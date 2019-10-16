@@ -1,0 +1,3 @@
+model = item/wooden_axe
+special = worldedit
+place = wooden_axe

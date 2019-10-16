@@ -1,0 +1,6 @@
+model = item/old_grass_block_slab
+special = slab
+top = old_grass_block_slab_top
+bottom = old_grass_block_slab_bottom
+both = old_grass_block
+place = old_grass_block_slab_bottom

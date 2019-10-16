@@ -1,0 +1,14 @@
+{
+    "parent": "block/templates/tintable_grass",
+    "textures": {
+        "overlay_up": "grass_block_top",
+        "side": "dirt_cut",
+        "overlay_side": "grass_block_side_overlay",
+        "down": "dirt"
+    },
+    "tints": {
+        "red": "1.0",
+        "green": "0.0",
+        "blue": "0.0"
+    }
+}

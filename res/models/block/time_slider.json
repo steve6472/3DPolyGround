@@ -1,0 +1,11 @@
+{
+    "parent": "block/templates/block",
+    "textures": {
+        "east": "time_slider",
+        "south": "time_slider_front",
+        "north": "time_slider",
+        "west": "time_slider",
+        "up": "time_slider",
+        "down": "time_slider"
+    }
+}

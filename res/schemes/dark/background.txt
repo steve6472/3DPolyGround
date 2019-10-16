@@ -1,0 +1,3 @@
+outsideBorder = ff151515
+insideBorder  = ff232323
+fill          = ff313131

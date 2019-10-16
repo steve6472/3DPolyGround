@@ -1,0 +1,3 @@
+model = block/smooth_slab_top
+special = slab
+type = top

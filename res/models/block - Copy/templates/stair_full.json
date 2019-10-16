@@ -1,0 +1,12 @@
+{
+	"parent": "block/templates/stair",
+	"textures":
+	{
+		"up" : "#texture",
+		"down" : "#texture",
+		"north" : "#texture",
+		"east" : "#texture",
+		"south" : "#texture",
+		"west" : "#texture",
+	}
+}

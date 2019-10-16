@@ -1,0 +1,3 @@
+outsideBorder = ff333333
+insideBorder  = ff7f7f7f
+fill          = fff2f2f2

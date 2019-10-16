@@ -1,0 +1,2 @@
+model = item/spruce_leaves
+place = spruce_leaves

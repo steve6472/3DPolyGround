@@ -1,0 +1,3 @@
+model = block/old_grass_block_slab_top
+special = slab
+type = top

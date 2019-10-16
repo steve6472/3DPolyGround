@@ -1,0 +1,25 @@
+{
+	"parent": "block/templates/tintable_stone_ore_emissive",
+	"textures":
+	{
+		"up" : "#texture",
+		"down" : "#texture",
+		"north" : "#texture",
+		"east" : "#texture",
+		"south" : "#texture",
+		"west" : "#texture",
+		
+		"o_up" : "#overlay",
+		"o_down" : "#overlay",
+		"o_north" : "#overlay",
+		"o_east" : "#overlay",
+		"o_south" : "#overlay",
+		"o_west" : "#overlay",
+	},
+	"tints":
+	{
+		"red": "#red",
+		"green": "#green",
+		"blue": "#blue",
+	}
+}

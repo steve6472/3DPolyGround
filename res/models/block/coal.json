@@ -1,0 +1,12 @@
+{
+    "parent": "block/templates/tintable_stone_ore_full",
+    "textures": {
+        "overlay": "ore_overlay",
+        "texture": "stone_cut"
+    },
+    "tints": {
+        "red": "0.3",
+        "green": "0.3",
+        "blue": "0.3"
+    }
+}

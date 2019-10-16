@@ -1,0 +1,2 @@
+model = item/full_grass_block
+place = full_grass_block

@@ -1,0 +1,15 @@
+buttonEnabledOutsideBorder   = ff000000
+buttonEnabledInsideBorder    = ff404040
+buttonEnabledFill            = ff262626
+
+buttonDisabledOutsideBorder  = ff000000
+buttonDisabledInsideBorder   = ff101010
+buttonDisabledFill           = ff0d0d0d
+
+buttonHoveredOutsideBorder   = ff000000
+buttonHoveredInsideBorder    = ff2060a0
+buttonHoveredFill            = ff004080
+
+sliderOutsideBorder          = ff000000
+sliderInsideBorder           = ff252525
+sliderFill                   = ff171717

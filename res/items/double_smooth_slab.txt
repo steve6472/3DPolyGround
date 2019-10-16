@@ -1,0 +1,2 @@
+model = item/double_smooth_slab
+place = double_smooth_slab

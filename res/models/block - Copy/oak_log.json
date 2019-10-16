@@ -1,0 +1,11 @@
+{
+    "parent": "block/templates/block",
+    "textures": {
+        "east": "oak_log_side",
+        "south": "oak_log_side",
+        "north": "oak_log_side",
+        "west": "oak_log_side",
+        "up": "oak_log",
+        "down": "oak_log"
+    }
+}

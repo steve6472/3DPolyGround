@@ -1,0 +1,2 @@
+model = block/magical_coal
+special = tinted

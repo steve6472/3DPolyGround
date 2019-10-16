@@ -1,0 +1,2 @@
+model = block/coal
+special = tinted

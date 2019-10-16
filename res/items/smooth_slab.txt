@@ -1,0 +1,6 @@
+model = item/smooth_slab
+special = slab
+top = smooth_slab_top
+bottom = smooth_slab_bottom
+both = double_smooth_slab
+place = smooth_slab_bottom

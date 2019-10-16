@@ -1,0 +1,9 @@
+{
+    "parent": "block/templates/tintable_block",
+    "textures": {"texture": "birch_leaves"},
+    "tints": {
+        "red": "0.5",
+        "green": "0.6513761",
+        "blue": "0.33035713"
+    }
+}

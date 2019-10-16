@@ -1,0 +1,9 @@
+border						 = ff020202
+
+fill						 = ff414041
+selectFill					 = ff1d1da9
+
+carretColor					 = ffa9a8aa
+
+textColor					 = ffffffff
+selectedTextColor			 	 = ffbfbfff

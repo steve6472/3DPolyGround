@@ -1,0 +1,23 @@
+package com.steve6472.polyground.generator.models.slab;
+
+import com.steve6472.polyground.generator.models.IModel;
+
+public class SlabTopSidedBlock implements IModel
+{
+	private static String json = "{\"parent\": \"block/templates/slab_top\", \"textures\": { \"up\" : \"#top\", \"down\" : \"#bottom\", \"north\" : \"#side\", \"east\" : \"#side\", \"south\" : \"#side\", \"west\" : \"#side\"}}";
+
+	private String top, bottom, side;
+
+	public SlabTopSidedBlock(String top, String bottom, String side)
+	{
+		this.top = top;
+		this.bottom = bottom;
+		this.side = side;
+	}
+
+	@Override
+	public String build()
+	{
+		return json.replace("#top", top).replace("#bottom", bottom).replace("#side", side);
+	}
+}

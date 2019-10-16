@@ -1,0 +1,3 @@
+model = block/dirt_slab_bottom
+special = slab
+type = bottom

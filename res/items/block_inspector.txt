@@ -1,0 +1,3 @@
+model = item/block_inspector
+special = block_inspector
+place = block_inspector

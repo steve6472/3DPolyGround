@@ -1,0 +1,39 @@
+{
+  "cubes": 
+  [
+    {
+      "from": [ 0, 0, 0 ],
+      "to": [ 16, 16, 16 ],
+      "faces": 
+	  {
+        "down":  { "texture": "#down" },
+        "up":    { "texture": "#up" },
+        "north": { "texture": "#north" },
+        "south": { "texture": "#south" },
+        "west":  { "texture": "#west" },
+        "east":  { "texture": "#east" }
+      }
+    }
+  ],
+  
+	"tintedCubes": 
+	[
+		{
+			"red": "#red",
+			"green": "#green",
+			"blue": "#blue",
+			
+			"from": [ 0, 0, 0 ],
+			"to": [ 16, 16, 16 ],
+			
+			"faces": {
+				"east":  { "texture": "#o_east", "emissive": true },
+				"south": { "texture": "#o_south", "emissive": true },
+				"north": { "texture": "#o_north", "emissive": true },
+				"west":  { "texture": "#o_west", "emissive": true },
+				"up":    { "texture": "#o_up", "emissive": true },
+				"down":  { "texture": "#o_down", "emissive": true }
+			}
+		}
+	]
+}

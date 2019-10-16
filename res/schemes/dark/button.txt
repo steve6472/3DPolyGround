@@ -1,0 +1,23 @@
+enabledOutsideBorder   = ff000000
+enabledInsideBorder    = ff404040
+enabledFill            = ff262626
+
+disabledOutsideBorder  = ff000000
+disabledInsideBorder   = ff101010
+disabledFill           = ff0d0d0d
+
+hoveredOutsideBorder   = ff000000
+hoveredInsideBorder    = ff2060a0
+hoveredFill            = ff004080
+
+enabledRed    = ffcccccc
+enabledGreen  = ffcccccc
+enabledBlue   = ffcccccc
+
+disabledRed   = ff808080
+disabledGreen = ff808080
+disabledBlue  = ff808080
+
+hoveredRed    = ffffffff
+hoveredGreen  = ffffffff
+hoveredBlue   = ffffffff

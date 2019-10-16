@@ -1,0 +1,11 @@
+{
+    "parent": "block/templates/block",
+    "textures": {
+        "east": "old_grass_block_side",
+        "south": "old_grass_block_side",
+        "north": "old_grass_block_side",
+        "west": "old_grass_block_side",
+        "up": "old_grass_block_top",
+        "down": "dirt"
+    }
+}

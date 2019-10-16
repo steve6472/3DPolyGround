@@ -1,0 +1,4 @@
+{
+    "parent": "block/templates/block_full",
+    "textures": {"texture": "old_grass_block_top"}
+}

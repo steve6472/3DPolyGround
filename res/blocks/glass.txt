@@ -1,0 +1,2 @@
+model = block/glass
+special = transparent

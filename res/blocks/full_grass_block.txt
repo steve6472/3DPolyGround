@@ -1,0 +1,2 @@
+model = block/full_grass_block
+special = tinted

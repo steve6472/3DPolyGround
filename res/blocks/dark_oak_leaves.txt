@@ -1,0 +1,2 @@
+model = block/dark_oak_leaves
+special = leaves
