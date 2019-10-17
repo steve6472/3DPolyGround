@@ -525,7 +525,7 @@
         }
     },
     {
-        "name": "Unnamed Cube",
+        "name": "top north",
         "from": [
             15,
             15,
@@ -588,7 +588,7 @@
         }
     },
     {
-        "name": "Unnamed Cube",
+        "name": "top south",
         "from": [
             0,
             15,
@@ -642,6 +642,219 @@
                     1,
                     1,
                     15
+                ],
+                "emissive": false,
+                "texture": "iron_block",
+                "isVisible": true,
+                "autoUV": true
+            }
+        }
+    },
+    {
+        "name": "yet another side",
+        "from": [
+            15,
+            1,
+            15
+        ],
+        "to": [
+            16,
+            15,
+            16
+        ],
+        "faces": {
+            "east": {
+                "uv": [
+                    15,
+                    1,
+                    16,
+                    15
+                ],
+                "emissive": false,
+                "texture": "iron_block",
+                "isVisible": true,
+                "autoUV": true
+            },
+            "south": {
+                "uv": [
+                    15,
+                    1,
+                    16,
+                    15
+                ],
+                "emissive": false,
+                "texture": "iron_block",
+                "isVisible": true,
+                "autoUV": true
+            },
+            "north": {
+                "uv": [
+                    15,
+                    1,
+                    16,
+                    15
+                ],
+                "emissive": false,
+                "texture": "iron_block",
+                "isVisible": true,
+                "autoUV": true
+            },
+            "west": {
+                "uv": [
+                    15,
+                    1,
+                    16,
+                    15
+                ],
+                "emissive": false,
+                "texture": "iron_block",
+                "isVisible": true,
+                "autoUV": true
+            }
+        }
+    },
+    {
+        "name": "final side",
+        "from": [
+            0,
+            1,
+            15
+        ],
+        "to": [
+            1,
+            15,
+            16
+        ],
+        "faces": {
+            "east": {
+                "uv": [
+                    0,
+                    1,
+                    1,
+                    15
+                ],
+                "emissive": false,
+                "texture": "iron_block",
+                "isVisible": true,
+                "autoUV": true
+            },
+            "south": {
+                "uv": [
+                    15,
+                    1,
+                    16,
+                    15
+                ],
+                "emissive": false,
+                "texture": "iron_block",
+                "isVisible": true,
+                "autoUV": true
+            },
+            "north": {
+                "uv": [
+                    15,
+                    1,
+                    16,
+                    15
+                ],
+                "emissive": false,
+                "texture": "iron_block",
+                "isVisible": true,
+                "autoUV": true
+            },
+            "west": {
+                "uv": [
+                    0,
+                    1,
+                    1,
+                    15
+                ],
+                "emissive": false,
+                "texture": "iron_block",
+                "isVisible": true,
+                "autoUV": true
+            }
+        }
+    },
+    {
+        "name": "top east",
+        "from": [
+            0,
+            15,
+            15
+        ],
+        "to": [
+            16,
+            16,
+            16
+        ],
+        "faces": {
+            "east": {
+                "uv": [
+                    0,
+                    15,
+                    16,
+                    16
+                ],
+                "emissive": false,
+                "texture": "iron_block",
+                "isVisible": true,
+                "autoUV": true
+            },
+            "south": {
+                "uv": [
+                    15,
+                    15,
+                    16,
+                    16
+                ],
+                "emissive": false,
+                "texture": "iron_block",
+                "isVisible": true,
+                "autoUV": true
+            },
+            "north": {
+                "uv": [
+                    15,
+                    15,
+                    16,
+                    16
+                ],
+                "emissive": false,
+                "texture": "iron_block",
+                "isVisible": true,
+                "autoUV": true
+            },
+            "west": {
+                "uv": [
+                    0,
+                    15,
+                    16,
+                    16
+                ],
+                "emissive": false,
+                "texture": "iron_block",
+                "isVisible": true,
+                "autoUV": true
+            },
+            "up": {
+                "uv": [
+                    0,
+                    15,
+                    16,
+                    16
+                ],
+                "emissive": false,
+                "texture": "iron_block",
+                "isVisible": true,
+                "autoUV": true
+            },
+            "down": {
+                "uv": [
+                    0,
+                    15,
+                    16,
+                    16
                 ],
                 "emissive": false,
                 "texture": "iron_block",

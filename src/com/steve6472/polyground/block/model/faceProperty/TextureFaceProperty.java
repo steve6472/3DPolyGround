@@ -41,6 +41,11 @@ public class TextureFaceProperty extends FaceProperty
 		return texture;
 	}
 
+	public String getWithoutReference()
+	{
+		return !isReference() ? getTexture() : getTexture().substring(1);
+	}
+
 	public void setTexture(String texture)
 	{
 		this.texture = texture;

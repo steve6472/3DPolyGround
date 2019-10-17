@@ -2,7 +2,9 @@ package com.steve6472.polyground.block.model;
 
 import com.steve6472.polyground.CaveGame;
 import com.steve6472.polyground.EnumFace;
+import com.steve6472.polyground.block.BlockLoader;
 import com.steve6472.polyground.block.model.faceProperty.AutoUVFaceProperty;
+import com.steve6472.polyground.block.model.faceProperty.TextureFaceProperty;
 import com.steve6472.polyground.block.model.registry.Cube;
 import com.steve6472.polyground.block.model.registry.CubeRegistry;
 import com.steve6472.polyground.block.model.registry.face.FaceRegistry;
@@ -96,28 +98,15 @@ public class BlockModelLoader
 			{
 				cf.getProperty(FaceRegistry.uv).autoUV(cube, face);
 			}
-			cube.setFace(face, cf);
 
-			/*
-			if (faceJson.has("texture"))
+			TextureFaceProperty texture = cf.getProperty(FaceRegistry.texture);
+			if (!texture.isReference())
 			{
-				String t = faceJson.getString("texture");
-				if (t.startsWith("#"))
-				{
-					cf.referenceTexture = t;
-					cube.setFace(face, cf);
-				} else
-				{
-					BlockLoader.putTexture(t);
+				BlockLoader.putTexture(texture.getTexture());
+				texture.setTextureId(BlockLoader.getTextureId(texture.getTexture()));
+			}
 
-					cf.setTexture(BlockLoader.getTextureId(t));
-					cube.setFace(face, cf);
-				}
-
-				JsonHelper.loadUv(faceJson, cf);
-				JsonHelper.loadShade(faceJson, cf);
-				JsonHelper.loadEmissive(faceJson, cf);
-			}*/
+			cube.setFace(face, cf);
 		}
 	}
 
