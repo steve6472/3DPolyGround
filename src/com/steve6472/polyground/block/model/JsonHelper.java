@@ -32,32 +32,6 @@ public class JsonHelper
 		);
 	}
 
-	public static void loadUv(JSONObject faceJson, CubeFace cubeFace)
-	{
-		if (faceJson.has("uv"))
-		{
-			JSONArray uvArray = faceJson.getJSONArray("uv");
-			cubeFace.getProperty(FaceRegistry.uv).setUV(
-				uvArray.getFloat(0) / 16f,
-				uvArray.getFloat(1) / 16f,
-				uvArray.getFloat(2) / 16f,
-				uvArray.getFloat(3) / 16f);
-		}
-	}
-
-	public static void loadShade(JSONObject faceJson, CubeFace cubeFace)
-	{
-		if (faceJson.has("shade"))
-		{
-			cubeFace.setShade(faceJson.getFloat("shade"));
-		}
-	}
-
-	public static void loadEmissive(JSONObject faceJson, CubeFace cubeFace)
-	{
-		cubeFace.setEmissive(faceJson.optBoolean("emissive", false));
-	}
-
 	public static void loadParentTextures(JSONObject json, Cube cube)
 	{
 		JSONObject textures = json.getJSONObject("textures");

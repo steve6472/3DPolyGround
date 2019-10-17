@@ -94,9 +94,11 @@ public class UVFaceProperty extends FaceProperty
 	{
 		switch (face)
 		{
-			case UP, DOWN -> setUV(parent.getAabb().minX, parent.getAabb().minZ, parent.getAabb().maxX, parent.getAabb().maxZ);
-			case WEST, EAST -> setUV(parent.getAabb().minX, parent.getAabb().minY, parent.getAabb().maxX, parent.getAabb().maxY);
-			case NORTH, SOUTH -> setUV(parent.getAabb().minZ, parent.getAabb().minY, parent.getAabb().maxZ, parent.getAabb().maxY);
+			case UP, DOWN -> setUV(parent.getAabb().minX, parent.getAabb().maxZ, parent.getAabb().maxX, parent.getAabb().minZ);
+			case EAST -> setUV(parent.getAabb().minX, parent.getAabb().maxY, parent.getAabb().maxX, parent.getAabb().minY);
+			case WEST -> setUV(parent.getAabb().maxX, parent.getAabb().maxY, parent.getAabb().minX, parent.getAabb().minY);
+			case NORTH -> setUV(parent.getAabb().maxZ, parent.getAabb().maxY, parent.getAabb().minZ, parent.getAabb().minY);
+			case SOUTH -> setUV(parent.getAabb().minZ, parent.getAabb().maxY, parent.getAabb().maxZ, parent.getAabb().minY);
 		}
 	}
 
