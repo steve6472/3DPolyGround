@@ -72,6 +72,14 @@ public class CubeFace
 		}
 	}
 
+	public void saveToJSON(JSONObject faceJson)
+	{
+		for (FaceProperty p : properties)
+		{
+			p.saveToJSON(faceJson);
+		}
+	}
+
 	public boolean hasProperty(String id)
 	{
 		for (FaceProperty fp : properties)

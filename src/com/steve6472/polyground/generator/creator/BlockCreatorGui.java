@@ -45,7 +45,7 @@ import java.util.Objects;
 public class BlockCreatorGui extends Gui
 {
 	/* UI Components */
-	private Button swichToItems, compile, newBlock, importTexture, setTexture, editCube, addCube, editUv, copyCube;
+	private Button swichToItems, save, newBlock, importTexture, setTexture, editCube, addCube, editUv, copyCube;
 	public ItemList blockList, cubeList;
 	private FaceList faceList;
 
@@ -84,11 +84,11 @@ public class BlockCreatorGui extends Gui
 
 		/* Buttons */
 
-		compile = new Button("Compile");
-		compile.setLocation(10, 10);
-		compile.setSize(80, 25);
-		compile.addClickEvent(this::compile);
-		addComponent(compile);
+		save = new Button("Save");
+		save.setLocation(10, 10);
+		save.setSize(80, 25);
+		save.addClickEvent(this::compile);
+		addComponent(save);
 
 		newBlock = new Button("New Block");
 		newBlock.setLocation(100, 10);
@@ -255,7 +255,7 @@ public class BlockCreatorGui extends Gui
 	{
 		if (face == null) return null;
 
-		CubeFace ccf = new CubeFace(parent, face.getFace());
+		CubeFace ccf = new CubeFace(parent, face.getFace(), face.copyProperties());
 
 		return ccf;
 	}
@@ -359,7 +359,7 @@ public class BlockCreatorGui extends Gui
 		{
 			CubeFace cf = cube.getFace(face);
 
-			faceList.get(face).setVisible(cf != null);
+			faceList.get(face).setVisible(cf.getProperty(FaceRegistry.isVisible).isVisible());
 		}
 	}
 

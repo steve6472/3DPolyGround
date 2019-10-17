@@ -39,6 +39,7 @@ public class UVFaceProperty extends FaceProperty
 		array.put(minV * 16f);
 		array.put(maxU * 16f);
 		array.put(maxV * 16f);
+		faceJson.put("uv", array);
 	}
 
 	public float getMinU()

@@ -257,11 +257,8 @@ public class BlockPreview
 					{
 						if (!VisibleFaceProperty.check(cubeFace)) continue;
 
-						if (cubeFace.hasProperty(FaceRegistry.uv))
-						{
-							UVFaceProperty uv = cubeFace.getProperty(FaceRegistry.uv);
-							uv.setUV(uv.getMinU(), uv.getMinV(), uv.getMaxU(), uv.getMaxV());
-						}
+						UVFaceProperty uv = cubeFace.getProperty(FaceRegistry.uv);
+						uv.setUV(uv.getMinU(), uv.getMinV(), uv.getMaxU(), uv.getMaxV());
 
 						tris += buildHelper.face(face);
 

@@ -5,6 +5,7 @@ import com.steve6472.polyground.block.model.BlockModel;
 import com.steve6472.polyground.block.model.CubeFace;
 import com.steve6472.polyground.block.model.JsonHelper;
 import com.steve6472.polyground.block.model.faceProperty.AutoUVFaceProperty;
+import com.steve6472.polyground.block.model.faceProperty.VisibleFaceProperty;
 import com.steve6472.polyground.block.model.registry.Cube;
 import com.steve6472.polyground.block.model.registry.CubeRegistry;
 import com.steve6472.polyground.block.model.registry.face.FaceRegistry;
@@ -117,25 +118,10 @@ class BlockLoader
 				cf.getProperty(FaceRegistry.uv).autoUV(cube, face);
 			}
 			cube.setFace(face, cf);
-			/*
-			JSONObject faceJson = json.getJSONObject(face.getName());
-			CreatorCubeFace cf = new CreatorCubeFace(cube, face);
-
-			if (faceJson.has("texture"))
-			{
-				String t = faceJson.getString("texture");
-
-				cf.setTextureName(t + ".png");
-				cf.autoUV = faceJson.optBoolean("autoUV");
-				cube.setFace(face, cf);
-
-				JsonHelper.loadUv(faceJson, cf);
-				JsonHelper.loadShade(faceJson, cf);
-				JsonHelper.loadEmissive(faceJson, cf);
-			}*/
 		} else
 		{
 			CubeFace cf = new CubeFace(cube, face);
+			cf.addProperty(new VisibleFaceProperty(false));
 			fillMissingProperties(cf);
 			cube.setFace(face, cf);
 		}

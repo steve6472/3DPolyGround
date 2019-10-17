@@ -18,7 +18,10 @@
                 16,
                 16
             ],
-            "texture": "daylight_detector_side"
+            "emissive": false,
+            "texture": "daylight_detector_side",
+            "isVisible": true,
+            "autoUV": false
         },
         "south": {
             "uv": [
@@ -27,7 +30,10 @@
                 16,
                 16
             ],
-            "texture": "daylight_detector_side"
+            "emissive": false,
+            "texture": "daylight_detector_side",
+            "isVisible": true,
+            "autoUV": false
         },
         "north": {
             "uv": [
@@ -36,7 +42,10 @@
                 16,
                 16
             ],
-            "texture": "daylight_detector_side"
+            "emissive": false,
+            "texture": "daylight_detector_side",
+            "isVisible": true,
+            "autoUV": false
         },
         "west": {
             "uv": [
@@ -45,7 +54,10 @@
                 16,
                 16
             ],
-            "texture": "daylight_detector_side"
+            "emissive": false,
+            "texture": "daylight_detector_side",
+            "isVisible": true,
+            "autoUV": false
         },
         "up": {
             "uv": [
@@ -54,7 +66,10 @@
                 16,
                 16
             ],
-            "texture": "daylight_detector_side"
+            "emissive": false,
+            "texture": "daylight_detector_side",
+            "isVisible": true,
+            "autoUV": false
         },
         "down": {
             "uv": [
@@ -63,7 +78,10 @@
                 16,
                 16
             ],
-            "texture": "daylight_detector_side"
+            "emissive": false,
+            "texture": "daylight_detector_side",
+            "isVisible": true,
+            "autoUV": false
         }
     }
 }]}

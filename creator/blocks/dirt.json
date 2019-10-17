@@ -12,27 +12,39 @@
     ],
     "faces": {
         "east": {
+            "emissive": false,
             "texture": "dirt",
+            "isVisible": true,
             "autoUV": true
         },
         "south": {
+            "emissive": false,
             "texture": "dirt",
+            "isVisible": true,
             "autoUV": true
         },
         "north": {
+            "emissive": false,
             "texture": "dirt",
+            "isVisible": true,
             "autoUV": true
         },
         "west": {
+            "emissive": false,
             "texture": "dirt",
+            "isVisible": true,
             "autoUV": true
         },
         "up": {
+            "emissive": false,
             "texture": "dirt",
+            "isVisible": true,
             "autoUV": true
         },
         "down": {
+            "emissive": false,
             "texture": "dirt",
+            "isVisible": true,
             "autoUV": true
         }
     }

@@ -13,27 +13,75 @@
         ],
         "faces": {
             "east": {
+                "uv": [
+                    0,
+                    0,
+                    16,
+                    5
+                ],
+                "emissive": false,
                 "texture": "stone",
+                "isVisible": true,
                 "autoUV": true
             },
             "south": {
+                "uv": [
+                    0,
+                    0,
+                    16,
+                    5
+                ],
+                "emissive": false,
                 "texture": "stone",
+                "isVisible": true,
                 "autoUV": true
             },
             "north": {
+                "uv": [
+                    0,
+                    0,
+                    16,
+                    5
+                ],
+                "emissive": false,
                 "texture": "stone",
+                "isVisible": true,
                 "autoUV": true
             },
             "west": {
+                "uv": [
+                    0,
+                    0,
+                    16,
+                    5
+                ],
+                "emissive": false,
                 "texture": "stone",
+                "isVisible": true,
                 "autoUV": true
             },
             "up": {
+                "uv": [
+                    0,
+                    0,
+                    16,
+                    16
+                ],
+                "emissive": false,
                 "texture": "stone",
+                "isVisible": true,
                 "autoUV": true
             },
             "down": {
+                "uv": [
+                    0,
+                    0,
+                    16,
+                    16
+                ],
+                "emissive": false,
                 "texture": "stone",
+                "isVisible": true,
                 "autoUV": true
             }
         }
@@ -52,27 +100,75 @@
         ],
         "faces": {
             "east": {
+                "uv": [
+                    0,
+                    11,
+                    5,
+                    16
+                ],
+                "emissive": false,
                 "texture": "stone",
+                "isVisible": true,
                 "autoUV": true
             },
             "south": {
+                "uv": [
+                    0,
+                    11,
+                    16,
+                    16
+                ],
+                "emissive": false,
                 "texture": "stone",
+                "isVisible": true,
                 "autoUV": true
             },
             "north": {
+                "uv": [
+                    0,
+                    11,
+                    16,
+                    16
+                ],
+                "emissive": false,
                 "texture": "stone",
+                "isVisible": true,
                 "autoUV": true
             },
             "west": {
+                "uv": [
+                    0,
+                    11,
+                    5,
+                    16
+                ],
+                "emissive": false,
                 "texture": "stone",
+                "isVisible": true,
                 "autoUV": true
             },
             "up": {
+                "uv": [
+                    0,
+                    0,
+                    5,
+                    16
+                ],
+                "emissive": false,
                 "texture": "stone",
+                "isVisible": true,
                 "autoUV": true
             },
             "down": {
+                "uv": [
+                    0,
+                    0,
+                    5,
+                    16
+                ],
+                "emissive": false,
                 "texture": "stone",
+                "isVisible": true,
                 "autoUV": true
             }
         }
@@ -91,19 +187,51 @@
         ],
         "faces": {
             "east": {
+                "uv": [
+                    0,
+                    5,
+                    5,
+                    11
+                ],
+                "emissive": false,
                 "texture": "stone",
+                "isVisible": true,
                 "autoUV": true
             },
             "south": {
+                "uv": [
+                    0,
+                    5,
+                    5,
+                    11
+                ],
+                "emissive": false,
                 "texture": "stone",
+                "isVisible": true,
                 "autoUV": true
             },
             "north": {
+                "uv": [
+                    0,
+                    5,
+                    5,
+                    11
+                ],
+                "emissive": false,
                 "texture": "stone",
+                "isVisible": true,
                 "autoUV": true
             },
             "west": {
+                "uv": [
+                    0,
+                    5,
+                    5,
+                    11
+                ],
+                "emissive": false,
                 "texture": "stone",
+                "isVisible": true,
                 "autoUV": true
             }
         }
@@ -122,19 +250,51 @@
         ],
         "faces": {
             "east": {
+                "uv": [
+                    0,
+                    5,
+                    5,
+                    11
+                ],
+                "emissive": false,
                 "texture": "stone",
+                "isVisible": true,
                 "autoUV": true
             },
             "south": {
+                "uv": [
+                    11,
+                    5,
+                    16,
+                    11
+                ],
+                "emissive": false,
                 "texture": "stone",
+                "isVisible": true,
                 "autoUV": true
             },
             "north": {
+                "uv": [
+                    11,
+                    5,
+                    16,
+                    11
+                ],
+                "emissive": false,
                 "texture": "stone",
+                "isVisible": true,
                 "autoUV": true
             },
             "west": {
+                "uv": [
+                    0,
+                    5,
+                    5,
+                    11
+                ],
+                "emissive": false,
                 "texture": "stone",
+                "isVisible": true,
                 "autoUV": true
             }
         }
@@ -153,19 +313,51 @@
         ],
         "faces": {
             "east": {
+                "uv": [
+                    11,
+                    5,
+                    16,
+                    11
+                ],
+                "emissive": false,
                 "texture": "stone",
+                "isVisible": true,
                 "autoUV": true
             },
             "south": {
+                "uv": [
+                    11,
+                    5,
+                    16,
+                    11
+                ],
+                "emissive": false,
                 "texture": "stone",
+                "isVisible": true,
                 "autoUV": true
             },
             "north": {
+                "uv": [
+                    11,
+                    5,
+                    16,
+                    11
+                ],
+                "emissive": false,
                 "texture": "stone",
+                "isVisible": true,
                 "autoUV": true
             },
             "west": {
+                "uv": [
+                    11,
+                    5,
+                    16,
+                    11
+                ],
+                "emissive": false,
                 "texture": "stone",
+                "isVisible": true,
                 "autoUV": true
             }
         }
@@ -184,19 +376,51 @@
         ],
         "faces": {
             "east": {
+                "uv": [
+                    11,
+                    5,
+                    16,
+                    11
+                ],
+                "emissive": false,
                 "texture": "stone",
+                "isVisible": true,
                 "autoUV": true
             },
             "south": {
+                "uv": [
+                    0,
+                    5,
+                    5,
+                    11
+                ],
+                "emissive": false,
                 "texture": "stone",
+                "isVisible": true,
                 "autoUV": true
             },
             "north": {
+                "uv": [
+                    0,
+                    5,
+                    5,
+                    11
+                ],
+                "emissive": false,
                 "texture": "stone",
+                "isVisible": true,
                 "autoUV": true
             },
             "west": {
+                "uv": [
+                    11,
+                    5,
+                    16,
+                    11
+                ],
+                "emissive": false,
                 "texture": "stone",
+                "isVisible": true,
                 "autoUV": true
             }
         }
@@ -215,27 +439,75 @@
         ],
         "faces": {
             "east": {
+                "uv": [
+                    11,
+                    11,
+                    16,
+                    16
+                ],
+                "emissive": false,
                 "texture": "stone",
+                "isVisible": true,
                 "autoUV": true
             },
             "south": {
+                "uv": [
+                    0,
+                    11,
+                    16,
+                    16
+                ],
+                "emissive": false,
                 "texture": "stone",
+                "isVisible": true,
                 "autoUV": true
             },
             "north": {
+                "uv": [
+                    0,
+                    11,
+                    16,
+                    16
+                ],
+                "emissive": false,
                 "texture": "stone",
+                "isVisible": true,
                 "autoUV": true
             },
             "west": {
+                "uv": [
+                    11,
+                    11,
+                    16,
+                    16
+                ],
+                "emissive": false,
                 "texture": "stone",
+                "isVisible": true,
                 "autoUV": true
             },
             "up": {
+                "uv": [
+                    11,
+                    0,
+                    16,
+                    16
+                ],
+                "emissive": false,
                 "texture": "stone",
+                "isVisible": true,
                 "autoUV": true
             },
             "down": {
+                "uv": [
+                    11,
+                    0,
+                    16,
+                    16
+                ],
+                "emissive": false,
                 "texture": "stone",
+                "isVisible": true,
                 "autoUV": true
             }
         }
@@ -254,19 +526,51 @@
         ],
         "faces": {
             "east": {
+                "uv": [
+                    5,
+                    11,
+                    11,
+                    16
+                ],
+                "emissive": false,
                 "texture": "stone",
+                "isVisible": true,
                 "autoUV": true
             },
             "south": {
+                "uv": [
+                    11,
+                    11,
+                    16,
+                    16
+                ],
+                "emissive": false,
                 "texture": "stone",
+                "isVisible": true,
                 "autoUV": true
             },
             "north": {
+                "uv": [
+                    11,
+                    11,
+                    16,
+                    16
+                ],
+                "emissive": false,
                 "texture": "stone",
+                "isVisible": true,
                 "autoUV": true
             },
             "west": {
+                "uv": [
+                    5,
+                    11,
+                    11,
+                    16
+                ],
+                "emissive": false,
                 "texture": "stone",
+                "isVisible": true,
                 "autoUV": true
             },
             "up": {
@@ -276,10 +580,21 @@
                     11,
                     5
                 ],
-                "texture": "stone"
+                "emissive": false,
+                "texture": "stone",
+                "isVisible": true,
+                "autoUV": false
             },
             "down": {
+                "uv": [
+                    5,
+                    11,
+                    11,
+                    16
+                ],
+                "emissive": false,
                 "texture": "stone",
+                "isVisible": true,
                 "autoUV": true
             }
         }
@@ -298,27 +613,75 @@
         ],
         "faces": {
             "east": {
+                "uv": [
+                    5,
+                    11,
+                    11,
+                    16
+                ],
+                "emissive": false,
                 "texture": "stone",
+                "isVisible": true,
                 "autoUV": true
             },
             "south": {
+                "uv": [
+                    0,
+                    11,
+                    5,
+                    16
+                ],
+                "emissive": false,
                 "texture": "stone",
+                "isVisible": true,
                 "autoUV": true
             },
             "north": {
+                "uv": [
+                    0,
+                    11,
+                    5,
+                    16
+                ],
+                "emissive": false,
                 "texture": "stone",
+                "isVisible": true,
                 "autoUV": true
             },
             "west": {
+                "uv": [
+                    5,
+                    11,
+                    11,
+                    16
+                ],
+                "emissive": false,
                 "texture": "stone",
+                "isVisible": true,
                 "autoUV": true
             },
             "up": {
+                "uv": [
+                    5,
+                    0,
+                    11,
+                    5
+                ],
+                "emissive": false,
                 "texture": "stone",
+                "isVisible": true,
                 "autoUV": true
             },
             "down": {
+                "uv": [
+                    5,
+                    0,
+                    11,
+                    5
+                ],
+                "emissive": false,
                 "texture": "stone",
+                "isVisible": true,
                 "autoUV": true
             }
         }

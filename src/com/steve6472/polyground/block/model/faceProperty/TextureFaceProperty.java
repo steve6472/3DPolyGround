@@ -58,7 +58,7 @@ public class TextureFaceProperty extends FaceProperty
 
 	public boolean isBlank()
 	{
-		return texture.isBlank();
+		return texture == null || texture.isBlank();
 	}
 
 	@Override
@@ -73,6 +73,7 @@ public class TextureFaceProperty extends FaceProperty
 		TextureFaceProperty o = new TextureFaceProperty();
 		o.isReference = isReference;
 		o.texture = texture;
+		o.textureId = textureId;
 
 		return o;
 	}

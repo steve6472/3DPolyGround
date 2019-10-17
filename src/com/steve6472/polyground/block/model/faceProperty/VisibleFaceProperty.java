@@ -16,7 +16,12 @@ public class VisibleFaceProperty extends FaceProperty
 
 	public VisibleFaceProperty()
 	{
-		isVisible = true;
+
+	}
+
+	public VisibleFaceProperty(boolean visible)
+	{
+		isVisible = visible;
 	}
 
 	@Override
@@ -55,9 +60,6 @@ public class VisibleFaceProperty extends FaceProperty
 	@Override
 	public FaceProperty createCopy()
 	{
-		VisibleFaceProperty o = new VisibleFaceProperty();
-		o.isVisible = isVisible;
-
-		return o;
+		return new VisibleFaceProperty(isVisible);
 	}
 }

@@ -2,7 +2,6 @@ package com.steve6472.polyground.generator.creator;
 
 import com.steve6472.polyground.EnumFace;
 import com.steve6472.polyground.block.model.CubeFace;
-import com.steve6472.polyground.block.model.faceProperty.UVFaceProperty;
 import com.steve6472.polyground.block.model.registry.Cube;
 import com.steve6472.polyground.block.model.registry.face.FaceRegistry;
 import org.json.JSONArray;
@@ -79,20 +78,22 @@ class BlockSaver
 		if (!face.hasProperty(FaceRegistry.texture) || face.getProperty(FaceRegistry.texture).isBlank()) return null;
 
 		JSONObject json = new JSONObject();
+		face.saveToJSON(json);
 
-		json.put("texture", face.getProperty(FaceRegistry.texture).getTexture());
 
-		if (face.hasProperty(FaceRegistry.autoUv) && face.getProperty(FaceRegistry.autoUv).isAuto())
-		{
-			json.put("autoUV", true);
-		} else
-		{
-			JSONArray uv = new JSONArray();
-			UVFaceProperty uvP = face.getProperty(FaceRegistry.uv);
-			uv.put(uvP.getMinU() * 16).put(uvP.getMinV() * 16).put(uvP.getMaxU() * 16).put(uvP.getMaxV() * 16);
-
-			json.put("uv", uv);
-		}
+//		json.put("texture", face.getProperty(FaceRegistry.texture).getTexture());
+//
+//		if (face.hasProperty(FaceRegistry.autoUv) && face.getProperty(FaceRegistry.autoUv).isAuto())
+//		{
+//			json.put("autoUV", true);
+//		} else
+//		{
+//			JSONArray uv = new JSONArray();
+//			UVFaceProperty uvP = face.getProperty(FaceRegistry.uv);
+//			uv.put(uvP.getMinU() * 16).put(uvP.getMinV() * 16).put(uvP.getMaxU() * 16).put(uvP.getMaxV() * 16);
+//
+//			json.put("uv", uv);
+//		}
 
 		return json;
 	}
