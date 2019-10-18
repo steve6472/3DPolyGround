@@ -3,8 +3,6 @@ package com.steve6472.polyground.block.model.faceProperty;
 import org.json.JSONObject;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.List;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
@@ -14,11 +12,11 @@ import java.util.List;
  ***********************/
 public abstract class FaceProperty
 {
-	List<FaceProperty> properties;
+//	List<FaceProperty> properties;
 
 	public FaceProperty()
 	{
-		properties = new ArrayList<>();
+//		properties = new ArrayList<>();
 	}
 
 	public abstract void loadFromJSON(JSONObject json);
@@ -29,13 +27,13 @@ public abstract class FaceProperty
 
 	public abstract String getId();
 
-	public void loadChildProperties(JSONObject propertyJson)
-	{
-		for (FaceProperty f : properties)
-		{
-			f.loadFromJSON(propertyJson);
-		}
-	}
+//	public void loadChildProperties(JSONObject propertyJson)
+//	{
+//		for (FaceProperty f : properties)
+//		{
+//			f.loadFromJSON(propertyJson);
+//		}
+//	}
 
 	/**
 	 * @author https://stackoverflow.com/a/1526843

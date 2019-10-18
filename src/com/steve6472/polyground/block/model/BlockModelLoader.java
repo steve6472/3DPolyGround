@@ -5,8 +5,8 @@ import com.steve6472.polyground.EnumFace;
 import com.steve6472.polyground.block.BlockLoader;
 import com.steve6472.polyground.block.model.faceProperty.AutoUVFaceProperty;
 import com.steve6472.polyground.block.model.faceProperty.TextureFaceProperty;
+import com.steve6472.polyground.block.model.faceProperty.UVFaceProperty;
 import com.steve6472.polyground.block.model.registry.Cube;
-import com.steve6472.polyground.block.model.registry.CubeRegistry;
 import com.steve6472.polyground.block.model.registry.face.FaceRegistry;
 import com.steve6472.sge.main.MainApp;
 import org.joml.AABBf;
@@ -48,28 +48,40 @@ public class BlockModelLoader
 			return createFromParent(json);
 		}
 
+		try
+		{
+			return loadCubes(json);
+		} catch (Exception e)
+		{
+			System.err.println("Loading cubes failed while loading  " + name);
+			e.printStackTrace();
+			CaveGame.getInstance().exit();
+			System.exit(0);
+			return null;
+		}
+	}
+
+	private List<Cube> loadCubes(JSONObject json)
+	{
 		List<Cube> cubeList = new ArrayList<>();
 
-		for (String cubeType : CubeRegistry.getKeys())
+		if (json.has("tintedCubes")) throw new IllegalArgumentException("Tinted cubes found in model!");
+
+		JSONArray array = json.getJSONArray("cubes");
+		for (int i = 0; i < array.length(); i++)
 		{
-			if (!json.has(cubeType)) continue;
+			JSONObject c = array.getJSONObject(i);
+			AABBf aabb = JsonHelper.createAABB(c);
+			Cube cube = new Cube(aabb);
 
-			JSONArray array = json.getJSONArray(cubeType);
-			for (int i = 0; i < array.length(); i++)
+			JSONObject faces = c.getJSONObject("faces");
+			for (EnumFace ef : EnumFace.getFaces())
 			{
-				JSONObject c = array.getJSONObject(i);
-				AABBf aabb = JsonHelper.createAABB(c);
-				Cube cube = CubeRegistry.createCube(cubeType, aabb);
-
-				JSONObject faces = c.getJSONObject("faces");
-				for (EnumFace ef : EnumFace.getFaces())
-				{
-					face(faces, ef, cube);
-				}
-
-				cube.loadFromJson(c);
-				cubeList.add(cube);
+				face(faces, ef, cube);
 			}
+
+			cube.loadFromJson(c);
+			cubeList.add(cube);
 		}
 
 		return cubeList;
@@ -93,7 +105,10 @@ public class BlockModelLoader
 			JSONObject faceJson = json.getJSONObject(face.getName());
 			CubeFace cf = new CubeFace(cube, face);
 			cf.loadFromJSON(faceJson);
-			fillMissingProperties(cf);
+
+			if (!cf.hasProperty(FaceRegistry.uv))
+				cf.addProperty(new UVFaceProperty());
+
 			if (AutoUVFaceProperty.check(cf))
 			{
 				cf.getProperty(FaceRegistry.uv).autoUV(cube, face);

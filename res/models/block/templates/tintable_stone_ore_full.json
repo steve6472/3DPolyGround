@@ -14,12 +14,10 @@
 		"o_north" : "#overlay",
 		"o_east" : "#overlay",
 		"o_south" : "#overlay",
-		"o_west" : "#overlay",
+		"o_west" : "#overlay"
 	},
 	"tints":
 	{
-		"red": "#red",
-		"green": "#green",
-		"blue": "#blue",
+		"overlay": "#overlay"
 	}
 }

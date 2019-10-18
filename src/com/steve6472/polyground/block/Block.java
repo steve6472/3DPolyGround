@@ -108,7 +108,7 @@ public class Block
 	}
 
 	public void tick(SubChunk subChunk, BlockData blockData, int x, int y, int z) {}
-	public void postLoad() {};
+	public void postLoad() {}
 
 	/* Events */
 

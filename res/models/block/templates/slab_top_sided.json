@@ -7,6 +7,6 @@
 		"north" : "#side",
 		"east" : "#side",
 		"south" : "#side",
-		"west" : "#side",
+		"west" : "#side"
 	}
 }

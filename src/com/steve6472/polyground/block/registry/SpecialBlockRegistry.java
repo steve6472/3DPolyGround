@@ -29,7 +29,6 @@ public class SpecialBlockRegistry
 	public static final SpecialBlockEntry<StairBlock> stair = register("stair", StairBlock::new);
 	public static final SpecialBlockEntry<LeavesBlock> leaves = register("leaves", LeavesBlock::new);
 	public static final SpecialBlockEntry<GravelBlock> gravel = register("gravel", GravelBlock::new);
-	public static final SpecialBlockEntry<TintedBlock> tinted = register("tinted", TintedBlock::new);
 	public static final SpecialBlockEntry<DoubleSlabBlockTinted> doubleSlabTinted = register("double_slab_tinted", DoubleSlabBlockTinted::new);
 	public static final SpecialBlockEntry<SlabBlockTinted> slabTinted = register("slab_tinted", SlabBlockTinted::new);
 	public static final SpecialBlockEntry<TimeSliderBlock> timeSlider = register("time_slider", TimeSliderBlock::new);

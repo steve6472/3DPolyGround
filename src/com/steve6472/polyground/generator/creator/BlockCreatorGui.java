@@ -5,7 +5,6 @@ import com.steve6472.polyground.block.model.CubeFace;
 import com.steve6472.polyground.block.model.faceProperty.AutoUVFaceProperty;
 import com.steve6472.polyground.block.model.faceProperty.TextureFaceProperty;
 import com.steve6472.polyground.block.model.registry.Cube;
-import com.steve6472.polyground.block.model.registry.TintedCube;
 import com.steve6472.polyground.block.model.registry.face.FaceRegistry;
 import com.steve6472.polyground.generator.creator.components.FaceList;
 import com.steve6472.polyground.generator.creator.dialogs.EditCubeDialog;
@@ -229,26 +228,20 @@ public class BlockCreatorGui extends Gui
 	private void copyCube(Button button)
 	{
 		Cube c = getSelectedCube();
-		if (c instanceof TintedCube)
+		CreatorCube cc = (CreatorCube) c;
+
+		CreatorCube newCube = new CreatorCube(new AABBf(c.getAabb()));
+		newCube.setCollisionBox(c.isCollisionBox());
+		newCube.setHitbox(c.isHitbox());
+		newCube.setName(cc.getName());
+
+		for (EnumFace f : EnumFace.getFaces())
 		{
-//			((TintedCube) c)
-		} else
-		{
-			CreatorCube cc = (CreatorCube) c;
-
-			CreatorCube newCube = new CreatorCube(new AABBf(c.getAabb()));
-			newCube.setCollisionBox(c.isCollisionBox());
-			newCube.setHitbox(c.isHitbox());
-			newCube.setName(cc.getName());
-
-			for (EnumFace f : EnumFace.getFaces())
-			{
-				newCube.setFace(f, copyFace(cc.getFace(f), newCube));
-			}
-
-			getSelectedBlock().getModel().addCube(newCube);
-			runOnBlockChange();
+			newCube.setFace(f, copyFace(cc.getFace(f), newCube));
 		}
+
+		getSelectedBlock().getModel().addCube(newCube);
+		runOnBlockChange();
 	}
 
 	private CubeFace copyFace(CubeFace face, Cube parent)

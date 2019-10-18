@@ -7,7 +7,6 @@ import com.steve6472.polyground.block.model.JsonHelper;
 import com.steve6472.polyground.block.model.faceProperty.AutoUVFaceProperty;
 import com.steve6472.polyground.block.model.faceProperty.VisibleFaceProperty;
 import com.steve6472.polyground.block.model.registry.Cube;
-import com.steve6472.polyground.block.model.registry.CubeRegistry;
 import com.steve6472.polyground.block.model.registry.face.FaceRegistry;
 import org.joml.AABBf;
 import org.json.JSONArray;
@@ -36,47 +35,38 @@ class BlockLoader
 
 		int cubeCount = 0;
 
-		for (String cubeType : CubeRegistry.getKeys())
+		JSONArray array = mainJson.getJSONArray("cubes");
+		for (int i = 0; i < array.length(); i++)
 		{
-			if (!mainJson.has(cubeType)) continue;
+			JSONObject c = array.getJSONObject(i);
+			AABBf aabb = JsonHelper.createAABB(c);
+			Cube cube = new CreatorCube(aabb);
+			ICreatorCube creatorCube = ((ICreatorCube) cube);
 
-			JSONArray array = mainJson.getJSONArray(cubeType);
-			for (int i = 0; i < array.length(); i++)
+			if (c.has("name"))
+				creatorCube.setName(c.getString("name"));
+			else
+				creatorCube.setName("Unnamed Cube");
+
+			creatorCube.setIndex(cubeCount++);
+
+			if (c.has("faces"))
 			{
-				JSONObject c = array.getJSONObject(i);
-				AABBf aabb = JsonHelper.createAABB(c);
-				Cube cube = switch (cubeType)
-					{
-						case "tintedCubes" -> new CreatorTintedCube(aabb);
-						default -> new CreatorCube(aabb);
-					};
-				ICreatorCube creatorCube = ((ICreatorCube) cube);
-
-				if (c.has("name"))
-					creatorCube.setName(c.getString("name"));
-				else
-					creatorCube.setName("Unnamed Cube");
-
-				creatorCube.setIndex(cubeCount++);
-
-				if (c.has("faces"))
+				JSONObject faces = c.getJSONObject("faces");
+				for (EnumFace ef : EnumFace.getFaces())
 				{
-					JSONObject faces = c.getJSONObject("faces");
-					for (EnumFace ef : EnumFace.getFaces())
-					{
-						face(faces, ef, cube);
-					}
-				} else
-				{
-					for (EnumFace ef : EnumFace.getFaces())
-					{
-						face(null, ef, cube);
-					}
+					face(faces, ef, cube);
 				}
-
-				cube.loadFromJson(c);
-				cubeList.add(cube);
+			} else
+			{
+				for (EnumFace ef : EnumFace.getFaces())
+				{
+					face(null, ef, cube);
+				}
 			}
+
+			cube.loadFromJson(c);
+			cubeList.add(cube);
 		}
 
 		return new BlockModel(cubeList);

@@ -1,9 +1,8 @@
 {
     "parent": "block/templates/tintable_block",
     "textures": {"texture": "oak_leaves"},
-    "tints": {
-        "red": "0.46153846",
-        "green": "0.67",
-        "blue": "0.1826923"
+    "tints":
+    {
+        "tint": [118, 171, 47]
     }
 }

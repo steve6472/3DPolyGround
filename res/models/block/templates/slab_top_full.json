@@ -7,6 +7,6 @@
 		"north" : "#texture",
 		"east" : "#texture",
 		"south" : "#texture",
-		"west" : "#texture",
+		"west" : "#texture"
 	}
 }

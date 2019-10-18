@@ -6,9 +6,8 @@
         "overlay_side": "grass_block_side_overlay",
         "down": "dirt"
     },
-    "tints": {
-        "red": "0.0",
-        "green": "1.0",
-        "blue": "0.0"
+    "tints":
+    {
+        "overlay": [0, 255, 0]
     }
 }

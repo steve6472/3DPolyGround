@@ -24,7 +24,6 @@ public class CubeFace
 	private List<FaceProperty> properties;
 
 	private float shade;
-	private boolean emissive = false;
 
 	public CubeFace(Cube parent, EnumFace face)
 	{
@@ -123,7 +122,17 @@ public class CubeFace
 
 	public void addProperty(FaceProperty property)
 	{
+		for (FaceProperty fp : properties)
+		{
+			if (fp.getId().equals(property.getId()))
+				throw new IllegalArgumentException("Duplicate Face Properties '" + property.getId() + "'");
+		}
 		properties.add(property);
+	}
+
+	public <T extends FaceProperty> void removeProperty(FaceEntry<T> a)
+	{
+		properties.removeIf(next -> next.getId().equals(a.getInstance().getId()));
 	}
 
 	public EnumFace getFace()
@@ -149,21 +158,5 @@ public class CubeFace
 	public Cube getParent()
 	{
 		return parent;
-	}
-
-	@Override
-	public String toString()
-	{
-		return "CubeFace{" + "face=" + face + ", shade=" + shade + ", emissive=" + emissive + '}';
-	}
-
-	public boolean isEmissive()
-	{
-		return emissive;
-	}
-
-	public void setEmissive(boolean emissive)
-	{
-		this.emissive = emissive;
 	}
 }

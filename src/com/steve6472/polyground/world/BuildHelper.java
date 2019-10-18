@@ -2,6 +2,8 @@ package com.steve6472.polyground.world;
 
 import com.steve6472.polyground.EnumFace;
 import com.steve6472.polyground.block.model.CubeFace;
+import com.steve6472.polyground.block.model.faceProperty.EmissiveFaceProperty;
+import com.steve6472.polyground.block.model.faceProperty.TintFaceProperty;
 import com.steve6472.polyground.block.model.faceProperty.UVFaceProperty;
 import com.steve6472.polyground.block.model.registry.Cube;
 import com.steve6472.polyground.block.model.registry.face.FaceRegistry;
@@ -135,7 +137,7 @@ public final class BuildHelper
 
 	public int face(EnumFace face)
 	{
-		return switch (face)
+		int tris = switch (face)
 			{
 				case UP -> topFace();
 				case DOWN -> bottomFace();
@@ -145,6 +147,36 @@ public final class BuildHelper
 				case WEST -> negativeZFace();
 				default -> 0;
 			};
+
+		if (tris != 0)
+		{
+			if (cube.getFace(face).hasProperty(FaceRegistry.tint))
+				recolor(cube.getFace(face));
+		}
+
+		return tris;
+	}
+
+	private void recolor(CubeFace face)
+	{
+		TintFaceProperty tint = face.getProperty(FaceRegistry.tint);
+
+		for (int j = 0; j < 24; j++)
+		{
+			getCol().remove(getCol().size() - 1);
+		}
+		for (int j = 0; j < 6; j++)
+		{
+			shade(tint.getRed(), tint.getGreen(), tint.getBlue(), face.getShade());
+		}
+	}
+
+	private void shade(float r, float g, float b, float shade)
+	{
+		getCol().add(r * shade);
+		getCol().add(g * shade);
+		getCol().add(b * shade);
+		getCol().add(1.0f);
 	}
 
 	public int negativeZFace()
@@ -426,7 +458,7 @@ public final class BuildHelper
 	private void setEmissive(EnumFace face)
 	{
 		float f = 0f;
-		if (cube.getFace(face).isEmissive())
+		if (EmissiveFaceProperty.check(cube.getFace(face)))
 		{
 			f = 1f;
 		}

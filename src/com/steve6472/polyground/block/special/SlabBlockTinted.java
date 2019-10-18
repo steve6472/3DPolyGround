@@ -1,9 +1,5 @@
 package com.steve6472.polyground.block.special;
 
-import com.steve6472.polyground.block.blockdata.BlockData;
-import com.steve6472.polyground.world.BuildHelper;
-import com.steve6472.polyground.world.SubChunk;
-
 import java.io.File;
 
 /**********************
@@ -20,9 +16,9 @@ public class SlabBlockTinted extends SlabBlock
 		isFull = false;
 	}
 
-	@Override
-	public int createModel(int x, int y, int z, SubChunk sc, BlockData blockData, BuildHelper buildHelper)
-	{
-		return TintedBlock.createTintedModel(getBlockModel(), buildHelper, x, y, z, sc, this);
-	}
+//	@Override
+//	public int createModel(int x, int y, int z, SubChunk sc, BlockData blockData, BuildHelper buildHelper)
+//	{
+//		return TintedBlock.createTintedModel(getBlockModel(), buildHelper, x, y, z, sc, this);
+//	}
 }

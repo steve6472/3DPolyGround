@@ -21,6 +21,8 @@ public class FaceRegistry
 	public static final FaceEntry<VisibleFaceProperty> isVisible = register("isVisible", VisibleFaceProperty::new);
 	public static final FaceEntry<UVFaceProperty> uv = register("uv", UVFaceProperty::new);
 	public static final FaceEntry<EmissiveFaceProperty> emissive = register("emissive", EmissiveFaceProperty::new);
+	public static final FaceEntry<TintFaceProperty> tint = register("tint", TintFaceProperty::new);
+	public static final FaceEntry<RefTintFaceProperty> refTint = register("refTint", RefTintFaceProperty::new);
 
 	public static <T extends FaceProperty> FaceEntry<T> register(String id, IFaceFactory<T> factory)
 	{

@@ -4,9 +4,8 @@
         "overlay": "ore_overlay",
         "texture": "stone_cut"
     },
-    "tints": {
-        "red": "0.1",
-        "green": "0.8",
-        "blue": "0.8"
+    "tints":
+    {
+        "overlay": [26, 204, 204]
     }
 }

@@ -346,7 +346,7 @@ public class CaveGame extends MainApp
 	@Override
 	public void exit()
 	{
-		if (world.worldName != null)
+		if (world != null && world.worldName != null)
 		{
 			Saver.saveWorld(world, world.worldName);
 		}

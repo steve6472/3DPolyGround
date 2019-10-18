@@ -8,7 +8,6 @@ import com.steve6472.polyground.block.model.CubeFace;
 import com.steve6472.polyground.block.model.faceProperty.UVFaceProperty;
 import com.steve6472.polyground.block.model.faceProperty.VisibleFaceProperty;
 import com.steve6472.polyground.block.model.registry.Cube;
-import com.steve6472.polyground.block.model.registry.TintedCube;
 import com.steve6472.polyground.block.model.registry.face.FaceRegistry;
 import com.steve6472.polyground.shaders.MainShader;
 import com.steve6472.polyground.shaders.world.WorldShader;
@@ -225,73 +224,28 @@ public class BlockPreview
 		{
 			buildHelper.setCube(c);
 
-			if (c instanceof TintedCube)
+			for (EnumFace face : EnumFace.getFaces())
 			{
-				throw new IllegalStateException("Model contains TintedCube which is not supported!");
+				CubeFace cubeFace = c.getFace(face);
 
-				/*
-				TintedCube tc = (TintedCube) c;
-				for (EnumFace face : EnumFace.getFaces())
+				if (cubeFace != null)
 				{
+					if (!VisibleFaceProperty.check(cubeFace)) continue;
+
+					UVFaceProperty uv = cubeFace.getProperty(FaceRegistry.uv);
+					uv.setUV(uv.getMinU(), uv.getMinV(), uv.getMaxU(), uv.getMaxV());
+
 					tris += buildHelper.face(face);
-					CubeFace cubeFace = tc.getFace(face);
-					if (cubeFace != null)
+
+					if (c.getFace(face).getProperty(FaceRegistry.texture).getTextureId() == -1)
 					{
-						if (!cubeFace.visible) continue;
-						tris += buildHelper.face(face);
-
-						recolor(buildHelper, cubeFace.getShade(), tc);
-						if (cubeFace.getTexture() == -1)
-						{
-							buildHelper.replaceLastFaceWithErrorTexture();
-						}
-					}
-				}*/
-			} else
-			{
-				for (EnumFace face : EnumFace.getFaces())
-				{
-					CubeFace cubeFace = c.getFace(face);
-
-					if (cubeFace != null)
-					{
-						if (!VisibleFaceProperty.check(cubeFace)) continue;
-
-						UVFaceProperty uv = cubeFace.getProperty(FaceRegistry.uv);
-						uv.setUV(uv.getMinU(), uv.getMinV(), uv.getMaxU(), uv.getMaxV());
-
-						tris += buildHelper.face(face);
-
-						if (c.getFace(face).getProperty(FaceRegistry.texture).getTextureId() == -1)
-						{
-							buildHelper.replaceLastFaceWithErrorTexture();
-						}
+						buildHelper.replaceLastFaceWithErrorTexture();
 					}
 				}
 			}
 		}
 
 		return tris;
-	}
-
-	private static void recolor(BuildHelper buildHelper, float shade, TintedCube cube)
-	{
-		for (int j = 0; j < 24; j++)
-		{
-			buildHelper.getCol().remove(buildHelper.getCol().size() - 1);
-		}
-		for (int j = 0; j < 6; j++)
-		{
-			shade(buildHelper, cube.red, cube.green, cube.blue, shade);
-		}
-	}
-
-	private static void shade(BuildHelper buildHelper, float r, float g, float b, float shade)
-	{
-		buildHelper.getCol().add(r * shade);
-		buildHelper.getCol().add(g * shade);
-		buildHelper.getCol().add(b * shade);
-		buildHelper.getCol().add(1.0f);
 	}
 
 	public int getId()

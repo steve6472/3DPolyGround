@@ -1,2 +1,2 @@
-model = block/model_test
+model = block/model_test/basalt_child
 special = custom

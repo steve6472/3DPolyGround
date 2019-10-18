@@ -1,9 +1,8 @@
 {
     "parent": "block/templates/tintable_block",
     "textures": {"texture": "jungle_leaves"},
-    "tints": {
-        "red": "0.4642857",
-        "green": "0.66972476",
-        "blue": "0.1875"
+    "tints":
+    {
+        "tint": [118, 171, 47]
     }
 }

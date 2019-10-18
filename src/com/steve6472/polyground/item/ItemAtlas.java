@@ -6,7 +6,6 @@ import com.steve6472.polyground.PolyUtil;
 import com.steve6472.polyground.block.Block;
 import com.steve6472.polyground.block.BlockLoader;
 import com.steve6472.polyground.block.model.registry.Cube;
-import com.steve6472.polyground.block.model.registry.TintedCube;
 import com.steve6472.polyground.block.registry.BlockRegistry;
 import com.steve6472.polyground.tessellators.ItemTessellator;
 import com.steve6472.polyground.world.BuildHelper;
@@ -186,45 +185,13 @@ public class ItemAtlas
 		{
 			buildHelper.setCube(c);
 
-			if (c instanceof TintedCube)
+			for (EnumFace face : EnumFace.getFaces())
 			{
-				TintedCube tc = (TintedCube) c;
-				for (EnumFace face : EnumFace.getFaces())
-				{
-					tris += buildHelper.face(face);
-					if (tc.getFace(face) != null)
-						recolor(buildHelper, tc.getFace(face).getShade(), tc);
-				}
-			} else
-			{
-				for (EnumFace face : EnumFace.getFaces())
-				{
-					tris += buildHelper.face(face);
-				}
+				tris += buildHelper.face(face);
 			}
 		}
 
 		return tris;
-	}
-
-	private static void recolor(BuildHelper buildHelper, float shade, TintedCube cube)
-	{
-		for (int j = 0; j < 24; j++)
-		{
-			buildHelper.getCol().remove(buildHelper.getCol().size() - 1);
-		}
-		for (int j = 0; j < 6; j++)
-		{
-			shade(buildHelper, cube.red, cube.green, cube.blue, shade);
-		}
-	}
-
-	private static void shade(BuildHelper buildHelper, float r, float g, float b, float shade)
-	{
-		buildHelper.getCol().add(r * shade);
-		buildHelper.getCol().add(g * shade);
-		buildHelper.getCol().add(b * shade);
-		buildHelper.getCol().add(1.0f);
 	}
 
 	private int index;

@@ -2,8 +2,9 @@ package com.steve6472.polyground.block.model;
 
 import com.steve6472.polyground.EnumFace;
 import com.steve6472.polyground.block.BlockLoader;
+import com.steve6472.polyground.block.model.faceProperty.RefTintFaceProperty;
+import com.steve6472.polyground.block.model.faceProperty.TintFaceProperty;
 import com.steve6472.polyground.block.model.registry.Cube;
-import com.steve6472.polyground.block.model.registry.TintedCube;
 import com.steve6472.polyground.block.model.registry.face.FaceRegistry;
 import org.joml.AABBf;
 import org.json.JSONArray;
@@ -32,7 +33,7 @@ public class JsonHelper
 		);
 	}
 
-	public static void loadParentTextures(JSONObject json, Cube cube)
+	public static void loadParentTextures(JSONObject json, Cube parentCube)
 	{
 		JSONObject textures = json.getJSONObject("textures");
 
@@ -42,7 +43,7 @@ public class JsonHelper
 
 			for (EnumFace ef : EnumFace.getFaces())
 			{
-				CubeFace pef = cube.getFace(ef);
+				CubeFace pef = parentCube.getFace(ef);
 				if (pef == null) continue;
 
 				if (newTexture.startsWith("#") && ("#" + key).equals(pef.getProperty(FaceRegistry.texture).getTexture()))
@@ -61,38 +62,62 @@ public class JsonHelper
 		}
 	}
 
-	public static void parentTints(JSONObject json, TintedCube cube)
+	public static void loadParentTints(JSONObject json, Cube parentCube)
 	{
 		JSONObject tints = json.getJSONObject("tints");
 
-		/* Red */
+		for (String key : tints.keySet())
+		{
+			for (EnumFace ef : EnumFace.getFaces())
+			{
+				CubeFace parentFace = parentCube.getFace(ef);
+				if (parentFace != null)
+				{
+					if (parentFace.hasProperty(FaceRegistry.refTint))
+					{
+						RefTintFaceProperty refTint = parentFace.getProperty(FaceRegistry.refTint);
+						if (refTint.getName().equals("#" + key))
+						{
+							if (!(tints.get(key) instanceof String))
+							{
+								parentFace.removeProperty(FaceRegistry.refTint);
+								parentFace.addProperty(new TintFaceProperty(tints.getJSONArray(key)));
+							}
+						}
+					}
+				}
+			}
+		}
+
+
+		/* Red *//*
 		if (tints.has("red"))
 		{
 			String redTint = tints.getString("red");
-			if (redTint.startsWith("#") && ("#red").equals(cube.refRed))
-				cube.refRed = redTint;
-			else if (("#red").equals(cube.refRed))
-				cube.red = Float.parseFloat(redTint);
+			if (redTint.startsWith("#") && ("#red").equals(parentCube.refRed))
+				parentCube.refRed = redTint;
+			else if (("#red").equals(parentCube.refRed))
+				parentCube.red = Float.parseFloat(redTint);
 		}
 
-		/* Green */
+		/* Green *//*
 		if (tints.has("green"))
 		{
 			String greenTint = tints.getString("green");
-			if (greenTint.startsWith("#") && ("#green").equals(cube.refGreen))
-				cube.refGreen = greenTint;
-			else if (("#green").equals(cube.refGreen))
-				cube.green = Float.parseFloat(greenTint);
+			if (greenTint.startsWith("#") && ("#green").equals(parentCube.refGreen))
+				parentCube.refGreen = greenTint;
+			else if (("#green").equals(parentCube.refGreen))
+				parentCube.green = Float.parseFloat(greenTint);
 		}
 
-		/* Blue */
+		/* Blue *//*
 		if (tints.has("blue"))
 		{
 			String blueTint = tints.getString("blue");
-			if (blueTint.startsWith("#") && ("#blue").equals(cube.refBlue))
-				cube.refBlue = blueTint;
-			else if (("#blue").equals(cube.refBlue))
-				cube.blue = Float.parseFloat(blueTint);
-		}
+			if (blueTint.startsWith("#") && ("#blue").equals(parentCube.refBlue))
+				parentCube.refBlue = blueTint;
+			else if (("#blue").equals(parentCube.refBlue))
+				parentCube.blue = Float.parseFloat(blueTint);
+		}*/
 	}
 }
