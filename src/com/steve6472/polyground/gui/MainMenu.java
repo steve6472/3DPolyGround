@@ -33,6 +33,7 @@ public class MainMenu extends Gui implements IGamePause
 		Background.createComponent(this);
 
 		main = new Sprite("main_title.png");
+		main.change(false);
 
 		Button sandbox = new Button("Sandbox");
 		sandbox.setLocation(30, 30);
@@ -113,7 +114,7 @@ public class MainMenu extends Gui implements IGamePause
 	public void render()
 	{
 		float f = (float) (getMainApp().getWidth() - 400) / ((float) getMainApp().getWidth());
-		SpriteRender.renderSprite(200, 100, (int) (main.getWidth() * f), (int) (main.getHeight() * f), 0, main);
+		SpriteRender.renderSprite(getMainApp().getWidth() / 2 - (int) (main.getWidth() * f) / 2, 100, (int) (main.getWidth() * f), (int) (main.getHeight() * f), 0, main);
 	}
 
 	@Override

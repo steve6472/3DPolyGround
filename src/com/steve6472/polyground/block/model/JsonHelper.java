@@ -71,53 +71,16 @@ public class JsonHelper
 			for (EnumFace ef : EnumFace.getFaces())
 			{
 				CubeFace parentFace = parentCube.getFace(ef);
-				if (parentFace != null)
-				{
-					if (parentFace.hasProperty(FaceRegistry.refTint))
-					{
-						RefTintFaceProperty refTint = parentFace.getProperty(FaceRegistry.refTint);
-						if (refTint.getName().equals("#" + key))
-						{
-							if (!(tints.get(key) instanceof String))
-							{
-								parentFace.removeProperty(FaceRegistry.refTint);
-								parentFace.addProperty(new TintFaceProperty(tints.getJSONArray(key)));
-							}
-						}
-					}
-				}
+				if (parentFace == null) continue;
+				if (!parentFace.hasProperty(FaceRegistry.refTint)) continue;
+				
+				RefTintFaceProperty refTint = parentFace.getProperty(FaceRegistry.refTint);
+				if (!refTint.getName().equals("#" + key)) continue;
+				if ((tints.get(key) instanceof String)) continue;
+
+				parentFace.removeProperty(FaceRegistry.refTint);
+				parentFace.addProperty(new TintFaceProperty(tints.getJSONArray(key)));
 			}
 		}
-
-
-		/* Red *//*
-		if (tints.has("red"))
-		{
-			String redTint = tints.getString("red");
-			if (redTint.startsWith("#") && ("#red").equals(parentCube.refRed))
-				parentCube.refRed = redTint;
-			else if (("#red").equals(parentCube.refRed))
-				parentCube.red = Float.parseFloat(redTint);
-		}
-
-		/* Green *//*
-		if (tints.has("green"))
-		{
-			String greenTint = tints.getString("green");
-			if (greenTint.startsWith("#") && ("#green").equals(parentCube.refGreen))
-				parentCube.refGreen = greenTint;
-			else if (("#green").equals(parentCube.refGreen))
-				parentCube.green = Float.parseFloat(greenTint);
-		}
-
-		/* Blue *//*
-		if (tints.has("blue"))
-		{
-			String blueTint = tints.getString("blue");
-			if (blueTint.startsWith("#") && ("#blue").equals(parentCube.refBlue))
-				parentCube.refBlue = blueTint;
-			else if (("#blue").equals(parentCube.refBlue))
-				parentCube.blue = Float.parseFloat(blueTint);
-		}*/
 	}
 }
