@@ -41,8 +41,8 @@ public class SetCommand extends Command
 							World w = c.getSource().getWorld();
 							int id = BlockArgument.getBlock(c, "block").getId();
 
-							Vector3i min = item.getFirstPos();
-							Vector3i max = item.getSecondPos();
+							Vector3i min = new Vector3i((int) item.getFirstPos().x, (int) item.getFirstPos().y, (int) item.getFirstPos().z);
+							Vector3i max = new Vector3i((int) item.getSecondPos().x, (int) item.getSecondPos().y, (int) item.getSecondPos().z);
 
 							if (min.x > max.x)
 							{

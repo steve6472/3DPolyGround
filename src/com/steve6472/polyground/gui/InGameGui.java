@@ -10,7 +10,6 @@ import com.steve6472.polyground.block.BlockLoader;
 import com.steve6472.polyground.commands.CommandRegistry;
 import com.steve6472.polyground.commands.CommandSource;
 import com.steve6472.polyground.events.InGameGuiEvent;
-import com.steve6472.sge.gfx.SpriteRender;
 import com.steve6472.sge.gfx.font.CustomChar;
 import com.steve6472.sge.gfx.font.Font;
 import com.steve6472.sge.gui.Gui;
@@ -197,16 +196,16 @@ public class InGameGui extends Gui implements IGamePause
 				"Distance: " + main.hitPicker.getHitResult().getDistance() + "\n" +
 					"Side: " + main.hitPicker.getHitResult().getFace() + "\n" +
 					"Particles: " + main.particles.count());
-			SpriteRender.renderSprite(0, 80, as, as, 0, BlockLoader.getAtlas().getSpriteId(), as, as);
+//			SpriteRender.renderSprite(0, 80, as, as, 0, BlockLoader.getAtlas().getSpriteId(), as, as);
 		} else
 		{
 			Font.render("Particles: " + main.particles.count(), 5, 45);
-			SpriteRender.renderSprite(0, 70, as, as, 0, BlockLoader.getAtlas().getSpriteId(), as, as);
+//			SpriteRender.renderSprite(0, 70, as, as, 0, BlockLoader.getAtlas().getSpriteId(), as, as);
 		}
 
 		int ts = CaveGame.getInstance().itemAtlas.totalSize;
 
-		SpriteRender.renderSprite(getMainApp().getWidth() - ts, 15, ts, ts, 0, CaveGame.getInstance().itemAtlas.itemAtlas.texture, ts, ts);
+//		SpriteRender.renderSprite(getMainApp().getWidth() - ts, 15, ts, ts, 0, CaveGame.getInstance().itemAtlas.itemAtlas.texture, ts, ts);
 	}
 
 	@Override

@@ -1,10 +1,7 @@
 package com.steve6472.polyground.item.registry;
 
 import com.steve6472.polyground.item.Item;
-import com.steve6472.polyground.item.special.BlockInspectorItem;
-import com.steve6472.polyground.item.special.SlabItem;
-import com.steve6472.polyground.item.special.SpeedometerItem;
-import com.steve6472.polyground.item.special.WorldEditItem;
+import com.steve6472.polyground.item.special.*;
 
 import java.io.File;
 import java.util.Collection;

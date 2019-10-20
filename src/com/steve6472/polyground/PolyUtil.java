@@ -3,6 +3,7 @@ package com.steve6472.polyground;
 import com.steve6472.sge.main.MainApp;
 import com.steve6472.sge.main.game.Camera;
 import org.joml.Matrix4f;
+import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 
@@ -89,5 +90,18 @@ public class PolyUtil
 		rz = (float) (-Math.cos(yaw) * (Math.cos(pitch)));
 
 		dir.set(rx, ry, rz);
+	}
+
+	public static void toScreenPos(Vector3f worldPos, Vector2f destination)
+	{
+		Matrix4f viewMatrix = CaveGame.getInstance().getCamera().getViewMatrix();
+		Matrix4f projectionMatrix = CaveGame.shaders.getProjectionMatrix();
+
+		Vector4f clipSpacePos = new Vector4f(worldPos, 1.0f).mul(viewMatrix).mul(projectionMatrix);
+		Vector3f ndcSpacePos = new Vector3f(clipSpacePos.x, clipSpacePos.y, clipSpacePos.z).div(clipSpacePos.w);
+
+		Vector2f viewSize = new Vector2f(CaveGame.getInstance().getWidth(), CaveGame.getInstance().getHeight());
+
+		destination.set(((ndcSpacePos.x + 1.0f) / 2.0f) * viewSize.x, ((1.0f - ndcSpacePos.y) / 2.0f) * viewSize.y);
 	}
 }

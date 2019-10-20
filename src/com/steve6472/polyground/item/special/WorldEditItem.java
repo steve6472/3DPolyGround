@@ -2,15 +2,19 @@ package com.steve6472.polyground.item.special;
 
 import com.steve6472.polyground.CaveGame;
 import com.steve6472.polyground.EnumFace;
+import com.steve6472.polyground.PolyUtil;
 import com.steve6472.polyground.block.blockdata.BlockData;
 import com.steve6472.polyground.entity.Player;
 import com.steve6472.polyground.events.InGameGuiEvent;
 import com.steve6472.polyground.item.Item;
 import com.steve6472.polyground.world.SubChunk;
+import com.steve6472.sge.gfx.SpriteRender;
+import com.steve6472.sge.gfx.font.Font;
 import com.steve6472.sge.main.KeyList;
 import com.steve6472.sge.main.events.Event;
 import com.steve6472.sge.main.events.MouseEvent;
-import org.joml.Vector3i;
+import org.joml.Vector2f;
+import org.joml.Vector3f;
 
 import java.io.File;
 
@@ -25,20 +29,32 @@ public class WorldEditItem extends Item
 	public WorldEditItem(File f, int id)
 	{
 		super(f, id);
-		firstPos = new Vector3i();
-		secondPos = new Vector3i();
+		firstPos = new Vector3f();
+		secondPos = new Vector3f();
+		firstPosScreen = new Vector2f();
+		secondPosScreen = new Vector2f();
 	}
 
-	private Vector3i firstPos, secondPos;
+	private Vector3f firstPos, secondPos;
+	private Vector2f firstPosScreen, secondPosScreen;
 
 	@Event
 	public void renderPos(InGameGuiEvent.PostRender e)
 	{
-		if (CaveGame.itemInHand == this)
-		{
-//			Font.render("First  Pos: " + firstPos.x + "/" + firstPos.y + "/" + firstPos.z, 5, CaveGame.getInstance().getHeight() - 25);
-//			Font.render("Second Pos: " + secondPos.x + "/" + secondPos.y + "/" + secondPos.z, 5, CaveGame.getInstance().getHeight() - 15);
-		}
+		if (CaveGame.itemInHand != this) return;
+
+		renderPosition(firstPos, firstPosScreen);
+		renderPosition(secondPos, secondPosScreen);
+	}
+
+	private void renderPosition(Vector3f worldPos, Vector2f screenPos)
+	{
+		String t = String.format("[%.0f, %.0f, %.0f]", worldPos.x, worldPos.y, worldPos.z);
+		int w = Font.getTextWidth(t, 1);
+
+		SpriteRender.fillRect((int) screenPos.x - w / 2, (int) screenPos.y - 2, w + 3, 12, 0.2f, 0.2f, 0.2f, 0.6f);
+
+		Font.render(t, (int) screenPos.x - Font.getTextWidth(t, 1) / 2, (int) screenPos.y);
 	}
 
 	@Override
@@ -48,24 +64,38 @@ public class WorldEditItem extends Item
 		{
 			if (click.getButton() == KeyList.LMB)
 			{
-				firstPos.set(player.getHitResult().getX(), player.getHitResult().getY(), player.getHitResult().getZ());
+				if (click.getMods() == KeyList.M_SHIFT)
+					firstPos.set(player.getHitResult().getX() + clickedOn.getXOffset(), player.getHitResult().getY() + clickedOn.getYOffset(), player.getHitResult().getZ() + clickedOn.getZOffset());
+				else
+					firstPos.set(player.getHitResult().getX(), player.getHitResult().getY(), player.getHitResult().getZ());
+
 				player.processNextBlockBreak = false;
 			}
 			if (click.getButton() == KeyList.RMB)
 			{
-				secondPos.set(player.getHitResult().getX(), player.getHitResult().getY(), player.getHitResult().getZ());
+				if (click.getMods() == KeyList.M_SHIFT)
+					secondPos.set(player.getHitResult().getX() + clickedOn.getXOffset(), player.getHitResult().getY() + clickedOn.getYOffset(), player.getHitResult().getZ() + clickedOn.getZOffset());
+				else
+					secondPos.set(player.getHitResult().getX(), player.getHitResult().getY(), player.getHitResult().getZ());
 				player.processNextBlockPlace = false;
 			}
 		}
 	}
 
-	public Vector3i getFirstPos()
+	public Vector3f getFirstPos()
 	{
 		return firstPos;
 	}
 
-	public Vector3i getSecondPos()
+	public Vector3f getSecondPos()
 	{
 		return secondPos;
+	}
+
+	@Override
+	public void onTickInItemBar(Player player)
+	{
+		PolyUtil.toScreenPos(new Vector3f(firstPos).add(0.5f, 0.5f, 0.5f), firstPosScreen);
+		PolyUtil.toScreenPos(new Vector3f(secondPos).add(0.5f, 0.5f, 0.5f), secondPosScreen);
 	}
 }
