@@ -190,10 +190,7 @@ public class BlockCreatorGui extends Gui
 		UVDialog editUv;
 		getMainApp().showDialog(editUv = new UVDialog(atlas, textureShader, tessellator, getSelectedFace()));
 
-		editUv.addOkClickEvent(b ->
-		{
-			autoUV();
-		});
+		editUv.addOkClickEvent(b -> autoUV());
 
 		editUv.center();
 	}
@@ -203,10 +200,7 @@ public class BlockCreatorGui extends Gui
 		EditCubeDialog editCube;
 		getMainApp().showDialog(editCube = new EditCubeDialog(getSelectedCube(), this));
 
-		editCube.addOkClickEvent(b ->
-		{
-			autoUV();
-		});
+		editCube.addOkClickEvent(b -> autoUV());
 
 		editCube.center();
 	}
@@ -280,10 +274,16 @@ public class BlockCreatorGui extends Gui
 
 		texture.addOkClickEvent(b ->
 		{
-			if (face.hasProperty(FaceRegistry.texture))
+			if (texture.isReference())
+			{
+				face.getProperty(FaceRegistry.texture).setTexture(texture.getReferenceName());
+				face.getProperty(FaceRegistry.texture).setTextureId(-1);
+				face.getProperty(FaceRegistry.texture).setReference(true);
+			} else
 			{
 				face.getProperty(FaceRegistry.texture).setTexture(textureNamesReference.get(texture.getTexture()));
 				face.getProperty(FaceRegistry.texture).setTextureId(texture.getTexture());
+				face.getProperty(FaceRegistry.texture).setReference(false);
 			}
 		});
 
@@ -499,6 +499,8 @@ public class BlockCreatorGui extends Gui
 						tex.setTextureId(-1);
 						continue;
 					}
+
+					if (tex.isReference()) continue;
 
 					Integer id = textureNames.get(tex.getTexture());
 					if (id == null) throw new NullPointerException("Id not found for " + tex.getTexture());

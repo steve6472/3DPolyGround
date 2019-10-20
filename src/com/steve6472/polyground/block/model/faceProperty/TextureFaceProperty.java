@@ -18,6 +18,12 @@ public class TextureFaceProperty extends FaceProperty
 	{
 	}
 
+	public TextureFaceProperty(int textureId, String texture)
+	{
+		this.textureId = textureId;
+		this.texture = texture;
+	}
+
 	@Override
 	public void loadFromJSON(JSONObject json)
 	{
@@ -34,6 +40,11 @@ public class TextureFaceProperty extends FaceProperty
 	public boolean isReference()
 	{
 		return isReference;
+	}
+
+	public void setReference(boolean reference)
+	{
+		isReference = reference;
 	}
 
 	public String getTexture()

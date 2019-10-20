@@ -480,7 +480,7 @@ public final class BuildHelper
 		}
 	}
 
-	public void replaceLastFaceWithErrorTexture()
+	public void replaceLastFaceWithErrorTexture(float r0, float g0, float b0, float r1, float g1, float b1)
 	{
 		for (int i = 0; i < 6 * 4; i++)
 		{
@@ -489,19 +489,24 @@ public final class BuildHelper
 
 		for (int i = 0; i < 3; i++)
 		{
-			col.add(0f);
-			col.add(256f);
-			col.add(256f);
+			col.add(r0);
+			col.add(g0);
+			col.add(b0);
 			col.add(1f);
 		}
 
 		for (int i = 0; i < 3; i++)
 		{
-			col.add(256f);
-			col.add(0f);
-			col.add(256f);
+			col.add(r1);
+			col.add(g1);
+			col.add(b1);
 			col.add(1f);
 		}
+	}
+
+	public void replaceLastFaceWithErrorTexture()
+	{
+		replaceLastFaceWithErrorTexture(0, 256, 256, 0, 0, 0);
 	}
 
 	public List<Float> getVert()

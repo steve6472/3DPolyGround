@@ -21,7 +21,12 @@
             "emissive": false,
             "texture": "daylight_detector_side",
             "isVisible": true,
-            "autoUV": false
+            "autoUV": false,
+            "tint": [
+                255,
+                255,
+                255
+            ]
         },
         "south": {
             "uv": [
@@ -33,7 +38,12 @@
             "emissive": false,
             "texture": "daylight_detector_side",
             "isVisible": true,
-            "autoUV": false
+            "autoUV": false,
+            "tint": [
+                255,
+                255,
+                255
+            ]
         },
         "north": {
             "uv": [
@@ -45,7 +55,12 @@
             "emissive": false,
             "texture": "daylight_detector_side",
             "isVisible": true,
-            "autoUV": false
+            "autoUV": false,
+            "tint": [
+                255,
+                255,
+                255
+            ]
         },
         "west": {
             "uv": [
@@ -57,7 +72,12 @@
             "emissive": false,
             "texture": "daylight_detector_side",
             "isVisible": true,
-            "autoUV": false
+            "autoUV": false,
+            "tint": [
+                255,
+                255,
+                255
+            ]
         },
         "up": {
             "uv": [
@@ -69,7 +89,12 @@
             "emissive": false,
             "texture": "daylight_detector_side",
             "isVisible": true,
-            "autoUV": false
+            "autoUV": false,
+            "tint": [
+                255,
+                255,
+                255
+            ]
         },
         "down": {
             "uv": [
@@ -81,7 +106,12 @@
             "emissive": false,
             "texture": "daylight_detector_side",
             "isVisible": true,
-            "autoUV": false
+            "autoUV": false,
+            "tint": [
+                255,
+                255,
+                255
+            ]
         }
     }
 }]}

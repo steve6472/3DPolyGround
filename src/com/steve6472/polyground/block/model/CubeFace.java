@@ -159,4 +159,10 @@ public class CubeFace
 	{
 		return parent;
 	}
+
+	@Override
+	public String toString()
+	{
+		return "CubeFace{" + "face=" + face + ", properties=" + properties + '}';
+	}
 }

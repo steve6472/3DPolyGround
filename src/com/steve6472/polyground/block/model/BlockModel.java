@@ -76,4 +76,9 @@ public class BlockModel
 	{
 		this.cubes.add(cube);
 	}
+
+	public void printFaceData()
+	{
+		System.out.println(cubes);
+	}
 }

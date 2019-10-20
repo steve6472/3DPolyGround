@@ -3,6 +3,8 @@ package com.steve6472.polyground.generator.creator;
 import com.steve6472.polyground.EnumFace;
 import com.steve6472.polyground.block.model.BlockModel;
 import com.steve6472.polyground.block.model.CubeFace;
+import com.steve6472.polyground.block.model.faceProperty.AutoUVFaceProperty;
+import com.steve6472.polyground.block.model.faceProperty.TextureFaceProperty;
 import com.steve6472.polyground.block.model.faceProperty.VisibleFaceProperty;
 import com.steve6472.polyground.block.model.registry.face.FaceRegistry;
 import org.joml.AABBf;
@@ -49,8 +51,11 @@ public class BlockEntry
 		for (EnumFace f : EnumFace.getFaces())
 		{
 			CubeFace cf = new CubeFace(cube, f);
+			cf.addProperty(new VisibleFaceProperty(true));
+			cf.addProperty(new AutoUVFaceProperty(true));
+			cf.addProperty(new TextureFaceProperty(-1, null));
 			fillMissingProperties(cf);
-			cf.addProperty(new VisibleFaceProperty(false));
+			cf.getProperty(FaceRegistry.uv).autoUV(cube, f);
 			cube.setFace(f, cf);
 		}
 		cube.setName("Unnamed Cube");

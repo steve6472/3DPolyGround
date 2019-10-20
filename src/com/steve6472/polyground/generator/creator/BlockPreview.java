@@ -233,7 +233,10 @@ public class BlockPreview
 
 					tris += buildHelper.face(face);
 
-					if (c.getFace(face).getProperty(FaceRegistry.texture).getTextureId() == -1)
+					if (c.getFace(face).getProperty(FaceRegistry.texture).isReference())
+					{
+						buildHelper.replaceLastFaceWithErrorTexture(256, 0, 256, 0, 256, 0);
+					} else if (c.getFace(face).getProperty(FaceRegistry.texture).getTextureId() == -1)
 					{
 						buildHelper.replaceLastFaceWithErrorTexture();
 					}

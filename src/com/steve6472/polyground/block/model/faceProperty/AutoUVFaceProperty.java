@@ -14,6 +14,15 @@ public class AutoUVFaceProperty extends FaceProperty
 {
 	private boolean isAuto;
 
+	public AutoUVFaceProperty()
+	{
+	}
+
+	public AutoUVFaceProperty(boolean auto)
+	{
+		this.isAuto = auto;
+	}
+
 	@Override
 	public void loadFromJSON(JSONObject json)
 	{
@@ -50,8 +59,6 @@ public class AutoUVFaceProperty extends FaceProperty
 	@Override
 	public AutoUVFaceProperty createCopy()
 	{
-		AutoUVFaceProperty o = new AutoUVFaceProperty();
-		o.isAuto = isAuto;
-		return o;
+		return new AutoUVFaceProperty(isAuto);
 	}
 }

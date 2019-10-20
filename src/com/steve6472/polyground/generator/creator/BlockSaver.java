@@ -80,21 +80,6 @@ class BlockSaver
 		JSONObject json = new JSONObject();
 		face.saveToJSON(json);
 
-
-//		json.put("texture", face.getProperty(FaceRegistry.texture).getTexture());
-//
-//		if (face.hasProperty(FaceRegistry.autoUv) && face.getProperty(FaceRegistry.autoUv).isAuto())
-//		{
-//			json.put("autoUV", true);
-//		} else
-//		{
-//			JSONArray uv = new JSONArray();
-//			UVFaceProperty uvP = face.getProperty(FaceRegistry.uv);
-//			uv.put(uvP.getMinU() * 16).put(uvP.getMinV() * 16).put(uvP.getMaxU() * 16).put(uvP.getMaxV() * 16);
-//
-//			json.put("uv", uv);
-//		}
-
 		return json;
 	}
 

@@ -1,10 +1,16 @@
 package com.steve6472.polyground.generator.creator.dialogs;
 
 import com.steve6472.polyground.block.model.CubeFace;
+import com.steve6472.polyground.block.model.registry.face.FaceRegistry;
 import com.steve6472.sge.gfx.Atlas;
 import com.steve6472.sge.gfx.SpriteRender;
+import com.steve6472.sge.gfx.font.CustomChar;
+import com.steve6472.sge.gui.components.Button;
+import com.steve6472.sge.gui.components.NamedCheckBox;
+import com.steve6472.sge.gui.components.TextField;
 import com.steve6472.sge.gui.components.dialog.OkDialog;
 import com.steve6472.sge.main.KeyList;
+import com.steve6472.sge.main.MainApp;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
@@ -16,18 +22,51 @@ public class TextureDialog extends OkDialog
 {
 	private Atlas atlas;
 	private int res, selX, selY;
+	private CubeFace face;
+	private NamedCheckBox isReference;
+	private TextField reference;
 
 	public TextureDialog(Atlas atlas, CubeFace face)
 	{
 		super(" ", "Select Texture");
 		this.atlas = atlas;
+		this.face = face;
 		height += atlas.getTotalSize() * 2 - 8;
-		width = Math.max(atlas.getTotalSize() * 2 + 32, 128);
+		width = Math.max(atlas.getTotalSize() * 2 + 32, 128) + 130;
 
-//		selX = face.getProperty(FaceRegistry.texture).getTextureId() % atlas.getTileCount();
-//		selY = face.getProperty(FaceRegistry.texture).getTextureId() / atlas.getTileCount();
-//		res = selX + selY * atlas.getTileCount();
-		res = -1;
+		selX = face.getProperty(FaceRegistry.texture).getTextureId() % atlas.getTileCount();
+		selY = face.getProperty(FaceRegistry.texture).getTextureId() / atlas.getTileCount();
+		res = selX + selY * atlas.getTileCount();
+	}
+
+	@Override
+	public void init(MainApp main)
+	{
+		super.init(main);
+
+		Button clear = new Button("Clear Texture");
+		clear.setRelativeLocation(getWidth() - 130, 34);
+		clear.setSize(120, 25);
+		clear.addClickEvent(c -> res = -1);
+		addComponent(clear);
+
+		reference = new TextField();
+		reference.setSize(120, 25);
+		reference.setRelativeLocation(getWidth() - 130, 104);
+		reference.setEditable(face.getProperty(FaceRegistry.texture).isReference());
+		addComponent(reference);
+
+		isReference = new NamedCheckBox();
+		isReference.setText("Is Reference");
+		isReference.setRelativeLocation(getWidth() - 130, 69 /* Nice */);
+		isReference.setToggled(face.getProperty(FaceRegistry.texture).isReference());
+		isReference.setSize(120, 25);
+		isReference.setBoxSize(14, 14);
+		isReference.setSelectedChar(CustomChar.CROSS);
+		isReference.setBoxPadding(5, 5);
+		isReference.addChangeEvent(c -> reference.setEditable(c.isToggled()));
+		isReference.addChangeEvent(c -> face.getProperty(FaceRegistry.texture).setTextureId(c.isToggled() ? res : -1));
+		addComponent(isReference);
 	}
 
 	@Override
@@ -39,7 +78,7 @@ public class TextureDialog extends OkDialog
 		{
 			int s = atlas.getTotalSize() * 2;
 
-			int sx = getX() + getWidth() / 2 - s / 2;
+			int sx = getX() + (getWidth() - 130) / 2 - s / 2;
 			int sy = getY() + 34;
 
 			int mx = getMain().getMouseX() - sx;
@@ -62,7 +101,7 @@ public class TextureDialog extends OkDialog
 
 		int s = atlas.getTotalSize() * 2;
 
-		int sx = getX() + getWidth() / 2 - s / 2;
+		int sx = getX() + (getWidth() - 130) / 2 - s / 2;
 		int sy = getY() + 34;
 
 		SpriteRender.renderSprite(sx, sy, s, s, 0, atlas.getSprite());
@@ -88,5 +127,15 @@ public class TextureDialog extends OkDialog
 	public int getTexture()
 	{
 		return res;
+	}
+
+	public boolean isReference()
+	{
+		return isReference.isToggled();
+	}
+
+	public String getReferenceName()
+	{
+		return "#" + reference.getText();
 	}
 }
