@@ -120,7 +120,7 @@ public class CaveGame extends MainApp
 		new ItemRegistry(this);
 
 
-		itemInHand = ItemRegistry.getItemByName("stone_stair");
+		itemInHand = ItemRegistry.getItemByName("stone");
 
 		getEventHandler().runEvent(new WindowSizeEvent(getWindowWidth(), getWindowHeight()));
 		setExitKey(KeyList.ESCAPE);

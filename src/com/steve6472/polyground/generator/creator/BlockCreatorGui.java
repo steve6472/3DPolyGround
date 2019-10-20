@@ -18,9 +18,7 @@ import com.steve6472.sge.gui.Gui;
 import com.steve6472.sge.gui.components.Background;
 import com.steve6472.sge.gui.components.Button;
 import com.steve6472.sge.gui.components.ItemList;
-import com.steve6472.sge.gui.components.dialog.FileSelectorDialog;
-import com.steve6472.sge.gui.components.dialog.OkDialog;
-import com.steve6472.sge.gui.components.dialog.OkTextInputDialog;
+import com.steve6472.sge.gui.components.dialog.*;
 import com.steve6472.sge.main.MainApp;
 import com.steve6472.sge.main.Util;
 import com.steve6472.sge.main.events.Event;
@@ -44,7 +42,7 @@ import java.util.Objects;
 public class BlockCreatorGui extends Gui
 {
 	/* UI Components */
-	private Button swichToItems, save, newBlock, importTexture, setTexture, editCube, addCube, editUv, copyCube;
+	private Button swichToItems, save, newBlock, importTexture, setTexture, editCube, addCube, editUv, copyCube, applyToAllFaces;
 	public ItemList blockList, cubeList;
 	private FaceList faceList;
 
@@ -136,10 +134,17 @@ public class BlockCreatorGui extends Gui
 
 		editUv = new Button("Edit UV");
 		editUv.setLocation(getMainApp().getWidth() - 210, 25 * 14 + 185);
-		editUv.setSize(200, 25);
+		editUv.setSize(95, 25);
 		editUv.setEnabled(false);
 		editUv.addClickEvent(this::editUV);
 		addComponent(editUv);
+
+		applyToAllFaces = new Button("Apply to All");
+		applyToAllFaces.setSize(95, 25);
+		applyToAllFaces.setLocation(getMainApp().getWidth() - 105, 25 * 14 + 185);
+		applyToAllFaces.setEnabled(false);
+		applyToAllFaces.addClickEvent(this::applyToAllFaces);
+		addComponent(applyToAllFaces);
 
 		/* Lists */
 
@@ -175,6 +180,7 @@ public class BlockCreatorGui extends Gui
 
 		setTexture.setEnabled(faceList.getSelectedFace() != null);
 		editUv.setEnabled(faceList.getSelectedFace() != null && faceList.getSelectedFace().isVisible());
+		applyToAllFaces.setEnabled(faceList.getSelectedFace() != null && faceList.getSelectedFace().isVisible());
 	}
 
 	@Override
@@ -184,6 +190,26 @@ public class BlockCreatorGui extends Gui
 	}
 
 	/* Button Click Events */
+
+	private void applyToAllFaces(Button button)
+	{
+		if (getSelectedCube() == null) { errorMessage("Cube is not selected!"); return; }
+		if (getSelectedFace() == null) { errorMessage("Face is not selected!"); return; }
+
+		YesNoDialog proceed = new YesNoDialog("Do you wish to proceed?", "Proceed?");
+		getMainApp().showDialog(proceed).center();
+
+		proceed.addYesClickEvent(c ->
+		{
+			for (EnumFace face : EnumFace.getFaces())
+			{
+				if (face == getSelectedFace().getFace()) continue;
+
+				getSelectedCube().getFace(face).clearProperties();
+				getSelectedCube().getFace(face).setProperties(getSelectedFace().copyProperties());
+			}
+		});
+	}
 
 	private void editUV(Button button)
 	{
@@ -414,6 +440,11 @@ public class BlockCreatorGui extends Gui
 	}
 
 	/* Other */
+
+	private void errorMessage(String message)
+	{
+		getMainApp().showDialog(new MessageDialog(message, "Error", 250)).center();
+	}
 
 	private void loadBlocks()
 	{

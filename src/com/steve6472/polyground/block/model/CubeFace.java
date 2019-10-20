@@ -135,6 +135,16 @@ public class CubeFace
 		properties.removeIf(next -> next.getId().equals(a.getInstance().getId()));
 	}
 
+	public void clearProperties()
+	{
+		properties.clear();
+	}
+
+	public void setProperties(List<FaceProperty> properties)
+	{
+		this.properties.addAll(properties);
+	}
+
 	public EnumFace getFace()
 	{
 		return face;

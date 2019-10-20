@@ -1,0 +1,2 @@
+model = item/stone_stair_north
+place = stone_stair_north
