@@ -130,11 +130,12 @@ public class UVDialog extends OkDialog
 			selected = EnumSelected.NONE;
 		}
 
+		/*
 		minU = Util.clamp(0, maxU - 1, minU);
 		minV = Util.clamp(0, maxV - 1, minV);
 
 		maxU = Util.clamp(minU + 1, 16, maxU);
-		maxV = Util.clamp(minV + 1, 16, maxV);
+		maxV = Util.clamp(minV + 1, 16, maxV);*/
 	}
 
 	@Override

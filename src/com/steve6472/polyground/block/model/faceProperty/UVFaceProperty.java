@@ -94,11 +94,12 @@ public class UVFaceProperty extends FaceProperty
 	{
 		switch (face)
 		{
-			case UP, DOWN -> setUV(parent.getAabb().minX, parent.getAabb().maxZ, parent.getAabb().maxX, parent.getAabb().minZ);
-			case EAST -> setUV(parent.getAabb().minX, parent.getAabb().maxY, parent.getAabb().maxX, parent.getAabb().minY);
-			case WEST -> setUV(parent.getAabb().maxX, parent.getAabb().maxY, parent.getAabb().minX, parent.getAabb().minY);
-			case NORTH -> setUV(parent.getAabb().maxZ, parent.getAabb().maxY, parent.getAabb().minZ, parent.getAabb().minY);
-			case SOUTH -> setUV(parent.getAabb().minZ, parent.getAabb().maxY, parent.getAabb().maxZ, parent.getAabb().minY);
+			case UP -> setUV(parent.getAabb().minZ, 1.0f - parent.getAabb().maxX, parent.getAabb().maxZ, 1.0f - parent.getAabb().minX);
+			case DOWN -> setUV(parent.getAabb().minZ, parent.getAabb().minX, parent.getAabb().maxZ, parent.getAabb().maxX);
+			case EAST -> setUV(parent.getAabb().minX, 1.0f - parent.getAabb().maxY, parent.getAabb().maxX, 1.0f - parent.getAabb().minY);
+			case WEST -> setUV(1.0f - parent.getAabb().maxX, 1.0f - parent.getAabb().maxY, 1.0f - parent.getAabb().minX, 1.0f - parent.getAabb().minY);
+			case NORTH -> setUV(1.0f - parent.getAabb().maxZ, 1.0f - parent.getAabb().maxY, 1.0f - parent.getAabb().minZ, 1.0f - parent.getAabb().minY);
+			case SOUTH -> setUV(parent.getAabb().minZ, 1.0f - parent.getAabb().maxY, parent.getAabb().maxZ, 1.0f - parent.getAabb().minY);
 		}
 	}
 

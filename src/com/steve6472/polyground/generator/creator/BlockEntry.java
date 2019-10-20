@@ -3,6 +3,8 @@ package com.steve6472.polyground.generator.creator;
 import com.steve6472.polyground.EnumFace;
 import com.steve6472.polyground.block.model.BlockModel;
 import com.steve6472.polyground.block.model.CubeFace;
+import com.steve6472.polyground.block.model.faceProperty.VisibleFaceProperty;
+import com.steve6472.polyground.block.model.registry.face.FaceRegistry;
 import org.joml.AABBf;
 
 import java.io.File;
@@ -30,12 +32,26 @@ public class BlockEntry
 		model = new BlockModel(createEmptyCube());
 	}
 
+	private static void fillMissingProperties(CubeFace face)
+	{
+		for (String key : FaceRegistry.getKeys())
+		{
+			if (!face.hasProperty(key))
+			{
+				face.addProperty(FaceRegistry.createProperty(key));
+			}
+		}
+	}
+
 	public static CreatorCube createEmptyCube()
 	{
 		CreatorCube cube = new CreatorCube(new AABBf(0, 0, 0, 1, 1, 1));
 		for (EnumFace f : EnumFace.getFaces())
 		{
-			cube.setFace(f, new CubeFace(cube, f));
+			CubeFace cf = new CubeFace(cube, f);
+			fillMissingProperties(cf);
+			cf.addProperty(new VisibleFaceProperty(false));
+			cube.setFace(f, cf);
 		}
 		cube.setName("Unnamed Cube");
 		cube.setIndex(0);

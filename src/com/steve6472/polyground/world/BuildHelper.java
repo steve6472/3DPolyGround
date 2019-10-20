@@ -101,13 +101,13 @@ public final class BuildHelper
 
 		UVFaceProperty uv = f.getProperty(FaceRegistry.uv);
 
-		texture11(EnumFace.UP, uv.getMinU(), uv.getMinV(), uv.getMaxU(), uv.getMaxV());
+		texture00(EnumFace.UP, uv.getMinU(), uv.getMinV(), uv.getMaxU(), uv.getMaxV());
 		texture01(EnumFace.UP, uv.getMinU(), uv.getMinV(), uv.getMaxU(), uv.getMaxV());
-		texture00(EnumFace.UP, uv.getMinU(), uv.getMinV(), uv.getMaxU(), uv.getMaxV());
-
-		texture00(EnumFace.UP, uv.getMinU(), uv.getMinV(), uv.getMaxU(), uv.getMaxV());
-		texture10(EnumFace.UP, uv.getMinU(), uv.getMinV(), uv.getMaxU(), uv.getMaxV());
 		texture11(EnumFace.UP, uv.getMinU(), uv.getMinV(), uv.getMaxU(), uv.getMaxV());
+
+		texture11(EnumFace.UP, uv.getMinU(), uv.getMinV(), uv.getMaxU(), uv.getMaxV());
+		texture10(EnumFace.UP, uv.getMinU(), uv.getMinV(), uv.getMaxU(), uv.getMaxV());
+		texture00(EnumFace.UP, uv.getMinU(), uv.getMinV(), uv.getMaxU(), uv.getMaxV());
 	}
 
 	private void bottomFaceTextures()
@@ -428,29 +428,29 @@ public final class BuildHelper
 
 		vert.add(a.minX + x);
 		vert.add(a.minY + y);
-		vert.add(a.maxZ + z);
-
-		vert.add(a.minX + x);
-		vert.add(a.minY + y);
 		vert.add(a.minZ + z);
 
 		vert.add(a.maxX + x);
 		vert.add(a.minY + y);
 		vert.add(a.minZ + z);
+
+		vert.add(a.maxX + x);
+		vert.add(a.minY + y);
+		vert.add(a.maxZ + z);
 
 		/* */
 
 		vert.add(a.maxX + x);
 		vert.add(a.minY + y);
-		vert.add(a.minZ + z);
-
-		vert.add(a.maxX + x);
-		vert.add(a.minY + y);
 		vert.add(a.maxZ + z);
 
 		vert.add(a.minX + x);
 		vert.add(a.minY + y);
 		vert.add(a.maxZ + z);
+
+		vert.add(a.minX + x);
+		vert.add(a.minY + y);
+		vert.add(a.minZ + z);
 
 		return 6;
 	}

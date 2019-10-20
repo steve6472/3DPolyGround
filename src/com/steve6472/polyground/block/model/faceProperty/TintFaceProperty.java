@@ -15,7 +15,9 @@ public class TintFaceProperty extends FaceProperty
 
 	public TintFaceProperty()
 	{
-
+		red = 1;
+		green = 1;
+		blue = 1;
 	}
 
 	public TintFaceProperty(JSONArray array)

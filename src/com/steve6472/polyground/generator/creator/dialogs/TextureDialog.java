@@ -1,7 +1,6 @@
 package com.steve6472.polyground.generator.creator.dialogs;
 
 import com.steve6472.polyground.block.model.CubeFace;
-import com.steve6472.polyground.block.model.registry.face.FaceRegistry;
 import com.steve6472.sge.gfx.Atlas;
 import com.steve6472.sge.gfx.SpriteRender;
 import com.steve6472.sge.gui.components.dialog.OkDialog;
@@ -25,9 +24,10 @@ public class TextureDialog extends OkDialog
 		height += atlas.getTotalSize() * 2 - 8;
 		width = Math.max(atlas.getTotalSize() * 2 + 32, 128);
 
-		selX = face.getProperty(FaceRegistry.texture).getTextureId() % atlas.getTileCount();
-		selY = face.getProperty(FaceRegistry.texture).getTextureId() / atlas.getTileCount();
-		res = selX + selY * atlas.getTileCount();
+//		selX = face.getProperty(FaceRegistry.texture).getTextureId() % atlas.getTileCount();
+//		selY = face.getProperty(FaceRegistry.texture).getTextureId() / atlas.getTileCount();
+//		res = selX + selY * atlas.getTileCount();
+		res = -1;
 	}
 
 	@Override

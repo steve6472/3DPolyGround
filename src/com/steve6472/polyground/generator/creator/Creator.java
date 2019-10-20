@@ -83,6 +83,7 @@ public class Creator extends MainApp
 
 	public static void main(String[] args)
 	{
+		System.setProperty("joml.format", "false");
 		new Creator();
 	}
 }

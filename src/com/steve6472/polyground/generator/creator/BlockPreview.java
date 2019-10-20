@@ -5,7 +5,6 @@ import com.steve6472.polyground.EnumFace;
 import com.steve6472.polyground.PolyUtil;
 import com.steve6472.polyground.block.model.BlockModel;
 import com.steve6472.polyground.block.model.CubeFace;
-import com.steve6472.polyground.block.model.faceProperty.UVFaceProperty;
 import com.steve6472.polyground.block.model.faceProperty.VisibleFaceProperty;
 import com.steve6472.polyground.block.model.registry.Cube;
 import com.steve6472.polyground.block.model.registry.face.FaceRegistry;
@@ -231,9 +230,6 @@ public class BlockPreview
 				if (cubeFace != null)
 				{
 					if (!VisibleFaceProperty.check(cubeFace)) continue;
-
-					UVFaceProperty uv = cubeFace.getProperty(FaceRegistry.uv);
-					uv.setUV(uv.getMinU(), uv.getMinV(), uv.getMaxU(), uv.getMaxV());
 
 					tris += buildHelper.face(face);
 

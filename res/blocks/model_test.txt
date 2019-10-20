@@ -1,2 +1,2 @@
-model = block/model_test/basalt_child
+model = block/model_test/frame
 special = custom

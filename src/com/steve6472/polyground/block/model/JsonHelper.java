@@ -73,7 +73,7 @@ public class JsonHelper
 				CubeFace parentFace = parentCube.getFace(ef);
 				if (parentFace == null) continue;
 				if (!parentFace.hasProperty(FaceRegistry.refTint)) continue;
-				
+
 				RefTintFaceProperty refTint = parentFace.getProperty(FaceRegistry.refTint);
 				if (!refTint.getName().equals("#" + key)) continue;
 				if ((tints.get(key) instanceof String)) continue;
