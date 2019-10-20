@@ -54,6 +54,8 @@ public class TextureDialog extends OkDialog
 		reference.setSize(120, 25);
 		reference.setRelativeLocation(getWidth() - 130, 104);
 		reference.setEditable(face.getProperty(FaceRegistry.texture).isReference());
+		reference.setText(face.getProperty(FaceRegistry.texture).getWithoutReference());
+		reference.endCarret();
 		addComponent(reference);
 
 		isReference = new NamedCheckBox();

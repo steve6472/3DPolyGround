@@ -107,6 +107,10 @@ class BlockLoader
 			{
 				cf.getProperty(FaceRegistry.uv).autoUV(cube, face);
 			}
+			if (cf.getProperty(FaceRegistry.texture).isReference())
+			{
+				cf.getProperty(FaceRegistry.texture).setTextureId(-1);
+			}
 			cube.setFace(face, cf);
 		} else
 		{
