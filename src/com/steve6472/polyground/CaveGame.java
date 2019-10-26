@@ -128,7 +128,7 @@ public class CaveGame extends MainApp
 		hitboxList = new ArrayList<>();
 //		hitboxList.add(new ParticleHitbox(0.05f, 0.1f, 0.05f, 0.1f, new Vector4f(2.5f, 2.5f, 2.5f, 1)));
 
-		getWindow().maximize();
+//		getWindow().maximize();
 	}
 
 	public Camera getCamera()

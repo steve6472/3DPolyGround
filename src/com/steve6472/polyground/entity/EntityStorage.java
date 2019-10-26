@@ -2,10 +2,14 @@ package com.steve6472.polyground.entity;
 
 import com.steve6472.polyground.CaveGame;
 import com.steve6472.polyground.entity.model.EntityModel;
+import com.steve6472.polyground.entity.model.IPostRender;
+import com.steve6472.polyground.entity.model.models.ModelAI;
 import com.steve6472.polyground.entity.model.models.ModelBlock;
-import org.joml.Matrix4f;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 
 import static org.lwjgl.opengl.GL30.glBindVertexArray;
 
@@ -20,6 +24,7 @@ public class EntityStorage
 	HashMap<EntityModel<? extends EntityBase>, List<EntityBase>> entities;
 
 	private static final ModelBlock modelBlock = new ModelBlock();
+	private static final ModelAI modelAI = new ModelAI();
 
 	public void fillList()
 	{
@@ -27,8 +32,11 @@ public class EntityStorage
 
 		modelBlock.initTexture();
 		modelBlock.initModel();
-
 		entities.put(modelBlock, new ArrayList<>());
+
+		modelAI.initTexture();
+		modelAI.initModel();
+		entities.put(modelAI, new ArrayList<>());
 	}
 
 	public void tickEntities()
@@ -52,23 +60,33 @@ public class EntityStorage
 		CaveGame.shaders.worldShader.bind();
 		CaveGame.shaders.worldShader.setView(CaveGame.getInstance().getCamera().getViewMatrix());
 
-		Matrix4f transformation = new Matrix4f();
-
 		for (EntityModel model : entities.keySet())
 		{
 			model.getTexture().bind(0);
 
 			for (EntityBase e : entities.get(model))
 			{
-				model.render(e, transformation.identity());
+				model.render(e);
 			}
 		}
 
 		glBindVertexArray(0);
+
+		for (EntityModel model : entities.keySet())
+		{
+			for (EntityBase e : entities.get(model))
+			{
+				if (e instanceof IPostRender)
+				{
+					((IPostRender) e).postRender(e);
+				}
+			}
+		}
 	}
 
 	public void addEntity(EntityBase entity)
 	{
 		if (entity instanceof FallingBlock) entities.get(modelBlock).add(entity);
+		if (entity instanceof AIEntity) entities.get(modelAI).add(entity);
 	}
 }

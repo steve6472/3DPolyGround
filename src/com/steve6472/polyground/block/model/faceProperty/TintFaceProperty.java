@@ -76,6 +76,13 @@ public class TintFaceProperty extends FaceProperty
 		this.blue = blue;
 	}
 
+	public void setTint(float red, float green, float blue)
+	{
+		setRed(red);
+		setGreen(green);
+		setBlue(blue);
+	}
+
 	@Override
 	public String getId()
 	{

@@ -2,7 +2,6 @@ package com.steve6472.polyground.generator.creator;
 
 import com.steve6472.sge.main.MainApp;
 import com.steve6472.sge.main.MainFlags;
-import com.steve6472.sge.main.Window;
 
 import static org.lwjgl.opengl.GL11.*;
 
@@ -15,12 +14,15 @@ import static org.lwjgl.opengl.GL11.*;
 public class Creator extends MainApp
 {
 	private BlockCreatorGui blockCreatorGui;
+	private ItemCreatorGui itemCreatorGui;
 
 	@Override
 	public void init()
 	{
 		blockCreatorGui = new BlockCreatorGui(this);
 		blockCreatorGui.setVisible(true);
+
+		itemCreatorGui = new ItemCreatorGui(this);
 	}
 
 	@Override
@@ -48,7 +50,6 @@ public class Creator extends MainApp
 	@Override
 	public void setWindowHints()
 	{
-		Window.setResizable(false);
 	}
 
 	@Override

@@ -33,9 +33,9 @@ public class ModelBlock implements EntityModel<FallingBlock>
 	}
 
 	@Override
-	public void render(FallingBlock entity, Matrix4f transformation)
+	public void render(FallingBlock entity)
 	{
-		transformation.translate(entity.getPosition());
+		Matrix4f transformation = new Matrix4f().translate(entity.getPosition());
 		CaveGame.shaders.worldShader.setTransformation(transformation);
 
 		block.render();

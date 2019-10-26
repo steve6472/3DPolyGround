@@ -1,5 +1,6 @@
 package com.steve6472.polyground.entity.registry;
 
+import com.steve6472.polyground.entity.AIEntity;
 import com.steve6472.polyground.entity.EntityBase;
 import com.steve6472.polyground.entity.FallingBlock;
 
@@ -18,6 +19,7 @@ public class EntityRegistry
 	private static final HashMap<String, EntityEntry<? extends EntityBase>> entityRegistry = new HashMap<>();
 
 	public static final EntityEntry<FallingBlock> fallingBlock = register("falling_block", FallingBlock::new);
+	public static final EntityEntry<AIEntity> ai = register("ai", AIEntity::new);
 
 	public static <T extends EntityBase> EntityEntry<T> register(String id, IEntityFactory<T> factory)
 	{

@@ -31,7 +31,7 @@ public class TextureDialog extends OkDialog
 		super(" ", "Select Texture");
 		this.atlas = atlas;
 		this.face = face;
-		height += atlas.getTotalSize() * 2 - 8;
+		height = Math.max(atlas.getTotalSize() * 2 - 8 + height, 74 + height);
 		width = Math.max(atlas.getTotalSize() * 2 + 32, 128) + 130;
 
 		selX = face.getProperty(FaceRegistry.texture).getTextureId() % atlas.getTileCount();

@@ -18,7 +18,7 @@ public interface EntityModel<T extends EntityBase>
 	void initModel();
 	void initTexture();
 
-	void render(T entity, Matrix4f transformation);
+	void render(T entity);
 
 	Sprite getTexture();
 

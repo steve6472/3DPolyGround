@@ -15,8 +15,10 @@ import com.steve6472.polyground.tessellators.ItemTessellator;
 import com.steve6472.polyground.world.BuildHelper;
 import com.steve6472.sge.gfx.Atlas;
 import com.steve6472.sge.gfx.DepthFrameBuffer;
+import com.steve6472.sge.gfx.Shader;
 import com.steve6472.sge.gfx.Tessellator;
 import com.steve6472.sge.main.KeyList;
+import com.steve6472.sge.main.events.WindowSizeEvent;
 import com.steve6472.sge.main.game.Camera;
 import org.joml.Matrix4f;
 
@@ -40,6 +42,8 @@ public class BlockPreview
 	private ItemTessellator itemTessellator;
 	private BasicTessellator basicTessellator;
 	private Camera camera;
+
+	private int w, h;
 
 	private WorldShader worldShader;
 	private MainShader mainShader;
@@ -101,11 +105,29 @@ public class BlockPreview
 		}
 	}
 
+	public void updateSize(WindowSizeEvent e)
+	{
+		this.w = e.getWidth();
+		this.h = e.getHeight();
+		preview.resize(w, h);
+
+		Matrix4f projectionMatrix = PolyUtil.createProjectionMatrix(w, h, 3f, 80f);
+
+		worldShader.getShader().bind();
+		worldShader.setProjection(projectionMatrix);
+
+		mainShader.getShader().bind();
+		mainShader.setProjection(projectionMatrix);
+
+		Shader.releaseShader();
+	}
+
 	private boolean flag;
 
 	public void tick()
 	{
-		if (creatorGui.getMouseHandler().getButton() == KeyList.RMB && creatorGui.isCursorInComponent(creatorGui.getMouseHandler(), 220, 45, 680, 540))
+		if (creatorGui.getMouseHandler().getButton() == KeyList.RMB && creatorGui.isCursorInComponent(creatorGui.getMouseHandler(), 220, 45,
+			creatorGui.getMainApp().getWidth() - 440, creatorGui.getMainApp().getHeight() - 90))
 		{
 			if (!flag)
 			{
@@ -137,7 +159,7 @@ public class BlockPreview
 		colors.clear();
 		emissive.clear();
 
-		preview.bindFrameBuffer(16 * 70, 9 * 70);
+		preview.bindFrameBuffer(w, h);
 		DepthFrameBuffer.clearCurrentBuffer();
 
 		buildHelper.load(0, 0, 0, vertices, colors, textures, emissive);
@@ -176,7 +198,7 @@ public class BlockPreview
 		if (creatorGui.getSelectedCube() != null)
 			AABBUtil.renderAABBf(creatorGui.getSelectedCube().getAabb(), basicTessellator, mainShader);
 
-		preview.unbindCurrentFrameBuffer(16 * 70, 9 * 70);
+		preview.unbindCurrentFrameBuffer(w, h);
 
 		glDisable(GL_DEPTH_TEST);
 		glDisable(GL_CULL_FACE);

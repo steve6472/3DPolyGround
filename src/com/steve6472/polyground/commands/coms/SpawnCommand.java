@@ -53,7 +53,7 @@ public class SpawnCommand extends Command
 	private void spawn(CommandContext<CommandSource> source)
 	{
 		EntityBase e = EntityRegistry.createEntity(EntityArgument.getEntityName(source, "entity"));
-		e.setPosition(source.getSource().getPlayer().getPosition());
+		e.addPosition(source.getSource().getPlayer().getPosition());
 
 		source.getSource().getWorld().addEntity(e);
 	}

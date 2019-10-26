@@ -6,6 +6,8 @@ import com.steve6472.polyground.block.model.faceProperty.AutoUVFaceProperty;
 import com.steve6472.polyground.block.model.faceProperty.TextureFaceProperty;
 import com.steve6472.polyground.block.model.registry.Cube;
 import com.steve6472.polyground.block.model.registry.face.FaceRegistry;
+import com.steve6472.polyground.generator.creator.components.ColorDialog;
+import com.steve6472.polyground.generator.creator.components.ComponentHolder;
 import com.steve6472.polyground.generator.creator.components.FaceList;
 import com.steve6472.polyground.generator.creator.dialogs.EditCubeDialog;
 import com.steve6472.polyground.generator.creator.dialogs.TextureDialog;
@@ -42,9 +44,10 @@ import java.util.Objects;
 public class BlockCreatorGui extends Gui
 {
 	/* UI Components */
-	private Button swichToItems, save, newBlock, importTexture, setTexture, editCube, addCube, editUv, copyCube, applyToAllFaces;
+	private Button swichToItems, save, newBlock, importTexture, setTexture, editCube, addCube, editUv, copyCube, applyToAllFaces, color;
 	public ItemList blockList, cubeList;
 	private FaceList faceList;
+	private ComponentHolder holder;
 
 	private HashMap<String, BlockEntry> blocks;
 	private HashMap<String, Integer> textureNames;
@@ -79,6 +82,9 @@ public class BlockCreatorGui extends Gui
 
 		Background.createComponent(this);
 
+		holder = new ComponentHolder();
+		addComponent(holder);
+
 		/* Buttons */
 
 		save = new Button("Save");
@@ -101,71 +107,82 @@ public class BlockCreatorGui extends Gui
 
 		swichToItems = new Button("Items");
 		swichToItems.setSize(80, 25);
-		swichToItems.setLocation(getMainApp().getWidth() - 90, getMainApp().getHeight() - 35);
+		swichToItems.setLocation(340, 10);
+		swichToItems.addClickEvent(c ->
+		{
+
+		});
 		addComponent(swichToItems);
 
 		editCube = new Button("Edit Cube");
-		editCube.setLocation(getMainApp().getWidth() - 210, 255);
+		editCube.setRelativeLocation(0, 255);
 		editCube.setSize(95, 25);
 		editCube.addClickEvent(this::editCube);
 		editCube.setEnabled(false);
-		addComponent(editCube);
+		holder.addComponent(editCube);
 
 		addCube = new Button("Add Cube");
-		addCube.setLocation(getMainApp().getWidth() - 105, 255);
+		addCube.setRelativeLocation(105, 255);
 		addCube.setSize(95, 25);
 		addCube.addClickEvent(this::addCube);
 		addCube.setEnabled(false);
-		addComponent(addCube);
+		holder.addComponent(addCube);
 
 		copyCube = new Button("Copy Cube");
 		copyCube.setSize(95, 25);
-		copyCube.setLocation(getMainApp().getWidth() - 210, 285);
+		copyCube.setRelativeLocation(0, 285);
 		copyCube.addClickEvent(this::copyCube);
 		copyCube.setEnabled(false);
-		addComponent(copyCube);
+		holder.addComponent(copyCube);
 
 		setTexture = new Button("Set Texture");
-		setTexture.setLocation(getMainApp().getWidth() - 210, 25 * 14 + 150);
+		setTexture.setRelativeLocation(0, 25 * 14 + 150);
 		setTexture.setSize(200, 25);
 		setTexture.setEnabled(false);
 		setTexture.addClickEvent(this::setTexture);
-		addComponent(setTexture);
+		holder.addComponent(setTexture);
 
 		editUv = new Button("Edit UV");
-		editUv.setLocation(getMainApp().getWidth() - 210, 25 * 14 + 185);
+		editUv.setRelativeLocation(0, 25 * 14 + 185);
 		editUv.setSize(95, 25);
 		editUv.setEnabled(false);
 		editUv.addClickEvent(this::editUV);
-		addComponent(editUv);
+		holder.addComponent(editUv);
 
 		applyToAllFaces = new Button("Apply to All");
 		applyToAllFaces.setSize(95, 25);
-		applyToAllFaces.setLocation(getMainApp().getWidth() - 105, 25 * 14 + 185);
+		applyToAllFaces.setRelativeLocation(105, 25 * 14 + 185);
 		applyToAllFaces.setEnabled(false);
 		applyToAllFaces.addClickEvent(this::applyToAllFaces);
-		addComponent(applyToAllFaces);
+		holder.addComponent(applyToAllFaces);
+
+		color = new Button("Color");
+		color.setRelativeLocation(0, 25 * 14 + 185 + 35);
+		color.setSize(95, 25);
+		color.setEnabled(false);
+		color.addClickEvent(this::color);
+		holder.addComponent(color);
 
 		/* Lists */
 
-		blockList = new ItemList(20);
+		blockList = new ItemList(10);
 		blockList.setMultiselect(false);
 		blockList.setLocation(10, 45);
-		blockList.setSize(200, 25 * 20);
+		blockList.setSize(200, 250);
 		blockList.addChangeEvent(this::onBlockChange);
 		addComponent(blockList);
 
 		cubeList = new ItemList(8);
 		cubeList.setMultiselect(false);
-		cubeList.setLocation(getMainApp().getWidth() - 210, 45);
+		cubeList.setRelativeLocation(0, 45);
 		cubeList.setSize(200, 25 * 8);
 		cubeList.addChangeEvent(this::onCubeListChange);
-		addComponent(cubeList);
+		holder.addComponent(cubeList);
 
 		faceList = new FaceList(this);
-		faceList.setLocation(getMainApp().getWidth() - 210, 25 * 8 + 140);
+		faceList.setRelativeLocation(0, 25 * 8 + 140);
 		faceList.setSize(200, 25 * 6);
-		addComponent(faceList);
+		holder.addComponent(faceList);
 		faceList.setEnabled(false);
 		faceList.hideAll();
 
@@ -181,6 +198,7 @@ public class BlockCreatorGui extends Gui
 		setTexture.setEnabled(faceList.getSelectedFace() != null);
 		editUv.setEnabled(faceList.getSelectedFace() != null && faceList.getSelectedFace().isVisible());
 		applyToAllFaces.setEnabled(faceList.getSelectedFace() != null && faceList.getSelectedFace().isVisible());
+		color.setEnabled(faceList.getSelectedFace() != null && faceList.getSelectedFace().isVisible());
 	}
 
 	@Override
@@ -189,7 +207,35 @@ public class BlockCreatorGui extends Gui
 		renderPreview();
 	}
 
+	@Event
+	public void updatePositions(WindowSizeEvent e)
+	{
+		holder.setLocation(e.getWidth() - 210, 0);
+		preview.updateSize(e);
+	}
+
 	/* Button Click Events */
+
+	private void color(Button button)
+	{
+		if (getSelectedCube() == null) { errorMessage("Cube is not selected!"); return; }
+		if (getSelectedFace() == null) { errorMessage("Face is not selected!"); return; }
+
+		ColorDialog colorDialog = new ColorDialog(getSelectedFace());
+		colorDialog.setOkEvent((b, s)->
+		{
+			getSelectedFace().getProperty(FaceRegistry.emissive).setEmissive(colorDialog.isEmissive());
+			getSelectedFace().getProperty(FaceRegistry.tint)
+				.setTint(s.getRed() / 255f, s.getGreen() / 255f, s.getBlue() / 255f);
+		});
+		colorDialog.addChangeEvent(c -> {
+			getSelectedFace().getProperty(FaceRegistry.tint)
+				.setTint(c.getRed() / 255f, c.getGreen() / 255f, c.getBlue() / 255f);
+		});
+
+		getMainApp().showDialog(colorDialog).center();
+
+	}
 
 	private void applyToAllFaces(Button button)
 	{
@@ -209,6 +255,8 @@ public class BlockCreatorGui extends Gui
 				getSelectedCube().getFace(face).setProperties(getSelectedFace().copyProperties());
 			}
 		});
+
+		runOnCubeListChange();
 	}
 
 	private void editUV(Button button)
@@ -467,7 +515,8 @@ public class BlockCreatorGui extends Gui
 
 		preview.renderBlock(this.blocks.get(this.blockList.getSelectedItems().get(0).getText()).getModel());
 
-		SpriteRender.renderSpriteInverted(0, 0, 16 * 70, 9 * 70, 0, preview.getId(), 16 * 70, 9 * 70);
+		SpriteRender.renderSpriteInverted(0, 0, getMainApp().getWidth(), getMainApp().getHeight(), 0, preview.getId(),
+			getMainApp().getWidth(), getMainApp().getHeight());
 	}
 
 	private void loadAllTextures()

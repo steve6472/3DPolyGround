@@ -26,11 +26,10 @@ public class EntityModelFace
 		setUV(0, 0, 1, 1);
 		shade = switch (face)
 		{
-			case WEST, EAST -> 0.7921568627450980392156862745098f;
-			case SOUTH, NORTH -> 0.5921568627450980392156862745098f;
-			case UP -> 0.98823529411764705882352941176471f;
-			case DOWN -> 0.49019607843137254901960784313725f;
-			case NONE -> 1.0f;
+			case WEST, EAST -> 0.8f;
+			case SOUTH, NORTH -> 0.6f;
+			case UP, NONE -> 1.0f;
+			case DOWN -> 0.5f;
 		};
 	}
 
