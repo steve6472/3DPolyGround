@@ -121,7 +121,8 @@ public class MainMenu extends Gui implements IGamePause
 				CommandRegistry registry = CaveGame.getInstance().commandRegistry;
 				registry.dispatcher.execute("loadworld pathfind", registry.commandSource);
 				registry.dispatcher.execute("tp 8 32.005 8", registry.commandSource);
-				registry.dispatcher.execute("spawn ai", registry.commandSource);
+				registry.dispatcher.execute("ai", registry.commandSource);
+//				registry.dispatcher.execute("spawn ai", registry.commandSource);
 				CaveGame.getInstance().getPlayer().isFlying = true;
 			} catch (CommandSyntaxException e)
 			{

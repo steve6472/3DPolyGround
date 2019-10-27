@@ -40,5 +40,6 @@ public class CommandRegistry
 		new AnimateChunkCommand(dispatcher);
 		new SetCommand(dispatcher);
 		new SensitivityCommand(dispatcher);
+		new AICommand(dispatcher);
 	}
 }

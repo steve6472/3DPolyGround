@@ -25,15 +25,19 @@ public class AIEntity extends EntityBase
 	private boolean isDead = false;
 
 	private List<Node> nodes;
+	private List<Node> obstacleNodes;
 	private HashMap<Block, BlockData> blockData;
 
 	private Interpolator3D move;
+	private boolean foundWithObstacles = false;
+	int sx, sy, sz;
 
 	public AIEntity()
 	{
 		addPosition(0, 0.5f, 0);
 		hitbox = new EntityHitbox(0.4999f, 0.4999f, 0.4999f);
 		nodes = new ArrayList<>();
+		obstacleNodes = new ArrayList<>();
 		blockData = new HashMap<>();
 
 		for (Block b : BlockRegistry.getAllBlocks())
@@ -48,6 +52,7 @@ public class AIEntity extends EntityBase
 	public float tick;
 	private byte moveTick;
 	private int moveTime = 5;
+	private int moveIteration = 1;
 
 	@Override
 	public void tick()
@@ -58,14 +63,18 @@ public class AIEntity extends EntityBase
 
 		if (nodes.isEmpty())
 		{
+			obstacleNodes.clear();
 			randomDest();
 		}
 
-		moveTick++;
-		if (moveTick == moveTime)
+		for (int i = 0; i < moveIteration; i++)
 		{
-			moveToNextNode();
-			moveTick = 0;
+			moveTick++;
+			if (moveTick == moveTime)
+			{
+				moveToNextNode();
+				moveTick = 0;
+			}
 		}
 		setPosition(move.getX(), move.getY(), move.getZ());
 
@@ -94,6 +103,16 @@ public class AIEntity extends EntityBase
 		{
 			next = nodes.get(0);
 			nodes.clear();
+			if (foundWithObstacles)
+			{
+				obstacleNodes.clear();
+			}
+			if (!obstacleNodes.isEmpty())
+			{
+				setPosition(sx + 0.5f, sy + 0.5f, sz + 0.5f);
+				calcPath(next);
+				return;
+			}
 		} else
 		{
 			next = nodes.get(1);
@@ -103,7 +122,7 @@ public class AIEntity extends EntityBase
 		move.set(next.x + 0.5f, next.y + 0.5f, next.z + 0.5f, (long) Math.floor(1000d / 60d * (double) moveTime));
 	}
 
-	private void calcPath(Node dest)
+	public void calcPath(Node dest)
 	{
 		if (nodes.size() != 0) return;
 
@@ -115,23 +134,28 @@ public class AIEntity extends EntityBase
 		int cx = (int) Math.floor(getX());
 		int cz = (int) Math.floor(getZ());
 
+		sx = cx;
+		sy = 1;
+		sz = cz;
+
 		for (int f = 0; f < 256 * 9; f++)
 		{
 			// Find next closest step
 			Node next = findNextClosestNode(world, cx, cz);
 			if (next == null)
 			{
-				System.err.println("AI Can not find path");
-				moveTime = 5;
+				System.err.println("AI Can not find path. Node count: " + nodes.size() + " Obstacles: " + obstacleNodes.size());
+				moveTime = 1;
+				moveIteration = 5;
 				return;
 			}
 
 			if (next.x == dest.x && next.z == dest.z)
 			{
+				foundWithObstacles = !obstacleNodes.isEmpty();
 				System.out.println("AI found destination");
-//				moveTime = (int) Math.floor((60.0 * 2.5) / (double) f);
-//				if (moveTime == 0 || moveTime > 10) moveTime = 1;
 				moveTime = 1;
+				moveIteration = 1;
 				return;
 			} else
 			{
@@ -154,6 +178,7 @@ public class AIEntity extends EntityBase
 		double lastDistance = Double.MAX_VALUE;
 
 		byte failCount = 0;
+		int fx = 0, fz = 0;
 
 		for (int i = 0; i < 3; i++)
 		{
@@ -168,8 +193,23 @@ public class AIEntity extends EntityBase
 //				if (i - 1 == 1 && j - 1 == -1) continue;
 //				if (i - 1 == -1 && j - 1 == 1) continue;
 
-				// Don't backtrack
+				// Ignore obstacle nodes
 				boolean skip = false;
+				for (Node n : obstacleNodes)
+				{
+					if (i - 1 + cx == n.x && j - 1 + cz == n.z)
+					{
+						skip = true;
+						failCount++;
+						fx = i;
+						fz = j;
+						break;
+					}
+				}
+				if (skip) continue;
+
+				// Don't backtrack
+				skip = false;
 				for (int k = 1; k < nodes.size(); k++)
 				{
 					Node n = nodes.get(k);
@@ -177,6 +217,8 @@ public class AIEntity extends EntityBase
 					{
 						skip = true;
 						failCount++;
+						fx = i;
+						fz = j;
 						break;
 					}
 				}
@@ -203,7 +245,12 @@ public class AIEntity extends EntityBase
 			}
 		}
 
-		if (failCount == 8) return null;
+		if (failCount == 8)
+		{
+			System.err.println("Adding node at " + (cx) + "/" + (cz));
+			obstacleNodes.add(new Node(cx, 1, cz));
+			return null;
+		}
 		return new Node(closestNode.x, 1, closestNode.y);
 	}
 
@@ -217,6 +264,14 @@ public class AIEntity extends EntityBase
 
 		EntityHitbox node = new EntityHitbox(0.2f, 0.2f, 0.2f);
 		for (Node n : nodes)
+		{
+			node.setHitbox(n.x + 0.5f, n.y + 0.5f, n.z + 0.5f);
+			CaveGame.t.add(new AABBf(node.getHitbox()));
+		}
+
+
+		node = new EntityHitbox(0.3f, 0.3f, 0.3f);
+		for (Node n : obstacleNodes)
 		{
 			node.setHitbox(n.x + 0.5f, n.y + 0.5f, n.z + 0.5f);
 			CaveGame.t.add(new AABBf(node.getHitbox()));
@@ -241,7 +296,7 @@ public class AIEntity extends EntityBase
 		return "ai";
 	}
 
-	private class Node
+	public static class Node
 	{
 		int x, y, z;
 
