@@ -10,12 +10,14 @@ import com.steve6472.polyground.generator.creator.components.ColorDialog;
 import com.steve6472.polyground.generator.creator.components.ComponentHolder;
 import com.steve6472.polyground.generator.creator.components.FaceList;
 import com.steve6472.polyground.generator.creator.dialogs.EditCubeDialog;
+import com.steve6472.polyground.generator.creator.dialogs.NewBlockDialog;
 import com.steve6472.polyground.generator.creator.dialogs.TextureDialog;
 import com.steve6472.polyground.generator.creator.dialogs.UVDialog;
 import com.steve6472.polyground.shaders.ItemTextureShader;
 import com.steve6472.polyground.tessellators.ItemTextureTessellator;
 import com.steve6472.sge.gfx.Atlas;
 import com.steve6472.sge.gfx.SpriteRender;
+import com.steve6472.sge.gfx.font.Font;
 import com.steve6472.sge.gui.Gui;
 import com.steve6472.sge.gui.components.Background;
 import com.steve6472.sge.gui.components.Button;
@@ -49,7 +51,7 @@ public class BlockCreatorGui extends Gui
 	private FaceList faceList;
 	private ComponentHolder holder;
 
-	private HashMap<String, BlockEntry> blocks;
+	public HashMap<String, BlockEntry> blocks;
 	private HashMap<String, Integer> textureNames;
 	private HashMap<Integer, String> textureNamesReference;
 	private BlockPreview preview;
@@ -87,10 +89,10 @@ public class BlockCreatorGui extends Gui
 
 		/* Buttons */
 
-		save = new Button("Save");
+		save = new Button("Save All");
 		save.setLocation(10, 10);
 		save.setSize(80, 25);
-		save.addClickEvent(this::compile);
+		save.addClickEvent(this::save);
 		addComponent(save);
 
 		newBlock = new Button("New Block");
@@ -205,6 +207,10 @@ public class BlockCreatorGui extends Gui
 	public void render()
 	{
 		renderPreview();
+
+		String text = "Block Type: " + (getSelectedBlock() != null ? (getSelectedBlock().isParent() ? "Parent" : "Normal") : "Not Found");
+
+		Font.render(text, getMainApp().getWidth() - Font.getTextWidth(text, 1) - 5, 5);
 	}
 
 	@Event
@@ -314,11 +320,13 @@ public class BlockCreatorGui extends Gui
 
 	private CubeFace copyFace(CubeFace face, Cube parent)
 	{
-		if (face == null) return null;
+		if (face == null)
+		{
+			errorMessage("No Face Selected!");
+			return null;
+		}
 
-		CubeFace ccf = new CubeFace(parent, face.getFace(), face.copyProperties());
-
-		return ccf;
+		return new CubeFace(parent, face.getFace(), face.copyProperties());
 	}
 
 	private void addCube(Button button)
@@ -329,11 +337,11 @@ public class BlockCreatorGui extends Gui
 		onBlockChange(blockList);
 	}
 
-	private void compile(Button button)
+	private void save(Button button)
 	{
-		if (getSelectedBlock() != null)
+		for (BlockEntry be : blocks.values())
 		{
-			getSelectedBlock().save();
+			be.save();
 		}
 
 		getMainApp().showDialog(new OkDialog("Blocks saved!", "Information")).center();
@@ -343,25 +351,32 @@ public class BlockCreatorGui extends Gui
 	{
 		CubeFace face = getSelectedFace();
 
-		TextureDialog texture;
-		getMainApp().showDialog(texture = new TextureDialog(atlas, face));
-
-		texture.addOkClickEvent(b ->
+		if (getSelectedBlock().isParent())
 		{
-			if (texture.isReference())
+			OkTextInputDialog reference;
+			getMainApp().showDialog(reference = new OkTextInputDialog("texture", "Reference"));
+
+			reference.addOkClickEvent(b ->
 			{
-				face.getProperty(FaceRegistry.texture).setTexture(texture.getReferenceName());
+				face.getProperty(FaceRegistry.texture).setTexture(reference.getText());
 				face.getProperty(FaceRegistry.texture).setTextureId(-1);
 				face.getProperty(FaceRegistry.texture).setReference(true);
-			} else
+			});
+			reference.center();
+		} else
+		{
+			TextureDialog texture;
+			getMainApp().showDialog(texture = new TextureDialog(atlas, face));
+
+			texture.addOkClickEvent(b ->
 			{
 				face.getProperty(FaceRegistry.texture).setTexture(textureNamesReference.get(texture.getTexture()));
 				face.getProperty(FaceRegistry.texture).setTextureId(texture.getTexture());
 				face.getProperty(FaceRegistry.texture).setReference(false);
-			}
-		});
 
-		texture.center();
+			});
+			texture.center();
+		}
 	}
 
 	private void importTexture(Button button)
@@ -385,16 +400,7 @@ public class BlockCreatorGui extends Gui
 
 	private void newBlock(Button c)
 	{
-		OkTextInputDialog name;
-		getMainApp().showDialog(name = new OkTextInputDialog("name", "Block Name"));
-
-		name.addOkClickEvent(b -> {
-
-			blocks.put(name.getText(), new BlockEntry(name.getText()));
-			blockList.addItem(name.getText());
-		});
-
-		name.center();
+		getMainApp().showDialog(new NewBlockDialog(this)).center();
 	}
 
 	/* List Change Events */
@@ -408,7 +414,7 @@ public class BlockCreatorGui extends Gui
 	{
 		editCube.setEnabled(cubeList.getSelectedItems().size() != 0);
 		addCube.setEnabled(blockList.getSelectedItems().size() != 0);
-		copyCube.setEnabled(blockList.getSelectedItems().size() != 0);
+		copyCube.setEnabled(cubeList.getSelectedItems().size() != 0);
 
 		setTexture.setEnabled(false);
 
@@ -443,6 +449,15 @@ public class BlockCreatorGui extends Gui
 
 		editCube.setEnabled(cubeList.getSelectedItems().size() != 0);
 		addCube.setEnabled(blockList.getSelectedItems().size() != 0);
+		copyCube.setEnabled(cubeList.getSelectedItems().size() != 0);
+
+		if (getSelectedBlock() == null)
+		{
+			editUv.setVisible(true);
+		} else
+		{
+			editUv.setVisible(!getSelectedBlock().isChild());
+		}
 
 		if (c.getSelectedItems().size() == 0) return;
 

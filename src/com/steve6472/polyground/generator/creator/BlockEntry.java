@@ -21,11 +21,13 @@ public class BlockEntry
 {
 	private BlockModel model;
 	private String name;
+	private boolean isParent;
+	private boolean isChild;
 
 	public BlockEntry(File f)
 	{
 		this.name = f.getName().substring(0, f.getName().length() - 5);
-		model = BlockLoader.load(f);
+		model = BlockLoader.load(f, this);
 	}
 
 	public BlockEntry(String name)
@@ -74,9 +76,29 @@ public class BlockEntry
 		return name;
 	}
 
+	public boolean isParent()
+	{
+		return isParent;
+	}
+
+	public void setParent(boolean parent)
+	{
+		isParent = parent;
+	}
+
 	public void save()
 	{
 		BlockSaver.save(this);
+	}
+
+	public boolean isChild()
+	{
+		return isChild;
+	}
+
+	public void setChild(boolean child)
+	{
+		isChild = child;
 	}
 }
 

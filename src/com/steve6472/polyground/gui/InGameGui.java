@@ -185,7 +185,8 @@ public class InGameGui extends Gui implements IGamePause
 		CaveGame main = CaveGame.getInstance();
 
 		Font.renderFps(5, 5, main.getFps());
-		Font.render("XYZ: " + main.getPlayer().getX() + " " + main.getPlayer().getY() + " " + main.getPlayer().getZ(), 5, 15);
+		Font.renderCustom(5, 15, 1, new Object[] { new Object[] {"XYZ: %.4f %.4f %.4f", new Object[] {main.getPlayer().getX(), main.getPlayer().getY(), main.getPlayer().getZ()}}});
+//		Font.render("XYZ: " + main.getPlayer().getX() + " " + main.getPlayer().getY() + " " + main.getPlayer().getZ(), 5, 15);
 		Font.render("XYZ: " + (int) Math.floor(main.getPlayer().getX()) + " " + (int) Math.floor(main.getPlayer().getY()) + " " + (int) Math.floor(main.getPlayer().getZ()), 5, 25);
 
 		final int as = BlockLoader.getAtlas().getTotalSize();

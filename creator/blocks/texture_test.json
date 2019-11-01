@@ -1,117 +1,120 @@
-{"cubes": [{
-    "name": "main",
-    "from": [
-        0,
-        0,
-        0
-    ],
-    "to": [
-        16,
-        16,
-        16
-    ],
-    "faces": {
-        "east": {
-            "uv": [
-                0,
-                0,
-                16,
-                16
-            ],
-            "emissive": false,
-            "texture": "iron_block",
-            "isVisible": true,
-            "autoUV": true,
-            "tint": [
-                255,
-                255,
-                255
-            ]
-        },
-        "south": {
-            "uv": [
-                0,
-                0,
-                16,
-                16
-            ],
-            "emissive": false,
-            "texture": "iron_block",
-            "isVisible": true,
-            "autoUV": true,
-            "tint": [
-                255,
-                255,
-                255
-            ]
-        },
-        "north": {
-            "uv": [
-                0,
-                0,
-                16,
-                16
-            ],
-            "emissive": false,
-            "texture": "iron_block",
-            "isVisible": true,
-            "autoUV": true,
-            "tint": [
-                255,
-                255,
-                255
-            ]
-        },
-        "west": {
-            "uv": [
-                0,
-                0,
-                16,
-                16
-            ],
-            "emissive": false,
-            "texture": "iron_block",
-            "isVisible": true,
-            "autoUV": true,
-            "tint": [
-                255,
-                255,
-                255
-            ]
-        },
-        "up": {
-            "uv": [
-                0,
-                0,
-                16,
-                16
-            ],
-            "emissive": false,
-            "texture": "iron_block",
-            "isVisible": true,
-            "autoUV": true,
-            "tint": [
-                255,
-                255,
-                255
-            ]
-        },
-        "down": {
-            "uv": [
-                0,
-                0,
-                16,
-                16
-            ],
-            "emissive": false,
-            "texture": "iron_block",
-            "isVisible": true,
-            "autoUV": true,
-            "tint": [
-                255,
-                255,
-                255
-            ]
+{
+    "isParent": false,
+    "cubes": [{
+        "name": "main",
+        "from": [
+            0,
+            0,
+            0
+        ],
+        "to": [
+            16,
+            16,
+            16
+        ],
+        "faces": {
+            "east": {
+                "uv": [
+                    0,
+                    0,
+                    16,
+                    16
+                ],
+                "emissive": false,
+                "texture": "iron_block",
+                "isVisible": true,
+                "autoUV": true,
+                "tint": [
+                    255,
+                    255,
+                    255
+                ]
+            },
+            "south": {
+                "uv": [
+                    0,
+                    0,
+                    16,
+                    16
+                ],
+                "emissive": false,
+                "texture": "iron_block",
+                "isVisible": true,
+                "autoUV": true,
+                "tint": [
+                    255,
+                    255,
+                    255
+                ]
+            },
+            "north": {
+                "uv": [
+                    0,
+                    0,
+                    16,
+                    16
+                ],
+                "emissive": false,
+                "texture": "iron_block",
+                "isVisible": true,
+                "autoUV": true,
+                "tint": [
+                    255,
+                    255,
+                    255
+                ]
+            },
+            "west": {
+                "uv": [
+                    0,
+                    0,
+                    16,
+                    16
+                ],
+                "emissive": false,
+                "texture": "iron_block",
+                "isVisible": true,
+                "autoUV": true,
+                "tint": [
+                    255,
+                    255,
+                    255
+                ]
+            },
+            "up": {
+                "uv": [
+                    0,
+                    0,
+                    16,
+                    16
+                ],
+                "emissive": false,
+                "texture": "iron_block",
+                "isVisible": true,
+                "autoUV": true,
+                "tint": [
+                    255,
+                    255,
+                    255
+                ]
+            },
+            "down": {
+                "uv": [
+                    0,
+                    0,
+                    16,
+                    16
+                ],
+                "emissive": false,
+                "texture": "iron_block",
+                "isVisible": true,
+                "autoUV": true,
+                "tint": [
+                    255,
+                    255,
+                    255
+                ]
+            }
         }
-    }
-}]}
+    }]
+}

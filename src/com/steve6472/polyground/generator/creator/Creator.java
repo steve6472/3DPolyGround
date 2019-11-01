@@ -85,6 +85,8 @@ public class Creator extends MainApp
 	public static void main(String[] args)
 	{
 		System.setProperty("joml.format", "false");
+		System.setProperty("joml.fastmath", "true");
+		System.setProperty("joml.sinLookup", "true");
 		new Creator();
 	}
 }

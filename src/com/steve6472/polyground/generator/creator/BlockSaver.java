@@ -29,6 +29,7 @@ class BlockSaver
 			cubeArray.put(cubeJson(c));
 		}
 
+		mainJson.put("isParent", entry.isParent());
 		mainJson.put("cubes", cubeArray);
 
 		File compiled = new File("creator\\blocks");

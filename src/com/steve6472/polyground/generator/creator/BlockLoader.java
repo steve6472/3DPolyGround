@@ -27,9 +27,10 @@ import java.util.List;
  ***********************/
 class BlockLoader
 {
-	static BlockModel load(File f)
+	static BlockModel load(File f, BlockEntry entry)
 	{
 		JSONObject mainJson = new JSONObject(read(f));
+		entry.setParent(mainJson.optBoolean("isParent", false));
 
 		List<Cube> cubeList = new ArrayList<>();
 
