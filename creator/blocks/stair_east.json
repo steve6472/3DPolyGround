@@ -22,7 +22,9 @@
                         16
                     ],
                     "emissive": false,
+                    "at": "0, 0, 0",
                     "texture": "#texture",
+                    "negate": false,
                     "isVisible": true,
                     "autoUV": true,
                     "tint": [
@@ -39,7 +41,9 @@
                         16
                     ],
                     "emissive": false,
+                    "at": "0, 0, 0",
                     "texture": "#texture",
+                    "negate": false,
                     "isVisible": true,
                     "autoUV": true,
                     "tint": [
@@ -56,7 +60,9 @@
                         16
                     ],
                     "emissive": false,
+                    "at": "0, 0, 0",
                     "texture": "#texture",
+                    "negate": false,
                     "isVisible": true,
                     "autoUV": true,
                     "tint": [
@@ -73,7 +79,9 @@
                         16
                     ],
                     "emissive": false,
+                    "at": "0, 0, 0",
                     "texture": "#texture",
+                    "negate": false,
                     "isVisible": true,
                     "autoUV": true,
                     "tint": [
@@ -90,7 +98,9 @@
                         16
                     ],
                     "emissive": false,
+                    "at": "0, 0, 0",
                     "texture": "#texture",
+                    "negate": false,
                     "isVisible": true,
                     "autoUV": true,
                     "tint": [
@@ -107,7 +117,9 @@
                         16
                     ],
                     "emissive": false,
+                    "at": "0, 0, 0",
                     "texture": "#texture",
+                    "negate": false,
                     "isVisible": true,
                     "autoUV": true,
                     "tint": [
@@ -139,7 +151,9 @@
                         8
                     ],
                     "emissive": false,
+                    "at": "0, 0, 0",
                     "texture": "#texture",
+                    "negate": false,
                     "isVisible": true,
                     "autoUV": true,
                     "tint": [
@@ -156,7 +170,9 @@
                         8
                     ],
                     "emissive": false,
+                    "at": "0, 0, 0",
                     "texture": "#texture",
+                    "negate": false,
                     "isVisible": true,
                     "autoUV": true,
                     "tint": [
@@ -173,7 +189,9 @@
                         8
                     ],
                     "emissive": false,
+                    "at": "0, 0, 0",
                     "texture": "#texture",
+                    "negate": false,
                     "isVisible": true,
                     "autoUV": true,
                     "tint": [
@@ -190,7 +208,9 @@
                         8
                     ],
                     "emissive": false,
+                    "at": "0, 0, 0",
                     "texture": "#texture",
+                    "negate": false,
                     "isVisible": true,
                     "autoUV": true,
                     "tint": [
@@ -207,7 +227,9 @@
                         16
                     ],
                     "emissive": false,
+                    "at": "0, 0, 0",
                     "texture": "#texture",
+                    "negate": false,
                     "isVisible": true,
                     "autoUV": true,
                     "tint": [
@@ -224,7 +246,9 @@
                         16
                     ],
                     "emissive": false,
+                    "at": "0, 0, 0",
                     "texture": "#texture",
+                    "negate": false,
                     "isVisible": false,
                     "autoUV": true,
                     "tint": [

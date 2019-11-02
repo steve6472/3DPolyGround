@@ -6,6 +6,7 @@ import com.steve6472.polyground.block.BlockLoader;
 import com.steve6472.polyground.block.model.faceProperty.AutoUVFaceProperty;
 import com.steve6472.polyground.block.model.faceProperty.TextureFaceProperty;
 import com.steve6472.polyground.block.model.faceProperty.UVFaceProperty;
+import com.steve6472.polyground.block.model.faceProperty.condition.ConditionFaceProperty;
 import com.steve6472.polyground.block.model.registry.Cube;
 import com.steve6472.polyground.block.model.registry.face.FaceRegistry;
 import com.steve6472.sge.main.MainApp;
@@ -65,8 +66,6 @@ public class BlockModelLoader
 	{
 		List<Cube> cubeList = new ArrayList<>();
 
-		if (json.has("tintedCubes")) throw new IllegalArgumentException("Tinted cubes found in model!");
-
 		JSONArray array = json.getJSONArray("cubes");
 		for (int i = 0; i < array.length(); i++)
 		{
@@ -114,11 +113,26 @@ public class BlockModelLoader
 				cf.getProperty(FaceRegistry.uv).autoUV(cube, face);
 			}
 
-			TextureFaceProperty texture = cf.getProperty(FaceRegistry.texture);
-			if (!texture.isReference())
+			if (cf.hasProperty(FaceRegistry.texture))
 			{
-				BlockLoader.putTexture(texture.getTexture());
+				TextureFaceProperty texture = cf.getProperty(FaceRegistry.texture);
+				if (!texture.isReference())
+				{
+					BlockLoader.putTexture(texture.getTexture());
+					texture.setTextureId(BlockLoader.getTextureId(texture.getTexture()));
+				}
+			} else
+			{
+				if (cf.hasProperty(FaceRegistry.conditionedTexture))
+				{
+					ConditionFaceProperty cfp = cf.getProperty(FaceRegistry.conditionedTexture);
+					cfp.loadTextures();
+				}
+				TextureFaceProperty texture = new TextureFaceProperty();
+				texture.setTexture("null");
+				BlockLoader.putTexture("null");
 				texture.setTextureId(BlockLoader.getTextureId(texture.getTexture()));
+				cf.addProperty(texture);
 			}
 
 			cube.setFace(face, cf);

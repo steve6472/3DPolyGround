@@ -18,16 +18,31 @@ import java.util.List;
 public class BlockModel
 {
 	private List<Cube> cubes;
+	private List<String> tags;
+
+	/**
+	 * Air Model Constructor
+	 */
+	public BlockModel()
+	{
+		tags = new ArrayList<>();
+		tags.add("transparent");
+		tags.add("air");
+	}
 
 	public BlockModel(File f)
 	{
 		cubes = new ArrayList<>();
+		tags = new ArrayList<>();
 
 		if (f.isFile())
 		{
 			SSS sss = new SSS(f);
 
 			setCubes(CaveGame.getInstance().blockModelLoader.loadModel(sss.getString("model")));
+
+			if (sss.containsName("tags"))
+				tags.addAll(Arrays.asList(sss.getStringArray("tags")));
 		}
 	}
 
@@ -75,6 +90,17 @@ public class BlockModel
 	public void addCube(Cube cube)
 	{
 		this.cubes.add(cube);
+	}
+
+	public boolean hasTag(String tag)
+	{
+		for (String s : tags)
+		{
+			if (s.equals(tag))
+				return true;
+		}
+
+		return false;
 	}
 
 	public void printFaceData()

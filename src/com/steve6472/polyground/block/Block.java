@@ -41,6 +41,7 @@ public class Block
 		name = "air";
 		id = 0;
 		isFull = false;
+		blockModel = new BlockModel();
 	}
 
 	public Block(File f, int id)
@@ -94,12 +95,13 @@ public class Block
 	{
 		int tris = 0;
 
+		buildHelper.setSubChunk(sc);
 		for (Cube c : blockModel.getCubes())
 		{
 			buildHelper.setCube(c);
 			for (EnumFace face : EnumFace.getFaces())
 			{
-				if (Cull.renderFace(x, y, z, face, this, sc))
+				if (Cull.renderFace(x, y, z, c, face, this, sc))
 					tris += buildHelper.face(face);
 			}
 		}

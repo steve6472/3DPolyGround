@@ -1,6 +1,7 @@
 package com.steve6472.polyground.block.model.registry.face;
 
 import com.steve6472.polyground.block.model.faceProperty.*;
+import com.steve6472.polyground.block.model.faceProperty.condition.*;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -23,6 +24,10 @@ public class FaceRegistry
 	public static final FaceEntry<EmissiveFaceProperty> emissive = register("emissive", EmissiveFaceProperty::new);
 	public static final FaceEntry<TintFaceProperty> tint = register("tint", TintFaceProperty::new);
 	public static final FaceEntry<RefTintFaceProperty> refTint = register("refTint", RefTintFaceProperty::new);
+
+	/* Conditioned Properties */
+	public static final FaceEntry<ConditionFaceProperty> conditionedTexture = register("conditionedTexture", ConditionFaceProperty::new);
+	public static final FaceEntry<CondProperty> condition = register("condition", CondProperty::new);
 
 	public static <T extends FaceProperty> FaceEntry<T> register(String id, IFaceFactory<T> factory)
 	{

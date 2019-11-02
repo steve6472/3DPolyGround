@@ -5,6 +5,7 @@ import com.steve6472.polyground.block.model.CubeFace;
 import com.steve6472.polyground.block.model.faceProperty.EmissiveFaceProperty;
 import com.steve6472.polyground.block.model.faceProperty.TintFaceProperty;
 import com.steve6472.polyground.block.model.faceProperty.UVFaceProperty;
+import com.steve6472.polyground.block.model.faceProperty.condition.ConditionFaceProperty;
 import com.steve6472.polyground.block.model.registry.Cube;
 import com.steve6472.polyground.block.model.registry.face.FaceRegistry;
 import org.joml.AABBf;
@@ -31,6 +32,7 @@ public final class BuildHelper
 	private List<Float> text;
 	private List<Float> emissive;
 	private Cube cube;
+	private SubChunk sc;
 
 	public void load(int x, int y, int z, List<Float> vert, List<Float> col, List<Float> text, List<Float> emissive)
 	{
@@ -48,34 +50,48 @@ public final class BuildHelper
 		this.cube = cube;
 	}
 
+	public void setSubChunk(SubChunk sc)
+	{
+		this.sc = sc;
+	}
+
+	private int getTextureId(Cube cube, EnumFace face)
+	{
+		if (sc != null && cube.getFace(face).hasProperty(FaceRegistry.conditionedTexture))
+		{
+			return ConditionFaceProperty.getTexture(cube.getFace(face).getProperty(FaceRegistry.conditionedTexture), x, y, z, sc);
+		}
+		return cube.getFace(face).getProperty(FaceRegistry.texture).getTextureId();
+	}
+
 	private void texture00(EnumFace face, float minX, float minY, float maxX, float maxY)
 	{
-		float x = cube.getFace(face).getProperty(FaceRegistry.texture).getTextureId() % atlasSize;
-		float y = cube.getFace(face).getProperty(FaceRegistry.texture).getTextureId() / atlasSize;
+		float x = getTextureId(cube, face) % atlasSize;
+		float y = getTextureId(cube, face) / atlasSize;
 		text.add(texel * x + minX * texel);
 		text.add(texel * y + minY * texel);
 	}
 
 	private void texture01(EnumFace face, float minX, float minY, float maxX, float maxY)
 	{
-		float x = cube.getFace(face).getProperty(FaceRegistry.texture).getTextureId() % atlasSize;
-		float y = cube.getFace(face).getProperty(FaceRegistry.texture).getTextureId() / atlasSize;
+		float x = getTextureId(cube, face) % atlasSize;
+		float y = getTextureId(cube, face) / atlasSize;
 		text.add(texel * x + minX * texel);
 		text.add(texel * y + maxY * texel);
 	}
 
 	private void texture10(EnumFace face, float minX, float minY, float maxX, float maxY)
 	{
-		float x = cube.getFace(face).getProperty(FaceRegistry.texture).getTextureId() % atlasSize;
-		float y = cube.getFace(face).getProperty(FaceRegistry.texture).getTextureId() / atlasSize;
+		float x = getTextureId(cube, face) % atlasSize;
+		float y = getTextureId(cube, face) / atlasSize;
 		text.add(texel * x + maxX * texel);
 		text.add(texel * y + minY * texel);
 	}
 
 	private void texture11(EnumFace face, float minX, float minY, float maxX, float maxY)
 	{
-		float x = cube.getFace(face).getProperty(FaceRegistry.texture).getTextureId() % atlasSize;
-		float y = cube.getFace(face).getProperty(FaceRegistry.texture).getTextureId() / atlasSize;
+		float x = getTextureId(cube, face) % atlasSize;
+		float y = getTextureId(cube, face) / atlasSize;
 		text.add(texel * x + maxX * texel);
 		text.add(texel * y + maxY * texel);
 	}

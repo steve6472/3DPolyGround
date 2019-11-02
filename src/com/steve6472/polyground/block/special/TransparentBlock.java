@@ -27,6 +27,7 @@ public class TransparentBlock extends Block
 	{
 		int tris = 0;
 
+		buildHelper.setSubChunk(sc);
 		for (Cube c : getCubes(x, y, z))
 		{
 			buildHelper.setCube(c);

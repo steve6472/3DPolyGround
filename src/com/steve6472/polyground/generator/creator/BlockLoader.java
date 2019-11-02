@@ -7,6 +7,7 @@ import com.steve6472.polyground.block.model.JsonHelper;
 import com.steve6472.polyground.block.model.faceProperty.AutoUVFaceProperty;
 import com.steve6472.polyground.block.model.faceProperty.VisibleFaceProperty;
 import com.steve6472.polyground.block.model.registry.Cube;
+import com.steve6472.polyground.block.model.registry.face.FaceEntry;
 import com.steve6472.polyground.block.model.registry.face.FaceRegistry;
 import org.joml.AABBf;
 import org.json.JSONArray;
@@ -27,6 +28,14 @@ import java.util.List;
  ***********************/
 class BlockLoader
 {
+	private static List<FaceEntry> ignoredProperties = new ArrayList<>();
+
+	static
+	{
+		ignoredProperties.add(FaceRegistry.condition);
+		ignoredProperties.add(FaceRegistry.conditionedTexture);
+	}
+
 	static BlockModel load(File f, BlockEntry entry)
 	{
 		JSONObject mainJson = new JSONObject(read(f));
@@ -75,8 +84,16 @@ class BlockLoader
 
 	private static void fillMissingProperties(CubeFace face)
 	{
-		for (String key : FaceRegistry.getKeys())
+		main : for (String key : FaceRegistry.getKeys())
 		{
+			for (FaceEntry f : ignoredProperties)
+			{
+				if (f.getInstance().getId().equals(key))
+				{
+					continue main;
+				}
+			}
+
 			if (!face.hasProperty(key))
 			{
 				face.addProperty(FaceRegistry.createProperty(key));

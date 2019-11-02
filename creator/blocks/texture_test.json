@@ -21,7 +21,9 @@
                     16
                 ],
                 "emissive": false,
+                "at": "0, 0, 0",
                 "texture": "iron_block",
+                "negate": false,
                 "isVisible": true,
                 "autoUV": true,
                 "tint": [
@@ -38,7 +40,9 @@
                     16
                 ],
                 "emissive": false,
+                "at": "0, 0, 0",
                 "texture": "iron_block",
+                "negate": false,
                 "isVisible": true,
                 "autoUV": true,
                 "tint": [
@@ -55,7 +59,9 @@
                     16
                 ],
                 "emissive": false,
+                "at": "0, 0, 0",
                 "texture": "iron_block",
+                "negate": false,
                 "isVisible": true,
                 "autoUV": true,
                 "tint": [
@@ -72,7 +78,9 @@
                     16
                 ],
                 "emissive": false,
+                "at": "0, 0, 0",
                 "texture": "iron_block",
+                "negate": false,
                 "isVisible": true,
                 "autoUV": true,
                 "tint": [
@@ -89,7 +97,9 @@
                     16
                 ],
                 "emissive": false,
+                "at": "0, 0, 0",
                 "texture": "iron_block",
+                "negate": false,
                 "isVisible": true,
                 "autoUV": true,
                 "tint": [
@@ -106,7 +116,9 @@
                     16
                 ],
                 "emissive": false,
+                "at": "0, 0, 0",
                 "texture": "iron_block",
+                "negate": false,
                 "isVisible": true,
                 "autoUV": true,
                 "tint": [

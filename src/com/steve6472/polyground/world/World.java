@@ -36,6 +36,11 @@ public class World implements IBlockProvider
 
 	public String worldName = null;
 
+	public World()
+	{
+
+	}
+
 	public World(CaveGame pg)
 	{
 		this.pg = pg;

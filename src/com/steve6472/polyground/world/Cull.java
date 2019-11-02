@@ -2,6 +2,10 @@ package com.steve6472.polyground.world;
 
 import com.steve6472.polyground.EnumFace;
 import com.steve6472.polyground.block.Block;
+import com.steve6472.polyground.block.model.CubeFace;
+import com.steve6472.polyground.block.model.faceProperty.condition.ConditionFaceProperty;
+import com.steve6472.polyground.block.model.registry.Cube;
+import com.steve6472.polyground.block.model.registry.face.FaceRegistry;
 import com.steve6472.polyground.block.registry.BlockRegistry;
 import com.steve6472.polyground.block.special.SlabBlock;
 import com.steve6472.polyground.block.special.StairBlock;
@@ -14,7 +18,7 @@ import com.steve6472.polyground.block.special.StairBlock;
  ***********************/
 public class Cull
 {
-	public static boolean renderFace(int x, int y, int z, EnumFace face, Block middleBlock, SubChunk subChunk)
+	public static boolean renderFace(int x, int y, int z, Cube cube, EnumFace face, Block middleBlock, SubChunk subChunk)
 	{
 		Block testedBlock = getBlock(subChunk, x + face.getXOffset(), y + face.getYOffset(), z + face.getZOffset());
 
@@ -35,8 +39,22 @@ public class Cull
 				}
 			}
 
+			CubeFace cubeFace = cube.getFace(face);
+
+			if (cubeFace != null && cubeFace.hasProperty(FaceRegistry.conditionedTexture))
+			{
+				boolean flag = ConditionFaceProperty.testConditions(cubeFace.getProperty(FaceRegistry.conditionedTexture), x, y, z, subChunk);
+				if (flag)
+				{
+					ConditionFaceProperty.editProperties(cubeFace.getProperty(FaceRegistry.conditionedTexture), cubeFace, face, x, y, z, subChunk);
+				}
+				return flag;
+			}
+
 			return SubChunkBuilder.cull(subChunk, x + face.getXOffset(), y + face.getYOffset(), z + face.getZOffset());
 		}
+
+		/* Slab */
 
 		SlabBlock thisSlabBlock = (SlabBlock) middleBlock;
 		if (testedBlock instanceof SlabBlock)
