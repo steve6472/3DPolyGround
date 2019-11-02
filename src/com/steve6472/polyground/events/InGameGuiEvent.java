@@ -22,47 +22,35 @@ public class InGameGuiEvent extends CancellableEvent
 		return gui;
 	}
 
-	public static class PreRender extends InGameGuiEvent {
-		public PreRender(InGameGui gui)
-		{
-			super(gui);
-		}
+	public static class PreRender extends InGameGuiEvent
+	{
+		public PreRender(InGameGui gui) { super(gui); }
 	}
 
-	public static class PostRender extends InGameGuiEvent {
-		public PostRender(InGameGui gui)
-		{
-			super(gui);
-		}
+	public static class PostRender extends InGameGuiEvent
+	{
+		public PostRender(InGameGui gui) { super(gui); }
 	}
 
 
-	public static class PreTick extends InGameGuiEvent {
-		public PreTick(InGameGui gui)
-		{
-			super(gui);
-		}
+	public static class PreTick extends InGameGuiEvent
+	{
+		public PreTick(InGameGui gui) { super(gui); }
 	}
 
-	public static class PostTick extends InGameGuiEvent {
-		public PostTick(InGameGui gui)
-		{
-			super(gui);
-		}
+	public static class PostTick extends InGameGuiEvent
+	{
+		public PostTick(InGameGui gui) { super(gui); }
 	}
 
 
-	public static class PreRenderCrosshair extends InGameGuiEvent {
-		public PreRenderCrosshair(InGameGui gui)
-		{
-			super(gui);
-		}
+	public static class PreRenderCrosshair extends InGameGuiEvent
+	{
+		public PreRenderCrosshair(InGameGui gui) { super(gui); }
 	}
 
-	public static class PostRenderCrosshair extends InGameGuiEvent {
-		public PostRenderCrosshair(InGameGui gui)
-		{
-			super(gui);
-		}
+	public static class PostRenderCrosshair extends InGameGuiEvent
+	{
+		public PostRenderCrosshair(InGameGui gui) { super(gui); }
 	}
 }

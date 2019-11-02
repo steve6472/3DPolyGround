@@ -1,7 +1,9 @@
 package com.steve6472.polyground.world.biomes.registry;
 
-import com.steve6472.polyground.block.model.registry.Cube;
-import org.joml.AABBf;
+import com.steve6472.polyground.world.biomes.Biome;
+import com.steve6472.polyground.world.biomes.BlueLand;
+import com.steve6472.polyground.world.biomes.GreenLand;
+import com.steve6472.polyground.world.biomes.RedLand;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -15,27 +17,31 @@ import java.util.Set;
  ***********************/
 public class BiomeRegistry
 {
-	private static final HashMap<String, BiomeEntry<? extends Cube>> cubeRegistry = new HashMap<>();
+	private static final HashMap<String, BiomeEntry<? extends Biome>> biomeRegistry = new HashMap<>();
 
-	public static <T extends Cube> BiomeEntry<T> register(String id, IBiomeFactory<T> factory)
+	public static final BiomeEntry<RedLand> redLand = register("red_land", RedLand::new);
+	public static final BiomeEntry<GreenLand> greenLand = register("green_land", GreenLand::new);
+	public static final BiomeEntry<BlueLand> blueLand = register("blue_land", BlueLand::new);
+
+	public static <T extends Biome> BiomeEntry<T> register(String id, IBiomeFactory<T> factory)
 	{
 		BiomeEntry<T> entry = new BiomeEntry<>(factory);
-		cubeRegistry.put(id, entry);
+		biomeRegistry.put(id, entry);
 		return entry;
 	}
 
-	public static Cube createCube(String id, AABBf aabb)
+	public static Biome createCube(String id)
 	{
-		return cubeRegistry.get(id).createNew(aabb);
+		return biomeRegistry.get(id).createNew();
 	}
 
-	public static Collection<BiomeEntry<? extends Cube>> getEntries()
+	public static Collection<BiomeEntry<? extends Biome>> getEntries()
 	{
-		return cubeRegistry.values();
+		return biomeRegistry.values();
 	}
 
 	public static Set<String> getKeys()
 	{
-		return cubeRegistry.keySet();
+		return biomeRegistry.keySet();
 	}
 }

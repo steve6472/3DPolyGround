@@ -1,10 +1,9 @@
 package com.steve6472.polyground.world.biomes.registry;
 
-import com.steve6472.polyground.block.model.registry.Cube;
-import org.joml.AABBf;
+import com.steve6472.polyground.world.biomes.Biome;
 
 @FunctionalInterface
-public interface IBiomeFactory<T extends Cube>
+public interface IBiomeFactory<T extends Biome>
 {
-	T create(AABBf aabb);
+	T create();
 }

@@ -1,9 +1,8 @@
 package com.steve6472.polyground.world.biomes.registry;
 
-import com.steve6472.polyground.block.model.registry.Cube;
-import org.joml.AABBf;
+import com.steve6472.polyground.world.biomes.Biome;
 
-public class BiomeEntry<T extends Cube>
+public class BiomeEntry<T extends Biome>
 {
 	private IBiomeFactory<T> factory;
 
@@ -12,8 +11,8 @@ public class BiomeEntry<T extends Cube>
 		this.factory = factory;
 	}
 
-	public T createNew(AABBf aabb)
+	public T createNew()
 	{
-		return factory.create(aabb);
+		return factory.create();
 	}
 }

@@ -1,10 +1,13 @@
 package com.steve6472.polyground.world.generator;
 
 import com.steve6472.polyground.block.Block;
-import com.steve6472.polyground.block.registry.BlockRegistry;
 import com.steve6472.polyground.world.SubChunk;
+import com.steve6472.polyground.world.biomes.Biome;
+import com.steve6472.polyground.world.biomes.registry.BiomeRegistry;
 import org.joml.SimplexNoise;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.BiConsumer;
 
 /**********************
@@ -17,67 +20,56 @@ public class WorldGenerator implements IGenerator
 {
 	private SubChunk subChunk;
 
+	private float[] heightMap;
+
+	List<Biome> biomes;
+
+	public WorldGenerator()
+	{
+		biomes = new ArrayList<>();
+		BiomeRegistry.getEntries().forEach(c -> biomes.add(c.createNew()));
+	}
+
 	@Override
 	public void generate(SubChunk subChunk)
 	{
 		this.subChunk = subChunk;
 
-		int grass = BlockRegistry.getBlockIdByName("grass");
-		int dirt = BlockRegistry.getBlockIdByName("gravel");
-		int stone = BlockRegistry.getBlockIdByName("stone");
-		int cobblestone = BlockRegistry.getBlockIdByName("cobblestone");
-
-		generateBiomes();
-		generateHeightMap();
+		createHeightMap();
+		createWorld();
 	}
 
-	private void generateHeightMap()
+	private void createHeightMap()
 	{
-		int stone = BlockRegistry.getBlockIdByName("stone");
+		heightMap = getHeights(subChunk.getX() * 16, subChunk.getZ() * 16, subChunk.getX() * 16 + 16, subChunk.getZ() * 16 + 16);
+	}
 
-		iterate((i, j, k, biome) ->
+	private void createWorld()
+	{
+		iterate((i, j, k) ->
 		{
-			float height =
-			switch (biome)
-			{
-				case 0 -> sumOcatave(16, i + subChunk.getX() * 16, k + subChunk.getZ() * 16, 0.4f, 0.007f, 0, 31);
-				case 1 -> sumOcatave(4, i + subChunk.getX() * 16, k + subChunk.getZ() * 16, 0.4f, 0.007f, 0, 63);
-				case 2 -> sumOcatave(8, i + subChunk.getX() * 16, k + subChunk.getZ() * 16, 0.4f, 0.007f, 0, 31);
-				default -> 1;
-			};
+			int maxHeight = (int) Math.ceil(heightMap[(i) + (k * 16)]);
 
-			if (height > j + subChunk.getLayer() * 16)
+			Biome b = getBiome(i, k);
+			int top = b.getTopBlock().getId();
+			int fill = b.getCaveBlock().getId();
+			int under = b.getUnderBlock().getId();
+
+			int y = j + subChunk.getLayer() * 16;
+
+			if (y == maxHeight)
 			{
-				subChunk.getIds()[i][j][k] = stone;
+				subChunk.getIds()[i][j][k] = top;
+			} else if (y < maxHeight - 1 - b.getUnderLayerHeight())
+			{
+				subChunk.getIds()[i][j][k] = fill;
+			} else if (y < maxHeight)
+			{
+				subChunk.getIds()[i][j][k] = under;
 			} else
 			{
 				subChunk.getIds()[i][j][k] = Block.air.getId();
 			}
-		});
-	}
-
-	private void generateBiomes()
-	{
-		iterate((i, j, k) ->
-		{
-			float biome = sumOcatave(4, i + subChunk.getX() * 16, k + subChunk.getZ() * 16, 0.4f, 0.025f, 0, 3);
-			subChunk.getIds()[i][j][k] = (int) Math.ceil(biome);
-
-//			float height = sumOcatave(8, i + subChunk.getX() * 16, k + subChunk.getZ() * 16, 0.4f, 0.007f, 0, 31);
-//			if (height > j + subChunk.getLayer() * 16)
-//			{
-//				subChunk.getIds()[i][j][k] =
-//					switch ((int) Math.ceil(biome))
-//						{
-//							case 1 -> stone;
-//							case 2 -> dirt;
-//							case 3 -> cobblestone;
-//							default -> BlockRegistry.getBlockByName("debug").getId();
-//						};
-//			} else
-//			{
-//				subChunk.getIds()[i][j][k] = Block.air.getId();
-//			}
 		});
 	}
 
@@ -93,13 +85,6 @@ public class WorldGenerator implements IGenerator
 				}
 			}
 		}
-	}
-
-	private void iterate(QuadConsumer consumer)
-	{
-		iterate((i, j, k) -> {
-			consumer.apply(i, j, k, subChunk.getIds()[i][j][k]);
-		});
 	}
 
 	private void iterate(int y, BiConsumer<Integer, Integer> consumer)
@@ -134,15 +119,86 @@ public class WorldGenerator implements IGenerator
         return noise;
     }
 
+	public static float smoothInterpolation(float bottomLeft, float topLeft, float bottomRight, float topRight, float xMin, float xMax,
+	                                        float zMin, float zMax, float x, float z)
+	{
+		float width = xMax - xMin, height = zMax - zMin;
+		float xValue = 1 - (x - xMin) / width;
+		float zValue = 1 - (z - zMin) / height;
+
+		float a = smoothstep(bottomLeft, bottomRight, xValue);
+		float b = smoothstep(topLeft, topRight, xValue);
+		return smoothstep(a, b, zValue);
+	}
+
+	public static float smoothstep(float edge0, float edge1, float x)
+	{
+		// Scale, bias and saturate x to 0..1 range
+		x = x * x * (3 - 2 * x);
+		// Evaluate polynomial
+		return (edge0 * x) + (edge1 * (1 - x));
+	}
+
+
+
+
+	public float[] getHeights(int xMin, int zMin, int xMax, int zMax)
+	{
+		float[] arr = new float[(xMax - xMin) * (zMax - zMin)];
+
+		float f0 = getH(0, 0);
+		float f1 = getH(0, 16);
+		float f2 = getH(16, 0);
+		float f3 = getH(16, 16);
+
+		for (int x = xMin; x < xMax; ++x)
+		{
+			for (int z = zMin; z < zMax; ++z)
+			{
+				float h = smoothInterpolation(f0, f1, f2, f3, xMin, xMax, zMin, zMax, x, z);
+
+				arr[(x - xMin) + (z - zMin) * (zMax - zMin)] = h;
+			}
+		}
+
+		return arr;
+	}
+
+	private Biome getBiome(int x, int z)
+	{
+		float f = sumOcatave(16, x + subChunk.getX() * 16, z + subChunk.getZ() * 16, 0.4f, 0.007f, 0, 3);
+
+		if (f <= 1)
+		{
+			return biomes.get(0);
+		} else if (f > 1 && f <= 2)
+		{
+			return biomes.get(1);
+		} else
+		{
+			return biomes.get(2);
+		}
+	}
+
+	public float getH(int x, int z)
+	{
+		Biome biome = getBiome(x, z);
+
+		int itCo;
+		float persistance, low, high, scale;
+
+		itCo = biome.getIterationCount();
+		persistance = biome.getPersistance();
+		low = biome.getLow();
+		high = biome.getHigh();
+		scale = biome.getScale();
+
+		return sumOcatave(itCo, x + subChunk.getX() * 16, z + subChunk.getZ() * 16, persistance, scale, low, high);
+	}
+
 	@FunctionalInterface
 	private interface TriConsumer
 	{
 		void apply(int x, int y, int z);
-	}
-
-	@FunctionalInterface
-	private interface QuadConsumer
-	{
-		void apply(int x, int y, int z, int id);
 	}
 }
