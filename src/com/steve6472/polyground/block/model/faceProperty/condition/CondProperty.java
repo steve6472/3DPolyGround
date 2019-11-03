@@ -2,7 +2,7 @@ package com.steve6472.polyground.block.model.faceProperty.condition;
 
 import com.steve6472.polyground.CaveGame;
 import com.steve6472.polyground.block.model.faceProperty.FaceProperty;
-import com.steve6472.polyground.world.World;
+import com.steve6472.polyground.world.SubChunk;
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -35,9 +35,9 @@ public class CondProperty extends FaceProperty
 		check = new MainCheck(condition);
 	}
 
-	boolean test(int x, int y, int z, World world)
+	boolean test(int x, int y, int z, SubChunk subChunk)
 	{
-		return check.test(x, y, z, world);
+		return check.test(x, y, z, subChunk);
 	}
 
 	@Override
@@ -61,7 +61,7 @@ public class CondProperty extends FaceProperty
 
 	private interface ICheck
 	{
-		boolean test(int x, int y, int z, World world);
+		boolean test(int x, int y, int z, SubChunk subChunk);
 	}
 
 	private static boolean hasCheckSign(String s)
@@ -175,7 +175,7 @@ public class CondProperty extends FaceProperty
 		}
 
 		@Override
-		public boolean test(int x, int y, int z, World world)
+		public boolean test(int x, int y, int z, SubChunk subChunk)
 		{
 			print("-+".repeat(32));
 			ICheck left = null, right = null;
@@ -202,11 +202,11 @@ public class CondProperty extends FaceProperty
 
 			if (right == null)
 			{
-				return left.test(x, y, z, world);
+				return left.test(x, y, z, subChunk);
 			}
 
-			boolean l = left.test(x, y, z, world);
-			boolean r = right.test(x, y, z, world);
+			boolean l = left.test(x, y, z, subChunk);
+			boolean r = right.test(x, y, z, subChunk);
 
 			boolean flag = switch (type)
 				{
@@ -250,10 +250,10 @@ public class CondProperty extends FaceProperty
 		}
 
 		@Override
-		public boolean test(int x, int y, int z, World world)
+		public boolean test(int x, int y, int z, SubChunk subChunk)
 		{
-			boolean l = left.test(x, y, z, world);
-			boolean r = right.test(x, y, z, world);
+			boolean l = left.test(x, y, z, subChunk);
+			boolean r = right.test(x, y, z, subChunk);
 
 			boolean flag = switch (type)
 				{
@@ -315,16 +315,16 @@ public class CondProperty extends FaceProperty
 			relZ = Integer.parseInt(arr[2].trim());
 		}
 
-		public boolean test(int x, int y, int z, World world)
+		public boolean test(int x, int y, int z, SubChunk subChunk)
 		{
 			boolean f;
 			if (block.startsWith("#"))
 			{
-				f = world.getBlock(x + relX, y + relY, z + relZ).hasTag(block.substring(1));
+				f = subChunk.getBlockEfficiently(relX + Math.floorMod(x, 16), relY + Math.floorMod(y, 16), relZ + Math.floorMod(z, 16)).hasTag(block.substring(1));
 				print("Checked for block tag \"%s\" with result %b", block.substring(1), f);
 			} else
 			{
-				f = world.getBlock(x + relX, y + relY, z + relZ).getName().equals(block);
+				f = subChunk.getBlockEfficiently(relX + Math.floorMod(x, 16), relY + Math.floorMod(y, 16), relZ + Math.floorMod(z, 16)).getName().equals(block);
 			}
 			boolean flag = switch (type)
 			{

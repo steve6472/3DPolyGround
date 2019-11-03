@@ -5,7 +5,6 @@ import com.steve6472.polyground.block.model.CubeFace;
 import com.steve6472.polyground.block.model.faceProperty.EmissiveFaceProperty;
 import com.steve6472.polyground.block.model.faceProperty.TintFaceProperty;
 import com.steve6472.polyground.block.model.faceProperty.UVFaceProperty;
-import com.steve6472.polyground.block.model.faceProperty.condition.ConditionFaceProperty;
 import com.steve6472.polyground.block.model.registry.Cube;
 import com.steve6472.polyground.block.model.registry.face.FaceRegistry;
 import org.joml.AABBf;
@@ -57,10 +56,10 @@ public final class BuildHelper
 
 	private int getTextureId(Cube cube, EnumFace face)
 	{
-		if (sc != null && cube.getFace(face).hasProperty(FaceRegistry.conditionedTexture))
-		{
-			return ConditionFaceProperty.getTexture(cube.getFace(face).getProperty(FaceRegistry.conditionedTexture), x, y, z, sc);
-		}
+//		if (sc != null && cube.getFace(face).hasProperty(FaceRegistry.conditionedTexture))
+//		{
+//			return ConditionFaceProperty.getTexture(cube.getFace(face).getProperty(FaceRegistry.conditionedTexture), x, y, z, sc);
+//		}
 		return cube.getFace(face).getProperty(FaceRegistry.texture).getTextureId();
 	}
 

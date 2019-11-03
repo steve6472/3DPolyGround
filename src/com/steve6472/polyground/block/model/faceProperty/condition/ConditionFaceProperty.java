@@ -8,7 +8,6 @@ import com.steve6472.polyground.block.model.faceProperty.TextureFaceProperty;
 import com.steve6472.polyground.block.model.registry.face.FaceEntry;
 import com.steve6472.polyground.block.model.registry.face.FaceRegistry;
 import com.steve6472.polyground.world.SubChunk;
-import com.steve6472.polyground.world.World;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -69,7 +68,7 @@ public class ConditionFaceProperty extends FaceProperty
 		{
 			Result result = conditions.results.get(i);
 
-			boolean flag = result.testBlock(x + sc.getX() * 16, y, z + sc.getZ() * 16, sc.getWorld());
+			boolean flag = result.testBlock(x + sc.getX() * 16, y, z + sc.getZ() * 16, sc);
 
 			if (flag)
 			{
@@ -99,47 +98,26 @@ public class ConditionFaceProperty extends FaceProperty
 		return conditions.results.get(conditions.results.size() - 1).getLast();
 	}
 
-	public static boolean testConditions(ConditionFaceProperty conditions, int x, int y, int z, SubChunk sc)
-	{
-		for (int i = 0; i < conditions.results.size() - 1; i++)
-		{
-			Result result = conditions.results.get(i);
-
-			boolean flag = result.testBlock(x + sc.getX() * 16, y, z + sc.getZ() * 16, sc.getWorld());
-
-			if (flag)
-			{
-				if (result.hasProperty(FaceRegistry.isVisible))
-				{
-					return result.getProperty(FaceRegistry.isVisible).isVisible();
-				}
-				return true;
-			}
-		}
-
-		return conditions.results.get(conditions.results.size() - 1).getLast();
-	}
-
-	public static int getTexture(ConditionFaceProperty conditions, int x, int y, int z, SubChunk sc)
-	{
-		for (int i = 0; i < conditions.results.size() - 1; i++)
-		{
-			Result result = conditions.results.get(i);
-
-			boolean flag = result.testBlock(x + sc.getX() * 16, y, z + sc.getZ() * 16, sc.getWorld());
-
-			if (flag)
-			{
-				if (result.hasProperty(FaceRegistry.texture))
-				{
-					return result.getProperty(FaceRegistry.texture).getTextureId();
-				}
-				return -1;
-			}
-		}
-
-		return conditions.results.get(conditions.results.size() - 1).getLastTexture();
-	}
+//	public static int getTexture(ConditionFaceProperty conditions, int x, int y, int z, SubChunk sc)
+//	{
+//		for (int i = 0; i < conditions.results.size() - 1; i++)
+//		{
+//			Result result = conditions.results.get(i);
+//
+//			boolean flag = result.testBlock(x + sc.getX() * 16, y, z + sc.getZ() * 16, sc);
+//
+//			if (flag)
+//			{
+//				if (result.hasProperty(FaceRegistry.texture))
+//				{
+//					return result.getProperty(FaceRegistry.texture).getTextureId();
+//				}
+//				return -1;
+//			}
+//		}
+//
+//		return conditions.results.get(conditions.results.size() - 1).getLastTexture();
+//	}
 
 	@Override
 	public String getId()
@@ -163,12 +141,12 @@ public class ConditionFaceProperty extends FaceProperty
 			loadFromJSON(conditionJson);
 		}
 
-		public boolean testBlock(int x, int y, int z, World world)
+		public boolean testBlock(int x, int y, int z, SubChunk subChunk)
 		{
 			if (hasProperty(FaceRegistry.condition))
 			{
 				CondProperty c = getProperty(FaceRegistry.condition);
-				return c.test(x, y, z, world);
+				return c.test(x, y, z, subChunk);
 			} else
 			{
 				System.err.println("No condition found!");

@@ -2,8 +2,8 @@ package com.steve6472.polyground.world;
 
 import com.steve6472.polyground.EnumFace;
 import com.steve6472.polyground.block.Block;
-import com.steve6472.polyground.block.registry.BlockRegistry;
 import com.steve6472.polyground.block.blockdata.BlockData;
+import com.steve6472.polyground.block.registry.BlockRegistry;
 import com.steve6472.polyground.world.generator.IGenerator;
 
 import java.io.IOException;
@@ -213,18 +213,54 @@ public class SubChunk
 	 */
 	public Block getBlockEfficiently(int x, int y, int z)
 	{
-		int cx = getX() * 16;
-		int cy = getLayer() * 16;
-		int cz = getZ() * 16;
-		if (x > cx && x < cx + 16 && z > cz && z < cz + 16 && y > cy && y < cy + 16)
+		int maxLayer = parent.getSubChunks().length;
+
+//		System.out.println(String.format("%s/%s/%s", x, y, z));
+
+		if (x >= 0 && x < 16 && z >= 0 && z < 16 && y >= 0 && y < 16)
 		{
 			return getBlock(x, y, z);
 		} else
 		{
+			if (x == 16)
+			{
+				SubChunk sc = getWorld().getSubChunk(getX() + 1, getLayer(), getZ());
+				if (sc == null)
+					return Block.air;
+				return sc.getBlockEfficiently(0, y, z);
+			} else if (x == -1)
+			{
+				SubChunk sc = getWorld().getSubChunk(getX() - 1, getLayer(), getZ());
+				if (sc == null)
+					return Block.air;
+				return sc.getBlockEfficiently(15, y, z);
+			}
 
+			if (z == 16)
+			{
+				SubChunk sc = getWorld().getSubChunk(getX(), getLayer(), getZ() + 1);
+				if (sc == null)
+					return Block.air;
+				return sc.getBlockEfficiently(x, y, 0);
+			} else if (z == -1)
+			{
+				SubChunk sc = getWorld().getSubChunk(getX(), getLayer(), getZ() - 1);
+				if (sc == null)
+					return Block.air;
+				return sc.getBlockEfficiently(x, y, 15);
+			}
+
+			if (y == -1 && getLayer() > 0)
+			{
+				return parent.getSubChunks()[getLayer() - 1].getBlockEfficiently(x, 15, z);
+			} else if (y == 16 && getLayer() < maxLayer)
+			{
+				return parent.getSubChunks()[getLayer() + 1].getBlockEfficiently(x, 0, z);
+			} else
+			{
+				return Block.air;
+			}
 		}
-
-		throw new IllegalArgumentException("Finish me you dumbass!");
 	}
 
 	public void setBlock(int x, int y, int z, Block block)
