@@ -1,1 +1,3 @@
-model = block/model_test/aqua_grass
+model = block/model_test/frame
+
+special = custom

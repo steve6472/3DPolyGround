@@ -43,12 +43,7 @@ public class Cull
 
 			if (cubeFace != null && cubeFace.hasProperty(FaceRegistry.conditionedTexture))
 			{
-				boolean flag = ConditionFaceProperty.testConditions(cubeFace.getProperty(FaceRegistry.conditionedTexture), x, y, z, subChunk);
-				if (flag)
-				{
-					ConditionFaceProperty.editProperties(cubeFace.getProperty(FaceRegistry.conditionedTexture), cubeFace, face, x, y, z, subChunk);
-				}
-				return flag;
+				return ConditionFaceProperty.editProperties(cubeFace.getProperty(FaceRegistry.conditionedTexture), cubeFace, face, x, y, z, subChunk);
 			}
 
 			return SubChunkBuilder.cull(subChunk, x + face.getXOffset(), y + face.getYOffset(), z + face.getZOffset());

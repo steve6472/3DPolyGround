@@ -1,12 +1,11 @@
 package com.steve6472.polyground.block.model.faceProperty.condition;
 
+import com.steve6472.polyground.CaveGame;
 import com.steve6472.polyground.block.model.faceProperty.FaceProperty;
 import com.steve6472.polyground.world.World;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.regex.Pattern;
+import java.util.HashMap;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
@@ -18,6 +17,12 @@ public class CondProperty extends FaceProperty
 {
 	private ICheck check;
 
+	private static void print(String s, Object... f)
+	{
+		if (Boolean.parseBoolean(System.getProperty("debug_conditions", "false")))
+			System.out.println(String.format(s, f));
+	}
+
 	public CondProperty()
 	{
 	}
@@ -27,19 +32,10 @@ public class CondProperty extends FaceProperty
 	{
 		String condition = json.getString("condition");
 
-		if (condition.contains("{") && condition.contains("}"))
-		{
-			check = new NestedCheck(condition);
-		} else if (condition.contains("(") && condition.contains(")"))
-		{
-			check = new LRCheck(condition);
-		} else
-		{
-			check = new BlockCheck(condition);
-		}
+		check = new MainCheck(condition);
 	}
 
-	public boolean test(int x, int y, int z, World world)
+	boolean test(int x, int y, int z, World world)
 	{
 		return check.test(x, y, z, world);
 	}
@@ -62,117 +58,166 @@ public class CondProperty extends FaceProperty
 	{
 		return null;
 	}
-/*
-	public static void main(String[] args)
-	{
-//		String toTest = "[1, -1, 0] != model_test";
-//		String toTest = "([1, -1, 0] != model_test) && ([1, 0, 0] == air)";
-		String toTest = "{([1, -1, 0] != model_test) && ([1, 0, 0] == air)} || {([1, -1, 0] != test) && ([1, 0, 0] == #transparent)}";
-
-		ICheck check;
-
-		World world = new World();
-
-		if (toTest.contains("{") && toTest.contains("}"))
-		{
-			check = new NestedCheck(toTest);
-		} else if (toTest.contains("(") && toTest.contains(")"))
-		{
-			check = new LRCheck(toTest);
-		} else
-		{
-			check = new BlockCheck(toTest);
-		}
-
-		System.out.println(check.test(0, 0, 0, world));
-	}*/
 
 	private interface ICheck
 	{
 		boolean test(int x, int y, int z, World world);
 	}
 
-	private static class NestedCheck implements ICheck
+	private static boolean hasCheckSign(String s)
 	{
-		List<ICheck> checks;
-		List<Type> types;
+		return s.contains("||") || s.contains("&&") || s.contains("!=") || s.contains("==");
+	}
 
-		public NestedCheck(String raw)
+	private static class MainCheck implements ICheck
+	{
+		HashMap<Integer, ICheck> map;
+		Type type;
+
+		String raw;
+
+		MainCheck(String raw)
 		{
-			checks = new ArrayList<>();
-			types = new ArrayList<>();
+			print("Raw: \"%s\"", raw);
+			map = new HashMap<>();
+			this.raw = raw;
 			int it = 0;
 			int replaceCount = 0;
-//			System.out.println(raw);
-//			System.out.println("-".repeat(raw.length()));
-			while (raw.indexOf('}') != -1 || raw.indexOf('{') != -1)
+			while (raw.indexOf(')') != -1 || raw.indexOf('(') != -1)
 			{
-				for (int i = 0; i < raw.length(); i++)
+				m: for (int i = 0; i < raw.length(); i++)
 				{
-					if (raw.charAt(i) == '}')
+					if (raw.charAt(i) == ')')
 					{
 						for (int j = i; j >= 0; j--)
 						{
-							if (raw.charAt(j) == '{')
+							if (raw.charAt(j) == '(')
 							{
-								checks.add(new LRCheck(raw.substring(j + 1, i)));
+								String cond = raw.substring(j + 1, i);
+								if (cond.startsWith("[") && cond.contains("]") && cond.indexOf(']') == cond.lastIndexOf(']'))
+								{
+									map.put(replaceCount, new BlockCheck(cond));
+								} else if (hasCheckSign(cond))
+								{
+									String num0 = "";
+									String num1;
+									StringBuilder temp = new StringBuilder();
+									boolean start = false;
+									for (int k = 0; k < cond.length(); k++)
+									{
+										char c = cond.charAt(k);
+										if (c == '§')
+										{
+											start = true;
+											continue;
+										}
+										if (c == ' ' && start)
+										{
+											num0 = temp.toString();
+											temp = new StringBuilder();
+											start = false;
+											continue;
+										}
+										if (start)
+										{
+											temp.append(c);
+										}
+									}
+									num1 = temp.toString();
+									print("\"%s\" \"%s\"", num0, num1);
+									int zero = Integer.parseInt(num0);
+									int one = Integer.parseInt(num1);
+									map.put(replaceCount, new LRCheck(map.get(zero), map.get(one), cond));
+									map.remove(zero);
+									map.remove(one);
+								} else
+								{
+									System.err.println("Error! Quitting game!");
+									CaveGame.getInstance().exit();
+									System.exit(-2);
+								}
+								print("Found check: " + cond);
 								raw = raw.replace(raw.substring(j, i + 1), "§" + replaceCount);
-//								System.out.println(raw);
 								replaceCount++;
-//								System.out.println("-----");
-								break;
+								break m;
 							}
 						}
 					}
 				}
 
 				it++;
-				if (it >= 50)
+				if (it >= 64)
 				{
-					System.err.println("ERROR");
+					System.err.println("Model had more than 64 conditions!");
 					return;
 				}
 			}
 
+			print("Result: \"" + raw + "\"");
 
-			while (raw.contains("||") || raw.contains("&&") || raw.contains("!=") || raw.contains("=="))
+			for (Integer integer : map.keySet())
 			{
-				for (Type typ : Type.values())
-				{
-					if (raw.contains(typ.raw))
-					{
-						types.add(typ);
-						raw = raw.replaceFirst(Pattern.quote(typ.raw), "&");
-						break;
-					}
-				}
+				print("%d: %s", integer, map.get(integer));
 			}
+
+			print("-".repeat(64));
+
+			if (raw.contains("||"))
+				type = Type.OR;
+			else if (raw.contains("&&"))
+				type = Type.AND;
+			else if (raw.contains("=="))
+				type = Type.EQUALS;
+			else if (raw.contains("!="))
+				type = Type.NOT_EQUALS;
+			else
+				type = Type.NOT_FOUND;
 		}
 
 		@Override
 		public boolean test(int x, int y, int z, World world)
 		{
-			boolean flag = checks.get(0).test(x, y, z, world);
-			for (int i = 1; i < checks.size() - 1; i++)
-			{
-				Type t = types.get(i - 1);
+			print("-+".repeat(32));
+			ICheck left = null, right = null;
 
-				switch (t)
+			int i = 0;
+			for (Integer integer : map.keySet())
+			{
+				if (left == null)
+					left = map.get(integer);
+				else
+					right = map.get(integer);
+				i++;
+			}
+
+			if (i == 0)
+			{
+				throw new IllegalStateException("There are no conditions!");
+			}
+
+			if (i > 2)
+			{
+				throw new IllegalStateException("Condition count is bigger than two!");
+			}
+
+			if (right == null)
+			{
+				return left.test(x, y, z, world);
+			}
+
+			boolean l = left.test(x, y, z, world);
+			boolean r = right.test(x, y, z, world);
+
+			boolean flag = switch (type)
 				{
-					case EQUALS -> flag = flag == checks.get(i).test(x, y, z, world);
-					case NOT_EQUALS -> flag = flag != checks.get(i).test(x, y, z, world);
-					case AND -> flag = flag && checks.get(i).test(x, y, z, world);
-					case OR -> flag = flag || checks.get(i).test(x, y, z, world);
-				}
-			}
+					case EQUALS -> l == r;
+					case NOT_EQUALS -> l != r;
+					case AND -> l && r;
+					case OR -> l || r;
+					default -> throw new IllegalStateException("Unexpected value: " + type);
+				};
 
-			switch (types.get(types.size() - 1))
-			{
-				case EQUALS -> flag = flag == checks.get(checks.size() - 1).test(x, y, z, world);
-				case NOT_EQUALS -> flag = flag != checks.get(checks.size() - 1).test(x, y, z, world);
-				case AND -> flag = flag && checks.get(checks.size() - 1).test(x, y, z, world);
-				case OR -> flag = flag || checks.get(checks.size() - 1).test(x, y, z, world);
-			}
+			print(String.format("Main Condition \"%s\" is %b", raw, flag));
 
 			return flag;
 		}
@@ -183,65 +228,45 @@ public class CondProperty extends FaceProperty
 		ICheck left, right;
 		Type type;
 
-		public LRCheck(String raw)
+		String raw;
+
+		LRCheck(ICheck left, ICheck right, String cond)
 		{
-			int it = 0;
-			int replaceCount = 0;
-//			System.out.println(raw);
-//			System.out.println("-".repeat(raw.length()));
-			while (raw.indexOf(')') != -1 || raw.indexOf('(') != -1)
-			{
-				for (int i = 0; i < raw.length(); i++)
-				{
-					if (raw.charAt(i) == ')')
-					{
-						for (int j = i; j >= 0; j--)
-						{
-							if (raw.charAt(j) == '(')
-							{
-								if (left == null)
-									left = new BlockCheck(raw.substring(j + 1, i));
-								else
-									right = new BlockCheck(raw.substring(j + 1, i));
+			this.raw = cond;
+			this.left = left;
+			this.right = right;
+			if (cond.contains("||"))
+				type = Type.OR;
+			else if (cond.contains("&&"))
+				type = Type.AND;
+			else if (cond.contains("=="))
+				type = Type.EQUALS;
+			else if (cond.contains("!="))
+				type = Type.NOT_EQUALS;
+			else
+				type = Type.NOT_FOUND;
 
-								raw = raw.replace(raw.substring(j, i + 1), "§" + replaceCount);
-//								System.out.println(raw);
-								replaceCount++;
-//								System.out.println("-----");
-								break;
-							}
-						}
-					}
-				}
-
-				it++;
-				if (it >= 50)
-				{
-					System.err.println("ERROR");
-					return;
-				}
-			}
-
-			for (Type typ : Type.values())
-			{
-				if (raw.contains(typ.raw))
-				{
-					type = typ;
-					break;
-				}
-			}
+			print(type.name());
 		}
 
 		@Override
 		public boolean test(int x, int y, int z, World world)
 		{
-			return switch (type)
+			boolean l = left.test(x, y, z, world);
+			boolean r = right.test(x, y, z, world);
+
+			boolean flag = switch (type)
 				{
-					case EQUALS -> left.test(x, y, z, world) == right.test(x, y, z, world);
-					case NOT_EQUALS -> left.test(x, y, z, world) != right.test(x, y, z, world);
-					case AND -> left.test(x, y, z, world) && right.test(x, y, z, world);
-					case OR -> left.test(x, y, z, world) || right.test(x, y, z, world);
+					case EQUALS -> l == r;
+					case NOT_EQUALS -> l != r;
+					case AND -> l && r;
+					case OR -> l || r;
+					default -> throw new IllegalStateException("Unexpected value: " + type);
 				};
+
+			print(String.format("LR Condition \"%s\" is %b", raw, flag));
+
+			return flag;
 		}
 	}
 
@@ -251,8 +276,11 @@ public class CondProperty extends FaceProperty
 		String block;
 		Type type;
 
-		public BlockCheck(String raw)
+		String raw;
+
+		BlockCheck(String raw)
 		{
+			this.raw = raw;
 			int end = 0;
 			for (int i = raw.length() - 1; i > 0; i--)
 			{
@@ -285,26 +313,35 @@ public class CondProperty extends FaceProperty
 			relX = Integer.parseInt(arr[0].trim());
 			relY = Integer.parseInt(arr[1].trim());
 			relZ = Integer.parseInt(arr[2].trim());
-
-//			System.out.println(block);
-//			System.out.println(type);
-//			System.out.println(String.format("%d, %d, %d", relX, relY, relZ));
 		}
 
 		public boolean test(int x, int y, int z, World world)
 		{
-			return switch (type)
+			boolean f;
+			if (block.startsWith("#"))
 			{
-				case EQUALS -> world.getBlock(x + relX, y + relY, z + relZ).getName().equals(block);
-				case NOT_EQUALS -> !world.getBlock(x + relX, y + relY, z + relZ).getName().equals(block);
+				f = world.getBlock(x + relX, y + relY, z + relZ).hasTag(block.substring(1));
+				print("Checked for block tag \"%s\" with result %b", block.substring(1), f);
+			} else
+			{
+				f = world.getBlock(x + relX, y + relY, z + relZ).getName().equals(block);
+			}
+			boolean flag = switch (type)
+			{
+				case EQUALS -> f;
+				case NOT_EQUALS -> !f;
 				default -> throw new IllegalStateException("Unexpected value: " + type);
 			};
+
+			print(String.format("Block Condition \"%s\" is %b", raw, flag));
+
+			return flag;
 		}
 	}
 
 	private enum Type
 	{
-		EQUALS("=="), NOT_EQUALS("!="), OR("||"), AND("&&");
+		EQUALS("=="), NOT_EQUALS("!="), OR("||"), AND("&&"), NOT_FOUND("");
 
 		String raw;
 

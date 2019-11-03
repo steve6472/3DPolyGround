@@ -83,6 +83,18 @@ public class Block
 		return blockModel.getCubes();
 	}
 
+	/* Tags */
+
+	public boolean hasTag(String tag)
+	{
+		return getBlockModel().hasTag(tag);
+	}
+
+	public void addTag(String tag)
+	{
+		getBlockModel().addTag(tag);
+	}
+
 	/* Other Something */
 
 	public boolean rebuildChunkOnPlace() { return true; }

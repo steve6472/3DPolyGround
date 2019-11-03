@@ -200,6 +200,33 @@ public class SubChunk
 		getIds()[Math.floorMod(x, 16)][Math.floorMod(y, 16)][Math.floorMod(z, 16)] = id;
 	}
 
+	/**
+	 *
+	 * Can check neighbour chunks.
+	 * Should be more efficient for chunk border block checking
+	 * as it does not have to create new Chunk Key everytime
+	 *
+	 * @param x x coordinate of block
+	 * @param y y coordinate of block
+	 * @param z z coordinate of block
+	 * @return Block
+	 */
+	public Block getBlockEfficiently(int x, int y, int z)
+	{
+		int cx = getX() * 16;
+		int cy = getLayer() * 16;
+		int cz = getZ() * 16;
+		if (x > cx && x < cx + 16 && z > cz && z < cz + 16 && y > cy && y < cy + 16)
+		{
+			return getBlock(x, y, z);
+		} else
+		{
+
+		}
+
+		throw new IllegalArgumentException("Finish me you dumbass!");
+	}
+
 	public void setBlock(int x, int y, int z, Block block)
 	{
 		setBlock(x, y, z, block.getId());

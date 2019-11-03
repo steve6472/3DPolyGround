@@ -368,6 +368,9 @@ public class CaveGame extends MainApp
 		System.setProperty("joml.format", "false");
 		System.setProperty("joml.fastmath", "true");
 		System.setProperty("joml.sinLookup", "true");
+
+//		System.setProperty("debug_conditions", "true");
+
 		new CaveGame();
 	}
 }

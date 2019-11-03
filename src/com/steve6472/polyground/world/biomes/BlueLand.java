@@ -20,7 +20,7 @@ public class BlueLand extends Biome
 	@Override
 	public Block getTopBlock()
 	{
-		return BlockRegistry.getBlockByName("blue_grass");
+		return BlockRegistry.getBlockByName("aqua_grass");
 	}
 
 	@Override

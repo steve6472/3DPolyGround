@@ -42,7 +42,10 @@ public class BlockModel
 			setCubes(CaveGame.getInstance().blockModelLoader.loadModel(sss.getString("model")));
 
 			if (sss.containsName("tags"))
-				tags.addAll(Arrays.asList(sss.getStringArray("tags")));
+			{
+				for (String s : sss.getStringArray("tags"))
+					addTag(s);
+			}
 		}
 	}
 
@@ -94,13 +97,12 @@ public class BlockModel
 
 	public boolean hasTag(String tag)
 	{
-		for (String s : tags)
-		{
-			if (s.equals(tag))
-				return true;
-		}
+		return tags.contains(tag);
+	}
 
-		return false;
+	public void addTag(String tag)
+	{
+		tags.add(tag);
 	}
 
 	public void printFaceData()

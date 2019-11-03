@@ -63,7 +63,7 @@ public class ConditionFaceProperty extends FaceProperty
 		}
 	}
 
-	public static void editProperties(ConditionFaceProperty conditions, CubeFace cubeFace, EnumFace face, int x, int y, int z, SubChunk sc)
+	public static boolean editProperties(ConditionFaceProperty conditions, CubeFace cubeFace, EnumFace face, int x, int y, int z, SubChunk sc)
 	{
 		for (int i = 0; i < conditions.results.size() - 1; i++)
 		{
@@ -73,6 +73,7 @@ public class ConditionFaceProperty extends FaceProperty
 
 			if (flag)
 			{
+//				System.out.println("Condition # " + i + " for " + face);
 				for (FaceProperty p : result.properties)
 				{
 					if (p instanceof ConditionFaceProperty || p instanceof CondProperty)
@@ -80,8 +81,22 @@ public class ConditionFaceProperty extends FaceProperty
 					cubeFace.removeProperty(FaceRegistry.getEntry(p.getId()));
 					cubeFace.addProperty(p.createCopy());
 				}
+
+				if (result.hasProperty(FaceRegistry.isVisible))
+				{
+//					System.out.println("--------------------");
+					return result.getProperty(FaceRegistry.isVisible).isVisible();
+				}
+				return true;
 			}
 		}
+
+//		System.out.println("--------------------");
+
+		if (cubeFace.hasProperty(FaceRegistry.texture))
+			cubeFace.getProperty(FaceRegistry.texture).setTextureId(conditions.results.get(conditions.results.size() - 1).getLastTexture());
+
+		return conditions.results.get(conditions.results.size() - 1).getLast();
 	}
 
 	public static boolean testConditions(ConditionFaceProperty conditions, int x, int y, int z, SubChunk sc)

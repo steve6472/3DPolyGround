@@ -177,7 +177,7 @@ public class ItemAtlas
 
 	private int model(Block block)
 	{
-		if (block.getCubes() == null) return 0;
+		if (block == null || block.getCubes() == null) return 0;
 
 		int tris = 0;
 
