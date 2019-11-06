@@ -4,7 +4,7 @@ import com.steve6472.polyground.EnumFace;
 import com.steve6472.polyground.CaveGame;
 import com.steve6472.polyground.PolyUtil;
 import com.steve6472.polyground.block.Block;
-import com.steve6472.polyground.block.BlockLoader;
+import com.steve6472.polyground.block.BlockTextureHolder;
 import com.steve6472.polyground.block.model.registry.Cube;
 import com.steve6472.polyground.block.registry.BlockRegistry;
 import com.steve6472.polyground.tessellators.ItemTessellator;
@@ -66,8 +66,8 @@ public class ItemAtlas
 		camera = new Camera();
 		camera.calculateOrbit(0, 0, 0, 10f);
 
-		buildHelper.atlasSize = BlockLoader.getAtlas().getTileCount();
-		buildHelper.texel = 1f / (float) BlockLoader.getAtlas().getTileCount();
+		buildHelper.atlasSize = BlockTextureHolder.getAtlas().getTileCount();
+		buildHelper.texel = 1f / (float) BlockTextureHolder.getAtlas().getTileCount();
 	}
 
 	public void start()
@@ -124,7 +124,7 @@ public class ItemAtlas
 		CaveGame.shaders.worldShader.setTransformation(transformationMatrix);
 		CaveGame.shaders.worldShader.setProjection(projectionMatrix);
 
-		BlockLoader.getAtlas().getSprite().bind();
+		BlockTextureHolder.getAtlas().getSprite().bind();
 	}
 
 	private float toRad(float deg)

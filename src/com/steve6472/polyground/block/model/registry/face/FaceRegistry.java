@@ -24,6 +24,7 @@ public class FaceRegistry
 	public static final FaceEntry<EmissiveFaceProperty> emissive = register("emissive", EmissiveFaceProperty::new);
 	public static final FaceEntry<TintFaceProperty> tint = register("tint", TintFaceProperty::new);
 	public static final FaceEntry<RefTintFaceProperty> refTint = register("refTint", RefTintFaceProperty::new);
+	public static final FaceEntry<RotationFaceProperty> rotation = register("rotation", RotationFaceProperty::new);
 
 	/* Conditioned Properties */
 	public static final FaceEntry<ConditionFaceProperty> conditionedTexture = register("conditionedTexture", ConditionFaceProperty::new);

@@ -67,7 +67,7 @@ public class Saver
 			Chunk oldChunk = world.getChunk(c.getX(), c.getZ());
 			if (oldChunk != null) world.deleteChunk(oldChunk.getX(), oldChunk.getZ());
 
-			world.addChunk(c, false);
+			world.addChunk(c, true);
 		}
 
 		/*

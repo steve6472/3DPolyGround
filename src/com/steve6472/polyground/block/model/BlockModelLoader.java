@@ -2,7 +2,7 @@ package com.steve6472.polyground.block.model;
 
 import com.steve6472.polyground.CaveGame;
 import com.steve6472.polyground.EnumFace;
-import com.steve6472.polyground.block.BlockLoader;
+import com.steve6472.polyground.block.BlockTextureHolder;
 import com.steve6472.polyground.block.model.faceProperty.AutoUVFaceProperty;
 import com.steve6472.polyground.block.model.faceProperty.TextureFaceProperty;
 import com.steve6472.polyground.block.model.faceProperty.UVFaceProperty;
@@ -118,8 +118,8 @@ public class BlockModelLoader
 				TextureFaceProperty texture = cf.getProperty(FaceRegistry.texture);
 				if (!texture.isReference())
 				{
-					BlockLoader.putTexture(texture.getTexture());
-					texture.setTextureId(BlockLoader.getTextureId(texture.getTexture()));
+					BlockTextureHolder.putTexture(texture.getTexture());
+					texture.setTextureId(BlockTextureHolder.getTextureId(texture.getTexture()));
 				}
 			} else
 			{
@@ -130,8 +130,8 @@ public class BlockModelLoader
 				}
 				TextureFaceProperty texture = new TextureFaceProperty();
 				texture.setTexture("null");
-				BlockLoader.putTexture("null");
-				texture.setTextureId(BlockLoader.getTextureId(texture.getTexture()));
+				BlockTextureHolder.putTexture("null");
+				texture.setTextureId(BlockTextureHolder.getTextureId(texture.getTexture()));
 				cf.addProperty(texture);
 			}
 

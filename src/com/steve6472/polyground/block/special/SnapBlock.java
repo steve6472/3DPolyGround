@@ -2,7 +2,7 @@ package com.steve6472.polyground.block.special;
 
 import com.steve6472.polyground.EnumFace;
 import com.steve6472.polyground.block.Block;
-import com.steve6472.polyground.block.BlockLoader;
+import com.steve6472.polyground.block.BlockTextureHolder;
 import com.steve6472.polyground.block.blockdata.BlockData;
 import com.steve6472.polyground.block.model.CubeFace;
 import com.steve6472.polyground.block.model.registry.Cube;
@@ -41,7 +41,7 @@ public class SnapBlock extends Block
 	{
 		if (block == Block.air) return;
 
-		float size = BlockLoader.getAtlas().getTileCount();
+		float size = BlockTextureHolder.getAtlas().getTileCount();
 		float s = 1f / 16f / size;
 
 		//s - TY / size + s * 14f
@@ -100,8 +100,8 @@ public class SnapBlock extends Block
 		float tx = cf.getProperty(FaceRegistry.texture).getTextureId() % bh.atlasSize;
 		float ty = cf.getProperty(FaceRegistry.texture).getTextureId() / bh.atlasSize;
 
-		tx /= (float) BlockLoader.getAtlas().getTileCount();
-		ty /= (float) BlockLoader.getAtlas().getTileCount();
+		tx /= (float) BlockTextureHolder.getAtlas().getTileCount();
+		ty /= (float) BlockTextureHolder.getAtlas().getTileCount();
 
 		float minU = tx + TX;
 		float minV = ty + TY;

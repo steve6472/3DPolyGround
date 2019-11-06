@@ -3,6 +3,7 @@ package com.steve6472.polyground.world;
 import com.steve6472.polyground.EnumFace;
 import com.steve6472.polyground.block.model.CubeFace;
 import com.steve6472.polyground.block.model.faceProperty.EmissiveFaceProperty;
+import com.steve6472.polyground.block.model.faceProperty.RotationFaceProperty;
 import com.steve6472.polyground.block.model.faceProperty.TintFaceProperty;
 import com.steve6472.polyground.block.model.faceProperty.UVFaceProperty;
 import com.steve6472.polyground.block.model.registry.Cube;
@@ -56,11 +57,14 @@ public final class BuildHelper
 
 	private int getTextureId(Cube cube, EnumFace face)
 	{
-//		if (sc != null && cube.getFace(face).hasProperty(FaceRegistry.conditionedTexture))
-//		{
-//			return ConditionFaceProperty.getTexture(cube.getFace(face).getProperty(FaceRegistry.conditionedTexture), x, y, z, sc);
-//		}
 		return cube.getFace(face).getProperty(FaceRegistry.texture).getTextureId();
+	}
+
+	private void vert(float ox, float oy, float oz)
+	{
+		vert.add(ox + x);
+		vert.add(oy + y);
+		vert.add(oz + z);
 	}
 
 	private void texture00(EnumFace face, float minX, float minY, float maxX, float maxY)
@@ -395,31 +399,61 @@ public final class BuildHelper
 
 		texture(face);
 
-		vert.add(a.maxX + x);
-		vert.add(a.maxY + y);
-		vert.add(a.minZ + z);
+		if (cube.getFace(face).hasProperty(FaceRegistry.rotation))
+		{
+			RotationFaceProperty.EnumRotation rotation = cube.getFace(face).getProperty(FaceRegistry.rotation).getRotation();
+			switch (rotation)
+			{
 
-		vert.add(a.minX + x);
-		vert.add(a.maxY + y);
-		vert.add(a.minZ + z);
+				case R_90 ->
+				{
+					vert(a.minX, a.maxY, a.minZ);
+					vert(a.minX, a.maxY, a.maxZ);
+					vert(a.maxX, a.maxY, a.maxZ);
 
-		vert.add(a.minX + x);
-		vert.add(a.maxY + y);
-		vert.add(a.maxZ + z);
+					/* */
 
-		/* */
+					vert(a.maxX, a.maxY, a.maxZ);
+					vert(a.maxX, a.maxY, a.minZ);
+					vert(a.minX, a.maxY, a.minZ);
+				}
+				case R_180 ->
+				{
+					vert(a.minX, a.maxY, a.maxZ);
+					vert(a.maxX, a.maxY, a.maxZ);
+					vert(a.maxX, a.maxY, a.minZ);
 
-		vert.add(a.minX + x);
-		vert.add(a.maxY + y);
-		vert.add(a.maxZ + z);
+					/* */
 
-		vert.add(a.maxX + x);
-		vert.add(a.maxY + y);
-		vert.add(a.maxZ + z);
+					vert(a.maxX, a.maxY, a.minZ);
+					vert(a.minX, a.maxY, a.minZ);
+					vert(a.minX, a.maxY, a.maxZ);
+				}
+				case R_270 ->
+				{
+					vert(a.maxX, a.maxY, a.maxZ);
+					vert(a.maxX, a.maxY, a.minZ);
+					vert(a.minX, a.maxY, a.minZ);
 
-		vert.add(a.maxX + x);
-		vert.add(a.maxY + y);
-		vert.add(a.minZ + z);
+					/* */
+
+					vert(a.minX, a.maxY, a.minZ);
+					vert(a.minX, a.maxY, a.maxZ);
+					vert(a.maxX, a.maxY, a.maxZ);
+				}
+			}
+		} else
+		{
+			vert(a.maxX, a.maxY, a.minZ);
+			vert(a.minX, a.maxY, a.minZ);
+			vert(a.minX, a.maxY, a.maxZ);
+
+			/* */
+
+			vert(a.minX, a.maxY, a.maxZ);
+			vert(a.maxX, a.maxY, a.maxZ);
+			vert(a.maxX, a.maxY, a.minZ);
+		}
 
 		return 6;
 	}
@@ -440,32 +474,22 @@ public final class BuildHelper
 		AABBf a = cube.getAabb();
 
 		texture(face);
+/*
+		if (cube.getFace(face).hasProperty(FaceRegistry.rotation))
+		{
+			RotationFaceProperty.EnumRotation rotation = cube.getFace(face).getProperty(FaceRegistry.rotation).getRotation();
+		} else*/
+		{
+			vert(a.minX, a.minY, a.minZ);
+			vert(a.maxX, a.minY, a.minZ);
+			vert(a.maxX, a.minY, a.maxZ);
 
-		vert.add(a.minX + x);
-		vert.add(a.minY + y);
-		vert.add(a.minZ + z);
+			/* */
 
-		vert.add(a.maxX + x);
-		vert.add(a.minY + y);
-		vert.add(a.minZ + z);
-
-		vert.add(a.maxX + x);
-		vert.add(a.minY + y);
-		vert.add(a.maxZ + z);
-
-		/* */
-
-		vert.add(a.maxX + x);
-		vert.add(a.minY + y);
-		vert.add(a.maxZ + z);
-
-		vert.add(a.minX + x);
-		vert.add(a.minY + y);
-		vert.add(a.maxZ + z);
-
-		vert.add(a.minX + x);
-		vert.add(a.minY + y);
-		vert.add(a.minZ + z);
+			vert(a.maxX, a.minY, a.maxZ);
+			vert(a.minX, a.minY, a.maxZ);
+			vert(a.minX, a.minY, a.minZ);
+		}
 
 		return 6;
 	}

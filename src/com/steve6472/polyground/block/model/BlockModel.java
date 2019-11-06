@@ -52,6 +52,7 @@ public class BlockModel
 	public BlockModel(List<Cube> cubes)
 	{
 		this.cubes = new ArrayList<>();
+		tags = new ArrayList<>();
 
 		setCubes(cubes);
 	}
@@ -59,6 +60,7 @@ public class BlockModel
 	public BlockModel(Cube... cubes)
 	{
 		this.cubes = new ArrayList<>();
+		tags = new ArrayList<>();
 
 		setCubes(cubes);
 	}

@@ -1,7 +1,7 @@
 package com.steve6472.polyground.block.model;
 
 import com.steve6472.polyground.EnumFace;
-import com.steve6472.polyground.block.BlockLoader;
+import com.steve6472.polyground.block.BlockTextureHolder;
 import com.steve6472.polyground.block.model.faceProperty.RefTintFaceProperty;
 import com.steve6472.polyground.block.model.faceProperty.TintFaceProperty;
 import com.steve6472.polyground.block.model.registry.Cube;
@@ -53,9 +53,9 @@ public class JsonHelper
 				{
 					if (("#" + key).equals(pef.getProperty(FaceRegistry.texture).getTexture()))
 					{
-						BlockLoader.putTexture(newTexture);
+						BlockTextureHolder.putTexture(newTexture);
 						pef.getProperty(FaceRegistry.texture).setTexture(null);
-						pef.getProperty(FaceRegistry.texture).setTextureId(BlockLoader.getTextureId(newTexture));
+						pef.getProperty(FaceRegistry.texture).setTextureId(BlockTextureHolder.getTextureId(newTexture));
 					}
 				}
 			}

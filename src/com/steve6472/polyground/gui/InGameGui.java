@@ -6,7 +6,7 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.suggestion.Suggestion;
 import com.mojang.brigadier.suggestion.Suggestions;
 import com.steve6472.polyground.CaveGame;
-import com.steve6472.polyground.block.BlockLoader;
+import com.steve6472.polyground.block.BlockTextureHolder;
 import com.steve6472.polyground.commands.CommandRegistry;
 import com.steve6472.polyground.commands.CommandSource;
 import com.steve6472.polyground.events.InGameGuiEvent;
@@ -189,7 +189,7 @@ public class InGameGui extends Gui implements IGamePause
 //		Font.render("XYZ: " + main.getPlayer().getX() + " " + main.getPlayer().getY() + " " + main.getPlayer().getZ(), 5, 15);
 		Font.render("XYZ: " + (int) Math.floor(main.getPlayer().getX()) + " " + (int) Math.floor(main.getPlayer().getY()) + " " + (int) Math.floor(main.getPlayer().getZ()), 5, 25);
 
-		final int as = BlockLoader.getAtlas().getTotalSize();
+		final int as = BlockTextureHolder.getAtlas().getTotalSize();
 
 		if (main.hitPicker.hit)
 		{

@@ -2,7 +2,7 @@ package com.steve6472.polyground.block.special;
 
 import com.steve6472.polyground.EnumFace;
 import com.steve6472.polyground.block.Block;
-import com.steve6472.polyground.block.BlockLoader;
+import com.steve6472.polyground.block.BlockTextureHolder;
 import com.steve6472.polyground.block.blockdata.BlockData;
 import com.steve6472.polyground.block.model.CubeFace;
 import com.steve6472.polyground.block.model.registry.Cube;
@@ -57,7 +57,7 @@ public class LogBlock extends Block
 
 				float r = RandomUtil.randomInt(0, 16 - s);
 
-				float size = 1f / (float) BlockLoader.getAtlas().getSize() / (float) BlockLoader.getAtlas().getTileCount();
+				float size = 1f / (float) BlockTextureHolder.getAtlas().getSize() / (float) BlockTextureHolder.getAtlas().getTileCount();
 				tx *= size * 16f;
 				ty *= size * 16f;
 

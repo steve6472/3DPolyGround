@@ -2,7 +2,7 @@ package com.steve6472.polyground.block.registry;
 
 import com.steve6472.polyground.CaveGame;
 import com.steve6472.polyground.block.Block;
-import com.steve6472.polyground.block.BlockLoader;
+import com.steve6472.polyground.block.BlockTextureHolder;
 import com.steve6472.sge.main.MainApp;
 import com.steve6472.sss2.SSS;
 
@@ -32,6 +32,11 @@ public class BlockRegistry
 		BlockRegistry.blocks.put("air", Block.createAir());
 		reference.put(0, "air");
 
+		BlockRegistry.blocks.put("error", Block.createError());
+		reference.put(1, "error");
+
+		int systemBlocks = 2;
+
 		for (int i = 0; i < Objects.requireNonNull(blocks).length; i++)
 		{
 			if (blocks[i].isDirectory()) continue;
@@ -41,18 +46,18 @@ public class BlockRegistry
 
 			if (t.containsName("special") && SpecialBlockRegistry.getKeys().contains(t.getString("special")))
 			{
-				block = SpecialBlockRegistry.createSpecialBlock(t.getString("special"), blocks[i], i + 1);
+				block = SpecialBlockRegistry.createSpecialBlock(t.getString("special"), blocks[i], i + systemBlocks);
 			} else
 			{
-				block = new Block(blocks[i], i + 1);
+				block = new Block(blocks[i], i + systemBlocks);
 			}
 
 			pg.getEventHandler().register(block);
 
-			if (!BlockRegistry.blocks.containsKey(block.getName()) && !reference.containsKey(i + 1))
+			if (!BlockRegistry.blocks.containsKey(block.getName()) && !reference.containsKey(i + systemBlocks))
 			{
 				BlockRegistry.blocks.put(block.getName(), block);
-				reference.put(i + 1, block.getName());
+				reference.put(i + systemBlocks, block.getName());
 			} else
 			{
 				throw new IllegalArgumentException("Duplicate block name " + block.getName() + " or id " + i);
@@ -61,10 +66,10 @@ public class BlockRegistry
 
 		getAllBlocks().forEach(Block::postLoad);
 
-		BlockLoader.compileTextures();
+		BlockTextureHolder.compileTextures();
 
-		pg.buildHelper.atlasSize = BlockLoader.getAtlas().getTileCount();
-		pg.buildHelper.texel = 1f / (float) BlockLoader.getAtlas().getTileCount();
+		pg.buildHelper.atlasSize = BlockTextureHolder.getAtlas().getTileCount();
+		pg.buildHelper.texel = 1f / (float) BlockTextureHolder.getAtlas().getTileCount();
 	}
 
 	public static int getBlockIdByName(String name)

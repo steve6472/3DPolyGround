@@ -1,10 +1,11 @@
 package com.steve6472.polyground.block.model.faceProperty.condition;
 
-import com.steve6472.polyground.EnumFace;
-import com.steve6472.polyground.block.BlockLoader;
+import com.steve6472.polyground.block.BlockTextureHolder;
 import com.steve6472.polyground.block.model.CubeFace;
+import com.steve6472.polyground.block.model.faceProperty.AutoUVFaceProperty;
 import com.steve6472.polyground.block.model.faceProperty.FaceProperty;
 import com.steve6472.polyground.block.model.faceProperty.TextureFaceProperty;
+import com.steve6472.polyground.block.model.faceProperty.UVFaceProperty;
 import com.steve6472.polyground.block.model.registry.face.FaceEntry;
 import com.steve6472.polyground.block.model.registry.face.FaceRegistry;
 import com.steve6472.polyground.world.SubChunk;
@@ -49,20 +50,19 @@ public class ConditionFaceProperty extends FaceProperty
 
 	public void loadTextures()
 	{
-		for (int i = 0; i < results.size(); i++)
+		for (Result c : results)
 		{
-			Result c = results.get(i);
 			if (c.hasProperty(FaceRegistry.texture))
 			{
 				TextureFaceProperty texture = c.getProperty(FaceRegistry.texture);
 
-				BlockLoader.putTexture(texture.getTexture());
-				texture.setTextureId(BlockLoader.getTextureId(texture.getTexture()));
+				BlockTextureHolder.putTexture(texture.getTexture());
+				texture.setTextureId(BlockTextureHolder.getTextureId(texture.getTexture()));
 			}
 		}
 	}
 
-	public static boolean editProperties(ConditionFaceProperty conditions, CubeFace cubeFace, EnumFace face, int x, int y, int z, SubChunk sc)
+	public static boolean editProperties(ConditionFaceProperty conditions, CubeFace cubeFace, int x, int y, int z, SubChunk sc)
 	{
 		for (int i = 0; i < conditions.results.size() - 1; i++)
 		{
@@ -72,52 +72,58 @@ public class ConditionFaceProperty extends FaceProperty
 
 			if (flag)
 			{
-//				System.out.println("Condition # " + i + " for " + face);
+				for (FaceEntry<? extends FaceProperty> e : FaceRegistry.getEntries())
+				{
+					if (e.getInstance() instanceof ConditionFaceProperty || e.getInstance() instanceof CondProperty)
+						continue;
+					cubeFace.removeProperty(e);
+				}
+
+				for (FaceProperty p : result.properties)
+				{
+					if (p instanceof ConditionFaceProperty || p instanceof CondProperty)
+						continue;
+					cubeFace.addProperty(p.createCopy());
+				}
+
+				if (cubeFace.hasProperty(FaceRegistry.texture))
+				{
+					TextureFaceProperty texture = cubeFace.getProperty(FaceRegistry.texture);
+					if (!texture.isReference())
+					{
+						texture.setTextureId(BlockTextureHolder.getTextureId(texture.getTexture()));
+					}
+				}
+
+				if (!cubeFace.hasProperty(FaceRegistry.uv))
+					cubeFace.addProperty(new UVFaceProperty());
+
+				if (AutoUVFaceProperty.check(cubeFace))
+				{
+					cubeFace.getProperty(FaceRegistry.uv).autoUV(cubeFace.getParent(), cubeFace.getFace());
+				}
+				/*
 				for (FaceProperty p : result.properties)
 				{
 					if (p instanceof ConditionFaceProperty || p instanceof CondProperty)
 						continue;
 					cubeFace.removeProperty(FaceRegistry.getEntry(p.getId()));
 					cubeFace.addProperty(p.createCopy());
-				}
+				}*/
 
 				if (result.hasProperty(FaceRegistry.isVisible))
 				{
-//					System.out.println("--------------------");
 					return result.getProperty(FaceRegistry.isVisible).isVisible();
 				}
 				return true;
 			}
 		}
 
-//		System.out.println("--------------------");
-
 		if (cubeFace.hasProperty(FaceRegistry.texture))
 			cubeFace.getProperty(FaceRegistry.texture).setTextureId(conditions.results.get(conditions.results.size() - 1).getLastTexture());
 
 		return conditions.results.get(conditions.results.size() - 1).getLast();
 	}
-
-//	public static int getTexture(ConditionFaceProperty conditions, int x, int y, int z, SubChunk sc)
-//	{
-//		for (int i = 0; i < conditions.results.size() - 1; i++)
-//		{
-//			Result result = conditions.results.get(i);
-//
-//			boolean flag = result.testBlock(x + sc.getX() * 16, y, z + sc.getZ() * 16, sc);
-//
-//			if (flag)
-//			{
-//				if (result.hasProperty(FaceRegistry.texture))
-//				{
-//					return result.getProperty(FaceRegistry.texture).getTextureId();
-//				}
-//				return -1;
-//			}
-//		}
-//
-//		return conditions.results.get(conditions.results.size() - 1).getLastTexture();
-//	}
 
 	@Override
 	public String getId()
@@ -131,17 +137,17 @@ public class ConditionFaceProperty extends FaceProperty
 		return null;
 	}
 
-	private class Result
+	private static class Result
 	{
 		private List<FaceProperty> properties;
 
-		public Result(JSONObject conditionJson)
+		Result(JSONObject conditionJson)
 		{
 			properties = new ArrayList<>();
 			loadFromJSON(conditionJson);
 		}
 
-		public boolean testBlock(int x, int y, int z, SubChunk subChunk)
+		boolean testBlock(int x, int y, int z, SubChunk subChunk)
 		{
 			if (hasProperty(FaceRegistry.condition))
 			{
@@ -154,7 +160,7 @@ public class ConditionFaceProperty extends FaceProperty
 			}
 		}
 
-		public boolean getLast()
+		boolean getLast()
 		{
 			if (hasProperty(FaceRegistry.isVisible))
 			{
@@ -164,7 +170,7 @@ public class ConditionFaceProperty extends FaceProperty
 			return false;
 		}
 
-		public int getLastTexture()
+		int getLastTexture()
 		{
 			if (hasProperty(FaceRegistry.texture))
 			{

@@ -1,6 +1,5 @@
 package com.steve6472.polyground.world;
 
-import com.steve6472.polyground.EnumFace;
 import com.steve6472.polyground.block.Block;
 import com.steve6472.polyground.block.blockdata.BlockData;
 import com.steve6472.polyground.block.registry.BlockRegistry;
@@ -10,8 +9,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.steve6472.sge.gfx.VertexObjectCreator.delete;
-
 /**********************
  * Created by steve6472 (Mirek Jozefek)
  * On date: 19.08.2019
@@ -20,10 +17,7 @@ import static com.steve6472.sge.gfx.VertexObjectCreator.delete;
  ***********************/
 public class SubChunk
 {
-	/* Model Data */
-	int vao, positionVbo, colorVbo, textureVbo, emissiveVbo;
-	int triangleCount;
-
+	private SubChunkModel model;
 	private Chunk parent;
 
 	private int layer;
@@ -38,12 +32,13 @@ public class SubChunk
 	{
 		this.parent = parent;
 		this.layer = layer;
+		model = new SubChunkModel();
 
 		blockData = new BlockData[16][16][16];
 		ids = new int[16][16][16];
 		tickableBlocks = new ArrayList<>();
 		scheduledUpdates = new ArrayList<>();
-		SubChunkBuilder.init(this);
+		SubChunkBuilder.init(model);
 
 		renderTime = 1;
 	}
@@ -53,8 +48,6 @@ public class SubChunk
 	public void generate()
 	{
 		generator.generate(this);
-
-//				SimplexGenerator.generate(this, 20f);
 	}
 
 	public void tick()
@@ -72,15 +65,15 @@ public class SubChunk
 			blockToTick.tick(this, blockData[x][y][z], x, y, z);
 		}
 
-		for (short i : scheduledUpdates)
-		{
-			short x = (short) (i >> 8);
-			short y = (short) ((i >> 4) & 0xf);
-			short z = (short) (i & 0xf);
-
-			Block blockToUpdate = BlockRegistry.getBlockById(ids[x][y][z]);
-			blockToUpdate.onUpdate(this, blockData[x][y][z], EnumFace.NONE, x, y, z);
-		}
+//		for (short i : scheduledUpdates)
+//		{
+//			short x = (short) (i >> 8);
+//			short y = (short) ((i >> 4) & 0xf);
+//			short z = (short) (i & 0xf);
+//
+//			Block blockToUpdate = BlockRegistry.getBlockById(ids[x][y][z]);
+//			blockToUpdate.onUpdate(this, blockData[x][y][z], EnumFace.NONE, x, y, z);
+//		}
 	}
 
 	public void saveSubChunk(String worldName) throws IOException
@@ -136,23 +129,24 @@ public class SubChunk
 		return scheduledUpdates.contains(r);
 	}
 
-
-
 	public void rebuild()
 	{
-		SubChunkBuilder.rebuild(this);
+		model.rebuild(this);
 	}
 
 	public void unload()
 	{
-		delete(vao, positionVbo, colorVbo, textureVbo);
+		model.unload();
 	}
 
-
+	public SubChunkModel getModel()
+	{
+		return model;
+	}
 
 	public boolean isEmpty()
 	{
-		return triangleCount == 0;
+		return model.triangleCount == 0;
 	}
 
 	public World getWorld()
@@ -214,8 +208,6 @@ public class SubChunk
 	public Block getBlockEfficiently(int x, int y, int z)
 	{
 		int maxLayer = parent.getSubChunks().length;
-
-//		System.out.println(String.format("%s/%s/%s", x, y, z));
 
 		if (x >= 0 && x < 16 && z >= 0 && z < 16 && y >= 0 && y < 16)
 		{
@@ -290,6 +282,6 @@ public class SubChunk
 
 	public int getTriangleCount()
 	{
-		return triangleCount;
+		return model.triangleCount;
 	}
 }
