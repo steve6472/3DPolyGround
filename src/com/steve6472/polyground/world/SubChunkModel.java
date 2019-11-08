@@ -22,6 +22,13 @@ public class SubChunkModel
 	int vao, positionVbo, colorVbo, textureVbo, emissiveVbo;
 	int triangleCount;
 
+	private int modelLayer;
+
+	public SubChunkModel(int modelLayer)
+	{
+		this.modelLayer = modelLayer;
+	}
+
 	public void unload()
 	{
 		delete(vao, positionVbo, colorVbo, textureVbo);
@@ -32,7 +39,8 @@ public class SubChunkModel
 		List<Float> vertices = new ArrayList<>();
 		List<Float> colors = new ArrayList<>();
 		List<Float> textures = new ArrayList<>();
-		List<Float> emissive = new ArrayList<>();
+		List<Integer> emissive = new ArrayList<>();
+		BuildHelper buildHelper = sc.getWorld().getPg().buildHelper;
 
 		triangleCount = 0;
 
@@ -52,7 +60,7 @@ public class SubChunkModel
 						if (b != null && b != Block.air)
 						{
 							sc.getParent().getWorld().getPg().buildHelper.load(j, i, k, vertices, colors, textures, emissive);
-							triangleCount += b.createModel(j, i, k, sc, blockData, sc.getParent().getWorld().getPg().buildHelper);
+							triangleCount += b.createModel(j, i, k, sc, blockData, buildHelper, modelLayer);
 						}
 
 					} catch (Exception ex)
@@ -61,10 +69,10 @@ public class SubChunkModel
 						ex.printStackTrace();
 						try
 						{
-							triangleCount += Block.error.createModel(j, i, k, sc, blockData, sc.getParent().getWorld().getPg().buildHelper);
+							triangleCount += Block.error.createModel(j, i, k, sc, blockData, buildHelper, modelLayer);
 						} catch (Exception ex1)
 						{
-							System.err.println("Error while building chunk error block!");
+							System.err.println("Error while building chunk error block!\nFrick! This should not happen :(");
 							ex.printStackTrace();
 							CaveGame.getInstance().exit();
 						}
@@ -76,10 +84,10 @@ public class SubChunkModel
 
 		bindVAO(vao);
 
-		storeDataInAttributeList(0, 3, positionVbo, vertices);
-		storeDataInAttributeList(1, 4, colorVbo, colors);
-		storeDataInAttributeList(2, 2, textureVbo, textures);
-		storeDataInAttributeList(3, 1, emissiveVbo, emissive);
+		storeFloatDataInAttributeList(0, 3, positionVbo, vertices);
+		storeFloatDataInAttributeList(1, 4, colorVbo, colors);
+		storeFloatDataInAttributeList(2, 2, textureVbo, textures);
+		storeIntDataInAttributeList(3, 1, emissiveVbo, emissive);
 
 		unbindVAO();
 	}

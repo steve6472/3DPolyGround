@@ -8,6 +8,7 @@ import com.steve6472.polyground.block.model.faceProperty.TintFaceProperty;
 import com.steve6472.polyground.block.model.faceProperty.UVFaceProperty;
 import com.steve6472.polyground.block.model.registry.Cube;
 import com.steve6472.polyground.block.model.registry.face.FaceRegistry;
+import com.steve6472.sge.main.Util;
 import org.joml.AABBf;
 
 import java.util.List;
@@ -30,11 +31,11 @@ public final class BuildHelper
 	private List<Float> vert;
 	private List<Float> col;
 	private List<Float> text;
-	private List<Float> emissive;
+	private List<Integer> emissive;
 	private Cube cube;
 	private SubChunk sc;
 
-	public void load(int x, int y, int z, List<Float> vert, List<Float> col, List<Float> text, List<Float> emissive)
+	public void load(int x, int y, int z, List<Float> vert, List<Float> col, List<Float> text, List<Integer> emissive)
 	{
 		this.x = x;
 		this.y = y;
@@ -496,15 +497,11 @@ public final class BuildHelper
 
 	private void setEmissive(EnumFace face)
 	{
-		float f = 0f;
-		if (EmissiveFaceProperty.check(cube.getFace(face)))
-		{
-			f = 1f;
-		}
+		int i = Util.toInt(EmissiveFaceProperty.check(cube.getFace(face)));
 
-		for (int i = 0; i < 6; i++)
+		for (int j = 0; j < 6; j++)
 		{
-			emissive.add(f);
+			emissive.add(i);
 		}
 	}
 

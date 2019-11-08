@@ -38,7 +38,8 @@ public class ItemAtlas
 	private ItemTessellator itemTessellator;
 	private Sprite itemTexture;
 
-	private List<Float> vertices, textures, colors, emissive;
+	private List<Float> vertices, textures, colors;
+	private List<Integer> emissive;
 
 	public int totalSize;
 

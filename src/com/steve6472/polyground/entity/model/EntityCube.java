@@ -41,9 +41,9 @@ public class EntityCube extends ModelPart
 
 		renderBox();
 
-		positionVbo = storeDataInAttributeList(0, 3, tess.getPosArr());
-		colorVbo = storeDataInAttributeList(1, 4, tess.getColorArr());
-		textureVbo = storeDataInAttributeList(2, 2, tess.getTextureArr());
+		positionVbo = storeFloatDataInAttributeList(0, 3, tess.getPosArr());
+		colorVbo = storeFloatDataInAttributeList(1, 4, tess.getColorArr());
+		textureVbo = storeFloatDataInAttributeList(2, 2, tess.getTextureArr());
 
 		unbindVAO();
 	}

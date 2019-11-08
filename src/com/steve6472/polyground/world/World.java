@@ -1,7 +1,7 @@
 package com.steve6472.polyground.world;
 
 import com.steve6472.polyground.CaveGame;
-import com.steve6472.polyground.block.BlockLoader;
+import com.steve6472.polyground.block.BlockTextureHolder;
 import com.steve6472.polyground.entity.EntityBase;
 import com.steve6472.polyground.entity.EntityStorage;
 import com.steve6472.polyground.shaders.world.DissoveWorldShader;
@@ -139,7 +139,7 @@ public class World implements IBlockProvider
 		CaveGame.shaders.dissoveWorldShader.setView(CaveGame.getInstance().getCamera().getViewMatrix());
 		CaveGame.shaders.dissoveWorldShader.setUniform(DissoveWorldShader.SHADE, shade);
 
-		BlockLoader.getAtlas().getSprite().bind(0);
+		BlockTextureHolder.getAtlas().getSprite().bind(0);
 
 		for (Chunk chunk : chunks.getMap().values())
 		{
@@ -155,12 +155,21 @@ public class World implements IBlockProvider
 				CaveGame.shaders.dissoveWorldShader.setUniform(DissoveWorldShader.TIME, sc.getRenderTime());
 				CaveGame.shaders.dissoveWorldShader.setTransformation(new Matrix4f().translate(chunk.getX() * 16, k * 16, chunk.getZ() * 16));
 
-				glBindVertexArray(sc.vao);
+				/*
+				 * Rendered in reverse order to get the desired effect
+				 * (layer 0 -> back texture, layer 1 -> overlay texture)
+				 */
+				for (int i = SubChunk.getModelCount() - 1; i >= 0; i--)
+				{
+					if (sc.isEmpty(i)) continue;
 
-				for (int l = 0; l < 4; l++)
-					glEnableVertexAttribArray(l);
+					glBindVertexArray(sc.getModel(i).vao);
 
-				glDrawArrays(Tessellator3D.TRIANGLES, 0, sc.getTriangleCount() * 3);
+					for (int l = 0; l < 4; l++)
+						glEnableVertexAttribArray(l);
+
+					glDrawArrays(Tessellator3D.TRIANGLES, 0, sc.getTriangleCount(i) * 3);
+				}
 			}
 		}
 

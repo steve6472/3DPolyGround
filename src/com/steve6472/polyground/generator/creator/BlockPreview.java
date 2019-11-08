@@ -35,7 +35,8 @@ import static org.lwjgl.opengl.GL11.*;
  ***********************/
 public class BlockPreview
 {
-	private List<Float> vertices, textures, colors, emissive;
+	private List<Float> vertices, textures, colors;
+	private List<Integer> emissive;
 
 	private BuildHelper buildHelper;
 	private DepthFrameBuffer preview;

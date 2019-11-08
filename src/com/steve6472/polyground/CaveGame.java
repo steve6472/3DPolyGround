@@ -243,22 +243,7 @@ public class CaveGame extends MainApp
 		mainFrameBuffer.bindFrameBuffer(this);
 		DepthFrameBuffer.clearCurrentBuffer();
 
-		{
-			CaveGame.shaders.mainShader.bind();
-			BasicTessellator tess = basicTess;
-			tess.begin(4);
-
-			tess.pos(+128, -0.0001f, +128).color(0.2f, 0.2f, 0.2f, 1.0f).endVertex();
-			tess.pos(+128, -0.0001f, -128).color(0.2f, 0.2f, 0.2f, 1.0f).endVertex();
-			tess.pos(-128, -0.0001f, -128).color(0.2f, 0.2f, 0.2f, 1.0f).endVertex();
-			tess.pos(-128, -0.0001f, +128).color(0.2f, 0.2f, 0.2f, 1.0f).endVertex();
-
-			tess.loadPos(0);
-			tess.loadColor(1);
-			tess.loadNormal(2);
-			tess.draw(Tessellator.QUADS);
-			tess.disable(0, 1, 2);
-		}
+		renderFloor();
 
 		hitPicker.tick(player, this);
 
@@ -294,6 +279,24 @@ public class CaveGame extends MainApp
 		glEnable(GL_DEPTH_TEST);
 		glEnable(GL_CULL_FACE);
 		glViewport(0, 0, getWidth(), getHeight());
+	}
+
+	private void renderFloor()
+	{
+		CaveGame.shaders.mainShader.bind();
+		BasicTessellator tess = basicTess;
+		tess.begin(4);
+
+		tess.pos(+128, -0.0001f, +128).color(0.2f, 0.2f, 0.2f, 1.0f).endVertex();
+		tess.pos(+128, -0.0001f, -128).color(0.2f, 0.2f, 0.2f, 1.0f).endVertex();
+		tess.pos(-128, -0.0001f, -128).color(0.2f, 0.2f, 0.2f, 1.0f).endVertex();
+		tess.pos(-128, -0.0001f, +128).color(0.2f, 0.2f, 0.2f, 1.0f).endVertex();
+
+		tess.loadPos(0);
+		tess.loadColor(1);
+		tess.loadNormal(2);
+		tess.draw(Tessellator.QUADS);
+		tess.disable(0, 1, 2);
 	}
 
 	@Event

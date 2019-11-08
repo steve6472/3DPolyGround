@@ -17,7 +17,9 @@ import java.util.List;
  ***********************/
 public class SubChunk
 {
-	private SubChunkModel model;
+	private static final int MODEL_COUNT = 2;
+
+	private SubChunkModel[] model;
 	private Chunk parent;
 
 	private int layer;
@@ -32,13 +34,18 @@ public class SubChunk
 	{
 		this.parent = parent;
 		this.layer = layer;
-		model = new SubChunkModel();
+
+		model = new SubChunkModel[MODEL_COUNT];
+		for (int i = 0; i < MODEL_COUNT; i++)
+		{
+			model[i] = new SubChunkModel(i);
+			SubChunkBuilder.init(model[i]);
+		}
 
 		blockData = new BlockData[16][16][16];
 		ids = new int[16][16][16];
 		tickableBlocks = new ArrayList<>();
 		scheduledUpdates = new ArrayList<>();
-		SubChunkBuilder.init(model);
 
 		renderTime = 1;
 	}
@@ -131,22 +138,39 @@ public class SubChunk
 
 	public void rebuild()
 	{
-		model.rebuild(this);
+		for (int i = 0; i < MODEL_COUNT; i++)
+		{
+			model[i].rebuild(this);
+		}
 	}
 
 	public void unload()
 	{
-		model.unload();
+		for (int i = 0; i < MODEL_COUNT; i++)
+		{
+			model[i].unload();
+		}
 	}
 
-	public SubChunkModel getModel()
+	public SubChunkModel getModel(int modelLayer)
 	{
-		return model;
+		return model[modelLayer];
+	}
+
+	public boolean isEmpty(int modelLayer)
+	{
+		return model[modelLayer].triangleCount == 0;
 	}
 
 	public boolean isEmpty()
 	{
-		return model.triangleCount == 0;
+		for (int i = 0; i < MODEL_COUNT; i++)
+		{
+			if (!isEmpty(i))
+				return false;
+		}
+
+		return true;
 	}
 
 	public World getWorld()
@@ -280,8 +304,13 @@ public class SubChunk
 		return getParent().getZ();
 	}
 
-	public int getTriangleCount()
+	public int getTriangleCount(int modelLayer)
 	{
-		return model.triangleCount;
+		return model[modelLayer].triangleCount;
+	}
+
+	public static int getModelCount()
+	{
+		return MODEL_COUNT;
 	}
 }

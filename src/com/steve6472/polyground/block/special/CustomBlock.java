@@ -22,7 +22,7 @@ public class CustomBlock extends TransparentBlock
 	}
 
 	@Override
-	public int createModel(int x, int y, int z, SubChunk sc, BlockData blockData, BuildHelper buildHelper)
+	public int createModel(int x, int y, int z, SubChunk sc, BlockData blockData, BuildHelper buildHelper, int modelLayer)
 	{
 		int tris = 0;
 

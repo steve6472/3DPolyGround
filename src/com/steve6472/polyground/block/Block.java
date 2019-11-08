@@ -3,6 +3,10 @@ package com.steve6472.polyground.block;
 import com.steve6472.polyground.EnumFace;
 import com.steve6472.polyground.block.blockdata.BlockData;
 import com.steve6472.polyground.block.model.BlockModel;
+import com.steve6472.polyground.block.model.CubeFace;
+import com.steve6472.polyground.block.model.faceProperty.AutoUVFaceProperty;
+import com.steve6472.polyground.block.model.faceProperty.LayerFaceProperty;
+import com.steve6472.polyground.block.model.faceProperty.TextureFaceProperty;
 import com.steve6472.polyground.block.model.registry.Cube;
 import com.steve6472.polyground.block.special.SnapBlock;
 import com.steve6472.polyground.entity.Player;
@@ -10,6 +14,7 @@ import com.steve6472.polyground.world.BuildHelper;
 import com.steve6472.polyground.world.Cull;
 import com.steve6472.polyground.world.SubChunk;
 import com.steve6472.sge.main.events.MouseEvent;
+import org.joml.AABBf;
 
 import java.io.File;
 import java.util.List;
@@ -22,7 +27,7 @@ import java.util.List;
  ***********************/
 public class Block
 {
-	public static Block air;
+	public static Block air, error;
 
 	public boolean isFull;
 
@@ -33,15 +38,45 @@ public class Block
 
 	public static Block createAir()
 	{
-		return air = new Block();
+		return air = new Block("air", 0, new BlockModel());
 	}
 
-	private Block()
+	public static Block createError()
 	{
-		name = "air";
-		id = 0;
+		Cube cube = new Cube(new AABBf(0, 0, 0, 1, 1, 1));
+		cube.setCollisionBox(true);
+		cube.setHitbox(true);
+
+		for (EnumFace face : EnumFace.getFaces())
+		{
+			CubeFace cubeFace = new CubeFace(cube, face);
+
+			TextureFaceProperty texture = new TextureFaceProperty();
+			texture.setTexture("null");
+			BlockTextureHolder.putTexture("null");
+			texture.setTextureId(BlockTextureHolder.getTextureId(texture.getTexture()));
+			cubeFace.addProperty(texture);
+
+			cubeFace.addProperty(new AutoUVFaceProperty(true));
+
+			cube.setFace(face, cubeFace);
+		}
+
+		BlockModel model = new BlockModel(cube);
+
+		error = new Block("error", 1, model);
+		error.addTag("error");
+		error.addTag("solid");
+
+		return error;
+	}
+
+	private Block(String name, int id, BlockModel blockModel)
+	{
+		this.name = name;
+		this.id = id;
 		isFull = false;
-		blockModel = new BlockModel();
+		this.blockModel = blockModel;
 	}
 
 	public Block(File f, int id)
@@ -103,7 +138,7 @@ public class Block
 
 	/* Something */
 
-	public int createModel(int x, int y, int z, SubChunk sc, BlockData blockData, BuildHelper buildHelper)
+	public int createModel(int x, int y, int z, SubChunk sc, BlockData blockData, BuildHelper buildHelper, int modelLayer)
 	{
 		int tris = 0;
 
@@ -113,8 +148,10 @@ public class Block
 			buildHelper.setCube(c);
 			for (EnumFace face : EnumFace.getFaces())
 			{
-				if (Cull.renderFace(x, y, z, c, face, this, sc))
-					tris += buildHelper.face(face);
+				/* Check if face is in correct (Chunk) Model Layer */
+				if (LayerFaceProperty.getModelLayer(c.getFace(face)) == modelLayer)
+					if (Cull.renderFace(x, y, z, c, face, this, sc))
+						tris += buildHelper.face(face);
 			}
 		}
 

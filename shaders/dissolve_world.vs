@@ -3,7 +3,7 @@
 layout(location = 0) in vec3 position;
 layout(location = 1) in vec4 color;
 layout(location = 2) in vec2 texture;
-layout(location = 3) in float emissive;
+layout(location = 3) in int emissive;
 
 uniform mat4 transformation;
 uniform mat4 projection;
@@ -11,7 +11,7 @@ uniform mat4 view;
 
 out vec4 vColor;
 out vec2 vTexture;
-out float vEmissive;
+flat out int vEmissive;
 out vec4 glPos;
 
 void main()

@@ -2,7 +2,7 @@
 
 in vec4 vColor;
 in vec2 vTexture;
-in float vEmissive;
+flat in int vEmissive;
 in vec4 glPos;
 
 uniform sampler2D atlas;
@@ -47,7 +47,8 @@ void main()
         fragColor = orig * vColor;
     }
 
-	if (vEmissive < 0.5)
+	//TODO: Dafuq is vEmissive ?! (value)
+	if (vEmissive == 0)
 		fragColor.rgb *= shade;
 }
 

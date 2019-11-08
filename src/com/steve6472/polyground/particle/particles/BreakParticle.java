@@ -1,8 +1,8 @@
 package com.steve6472.polyground.particle.particles;
 
-import com.steve6472.polyground.Particle;
 import com.steve6472.polyground.CaveGame;
-import com.steve6472.polyground.block.BlockLoader;
+import com.steve6472.polyground.Particle;
+import com.steve6472.polyground.block.BlockTextureHolder;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 
@@ -62,7 +62,7 @@ public class BreakParticle extends Particle
 	{
 		CaveGame.shaders.breakParticleShader.bind();
 		CaveGame.shaders.breakParticleShader.setView(CaveGame.getInstance().getCamera().getViewMatrix());
-		BlockLoader.getAtlas().getSprite().bind(0);
+		BlockTextureHolder.getAtlas().getSprite().bind(0);
 	}
 
 	@Override
