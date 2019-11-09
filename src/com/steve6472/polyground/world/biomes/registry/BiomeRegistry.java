@@ -1,9 +1,6 @@
 package com.steve6472.polyground.world.biomes.registry;
 
-import com.steve6472.polyground.world.biomes.Biome;
-import com.steve6472.polyground.world.biomes.BlueLand;
-import com.steve6472.polyground.world.biomes.GreenLand;
-import com.steve6472.polyground.world.biomes.RedLand;
+import com.steve6472.polyground.world.biomes.*;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -19,6 +16,7 @@ public class BiomeRegistry
 {
 	private static final HashMap<String, BiomeEntry<? extends Biome>> biomeRegistry = new HashMap<>();
 
+	public static final BiomeEntry<VoidBiome> voidBiome = register("void_biome", VoidBiome::new);
 	public static final BiomeEntry<RedLand> redLand = register("red_land", RedLand::new);
 	public static final BiomeEntry<GreenLand> greenLand = register("green_land", GreenLand::new);
 	public static final BiomeEntry<BlueLand> blueLand = register("blue_land", BlueLand::new);
@@ -28,11 +26,6 @@ public class BiomeRegistry
 		BiomeEntry<T> entry = new BiomeEntry<>(factory);
 		biomeRegistry.put(id, entry);
 		return entry;
-	}
-
-	public static Biome createCube(String id)
-	{
-		return biomeRegistry.get(id).createNew();
 	}
 
 	public static Collection<BiomeEntry<? extends Biome>> getEntries()

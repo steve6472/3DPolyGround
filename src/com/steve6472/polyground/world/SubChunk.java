@@ -3,6 +3,7 @@ package com.steve6472.polyground.world;
 import com.steve6472.polyground.block.Block;
 import com.steve6472.polyground.block.blockdata.BlockData;
 import com.steve6472.polyground.block.registry.BlockRegistry;
+import com.steve6472.polyground.world.biomes.IBiomeProvider;
 import com.steve6472.polyground.world.generator.IGenerator;
 
 import java.io.IOException;
@@ -15,7 +16,7 @@ import java.util.List;
  * Project: SJP
  *
  ***********************/
-public class SubChunk
+public class SubChunk implements IBiomeProvider
 {
 	private static final int MODEL_COUNT = 2;
 
@@ -27,6 +28,7 @@ public class SubChunk
 
 	private BlockData[][][] blockData;
 	private int[][][] ids;
+	private int[][][] biomes;
 	private List<Short> scheduledUpdates;
 	private List<Short> tickableBlocks;
 
@@ -44,6 +46,7 @@ public class SubChunk
 
 		blockData = new BlockData[16][16][16];
 		ids = new int[16][16][16];
+		biomes = new int[16][16][16];
 		tickableBlocks = new ArrayList<>();
 		scheduledUpdates = new ArrayList<>();
 
@@ -312,5 +315,11 @@ public class SubChunk
 	public static int getModelCount()
 	{
 		return MODEL_COUNT;
+	}
+
+	@Override
+	public int[][][] getBiomeIds()
+	{
+		return biomes;
 	}
 }

@@ -2,6 +2,7 @@ package com.steve6472.polyground.world.biomes;
 
 import com.steve6472.polyground.block.Block;
 import com.steve6472.polyground.block.registry.BlockRegistry;
+import org.joml.Vector3f;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
@@ -69,5 +70,11 @@ public class GreenLand extends Biome
 	public float getHigh()
 	{
 		return 31;
+	}
+
+	@Override
+	public Vector3f getColor()
+	{
+		return new Vector3f(0, 1, 0);
 	}
 }

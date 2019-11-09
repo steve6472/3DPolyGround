@@ -2,7 +2,7 @@ package com.steve6472.polyground.world.generator;
 
 import com.steve6472.polyground.block.Block;
 import com.steve6472.polyground.world.SubChunk;
-import com.steve6472.polyground.world.biomes.Biome;
+import com.steve6472.polyground.world.biomes.*;
 import com.steve6472.polyground.world.biomes.registry.BiomeRegistry;
 import org.joml.SimplexNoise;
 
@@ -70,6 +70,16 @@ public class WorldGenerator implements IGenerator
 			{
 				subChunk.getIds()[i][j][k] = Block.air.getId();
 			}
+		});
+
+		iterate((x, y, z) ->
+		{
+			Biome b = getBiome(x, z);
+			int id = 0;
+			if (b instanceof RedLand) id = 1;
+			if (b instanceof GreenLand) id = 2;
+			if (b instanceof BlueLand) id = 3;
+			subChunk.setBiomeId(x, y, z, id);
 		});
 	}
 

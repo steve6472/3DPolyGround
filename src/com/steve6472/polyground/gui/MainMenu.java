@@ -104,10 +104,42 @@ public class MainMenu extends Gui implements IGamePause
 		});
 		addComponent(world);
 
+		Button cave = new Button("Cave");
+		cave.setLocation(30, 150);
+		cave.setSize(100, 30);
+		cave.addClickEvent(c -> {
+
+			setVisible(false);
+			CaveGame.getInstance().inGameGui.setVisible(true);
+			CaveGame.getInstance().options.isGamePaused = false;
+
+			SubChunk.generator = CaveGame.getInstance().generatorRegistry.getGenerator("cave");
+
+			int r = 3;
+			for (int i = -r; i <= r; i++)
+			{
+				for (int j = -r; j <= r; j++)
+				{
+					CaveGame.getInstance().world.addChunk(new Chunk(i, j, CaveGame.getInstance().world).generate(), false);
+				}
+			}
+
+			try
+			{
+				CommandRegistry registry = CaveGame.getInstance().commandRegistry;
+				registry.dispatcher.execute("tp 8 32.005 8", registry.commandSource);
+			} catch (CommandSyntaxException e)
+			{
+				e.printStackTrace();
+			}
+
+		});
+		addComponent(cave);
+
 
 
 		Button pathfind = new Button("Pathfind");
-		pathfind.setLocation(30, 150);
+		pathfind.setLocation(30, 190);
 		pathfind.setSize(100, 30);
 		pathfind.addClickEvent(c -> {
 

@@ -1,6 +1,7 @@
 package com.steve6472.polyground.world.biomes;
 
 import com.steve6472.polyground.block.Block;
+import org.joml.Vector3f;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
@@ -23,4 +24,6 @@ public abstract class Biome
 	public abstract float getScale();
 	public abstract float getLow();
 	public abstract float getHigh();
+
+	public abstract Vector3f getColor();
 }

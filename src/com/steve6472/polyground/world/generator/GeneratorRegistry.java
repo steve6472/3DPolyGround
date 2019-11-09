@@ -19,6 +19,7 @@ public class GeneratorRegistry
 		generators.put("simplex", new SimplexGenerator());
 		generators.put("flat", new FlatGenerator());
 		generators.put("world", new WorldGenerator());
+		generators.put("cave", new CaveGenerator());
 	}
 
 	public IGenerator getGenerator(String name)

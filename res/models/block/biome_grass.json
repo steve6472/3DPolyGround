@@ -1,0 +1,33 @@
+{
+	"cubes": 
+	[
+		{
+			"from": [ 0, 0, 0 ],
+			"to": [ 16, 16, 16 ],
+			"faces": 
+			{
+				"east":  { "texture": "dirt" },
+				"south": { "texture": "dirt" },
+				"north": { "texture": "dirt" },
+				"west":  { "texture": "dirt" },
+				"down":  { "texture": "dirt" }
+			}
+		},
+		{
+			"from": [ 0, 0, 0 ],
+			"to": [ 16, 16, 16 ],
+			
+			"isHitbox": false,
+			"isCollisionBox": false,
+			
+			"faces": 
+			{
+				"east":  { "texture": "grass_block_side_overlay", "biomeTint": true, "modelLayer": 1 },
+				"south": { "texture": "grass_block_side_overlay", "biomeTint": true, "modelLayer": 1 },
+				"north": { "texture": "grass_block_side_overlay", "biomeTint": true, "modelLayer": 1 },
+				"west":  { "texture": "grass_block_side_overlay", "biomeTint": true, "modelLayer": 1 },
+				"up":    { "texture": "grass_block_top"         , "biomeTint": true, "modelLayer": 1 }
+			}
+		}
+	]
+}

@@ -10,54 +10,54 @@ import org.joml.Vector3f;
  * Project: SJP
  *
  ***********************/
-public class BlueLand extends Biome
+public class VoidBiome extends Biome
 {
 	@Override
 	public String getName()
 	{
-		return "blue_land";
+		return "void";
 	}
 
 	@Override
 	public Block getTopBlock()
 	{
-		return BlockRegistry.getBlockByName("aqua_grass");
+		return BlockRegistry.getBlockByName("air");
 	}
 
 	@Override
 	public Block getUnderBlock()
 	{
-		return BlockRegistry.getBlockByName("dirt");
+		return BlockRegistry.getBlockByName("air");
 	}
 
 	@Override
 	public Block getCaveBlock()
 	{
-		return BlockRegistry.getBlockByName("stone");
+		return BlockRegistry.getBlockByName("air");
 	}
 
 	@Override
 	public int getUnderLayerHeight()
 	{
-		return 4;
+		return 0;
 	}
 
 	@Override
 	public int getIterationCount()
 	{
-		return 64;
+		return 0;
 	}
 
 	@Override
 	public float getPersistance()
 	{
-		return 0.4f;
+		return 0.0f;
 	}
 
 	@Override
 	public float getScale()
 	{
-		return 0.0007f;
+		return 0.0f;
 	}
 
 	@Override
@@ -69,12 +69,12 @@ public class BlueLand extends Biome
 	@Override
 	public float getHigh()
 	{
-		return 15;
+		return 0;
 	}
 
 	@Override
 	public Vector3f getColor()
 	{
-		return new Vector3f(0, 0, 1);
+		return new Vector3f(0.14f, 0.14f, 0.14f);
 	}
 }

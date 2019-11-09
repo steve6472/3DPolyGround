@@ -2,12 +2,11 @@ package com.steve6472.polyground.world;
 
 import com.steve6472.polyground.EnumFace;
 import com.steve6472.polyground.block.model.CubeFace;
-import com.steve6472.polyground.block.model.faceProperty.EmissiveFaceProperty;
-import com.steve6472.polyground.block.model.faceProperty.RotationFaceProperty;
-import com.steve6472.polyground.block.model.faceProperty.TintFaceProperty;
-import com.steve6472.polyground.block.model.faceProperty.UVFaceProperty;
+import com.steve6472.polyground.block.model.faceProperty.*;
 import com.steve6472.polyground.block.model.registry.Cube;
 import com.steve6472.polyground.block.model.registry.face.FaceRegistry;
+import com.steve6472.polyground.world.biomes.Biome;
+import com.steve6472.polyground.world.biomes.registry.BiomeRegistry;
 import com.steve6472.sge.main.Util;
 import org.joml.AABBf;
 
@@ -170,21 +169,52 @@ public final class BuildHelper
 
 		if (tris != 0)
 		{
+			if (cube.getFace(face).hasProperty(FaceRegistry.biomeTint))
+				biomeTint(cube.getFace(face));
 			if (cube.getFace(face).hasProperty(FaceRegistry.tint))
-				recolor(cube.getFace(face));
+				tint(cube.getFace(face));
 		}
 
 		return tris;
 	}
 
-	private void recolor(CubeFace face)
+	private void removeFaceColors()
 	{
-		TintFaceProperty tint = face.getProperty(FaceRegistry.tint);
-
 		for (int j = 0; j < 24; j++)
 		{
 			getCol().remove(getCol().size() - 1);
 		}
+	}
+
+	private void biomeTint(CubeFace face)
+	{
+		BiomeTintFaceProperty tint = face.getProperty(FaceRegistry.biomeTint);
+
+		removeFaceColors();
+
+		int biomeId = sc == null ? 0 : sc.getBiomeId(x, y, z);
+
+		Biome b = switch (biomeId)
+		{
+			case 0 -> BiomeRegistry.voidBiome.createNew();
+			case 1 -> BiomeRegistry.redLand.createNew();
+			case 2 -> BiomeRegistry.greenLand.createNew();
+			case 3 -> BiomeRegistry.blueLand.createNew();
+			default -> throw new IllegalStateException("Unexpected value: " + biomeId);
+		};
+
+		for (int j = 0; j < 6; j++)
+		{
+			shade(b.getColor().x, b.getColor().y, b.getColor().z, face.getShade());
+		}
+	}
+
+	private void tint(CubeFace face)
+	{
+		TintFaceProperty tint = face.getProperty(FaceRegistry.tint);
+
+		removeFaceColors();
+
 		for (int j = 0; j < 6; j++)
 		{
 			shade(tint.getRed(), tint.getGreen(), tint.getBlue(), face.getShade());
