@@ -22,11 +22,11 @@
 
 			"faces":
 			{
-				"east":  { "texture": "#overlay_side", "uv": [ 0, 0, 16, 8 ], "refTint": "#overlay" },
-				"south": { "texture": "#overlay_side", "uv": [ 0, 0, 16, 8 ], "refTint": "#overlay" },
-				"north": { "texture": "#overlay_side", "uv": [ 0, 0, 16, 8 ], "refTint": "#overlay" },
-				"west":  { "texture": "#overlay_side", "uv": [ 0, 0, 16, 8 ], "refTint": "#overlay" },
-				"up":    { "texture": "#overlay_up", "refTint": "#overlay" }
+				"east":  { "texture": "#overlay_side", "uv": [ 0, 0, 16, 8 ], "refTint": "#overlay", "modelLayer": 1 },
+				"south": { "texture": "#overlay_side", "uv": [ 0, 0, 16, 8 ], "refTint": "#overlay", "modelLayer": 1 },
+				"north": { "texture": "#overlay_side", "uv": [ 0, 0, 16, 8 ], "refTint": "#overlay", "modelLayer": 1 },
+				"west":  { "texture": "#overlay_side", "uv": [ 0, 0, 16, 8 ], "refTint": "#overlay", "modelLayer": 1 },
+				"up":    { "texture": "#overlay_up", "refTint": "#overlay", "modelLayer": 1 }
 			}
 		}
 	]

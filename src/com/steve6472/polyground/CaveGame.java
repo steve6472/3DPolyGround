@@ -306,6 +306,9 @@ public class CaveGame extends MainApp
 		{
 			if (e.getKey() == KeyList.P && e.getAction() == KeyList.PRESS)
 				options.enablePostProcessing = !options.enablePostProcessing;
+
+			if (e.getKey() == KeyList.O && e.getAction() == KeyList.PRESS)
+				options.renderAtlases = !options.renderAtlases;
 		}
 	}
 

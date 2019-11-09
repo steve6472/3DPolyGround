@@ -20,12 +20,12 @@
 
 	   "faces":
 	   {
-	   	  "east":  { "texture": "#o_east" , "refTint": "#overlay" },
-	   	  "south": { "texture": "#o_south", "refTint": "#overlay" },
-	   	  "north": { "texture": "#o_north", "refTint": "#overlay" },
-	   	  "west":  { "texture": "#o_west" , "refTint": "#overlay" },
-	   	  "up":    { "texture": "#o_up"   , "refTint": "#overlay" },
-	   	  "down":  { "texture": "#o_down" , "refTint": "#overlay" }
+	   	  "east":  { "texture": "#o_east" , "refTint": "#overlay", "modelLayer": 1 },
+	   	  "south": { "texture": "#o_south", "refTint": "#overlay", "modelLayer": 1 },
+	   	  "north": { "texture": "#o_north", "refTint": "#overlay", "modelLayer": 1 },
+	   	  "west":  { "texture": "#o_west" , "refTint": "#overlay", "modelLayer": 1 },
+	   	  "up":    { "texture": "#o_up"   , "refTint": "#overlay", "modelLayer": 1 },
+	   	  "down":  { "texture": "#o_down" , "refTint": "#overlay", "modelLayer": 1 }
 	   }
 	}
   ]

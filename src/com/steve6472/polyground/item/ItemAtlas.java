@@ -1,14 +1,16 @@
 package com.steve6472.polyground.item;
 
-import com.steve6472.polyground.EnumFace;
 import com.steve6472.polyground.CaveGame;
+import com.steve6472.polyground.EnumFace;
 import com.steve6472.polyground.PolyUtil;
 import com.steve6472.polyground.block.Block;
 import com.steve6472.polyground.block.BlockTextureHolder;
+import com.steve6472.polyground.block.model.faceProperty.LayerFaceProperty;
 import com.steve6472.polyground.block.model.registry.Cube;
 import com.steve6472.polyground.block.registry.BlockRegistry;
 import com.steve6472.polyground.tessellators.ItemTessellator;
 import com.steve6472.polyground.world.BuildHelper;
+import com.steve6472.polyground.world.SubChunk;
 import com.steve6472.sge.gfx.*;
 import com.steve6472.sge.main.events.WindowSizeEvent;
 import com.steve6472.sge.main.game.Camera;
@@ -81,7 +83,15 @@ public class ItemAtlas
 		setupBlockItemRender();
 
 		glEnable(GL_CULL_FACE);
-		renderItem(b);
+		textureBuffer.bindFrameBuffer(itemSize, itemSize);
+		DepthFrameBuffer.clearCurrentBuffer();
+
+		for (int i = SubChunk.getModelCount() - 1; i >= 0; i--)
+		{
+			renderItem(b, i);
+		}
+
+		textureBuffer.unbindCurrentFrameBuffer(caveGame);
 		glDisable(GL_CULL_FACE);
 
 		insertTexture(textureBuffer.texture, false);
@@ -133,18 +143,15 @@ public class ItemAtlas
 		return deg * 0.017453292519943295f;
 	}
 
-	private void renderItem(Block block)
+	private void renderItem(Block block, int modelLayer)
 	{
 		vertices.clear();
 		textures.clear();
 		colors.clear();
 		emissive.clear();
 
-		textureBuffer.bindFrameBuffer(itemSize, itemSize);
-		DepthFrameBuffer.clearCurrentBuffer();
-
 		buildHelper.load(0, 0, 0, vertices, colors, textures, emissive);
-		int tris = model(block);
+		int tris = model(block, modelLayer);
 
 		itemTessellator.begin(tris * 3);
 
@@ -172,11 +179,9 @@ public class ItemAtlas
 		itemTessellator.draw(Tessellator.TRIANGLES);
 
 		itemTessellator.disable(0, 1, 2);
-
-		textureBuffer.unbindCurrentFrameBuffer(caveGame);
 	}
 
-	private int model(Block block)
+	private int model(Block block, int modelLayer)
 	{
 		if (block == null || block.getCubes() == null) return 0;
 
@@ -188,7 +193,8 @@ public class ItemAtlas
 
 			for (EnumFace face : EnumFace.getFaces())
 			{
-				tris += buildHelper.face(face);
+				if (LayerFaceProperty.getModelLayer(c.getFace(face)) == modelLayer)
+					tris += buildHelper.face(face);
 			}
 		}
 

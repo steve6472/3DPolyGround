@@ -2,7 +2,7 @@
     "parent": "block/templates/slab/tintable_grass_block_slab_bottom",
     "textures": {
         "overlay_up": "grass_block_top",
-        "side": "dirt_cut_full",
+        "side": "dirt",
         "overlay_side": "grass_block_side_overlay",
         "down": "dirt"
     },

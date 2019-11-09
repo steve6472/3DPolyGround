@@ -47,7 +47,6 @@ void main()
         fragColor = orig * vColor;
     }
 
-	//TODO: Dafuq is vEmissive ?! (value)
 	if (vEmissive == 0)
 		fragColor.rgb *= shade;
 }

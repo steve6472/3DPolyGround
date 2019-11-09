@@ -9,7 +9,7 @@ package com.steve6472.polyground;
 public class Options
 {
 	public boolean enablePostProcessing = true;
-	public boolean renderWorld = true;
+	public boolean renderAtlases = false;
 
 	public boolean isGamePaused = true;
 	public boolean isInMenu = true;
