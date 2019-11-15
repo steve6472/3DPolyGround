@@ -3,6 +3,7 @@ package com.steve6472.polyground.entity;
 import com.steve6472.polyground.CaveGame;
 import com.steve6472.polyground.entity.model.EntityModel;
 import com.steve6472.polyground.entity.model.IPostRender;
+import com.steve6472.polyground.entity.model.models.EmptyModel;
 import com.steve6472.polyground.entity.model.models.ModelAI;
 import com.steve6472.polyground.entity.model.models.ModelBlock;
 
@@ -37,6 +38,8 @@ public class EntityStorage
 		modelAI.initTexture();
 		modelAI.initModel();
 		entities.put(modelAI, new ArrayList<>());
+
+		entities.put(new EmptyModel(), new ArrayList<>());
 	}
 
 	public void tickEntities()
@@ -62,7 +65,8 @@ public class EntityStorage
 
 		for (EntityModel model : entities.keySet())
 		{
-			model.getTexture().bind(0);
+			if (model.getTexture() != null)
+				model.getTexture().bind(0);
 
 			for (EntityBase e : entities.get(model))
 			{
@@ -88,5 +92,10 @@ public class EntityStorage
 	{
 		if (entity instanceof FallingBlock) entities.get(modelBlock).add(entity);
 		if (entity instanceof AIEntity) entities.get(modelAI).add(entity);
+	}
+
+	public HashMap<EntityModel<? extends EntityBase>, List<EntityBase>> getEntities()
+	{
+		return entities;
 	}
 }

@@ -1,0 +1,96 @@
+{
+	"cubes":
+	[
+		{
+			"from": [ 0, 0, 0 ],
+			"to": [ 16, 16, 16 ],
+			"faces":
+			{
+				"up":
+				{
+					"conditionedTexture":
+					[
+						{
+							"condition": "([0, 1, 0] != cave_test_3)",
+							"texture": "grayscale",
+							"tint": [240, 240, 240]
+						},
+						{
+							"isVisible": false
+						}
+					]
+				},
+				"down":
+				{
+					"conditionedTexture":
+					[
+						{
+							"condition": "([0, -1, 0] != cave_test_3)",
+							"texture": "grayscale",
+							"tint": [240, 240, 240]
+						},
+						{
+							"isVisible": false
+						}
+					]
+				},
+				"north":
+				{
+					"conditionedTexture":
+					[
+						{
+							"condition": "([1, 0, 0] != cave_test_3)",
+							"texture": "grayscale",
+							"tint": [240, 240, 240]
+						},
+						{
+							"isVisible": false
+						}
+					]
+				},
+				"east":
+				{
+					"conditionedTexture":
+					[
+						{
+							"condition": "([0, 0, 1] != cave_test_3)",
+							"texture": "grayscale",
+							"tint": [240, 240, 240]
+						},
+						{
+							"isVisible": false
+						}
+					]
+				},
+				"south":
+				{
+					"conditionedTexture":
+					[
+						{
+							"condition": "([-1, 0, 0] != cave_test_3)",
+							"texture": "grayscale",
+							"tint": [240, 240, 240]
+						},
+						{
+							"isVisible": false
+						}
+					]
+				},
+				"west":
+				{
+					"conditionedTexture":
+					[
+						{
+							"condition": "([0, 0, -1] != cave_test_3)",
+							"texture": "grayscale",
+							"tint": [240, 240, 240]
+						},
+						{
+							"isVisible": false
+						}
+					]
+				}
+			}
+		}
+	]
+}

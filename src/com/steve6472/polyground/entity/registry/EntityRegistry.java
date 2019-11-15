@@ -3,6 +3,7 @@ package com.steve6472.polyground.entity.registry;
 import com.steve6472.polyground.entity.AIEntity;
 import com.steve6472.polyground.entity.EntityBase;
 import com.steve6472.polyground.entity.FallingBlock;
+import com.steve6472.polyground.entity.FloatingText;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -20,6 +21,7 @@ public class EntityRegistry
 
 	public static final EntityEntry<FallingBlock> fallingBlock = register("falling_block", FallingBlock::new);
 	public static final EntityEntry<AIEntity> ai = register("ai", AIEntity::new);
+	public static final EntityEntry<FloatingText> floatingText = register("floatingText", FloatingText::new);
 
 	public static <T extends EntityBase> EntityEntry<T> register(String id, IEntityFactory<T> factory)
 	{

@@ -4,9 +4,9 @@ import com.steve6472.polyground.EnumFace;
 import com.steve6472.polyground.block.blockdata.BlockData;
 import com.steve6472.polyground.block.model.BlockModel;
 import com.steve6472.polyground.block.model.CubeFace;
-import com.steve6472.polyground.block.model.faceProperty.AutoUVFaceProperty;
 import com.steve6472.polyground.block.model.faceProperty.LayerFaceProperty;
 import com.steve6472.polyground.block.model.faceProperty.TextureFaceProperty;
+import com.steve6472.polyground.block.model.faceProperty.UVFaceProperty;
 import com.steve6472.polyground.block.model.registry.Cube;
 import com.steve6472.polyground.block.special.SnapBlock;
 import com.steve6472.polyground.entity.Player;
@@ -57,7 +57,10 @@ public class Block
 			texture.setTextureId(BlockTextureHolder.getTextureId(texture.getTexture()));
 			cubeFace.addProperty(texture);
 
-			cubeFace.addProperty(new AutoUVFaceProperty(true));
+			UVFaceProperty uv = new UVFaceProperty();
+			uv.autoUV(cube, face);
+
+			cubeFace.addProperty(uv);
 
 			cube.setFace(face, cubeFace);
 		}

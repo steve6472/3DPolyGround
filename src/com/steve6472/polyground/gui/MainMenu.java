@@ -115,19 +115,20 @@ public class MainMenu extends Gui implements IGamePause
 
 			SubChunk.generator = CaveGame.getInstance().generatorRegistry.getGenerator("cave");
 
-			int r = 3;
+			int r = 0;
 			for (int i = -r; i <= r; i++)
 			{
 				for (int j = -r; j <= r; j++)
 				{
-					CaveGame.getInstance().world.addChunk(new Chunk(i, j, CaveGame.getInstance().world).generate(), false);
+					CaveGame.getInstance().world.addChunk(new Chunk(i, j, CaveGame.getInstance().world).generate(), true);
 				}
 			}
 
 			try
 			{
 				CommandRegistry registry = CaveGame.getInstance().commandRegistry;
-				registry.dispatcher.execute("tp 8 32.005 8", registry.commandSource);
+				registry.dispatcher.execute("tp 8.5 16.005 8.5", registry.commandSource);
+				registry.dispatcher.execute("speed 0.025" , registry.commandSource);
 			} catch (CommandSyntaxException e)
 			{
 				e.printStackTrace();

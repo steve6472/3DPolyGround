@@ -4,6 +4,7 @@ import com.steve6472.polyground.CaveGame;
 import com.steve6472.polyground.block.BlockTextureHolder;
 import com.steve6472.polyground.entity.EntityBase;
 import com.steve6472.polyground.entity.EntityStorage;
+import com.steve6472.polyground.entity.FloatingText;
 import com.steve6472.polyground.shaders.world.DissoveWorldShader;
 import com.steve6472.sge.gfx.Tessellator3D;
 import com.steve6472.sge.main.game.GridStorage;
@@ -183,6 +184,8 @@ public class World implements IBlockProvider
 
 	public void addEntity(EntityBase e)
 	{
+		if (e instanceof FloatingText)
+			pg.getEventHandler().register(e);
 		entityStorage.addEntity(e);
 	}
 
@@ -191,6 +194,11 @@ public class World implements IBlockProvider
 	public void renderEntities()
 	{
 		entityStorage.renderEntities();
+	}
+
+	public EntityStorage getEntityStorage()
+	{
+		return entityStorage;
 	}
 
 	public Random getRandom()

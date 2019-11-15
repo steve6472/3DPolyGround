@@ -272,7 +272,7 @@ public class SubChunk implements IBiomeProvider
 			if (y == -1 && getLayer() > 0)
 			{
 				return parent.getSubChunks()[getLayer() - 1].getBlockEfficiently(x, 15, z);
-			} else if (y == 16 && getLayer() < maxLayer)
+			} else if (y == 16 && getLayer() + 1 < maxLayer)
 			{
 				return parent.getSubChunks()[getLayer() + 1].getBlockEfficiently(x, 0, z);
 			} else

@@ -208,10 +208,10 @@ public class Player implements IMotion3f, IPosition3f
 
 			CaveGame.itemInHand
 				.onClick(subChunk, subChunk.getBlockData(hr.getX(), hr.getY(), hr.getZ()), this, hr.getFace(), event, hr.getX(), hr.getY(), hr.getZ());
-
-			CaveGame.itemInHand
-				.onClick(this, event);
 		}
+
+		CaveGame.itemInHand
+			.onClick(this, event);
 
 		if (event.getButton() == KeyList.RMB && event.getAction() == KeyList.PRESS)
 		{

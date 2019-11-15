@@ -122,7 +122,6 @@ public class Saver
 			}
 		}
 
-
 		int[] ids = new int[pallete.size()];
 		{
 			int i = 0;
