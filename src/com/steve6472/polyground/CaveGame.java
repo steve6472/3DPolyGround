@@ -15,10 +15,7 @@ import com.steve6472.polyground.particle.ParticleStorage;
 import com.steve6472.polyground.shaders.ShaderStorage;
 import com.steve6472.polyground.tessellators.BasicTessellator;
 import com.steve6472.polyground.tessellators.EntityTessellator;
-import com.steve6472.polyground.world.BuildHelper;
-import com.steve6472.polyground.world.Saver;
-import com.steve6472.polyground.world.SubChunk;
-import com.steve6472.polyground.world.World;
+import com.steve6472.polyground.world.*;
 import com.steve6472.polyground.world.generator.GeneratorRegistry;
 import com.steve6472.polyground.world.interaction.HitPicker;
 import com.steve6472.sge.gfx.*;
@@ -35,6 +32,7 @@ import com.steve6472.sge.main.game.Camera;
 import org.joml.AABBf;
 import org.lwjgl.glfw.GLFW;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -354,7 +352,14 @@ public class CaveGame extends MainApp
 	{
 		if (world != null && world.worldName != null)
 		{
-			Saver.saveWorld(world, world.worldName);
+			try
+			{
+				WorldSerializer.serialize(world);
+			} catch (IOException e)
+			{
+				System.err.println("Failed to load the world!");
+				e.printStackTrace();
+			}
 		}
 
 		FrameBuffer.cleanUp();

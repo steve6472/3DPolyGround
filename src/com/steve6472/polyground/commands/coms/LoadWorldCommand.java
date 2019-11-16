@@ -3,7 +3,9 @@ package com.steve6472.polyground.commands.coms;
 import com.mojang.brigadier.CommandDispatcher;
 import com.steve6472.polyground.commands.Command;
 import com.steve6472.polyground.commands.CommandSource;
-import com.steve6472.polyground.world.Saver;
+import com.steve6472.polyground.world.WorldSerializer;
+
+import java.io.IOException;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
@@ -25,9 +27,17 @@ public class LoadWorldCommand extends Command
 			literal("loadworld")
 				.then(
 					argument("name", string())
-						.executes(c -> {
+						.executes(c ->
+						{
+							c.getSource().getWorld().worldName = getString(c, "name");
 
-							Saver.loadWorld(c.getSource().getWorld(), getString(c, "name"));
+							try
+							{
+								WorldSerializer.deserialize(c.getSource().getWorld());
+							} catch (IOException e)
+							{
+								e.printStackTrace();
+							}
 
 							return 1;
 						})

@@ -3,7 +3,9 @@ package com.steve6472.polyground.commands.coms;
 import com.mojang.brigadier.CommandDispatcher;
 import com.steve6472.polyground.commands.Command;
 import com.steve6472.polyground.commands.CommandSource;
-import com.steve6472.polyground.world.Saver;
+import com.steve6472.polyground.world.WorldSerializer;
+
+import java.io.IOException;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
@@ -27,7 +29,16 @@ public class SaveWorldCommand extends Command
 					argument("name", string())
 						.executes(c -> {
 
-							Saver.saveWorld(c.getSource().getWorld(), getString(c, "name"));
+							c.getSource().getWorld().worldName = getString(c, "name");
+
+							try
+							{
+								WorldSerializer.serialize(c.getSource().getWorld());
+							} catch (IOException e)
+							{
+								System.err.println("Failed to save the world!");
+								e.printStackTrace();
+							}
 
 							return 1;
 						})

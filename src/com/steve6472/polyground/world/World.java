@@ -80,7 +80,7 @@ public class World implements IBlockProvider
 				{
 					try
 					{
-						next.saveChunk(worldName);
+						next.saveChunk(this);
 					} catch (IOException e)
 					{
 						System.err.println("Chunk " + next.getX() + "/" + next.getZ() + " failed to save");
@@ -105,7 +105,7 @@ public class World implements IBlockProvider
 							Chunk c = new Chunk(i + px - 1, j + pz - 1, this);
 							try
 							{
-								c.loadChunk(worldName);
+								c.loadChunk(this);
 								addChunk(c, true);
 							} catch (IOException e)
 							{

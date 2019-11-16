@@ -88,14 +88,8 @@ public class SubChunk implements IBiomeProvider
 
 	public void saveSubChunk(String worldName) throws IOException
 	{
-		Saver.saveSubChunk(worldName, this);
+		ChunkSerializer.serialize(this);
 	}
-
-	public void loadSubChunk(String worldName) throws IOException
-	{
-		Saver.loadSubChunk(worldName, this);
-	}
-
 
 	public void addTickableBlock(int x, int y, int z)
 	{
