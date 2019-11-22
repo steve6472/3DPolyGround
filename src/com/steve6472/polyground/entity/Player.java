@@ -163,7 +163,7 @@ public class Player implements IMotion3f, IPosition3f
 	@Event
 	public void fly(KeyEvent e)
 	{
-		if (pg.inGameGui.commandBox.isFocused()) return;
+		if (pg.inGameGui.chat.isFocused()) return;
 
 		if (e.getAction() == KeyList.PRESS && e.getKey() == KeyList.SPACE)
 		{
@@ -187,9 +187,9 @@ public class Player implements IMotion3f, IPosition3f
 	}
 
 	@Event
-	public void mouseFix(MouseEvent event)
+	public void mouseEvent(MouseEvent event)
 	{
-		if (pg.inGameGui.commandBox.isFocused()) return;
+		if (pg.inGameGui.chat.isFocused()) return;
 
 		if (camera.canMoveHead() && event.getAction() == KeyList.RELEASE && event.getButton() == KeyList.RMB)
 		{

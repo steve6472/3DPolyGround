@@ -1,6 +1,7 @@
 package com.steve6472.polyground.commands;
 
 import com.steve6472.polyground.entity.Player;
+import com.steve6472.polyground.gui.GameChat;
 import com.steve6472.polyground.world.World;
 
 /**********************
@@ -13,11 +14,13 @@ public class CommandSource
 {
 	private Player player;
 	private World world;
+	private GameChat chat;
 
-	public CommandSource(Player player, World world)
+	public CommandSource(Player player, World world, GameChat chat)
 	{
 		this.player = player;
 		this.world = world;
+		this.chat = chat;
 	}
 
 	public World getWorld()
@@ -28,5 +31,15 @@ public class CommandSource
 	public Player getPlayer()
 	{
 		return player;
+	}
+
+	public GameChat getChat()
+	{
+		return chat;
+	}
+
+	public void sendFeedback(Object... text)
+	{
+		chat.addText(text);
 	}
 }

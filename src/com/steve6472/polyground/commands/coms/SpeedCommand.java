@@ -25,7 +25,11 @@ public class SpeedCommand extends Command
 					argument("speed", floatArg())
 						.executes(c ->
 						{
-							c.getSource().getPlayer().flySpeed = getFloat(c, "speed");
+							float speed = getFloat(c, "speed");
+
+							c.getSource().getPlayer().flySpeed = speed;
+
+							c.getSource().sendFeedback("Speed set to ", "[#55FF55]", speed);
 
 							return 1;
 						})

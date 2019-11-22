@@ -24,7 +24,7 @@ public class CommandRegistry
 	private void init()
 	{
 		dispatcher = new CommandDispatcher<>();
-		commandSource = new CommandSource(CaveGame.getInstance().getPlayer(), CaveGame.getInstance().world);
+		commandSource = new CommandSource(CaveGame.getInstance().getPlayer(), CaveGame.getInstance().world, CaveGame.getInstance().inGameGui.chat);
 
 		new TpCommand(dispatcher);
 		new ChunkCommand(dispatcher);
