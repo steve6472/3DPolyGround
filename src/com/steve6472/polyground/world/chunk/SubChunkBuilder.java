@@ -1,4 +1,4 @@
-package com.steve6472.polyground.world;
+package com.steve6472.polyground.world.chunk;
 
 import com.steve6472.polyground.block.Block;
 import com.steve6472.polyground.block.special.TransparentBlock;
@@ -19,7 +19,6 @@ public class SubChunkBuilder
 		sc.positionVbo = storeFloatDataInAttributeList(0, 3, new float[] {-1, 0, 1, -1, 0, -1, 1, 0, -1});
 		sc.colorVbo = storeFloatDataInAttributeList(1, 4, new float[] {1, 1, 1, 1});
 		sc.textureVbo = storeFloatDataInAttributeList(2, 2, new float[] {0, 0, 0, 1, 1, 1});
-		sc.emissiveVbo = storeIntDataInAttributeList(3, 1, new int[1]);
 	}
 
 	public static boolean cull(SubChunk sc, int x, int y, int z)

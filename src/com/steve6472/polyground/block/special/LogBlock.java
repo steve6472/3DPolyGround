@@ -10,7 +10,7 @@ import com.steve6472.polyground.block.model.registry.face.FaceRegistry;
 import com.steve6472.polyground.entity.Player;
 import com.steve6472.polyground.particle.particles.BreakParticle;
 import com.steve6472.polyground.world.BuildHelper;
-import com.steve6472.polyground.world.SubChunk;
+import com.steve6472.polyground.world.chunk.SubChunk;
 import com.steve6472.sge.main.util.RandomUtil;
 import org.joml.Vector3f;
 import org.joml.Vector4f;

@@ -9,7 +9,7 @@ import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import com.steve6472.polyground.entity.Player;
 import com.steve6472.polyground.commands.Command;
 import com.steve6472.polyground.commands.CommandSource;
-import com.steve6472.polyground.world.Chunk;
+import com.steve6472.polyground.world.chunk.Chunk;
 import org.joml.Vector2i;
 
 import java.util.Collection;

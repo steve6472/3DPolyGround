@@ -2,12 +2,15 @@ package com.steve6472.polyground.world;
 
 import com.steve6472.polyground.EnumFace;
 import com.steve6472.polyground.block.model.CubeFace;
-import com.steve6472.polyground.block.model.faceProperty.*;
+import com.steve6472.polyground.block.model.faceProperty.BiomeTintFaceProperty;
+import com.steve6472.polyground.block.model.faceProperty.RotationFaceProperty;
+import com.steve6472.polyground.block.model.faceProperty.TintFaceProperty;
+import com.steve6472.polyground.block.model.faceProperty.UVFaceProperty;
 import com.steve6472.polyground.block.model.registry.Cube;
 import com.steve6472.polyground.block.model.registry.face.FaceRegistry;
 import com.steve6472.polyground.world.biomes.Biome;
 import com.steve6472.polyground.world.biomes.registry.BiomeRegistry;
-import com.steve6472.sge.main.Util;
+import com.steve6472.polyground.world.chunk.SubChunk;
 import org.joml.AABBf;
 
 import java.util.List;
@@ -30,11 +33,10 @@ public final class BuildHelper
 	private List<Float> vert;
 	private List<Float> col;
 	private List<Float> text;
-	private List<Integer> emissive;
 	private Cube cube;
 	private SubChunk sc;
 
-	public void load(int x, int y, int z, List<Float> vert, List<Float> col, List<Float> text, List<Integer> emissive)
+	public void load(int x, int y, int z, List<Float> vert, List<Float> col, List<Float> text)
 	{
 		this.x = x;
 		this.y = y;
@@ -42,7 +44,6 @@ public final class BuildHelper
 		this.vert = vert;
 		this.col = col;
 		this.text = text;
-		this.emissive = emissive;
 	}
 
 	public void setCube(Cube cube)
@@ -240,7 +241,6 @@ public final class BuildHelper
 	public int negativeZFace(EnumFace face)
 	{
 		setShade(col, cube.getFace(face).getShade());
-		setEmissive(face);
 
 		AABBf a = cube.getAabb();
 
@@ -286,7 +286,6 @@ public final class BuildHelper
 	public int positiveZFace(EnumFace face)
 	{
 		setShade(col, cube.getFace(face).getShade());
-		setEmissive(face);
 
 		AABBf a = cube.getAabb();
 
@@ -332,7 +331,6 @@ public final class BuildHelper
 	public int negativeXFace(EnumFace face)
 	{
 		setShade(col, cube.getFace(face).getShade());
-		setEmissive(face);
 
 		AABBf a = cube.getAabb();
 
@@ -378,7 +376,6 @@ public final class BuildHelper
 	public int positiveXFace(EnumFace face)
 	{
 		setShade(col, cube.getFace(face).getShade());
-		setEmissive(face);
 
 		AABBf a = cube.getAabb();
 
@@ -424,7 +421,6 @@ public final class BuildHelper
 	public int topFace(EnumFace face)
 	{
 		setShade(col, cube.getFace(face).getShade());
-		setEmissive(face);
 
 		AABBf a = cube.getAabb();
 
@@ -500,7 +496,6 @@ public final class BuildHelper
 	public int bottomFace(EnumFace face)
 	{
 		setShade(col, cube.getFace(face).getShade());
-		setEmissive(face);
 
 		AABBf a = cube.getAabb();
 
@@ -523,16 +518,6 @@ public final class BuildHelper
 		}
 
 		return 6;
-	}
-
-	private void setEmissive(EnumFace face)
-	{
-		int i = Util.toInt(EmissiveFaceProperty.check(cube.getFace(face)));
-
-		for (int j = 0; j < 6; j++)
-		{
-			emissive.add(i);
-		}
 	}
 
 	private void setShade(List<Float> color, float shade)

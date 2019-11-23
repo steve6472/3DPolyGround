@@ -2,7 +2,7 @@ package com.steve6472.polyground.world.generator;
 
 import com.steve6472.polyground.block.Block;
 import com.steve6472.polyground.block.registry.BlockRegistry;
-import com.steve6472.polyground.world.SubChunk;
+import com.steve6472.polyground.world.chunk.SubChunk;
 import org.joml.SimplexNoise;
 
 /**********************

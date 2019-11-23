@@ -1,8 +1,8 @@
-package com.steve6472.polyground.world;
+package com.steve6472.polyground.world.chunk;
 
 import com.steve6472.polyground.block.Block;
 import com.steve6472.polyground.block.registry.BlockRegistry;
-import com.steve6472.polyground.block.blockdata.IBlockData;
+import com.steve6472.polyground.world.World;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -27,7 +27,7 @@ public class Chunk
 		this.z = z;
 		this.world = world;
 
-		subChunks = new SubChunk[1];
+		subChunks = new SubChunk[3];
 		for (int i = 0; i < subChunks.length; i++)
 		{
 			subChunks[i] = new SubChunk(this, i);
@@ -74,7 +74,7 @@ public class Chunk
 			chunk.mkdir();
 
 		for (SubChunk subChunk : subChunks)
-			subChunk.saveSubChunk(world.worldName);
+			subChunk.saveSubChunk();
 	}
 
 	public void loadChunk(World world) throws IOException
@@ -118,13 +118,13 @@ public class Chunk
 			sc.removeTickableBlock(x, y % 16, z);
 		}
 
-		if (b instanceof IBlockData)
-		{
-			sc.setBlockEntity(x, y, z, ((IBlockData) b).createNewBlockEntity());
-		} else
-		{
-			sc.setBlockEntity(x, y, z, null);
-		}
+//		if (b instanceof IBlockData)
+//		{
+//			sc.setBlockEntity(x, y, z, ((IBlockData) b).createNewBlockEntity());
+//		} else
+//		{
+//			sc.setBlockEntity(x, y, z, null);
+//		}
 
 		if (rebuild)
 		{
@@ -167,16 +167,6 @@ public class Chunk
 
 		SubChunk sc = subChunks[y / 16];
 		return BlockRegistry.getBlockById(sc.getIds()[x][y % 16][z]);
-	}
-
-	public Block getBlockFromWorldCoords(int x, int y, int z)
-	{
-		return getBlock(Math.floorMod(x, 16), y, Math.floorMod(z, 16));
-	}
-
-	public int getBlockIdFromWorldCoords(int x, int y, int z)
-	{
-		return getBlockId(Math.floorMod(x, 16), y, Math.floorMod(z, 16));
 	}
 
 	public int getBlockId(int x, int y, int z)

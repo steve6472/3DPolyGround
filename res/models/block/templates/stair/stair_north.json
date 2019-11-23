@@ -19,7 +19,6 @@
                     16,
                     16
                 ],
-                "emissive": false,
                 "texture": "#texture",
                 "isVisible": true,
                 "autoUV": true,
@@ -36,7 +35,6 @@
                     16,
                     16
                 ],
-                "emissive": false,
                 "texture": "#texture",
                 "isVisible": true,
                 "autoUV": true,
@@ -53,7 +51,6 @@
                     16,
                     16
                 ],
-                "emissive": false,
                 "texture": "#texture",
                 "isVisible": true,
                 "autoUV": true,
@@ -70,7 +67,6 @@
                     16,
                     16
                 ],
-                "emissive": false,
                 "texture": "#texture",
                 "isVisible": true,
                 "autoUV": true,
@@ -87,7 +83,6 @@
                     16,
                     16
                 ],
-                "emissive": false,
                 "texture": "#texture",
                 "isVisible": true,
                 "autoUV": true,
@@ -104,7 +99,6 @@
                     16,
                     16
                 ],
-                "emissive": false,
                 "texture": "#texture",
                 "isVisible": true,
                 "autoUV": true,
@@ -136,7 +130,6 @@
                     8,
                     8
                 ],
-                "emissive": false,
                 "texture": "#texture",
                 "isVisible": true,
                 "autoUV": true,
@@ -153,7 +146,6 @@
                     16,
                     8
                 ],
-                "emissive": false,
                 "texture": "#texture",
                 "isVisible": true,
                 "autoUV": true,
@@ -170,7 +162,6 @@
                     16,
                     8
                 ],
-                "emissive": false,
                 "texture": "#texture",
                 "isVisible": true,
                 "autoUV": true,
@@ -187,7 +178,6 @@
                     16,
                     8
                 ],
-                "emissive": false,
                 "texture": "#texture",
                 "isVisible": true,
                 "autoUV": true,
@@ -204,7 +194,6 @@
                     16,
                     16
                 ],
-                "emissive": false,
                 "texture": "#texture",
                 "isVisible": true,
                 "autoUV": true,

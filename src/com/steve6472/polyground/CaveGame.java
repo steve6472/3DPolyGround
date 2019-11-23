@@ -15,7 +15,9 @@ import com.steve6472.polyground.particle.ParticleStorage;
 import com.steve6472.polyground.shaders.ShaderStorage;
 import com.steve6472.polyground.tessellators.BasicTessellator;
 import com.steve6472.polyground.tessellators.EntityTessellator;
-import com.steve6472.polyground.world.*;
+import com.steve6472.polyground.world.BuildHelper;
+import com.steve6472.polyground.world.chunk.SubChunk;
+import com.steve6472.polyground.world.World;
 import com.steve6472.polyground.world.generator.GeneratorRegistry;
 import com.steve6472.polyground.world.interaction.HitPicker;
 import com.steve6472.sge.gfx.*;
@@ -32,7 +34,6 @@ import com.steve6472.sge.main.game.Camera;
 import org.joml.AABBf;
 import org.lwjgl.glfw.GLFW;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -241,8 +242,6 @@ public class CaveGame extends MainApp
 		mainFrameBuffer.bindFrameBuffer(this);
 		DepthFrameBuffer.clearCurrentBuffer();
 
-		renderFloor();
-
 		hitPicker.tick(player, this);
 
 		for (AABBf a : t)
@@ -255,6 +254,8 @@ public class CaveGame extends MainApp
 		particles.render();
 
 //		AABBUtil.renderAABBf(player.getHitbox().getHitbox(), this);
+
+		renderFloor();
 
 		mainFrameBuffer.unbindCurrentFrameBuffer(this);
 
@@ -281,26 +282,28 @@ public class CaveGame extends MainApp
 
 	private void renderFloor()
 	{
+		glDisable(GL_CULL_FACE);
 		CaveGame.shaders.mainShader.bind();
 		BasicTessellator tess = basicTess;
 		tess.begin(4);
 
-		tess.pos(+128, -0.0001f, +128).color(0.2f, 0.2f, 0.2f, 1.0f).endVertex();
-		tess.pos(+128, -0.0001f, -128).color(0.2f, 0.2f, 0.2f, 1.0f).endVertex();
-		tess.pos(-128, -0.0001f, -128).color(0.2f, 0.2f, 0.2f, 1.0f).endVertex();
-		tess.pos(-128, -0.0001f, +128).color(0.2f, 0.2f, 0.2f, 1.0f).endVertex();
+		tess.pos(+128, -0.0001f, +128).color(0.5f, 0.5f, 0.5f, 0.9f).endVertex();
+		tess.pos(+128, -0.0001f, -128).color(0.5f, 0.5f, 0.5f, 0.9f).endVertex();
+		tess.pos(-128, -0.0001f, -128).color(0.5f, 0.5f, 0.5f, 0.9f).endVertex();
+		tess.pos(-128, -0.0001f, +128).color(0.5f, 0.5f, 0.5f, 0.9f).endVertex();
 
 		tess.loadPos(0);
 		tess.loadColor(1);
 		tess.loadNormal(2);
 		tess.draw(Tessellator.QUADS);
 		tess.disable(0, 1, 2);
+		glEnable(GL_CULL_FACE);
 	}
 
 	@Event
 	public void togglePP(KeyEvent e)
 	{
-		if (!inGameGui.commandBox.isFocused())
+		if (!inGameGui.chat.isFocused())
 		{
 			if (e.getKey() == KeyList.P && e.getAction() == KeyList.PRESS)
 				options.enablePostProcessing = !options.enablePostProcessing;
@@ -350,17 +353,17 @@ public class CaveGame extends MainApp
 	@Override
 	public void exit()
 	{
-		if (world != null && world.worldName != null)
-		{
-			try
-			{
-				WorldSerializer.serialize(world);
-			} catch (IOException e)
-			{
-				System.err.println("Failed to load the world!");
-				e.printStackTrace();
-			}
-		}
+//		if (world != null && world.worldName != null)
+//		{
+//			try
+//			{
+//				WorldSerializer.serialize(world);
+//			} catch (IOException e)
+//			{
+//				System.err.println("Failed to load the world!");
+//				e.printStackTrace();
+//			}
+//		}
 
 		FrameBuffer.cleanUp();
 		DepthFrameBuffer.cleanUp();

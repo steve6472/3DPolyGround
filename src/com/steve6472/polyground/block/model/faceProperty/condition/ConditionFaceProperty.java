@@ -8,7 +8,7 @@ import com.steve6472.polyground.block.model.faceProperty.TextureFaceProperty;
 import com.steve6472.polyground.block.model.faceProperty.UVFaceProperty;
 import com.steve6472.polyground.block.model.registry.face.FaceEntry;
 import com.steve6472.polyground.block.model.registry.face.FaceRegistry;
-import com.steve6472.polyground.world.SubChunk;
+import com.steve6472.polyground.world.chunk.SubChunk;
 import org.json.JSONArray;
 import org.json.JSONObject;
 

@@ -7,7 +7,7 @@ import com.steve6472.polyground.block.blockdata.BlockData;
 import com.steve6472.polyground.entity.Player;
 import com.steve6472.polyground.events.InGameGuiEvent;
 import com.steve6472.polyground.item.Item;
-import com.steve6472.polyground.world.SubChunk;
+import com.steve6472.polyground.world.chunk.SubChunk;
 import com.steve6472.sge.gfx.SpriteRender;
 import com.steve6472.sge.gfx.font.Font;
 import com.steve6472.sge.main.KeyList;

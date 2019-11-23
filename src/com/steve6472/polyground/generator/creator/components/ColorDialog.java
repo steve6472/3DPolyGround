@@ -45,11 +45,11 @@ public class ColorDialog extends SliderColorSelectDialog
 		isEmissive = new NamedCheckBox();
 		isEmissive.setRelativeLocation(10, 145);
 		isEmissive.setText("Is Emissive");
-		isEmissive.setToggled(face.getProperty(FaceRegistry.emissive).isEmissive());
 		isEmissive.setSize(120, 25);
 		isEmissive.setBoxSize(14, 14);
 		isEmissive.setSelectedChar(CustomChar.CROSS);
 		isEmissive.setBoxPadding(5, 5);
+		isEmissive.setEnabled(false);
 		addComponent(isEmissive);
 	}
 

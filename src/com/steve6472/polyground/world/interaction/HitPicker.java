@@ -5,7 +5,7 @@ import com.steve6472.polyground.block.Block;
 import com.steve6472.polyground.block.registry.BlockRegistry;
 import com.steve6472.polyground.block.model.registry.Cube;
 import com.steve6472.polyground.entity.Player;
-import com.steve6472.polyground.world.Chunk;
+import com.steve6472.polyground.world.chunk.Chunk;
 import com.steve6472.polyground.world.World;
 import org.joml.AABBf;
 import org.joml.Intersectionf;
@@ -65,7 +65,7 @@ public class HitPicker
 						if (i < c.getX() * 16 || i >= c.getX() * 16 + 16 || k < c.getZ() * 16 || k >= c.getZ() * 16 + 16)
 							continue;
 
-						int id = c.getBlockIdFromWorldCoords(i, j, k);
+						int id = c.getWorld().getBlockId(i, j, k);
 						if (id != Block.air.getId())
 						{
 							Block b = BlockRegistry.getBlockById(id);

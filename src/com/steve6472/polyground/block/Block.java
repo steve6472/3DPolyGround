@@ -12,7 +12,8 @@ import com.steve6472.polyground.block.special.SnapBlock;
 import com.steve6472.polyground.entity.Player;
 import com.steve6472.polyground.world.BuildHelper;
 import com.steve6472.polyground.world.Cull;
-import com.steve6472.polyground.world.SubChunk;
+import com.steve6472.polyground.world.chunk.ModelLayer;
+import com.steve6472.polyground.world.chunk.SubChunk;
 import com.steve6472.sge.main.events.MouseEvent;
 import org.joml.AABBf;
 
@@ -141,7 +142,7 @@ public class Block
 
 	/* Something */
 
-	public int createModel(int x, int y, int z, SubChunk sc, BlockData blockData, BuildHelper buildHelper, int modelLayer)
+	public int createModel(int x, int y, int z, SubChunk sc, BlockData blockData, BuildHelper buildHelper, ModelLayer modelLayer)
 	{
 		int tris = 0;
 

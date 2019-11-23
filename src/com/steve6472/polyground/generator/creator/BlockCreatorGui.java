@@ -230,7 +230,6 @@ public class BlockCreatorGui extends Gui
 		ColorDialog colorDialog = new ColorDialog(getSelectedFace());
 		colorDialog.setOkEvent((b, s)->
 		{
-			getSelectedFace().getProperty(FaceRegistry.emissive).setEmissive(colorDialog.isEmissive());
 			getSelectedFace().getProperty(FaceRegistry.tint)
 				.setTint(s.getRed() / 255f, s.getGreen() / 255f, s.getBlue() / 255f);
 		});

@@ -7,8 +7,8 @@ import com.steve6472.polyground.block.registry.BlockRegistry;
 import com.steve6472.polyground.commands.Command;
 import com.steve6472.polyground.commands.CommandSource;
 import com.steve6472.polyground.commands.arguments.ChunkArgument;
-import com.steve6472.polyground.world.Chunk;
-import com.steve6472.polyground.world.SubChunk;
+import com.steve6472.polyground.world.chunk.Chunk;
+import com.steve6472.polyground.world.chunk.SubChunk;
 import org.joml.Vector2i;
 
 /**********************

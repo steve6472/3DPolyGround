@@ -1,5 +1,7 @@
 package com.steve6472.polyground.world;
 
+import com.steve6472.polyground.world.chunk.Chunk;
+import com.steve6472.polyground.world.chunk.SubChunk;
 import com.steve6472.sge.main.game.GridStorage;
 
 import java.util.Collection;
@@ -43,7 +45,7 @@ public interface IChunkProvider
 
 	default SubChunk getSubChunkFromBlockCoords(int x, int y, int z)
 	{
-		return getSubChunk(x >> 4, y / 16, z >> 4);
+		return getSubChunk(x >> 4, y >> 4, z >> 4);
 	}
 
 	default Chunk getChunkFromBlockPos(int x, int z)
@@ -61,5 +63,7 @@ public interface IChunkProvider
 			if (getChunkStorage().get(chunk.getX(), chunk.getZ() + 1) != null) getChunkStorage().get(chunk.getX(), chunk.getZ() + 1).update();
 			if (getChunkStorage().get(chunk.getX(), chunk.getZ() - 1) != null) getChunkStorage().get(chunk.getX(), chunk.getZ() - 1).update();
 		}
+
+		getChunkStorage().get(chunk.getX(), chunk.getZ()).update();
 	}
 }

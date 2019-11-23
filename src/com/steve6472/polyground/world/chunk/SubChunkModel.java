@@ -1,9 +1,10 @@
-package com.steve6472.polyground.world;
+package com.steve6472.polyground.world.chunk;
 
 import com.steve6472.polyground.CaveGame;
 import com.steve6472.polyground.block.Block;
 import com.steve6472.polyground.block.blockdata.BlockData;
 import com.steve6472.polyground.block.registry.BlockRegistry;
+import com.steve6472.polyground.world.BuildHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,12 +20,12 @@ import static com.steve6472.sge.gfx.VertexObjectCreator.*;
 public class SubChunkModel
 {
 	/* Model Data */
-	int vao, positionVbo, colorVbo, textureVbo, emissiveVbo;
+	int vao, positionVbo, colorVbo, textureVbo;
 	int triangleCount;
 
-	private int modelLayer;
+	private ModelLayer modelLayer;
 
-	public SubChunkModel(int modelLayer)
+	public SubChunkModel(ModelLayer modelLayer)
 	{
 		this.modelLayer = modelLayer;
 	}
@@ -39,7 +40,6 @@ public class SubChunkModel
 		List<Float> vertices = new ArrayList<>();
 		List<Float> colors = new ArrayList<>();
 		List<Float> textures = new ArrayList<>();
-		List<Integer> emissive = new ArrayList<>();
 		BuildHelper buildHelper = sc.getWorld().getPg().buildHelper;
 
 		triangleCount = 0;
@@ -59,7 +59,7 @@ public class SubChunkModel
 					{
 						if (b != null && b != Block.air)
 						{
-							sc.getParent().getWorld().getPg().buildHelper.load(j, i, k, vertices, colors, textures, emissive);
+							sc.getParent().getWorld().getPg().buildHelper.load(j, i, k, vertices, colors, textures);
 							triangleCount += b.createModel(j, i, k, sc, blockData, buildHelper, modelLayer);
 						}
 
@@ -87,8 +87,12 @@ public class SubChunkModel
 		storeFloatDataInAttributeList(0, 3, positionVbo, vertices);
 		storeFloatDataInAttributeList(1, 4, colorVbo, colors);
 		storeFloatDataInAttributeList(2, 2, textureVbo, textures);
-		storeIntDataInAttributeList(3, 1, emissiveVbo, emissive);
 
 		unbindVAO();
+	}
+
+	public int getVao()
+	{
+		return vao;
 	}
 }

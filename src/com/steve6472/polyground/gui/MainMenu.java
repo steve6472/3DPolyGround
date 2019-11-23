@@ -3,8 +3,8 @@ package com.steve6472.polyground.gui;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.steve6472.polyground.CaveGame;
 import com.steve6472.polyground.commands.CommandRegistry;
-import com.steve6472.polyground.world.Chunk;
-import com.steve6472.polyground.world.SubChunk;
+import com.steve6472.polyground.world.chunk.Chunk;
+import com.steve6472.polyground.world.chunk.SubChunk;
 import com.steve6472.sge.gfx.Sprite;
 import com.steve6472.sge.gfx.SpriteRender;
 import com.steve6472.sge.gui.Gui;
@@ -115,7 +115,7 @@ public class MainMenu extends Gui implements IGamePause
 
 			SubChunk.generator = CaveGame.getInstance().generatorRegistry.getGenerator("cave");
 
-			int r = 0;
+			int r = 1;
 			for (int i = -r; i <= r; i++)
 			{
 				for (int j = -r; j <= r; j++)

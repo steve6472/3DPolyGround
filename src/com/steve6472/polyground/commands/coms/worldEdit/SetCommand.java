@@ -6,7 +6,7 @@ import com.steve6472.polyground.commands.Command;
 import com.steve6472.polyground.commands.CommandSource;
 import com.steve6472.polyground.commands.arguments.BlockArgument;
 import com.steve6472.polyground.item.special.WorldEditItem;
-import com.steve6472.polyground.world.Chunk;
+import com.steve6472.polyground.world.chunk.Chunk;
 import com.steve6472.polyground.world.World;
 import org.joml.Vector3i;
 

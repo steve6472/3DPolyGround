@@ -6,7 +6,7 @@ import com.steve6472.polyground.block.Block;
 import com.steve6472.polyground.block.blockdata.BlockData;
 import com.steve6472.polyground.entity.EntityBase;
 import com.steve6472.polyground.entity.registry.EntityRegistry;
-import com.steve6472.polyground.world.SubChunk;
+import com.steve6472.polyground.world.chunk.SubChunk;
 
 import java.io.File;
 
@@ -29,13 +29,14 @@ public class GravelBlock extends Block
 		super.onUpdate(subChunk, blockData, updateFrom, x, y, z);
 		if (y <= 0) return;
 
-		if (subChunk.getWorld().getBlock(x, y - 1, z) == Block.air)
+		if (subChunk.getBlockEfficiently(x, y - 1, z) == Block.air)
 		{
-			subChunk.getWorld().setBlock(x, y, z, Block.air);
-			BasicEvents.updateAll(x, y, z);
+			subChunk.setBlock(x, y, z, Block.air);
+			subChunk.rebuild();
+			BasicEvents.updateAll(subChunk, x + subChunk.getX() * 16, y + subChunk.getLayer() * 16, z + subChunk.getZ() * 16);
 
 			EntityBase e = EntityRegistry.fallingBlock.createNew();
-			e.setPosition(x + 0.5f, y + 0.5f, z + 0.5f);
+			e.setPosition(x + 0.5f + subChunk.getX() * 16, y + 0.5f + subChunk.getLayer() * 16, z + 0.5f + subChunk.getZ() * 16);
 
 			subChunk.getWorld().addEntity(e);
 		}

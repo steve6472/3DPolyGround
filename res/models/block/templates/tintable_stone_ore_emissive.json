@@ -20,12 +20,12 @@
 
 			"faces":
 			{
-				  "east":  { "texture": "#o_east",  "emissive": true, "refTint": "#overlay", "modelLayer": 1 },
-				  "south": { "texture": "#o_south", "emissive": true, "refTint": "#overlay", "modelLayer": 1 },
-				  "north": { "texture": "#o_north", "emissive": true, "refTint": "#overlay", "modelLayer": 1 },
-				  "west":  { "texture": "#o_west",  "emissive": true, "refTint": "#overlay", "modelLayer": 1 },
-				  "up":    { "texture": "#o_up",    "emissive": true, "refTint": "#overlay", "modelLayer": 1 },
-				  "down":  { "texture": "#o_down",  "emissive": true, "refTint": "#overlay", "modelLayer": 1 }
+				  "east":  { "texture": "#o_east",  "emissive": true, "refTint": "#overlay", "modelLayer": "OVERLAY_0" },
+				  "south": { "texture": "#o_south", "emissive": true, "refTint": "#overlay", "modelLayer": "OVERLAY_0" },
+				  "north": { "texture": "#o_north", "emissive": true, "refTint": "#overlay", "modelLayer": "OVERLAY_0" },
+				  "west":  { "texture": "#o_west",  "emissive": true, "refTint": "#overlay", "modelLayer": "OVERLAY_0" },
+				  "up":    { "texture": "#o_up",    "emissive": true, "refTint": "#overlay", "modelLayer": "OVERLAY_0" },
+				  "down":  { "texture": "#o_down",  "emissive": true, "refTint": "#overlay", "modelLayer": "OVERLAY_0" }
 			}
 		}
 	]

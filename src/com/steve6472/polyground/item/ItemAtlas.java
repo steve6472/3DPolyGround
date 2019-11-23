@@ -10,7 +10,8 @@ import com.steve6472.polyground.block.model.registry.Cube;
 import com.steve6472.polyground.block.registry.BlockRegistry;
 import com.steve6472.polyground.tessellators.ItemTessellator;
 import com.steve6472.polyground.world.BuildHelper;
-import com.steve6472.polyground.world.SubChunk;
+import com.steve6472.polyground.world.chunk.ModelLayer;
+import com.steve6472.polyground.world.chunk.SubChunk;
 import com.steve6472.sge.gfx.*;
 import com.steve6472.sge.main.events.WindowSizeEvent;
 import com.steve6472.sge.main.game.Camera;
@@ -41,7 +42,6 @@ public class ItemAtlas
 	private Sprite itemTexture;
 
 	private List<Float> vertices, textures, colors;
-	private List<Integer> emissive;
 
 	public int totalSize;
 
@@ -55,7 +55,6 @@ public class ItemAtlas
 		vertices = new ArrayList<>();
 		textures = new ArrayList<>();
 		colors = new ArrayList<>();
-		emissive = new ArrayList<>();
 
 		itemTexture = new Sprite();
 
@@ -88,7 +87,7 @@ public class ItemAtlas
 
 		for (int i = SubChunk.getModelCount() - 1; i >= 0; i--)
 		{
-			renderItem(b, i);
+			renderItem(b, ModelLayer.values()[i]);
 		}
 
 		textureBuffer.unbindCurrentFrameBuffer(caveGame);
@@ -143,14 +142,13 @@ public class ItemAtlas
 		return deg * 0.017453292519943295f;
 	}
 
-	private void renderItem(Block block, int modelLayer)
+	private void renderItem(Block block, ModelLayer modelLayer)
 	{
 		vertices.clear();
 		textures.clear();
 		colors.clear();
-		emissive.clear();
 
-		buildHelper.load(0, 0, 0, vertices, colors, textures, emissive);
+		buildHelper.load(0, 0, 0, vertices, colors, textures);
 		int tris = model(block, modelLayer);
 
 		itemTessellator.begin(tris * 3);
@@ -181,7 +179,7 @@ public class ItemAtlas
 		itemTessellator.disable(0, 1, 2);
 	}
 
-	private int model(Block block, int modelLayer)
+	private int model(Block block, ModelLayer modelLayer)
 	{
 		if (block == null || block.getCubes() == null) return 0;
 

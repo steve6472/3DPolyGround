@@ -1,5 +1,7 @@
 package com.steve6472.polyground.world;
 
+import com.steve6472.polyground.world.chunk.Chunk;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;

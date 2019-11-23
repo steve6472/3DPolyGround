@@ -6,6 +6,9 @@ import com.steve6472.polyground.entity.EntityBase;
 import com.steve6472.polyground.entity.EntityStorage;
 import com.steve6472.polyground.entity.FloatingText;
 import com.steve6472.polyground.shaders.world.DissoveWorldShader;
+import com.steve6472.polyground.world.chunk.Chunk;
+import com.steve6472.polyground.world.chunk.ModelLayer;
+import com.steve6472.polyground.world.chunk.SubChunk;
 import com.steve6472.sge.gfx.Tessellator3D;
 import com.steve6472.sge.main.game.GridStorage;
 import org.joml.Matrix4f;
@@ -57,13 +60,20 @@ public class World implements IBlockProvider
 
 	}
 
+//	private byte delay = 0;
+
 	public void tick()
 	{
 		chunks.getMap().values().forEach(Chunk::tick);
 
 		entityStorage.tickEntities();
 
-//		generateChunks();
+//		delay++;
+//		if (delay >= 30)
+//		{
+//			generateChunks();
+//			delay = 0;
+//		}
 	}
 
 	private void generateChunks()
@@ -92,17 +102,25 @@ public class World implements IBlockProvider
 			}
 		}
 
-		for (int i = 0; i < 3; i++)
+		if (getChunk(px, pz) == null)
 		{
-			for (int j = 0; j < 3; j++)
+			generateNewChunk(px, pz);
+			return;
+		}
+
+		int range = 5;
+
+		for (int i = -range; i <= range; i++)
+		{
+			for (int j = -range; j <= range; j++)
 			{
 				if (worldName != null)
 				{
-					if (getChunk(i + px - 1, j + pz - 1) == null)
+					if (getChunk(i + px, j + pz) == null)
 					{
-						if (new File("worlds\\" + worldName + "\\chunk_" + (i + px - 1) + "_" + (j + pz - 1)).exists())
+						if (new File("worlds\\" + worldName + "\\chunk_" + (i + px) + "_" + (j + pz)).exists())
 						{
-							Chunk c = new Chunk(i + px - 1, j + pz - 1, this);
+							Chunk c = new Chunk(i + px, j + pz, this);
 							try
 							{
 								c.loadChunk(this);
@@ -112,12 +130,16 @@ public class World implements IBlockProvider
 								System.err.println("Chunk " + c.getX() + "/" + c.getZ() + " failed to load");
 								System.err.println("    " + e.getMessage() + "\n");
 							}
-
 							continue;
 						}
 					}
 				}
-				generateNewChunk(i + px - 1, j + pz - 1);
+
+				if (getChunk(i + px, j + pz) == null)
+				{
+					generateNewChunk(i + px, j + pz);
+					return;
+				}
 			}
 		}
 	}
@@ -164,9 +186,14 @@ public class World implements IBlockProvider
 				{
 					if (sc.isEmpty(i)) continue;
 
-					glBindVertexArray(sc.getModel(i).vao);
+					if (ModelLayer.EMISSION_NORMAL.ordinal() == i || ModelLayer.EMISSION_OVERLAY.ordinal() == i)
+						CaveGame.shaders.dissoveWorldShader.setUniform(DissoveWorldShader.SHADE, 1.0f);
+					else
+						CaveGame.shaders.dissoveWorldShader.setUniform(DissoveWorldShader.SHADE, shade);
 
-					for (int l = 0; l < 4; l++)
+					glBindVertexArray(sc.getModel(i).getVao());
+
+					for (int l = 0; l < 3; l++)
 						glEnableVertexAttribArray(l);
 
 					glDrawArrays(Tessellator3D.TRIANGLES, 0, sc.getTriangleCount(i) * 3);
@@ -174,7 +201,7 @@ public class World implements IBlockProvider
 			}
 		}
 
-		for (int l = 0; l < 4; l++)
+		for (int l = 0; l < 3; l++)
 			glDisableVertexAttribArray(l);
 
 		glBindVertexArray(0);
@@ -216,7 +243,6 @@ public class World implements IBlockProvider
 		if (getChunk(x, z) != null) return;
 
 		addChunk(new Chunk(x, z, this).generate(), true);
-
 	}
 
 	@Override

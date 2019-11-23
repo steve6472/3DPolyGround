@@ -5,7 +5,7 @@ import com.steve6472.polyground.block.Block;
 import com.steve6472.polyground.block.blockdata.BlockData;
 import com.steve6472.polyground.block.blockdata.IBlockData;
 import com.steve6472.polyground.block.blockdata.ScanBlockData;
-import com.steve6472.polyground.world.SubChunk;
+import com.steve6472.polyground.world.chunk.SubChunk;
 
 import java.io.File;
 

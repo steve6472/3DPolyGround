@@ -77,6 +77,21 @@ public class HitResult
 		return z;
 	}
 
+	public int getCx()
+	{
+		return Math.floorMod(x, 16);
+	}
+
+	public int getCy()
+	{
+		return Math.floorMod(y, 16);
+	}
+
+	public int getCz()
+	{
+		return Math.floorMod(z, 16);
+	}
+
 	public float getPx()
 	{
 		return px;

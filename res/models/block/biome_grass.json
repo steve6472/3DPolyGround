@@ -22,11 +22,11 @@
 			
 			"faces": 
 			{
-				"east":  { "texture": "grass_block_side_overlay", "biomeTint": true, "modelLayer": 1 },
-				"south": { "texture": "grass_block_side_overlay", "biomeTint": true, "modelLayer": 1 },
-				"north": { "texture": "grass_block_side_overlay", "biomeTint": true, "modelLayer": 1 },
-				"west":  { "texture": "grass_block_side_overlay", "biomeTint": true, "modelLayer": 1 },
-				"up":    { "texture": "grass_block_top"         , "biomeTint": true, "modelLayer": 1 }
+				"east":  { "texture": "grass_block_side_overlay", "biomeTint": true, "modelLayer": "OVERLAY_0" },
+				"south": { "texture": "grass_block_side_overlay", "biomeTint": true, "modelLayer": "OVERLAY_0" },
+				"north": { "texture": "grass_block_side_overlay", "biomeTint": true, "modelLayer": "OVERLAY_0" },
+				"west":  { "texture": "grass_block_side_overlay", "biomeTint": true, "modelLayer": "OVERLAY_0" },
+				"up":    { "texture": "grass_block_top"         , "biomeTint": true, "modelLayer": "OVERLAY_0" }
 			}
 		}
 	]

@@ -1,4 +1,4 @@
-package com.steve6472.polyground.world;
+package com.steve6472.polyground.world.chunk;
 
 import com.steve6472.polyground.block.registry.BlockRegistry;
 import com.steve6472.sge.main.smartsave.SmartSave;

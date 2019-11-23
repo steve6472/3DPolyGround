@@ -1,12 +1,13 @@
 package com.steve6472.polyground.entity;
 
 import com.steve6472.polyground.BasicEvents;
-import com.steve6472.polyground.HitResult;
 import com.steve6472.polyground.CaveGame;
+import com.steve6472.polyground.HitResult;
 import com.steve6472.polyground.block.Block;
+import com.steve6472.polyground.block.blockdata.BlockData;
 import com.steve6472.polyground.block.registry.BlockRegistry;
 import com.steve6472.polyground.item.registry.ItemRegistry;
-import com.steve6472.polyground.world.SubChunk;
+import com.steve6472.polyground.world.chunk.SubChunk;
 import com.steve6472.sge.main.KeyList;
 import com.steve6472.sge.main.events.Event;
 import com.steve6472.sge.main.events.KeyEvent;
@@ -203,11 +204,13 @@ public class Player implements IMotion3f, IPosition3f
 
 			SubChunk subChunk = pg.world.getSubChunkFromBlockCoords(hr.getX(), hr.getY(), hr.getZ());
 
+			BlockData data = subChunk.getBlockData(hr.getCx(), hr.getCy(), hr.getCz());
+
 			BlockRegistry.getBlockById(pg.world.getBlockId(hr.getX(), hr.getY(), hr.getZ()))
-				.onClick(subChunk, subChunk.getBlockData(hr.getX(), hr.getY(), hr.getZ()), this, hr.getFace(), event, hr.getX(), hr.getY(), hr.getZ());
+				.onClick(subChunk, data, this, hr.getFace(), event, hr.getX(), hr.getY(), hr.getZ());
 
 			CaveGame.itemInHand
-				.onClick(subChunk, subChunk.getBlockData(hr.getX(), hr.getY(), hr.getZ()), this, hr.getFace(), event, hr.getX(), hr.getY(), hr.getZ());
+				.onClick(subChunk, data, this, hr.getFace(), event, hr.getX(), hr.getY(), hr.getZ());
 		}
 
 		CaveGame.itemInHand

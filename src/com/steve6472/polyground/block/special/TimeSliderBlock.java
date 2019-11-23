@@ -6,7 +6,7 @@ import com.steve6472.polyground.CaveGame;
 import com.steve6472.polyground.block.Block;
 import com.steve6472.polyground.block.blockdata.BlockData;
 import com.steve6472.polyground.entity.Player;
-import com.steve6472.polyground.world.SubChunk;
+import com.steve6472.polyground.world.chunk.SubChunk;
 import com.steve6472.polyground.world.World;
 import com.steve6472.sge.main.KeyList;
 import com.steve6472.sge.main.Util;

@@ -1,13 +1,16 @@
-package com.steve6472.polyground.world;
+package com.steve6472.polyground.world.chunk;
 
+import com.steve6472.polyground.EnumFace;
 import com.steve6472.polyground.block.Block;
 import com.steve6472.polyground.block.blockdata.BlockData;
 import com.steve6472.polyground.block.registry.BlockRegistry;
+import com.steve6472.polyground.world.World;
 import com.steve6472.polyground.world.biomes.IBiomeProvider;
 import com.steve6472.polyground.world.generator.IGenerator;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**********************
@@ -18,7 +21,7 @@ import java.util.List;
  ***********************/
 public class SubChunk implements IBiomeProvider
 {
-	private static final int MODEL_COUNT = 2;
+	private static final int MODEL_COUNT = ModelLayer.values().length;
 
 	private SubChunkModel[] model;
 	private Chunk parent;
@@ -31,6 +34,7 @@ public class SubChunk implements IBiomeProvider
 	private int[][][] biomes;
 	private List<Short> scheduledUpdates;
 	private List<Short> tickableBlocks;
+	private List<Short> newScheduledUpdates;
 
 	public SubChunk(Chunk parent, int layer)
 	{
@@ -40,7 +44,7 @@ public class SubChunk implements IBiomeProvider
 		model = new SubChunkModel[MODEL_COUNT];
 		for (int i = 0; i < MODEL_COUNT; i++)
 		{
-			model[i] = new SubChunkModel(i);
+			model[i] = new SubChunkModel(ModelLayer.values()[i]);
 			SubChunkBuilder.init(model[i]);
 		}
 
@@ -49,8 +53,9 @@ public class SubChunk implements IBiomeProvider
 		biomes = new int[16][16][16];
 		tickableBlocks = new ArrayList<>();
 		scheduledUpdates = new ArrayList<>();
+		newScheduledUpdates = new ArrayList<>();
 
-		renderTime = 1;
+//		renderTime = 1;
 	}
 
 	public static IGenerator generator;
@@ -63,7 +68,7 @@ public class SubChunk implements IBiomeProvider
 	public void tick()
 	{
 		if (renderTime <= 1.0f)
-			renderTime += 0.0005f;
+			renderTime += 0.025f;
 
 		for (short i : tickableBlocks)
 		{
@@ -75,18 +80,24 @@ public class SubChunk implements IBiomeProvider
 			blockToTick.tick(this, blockData[x][y][z], x, y, z);
 		}
 
-//		for (short i : scheduledUpdates)
-//		{
-//			short x = (short) (i >> 8);
-//			short y = (short) ((i >> 4) & 0xf);
-//			short z = (short) (i & 0xf);
-//
-//			Block blockToUpdate = BlockRegistry.getBlockById(ids[x][y][z]);
-//			blockToUpdate.onUpdate(this, blockData[x][y][z], EnumFace.NONE, x, y, z);
-//		}
+		scheduledUpdates.addAll(newScheduledUpdates);
+		newScheduledUpdates.clear();
+
+		for (Iterator<Short> iter = scheduledUpdates.iterator(); iter.hasNext();)
+		{
+			short i = iter.next();
+
+			short x = (short) (i >> 8);
+			short y = (short) ((i >> 4) & 0xf);
+			short z = (short) (i & 0xf);
+
+			Block blockToUpdate = BlockRegistry.getBlockById(ids[x][y][z]);
+			blockToUpdate.onUpdate(this, blockData[x][y][z], EnumFace.NONE, x, y, z);
+			iter.remove();
+		}
 	}
 
-	public void saveSubChunk(String worldName) throws IOException
+	public void saveSubChunk() throws IOException
 	{
 		ChunkSerializer.serialize(this);
 	}
@@ -116,21 +127,8 @@ public class SubChunk implements IBiomeProvider
 	public void addScheduledUpdate(int x, int y, int z)
 	{
 		short r = (short) (x << 8 | y << 4 | z);
-		if (!scheduledUpdates.contains(r))
-			scheduledUpdates.add(r);
-	}
-
-	public void removeScheduledUpdate(int x, int y, int z)
-	{
-		short r = (short) (x << 8 | y << 4 | z);
-		if (scheduledUpdates.contains(r))
-			scheduledUpdates.remove((Short) r);
-	}
-
-	public boolean isScheduledUpdate(int x, int y, int z)
-	{
-		short r = (short) (x << 8 | y << 4 | z);
-		return scheduledUpdates.contains(r);
+		if (!scheduledUpdates.contains(r) && !newScheduledUpdates.contains(r))
+			newScheduledUpdates.add(r);
 	}
 
 	public void rebuild()
@@ -192,17 +190,17 @@ public class SubChunk implements IBiomeProvider
 
 	public BlockData getBlockData(int x, int y, int z)
 	{
-		return getBlockData()[Math.floorMod(x, 16)][Math.floorMod(y, 16)][Math.floorMod(z, 16)];
+		return getBlockData()[x][y][z];
 	}
 
 	public void setBlockEntity(int x, int y, int z, BlockData blockData)
 	{
-		getBlockData()[Math.floorMod(x, 16)][Math.floorMod(y, 16)][Math.floorMod(z, 16)] = blockData;
+		getBlockData()[x][y][z] = blockData;
 	}
 
 	public int getBlockId(int x, int y, int z)
 	{
-		return getIds()[Math.floorMod(x, 16)][Math.floorMod(y, 16)][Math.floorMod(z, 16)];
+		return getIds()[x][y][z];
 	}
 
 	public Block getBlock(int x, int y, int z)
@@ -212,7 +210,7 @@ public class SubChunk implements IBiomeProvider
 
 	public void setBlock(int x, int y, int z, int id)
 	{
-		getIds()[Math.floorMod(x, 16)][Math.floorMod(y, 16)][Math.floorMod(z, 16)] = id;
+		getIds()[x][y][z] = id;
 	}
 
 	/**
@@ -230,6 +228,8 @@ public class SubChunk implements IBiomeProvider
 	{
 		int maxLayer = parent.getSubChunks().length;
 
+		World world = getWorld();
+
 		if (x >= 0 && x < 16 && z >= 0 && z < 16 && y >= 0 && y < 16)
 		{
 			return getBlock(x, y, z);
@@ -237,13 +237,13 @@ public class SubChunk implements IBiomeProvider
 		{
 			if (x == 16)
 			{
-				SubChunk sc = getWorld().getSubChunk(getX() + 1, getLayer(), getZ());
+				SubChunk sc = world.getSubChunk(getX() + 1, getLayer(), getZ());
 				if (sc == null)
 					return Block.air;
 				return sc.getBlockEfficiently(0, y, z);
 			} else if (x == -1)
 			{
-				SubChunk sc = getWorld().getSubChunk(getX() - 1, getLayer(), getZ());
+				SubChunk sc = world.getSubChunk(getX() - 1, getLayer(), getZ());
 				if (sc == null)
 					return Block.air;
 				return sc.getBlockEfficiently(15, y, z);
@@ -251,13 +251,13 @@ public class SubChunk implements IBiomeProvider
 
 			if (z == 16)
 			{
-				SubChunk sc = getWorld().getSubChunk(getX(), getLayer(), getZ() + 1);
+				SubChunk sc = world.getSubChunk(getX(), getLayer(), getZ() + 1);
 				if (sc == null)
 					return Block.air;
 				return sc.getBlockEfficiently(x, y, 0);
 			} else if (z == -1)
 			{
-				SubChunk sc = getWorld().getSubChunk(getX(), getLayer(), getZ() - 1);
+				SubChunk sc = world.getSubChunk(getX(), getLayer(), getZ() - 1);
 				if (sc == null)
 					return Block.air;
 				return sc.getBlockEfficiently(x, y, 15);
@@ -272,6 +272,46 @@ public class SubChunk implements IBiomeProvider
 			} else
 			{
 				return Block.air;
+			}
+		}
+	}
+
+	public SubChunk getNeighbouringChunk(int x, int y, int z)
+	{
+		int maxLayer = parent.getSubChunks().length;
+
+		World world = getWorld();
+
+		if (x >= 0 && x < 16 && z >= 0 && z < 16 && y >= 0 && y < 16)
+		{
+			return this;
+		} else
+		{
+			if (x == 16)
+			{
+				return world.getSubChunk(getX() + 1, getLayer(), getZ());
+			} else if (x == -1)
+			{
+				return world.getSubChunk(getX() - 1, getLayer(), getZ());
+			}
+
+			if (z == 16)
+			{
+				return world.getSubChunk(getX(), getLayer(), getZ() + 1);
+			} else if (z == -1)
+			{
+				return world.getSubChunk(getX(), getLayer(), getZ() - 1);
+			}
+
+			if (y == -1 && getLayer() > 0)
+			{
+				return parent.getSubChunks()[getLayer() - 1];
+			} else if (y == 16 && getLayer() + 1 < maxLayer)
+			{
+				return parent.getSubChunks()[getLayer() + 1];
+			} else
+			{
+				return null;
 			}
 		}
 	}

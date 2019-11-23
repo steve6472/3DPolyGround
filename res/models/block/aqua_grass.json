@@ -77,13 +77,13 @@
 						{
 							"condition": "(([0, -1, 0] == aqua_grass) || ([1, -1, 0] == aqua_grass)) && ([1, 0, 0] == air)",
 							"texture": "grass_block_top",
-							"modelLayer": 1,
+							"modelLayer": "OVERLAY_0",
 							"tint": [0, 127, 255]
 						},
 						{
 							"condition": "(([1, 0, 0] == air) || ([1, 0, 0] == #slab_bottom)) || ([1, 0, 0] == #transparent)",
 							"texture": "grass_block_side_overlay",
-							"modelLayer": 1,
+							"modelLayer": "OVERLAY_0",
 							"tint": [0, 127, 255]
 						},
 						{
@@ -98,13 +98,13 @@
 						{
 							"condition": "(([0, -1, 0] == aqua_grass) || ([0, -1, 1] == aqua_grass)) && ([0, 0, 1] == air)",
 							"texture": "grass_block_top",
-							"modelLayer": 1,
+							"modelLayer": "OVERLAY_0",
 							"tint": [0, 127, 255]
 						},
 						{
 							"condition": "(([0, 0, 1] == air) || ([0, 0, 1] == #slab_bottom)) || ([0, 0, 1] == #transparent)",
 							"texture": "grass_block_side_overlay",
-							"modelLayer": 1,
+							"modelLayer": "OVERLAY_0",
 							"tint": [0, 127, 255]
 						},
 						{
@@ -119,13 +119,13 @@
 						{
 							"condition": "(([0, -1, 0] == aqua_grass) || ([-1, -1, 0] == aqua_grass)) && ([-1, 0, 0] == air)",
 							"texture": "grass_block_top",
-							"modelLayer": 1,
+							"modelLayer": "OVERLAY_0",
 							"tint": [0, 127, 255]
 						},
 						{
 							"condition": "(([-1, 0, 0] == air) || ([-1, 0, 0] == #slab_bottom)) || ([-1, 0, 0] == #transparent)",
 							"texture": "grass_block_side_overlay",
-							"modelLayer": 1,
+							"modelLayer": "OVERLAY_0",
 							"tint": [0, 127, 255]
 						},
 						{
@@ -140,13 +140,13 @@
 						{
 							"condition": "(([0, -1, 0] == aqua_grass) || ([0, -1, -1] == aqua_grass)) && ([0, 0, -1] == air)",
 							"texture": "grass_block_top",
-							"modelLayer": 1,
+							"modelLayer": "OVERLAY_0",
 							"tint": [0, 127, 255]
 						},
 						{
 							"condition": "(([0, 0, -1] == air) || ([0, 0, -1] == #slab_bottom)) || ([0, 0, -1] == #transparent)",
 							"texture": "grass_block_side_overlay",
-							"modelLayer": 1,
+							"modelLayer": "OVERLAY_0",
 							"tint": [0, 127, 255]
 						},
 						{

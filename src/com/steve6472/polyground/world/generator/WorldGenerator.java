@@ -1,7 +1,7 @@
 package com.steve6472.polyground.world.generator;
 
 import com.steve6472.polyground.block.Block;
-import com.steve6472.polyground.world.SubChunk;
+import com.steve6472.polyground.world.chunk.SubChunk;
 import com.steve6472.polyground.world.biomes.*;
 import com.steve6472.polyground.world.biomes.registry.BiomeRegistry;
 import org.joml.SimplexNoise;

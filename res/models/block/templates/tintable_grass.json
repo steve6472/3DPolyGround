@@ -22,11 +22,11 @@
 			
 			"faces": 
 			{
-				"east":  { "texture": "#overlay_side", "refTint": "#overlay", "modelLayer": 1 },
-				"south": { "texture": "#overlay_side", "refTint": "#overlay", "modelLayer": 1 },
-				"north": { "texture": "#overlay_side", "refTint": "#overlay", "modelLayer": 1 },
-				"west":  { "texture": "#overlay_side", "refTint": "#overlay", "modelLayer": 1 },
-				"up":    { "texture": "#overlay_up"  , "refTint": "#overlay", "modelLayer": 1 }
+				"east":  { "texture": "#overlay_side", "refTint": "#overlay", "modelLayer": "OVERLAY_0" },
+				"south": { "texture": "#overlay_side", "refTint": "#overlay", "modelLayer": "OVERLAY_0" },
+				"north": { "texture": "#overlay_side", "refTint": "#overlay", "modelLayer": "OVERLAY_0" },
+				"west":  { "texture": "#overlay_side", "refTint": "#overlay", "modelLayer": "OVERLAY_0" },
+				"up":    { "texture": "#overlay_up"  , "refTint": "#overlay", "modelLayer": "OVERLAY_0" }
 			}
 		}
 	]

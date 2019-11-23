@@ -4,7 +4,7 @@ import com.steve6472.polyground.block.Block;
 import com.steve6472.polyground.block.registry.BlockRegistry;
 import com.steve6472.polyground.block.blockdata.BlockData;
 import com.steve6472.polyground.entity.Player;
-import com.steve6472.polyground.world.SubChunk;
+import com.steve6472.polyground.world.chunk.SubChunk;
 import com.steve6472.polyground.world.World;
 
 /**********************
@@ -33,10 +33,10 @@ public class BasicEvents
 		SubChunk subChunk = world.getSubChunkFromBlockCoords(hr.getX() + xOffset, hr.getY() + yOffset, hr.getZ() + zOffset);
 
 		world.setBlock(hr.getX() + xOffset, hr.getY() + yOffset, hr.getZ() + zOffset, block, block.rebuildChunkOnPlace(), Block::isReplaceable);
-		BlockData blockData = subChunk.getBlockData(hr.getX() + xOffset, hr.getY() + yOffset, hr.getZ() + zOffset);
+		BlockData blockData = subChunk.getBlockData(hr.getCx() + xOffset, hr.getCy() + yOffset, hr.getCz() + zOffset);
 
 		block.onPlace(subChunk, blockData, player, face, hr.getX() + xOffset, hr.getY() + yOffset, hr.getZ() + zOffset);
-		updateAll(hr.getX() + xOffset, hr.getY() + yOffset, hr.getZ() + zOffset);
+		updateAll(subChunk, hr.getX() + xOffset, hr.getY() + yOffset, hr.getZ() + zOffset);
 	}
 
 	/* Replacing Block */
@@ -57,10 +57,10 @@ public class BasicEvents
 		SubChunk subChunk = world.getSubChunkFromBlockCoords(hr.getX() + xOffset, hr.getY() + yOffset, hr.getZ() + zOffset);
 
 		world.setBlock(hr.getX() + xOffset, hr.getY() + yOffset, hr.getZ() + zOffset, block, block.rebuildChunkOnPlace());
-		BlockData blockData = subChunk.getBlockData(hr.getX() + xOffset, hr.getY() + yOffset, hr.getZ() + zOffset);
+		BlockData blockData = subChunk.getBlockData(hr.getCx() + xOffset, hr.getCy() + yOffset, hr.getCz() + zOffset);
 
 		block.onPlace(subChunk, blockData, player, face, hr.getX() + xOffset, hr.getY() + yOffset, hr.getZ() + zOffset);
-		updateAll(hr.getX() + xOffset, hr.getY() + yOffset, hr.getZ() + zOffset);
+		updateAll(subChunk, hr.getX() + xOffset, hr.getY() + yOffset, hr.getZ() + zOffset);
 	}
 
 	/* Breaking Block */
@@ -71,32 +71,35 @@ public class BasicEvents
 
 		SubChunk subChunk = world.getSubChunkFromBlockCoords(hr.getX(), hr.getY(), hr.getZ());
 
-		BlockRegistry.getBlockById(world.getBlockId(hr.getX(), hr.getY(), hr.getZ())).onBreak(subChunk, subChunk.getBlockData(hr.getX(), hr.getY(), hr.getZ()), player, hr.getFace(), hr.getX(), hr.getY(), hr.getZ());
+		BlockData data = subChunk.getBlockData(hr.getCx(), hr.getCy(), hr.getCz());
+
+		BlockRegistry.getBlockById(world.getBlockId(hr.getX(), hr.getY(), hr.getZ())).onBreak(subChunk, data, player, hr.getFace(), hr.getX(), hr.getY(), hr.getZ());
 		world.setBlock(hr.getX(), hr.getY(), hr.getZ(), Block.air.getId());
-		updateAll(hr.getX(), hr.getY(), hr.getZ());
+		updateAll(subChunk, hr.getX(), hr.getY(), hr.getZ());
 	}
 
 	/* Updating Block */
-	public static void updateAll(int x, int y, int z)
+	public static void updateAll(SubChunk subChunk, int x, int y, int z)
 	{
-		update(EnumFace.NONE, x, y, z);
+		update(subChunk, EnumFace.NONE, x, y, z);
 		for (EnumFace face : EnumFace.getFaces())
 		{
-			update(face, x + face.getXOffset(), y + face.getYOffset(), z + face.getZOffset());
+			update(
+				subChunk.getNeighbouringChunk(Math.floorMod(x, 16) + face.getXOffset(), Math.floorMod(y, 16) + face.getYOffset(), Math.floorMod(z, 16) + face.getZOffset()),
+				face, x + face.getXOffset(), y + face.getYOffset(), z + face.getZOffset());
 		}
 	}
 
-	public static void update(EnumFace updateFrom, int x, int y, int z)
+	public static void update(SubChunk subChunk, EnumFace updateFrom, int x, int y, int z)
 	{
-		World world = CaveGame.getInstance().world;
-		SubChunk subChunk = world.getSubChunkFromBlockCoords(x, y, z);
-
 		if (subChunk == null) return;
 
-		Block block = world.getBlock(x, y, z);
+		subChunk.addScheduledUpdate(Math.floorMod(x, 16), Math.floorMod(y, 16), Math.floorMod(z, 16));
 
-		BlockData blockData = subChunk.getBlockData(x, y, z);
-
-		block.onUpdate(subChunk, blockData, updateFrom, x, y, z);
+//		Block block = world.getBlock(x, y, z);
+//
+//		BlockData blockData = subChunk.getBlockData(x, y, z);
+//
+//		block.onUpdate(subChunk, blockData, updateFrom, x, y, z);
 	}
 }

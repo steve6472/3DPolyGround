@@ -9,6 +9,8 @@ import com.steve6472.polyground.block.model.registry.face.FaceRegistry;
 import com.steve6472.polyground.block.registry.BlockRegistry;
 import com.steve6472.polyground.block.special.SlabBlock;
 import com.steve6472.polyground.block.special.StairBlock;
+import com.steve6472.polyground.world.chunk.SubChunk;
+import com.steve6472.polyground.world.chunk.SubChunkBuilder;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)

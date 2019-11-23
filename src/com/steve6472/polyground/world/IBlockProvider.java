@@ -3,6 +3,7 @@ package com.steve6472.polyground.world;
 import com.steve6472.polyground.HitResult;
 import com.steve6472.polyground.block.Block;
 import com.steve6472.polyground.block.registry.BlockRegistry;
+import com.steve6472.polyground.world.chunk.Chunk;
 
 import java.util.function.Function;
 

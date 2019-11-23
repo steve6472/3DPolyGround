@@ -5,7 +5,8 @@ import com.steve6472.polyground.block.blockdata.BlockData;
 import com.steve6472.polyground.block.model.registry.Cube;
 import com.steve6472.polyground.block.registry.BlockRegistry;
 import com.steve6472.polyground.world.BuildHelper;
-import com.steve6472.polyground.world.SubChunk;
+import com.steve6472.polyground.world.chunk.ModelLayer;
+import com.steve6472.polyground.world.chunk.SubChunk;
 
 import java.io.File;
 
@@ -23,7 +24,7 @@ public class TransparentBlock extends Block
 	}
 
 	@Override
-	public int createModel(int x, int y, int z, SubChunk sc, BlockData blockData, BuildHelper buildHelper, int modelLayer)
+	public int createModel(int x, int y, int z, SubChunk sc, BlockData blockData, BuildHelper buildHelper, ModelLayer modelLayer)
 	{
 		int tris = 0;
 

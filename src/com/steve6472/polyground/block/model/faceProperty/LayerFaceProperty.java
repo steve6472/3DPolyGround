@@ -2,6 +2,7 @@ package com.steve6472.polyground.block.model.faceProperty;
 
 import com.steve6472.polyground.block.model.CubeFace;
 import com.steve6472.polyground.block.model.registry.face.FaceRegistry;
+import com.steve6472.polyground.world.chunk.ModelLayer;
 import org.json.JSONObject;
 
 /**********************
@@ -12,34 +13,34 @@ import org.json.JSONObject;
  ***********************/
 public class LayerFaceProperty extends FaceProperty
 {
-	private int layer;
+	private ModelLayer layer;
 
 	public LayerFaceProperty()
 	{
 	}
 
-	public LayerFaceProperty(int layer)
+	public LayerFaceProperty(ModelLayer layer)
 	{
 		this.layer = layer;
 	}
 
-	public int getLayer()
+	public ModelLayer getLayer()
 	{
 		return layer;
 	}
 
-	public void setLayer(int layer)
+	public void setLayer(ModelLayer layer)
 	{
 		this.layer = layer;
 	}
 
-	public static int getModelLayer(CubeFace face)
+	public static ModelLayer getModelLayer(CubeFace face)
 	{
 		if (face == null)
-			return 0;
+			return ModelLayer.NORMAL;
 
 		if (!face.hasProperty(FaceRegistry.modelLayer))
-			return 0;
+			return ModelLayer.NORMAL;
 
 		return face.getProperty(FaceRegistry.modelLayer).getLayer();
 	}
@@ -47,7 +48,7 @@ public class LayerFaceProperty extends FaceProperty
 	@Override
 	public void loadFromJSON(JSONObject json)
 	{
-		layer = json.getInt("modelLayer");
+		layer = json.getEnum(ModelLayer.class, "modelLayer");
 	}
 
 	@Override

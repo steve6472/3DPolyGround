@@ -8,7 +8,7 @@ import com.steve6472.polyground.block.blockdata.IBlockData;
 import com.steve6472.polyground.block.blockdata.RotationData;
 import com.steve6472.polyground.block.model.registry.Cube;
 import com.steve6472.polyground.entity.Player;
-import com.steve6472.polyground.world.SubChunk;
+import com.steve6472.polyground.world.chunk.SubChunk;
 import com.steve6472.polyground.world.World;
 
 import java.io.File;

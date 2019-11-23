@@ -2,7 +2,7 @@ package com.steve6472.polyground.block.model.faceProperty.condition;
 
 import com.steve6472.polyground.CaveGame;
 import com.steve6472.polyground.block.model.faceProperty.FaceProperty;
-import com.steve6472.polyground.world.SubChunk;
+import com.steve6472.polyground.world.chunk.SubChunk;
 import org.json.JSONObject;
 
 import java.util.HashMap;

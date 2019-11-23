@@ -1,11 +1,11 @@
 package com.steve6472.polyground.particle;
 
-import com.steve6472.polyground.Particle;
 import com.steve6472.polyground.CaveGame;
-import com.steve6472.polyground.QuickSort;
+import com.steve6472.polyground.Particle;
 import com.steve6472.polyground.particle.particles.BasicParticle;
 import com.steve6472.polyground.tessellators.ParticleTessellator;
 import com.steve6472.sge.gfx.Tessellator;
+import org.joml.AABBf;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 
@@ -74,6 +74,8 @@ public class ParticleStorage
 
 	private void subRender(HashMap<Class<? extends Particle>, List<Particle>> map)
 	{
+		AABBf test = new AABBf();
+
 		for (Class<? extends Particle> type : map.keySet())
 		{
 			List<Particle> list = map.get(type);
@@ -81,8 +83,8 @@ public class ParticleStorage
 			if (list.isEmpty())
 				continue;
 
-			if (list.get(0).sort())
-				QuickSort.sortEntitiesByDistance(list, CaveGame.getInstance().getCamera().getPosition());
+//			if (list.get(0).sort())
+//				QuickSort.sortEntitiesByDistance(list, CaveGame.getInstance().getCamera().getPosition());
 
 			list.get(0).applyShader();
 
@@ -91,7 +93,8 @@ public class ParticleStorage
 
 			for (Particle p : list)
 			{
-				p.applyInvidualShader();
+//				p.applyInvidualShader();
+				if (CaveGame.getInstance().frustum.insideFrsutum(p.getX() - p.getSize(), p.getY() - p.getSize(), p.getZ() - p.getSize(), p.getX() + p.getSize(), p.getY() + p.getSize(), p.getZ() + p.getSize()))
 				tess.pos(p.getX(), p.getY(), p.getZ()).color(p.getColor()).size(p.getSize()).endVertex();
 			}
 
