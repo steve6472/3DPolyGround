@@ -64,6 +64,6 @@ public interface IChunkProvider
 			if (getChunkStorage().get(chunk.getX(), chunk.getZ() - 1) != null) getChunkStorage().get(chunk.getX(), chunk.getZ() - 1).update();
 		}
 
-		getChunkStorage().get(chunk.getX(), chunk.getZ()).update();
+//		getChunkStorage().get(chunk.getX(), chunk.getZ()).update();
 	}
 }

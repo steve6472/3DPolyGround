@@ -35,7 +35,7 @@ import static org.lwjgl.opengl.GL11.*;
  ***********************/
 public class BlockPreview
 {
-	private List<Float> vertices, textures, colors;
+	private List<Float> vertices, textures, colors, light;
 
 	private BuildHelper buildHelper;
 	private DepthFrameBuffer preview;
@@ -61,6 +61,7 @@ public class BlockPreview
 		vertices = new ArrayList<>();
 		textures = new ArrayList<>();
 		colors = new ArrayList<>();
+		light = new ArrayList<>();
 
 		buildHelper = new BuildHelper();
 		itemTessellator = new ItemTessellator();
@@ -156,11 +157,12 @@ public class BlockPreview
 		vertices.clear();
 		textures.clear();
 		colors.clear();
+		light.clear();
 
 		preview.bindFrameBuffer(w, h);
 		DepthFrameBuffer.clearCurrentBuffer();
 
-		buildHelper.load(0, 0, 0, vertices, colors, textures);
+		buildHelper.load(0, 0, 0, vertices, colors, textures, light);
 		int tris = model(block);
 
 		itemTessellator.begin(tris * 3);

@@ -9,11 +9,17 @@ package com.steve6472.polyground;
 public class Options
 {
 	public boolean enablePostProcessing = true;
-	public boolean renderAtlases = false;
 
 	public boolean isGamePaused = true;
 	public boolean isInMenu = true;
 	public boolean isMouseFree = false;
+
+	/*
+	* Debug
+	*/
+	public boolean chunkModelDebug = false;
+	public boolean renderAtlases = false;
+	public boolean lightDebug = false;
 
 	public float mouseSensitivity = 0.2f;
 

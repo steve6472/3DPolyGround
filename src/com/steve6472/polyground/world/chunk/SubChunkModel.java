@@ -20,7 +20,7 @@ import static com.steve6472.sge.gfx.VertexObjectCreator.*;
 public class SubChunkModel
 {
 	/* Model Data */
-	int vao, positionVbo, colorVbo, textureVbo;
+	int vao, positionVbo, colorVbo, textureVbo, lightVbo;
 	int triangleCount;
 
 	private ModelLayer modelLayer;
@@ -32,7 +32,7 @@ public class SubChunkModel
 
 	public void unload()
 	{
-		delete(vao, positionVbo, colorVbo, textureVbo);
+		delete(vao, positionVbo, colorVbo, textureVbo, lightVbo);
 	}
 
 	public void rebuild(SubChunk sc)
@@ -40,9 +40,13 @@ public class SubChunkModel
 		List<Float> vertices = new ArrayList<>();
 		List<Float> colors = new ArrayList<>();
 		List<Float> textures = new ArrayList<>();
+		List<Float> light = new ArrayList<>();
+
 		BuildHelper buildHelper = sc.getWorld().getPg().buildHelper;
 
 		triangleCount = 0;
+
+		setupLight(sc);
 
 		for (int i = 0; i < sc.getIds().length; i++)
 		{
@@ -59,7 +63,7 @@ public class SubChunkModel
 					{
 						if (b != null && b != Block.air)
 						{
-							sc.getParent().getWorld().getPg().buildHelper.load(j, i, k, vertices, colors, textures);
+							sc.getParent().getWorld().getPg().buildHelper.load(j, i, k, vertices, colors, textures, light);
 							triangleCount += b.createModel(j, i, k, sc, blockData, buildHelper, modelLayer);
 						}
 
@@ -75,6 +79,7 @@ public class SubChunkModel
 							System.err.println("Error while building chunk error block!\nFrick! This should not happen :(");
 							ex.printStackTrace();
 							CaveGame.getInstance().exit();
+							System.exit(2);
 						}
 						return;
 					}
@@ -82,13 +87,36 @@ public class SubChunkModel
 			}
 		}
 
+		if (CaveGame.getInstance().options.chunkModelDebug && triangleCount != 0)
+		{
+			System.out.println(String.format("Layer: %s, Triangle Count: %d, Vertices: %d, Colors: %d, Textures: %d, Light: %d", modelLayer, triangleCount, vertices.size(), colors.size(), textures.size(), light.size()));
+		}
+
 		bindVAO(vao);
 
 		storeFloatDataInAttributeList(0, 3, positionVbo, vertices);
 		storeFloatDataInAttributeList(1, 4, colorVbo, colors);
 		storeFloatDataInAttributeList(2, 2, textureVbo, textures);
+		storeFloatDataInAttributeList(3, 3, lightVbo, light);
 
 		unbindVAO();
+	}
+
+	private void setupLight(SubChunk sc)
+	{
+		for (int i = 0; i < sc.getIds().length; i++)
+		{
+			for (int j = 0; j < sc.getIds()[i].length; j++)
+			{
+				for (int k = 0; k < sc.getIds()[i][j].length; k++)
+				{
+					int id = sc.getIds()[j][i][k];
+					BlockData blockData = sc.getBlockData(i, j, k);
+
+					BlockRegistry.getBlockById(id).createLight(j, i, k, sc, blockData);
+				}
+			}
+		}
 	}
 
 	public int getVao()

@@ -2,7 +2,6 @@ model = block/smooth_slab_bottom
 special = slab
 type = bottom
 
-
 tags:
 {
 	slab

@@ -27,7 +27,7 @@ public class Chunk
 		this.z = z;
 		this.world = world;
 
-		subChunks = new SubChunk[3];
+		subChunks = new SubChunk[1];
 		for (int i = 0; i < subChunks.length; i++)
 		{
 			subChunks[i] = new SubChunk(this, i);

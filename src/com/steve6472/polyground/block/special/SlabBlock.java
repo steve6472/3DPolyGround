@@ -1,13 +1,6 @@
 package com.steve6472.polyground.block.special;
 
-import com.steve6472.polyground.EnumFace;
 import com.steve6472.polyground.block.Block;
-import com.steve6472.polyground.block.blockdata.BlockData;
-import com.steve6472.polyground.block.model.registry.Cube;
-import com.steve6472.polyground.world.BuildHelper;
-import com.steve6472.polyground.world.Cull;
-import com.steve6472.polyground.world.chunk.ModelLayer;
-import com.steve6472.polyground.world.chunk.SubChunk;
 import com.steve6472.sss2.SSS;
 
 import java.io.File;
@@ -44,27 +37,7 @@ public class SlabBlock extends Block
 					default -> throw new IllegalStateException("Unexpected value: " + sss.getString("type"));
 				};
 		}
-	}
-
-	@Override
-	public int createModel(int x, int y, int z, SubChunk sc, BlockData blockData, BuildHelper buildHelper, ModelLayer modelLayer)
-	{
-		int tris = 0;
-
-		buildHelper.setSubChunk(sc);
-		for (Cube c : blockModel.getCubes())
-		{
-			buildHelper.setCube(c);
-			for (EnumFace face : EnumFace.getFaces())
-			{
-				if (Cull.renderFace(x, y, z, c, face, this, sc))
-				{
-					tris += buildHelper.face(face);
-				}
-			}
-		}
-
-		return tris;
+		f = null;
 	}
 
 	public enum EnumSlabType

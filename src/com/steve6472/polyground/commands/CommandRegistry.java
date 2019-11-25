@@ -41,5 +41,7 @@ public class CommandRegistry
 		new SetCommand(dispatcher);
 		new SensitivityCommand(dispatcher);
 		new AICommand(dispatcher);
+		new ModelLayerCommand(dispatcher);
+		new ParticleCommand(dispatcher);
 	}
 }

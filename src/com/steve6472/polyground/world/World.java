@@ -156,6 +156,8 @@ public class World implements IBlockProvider
 
 	public float shade = 1f;
 
+	public static int enabled = -1;
+
 	public void render()
 	{
 		CaveGame.shaders.dissoveWorldShader.bind();
@@ -186,6 +188,9 @@ public class World implements IBlockProvider
 				{
 					if (sc.isEmpty(i)) continue;
 
+					if (enabled != -1 && i != enabled)
+						continue;
+
 					if (ModelLayer.EMISSION_NORMAL.ordinal() == i || ModelLayer.EMISSION_OVERLAY.ordinal() == i)
 						CaveGame.shaders.dissoveWorldShader.setUniform(DissoveWorldShader.SHADE, 1.0f);
 					else
@@ -193,7 +198,7 @@ public class World implements IBlockProvider
 
 					glBindVertexArray(sc.getModel(i).getVao());
 
-					for (int l = 0; l < 3; l++)
+					for (int l = 0; l < 4; l++)
 						glEnableVertexAttribArray(l);
 
 					glDrawArrays(Tessellator3D.TRIANGLES, 0, sc.getTriangleCount(i) * 3);
@@ -201,7 +206,7 @@ public class World implements IBlockProvider
 			}
 		}
 
-		for (int l = 0; l < 3; l++)
+		for (int l = 0; l < 4; l++)
 			glDisableVertexAttribArray(l);
 
 		glBindVertexArray(0);

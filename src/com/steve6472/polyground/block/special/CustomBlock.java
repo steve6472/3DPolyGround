@@ -2,6 +2,7 @@ package com.steve6472.polyground.block.special;
 
 import com.steve6472.polyground.EnumFace;
 import com.steve6472.polyground.block.blockdata.BlockData;
+import com.steve6472.polyground.block.model.faceProperty.LayerFaceProperty;
 import com.steve6472.polyground.block.model.registry.Cube;
 import com.steve6472.polyground.world.BuildHelper;
 import com.steve6472.polyground.world.chunk.ModelLayer;
@@ -34,10 +35,9 @@ public class CustomBlock extends TransparentBlock
 
 			for (EnumFace face : EnumFace.getFaces())
 			{
-				if (c.getFace(face) != null)
-				{
-					tris += buildHelper.face(face);
-				}
+				if (LayerFaceProperty.getModelLayer(c.getFace(face)) == modelLayer)
+					if (c.getFace(face) != null)
+						tris += buildHelper.face(face);
 			}
 		}
 

@@ -1,5 +1,6 @@
 package com.steve6472.polyground.world.chunk;
 
+import com.steve6472.polyground.CaveGame;
 import com.steve6472.polyground.EnumFace;
 import com.steve6472.polyground.block.Block;
 import com.steve6472.polyground.block.blockdata.BlockData;
@@ -7,6 +8,7 @@ import com.steve6472.polyground.block.registry.BlockRegistry;
 import com.steve6472.polyground.world.World;
 import com.steve6472.polyground.world.biomes.IBiomeProvider;
 import com.steve6472.polyground.world.generator.IGenerator;
+import com.steve6472.sge.main.util.ColorUtil;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -32,6 +34,7 @@ public class SubChunk implements IBiomeProvider
 	private BlockData[][][] blockData;
 	private int[][][] ids;
 	private int[][][] biomes;
+	private int[][][] light;
 	private List<Short> scheduledUpdates;
 	private List<Short> tickableBlocks;
 	private List<Short> newScheduledUpdates;
@@ -51,11 +54,48 @@ public class SubChunk implements IBiomeProvider
 		blockData = new BlockData[16][16][16];
 		ids = new int[16][16][16];
 		biomes = new int[16][16][16];
+		light = new int[16][16][16];
 		tickableBlocks = new ArrayList<>();
 		scheduledUpdates = new ArrayList<>();
 		newScheduledUpdates = new ArrayList<>();
 
-//		renderTime = 1;
+		clearLight();
+	}
+
+	public void clearLight()
+	{
+		for (int i = 0; i < 16; i++)
+		{
+			for (int j = 0; j < 16; j++)
+			{
+				for (int k = 0; k < 16; k++)
+				{
+					light[i][j][k] = 0;
+				}
+			}
+		}
+	}
+
+	public int getLight(int x, int y, int z)
+	{
+		return light[x][y][z];
+	}
+
+	/**
+	 * If the current light is not 0 (no color) it blends the two together
+	 *
+	 * @param x x coordinate
+	 * @param y y coordinate
+	 * @param z z coordinate
+	 * @param color light color
+	 */
+	public void setLight(int x, int y, int z, int color)
+	{
+		int l = light[x][y][z];
+		if (l == 0)
+			light[x][y][z] = color;
+		else
+			light[x][y][z] = ColorUtil.blend(l, color, 0.5);
 	}
 
 	public static IGenerator generator;
@@ -133,10 +173,14 @@ public class SubChunk implements IBiomeProvider
 
 	public void rebuild()
 	{
+		clearLight();
 		for (int i = 0; i < MODEL_COUNT; i++)
 		{
 			model[i].rebuild(this);
 		}
+
+		if (CaveGame.getInstance().options.chunkModelDebug)
+			System.out.println("");
 	}
 
 	public void unload()
@@ -272,6 +316,69 @@ public class SubChunk implements IBiomeProvider
 			} else
 			{
 				return Block.air;
+			}
+		}
+	}
+
+	/**
+	 *
+	 * Can check neighbour chunks.
+	 * Should be more efficient for chunk border light checking
+	 * as it does not have to create new Chunk Key everytime
+	 *
+	 * @param x x coordinate of light
+	 * @param y y coordinate of light
+	 * @param z z coordinate of light
+	 * @return int Light
+	 */
+	public int getLightEfficiently(int x, int y, int z)
+	{
+		int maxLayer = parent.getSubChunks().length;
+
+		World world = getWorld();
+
+		if (x >= 0 && x < 16 && z >= 0 && z < 16 && y >= 0 && y < 16)
+		{
+			return getLight(x, y, z);
+		} else
+		{
+			if (x == 16)
+			{
+				SubChunk sc = world.getSubChunk(getX() + 1, getLayer(), getZ());
+				if (sc == null)
+					return 0;
+				return sc.getLightEfficiently(0, y, z);
+			} else if (x == -1)
+			{
+				SubChunk sc = world.getSubChunk(getX() - 1, getLayer(), getZ());
+				if (sc == null)
+					return 0;
+				return sc.getLightEfficiently(15, y, z);
+			}
+
+			if (z == 16)
+			{
+				SubChunk sc = world.getSubChunk(getX(), getLayer(), getZ() + 1);
+				if (sc == null)
+					return 0;
+				return sc.getLightEfficiently(x, y, 0);
+			} else if (z == -1)
+			{
+				SubChunk sc = world.getSubChunk(getX(), getLayer(), getZ() - 1);
+				if (sc == null)
+					return 0;
+				return sc.getLightEfficiently(x, y, 15);
+			}
+
+			if (y == -1 && getLayer() > 0)
+			{
+				return parent.getSubChunks()[getLayer() - 1].getLightEfficiently(x, 15, z);
+			} else if (y == 16 && getLayer() + 1 < maxLayer)
+			{
+				return parent.getSubChunks()[getLayer() + 1].getLightEfficiently(x, 0, z);
+			} else
+			{
+				return 0;
 			}
 		}
 	}

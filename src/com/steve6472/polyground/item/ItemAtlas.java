@@ -41,7 +41,7 @@ public class ItemAtlas
 	private ItemTessellator itemTessellator;
 	private Sprite itemTexture;
 
-	private List<Float> vertices, textures, colors;
+	private List<Float> vertices, textures, colors, light;
 
 	public int totalSize;
 
@@ -55,6 +55,7 @@ public class ItemAtlas
 		vertices = new ArrayList<>();
 		textures = new ArrayList<>();
 		colors = new ArrayList<>();
+		light = new ArrayList<>();
 
 		itemTexture = new Sprite();
 
@@ -147,8 +148,9 @@ public class ItemAtlas
 		vertices.clear();
 		textures.clear();
 		colors.clear();
+		light.clear();
 
-		buildHelper.load(0, 0, 0, vertices, colors, textures);
+		buildHelper.load(0, 0, 0, vertices, colors, textures, light);
 		int tris = model(block, modelLayer);
 
 		itemTessellator.begin(tris * 3);
@@ -191,6 +193,7 @@ public class ItemAtlas
 
 			for (EnumFace face : EnumFace.getFaces())
 			{
+				/* Check if face is in correct (Chunk) Model Layer */
 				if (LayerFaceProperty.getModelLayer(c.getFace(face)) == modelLayer)
 					tris += buildHelper.face(face);
 			}

@@ -1,5 +1,5 @@
 model = block/grass_block_slab_bottom
-special = slab_tinted
+special = slab
 type = bottom
 
 

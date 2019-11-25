@@ -31,7 +31,7 @@ public class FlatGenerator implements IGenerator
 //					}
 
 					if (j == 0 && subChunk.getLayer() == 0)
-						subChunk.getIds()[i][j][k] = BlockRegistry.getBlockIdByName("grass");
+						subChunk.getIds()[i][j][k] = BlockRegistry.getBlockIdByName("stone");
 				}
 			}
 		}

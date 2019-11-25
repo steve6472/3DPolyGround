@@ -9,6 +9,7 @@ import com.steve6472.polyground.block.model.registry.face.FaceRegistry;
 import com.steve6472.polyground.block.registry.BlockRegistry;
 import com.steve6472.polyground.block.special.SlabBlock;
 import com.steve6472.polyground.block.special.StairBlock;
+import com.steve6472.polyground.block.special.TransparentBlock;
 import com.steve6472.polyground.world.chunk.SubChunk;
 import com.steve6472.polyground.world.chunk.SubChunkBuilder;
 
@@ -27,6 +28,17 @@ public class Cull
 		if (middleBlock instanceof StairBlock)
 		{
 			return true;
+		}
+
+		if (middleBlock instanceof TransparentBlock)
+		{
+			if (testedBlock instanceof TransparentBlock)
+			{
+				return testedBlock != middleBlock;
+			} else
+			{
+				return testedBlock == Block.air;
+			}
 		}
 
 		if (!(middleBlock instanceof SlabBlock))

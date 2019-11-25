@@ -18,6 +18,8 @@ public abstract class Particle implements IMotion3f, IPosition3f, Comparable<Par
 	private Vector4f color;
 	private final long deathTime;
 
+	public boolean forcedDeath = false;
+
 	public Particle(Vector3f motion, Vector3f position, float size, Vector4f color, long lifeTime)
 	{
 		this.motion = motion;
@@ -78,7 +80,7 @@ public abstract class Particle implements IMotion3f, IPosition3f, Comparable<Par
 
 	public boolean shouldDie()
 	{
-		return false;
+		return forcedDeath;
 	}
 
 	public boolean sort()

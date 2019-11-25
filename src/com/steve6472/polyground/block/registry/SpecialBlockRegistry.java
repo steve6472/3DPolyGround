@@ -30,9 +30,9 @@ public class SpecialBlockRegistry
 	public static final SpecialBlockEntry<LeavesBlock> leaves = register("leaves", LeavesBlock::new);
 	public static final SpecialBlockEntry<GravelBlock> gravel = register("gravel", GravelBlock::new);
 	public static final SpecialBlockEntry<DoubleSlabBlockTinted> doubleSlabTinted = register("double_slab_tinted", DoubleSlabBlockTinted::new);
-	public static final SpecialBlockEntry<SlabBlockTinted> slabTinted = register("slab_tinted", SlabBlockTinted::new);
 	public static final SpecialBlockEntry<TimeSliderBlock> timeSlider = register("time_slider", TimeSliderBlock::new);
 	public static final SpecialBlockEntry<CustomBlock> custom = register("custom", CustomBlock::new);
+	public static final SpecialBlockEntry<LightSourceBlock> light = register("light", LightSourceBlock::new);
 
 	public static <T extends Block> SpecialBlockEntry<T> register(String id, ISpecialBlockFactory<T> factory)
 	{
