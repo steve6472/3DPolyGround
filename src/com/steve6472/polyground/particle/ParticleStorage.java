@@ -56,7 +56,7 @@ public class ParticleStorage
 
 	private boolean isDead(Particle p)
 	{
-		return p.getDeathTime() != -1 && System.currentTimeMillis() >= p.getDeathTime() || p.shouldDie();
+		return (p.getDeathTime() != -1 && System.currentTimeMillis() >= p.getDeathTime()) || p.shouldDie();
 	}
 
 	public void render()

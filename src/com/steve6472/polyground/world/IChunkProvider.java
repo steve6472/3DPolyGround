@@ -64,6 +64,10 @@ public interface IChunkProvider
 			if (getChunkStorage().get(chunk.getX(), chunk.getZ() - 1) != null) getChunkStorage().get(chunk.getX(), chunk.getZ() - 1).update();
 		}
 
+//		FloatingText c = new FloatingText(String.format("[%d,%d]", chunk.getX(), chunk.getZ()));
+//		c.setPosition(chunk.getX() * 16 + 7.5f, 2.5f, chunk.getZ() * 16 + 7.5f);
+//		CaveGame.getInstance().world.addEntity(c);
+
 //		getChunkStorage().get(chunk.getX(), chunk.getZ()).update();
 	}
 }

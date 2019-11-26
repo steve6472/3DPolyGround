@@ -16,7 +16,7 @@ public class TextLog
 {
 	private int displayTime = 2000;
 	private int fadeStart = 1000;
-	private int maxDisplayed = 8;
+	private int maxDisplayed = 16;
 
 	private List<Long> displayed;
 	private List<Object[]> texts;
@@ -36,16 +36,16 @@ public class TextLog
 			displayed.set(j, displayed.get(j) - 1);
 		}
 
-		int i = 0;
+		int i = displayed.size() - 1;
 		for (Iterator<Long> iter = displayed.iterator(); iter.hasNext(); )
 		{
 			Long dis = iter.next();
 			if (dis + displayTime <= now)
 			{
 				iter.remove();
-				texts.remove(i);
+				texts.remove(displayed.size() - i);
 			}
-			i++;
+			i--;
 		}
 	}
 

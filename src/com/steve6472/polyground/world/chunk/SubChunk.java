@@ -8,12 +8,11 @@ import com.steve6472.polyground.block.registry.BlockRegistry;
 import com.steve6472.polyground.world.World;
 import com.steve6472.polyground.world.biomes.IBiomeProvider;
 import com.steve6472.polyground.world.generator.IGenerator;
-import com.steve6472.sge.main.util.ColorUtil;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
+
+import static com.steve6472.sge.gfx.VertexObjectCreator.unbindVAO;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
@@ -32,12 +31,11 @@ public class SubChunk implements IBiomeProvider
 	public float renderTime = 0.1f;
 
 	private BlockData[][][] blockData;
-	private int[][][] ids;
 	private int[][][] biomes;
-	private int[][][] light;
-	private List<Short> scheduledUpdates;
-	private List<Short> tickableBlocks;
-	private List<Short> newScheduledUpdates;
+	private SubChunkLight light;
+	private SubChunkBlocks blocks;
+
+	private ChunkPosStorage tickableBlocks, scheduledUpdates, newScheduledUpdates;
 
 	public SubChunk(Chunk parent, int layer)
 	{
@@ -52,50 +50,16 @@ public class SubChunk implements IBiomeProvider
 		}
 
 		blockData = new BlockData[16][16][16];
-		ids = new int[16][16][16];
 		biomes = new int[16][16][16];
-		light = new int[16][16][16];
-		tickableBlocks = new ArrayList<>();
-		scheduledUpdates = new ArrayList<>();
-		newScheduledUpdates = new ArrayList<>();
 
-		clearLight();
-	}
+		tickableBlocks = new ChunkPosStorage();
+		scheduledUpdates = new ChunkPosStorage();
+		newScheduledUpdates = new ChunkPosStorage();
 
-	public void clearLight()
-	{
-		for (int i = 0; i < 16; i++)
-		{
-			for (int j = 0; j < 16; j++)
-			{
-				for (int k = 0; k < 16; k++)
-				{
-					light[i][j][k] = 0;
-				}
-			}
-		}
-	}
+		light = new SubChunkLight(this);
+		blocks = new SubChunkBlocks(this);
 
-	public int getLight(int x, int y, int z)
-	{
-		return light[x][y][z];
-	}
-
-	/**
-	 * If the current light is not 0 (no color) it blends the two together
-	 *
-	 * @param x x coordinate
-	 * @param y y coordinate
-	 * @param z z coordinate
-	 * @param color light color
-	 */
-	public void setLight(int x, int y, int z, int color)
-	{
-		int l = light[x][y][z];
-		if (l == 0)
-			light[x][y][z] = color;
-		else
-			light[x][y][z] = ColorUtil.blend(l, color, 0.5);
+		light.clearLight();
 	}
 
 	public static IGenerator generator;
@@ -110,15 +74,11 @@ public class SubChunk implements IBiomeProvider
 		if (renderTime <= 1.0f)
 			renderTime += 0.025f;
 
-		for (short i : tickableBlocks)
+		tickableBlocks.iterate((x, y, z) ->
 		{
-			short x = (short) (i >> 8);
-			short y = (short) ((i >> 4) & 0xf);
-			short z = (short) (i & 0xf);
-
-			Block blockToTick = BlockRegistry.getBlockById(ids[x][y][z]);
+			Block blockToTick = BlockRegistry.getBlockById(blocks.getIds()[x][y][z]);
 			blockToTick.tick(this, blockData[x][y][z], x, y, z);
-		}
+		});
 
 		scheduledUpdates.addAll(newScheduledUpdates);
 		newScheduledUpdates.clear();
@@ -131,7 +91,7 @@ public class SubChunk implements IBiomeProvider
 			short y = (short) ((i >> 4) & 0xf);
 			short z = (short) (i & 0xf);
 
-			Block blockToUpdate = BlockRegistry.getBlockById(ids[x][y][z]);
+			Block blockToUpdate = BlockRegistry.getBlockById(blocks.getIds()[x][y][z]);
 			blockToUpdate.onUpdate(this, blockData[x][y][z], EnumFace.NONE, x, y, z);
 			iter.remove();
 		}
@@ -142,42 +102,42 @@ public class SubChunk implements IBiomeProvider
 		ChunkSerializer.serialize(this);
 	}
 
-	public void addTickableBlock(int x, int y, int z)
-	{
-		short r = (short) (x << 8 | y << 4 | z);
-		if (!tickableBlocks.contains(r))
-			tickableBlocks.add(r);
-	}
-
-	public void removeTickableBlock(int x, int y, int z)
-	{
-		short r = (short) (x << 8 | y << 4 | z);
-		if (tickableBlocks.contains(r))
-			tickableBlocks.remove((Short) r);
-	}
-
-	public boolean isTickableBlock(int x, int y, int z)
-	{
-		short r = (short) (x << 8 | y << 4 | z);
-		return tickableBlocks.contains(r);
-	}
-
-
-
 	public void addScheduledUpdate(int x, int y, int z)
 	{
 		short r = (short) (x << 8 | y << 4 | z);
-		if (!scheduledUpdates.contains(r) && !newScheduledUpdates.contains(r))
-			newScheduledUpdates.add(r);
+		if (!scheduledUpdates.has(r) && !newScheduledUpdates.has(r))
+			newScheduledUpdates.addNonSafe(r);
 	}
 
 	public void rebuild()
 	{
+		long start = System.nanoTime();
+
+		if (CaveGame.getInstance().options.lightDebug)
+		{
+			CaveGame.getInstance().particles.getMap().values().forEach(list -> list.forEach(particle ->
+			{
+				if (particle.hasTag("DebugLight" + getX() + "_" + getLayer() + "_" + getZ()))
+				{
+					particle.forcedDeath = true;
+				}
+			}));
+		}
+
 		clearLight();
+
 		for (int i = 0; i < MODEL_COUNT; i++)
 		{
 			model[i].rebuild(this);
 		}
+
+		/* Can be called only once after finishing updating all sub-chunk models */
+		unbindVAO();
+
+		long end = System.nanoTime();
+
+		if (CaveGame.getInstance().options.subChunkBuildTime)
+			CaveGame.getInstance().inGameGui.chat.addText("SubChunk " + getX() + "/" + getLayer() + "/" + getZ() + " Took " + (end - start) / 1000000.0 + "ms to build");
 
 		if (CaveGame.getInstance().options.chunkModelDebug)
 			System.out.println("");
@@ -222,11 +182,6 @@ public class SubChunk implements IBiomeProvider
 		return renderTime;
 	}
 
-	public int[][][] getIds()
-	{
-		return ids;
-	}
-
 	public BlockData[][][] getBlockData()
 	{
 		return blockData;
@@ -234,153 +189,13 @@ public class SubChunk implements IBiomeProvider
 
 	public BlockData getBlockData(int x, int y, int z)
 	{
-		return getBlockData()[x][y][z];
+//		return getBlockData()[x][y][z];
+		return null;
 	}
 
 	public void setBlockEntity(int x, int y, int z, BlockData blockData)
 	{
 		getBlockData()[x][y][z] = blockData;
-	}
-
-	public int getBlockId(int x, int y, int z)
-	{
-		return getIds()[x][y][z];
-	}
-
-	public Block getBlock(int x, int y, int z)
-	{
-		return BlockRegistry.getBlockById(getBlockId(x, y, z));
-	}
-
-	public void setBlock(int x, int y, int z, int id)
-	{
-		getIds()[x][y][z] = id;
-	}
-
-	/**
-	 *
-	 * Can check neighbour chunks.
-	 * Should be more efficient for chunk border block checking
-	 * as it does not have to create new Chunk Key everytime
-	 *
-	 * @param x x coordinate of block
-	 * @param y y coordinate of block
-	 * @param z z coordinate of block
-	 * @return Block
-	 */
-	public Block getBlockEfficiently(int x, int y, int z)
-	{
-		int maxLayer = parent.getSubChunks().length;
-
-		World world = getWorld();
-
-		if (x >= 0 && x < 16 && z >= 0 && z < 16 && y >= 0 && y < 16)
-		{
-			return getBlock(x, y, z);
-		} else
-		{
-			if (x == 16)
-			{
-				SubChunk sc = world.getSubChunk(getX() + 1, getLayer(), getZ());
-				if (sc == null)
-					return Block.air;
-				return sc.getBlockEfficiently(0, y, z);
-			} else if (x == -1)
-			{
-				SubChunk sc = world.getSubChunk(getX() - 1, getLayer(), getZ());
-				if (sc == null)
-					return Block.air;
-				return sc.getBlockEfficiently(15, y, z);
-			}
-
-			if (z == 16)
-			{
-				SubChunk sc = world.getSubChunk(getX(), getLayer(), getZ() + 1);
-				if (sc == null)
-					return Block.air;
-				return sc.getBlockEfficiently(x, y, 0);
-			} else if (z == -1)
-			{
-				SubChunk sc = world.getSubChunk(getX(), getLayer(), getZ() - 1);
-				if (sc == null)
-					return Block.air;
-				return sc.getBlockEfficiently(x, y, 15);
-			}
-
-			if (y == -1 && getLayer() > 0)
-			{
-				return parent.getSubChunks()[getLayer() - 1].getBlockEfficiently(x, 15, z);
-			} else if (y == 16 && getLayer() + 1 < maxLayer)
-			{
-				return parent.getSubChunks()[getLayer() + 1].getBlockEfficiently(x, 0, z);
-			} else
-			{
-				return Block.air;
-			}
-		}
-	}
-
-	/**
-	 *
-	 * Can check neighbour chunks.
-	 * Should be more efficient for chunk border light checking
-	 * as it does not have to create new Chunk Key everytime
-	 *
-	 * @param x x coordinate of light
-	 * @param y y coordinate of light
-	 * @param z z coordinate of light
-	 * @return int Light
-	 */
-	public int getLightEfficiently(int x, int y, int z)
-	{
-		int maxLayer = parent.getSubChunks().length;
-
-		World world = getWorld();
-
-		if (x >= 0 && x < 16 && z >= 0 && z < 16 && y >= 0 && y < 16)
-		{
-			return getLight(x, y, z);
-		} else
-		{
-			if (x == 16)
-			{
-				SubChunk sc = world.getSubChunk(getX() + 1, getLayer(), getZ());
-				if (sc == null)
-					return 0;
-				return sc.getLightEfficiently(0, y, z);
-			} else if (x == -1)
-			{
-				SubChunk sc = world.getSubChunk(getX() - 1, getLayer(), getZ());
-				if (sc == null)
-					return 0;
-				return sc.getLightEfficiently(15, y, z);
-			}
-
-			if (z == 16)
-			{
-				SubChunk sc = world.getSubChunk(getX(), getLayer(), getZ() + 1);
-				if (sc == null)
-					return 0;
-				return sc.getLightEfficiently(x, y, 0);
-			} else if (z == -1)
-			{
-				SubChunk sc = world.getSubChunk(getX(), getLayer(), getZ() - 1);
-				if (sc == null)
-					return 0;
-				return sc.getLightEfficiently(x, y, 15);
-			}
-
-			if (y == -1 && getLayer() > 0)
-			{
-				return parent.getSubChunks()[getLayer() - 1].getLightEfficiently(x, 15, z);
-			} else if (y == 16 && getLayer() + 1 < maxLayer)
-			{
-				return parent.getSubChunks()[getLayer() + 1].getLightEfficiently(x, 0, z);
-			} else
-			{
-				return 0;
-			}
-		}
 	}
 
 	public SubChunk getNeighbouringChunk(int x, int y, int z)
@@ -423,9 +238,12 @@ public class SubChunk implements IBiomeProvider
 		}
 	}
 
-	public void setBlock(int x, int y, int z, Block block)
+	public void updateAllLayers()
 	{
-		setBlock(x, y, z, block.getId());
+		for (SubChunkModel m : model)
+		{
+			m.setShouldUpdate(true);
+		}
 	}
 
 	public Chunk getParent()
@@ -462,5 +280,98 @@ public class SubChunk implements IBiomeProvider
 	public int[][][] getBiomeIds()
 	{
 		return biomes;
+	}
+
+	public ChunkPosStorage getTickableBlocks()
+	{
+		return tickableBlocks;
+	}
+
+	/*
+	 * Light
+	 */
+
+	public void clearLight()
+	{
+		light.clearLight();
+	}
+
+	/**
+	 *
+	 * Can check neighbour chunks.
+	 * Should be more efficient for chunk border light checking
+	 * as it does not have to create new Chunk Key everytime
+	 *
+	 * @param x x coordinate of light
+	 * @param y y coordinate of light
+	 * @param z z coordinate of light
+	 * @return int Light
+	 */
+	public int getLightEfficiently(int x, int y, int z)
+	{
+		return light.getLightEfficiently(x, y, z);
+	}
+
+	/**
+	 * If the current light is not 0 (no color) it blends the two together
+	 *
+	 * @param x x coordinate
+	 * @param y y coordinate
+	 * @param z z coordinate
+	 * @param color light color
+	 */
+	public void setLight(int x, int y, int z, int color)
+	{
+		light.setLight(x, y, z, color);
+	}
+
+	public int getLight(int x, int y, int z)
+	{
+		return light.getLight(x, y, z);
+	}
+
+	/*
+	 * Blocks
+	 */
+
+	public int[][][] getIds()
+	{
+		return blocks.getIds();
+	}
+
+	public int getBlockId(int x, int y, int z)
+	{
+		return blocks.getBlockId(x, y, z);
+	}
+
+	public Block getBlock(int x, int y, int z)
+	{
+		return blocks.getBlock(x, y, z);
+	}
+
+	public void setBlock(int x, int y, int z, int id)
+	{
+		blocks.setBlock(x, y, z, id);
+	}
+
+	/**
+	 *
+	 * Can check neighbour chunks.
+	 * Should be more efficient for chunk border block checking
+	 * as it does not have to create new Chunk Key everytime
+	 *
+	 * @param x x coordinate of block
+	 * @param y y coordinate of block
+	 * @param z z coordinate of block
+	 * @return Block
+	 */
+	public Block getBlockEfficiently(int x, int y, int z)
+	{
+		return blocks.getBlockEfficiently(x, y, z);
+	}
+
+	public void setBlock(int x, int y, int z, Block block)
+	{
+		blocks.setBlock(x, y, z, block);
 	}
 }

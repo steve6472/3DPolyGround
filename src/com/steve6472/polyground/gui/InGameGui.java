@@ -7,6 +7,7 @@ import com.steve6472.sge.gfx.SpriteRender;
 import com.steve6472.sge.gfx.font.CustomChar;
 import com.steve6472.sge.gfx.font.Font;
 import com.steve6472.sge.gui.Gui;
+import com.steve6472.sge.gui.components.GCLog;
 import com.steve6472.sge.main.MainApp;
 import com.steve6472.sge.main.events.Event;
 import com.steve6472.sge.main.events.WindowSizeEvent;
@@ -27,6 +28,8 @@ public class InGameGui extends Gui implements IGamePause
 	public ItemBar itemBar;
 	public GameChat chat;
 
+	private GCLog gcLog;
+
 	@Override
 	public void createGui()
 	{
@@ -37,6 +40,7 @@ public class InGameGui extends Gui implements IGamePause
 
 		itemBar = new ItemBar();
 		addComponent(itemBar);
+		gcLog = new GCLog();
 	}
 
 	@Event
@@ -48,6 +52,8 @@ public class InGameGui extends Gui implements IGamePause
 	@Override
 	public void guiTick()
 	{
+		gcLog.tick();
+
 		if (CaveGame.runGameEvent(new InGameGuiEvent.PreTick(this))) return;
 
 		CaveGame.getInstance().options.isMouseFree = chat.isFocused();
@@ -60,6 +66,9 @@ public class InGameGui extends Gui implements IGamePause
 	public void render()
 	{
 		if (CaveGame.runGameEvent(new InGameGuiEvent.PreRender(this))) return;
+
+		if (CaveGame.getInstance().options.showGCLog)
+			gcLog.render(10, 120);
 
 		renderTheRest();
 

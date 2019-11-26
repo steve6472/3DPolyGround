@@ -2,6 +2,7 @@ package com.steve6472.polyground;
 
 import com.steve6472.sge.main.game.mixable.IMotion3f;
 import com.steve6472.sge.main.game.mixable.IPosition3f;
+import com.steve6472.sge.main.game.mixable.ITag;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 
@@ -11,7 +12,7 @@ import org.joml.Vector4f;
  * Project: SJP
  *
  ***********************/
-public abstract class Particle implements IMotion3f, IPosition3f, Comparable<Particle>
+public abstract class Particle implements IMotion3f, IPosition3f, Comparable<Particle>, ITag
 {
 	private Vector3f motion, position;
 	private float size;

@@ -5,6 +5,7 @@ import com.steve6472.polyground.block.Block;
 import com.steve6472.polyground.block.registry.BlockRegistry;
 import com.steve6472.polyground.particle.ParticleStorage;
 import com.steve6472.polyground.world.chunk.SubChunk;
+import com.steve6472.sge.main.TriConsumer;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
@@ -36,7 +37,7 @@ public class CaveGenerator implements IGenerator
 		new SphereCaveFeature(8, 24, 8, 20).generate(subChunk, 0);
 	}
 
-	private void iterate(TriConsumer consumer)
+	private void iterate(TriConsumer<Integer, Integer, Integer> consumer)
 	{
 		for (int i = 0; i < subChunk.getIds().length; i++)
 		{
@@ -48,12 +49,6 @@ public class CaveGenerator implements IGenerator
 				}
 			}
 		}
-	}
-
-	@FunctionalInterface
-	private interface TriConsumer
-	{
-		void apply(int x, int y, int z);
 	}
 
 	interface ICaveFeature

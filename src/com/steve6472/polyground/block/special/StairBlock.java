@@ -1,6 +1,5 @@
 package com.steve6472.polyground.block.special;
 
-import com.steve6472.polyground.CaveGame;
 import com.steve6472.polyground.EnumFace;
 import com.steve6472.polyground.block.Block;
 import com.steve6472.polyground.block.blockdata.BlockData;
@@ -9,7 +8,6 @@ import com.steve6472.polyground.block.blockdata.RotationData;
 import com.steve6472.polyground.block.model.registry.Cube;
 import com.steve6472.polyground.entity.Player;
 import com.steve6472.polyground.world.chunk.SubChunk;
-import com.steve6472.polyground.world.World;
 
 import java.io.File;
 import java.util.List;
@@ -47,11 +45,11 @@ public class StairBlock extends Block implements IBlockData
 	@Override
 	public List<Cube> getCubes(int x, int y, int z)
 	{
-		World world = CaveGame.getInstance().world;
-
-		SubChunk subChunk = world.getSubChunkFromBlockCoords(x, y, z);
-		RotationData data = (RotationData) subChunk.getBlockData(x, y, z);
-
+//		World world = CaveGame.getInstance().world;
+//
+//		SubChunk subChunk = world.getSubChunkFromBlockCoords(x, y, z);
+//		RotationData data = (RotationData) subChunk.getBlockData(x, y, z);
+//
 		return super.getCubes(x, y, z);
 	}
 

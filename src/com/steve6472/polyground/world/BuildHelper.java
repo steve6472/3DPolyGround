@@ -8,11 +8,15 @@ import com.steve6472.polyground.block.model.faceProperty.TintFaceProperty;
 import com.steve6472.polyground.block.model.faceProperty.UVFaceProperty;
 import com.steve6472.polyground.block.model.registry.Cube;
 import com.steve6472.polyground.block.model.registry.face.FaceRegistry;
+import com.steve6472.polyground.particle.particles.BasicParticle;
 import com.steve6472.polyground.world.biomes.Biome;
 import com.steve6472.polyground.world.biomes.registry.BiomeRegistry;
 import com.steve6472.polyground.world.chunk.SubChunk;
+import com.steve6472.sge.main.game.Tag;
 import com.steve6472.sge.main.util.ColorUtil;
 import org.joml.AABBf;
+import org.joml.Vector3f;
+import org.joml.Vector4f;
 
 import java.util.List;
 
@@ -38,15 +42,19 @@ public final class BuildHelper
 	private Cube cube;
 	private SubChunk sc;
 
-	public void load(int x, int y, int z, List<Float> vert, List<Float> col, List<Float> text, List<Float> light)
+	public void load(List<Float> vert, List<Float> col, List<Float> text, List<Float> light)
 	{
-		this.x = x;
-		this.y = y;
-		this.z = z;
 		this.vert = vert;
 		this.col = col;
 		this.text = text;
 		this.light = light;
+	}
+
+	public void load(int x, int y, int z)
+	{
+		this.x = x;
+		this.y = y;
+		this.z = z;
 	}
 
 	public void setCube(Cube cube)
@@ -215,15 +223,26 @@ public final class BuildHelper
 	{
 		if (CaveGame.getInstance().options.lightDebug)
 		{
-			CaveGame.getInstance().particles.addBasicParticle(
-				x + face.getXOffset() * 0.5f + 0.5f + sc.getX() * 16,
-				y + face.getYOffset() * 0.5f + 0.5f + sc.getLayer() * 16,
-				z + face.getZOffset() * 0.5f + 0.5f + sc.getZ() * 16,
-				0.1f,
-				Math.min(ColorUtil.getRed(light) / 255f, 1.0f),
-				Math.min(ColorUtil.getGreen(light) / 255f, 1.0f),
-				Math.min(ColorUtil.getBlue(light) / 255f, 1.0f),
-				1.0f, -1);
+			BasicParticle l = new BasicParticle(
+				new Vector3f(
+					0,
+					0,
+					0),
+				new Vector3f(
+					x + face.getXOffset() * 0.5f + 0.5f + sc.getX() * 16,
+					y + face.getYOffset() * 0.5f + 0.5f + sc.getLayer() * 16,
+					z + face.getZOffset() * 0.5f + 0.5f + sc.getZ() * 16),
+			0.1f,
+				new Vector4f(
+					Math.min(ColorUtil.getRed(light) / 255f, 1.0f),
+					Math.min(ColorUtil.getGreen(light) / 255f, 1.0f),
+					Math.min(ColorUtil.getBlue(light) / 255f, 1.0f),
+					1.0f),
+				-1);
+
+			l.addTag(new Tag("DebugLight" + sc.getX() + "_" + sc.getLayer() + "_" + sc.getZ()));
+
+			CaveGame.getInstance().particles.addParticle(l);
 		}
 	}
 

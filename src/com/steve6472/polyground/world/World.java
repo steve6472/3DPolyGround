@@ -57,7 +57,6 @@ public class World implements IBlockProvider
 //
 //		if (worldName == null)
 //			addChunk(new Chunk(0, 0, this).generate(), false);
-
 	}
 
 //	private byte delay = 0;

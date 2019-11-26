@@ -162,7 +162,7 @@ public class BlockPreview
 		preview.bindFrameBuffer(w, h);
 		DepthFrameBuffer.clearCurrentBuffer();
 
-		buildHelper.load(0, 0, 0, vertices, colors, textures, light);
+		buildHelper.load(vertices, colors, textures, light);
 		int tris = model(block);
 
 		itemTessellator.begin(tris * 3);

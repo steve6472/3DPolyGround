@@ -3,8 +3,12 @@ package com.steve6472.polyground.particle.particles;
 import com.steve6472.polyground.CaveGame;
 import com.steve6472.polyground.Particle;
 import com.steve6472.polyground.block.BlockTextureHolder;
+import com.steve6472.sge.main.game.Tag;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
@@ -14,6 +18,7 @@ import org.joml.Vector4f;
  ***********************/
 public class BreakParticle extends Particle
 {
+	private List<Tag> tags;
 	long l, d;
 
 	int life;
@@ -23,6 +28,7 @@ public class BreakParticle extends Particle
 		super(motion, position, size, color, -1);
 		d = System.currentTimeMillis();
 		l = System.currentTimeMillis() + lifeTime;
+		tags = new ArrayList<>();
 	}
 
 	float growingSpeed;
@@ -69,5 +75,11 @@ public class BreakParticle extends Particle
 	public void applyInvidualShader()
 	{
 
+	}
+
+	@Override
+	public List<Tag> getTags()
+	{
+		return tags;
 	}
 }

@@ -1,9 +1,13 @@
 package com.steve6472.polyground.world.generator;
 
 import com.steve6472.polyground.block.Block;
-import com.steve6472.polyground.world.chunk.SubChunk;
-import com.steve6472.polyground.world.biomes.*;
+import com.steve6472.polyground.world.biomes.Biome;
+import com.steve6472.polyground.world.biomes.BlueLand;
+import com.steve6472.polyground.world.biomes.GreenLand;
+import com.steve6472.polyground.world.biomes.RedLand;
 import com.steve6472.polyground.world.biomes.registry.BiomeRegistry;
+import com.steve6472.polyground.world.chunk.SubChunk;
+import com.steve6472.sge.main.TriConsumer;
 import org.joml.SimplexNoise;
 
 import java.util.ArrayList;
@@ -83,7 +87,7 @@ public class WorldGenerator implements IGenerator
 		});
 	}
 
-	private void iterate(TriConsumer consumer)
+	private void iterate(TriConsumer<Integer, Integer, Integer> consumer)
 	{
 		for (int i = 0; i < subChunk.getIds().length; i++)
 		{
@@ -204,11 +208,5 @@ public class WorldGenerator implements IGenerator
 		scale = biome.getScale();
 
 		return sumOcatave(itCo, x + subChunk.getX() * 16, z + subChunk.getZ() * 16, persistance, scale, low, high);
-	}
-
-	@FunctionalInterface
-	private interface TriConsumer
-	{
-		void apply(int x, int y, int z);
 	}
 }

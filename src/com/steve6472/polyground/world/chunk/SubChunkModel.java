@@ -23,6 +23,8 @@ public class SubChunkModel
 	int vao, positionVbo, colorVbo, textureVbo, lightVbo;
 	int triangleCount;
 
+	private boolean shouldUpdate = true;
+
 	private ModelLayer modelLayer;
 
 	public SubChunkModel(ModelLayer modelLayer)
@@ -37,10 +39,16 @@ public class SubChunkModel
 
 	public void rebuild(SubChunk sc)
 	{
-		List<Float> vertices = new ArrayList<>();
-		List<Float> colors = new ArrayList<>();
-		List<Float> textures = new ArrayList<>();
-		List<Float> light = new ArrayList<>();
+		if (!shouldUpdate) return;
+
+		shouldUpdate = false;
+
+		List<Float> vertices = new ArrayList<>(triangleCount * 3);
+		List<Float> colors = new ArrayList<>(triangleCount * 4);
+		List<Float> textures = new ArrayList<>(triangleCount * 2);
+		List<Float> light = new ArrayList<>(triangleCount * 3);
+
+		sc.getParent().getWorld().getPg().buildHelper.load(vertices, colors, textures, light);
 
 		BuildHelper buildHelper = sc.getWorld().getPg().buildHelper;
 
@@ -63,7 +71,7 @@ public class SubChunkModel
 					{
 						if (b != null && b != Block.air)
 						{
-							sc.getParent().getWorld().getPg().buildHelper.load(j, i, k, vertices, colors, textures, light);
+							sc.getParent().getWorld().getPg().buildHelper.load(j, i, k);
 							triangleCount += b.createModel(j, i, k, sc, blockData, buildHelper, modelLayer);
 						}
 
@@ -98,8 +106,6 @@ public class SubChunkModel
 		storeFloatDataInAttributeList(1, 4, colorVbo, colors);
 		storeFloatDataInAttributeList(2, 2, textureVbo, textures);
 		storeFloatDataInAttributeList(3, 3, lightVbo, light);
-
-		unbindVAO();
 	}
 
 	private void setupLight(SubChunk sc)
@@ -122,5 +128,15 @@ public class SubChunkModel
 	public int getVao()
 	{
 		return vao;
+	}
+
+	public boolean isShouldUpdate()
+	{
+		return shouldUpdate;
+	}
+
+	public void setShouldUpdate(boolean shouldUpdate)
+	{
+		this.shouldUpdate = shouldUpdate;
 	}
 }

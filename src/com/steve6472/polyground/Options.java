@@ -20,6 +20,8 @@ public class Options
 	public boolean chunkModelDebug = false;
 	public boolean renderAtlases = false;
 	public boolean lightDebug = false;
+	public boolean subChunkBuildTime = false;
+	public boolean showGCLog = false;
 
 	public float mouseSensitivity = 0.2f;
 
