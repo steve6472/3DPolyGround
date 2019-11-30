@@ -5,6 +5,7 @@ import com.steve6472.polyground.block.registry.BlockRegistry;
 import com.steve6472.polyground.commands.CommandRegistry;
 import com.steve6472.polyground.entity.Player;
 import com.steve6472.polyground.events.CancellableEvent;
+import com.steve6472.polyground.events.WorldEvent;
 import com.steve6472.polyground.gui.IGamePause;
 import com.steve6472.polyground.gui.InGameGui;
 import com.steve6472.polyground.gui.MainMenu;
@@ -12,6 +13,9 @@ import com.steve6472.polyground.item.Item;
 import com.steve6472.polyground.item.ItemAtlas;
 import com.steve6472.polyground.item.registry.ItemRegistry;
 import com.steve6472.polyground.particle.ParticleStorage;
+import com.steve6472.polyground.rift.Rift;
+import com.steve6472.polyground.rift.RiftManager;
+import com.steve6472.polyground.rift.RiftModel;
 import com.steve6472.polyground.shaders.ShaderStorage;
 import com.steve6472.polyground.tessellators.BasicTessellator;
 import com.steve6472.polyground.tessellators.EntityTessellator;
@@ -32,6 +36,7 @@ import com.steve6472.sge.main.events.KeyEvent;
 import com.steve6472.sge.main.events.WindowSizeEvent;
 import com.steve6472.sge.main.game.Camera;
 import org.joml.AABBf;
+import org.joml.Vector3f;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.ArrayList;
@@ -59,6 +64,7 @@ public class CaveGame extends MainApp
 	public ItemAtlas itemAtlas;
 	public ParticleStorage particles;
 	public HitPicker hitPicker;
+	private RiftManager rifts;
 
 	public static ShaderStorage shaders;
 	private DepthFrameBuffer mainFrameBuffer;
@@ -99,6 +105,8 @@ public class CaveGame extends MainApp
 		world = new World(this);
 		hitPicker = new HitPicker(world);
 		frustum = new Frustum();
+		rifts = new RiftManager(this);
+		getEventHandler().register(rifts);
 
 		inGameGui = new InGameGui(this);
 		mainMenu = new MainMenu(this);
@@ -118,7 +126,6 @@ public class CaveGame extends MainApp
 		itemAtlas = new ItemAtlas(this);
 		new ItemRegistry(this);
 
-
 		itemInHand = ItemRegistry.getItemByName("stone");
 
 		getEventHandler().runEvent(new WindowSizeEvent(getWindowWidth(), getWindowHeight()));
@@ -128,6 +135,50 @@ public class CaveGame extends MainApp
 //		hitboxList.add(new ParticleHitbox(0.05f, 0.1f, 0.05f, 0.1f, new Vector4f(2.5f, 2.5f, 2.5f, 1)));
 
 //		getWindow().maximize();
+
+		placeRifts();
+	}
+
+	private void placeRifts()
+	{
+		List<Vector3f> vertices = new ArrayList<>();
+		vertices.add(new Vector3f(0.5f, 1, 2));
+		vertices.add(new Vector3f(0.5f, 4, 2));
+		vertices.add(new Vector3f(0.5f, 1, -1));
+		vertices.add(new Vector3f(0.5f, 4, -1));
+		vertices.add(new Vector3f(0.5f, 1, 2));
+		vertices.add(new Vector3f(0.5f, 4, 2));
+
+		Vector3f pos = new Vector3f(20.0f, 0, -9f);
+
+		Rift portal = new Rift("Garage", pos, new Vector3f(), 0, 0, new RiftModel(vertices));
+		portal.setFinished(true);
+		getRifts().addRift(portal);
+
+/*
+		List<Vector3f> verts = new ArrayList<>();
+		verts.add(new Vector3f(-1f, 1f, 1f));
+		verts.add(new Vector3f(1f, 1f, 1f));
+		verts.add(new Vector3f(-1f, -1f, 1f));
+		verts.add(new Vector3f(1f, -1f, 1f));
+
+		verts.add(new Vector3f(1f, -1f, -1f));
+		verts.add(new Vector3f(1f, 1f, 1f));
+		verts.add(new Vector3f(1f, 1f, -1f));
+		verts.add(new Vector3f(-1f, 1f, 1f));
+
+		verts.add(new Vector3f(-1f, 1f, -1f));
+		verts.add(new Vector3f(-1f, -1f, 1f));
+		verts.add(new Vector3f(-1f, -1f, -1f));
+		verts.add(new Vector3f(1f, -1f, -1f));
+
+		verts.add(new Vector3f(-1f, 1f, -1f));
+		verts.add(new Vector3f(1f, 1f, -1f));
+
+		verts.forEach(v -> v.add(0, 2f, 16));
+
+		Rift cube = new Rift("GarageCube", pos, new Vector3f(0.5f, 0, -15.5f), 0, 0, true, new RiftModel(verts));
+		getRifts().addRift(cube);*/
 	}
 
 	public Camera getCamera()
@@ -138,6 +189,26 @@ public class CaveGame extends MainApp
 	public Player getPlayer()
 	{
 		return player;
+	}
+
+	public void setPlayer(Player player)
+	{
+		this.player = player;
+	}
+
+	public RiftManager getRifts()
+	{
+		return rifts;
+	}
+
+	public World getWorld()
+	{
+		return world;
+	}
+
+	public DepthFrameBuffer getMainFrameBuffer()
+	{
+		return mainFrameBuffer;
 	}
 
 	public static CaveGame getInstance()
@@ -234,13 +305,8 @@ public class CaveGame extends MainApp
 
 	public static List<AABBf> t = new ArrayList<>();
 
-	@Override
-	public void render()
+	public void renderTheWorld()
 	{
-		frustum.updateFrustum(shaders.getProjectionMatrix(), getCamera().getViewMatrix());
-
-		mainFrameBuffer.bindFrameBuffer(this);
-		DepthFrameBuffer.clearCurrentBuffer();
 
 		hitPicker.tick(player, this);
 
@@ -249,15 +315,33 @@ public class CaveGame extends MainApp
 			AABBUtil.renderAABBf(a, basicTess, shaders.mainShader);
 		}
 
-		world.render();
+		if (!CaveGame.runGameEvent(new WorldEvent.PreRender(world)))
+			world.render();
+		CaveGame.runGameEvent(new WorldEvent.PostRender(world));
 
 		particles.render();
 
 //		AABBUtil.renderAABBf(player.getHitbox().getHitbox(), this);
-
 		renderFloor();
+	}
 
+	@Override
+	public void render()
+	{
+		frustum.updateFrustum(shaders.getProjectionMatrix(), getCamera().getViewMatrix());
+
+		mainFrameBuffer.bindFrameBuffer(this);
+		DepthFrameBuffer.clearCurrentBuffer();
+		renderTheWorld();
 		mainFrameBuffer.unbindCurrentFrameBuffer(this);
+
+		getRifts().render();
+
+//		getRifts().renderBuffers();
+//
+//		mainFrameBuffer.bindFrameBuffer(this);
+//		getRifts().render();
+//		mainFrameBuffer.unbindCurrentFrameBuffer(this);
 
 		Shader.releaseShader();
 

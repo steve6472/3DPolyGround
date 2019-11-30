@@ -32,7 +32,6 @@ public class Player implements IMotion3f, IPosition3f
 
 	private Camera camera;
 
-	private Vector3f gravity;
 	public Vector3f viewDir;
 	public boolean isFlying;
 	public boolean isOnGround;
@@ -54,7 +53,6 @@ public class Player implements IMotion3f, IPosition3f
 		motion = new Vector3f();
 		viewDir = new Vector3f();
 
-		gravity = new Vector3f(0, -9.8f, 0);
 		//65 m/s terminal vel
 
 		this.pg = pg;
@@ -286,5 +284,10 @@ public class Player implements IMotion3f, IPosition3f
 	public HitResult getHitResult()
 	{
 		return pg.hitPicker.getHitResult();
+	}
+
+	public void setCamera(Camera camera)
+	{
+		this.camera = camera;
 	}
 }

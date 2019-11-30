@@ -23,6 +23,7 @@ public class SpecialItemRegistry
 	public static final SpecialItemEntry<BlockInspectorItem> blockInspector = register("block_inspector", BlockInspectorItem::new);
 	public static final SpecialItemEntry<WorldEditItem> worldedit = register("worldedit", WorldEditItem::new);
 	public static final SpecialItemEntry<RegeneratorItem> regenerator = register("regenerator", RegeneratorItem::new);
+	public static final SpecialItemEntry<RiftPlacerItem> riftplacer = register("riftplacer", RiftPlacerItem::new);
 
 	public static <T extends Item> SpecialItemEntry<T> register(String id, ISpecialItemFactory<T> factory)
 	{

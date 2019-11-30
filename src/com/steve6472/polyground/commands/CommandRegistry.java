@@ -43,5 +43,6 @@ public class CommandRegistry
 		new AICommand(dispatcher);
 		new ModelLayerCommand(dispatcher);
 		new ParticleCommand(dispatcher);
+		new RiftCommand(dispatcher);
 	}
 }

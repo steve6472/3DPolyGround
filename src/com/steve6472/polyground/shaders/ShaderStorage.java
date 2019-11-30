@@ -28,6 +28,8 @@ public class ShaderStorage
 	public DissoveWorldShader dissoveWorldShader;
 	public BreakParticleShader breakParticleShader;
 	public ItemTextureShader itemTextureShader;
+	public DebugShader debugShader;
+	public RiftShader riftShader;
 
 	public MainShader mainShader;
 
@@ -49,6 +51,8 @@ public class ShaderStorage
 		dissoveWorldShader = new DissoveWorldShader();
 		breakParticleShader = new BreakParticleShader();
 		itemTextureShader = new ItemTextureShader();
+		debugShader = new DebugShader();
+		riftShader = new RiftShader();
 
 		mainShader = new MainShader();
 	}
@@ -88,6 +92,13 @@ public class ShaderStorage
 
 		itemTextureShader.bind();
 		itemTextureShader.setProjection(ortho);
+
+		debugShader.bind();
+		debugShader.setProjection(projectionMatrix);
+
+		riftShader.bind();
+		riftShader.setProjection(projectionMatrix);
+		riftShader.setUniform(RiftShader.TEXTURE, 0);
 
 		Shader.releaseShader();
 	}

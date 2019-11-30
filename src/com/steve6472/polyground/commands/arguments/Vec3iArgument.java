@@ -20,11 +20,11 @@ import java.util.concurrent.CompletableFuture;
  * Project: SJP
  *
  ***********************/
-public class Vec3Argument implements ArgumentType<Vector3i>
+public class Vec3iArgument implements ArgumentType<Vector3i>
 {
-	public static Vec3Argument vec3()
+	public static Vec3iArgument vec3()
 	{
-		return new Vec3Argument();
+		return new Vec3iArgument();
 	}
 
 	public static Vector3i getCoords(CommandContext<CommandSource> source, String name)

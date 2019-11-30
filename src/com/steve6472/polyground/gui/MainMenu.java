@@ -63,7 +63,7 @@ public class MainMenu extends Gui implements IGamePause
 			{
 				CommandRegistry registry = CaveGame.getInstance().commandRegistry;
 				registry.dispatcher.execute("loadworld house", registry.commandSource);
-				registry.dispatcher.execute("tp 8 1.005 8", registry.commandSource);
+				registry.dispatcher.execute("tp -1 1.005 0.5", registry.commandSource);
 			} catch (CommandSyntaxException e)
 			{
 				e.printStackTrace();

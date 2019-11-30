@@ -1,0 +1,2 @@
+model = item/rift_placer
+special = riftplacer

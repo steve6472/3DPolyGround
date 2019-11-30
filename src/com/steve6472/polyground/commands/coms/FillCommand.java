@@ -4,7 +4,7 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.steve6472.polyground.commands.Command;
 import com.steve6472.polyground.commands.CommandSource;
 import com.steve6472.polyground.commands.arguments.BlockArgument;
-import com.steve6472.polyground.commands.arguments.Vec3Argument;
+import com.steve6472.polyground.commands.arguments.Vec3iArgument;
 import com.steve6472.polyground.world.chunk.Chunk;
 import com.steve6472.polyground.world.World;
 import org.joml.Vector3i;
@@ -28,16 +28,16 @@ public class FillCommand extends Command
 		dispatcher.register(
 			literal("fill")
 				.then(
-					argument("min", Vec3Argument.vec3())
+					argument("min", Vec3iArgument.vec3())
 						.then(
-							argument("max", Vec3Argument.vec3())
+							argument("max", Vec3iArgument.vec3())
 								.then(
 									argument("block", BlockArgument.block())
 										.executes(c -> {
 
 											World w = c.getSource().getWorld();
-											Vector3i min = Vec3Argument.getCoords(c, "min");
-											Vector3i max = Vec3Argument.getCoords(c, "max");
+											Vector3i min = Vec3iArgument.getCoords(c, "min");
+											Vector3i max = Vec3iArgument.getCoords(c, "max");
 											int id = BlockArgument.getBlock(c, "block").getId();
 
 											for (int x = min.x; x <= max.x; x++)
