@@ -51,6 +51,16 @@ public class Rift implements IPosition3f
 		return pitch;
 	}
 
+	public void setYaw(float yaw)
+	{
+		this.yaw = yaw;
+	}
+
+	public void setPitch(float pitch)
+	{
+		this.pitch = pitch;
+	}
+
 	public RiftModel getModel()
 	{
 		return model;

@@ -1,6 +1,7 @@
 package com.steve6472.polyground.tessellators;
 
 import com.steve6472.sge.gfx.TessellatorCreator;
+import org.joml.Vector3f;
 
 import java.nio.FloatBuffer;
 
@@ -25,6 +26,14 @@ public class BasicTessellator extends TessellatorCreator
 		this.x = x;
 		this.y = y;
 		this.z = z;
+		return this;
+	}
+
+	public BasicTessellator pos(Vector3f vector)
+	{
+		this.x = vector.x;
+		this.y = vector.y;
+		this.z = vector.z;
 		return this;
 	}
 

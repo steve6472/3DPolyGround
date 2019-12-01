@@ -158,6 +158,28 @@ public class RiftCommand extends Command
 						)
 				)
 				.then(
+					literal("setrot")
+						.then(
+							argument("yaw", integer(0, 360))
+								.then(
+									argument("pitch", integer(0, 360))
+										.executes(c -> {
+
+											if (rift == null)
+											{
+												c.getSource().sendFeedback("[#FF5555]", "Rift is selected!");
+												return 0;
+											} else
+											{
+												rift.setYaw((float) Math.toRadians(getInteger(c, "yaw")));
+												rift.setPitch((float) Math.toRadians(getInteger(c, "pitch")));
+												return 1;
+											}
+										})
+								)
+						)
+				)
+				.then(
 					literal("print")
 						.then(
 							literal("cam")
@@ -186,6 +208,31 @@ public class RiftCommand extends Command
 									{
 										c.getSource().sendFeedback(String.format("Correction is at %.2f, %.2f, %.2f",
 											rift.getCorrection().x, rift.getCorrection().y, rift.getCorrection().z));
+										return 1;
+									}
+								})
+						)
+						.then(
+							literal("code")
+								.executes(c -> {
+
+									if (rift == null)
+									{
+										c.getSource().sendFeedback("[#FF5555]", "No rift is selected!");
+										return 0;
+									} else
+									{
+										System.out.println("{");
+										System.out.println("\tList<Vector3f> vertices = new ArrayList<>();");
+										for (Vector3f v : rift.getModel().getVertices())
+											System.out.println(String.format("\tvertices.add(new Vector3f(%.2ff, %.2ff, %.2ff));", v.x, v.y, v.z));
+										System.out.println(
+											String.format(
+												"\tRift portal = new Rift(\"%s\", new Vector3f(%.2ff, %.2ff, %.2ff), new Vector3f(%.2ff, %.2ff, %.2ff), 0, 0, new RiftModel(vertices));",
+												rift.getName(), rift.getX(), rift.getY(), rift.getZ(), rift.getCorrection().x, rift.getCorrection().y, rift.getCorrection().z));
+										System.out.println("\tportal.setFinished(true);");
+										System.out.println("\tgetRifts().addRift(portal);");
+										System.out.println("}");
 										return 1;
 									}
 								})

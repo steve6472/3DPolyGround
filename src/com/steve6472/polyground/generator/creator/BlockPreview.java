@@ -196,7 +196,7 @@ public class BlockPreview
 
 		//Render selected cube outline
 		if (creatorGui.getSelectedCube() != null)
-			AABBUtil.renderAABBf(creatorGui.getSelectedCube().getAabb(), basicTessellator, mainShader);
+			AABBUtil.renderAABBf(creatorGui.getSelectedCube().getAabb(), basicTessellator, 1f, mainShader);
 
 		preview.unbindCurrentFrameBuffer(w, h);
 

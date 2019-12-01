@@ -3,6 +3,7 @@ package com.steve6472.polyground.gui;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.steve6472.polyground.CaveGame;
 import com.steve6472.polyground.commands.CommandRegistry;
+import com.steve6472.polyground.world.World;
 import com.steve6472.polyground.world.chunk.Chunk;
 import com.steve6472.polyground.world.chunk.SubChunk;
 import com.steve6472.sge.gfx.Sprite;
@@ -44,6 +45,7 @@ public class MainMenu extends Gui implements IGamePause
 			CaveGame.getInstance().inGameGui.setVisible(true);
 			CaveGame.getInstance().options.isGamePaused = false;
 
+			CaveGame.getInstance().setWorld(new World(CaveGame.getInstance()));
 			CaveGame.getInstance().world.addChunk(new Chunk(0, 0, CaveGame.getInstance().world).generate(), false);
 
 		});
@@ -58,7 +60,7 @@ public class MainMenu extends Gui implements IGamePause
 			CaveGame.getInstance().inGameGui.setVisible(true);
 			CaveGame.getInstance().options.isGamePaused = false;
 
-			CaveGame.getInstance().world.addChunk(new Chunk(0, 0, CaveGame.getInstance().world).generate(), false);
+			CaveGame.getInstance().setWorld(new World(CaveGame.getInstance()));
 			try
 			{
 				CommandRegistry registry = CaveGame.getInstance().commandRegistry;
@@ -81,6 +83,7 @@ public class MainMenu extends Gui implements IGamePause
 			CaveGame.getInstance().inGameGui.setVisible(true);
 			CaveGame.getInstance().options.isGamePaused = false;
 
+			CaveGame.getInstance().setWorld(new World(CaveGame.getInstance()));
 			SubChunk.generator = CaveGame.getInstance().generatorRegistry.getGenerator("world");
 
 			int r = 3;
@@ -113,6 +116,7 @@ public class MainMenu extends Gui implements IGamePause
 			CaveGame.getInstance().inGameGui.setVisible(true);
 			CaveGame.getInstance().options.isGamePaused = false;
 
+			CaveGame.getInstance().setWorld(new World(CaveGame.getInstance()));
 			SubChunk.generator = CaveGame.getInstance().generatorRegistry.getGenerator("cave");
 
 			int r = 1;
@@ -148,7 +152,7 @@ public class MainMenu extends Gui implements IGamePause
 			CaveGame.getInstance().inGameGui.setVisible(true);
 			CaveGame.getInstance().options.isGamePaused = false;
 
-			CaveGame.getInstance().world.addChunk(new Chunk(0, 0, CaveGame.getInstance().world).generate(), false);
+			CaveGame.getInstance().setWorld(new World(CaveGame.getInstance()));
 			try
 			{
 				CommandRegistry registry = CaveGame.getInstance().commandRegistry;

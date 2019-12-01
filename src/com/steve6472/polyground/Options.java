@@ -22,6 +22,8 @@ public class Options
 	public boolean lightDebug = false;
 	public boolean subChunkBuildTime = false;
 	public boolean showGCLog = false;
+	public boolean renderTeleporters = false;
+	public boolean renderRifts = false;
 
 	public float mouseSensitivity = 0.2f;
 

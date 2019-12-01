@@ -3,12 +3,14 @@ package com.steve6472.polyground;
 import com.steve6472.polyground.block.model.BlockModelLoader;
 import com.steve6472.polyground.block.registry.BlockRegistry;
 import com.steve6472.polyground.commands.CommandRegistry;
+import com.steve6472.polyground.commands.CommandSource;
 import com.steve6472.polyground.entity.Player;
 import com.steve6472.polyground.events.CancellableEvent;
 import com.steve6472.polyground.events.WorldEvent;
 import com.steve6472.polyground.gui.IGamePause;
 import com.steve6472.polyground.gui.InGameGui;
 import com.steve6472.polyground.gui.MainMenu;
+import com.steve6472.polyground.gui.OptionsGui;
 import com.steve6472.polyground.item.Item;
 import com.steve6472.polyground.item.ItemAtlas;
 import com.steve6472.polyground.item.registry.ItemRegistry;
@@ -17,6 +19,8 @@ import com.steve6472.polyground.rift.Rift;
 import com.steve6472.polyground.rift.RiftManager;
 import com.steve6472.polyground.rift.RiftModel;
 import com.steve6472.polyground.shaders.ShaderStorage;
+import com.steve6472.polyground.teleporter.Teleporter;
+import com.steve6472.polyground.teleporter.TeleporterManager;
 import com.steve6472.polyground.tessellators.BasicTessellator;
 import com.steve6472.polyground.tessellators.EntityTessellator;
 import com.steve6472.polyground.world.BuildHelper;
@@ -65,6 +69,7 @@ public class CaveGame extends MainApp
 	public ParticleStorage particles;
 	public HitPicker hitPicker;
 	private RiftManager rifts;
+	private TeleporterManager teleporters;
 
 	public static ShaderStorage shaders;
 	private DepthFrameBuffer mainFrameBuffer;
@@ -77,6 +82,7 @@ public class CaveGame extends MainApp
 	/* GUI */
 	public InGameGui inGameGui;
 	public MainMenu mainMenu;
+	public OptionsGui optionsGui;
 
 	/* Other */
 	public List<ParticleHitbox> hitboxList;
@@ -97,16 +103,17 @@ public class CaveGame extends MainApp
 		getEventHandler().register(player);
 
 		options = new Options();
+		optionsGui = new OptionsGui(this);
 
 		buildHelper = new BuildHelper();
 		blockModelLoader = new BlockModelLoader();
 		new BlockRegistry(this);
 
-		world = new World(this);
-		hitPicker = new HitPicker(world);
 		frustum = new Frustum();
 		rifts = new RiftManager(this);
 		getEventHandler().register(rifts);
+
+		teleporters = new TeleporterManager();
 
 		inGameGui = new InGameGui(this);
 		mainMenu = new MainMenu(this);
@@ -129,7 +136,6 @@ public class CaveGame extends MainApp
 		itemInHand = ItemRegistry.getItemByName("stone");
 
 		getEventHandler().runEvent(new WindowSizeEvent(getWindowWidth(), getWindowHeight()));
-		setExitKey(KeyList.ESCAPE);
 
 		hitboxList = new ArrayList<>();
 //		hitboxList.add(new ParticleHitbox(0.05f, 0.1f, 0.05f, 0.1f, new Vector4f(2.5f, 2.5f, 2.5f, 1)));
@@ -141,44 +147,46 @@ public class CaveGame extends MainApp
 
 	private void placeRifts()
 	{
-		List<Vector3f> vertices = new ArrayList<>();
-		vertices.add(new Vector3f(0.5f, 1, 2));
-		vertices.add(new Vector3f(0.5f, 4, 2));
-		vertices.add(new Vector3f(0.5f, 1, -1));
-		vertices.add(new Vector3f(0.5f, 4, -1));
-		vertices.add(new Vector3f(0.5f, 1, 2));
-		vertices.add(new Vector3f(0.5f, 4, 2));
+		{
+			List<Vector3f> vertices = new ArrayList<>();
+			vertices.add(new Vector3f(1f, 1, 2));
+			vertices.add(new Vector3f(1f, 4, 2));
+			vertices.add(new Vector3f(1f, 1, -1));
+			vertices.add(new Vector3f(1f, 4, -1));
+			vertices.add(new Vector3f(1f, 1, 2));
+			vertices.add(new Vector3f(1f, 4, 2));
 
-		Vector3f pos = new Vector3f(20.0f, 0, -9f);
+			Rift portal = new Rift("Garage", new Vector3f(20.0f, 0, -9f), new Vector3f(), 0, 0, new RiftModel(vertices));
+			portal.setFinished(true);
+			getRifts().addRift(portal);
+		}
 
-		Rift portal = new Rift("Garage", pos, new Vector3f(), 0, 0, new RiftModel(vertices));
-		portal.setFinished(true);
-		getRifts().addRift(portal);
+		{
+			List<Vector3f> vertices = new ArrayList<>();
+			vertices.add(new Vector3f(20.00f, 1.00f, -10.00f));
+			vertices.add(new Vector3f(20.00f, 4.00f, -10.00f));
+			vertices.add(new Vector3f(20.00f, 1.00f, -7.00f));
+			vertices.add(new Vector3f(20.00f, 4.00f, -7.00f));
+			vertices.add(new Vector3f(20.00f, 1.00f, -10.00f));
+			vertices.add(new Vector3f(20.00f, 4.00f, -10.00f));
+			Rift portal = new Rift("Wild", new Vector3f(0.00f, 1.00f, 0.50f), new Vector3f(-20.00f, -1.00f, 8.50f), 0, 0, new RiftModel(vertices));
+			portal.setFinished(true);
+			getRifts().addRift(portal);
+		}
 
-/*
-		List<Vector3f> verts = new ArrayList<>();
-		verts.add(new Vector3f(-1f, 1f, 1f));
-		verts.add(new Vector3f(1f, 1f, 1f));
-		verts.add(new Vector3f(-1f, -1f, 1f));
-		verts.add(new Vector3f(1f, -1f, 1f));
+		Teleporter fromGarage, toGarage;
 
-		verts.add(new Vector3f(1f, -1f, -1f));
-		verts.add(new Vector3f(1f, 1f, 1f));
-		verts.add(new Vector3f(1f, 1f, -1f));
-		verts.add(new Vector3f(-1f, 1f, 1f));
+		toGarage = new Teleporter();
+		fromGarage = new Teleporter();
 
-		verts.add(new Vector3f(-1f, 1f, -1f));
-		verts.add(new Vector3f(-1f, -1f, 1f));
-		verts.add(new Vector3f(-1f, -1f, -1f));
-		verts.add(new Vector3f(1f, -1f, -1f));
+		toGarage.setOther(fromGarage);
+		toGarage.setAabb(new AABBf(0.25f, 1f, -1f, 0.75f, 4f, 2f));
 
-		verts.add(new Vector3f(-1f, 1f, -1f));
-		verts.add(new Vector3f(1f, 1f, -1f));
+		fromGarage.setOther(toGarage);
+		fromGarage.setAabb(new AABBf(20.25f, 1f, -10f, 20.75f, 4f, -7f));
 
-		verts.forEach(v -> v.add(0, 2f, 16));
-
-		Rift cube = new Rift("GarageCube", pos, new Vector3f(0.5f, 0, -15.5f), 0, 0, true, new RiftModel(verts));
-		getRifts().addRift(cube);*/
+		teleporters.getTeleporters().add(toGarage);
+		teleporters.getTeleporters().add(fromGarage);
 	}
 
 	public Camera getCamera()
@@ -206,6 +214,13 @@ public class CaveGame extends MainApp
 		return world;
 	}
 
+	public void setWorld(World world)
+	{
+		this.world = world;
+		this.commandRegistry.commandSource = new CommandSource(player, world, inGameGui.chat);
+		hitPicker = new HitPicker(world);
+	}
+
 	public DepthFrameBuffer getMainFrameBuffer()
 	{
 		return mainFrameBuffer;
@@ -224,24 +239,31 @@ public class CaveGame extends MainApp
 		options.isInMenu = false;
 		options.isMouseFree = false;
 
+		if (world != null)
+			teleporters.tick(player);
+
 		tickGui();
 
-		particles.tick();
+		if (world != null)
+			particles.tick();
 
 		t.clear();
 
 		handleCamera();
 
-		if (getCamera().canMoveHead())
-			player.tick();
+		if (world != null)
+			if (getCamera().canMoveHead())
+				player.tick();
 
 		PolyUtil.updateDirectionRay(player.viewDir, getCamera());
 
 //		particles.testParticle(player.viewDir.x * 4.2f + player.getX(), player.viewDir.y * 4.2f + player.getY() + player.getEyeHeight(), player.viewDir.z * 4.2f + player.getZ());
 
-		world.tick();
+		if (world != null)
+			world.tick();
 
-		hitboxList.forEach(c -> c.tick(this));
+		if (world != null)
+			hitboxList.forEach(c -> c.tick(this));
 
 		tickGui();
 		getCamera().updateViewMatrix();
@@ -287,7 +309,7 @@ public class CaveGame extends MainApp
 
 	private boolean updateMenuFlag()
 	{
-		Gui[] guis = new Gui[] {mainMenu, inGameGui};
+		Gui[] guis = new Gui[] {mainMenu, inGameGui, optionsGui};
 		for (Gui g : guis)
 		{
 			if (g instanceof IGamePause)
@@ -307,22 +329,93 @@ public class CaveGame extends MainApp
 
 	public void renderTheWorld()
 	{
-
-		hitPicker.tick(player, this);
+		if (world != null)
+			hitPicker.tick(player, this);
 
 		for (AABBf a : t)
+			AABBUtil.renderAABBf(a, basicTess, 1f, shaders.mainShader);
+
+		if (options.renderTeleporters)
 		{
-			AABBUtil.renderAABBf(a, basicTess, shaders.mainShader);
+			CaveGame.shaders.mainShader.bind();
+			for (Teleporter teleporter : teleporters.getTeleporters())
+			{
+				AABBUtil.renderAABBf(teleporter.getAabb(), basicTess, 3f, shaders.mainShader);
+				renderTeleporterPair(teleporter);
+			}
 		}
 
-		if (!CaveGame.runGameEvent(new WorldEvent.PreRender(world)))
-			world.render();
-		CaveGame.runGameEvent(new WorldEvent.PostRender(world));
+		if (world != null)
+		{
+			if (!CaveGame.runGameEvent(new WorldEvent.PreRender(world)))
+				world.render();
+			CaveGame.runGameEvent(new WorldEvent.PostRender(world));
+		}
 
 		particles.render();
 
 //		AABBUtil.renderAABBf(player.getHitbox().getHitbox(), this);
 		renderFloor();
+	}
+
+	private void renderRifts()
+	{
+		int v = 0;
+		for (Rift rift : rifts.getRifts())
+		{
+			int t = ((rift.getModel().getVertices().size() * 2) - 3) * 2;
+			v += Math.max(t, 1);
+		}
+
+		CaveGame.shaders.mainShader.bind();
+		BasicTessellator tess = basicTess;
+		tess.begin(v);
+		tess.color(1, 1, 1, 1);
+
+		for (Rift rift : rifts.getRifts())
+		{
+			List<Vector3f> vertices = rift.getModel().getVertices();
+
+			for (int i = 0; i < vertices.size(); i++)
+			{
+				Vector3f vec = vertices.get(i);
+
+				if (i == 0 || i == 1)
+				{
+					tess.pos(vec).endVertex();
+				} else
+				{
+					tess.pos(vec).endVertex();
+					tess.pos(vertices.get(i - 1)).endVertex();
+					tess.pos(vec).endVertex();
+					tess.pos(vertices.get(i - 2)).endVertex();
+				}
+			}
+		}
+
+		glLineWidth(3f);
+		tess.loadPos(0);
+		tess.loadColor(1);
+		tess.draw(Tessellator.LINES);
+		tess.disable(0, 1);
+		glLineWidth(1f);
+	}
+
+	private void renderTeleporterPair(Teleporter tel)
+	{
+		BasicTessellator tess = basicTess;
+		tess.begin(2);
+
+		Vector3f c0 = AABBUtil.getCenter(tel.getAabb());
+		Vector3f c1 = AABBUtil.getCenter(tel.getOther().getAabb());
+
+		tess.pos(c0.x, c0.y, c0.z).color(1f, 1f, 1f, 1f).endVertex();
+		tess.pos(c1.x, c1.y, c1.z).color(1f, 1f, 1f, 1f).endVertex();
+
+		tess.loadPos(0);
+		tess.loadColor(1);
+		tess.draw(Tessellator.LINES);
+		tess.disable(0, 1);
 	}
 
 	@Override
@@ -333,15 +426,19 @@ public class CaveGame extends MainApp
 		mainFrameBuffer.bindFrameBuffer(this);
 		DepthFrameBuffer.clearCurrentBuffer();
 		renderTheWorld();
+
 		mainFrameBuffer.unbindCurrentFrameBuffer(this);
 
 		getRifts().render();
 
-//		getRifts().renderBuffers();
-//
-//		mainFrameBuffer.bindFrameBuffer(this);
-//		getRifts().render();
-//		mainFrameBuffer.unbindCurrentFrameBuffer(this);
+		if (options.renderRifts)
+		{
+			mainFrameBuffer.bindFrameBuffer(this);
+			glDisable(GL_DEPTH_TEST);
+			renderRifts();
+			glEnable(GL_DEPTH_TEST);
+			mainFrameBuffer.unbindCurrentFrameBuffer(this);
+		}
 
 		Shader.releaseShader();
 
@@ -385,15 +482,24 @@ public class CaveGame extends MainApp
 	}
 
 	@Event
-	public void togglePP(KeyEvent e)
+	public void keyEvent(KeyEvent e)
 	{
 		if (!inGameGui.chat.isFocused())
 		{
-			if (e.getKey() == KeyList.P && e.getAction() == KeyList.PRESS)
-				options.enablePostProcessing = !options.enablePostProcessing;
+			if (e.getAction() == KeyList.PRESS)
+			{
+				if (e.getKey() == KeyList.P)
+					options.enablePostProcessing = !options.enablePostProcessing;
 
-			if (e.getKey() == KeyList.O && e.getAction() == KeyList.PRESS)
-				options.renderAtlases = !options.renderAtlases;
+				if (e.getKey() == KeyList.O)
+					options.renderAtlases = !options.renderAtlases;
+
+				if (e.getKey() == KeyList.ESCAPE)
+				{
+					optionsGui.setVisible(!optionsGui.isVisible());
+					inGameGui.setVisible(!optionsGui.isVisible());
+				}
+			}
 		}
 	}
 
@@ -453,6 +559,7 @@ public class CaveGame extends MainApp
 		DepthFrameBuffer.cleanUp();
 		VertexObjectCreator.cleanUp();
 		getWindow().close();
+		System.exit(0);
 	}
 
 	@Override

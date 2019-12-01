@@ -92,7 +92,13 @@ public class GameChat extends TextField
 	@Event
 	public void executeCommand(KeyEvent e)
 	{
-		if (e.getAction() == KeyList.PRESS && (e.getKey() == KeyList.ENTER || e.getKey() == KeyList.KP_ENTER))
+		if (e.getAction() == KeyList.PRESS && e.getKey() == KeyList.ESCAPE)
+		{
+			setText("");
+			loseFocus();
+			setCarretPosition(0);
+
+		} else if (e.getAction() == KeyList.PRESS && (e.getKey() == KeyList.ENTER || e.getKey() == KeyList.KP_ENTER))
 		{
 			CaveGame pg = ((CaveGame) getMain());
 			if (isFocused())

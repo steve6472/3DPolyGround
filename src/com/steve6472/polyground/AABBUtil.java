@@ -4,6 +4,7 @@ import com.steve6472.polyground.shaders.MainShader;
 import com.steve6472.polyground.tessellators.BasicTessellator;
 import com.steve6472.sge.gfx.Tessellator;
 import org.joml.AABBf;
+import org.joml.Vector3f;
 import org.lwjgl.opengl.GL11;
 
 /**********************
@@ -85,12 +86,12 @@ public class AABBUtil
 		return za;
 	}
 
-	public static void renderAABB(float minX, float minY, float minZ, float maxX, float maxY, float maxZ, BasicTessellator tess, MainShader mainShader)
+	public static void renderAABB(float minX, float minY, float minZ, float maxX, float maxY, float maxZ, float lineWidth, BasicTessellator tess, MainShader mainShader)
 	{
 		mainShader.getShader().bind();
 		tess.begin(24);
 
-		GL11.glLineWidth(1f);
+		GL11.glLineWidth(lineWidth);
 
 		tess.pos(minX, minY, minZ).color(1f, 0f, 0f, 1f).endVertex();
 		tess.pos(maxX, minY, minZ).color(1f, 0f, 0f, 1f).endVertex();
@@ -212,8 +213,13 @@ public class AABBUtil
 		tess.disable(0, 1, 2);
 	}*/
 
-	public static void renderAABBf(AABBf box, BasicTessellator tess, MainShader mainShader)
+	public static void renderAABBf(AABBf box, BasicTessellator tess, float lineWidth, MainShader mainShader)
 	{
-		renderAABB(box.minX, box.minY, box.minZ, box.maxX, box.maxY, box.maxZ, tess, mainShader);
+		renderAABB(box.minX, box.minY, box.minZ, box.maxX, box.maxY, box.maxZ, lineWidth, tess, mainShader);
+	}
+
+	public static Vector3f getCenter(AABBf box)
+	{
+		return new Vector3f((box.maxX + box.minX) / 2.0f, (box.maxY + box.minY) / 2.0f, (box.maxZ + box.minZ) / 2.0f);
 	}
 }

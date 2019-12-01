@@ -123,6 +123,11 @@ public class Player implements IMotion3f, IPosition3f
 		if (getPosition().y < 0 && !isFlying)
 			getPosition().y = 0;
 
+		updateHitbox();
+	}
+
+	public void updateHitbox()
+	{
 		camera.setPosition(getPosition().x, getPosition().y + eyeHeight, getPosition().z);
 		hitbox.setHitbox(getX(), getY() + 0.9f, getZ());
 	}
@@ -162,6 +167,7 @@ public class Player implements IMotion3f, IPosition3f
 	@Event
 	public void fly(KeyEvent e)
 	{
+		if (pg.world == null || pg.options.isInMenu) return;
 		if (pg.inGameGui.chat.isFocused()) return;
 
 		if (e.getAction() == KeyList.PRESS && e.getKey() == KeyList.SPACE)
@@ -188,6 +194,7 @@ public class Player implements IMotion3f, IPosition3f
 	@Event
 	public void mouseEvent(MouseEvent event)
 	{
+		if (pg.world == null || pg.options.isInMenu) return;
 		if (pg.inGameGui.chat.isFocused()) return;
 
 		if (camera.canMoveHead() && event.getAction() == KeyList.RELEASE && event.getButton() == KeyList.RMB)

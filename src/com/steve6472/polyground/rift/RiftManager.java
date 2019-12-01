@@ -46,8 +46,8 @@ public class RiftManager
 		camera.getPosition().add(temp.getPosition());
 		camera.getPosition().add(rift.getCorrection());
 
-		camera.setYaw(temp.getYaw() + rift.getYaw());
-		camera.setPitch(temp.getPitch() + rift.getPitch());
+		camera.setYaw(temp.getYaw() - rift.getYaw());
+		camera.setPitch(temp.getPitch() - rift.getPitch());
 
 		camera.updateViewMatrix();
 		main.getPlayer().setCamera(camera);
@@ -65,7 +65,7 @@ public class RiftManager
 	{
 		CaveGame.shaders.riftShader.bind();
 		CaveGame.shaders.riftShader.setView(CaveGame.getInstance().getCamera().getViewMatrix());
-		CaveGame.shaders.riftShader.setUniform(RiftShader.TINT, 0.75f, 0.75f, 0.75f);
+		CaveGame.shaders.riftShader.setUniform(RiftShader.TINT, 1f, 1f, 1f);
 
 		Sprite.bind(0, rift.getBuffer().texture);
 
