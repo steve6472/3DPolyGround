@@ -7,7 +7,10 @@ import com.steve6472.sge.main.MainApp;
 import com.steve6472.sss2.SSS;
 
 import java.io.File;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Objects;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
@@ -27,6 +30,7 @@ public class BlockRegistry
 	public BlockRegistry(CaveGame pg)
 	{
 		File[] blocksFile = new File(MainApp.class.getResource("/blocks").getFile()).listFiles();
+//		File[] blocksFile = new File("blocks").listFiles();
 
 		reference = new HashMap<>();
 //		blocks = new HashMap<>();

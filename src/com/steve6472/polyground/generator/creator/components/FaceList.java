@@ -2,14 +2,15 @@ package com.steve6472.polyground.generator.creator.components;
 
 import com.steve6472.polyground.EnumFace;
 import com.steve6472.polyground.generator.creator.BlockCreatorGui;
+import com.steve6472.polyground.generator.creator.Creator;
+import com.steve6472.sge.gfx.SpriteRender;
+import com.steve6472.sge.gfx.font.Font;
 import com.steve6472.sge.gui.Component;
 import com.steve6472.sge.gui.components.RadioGroup;
-import com.steve6472.sge.gui.components.ToggleButton;
+import com.steve6472.sge.gui.components.context.ContextMenu;
+import com.steve6472.sge.gui.components.context.ContextMenuToggleButton;
+import com.steve6472.sge.main.KeyList;
 import com.steve6472.sge.main.MainApp;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.function.Consumer;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
@@ -19,125 +20,102 @@ import java.util.function.Consumer;
  ***********************/
 public class FaceList extends Component
 {
-	private FaceListItem up, down, north, east, south, west;
 	private BlockCreatorGui creatorGui;
+
+	private boolean hoveringFaceSelect;
+	private EnumFace selectedFace;
 
 	public FaceList(BlockCreatorGui creatorGui)
 	{
 		this.creatorGui = creatorGui;
+		selectedFace = EnumFace.NORTH;
 	}
 
 	@Override
 	public void init(MainApp main)
 	{
-		up = createButton(EnumFace.UP, 0);
-		down = createButton(EnumFace.DOWN, 25);
-		north = createButton(EnumFace.NORTH, 50);
-		east = createButton(EnumFace.EAST, 75);
-		south = createButton(EnumFace.SOUTH, 100);
-		west = createButton(EnumFace.WEST, 125);
-
-		RadioGroup.addToggleButtons(
-			up.getToggleButton(),
-			down.getToggleButton(),
-			north.getToggleButton(),
-			east.getToggleButton(),
-			south.getToggleButton(),
-			west.getToggleButton());
-	}
-
-	private FaceListItem createButton(EnumFace face, int y)
-	{
-		FaceListItem button = new FaceListItem(creatorGui, face);
-		button.setRelativeLocation(0, y);
-		button.setSize(200, 25);
-		addComponent(button);
-		button.getToggleButton().addChangeEvent(this::runFaceChangeEvents);
-		button.getVisButton().addChangeEvent(this::runVisChangeEvents);
-
-		return button;
-	}
-
-	public FaceListItem[] array()
-	{
-		return new FaceListItem[] {up, down, north, east, south, west};
-	}
-
-	public void iterate(Consumer<FaceListItem> c)
-	{
-		for (FaceListItem fli : array())
-			c.accept(fli);
-	}
-
-	public FaceListItem get(EnumFace face)
-	{
-		for (FaceListItem f : array())
-		{
-			if (f.getFace() == face) return f;
-		}
-
-		return null;
-	}
-
-	public void hideAll()
-	{
-		iterate(c -> c.setVisible(false));
-	}
-
-	public void setEnabled(boolean flag)
-	{
-		iterate(c -> c.setEnabled(flag));
-		if (!flag) iterate(c ->
-		{
-			c.setSelected(false);
-			c.setVisible(false);
-		});
-	}
-
-	public FaceListItem getSelectedFace()
-	{
-		for (FaceListItem f : array())
-		{
-			if (f.isSelected()) return f;
-		}
-
-		return null;
+		setupFaceSelectContextMenu();
 	}
 
 	@Override
 	public void tick()
 	{
-		tickComponents();
+		hoveringFaceSelect = isCursorInComponent(x + 12, y + 12, 96, 28);
+
+		onMouseClicked(hoveringFaceSelect, KeyList.LMB, () ->
+		{
+			creatorGui.setContextMenu("faceSelect");
+			creatorGui.getCurrentContextMenu().show(x + 12, y + 40, -1, -1);
+		});
 	}
 
 	@Override
 	public void render()
 	{
 		renderComponents();
+
+		SpriteRender.renderSingleBorderComponent(this, 0, 0, 0, 1, 1, 1, 1, 1);
+
+		/* Render Face Select Button */
+		if (hoveringFaceSelect)
+			SpriteRender.renderSpriteFromAtlas(x + 12, y + 12, 128, 32, Creator.BUTTONS.getId(), 0, 4, 2, 8);
+		else
+			SpriteRender.renderSpriteFromAtlas(x + 12, y + 12, 128, 32, Creator.BUTTONS.getId(), 0, 3, 2, 8);
+
+		Font.render(selectedFace.getFancyName(), x + 20, y + 22);
 	}
 
-	/* Events */
-
-	private List<Consumer<ToggleButton>> visChangeEvent = new ArrayList<>();
-	private List<Consumer<ToggleButton>> faceChangeEvent = new ArrayList<>();
-
-	public void addVisChangeEvent(Consumer<ToggleButton> c)
+	private void setupFaceSelectContextMenu()
 	{
-		visChangeEvent.add(c);
+		ContextMenu menu = new ContextMenu("faceSelect")
+		{
+			boolean canOpen = true;
+
+			@Override
+			public void hide()
+			{
+				super.hide();
+
+				if (hoveringFaceSelect)
+					canOpen = false;
+			}
+
+			@Override
+			public void show(int x, int y, int mouseX, int mouseY)
+			{
+				if (canOpen)
+				{
+					super.show(x, y, mouseX, mouseY);
+				} else
+				{
+					canOpen = true;
+				}
+			}
+		};
+		creatorGui.addContextMenu(menu);
+		menu.darkenGui = false;
+		menu.setSize(96);
+
+		ContextMenuToggleButton north = createFaceButton(EnumFace.NORTH, menu);
+		ContextMenuToggleButton east = createFaceButton(EnumFace.EAST, menu);
+		ContextMenuToggleButton south = createFaceButton(EnumFace.SOUTH, menu);
+		ContextMenuToggleButton west = createFaceButton(EnumFace.WEST, menu);
+		ContextMenuToggleButton top = createFaceButton(EnumFace.UP, menu);
+		ContextMenuToggleButton bottom = createFaceButton(EnumFace.DOWN, menu);
+
+		north.setToggled(true);
+
+		RadioGroup.addContextMenuToggleButtons(north, east, south, west, top, bottom);
+
 	}
 
-	private void runVisChangeEvents(ToggleButton button)
+	private ContextMenuToggleButton createFaceButton(EnumFace face, ContextMenu menu)
 	{
-		visChangeEvent.forEach(c -> c.accept(button));
-	}
+		ContextMenuToggleButton b = new ContextMenuToggleButton();
+		b.addClickEvent(c -> selectedFace = face);
+		b.setName(face.getFancyName());
 
-	public void addFaceChangeEvent(Consumer<ToggleButton> c)
-	{
-		faceChangeEvent.add(c);
-	}
-
-	private void runFaceChangeEvents(ToggleButton button)
-	{
-		faceChangeEvent.forEach(c -> c.accept(button));
+		menu.add(b);
+		return b;
 	}
 }

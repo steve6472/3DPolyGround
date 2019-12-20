@@ -8,13 +8,11 @@ import com.steve6472.polyground.generator.creator.BlockCreatorGui;
 import com.steve6472.polyground.generator.creator.ICreatorCube;
 import com.steve6472.polyground.generator.creator.components.SomeSlider;
 import com.steve6472.sge.gfx.SpriteRender;
-import com.steve6472.sge.gfx.font.CustomChar;
 import com.steve6472.sge.gui.components.Button;
 import com.steve6472.sge.gui.components.NamedCheckBox;
 import com.steve6472.sge.gui.components.Slider;
 import com.steve6472.sge.gui.components.TextField;
 import com.steve6472.sge.gui.components.dialog.OkDialog;
-import com.steve6472.sge.gui.components.dialog.YesNoDialog;
 import com.steve6472.sge.main.MainApp;
 
 import java.util.function.Consumer;
@@ -39,8 +37,8 @@ public class EditCubeDialog extends OkDialog
 	{
 		super(" ", "Edit Cube");
 		this.creatorGui = creatorGui;
-		height = 227;
-		width = 272;
+		height = 202;
+		width = 274;
 
 		if (!(cube instanceof ICreatorCube))
 		{
@@ -65,58 +63,11 @@ public class EditCubeDialog extends OkDialog
 		(toY = addSlider(130, 25, c -> cube.getCube().getAabb().maxY = c.getIValue() / 16f)).setValue((int) (cube.getCube().getAabb().maxY * 16f));
 		(toZ = addSlider(130, 50, c -> cube.getCube().getAabb().maxZ = c.getIValue() / 16f)).setValue((int) (cube.getCube().getAabb().maxZ * 16f));
 
-		hitbox = new NamedCheckBox();
-		hitbox.setRelativeLocation(12, 124);
-		hitbox.setSize(120, 25);
-		hitbox.setText("Hitbox");
-		hitbox.setBoxSize(14, 14);
-		hitbox.setSelectedChar(CustomChar.CROSS);
-		hitbox.setBoxPadding(5, 5);
-		hitbox.setToggled(cube.getCube().isHitbox());
-		hitbox.addChangeEvent(c -> cube.getCube().setHitbox(c.isToggled()));
-		addComponent(hitbox);
-
-		collisionBox = new NamedCheckBox();
-		collisionBox.setRelativeLocation(142, 124);
-		collisionBox.setSize(120, 25);
-		collisionBox.setText("Collision Box");
-		collisionBox.setBoxSize(14, 14);
-		collisionBox.setSelectedChar(CustomChar.CROSS);
-		collisionBox.setBoxPadding(5, 5);
-		collisionBox.setToggled(cube.getCube().isCollisionBox());
-		collisionBox.addChangeEvent(c -> cube.getCube().setCollisionBox(c.isToggled()));
-		addComponent(collisionBox);
-
-		delete = new Button("Delete");
-		delete.setRelativeLocation(12, 154);
-		delete.setSize(120, 25);
-		delete.addClickEvent(c ->
-		{
-			delete.setEnabled(false);
-			ok.setEnabled(false);
-
-			YesNoDialog yn = new YesNoDialog("Do you really want to delete this nice Cube ?\nWhat did it do to you?\nIt never EVER hurt you!\n\nYou Monster", "Murderer");
-			getMain().showDialog(yn).center();
-			yn.addYesClickEvent(y -> {
-				creatorGui.getSelectedBlock().getModel().removeCube(cube.getCube());
-				creatorGui.runOnBlockChange();
-
-				close();
-			});
-			yn.addNoClickEvent(n -> {
-
-				delete.setEnabled(true);
-				ok.setEnabled(true);
-
-			});
-		});
-		addComponent(delete);
-
 		name = new TextField();
 		name.setText(cube.getName());
 		name.endCarret();
-		name.setRelativeLocation(142, 154);
-		name.setSize(120, 25);
+		name.setRelativeLocation(12, 129);
+		name.setSize(250, 25);
 		addComponent(name);
 
 		ok.addClickEvent(c ->
@@ -128,10 +79,6 @@ public class EditCubeDialog extends OkDialog
 			{
 				cube.setName("Unnamed Cube");
 			}
-
-			creatorGui.runOnBlockChange();
-			creatorGui.cubeList.select(cube.getIndex());
-			creatorGui.runOnCubeListChange();
 		});
 	}
 

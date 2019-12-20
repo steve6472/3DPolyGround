@@ -34,6 +34,7 @@ class BlockLoader
 	{
 		ignoredProperties.add(FaceRegistry.condition);
 		ignoredProperties.add(FaceRegistry.conditionedTexture);
+		ignoredProperties.add(FaceRegistry.rotation);
 	}
 
 	static BlockModel load(File f, BlockEntry entry)

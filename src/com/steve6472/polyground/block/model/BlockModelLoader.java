@@ -36,6 +36,7 @@ public class BlockModelLoader
 		try
 		{
 			json = new JSONObject(read(new File(MainApp.class.getResource("/models/" + name + ".json").getFile())));
+//			json = new JSONObject(read(new File("models/" + name + ".json")));
 		} catch (Exception e)
 		{
 			System.err.println("Could not load " + name);

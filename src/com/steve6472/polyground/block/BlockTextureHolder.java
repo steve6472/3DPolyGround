@@ -28,6 +28,7 @@ public class BlockTextureHolder
 			try
 			{
 				File f = new File(url.getFile());
+//				File f = new File("textures/block/" + usedTextures.get(i) + ".png");
 				atlas.add(f);
 			} catch (NullPointerException ex)
 			{

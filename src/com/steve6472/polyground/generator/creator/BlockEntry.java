@@ -6,10 +6,13 @@ import com.steve6472.polyground.block.model.CubeFace;
 import com.steve6472.polyground.block.model.faceProperty.AutoUVFaceProperty;
 import com.steve6472.polyground.block.model.faceProperty.TextureFaceProperty;
 import com.steve6472.polyground.block.model.faceProperty.VisibleFaceProperty;
+import com.steve6472.polyground.block.model.registry.face.FaceEntry;
 import com.steve6472.polyground.block.model.registry.face.FaceRegistry;
 import org.joml.AABBf;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
@@ -23,6 +26,15 @@ public class BlockEntry
 	private String name;
 	private boolean isParent;
 	private boolean isChild;
+
+	private static List<FaceEntry> ignoredProperties = new ArrayList<>();
+
+	static
+	{
+		ignoredProperties.add(FaceRegistry.condition);
+		ignoredProperties.add(FaceRegistry.conditionedTexture);
+		ignoredProperties.add(FaceRegistry.rotation);
+	}
 
 	public BlockEntry(File f)
 	{
@@ -38,8 +50,16 @@ public class BlockEntry
 
 	private static void fillMissingProperties(CubeFace face)
 	{
-		for (String key : FaceRegistry.getKeys())
+		main : for (String key : FaceRegistry.getKeys())
 		{
+			for (FaceEntry f : ignoredProperties)
+			{
+				if (f.getInstance().getId().equals(key))
+				{
+					continue main;
+				}
+			}
+
 			if (!face.hasProperty(key))
 			{
 				face.addProperty(FaceRegistry.createProperty(key));

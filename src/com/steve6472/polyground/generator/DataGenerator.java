@@ -26,16 +26,16 @@ public class DataGenerator
 	private File blockModels = new File("res\\models\\block");
 	private File itemModels = new File("res\\models\\item");
 
-	public static void main(String[] args)
-	{
-		try
-		{
-			new DataGenerator().generate();
-		} catch (IOException e)
-		{
-			e.printStackTrace();
-		}
-	}
+//	public static void main(String[] args)
+//	{
+//		try
+//		{
+//			new DataGenerator().generate();
+//		} catch (IOException e)
+//		{
+//			e.printStackTrace();
+//		}
+//	}
 
 	public void generate() throws IOException
 	{

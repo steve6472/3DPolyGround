@@ -48,6 +48,11 @@ public enum EnumFace
 		return this.name().toLowerCase();
 	}
 
+	public String getFancyName()
+	{
+		return this.name().charAt(0) + this.name().toLowerCase().substring(1);
+	}
+
 	public static EnumFace[] getFaces()
 	{
 		return new EnumFace[] { UP, DOWN, NORTH, EAST, SOUTH, WEST };

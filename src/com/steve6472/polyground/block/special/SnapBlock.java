@@ -121,7 +121,7 @@ public class SnapBlock extends Block
 				y + j + pixel,
 				z + k + pixel),
 			pixel,
-//			Util.getRandomFloat(1f / 16f / 1.5f, 1f / 16f / 2f),
+//			RandomUtil.randomFloat(1f / 16f / 1.5f, 1f / 16f / 2f),
 			new Vector4f(
 				minU,
 				0,

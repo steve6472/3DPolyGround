@@ -3,7 +3,6 @@ package com.steve6472.polyground.entity.model;
 import com.steve6472.polyground.entity.EntityBase;
 import com.steve6472.sge.gfx.Sprite;
 import com.steve6472.sge.main.MainApp;
-import org.joml.Matrix4f;
 
 import java.io.File;
 
@@ -25,5 +24,6 @@ public interface EntityModel<T extends EntityBase>
 	default Sprite loadTexture(String name)
 	{
 		return new Sprite(new File(MainApp.class.getResource("/textures/entity/" + name + ".png").getFile()));
+//		return new Sprite(new File("textures/entity/" + name + ".png"));
 	}
 }

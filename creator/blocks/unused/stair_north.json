@@ -1,8 +1,8 @@
 {
-    "isParent": false,
+    "isParent": true,
     "cubes": [
         {
-            "name": "main",
+            "name": "bottom",
             "from": [
                 0,
                 0,
@@ -10,20 +10,19 @@
             ],
             "to": [
                 16,
-                16,
+                8,
                 16
             ],
             "faces": {
                 "east": {
                     "uv": [
                         0,
-                        0,
+                        8,
                         16,
                         16
                     ],
-                    "emissive": false,
                     "at": "0, 0, 0",
-                    "texture": "stone_cut",
+                    "texture": "#texture",
                     "negate": false,
                     "isVisible": true,
                     "autoUV": true,
@@ -36,13 +35,12 @@
                 "south": {
                     "uv": [
                         0,
-                        0,
+                        8,
                         16,
                         16
                     ],
-                    "emissive": false,
                     "at": "0, 0, 0",
-                    "texture": "stone_cut",
+                    "texture": "#texture",
                     "negate": false,
                     "isVisible": true,
                     "autoUV": true,
@@ -55,13 +53,12 @@
                 "north": {
                     "uv": [
                         0,
-                        0,
+                        8,
                         16,
                         16
                     ],
-                    "emissive": false,
                     "at": "0, 0, 0",
-                    "texture": "stone_cut",
+                    "texture": "#texture",
                     "negate": false,
                     "isVisible": true,
                     "autoUV": true,
@@ -74,13 +71,12 @@
                 "west": {
                     "uv": [
                         0,
-                        0,
+                        8,
                         16,
                         16
                     ],
-                    "emissive": false,
                     "at": "0, 0, 0",
-                    "texture": "stone_cut",
+                    "texture": "#texture",
                     "negate": false,
                     "isVisible": true,
                     "autoUV": true,
@@ -97,9 +93,8 @@
                         16,
                         16
                     ],
-                    "emissive": false,
                     "at": "0, 0, 0",
-                    "texture": "stone_cut",
+                    "texture": "#texture",
                     "negate": false,
                     "isVisible": true,
                     "autoUV": true,
@@ -116,9 +111,8 @@
                         16,
                         16
                     ],
-                    "emissive": false,
                     "at": "0, 0, 0",
-                    "texture": "stone_cut",
+                    "texture": "#texture",
                     "negate": false,
                     "isVisible": true,
                     "autoUV": true,
@@ -131,14 +125,14 @@
             }
         },
         {
-            "name": "ore",
+            "name": "top",
             "from": [
                 0,
-                0,
+                8,
                 0
             ],
             "to": [
-                16,
+                8,
                 16,
                 16
             ],
@@ -147,19 +141,18 @@
                     "uv": [
                         0,
                         0,
-                        16,
-                        16
+                        8,
+                        8
                     ],
-                    "emissive": true,
                     "at": "0, 0, 0",
-                    "texture": "ore_overlay",
+                    "texture": "#texture",
                     "negate": false,
                     "isVisible": true,
                     "autoUV": true,
                     "tint": [
                         255,
-                        110,
-                        0
+                        255,
+                        255
                     ]
                 },
                 "south": {
@@ -167,18 +160,17 @@
                         0,
                         0,
                         16,
-                        16
+                        8
                     ],
-                    "emissive": true,
                     "at": "0, 0, 0",
-                    "texture": "ore_overlay",
+                    "texture": "#texture",
                     "negate": false,
                     "isVisible": true,
                     "autoUV": true,
                     "tint": [
                         255,
-                        110,
-                        0
+                        255,
+                        255
                     ]
                 },
                 "north": {
@@ -186,56 +178,53 @@
                         0,
                         0,
                         16,
-                        16
+                        8
                     ],
-                    "emissive": true,
                     "at": "0, 0, 0",
-                    "texture": "ore_overlay",
+                    "texture": "#texture",
                     "negate": false,
                     "isVisible": true,
                     "autoUV": true,
                     "tint": [
                         255,
-                        110,
-                        0
+                        255,
+                        255
                     ]
                 },
                 "west": {
                     "uv": [
-                        0,
+                        8,
                         0,
                         16,
-                        16
+                        8
                     ],
-                    "emissive": true,
                     "at": "0, 0, 0",
-                    "texture": "ore_overlay",
+                    "texture": "#texture",
                     "negate": false,
                     "isVisible": true,
                     "autoUV": true,
                     "tint": [
                         255,
-                        110,
-                        0
+                        255,
+                        255
                     ]
                 },
                 "up": {
                     "uv": [
                         0,
-                        0,
+                        8,
                         16,
                         16
                     ],
-                    "emissive": true,
                     "at": "0, 0, 0",
-                    "texture": "ore_overlay",
+                    "texture": "#texture",
                     "negate": false,
                     "isVisible": true,
                     "autoUV": true,
                     "tint": [
                         255,
-                        110,
-                        0
+                        255,
+                        255
                     ]
                 },
                 "down": {
@@ -243,18 +232,17 @@
                         0,
                         0,
                         16,
-                        16
+                        8
                     ],
-                    "emissive": true,
                     "at": "0, 0, 0",
-                    "texture": "ore_overlay",
+                    "texture": "#texture",
                     "negate": false,
-                    "isVisible": true,
+                    "isVisible": false,
                     "autoUV": true,
                     "tint": [
                         255,
-                        110,
-                        0
+                        255,
+                        255
                     ]
                 }
             }

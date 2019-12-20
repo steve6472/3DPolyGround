@@ -24,6 +24,7 @@ public class ItemRegistry
 	public ItemRegistry(CaveGame pg)
 	{
 		File[] blocks = new File(MainApp.class.getResource("/items").getFile()).listFiles();
+//		File[] blocks = new File("items").listFiles();
 
 		reference = new HashMap<>();
 		ItemRegistry.items = new HashMap<>();

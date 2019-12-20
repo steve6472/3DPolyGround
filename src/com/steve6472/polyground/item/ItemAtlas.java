@@ -218,7 +218,7 @@ public class ItemAtlas
 		if (invert)
 			SpriteRender.renderSpriteInverted(x, y, itemSize, itemSize, 0, textureId, itemSize, itemSize);
 		else
-			SpriteRender.renderSprite(x, y, itemSize, itemSize, 0, textureId, itemSize, itemSize);
+			SpriteRender.renderSprite(x, y, itemSize, itemSize, 0, textureId);
 
 
 		itemAtlas.unbindCurrentFrameBuffer(caveGame);

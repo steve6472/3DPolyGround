@@ -8,6 +8,7 @@ import com.steve6472.polyground.block.model.registry.Cube;
 import com.steve6472.polyground.block.model.registry.face.FaceRegistry;
 import com.steve6472.polyground.generator.creator.components.ColorDialog;
 import com.steve6472.polyground.generator.creator.components.ComponentHolder;
+import com.steve6472.polyground.generator.creator.components.CubeList;
 import com.steve6472.polyground.generator.creator.components.FaceList;
 import com.steve6472.polyground.generator.creator.dialogs.EditCubeDialog;
 import com.steve6472.polyground.generator.creator.dialogs.NewBlockDialog;
@@ -23,12 +24,14 @@ import com.steve6472.sge.gui.components.Background;
 import com.steve6472.sge.gui.components.Button;
 import com.steve6472.sge.gui.components.ItemList;
 import com.steve6472.sge.gui.components.dialog.*;
+import com.steve6472.sge.gui.components.schemes.SchemeButton;
 import com.steve6472.sge.main.MainApp;
 import com.steve6472.sge.main.Util;
 import com.steve6472.sge.main.events.Event;
 import com.steve6472.sge.main.events.WindowSizeEvent;
 import org.joml.AABBf;
 import org.joml.Matrix4f;
+import org.joml.Vector4f;
 
 import java.io.File;
 import java.io.IOException;
@@ -46,10 +49,11 @@ import java.util.Objects;
 public class BlockCreatorGui extends Gui
 {
 	/* UI Components */
-	private Button swichToItems, save, newBlock, importTexture, setTexture, editCube, addCube, editUv, copyCube, applyToAllFaces, color;
-	public ItemList blockList, cubeList;
+	private Button swichToItems, save, newBlock, importTexture, setTexture, editUv, applyToAllFaces, color;
+	public ItemList blockList;
 	private FaceList faceList;
 	private ComponentHolder holder;
+	private CubeList cubeList;
 
 	public HashMap<String, BlockEntry> blocks;
 	private HashMap<String, Integer> textureNames;
@@ -60,6 +64,8 @@ public class BlockCreatorGui extends Gui
 
 	private ItemTextureShader textureShader;
 	private ItemTextureTessellator tessellator;
+
+	private SchemeButton buttonSheme;
 
 	public BlockCreatorGui(MainApp mainApp)
 	{
@@ -76,6 +82,17 @@ public class BlockCreatorGui extends Gui
 		loadAllTextures();
 		getMainApp().getEventHandler().register(preview);
 
+		buttonSheme = MainApp.getSchemeRegistry().copyDefaultScheme(SchemeButton.class);
+		buttonSheme.disabledFill = new Vector4f(0.25f, 0.25f, 0.25f, 1);
+		buttonSheme.enabledFill = new Vector4f(0.25f, 0.25f, 0.25f, 1);
+		buttonSheme.hoveredFill = new Vector4f(0.25f, 0.25f, 0.25f, 1);
+		buttonSheme.disabledOutsideBorder = new Vector4f(buttonSheme.disabledInsideBorder);
+		buttonSheme.disabledInsideBorder = new Vector4f(buttonSheme.disabledInsideBorder.mul(1.2f));
+		buttonSheme.enabledOutsideBorder = new Vector4f(buttonSheme.enabledInsideBorder);
+		buttonSheme.enabledInsideBorder = new Vector4f(buttonSheme.enabledInsideBorder.mul(1.2f));
+		buttonSheme.hoveredOutsideBorder = new Vector4f(buttonSheme.hoveredInsideBorder);
+		buttonSheme.hoveredInsideBorder = new Vector4f(buttonSheme.hoveredInsideBorder.mul(1.2f));
+
 		textureShader = new ItemTextureShader();
 		textureShader.bind();
 		textureShader.setUniform(ItemTextureShader.ATLAS, 0);
@@ -83,6 +100,13 @@ public class BlockCreatorGui extends Gui
 		tessellator = new ItemTextureTessellator();
 
 		Background.createComponent(this);
+
+
+		cubeList = new CubeList(this);
+		cubeList.setLocation(250, 200);
+		cubeList.setSize(130, 200);
+		addComponent(cubeList);
+
 
 		holder = new ComponentHolder();
 		addComponent(holder);
@@ -115,27 +139,6 @@ public class BlockCreatorGui extends Gui
 
 		});
 		addComponent(swichToItems);
-
-		editCube = new Button("Edit Cube");
-		editCube.setRelativeLocation(0, 255);
-		editCube.setSize(95, 25);
-		editCube.addClickEvent(this::editCube);
-		editCube.setEnabled(false);
-		holder.addComponent(editCube);
-
-		addCube = new Button("Add Cube");
-		addCube.setRelativeLocation(105, 255);
-		addCube.setSize(95, 25);
-		addCube.addClickEvent(this::addCube);
-		addCube.setEnabled(false);
-		holder.addComponent(addCube);
-
-		copyCube = new Button("Copy Cube");
-		copyCube.setSize(95, 25);
-		copyCube.setRelativeLocation(0, 285);
-		copyCube.addClickEvent(this::copyCube);
-		copyCube.setEnabled(false);
-		holder.addComponent(copyCube);
 
 		setTexture = new Button("Set Texture");
 		setTexture.setRelativeLocation(0, 25 * 14 + 150);
@@ -171,36 +174,22 @@ public class BlockCreatorGui extends Gui
 		blockList.setMultiselect(false);
 		blockList.setLocation(10, 45);
 		blockList.setSize(200, 250);
-		blockList.addChangeEvent(this::onBlockChange);
 		addComponent(blockList);
-
-		cubeList = new ItemList(8);
-		cubeList.setMultiselect(false);
-		cubeList.setRelativeLocation(0, 45);
-		cubeList.setSize(200, 25 * 8);
-		cubeList.addChangeEvent(this::onCubeListChange);
-		holder.addComponent(cubeList);
 
 		faceList = new FaceList(this);
 		faceList.setRelativeLocation(0, 25 * 8 + 140);
 		faceList.setSize(200, 25 * 6);
 		holder.addComponent(faceList);
-		faceList.setEnabled(false);
-		faceList.hideAll();
 
 		loadBlocks();
 		updateBlockTextures();
+		cubeList.updateButtons();
 	}
 
 	@Override
 	public void guiTick()
 	{
 		preview.tick();
-
-		setTexture.setEnabled(faceList.getSelectedFace() != null);
-		editUv.setEnabled(faceList.getSelectedFace() != null && faceList.getSelectedFace().isVisible());
-		applyToAllFaces.setEnabled(faceList.getSelectedFace() != null && faceList.getSelectedFace().isVisible());
-		color.setEnabled(faceList.getSelectedFace() != null && faceList.getSelectedFace().isVisible());
 	}
 
 	@Override
@@ -211,12 +200,15 @@ public class BlockCreatorGui extends Gui
 		String text = "Block Type: " + (getSelectedBlock() != null ? (getSelectedBlock().isParent() ? "Parent" : "Normal") : "Not Found");
 
 		Font.render(text, getMainApp().getWidth() - Font.getTextWidth(text, 1) - 5, 5);
+
+//		SpriteRender.renderSpriteFromAtlas(0, 0, 32, 32, 0, Creator.UI.getId(), 0, 0, 4, 4);
 	}
 
 	@Event
 	public void updatePositions(WindowSizeEvent e)
 	{
 		holder.setLocation(e.getWidth() - 210, 0);
+		cubeList.setLocation(e.getWidth() - cubeList.getWidth() - 20, 20);
 		preview.updateSize(e);
 	}
 
@@ -260,8 +252,6 @@ public class BlockCreatorGui extends Gui
 				getSelectedCube().getFace(face).setProperties(getSelectedFace().copyProperties());
 			}
 		});
-
-		runOnCubeListChange();
 	}
 
 	private void editUV(Button button)
@@ -287,7 +277,7 @@ public class BlockCreatorGui extends Gui
 	/**
 	 * Check if selected cube has any faces with auto UV, if so it sets UV automatically
 	 */
-	private void autoUV()
+	public void autoUV()
 	{
 		for (CubeFace f : getSelectedCube().getFaces())
 		{
@@ -314,7 +304,6 @@ public class BlockCreatorGui extends Gui
 		}
 
 		getSelectedBlock().getModel().addCube(newCube);
-		runOnBlockChange();
 	}
 
 	private CubeFace copyFace(CubeFace face, Cube parent)
@@ -332,8 +321,6 @@ public class BlockCreatorGui extends Gui
 	{
 		BlockEntry entry = getSelectedBlock();
 		entry.getModel().addCube(BlockEntry.createEmptyCube());
-
-		onBlockChange(blockList);
 	}
 
 	private void save(Button button)
@@ -404,86 +391,21 @@ public class BlockCreatorGui extends Gui
 
 	/* List Change Events */
 
-	public void runOnCubeListChange()
-	{
-		onCubeListChange(cubeList);
-	}
-
-	private void onCubeListChange(ItemList c)
-	{
-		editCube.setEnabled(cubeList.getSelectedItems().size() != 0);
-		addCube.setEnabled(blockList.getSelectedItems().size() != 0);
-		copyCube.setEnabled(cubeList.getSelectedItems().size() != 0);
-
-		setTexture.setEnabled(false);
-
-		Cube cube = getSelectedCube();
-		if (cube == null)
-		{
-			faceList.hideAll();
-			faceList.setEnabled(false);
-			return;
-		}
-
-		faceList.setEnabled(true);
-
-		for (EnumFace face : EnumFace.getFaces())
-		{
-			CubeFace cf = cube.getFace(face);
-
-			faceList.get(face).setVisible(cf.getProperty(FaceRegistry.isVisible).isVisible());
-		}
-	}
-
-	public void runOnBlockChange()
-	{
-		onBlockChange(blockList);
-	}
-
-	private void onBlockChange(ItemList c)
-	{
-		cubeList.clear();
-		faceList.hideAll();
-		faceList.setEnabled(false);
-
-		editCube.setEnabled(cubeList.getSelectedItems().size() != 0);
-		addCube.setEnabled(blockList.getSelectedItems().size() != 0);
-		copyCube.setEnabled(cubeList.getSelectedItems().size() != 0);
-
-		if (getSelectedBlock() == null)
-		{
-			editUv.setVisible(true);
-		} else
-		{
-			editUv.setVisible(!getSelectedBlock().isChild());
-		}
-
-		if (c.getSelectedItems().size() == 0) return;
-
-		String name = c.getSelectedItems().get(0).getText();
-		BlockEntry entry = blocks.get(name);
-
-		cubeList.clear();
-
-		for (int i = 0; i < entry.getModel().getCubes().size(); i++)
-		{
-			cubeList.addItem(((ICreatorCube) entry.getModel().getCube(i)).getName());
-		}
-	}
 
 	/* Get Functions */
 
 	public CubeFace getSelectedFace()
 	{
 		Cube cube = getSelectedCube();
-		return cube.getFace(faceList.getSelectedFace().getFace());
+//		return cube.getFace(faceList.getSelectedFace().getFace());
+		return null;
 	}
 
 	public Cube getSelectedCube()
 	{
-		if (cubeList.getSelectedItemsIndices().size() == 0) return null;
+		if (cubeList.getSelectedIndex() == -1) return null;
 
-		int cubeId = cubeList.getSelectedItemsIndices().get(0);
+		int cubeId = cubeList.getSelectedIndex();
 		BlockEntry entry = getSelectedBlock();
 		return entry.getModel().getCube(cubeId);
 	}

@@ -14,7 +14,6 @@ public class RotationFaceProperty extends FaceProperty
 
 	public RotationFaceProperty()
 	{
-
 	}
 
 	public RotationFaceProperty(EnumRotation rotation)

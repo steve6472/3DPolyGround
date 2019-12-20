@@ -8,5 +8,6 @@ uniform vec4 fill;
 
 void main()
 {
+	if (fill.a == 0) discard;
 	fragColor = fill;
 }

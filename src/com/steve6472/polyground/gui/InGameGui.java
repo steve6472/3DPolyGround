@@ -103,18 +103,18 @@ public class InGameGui extends Gui implements IGamePause
 					"Side: " + main.hitPicker.getHitResult().getFace() + "\n" +
 					"Particles: " + main.particles.count());
 			if (CaveGame.getInstance().options.renderAtlases)
-				SpriteRender.renderSprite(0, 80, as, as, 0, BlockTextureHolder.getAtlas().getSpriteId(), as, as);
+				SpriteRender.renderSprite(0, 80, as, as, 0, BlockTextureHolder.getAtlas().getSpriteId());
 		} else
 		{
 			Font.render("Particles: " + main.particles.count(), 5, 45);
 			if (CaveGame.getInstance().options.renderAtlases)
-				SpriteRender.renderSprite(0, 70, as, as, 0, BlockTextureHolder.getAtlas().getSpriteId(), as, as);
+				SpriteRender.renderSprite(0, 70, as, as, 0, BlockTextureHolder.getAtlas().getSpriteId());
 		}
 
 		int ts = CaveGame.getInstance().itemAtlas.totalSize;
 
 		if (CaveGame.getInstance().options.renderAtlases)
-			SpriteRender.renderSprite(getMainApp().getWidth() - ts, 15, ts, ts, 0, CaveGame.getInstance().itemAtlas.itemAtlas.texture, ts, ts);
+			SpriteRender.renderSprite(getMainApp().getWidth() - ts, 15, ts, ts, 0, CaveGame.getInstance().itemAtlas.itemAtlas.texture);
 	}
 
 	@Override

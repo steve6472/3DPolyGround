@@ -21,7 +21,6 @@
                         16,
                         16
                     ],
-                    "emissive": false,
                     "at": "0, 0, 0",
                     "texture": "#texture",
                     "negate": false,
@@ -40,7 +39,6 @@
                         16,
                         16
                     ],
-                    "emissive": false,
                     "at": "0, 0, 0",
                     "texture": "#texture",
                     "negate": false,
@@ -59,7 +57,6 @@
                         16,
                         16
                     ],
-                    "emissive": false,
                     "at": "0, 0, 0",
                     "texture": "#texture",
                     "negate": false,
@@ -78,7 +75,6 @@
                         16,
                         16
                     ],
-                    "emissive": false,
                     "at": "0, 0, 0",
                     "texture": "#texture",
                     "negate": false,
@@ -97,7 +93,6 @@
                         16,
                         16
                     ],
-                    "emissive": false,
                     "at": "0, 0, 0",
                     "texture": "#texture",
                     "negate": false,
@@ -116,7 +111,6 @@
                         16,
                         16
                     ],
-                    "emissive": false,
                     "at": "0, 0, 0",
                     "texture": "#texture",
                     "negate": false,
@@ -138,19 +132,18 @@
                 0
             ],
             "to": [
-                8,
                 16,
-                16
+                16,
+                8
             ],
             "faces": {
                 "east": {
                     "uv": [
                         0,
                         0,
-                        8,
+                        16,
                         8
                     ],
-                    "emissive": false,
                     "at": "0, 0, 0",
                     "texture": "#texture",
                     "negate": false,
@@ -166,10 +159,9 @@
                     "uv": [
                         0,
                         0,
-                        16,
+                        8,
                         8
                     ],
-                    "emissive": false,
                     "at": "0, 0, 0",
                     "texture": "#texture",
                     "negate": false,
@@ -183,12 +175,11 @@
                 },
                 "north": {
                     "uv": [
-                        0,
+                        8,
                         0,
                         16,
                         8
                     ],
-                    "emissive": false,
                     "at": "0, 0, 0",
                     "texture": "#texture",
                     "negate": false,
@@ -202,12 +193,11 @@
                 },
                 "west": {
                     "uv": [
-                        8,
+                        0,
                         0,
                         16,
                         8
                     ],
-                    "emissive": false,
                     "at": "0, 0, 0",
                     "texture": "#texture",
                     "negate": false,
@@ -222,11 +212,10 @@
                 "up": {
                     "uv": [
                         0,
+                        0,
                         8,
-                        16,
                         16
                     ],
-                    "emissive": false,
                     "at": "0, 0, 0",
                     "texture": "#texture",
                     "negate": false,
@@ -242,10 +231,9 @@
                     "uv": [
                         0,
                         0,
-                        16,
-                        8
+                        8,
+                        16
                     ],
-                    "emissive": false,
                     "at": "0, 0, 0",
                     "texture": "#texture",
                     "negate": false,

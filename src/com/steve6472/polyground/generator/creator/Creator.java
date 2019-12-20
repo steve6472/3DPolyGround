@@ -1,5 +1,6 @@
 package com.steve6472.polyground.generator.creator;
 
+import com.steve6472.sge.gfx.Sprite;
 import com.steve6472.sge.main.MainApp;
 import com.steve6472.sge.main.MainFlags;
 
@@ -16,9 +17,15 @@ public class Creator extends MainApp
 	private BlockCreatorGui blockCreatorGui;
 	private ItemCreatorGui itemCreatorGui;
 
+	public static Sprite UI;
+	public static Sprite BUTTONS;
+
 	@Override
 	public void init()
 	{
+		UI = new Sprite("*creator\\ui.png");
+		BUTTONS = new Sprite("*creator\\buttons.png");
+
 		blockCreatorGui = new BlockCreatorGui(this);
 		blockCreatorGui.setVisible(true);
 
