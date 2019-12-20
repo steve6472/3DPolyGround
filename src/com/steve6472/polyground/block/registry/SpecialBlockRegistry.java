@@ -33,6 +33,7 @@ public class SpecialBlockRegistry
 	public static final SpecialBlockEntry<TimeSliderBlock> timeSlider = register("time_slider", TimeSliderBlock::new);
 	public static final SpecialBlockEntry<CustomBlock> custom = register("custom", CustomBlock::new);
 	public static final SpecialBlockEntry<LightSourceBlock> light = register("light", LightSourceBlock::new);
+	public static final SpecialBlockEntry<MicroBlock> microBlock = register("micro_block", MicroBlock::new);
 
 	public static <T extends Block> SpecialBlockEntry<T> register(String id, ISpecialBlockFactory<T> factory)
 	{

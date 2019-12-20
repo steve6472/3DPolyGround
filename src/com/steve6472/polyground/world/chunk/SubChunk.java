@@ -30,10 +30,10 @@ public class SubChunk implements IBiomeProvider
 	private int layer;
 	public float renderTime = 0.1f;
 
-	private BlockData[][][] blockData;
 	private int[][][] biomes;
 	private SubChunkLight light;
 	private SubChunkBlocks blocks;
+	private SubChunkBlockData blockData;
 
 	private ChunkPosStorage tickableBlocks, scheduledUpdates, newScheduledUpdates;
 
@@ -49,13 +49,13 @@ public class SubChunk implements IBiomeProvider
 			SubChunkBuilder.init(model[i]);
 		}
 
-		blockData = new BlockData[16][16][16];
 		biomes = new int[16][16][16];
 
 		tickableBlocks = new ChunkPosStorage();
 		scheduledUpdates = new ChunkPosStorage();
 		newScheduledUpdates = new ChunkPosStorage();
 
+		blockData = new SubChunkBlockData(this);
 		light = new SubChunkLight(this);
 		blocks = new SubChunkBlocks(this);
 
@@ -77,7 +77,7 @@ public class SubChunk implements IBiomeProvider
 		tickableBlocks.iterate((x, y, z) ->
 		{
 			Block blockToTick = BlockRegistry.getBlockById(blocks.getIds()[x][y][z]);
-			blockToTick.tick(this, blockData[x][y][z], x, y, z);
+			blockToTick.tick(this, blockData.getBlockData(x, y, z), x, y, z);
 		});
 
 		scheduledUpdates.addAll(newScheduledUpdates);
@@ -92,7 +92,7 @@ public class SubChunk implements IBiomeProvider
 			short z = (short) (i & 0xf);
 
 			Block blockToUpdate = BlockRegistry.getBlockById(blocks.getIds()[x][y][z]);
-			blockToUpdate.onUpdate(this, blockData[x][y][z], EnumFace.NONE, x, y, z);
+			blockToUpdate.onUpdate(this, blockData.getBlockData(x, y, z), EnumFace.NONE, x, y, z);
 			iter.remove();
 		}
 	}
@@ -143,6 +143,12 @@ public class SubChunk implements IBiomeProvider
 			System.out.println("");
 	}
 
+	public void forceRebuild()
+	{
+		updateAllLayers();
+		rebuild();
+	}
+
 	public void unload()
 	{
 		for (int i = 0; i < MODEL_COUNT; i++)
@@ -184,13 +190,31 @@ public class SubChunk implements IBiomeProvider
 
 	public BlockData[][][] getBlockData()
 	{
-		return blockData;
+		return blockData.getBlockData();
 	}
 
 	public BlockData getBlockData(int x, int y, int z)
 	{
-//		return getBlockData()[x][y][z];
-		return null;
+		if (x >= 0 && x < 16 && z >= 0 && z < 16 && y >= 0 && y < 16)
+			return getBlockData()[x][y][z];
+		else
+			return null;
+	}
+
+	/**
+	 *
+	 * Can check neighbour chunks.
+	 * Should be more efficient for chunk border block data checking
+	 * as it does not have to create new Chunk Key everytime
+	 *
+	 * @param x x coordinate of light
+	 * @param y y coordinate of light
+	 * @param z z coordinate of light
+	 * @return int Light
+	 */
+	public BlockData getBlockDataEfficiently(int x, int y, int z)
+	{
+		return blockData.getBlockDataEfficiently(x, y, z);
 	}
 
 	public void setBlockEntity(int x, int y, int z, BlockData blockData)

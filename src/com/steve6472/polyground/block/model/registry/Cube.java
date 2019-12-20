@@ -106,6 +106,22 @@ public class Cube
 		return this;
 	}
 
+	public Cube copy()
+	{
+		Cube cube = new Cube(new AABBf(aabb));
+		cube.setHitbox(isHitbox());
+		cube.setCollisionBox(isCollisionBox());
+
+		for (EnumFace face : EnumFace.getFaces())
+		{
+			CubeFace cf = getFace(face);
+			if (cf == null) continue;
+			cube.setFace(face, new CubeFace(cube, face, cf.copyProperties()));
+		}
+
+		return cube;
+	}
+
 	public boolean isHitbox()
 	{
 		return isHitbox;

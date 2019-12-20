@@ -35,7 +35,7 @@ public class Block
 	private final int id;
 
 	public String name;
-	public BlockModel blockModel;
+	private BlockModel blockModel;
 
 	public static Block createAir()
 	{

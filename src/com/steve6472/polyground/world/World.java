@@ -220,8 +220,6 @@ public class World implements IBlockProvider
 		entityStorage.addEntity(e);
 	}
 
-	private static final Matrix4f mat = new Matrix4f();
-
 	public void renderEntities()
 	{
 		entityStorage.renderEntities();

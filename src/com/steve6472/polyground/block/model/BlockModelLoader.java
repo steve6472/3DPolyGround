@@ -36,10 +36,9 @@ public class BlockModelLoader
 		try
 		{
 			json = new JSONObject(read(new File(MainApp.class.getResource("/models/" + name + ".json").getFile())));
-//			json = new JSONObject(read(new File("models/" + name + ".json")));
 		} catch (Exception e)
 		{
-			System.err.println("Could not load " + name);
+			System.err.println("Could not load block model " + name);
 			e.printStackTrace();
 			CaveGame.getInstance().exit();
 			System.exit(0);
@@ -67,6 +66,8 @@ public class BlockModelLoader
 	{
 		List<Cube> cubeList = new ArrayList<>();
 
+		if (!json.has("cubes")) return cubeList;
+
 		JSONArray array = json.getJSONArray("cubes");
 		for (int i = 0; i < array.length(); i++)
 		{
@@ -74,10 +75,13 @@ public class BlockModelLoader
 			AABBf aabb = JsonHelper.createAABB(c);
 			Cube cube = new Cube(aabb);
 
-			JSONObject faces = c.getJSONObject("faces");
-			for (EnumFace ef : EnumFace.getFaces())
+			if (c.has("faces"))
 			{
-				face(faces, ef, cube);
+				JSONObject faces = c.getJSONObject("faces");
+				for (EnumFace ef : EnumFace.getFaces())
+				{
+					face(faces, ef, cube);
+				}
 			}
 
 			cube.loadFromJson(c);
