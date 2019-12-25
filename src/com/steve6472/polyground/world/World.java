@@ -11,6 +11,7 @@ import com.steve6472.polyground.world.chunk.ModelLayer;
 import com.steve6472.polyground.world.chunk.SubChunk;
 import com.steve6472.sge.gfx.Tessellator3D;
 import com.steve6472.sge.main.game.GridStorage;
+import org.joml.AABBf;
 import org.joml.Matrix4f;
 import org.joml.Random;
 
@@ -39,6 +40,7 @@ public class World implements IBlockProvider
 	private Random random;
 
 	public String worldName = null;
+	private final int HEIGHT = 4;
 
 	public World()
 	{
@@ -66,6 +68,8 @@ public class World implements IBlockProvider
 		chunks.getMap().values().forEach(Chunk::tick);
 
 		entityStorage.tickEntities();
+
+		renderChunkOutlines();
 
 //		delay++;
 //		if (delay >= 30)
@@ -159,6 +163,8 @@ public class World implements IBlockProvider
 
 	public void render()
 	{
+		rebuild();
+
 		CaveGame.shaders.dissoveWorldShader.bind();
 		CaveGame.shaders.dissoveWorldShader.setView(CaveGame.getInstance().getCamera().getViewMatrix());
 		CaveGame.shaders.dissoveWorldShader.setUniform(DissoveWorldShader.SHADE, shade);
@@ -185,6 +191,7 @@ public class World implements IBlockProvider
 				 */
 				for (int i = SubChunk.getModelCount() - 1; i >= 0; i--)
 				{
+
 					if (sc.isEmpty(i)) continue;
 
 					if (enabled != -1 && i != enabled)
@@ -211,6 +218,41 @@ public class World implements IBlockProvider
 		glBindVertexArray(0);
 
 		renderEntities();
+	}
+
+	private void rebuild()
+	{
+		for (Chunk chunk : chunks.getMap().values())
+		{
+			if (chunk == null) continue;
+
+			for (int k = 0; k < chunk.getSubChunks().length; k++)
+			{
+				SubChunk sc = chunk.getSubChunk(k);
+				if (sc == null) continue;
+
+				sc.rebuild();
+			}
+		}
+	}
+
+	private void renderChunkOutlines()
+	{
+		for (Chunk chunk : chunks.getMap().values())
+		{
+			if (chunk == null) continue;
+			if (!chunkFrustum(chunk.getX() * 16, chunk.getZ() * 16)) continue;
+
+			for (int k = 0; k < chunk.getSubChunks().length; k++)
+			{
+				if (!subChunkFrustum(chunk.getX() * 16, k * 16, chunk.getZ() * 16)) continue;
+
+				if (pg.options.renderChunkOutline)
+					CaveGame.t.add(new AABBf(
+						chunk.getX() * 16, k * 16, chunk.getZ() * 16,
+						chunk.getX() * 16 + 16, k * 16 + 16, chunk.getZ() * 16 + 16));
+			}
+		}
 	}
 
 	public void addEntity(EntityBase e)
@@ -257,5 +299,10 @@ public class World implements IBlockProvider
 	{
 		getChunks().forEach(Chunk::unload);
 		chunks = new GridStorage<>();
+	}
+
+	public int getHeight()
+	{
+		return HEIGHT;
 	}
 }

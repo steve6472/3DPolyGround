@@ -1,6 +1,5 @@
 package com.steve6472.polyground.world.chunk;
 
-import com.steve6472.polyground.world.World;
 import com.steve6472.sge.main.util.ColorUtil;
 
 /**********************
@@ -48,53 +47,15 @@ public class SubChunkLight
 	 */
 	public int getLightEfficiently(int x, int y, int z)
 	{
-		int maxLayer = subChunk.getParent().getSubChunks().length;
-
-		World world = subChunk.getWorld();
-
 		if (x >= 0 && x < 16 && z >= 0 && z < 16 && y >= 0 && y < 16)
 		{
 			return getLight(x, y, z);
 		} else
 		{
-			if (x == 16)
-			{
-				SubChunk sc = world.getSubChunk(subChunk.getX() + 1, subChunk.getLayer(), subChunk.getZ());
-				if (sc == null)
-					return 0;
-				return sc.getLightEfficiently(0, y, z);
-			} else if (x == -1)
-			{
-				SubChunk sc = world.getSubChunk(subChunk.getX() - 1, subChunk.getLayer(), subChunk.getZ());
-				if (sc == null)
-					return 0;
-				return sc.getLightEfficiently(15, y, z);
-			}
-
-			if (z == 16)
-			{
-				SubChunk sc = world.getSubChunk(subChunk.getX(), subChunk.getLayer(), subChunk.getZ() + 1);
-				if (sc == null)
-					return 0;
-				return sc.getLightEfficiently(x, y, 0);
-			} else if (z == -1)
-			{
-				SubChunk sc = world.getSubChunk(subChunk.getX(), subChunk.getLayer(), subChunk.getZ() - 1);
-				if (sc == null)
-					return 0;
-				return sc.getLightEfficiently(x, y, 15);
-			}
-
-			if (y == -1 && subChunk.getLayer() > 0)
-			{
-				return subChunk.getParent().getSubChunks()[subChunk.getLayer() - 1].getLightEfficiently(x, 15, z);
-			} else if (y == 16 && subChunk.getLayer() + 1 < maxLayer)
-			{
-				return subChunk.getParent().getSubChunks()[subChunk.getLayer() + 1].getLightEfficiently(x, 0, z);
-			} else
-			{
+			SubChunk sc = subChunk.getNeighbouringSubChunk(x, y, z);
+			if (sc == null)
 				return 0;
-			}
+			return sc.getLight(Math.floorMod(x, 16), Math.floorMod(y, 16), Math.floorMod(z, 16));
 		}
 	}
 

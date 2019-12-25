@@ -63,7 +63,7 @@ public class SlabItem extends Item
 		Block placed;
 
 		/* Combining the slabs */
-		if ((placed = world.getBlock(hitResult.getX(), hitResult.getY(), hitResult.getZ())) instanceof SlabBlock && !hitResult.getFace().isSide())
+		if ((placed = BlockRegistry.getBlockById(world.getBlock(hitResult.getX(), hitResult.getY(), hitResult.getZ()))) instanceof SlabBlock && !hitResult.getFace().isSide())
 		{
 			if (!baseName(placed).equals(baseName(CaveGame.itemInHand.getBlockToPlace()))) return;
 
@@ -74,7 +74,7 @@ public class SlabItem extends Item
 				if (bottom == placed)
 				{
 					BasicEvents.replace(toPlace, EnumFace.UP, player, 0, 0, 0);
-				} else if (world.getBlock(hitResult.getX(), hitResult.getY() + 1, hitResult.getZ()).isReplaceable())
+				} else if (BlockRegistry.getBlockById(world.getBlock(hitResult.getX(), hitResult.getY() + 1, hitResult.getZ())).isReplaceable())
 				{
 					BasicEvents.place(bottom, EnumFace.UP, player);
 				} else if (top == placed)
@@ -91,7 +91,7 @@ public class SlabItem extends Item
 				if (top == placed)
 				{
 					BasicEvents.replace(toPlace, EnumFace.DOWN, player, 0, 0, 0);
-				} else if (world.getBlock(hitResult.getX(), hitResult.getY() - 1, hitResult.getZ()).isReplaceable())
+				} else if (BlockRegistry.getBlockById(world.getBlock(hitResult.getX(), hitResult.getY() - 1, hitResult.getZ())).isReplaceable())
 				{
 					BasicEvents.place(top, EnumFace.DOWN, player);
 				} else if (bottom == placed)
@@ -192,7 +192,7 @@ public class SlabItem extends Item
 	private Block getPlacedBlock(HitResult hitResult)
 	{
 		World world = CaveGame.getInstance().world;
-		return switch (hitResult.getFace())
+		int id = switch (hitResult.getFace())
 			{
 				case UP ->    world.getBlock(hitResult.getX(), hitResult.getY() + 1, hitResult.getZ());
 				case DOWN ->  world.getBlock(hitResult.getX(), hitResult.getY() - 1, hitResult.getZ());
@@ -200,7 +200,8 @@ public class SlabItem extends Item
 				case SOUTH -> world.getBlock(hitResult.getX() - 1, hitResult.getY(), hitResult.getZ());
 				case EAST ->  world.getBlock(hitResult.getX(), hitResult.getY(), hitResult.getZ() + 1);
 				case WEST ->  world.getBlock(hitResult.getX(), hitResult.getY(), hitResult.getZ() - 1);
-				case NONE -> Block.air;
+				case NONE -> Block.air.getId();
 			};
+		return BlockRegistry.getBlockById(id);
 	}
 }

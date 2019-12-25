@@ -1,5 +1,6 @@
 package com.steve6472.polyground.world.chunk;
 
+import com.steve6472.polyground.EnumFace;
 import com.steve6472.polyground.block.Block;
 import com.steve6472.polyground.block.blockdata.IBlockData;
 import com.steve6472.polyground.block.registry.BlockRegistry;
@@ -17,10 +18,11 @@ import java.io.IOException;
  ***********************/
 public class Chunk
 {
-	private int x, z;
+	private Chunk NORTH, EAST, SOUTH, WEST;
 
-	private SubChunk[] subChunks;
-	private World world;
+	private final int x, z;
+	private final SubChunk[] subChunks;
+	private final World world;
 
 	public Chunk(int x, int z, World world)
 	{
@@ -28,7 +30,7 @@ public class Chunk
 		this.z = z;
 		this.world = world;
 
-		subChunks = new SubChunk[4];
+		subChunks = new SubChunk[world.getHeight()];
 		for (int i = 0; i < subChunks.length; i++)
 		{
 			subChunks[i] = new SubChunk(this, i);
@@ -87,75 +89,78 @@ public class Chunk
 			ChunkSerializer.deserialize(subChunk);
 	}
 
-	public void setBlock(int x, int y, int z, Block block)
-	{
-		setBlock(x, y, z, block.getId());
-	}
-
-	public void setBlock(int x, int y, int z, Block block, boolean rebuild)
-	{
-		setBlock(x, y, z, block.getId(), rebuild);
-	}
-
 	public void setBlock(int x, int y, int z, int id)
-	{
-		setBlock(x, y, z, id, true);
-	}
-
-	public void setBlock(int x, int y, int z, int id, boolean rebuild)
 	{
 		if (isOutOfChunkBounds(x, y, z)) return;
 
 		SubChunk sc = subChunks[y / 16];
+
+		boolean shouldRebuild = sc.getBlockId(x, y % 16, z) != id;
+
 		sc.setBlock(x, y % 16, z, id);
 
 		Block b = BlockRegistry.getBlockById(id);
 
-		if (b.isTickable())
+		sc.getTickableBlocks().set(x, y % 16, z, b.isTickable());
+		sc.setBlockEntity(x, y % 16, z, b instanceof IBlockData ? ((IBlockData) b).createNewBlockEntity() : null);
+
+		if (shouldRebuild)
+			updateNeighbours(sc, x, y, z);
+	}
+
+	public void updateNeighbours(SubChunk sc, int x, int y, int z)
+	{
+		EnumFace faceX = x == 15 ? EnumFace.NORTH : x == 0 ? EnumFace.SOUTH : EnumFace.NONE;
+		EnumFace faceZ = z == 15 ? EnumFace.EAST : z == 0 ? EnumFace.WEST : EnumFace.NONE;
+		EnumFace faceY = y % 16 == 15 ? EnumFace.UP : y % 16 == 0 ? EnumFace.DOWN : EnumFace.NONE;
+
+		int layer = y / 16;
+
+		if (layer < 0 || layer >= getSubChunks().length)
+			return;
+
+		if (faceX == EnumFace.NONE && faceY == EnumFace.NONE && faceZ == EnumFace.NONE)
 		{
-			sc.getTickableBlocks().add(x, y % 16, z);
+			getSubChunk(layer).updateAllLayers();
+			return;
 		} else
 		{
-			sc.getTickableBlocks().remove(x, y % 16, z);
+			sc.updateAllLayers();
 		}
 
-		if (b instanceof IBlockData)
+		Chunk chunk;
+
+		chunk = getNeighbouringChunk(faceX);
+		if (chunk != null)
 		{
-			sc.setBlockEntity(x, y, z, ((IBlockData) b).createNewBlockEntity());
-		} else
-		{
-			sc.setBlockEntity(x, y, z, null);
+			SubChunk subChunk = chunk.getSubChunk(layer);
+			if (subChunk != null)
+				subChunk.updateAllLayers();
 		}
 
-		if (rebuild)
+		if (faceY != EnumFace.NONE)
 		{
-			sc.rebuild();
-
-			if (x == 15)
-			{
-				SubChunk subChunk = world.getSubChunk(getX() + 1, y / 16, getZ());
-				if (subChunk != null) subChunk.rebuild();
-			} else if (x == 0)
-			{
-				SubChunk subChunk = world.getSubChunk(getX() - 1, y / 16, getZ());
-				if (subChunk != null) subChunk.rebuild();
-			}
-
-			if (z == 15)
-			{
-				SubChunk subChunk = world.getSubChunk(getX(), y / 16, getZ() + 1);
-				if (subChunk != null) subChunk.rebuild();
-			} else if (z == 0)
-			{
-				SubChunk subChunk = world.getSubChunk(getX(), y / 16, getZ() - 1);
-				if (subChunk != null) subChunk.rebuild();
-			}
-
-			if (y % 16 == 0 && y - 1 < 16 * subChunks.length && y - 1 > 0)
-				subChunks[(y - 1) / 16].rebuild();
-			if (y % 16 == 15 && y + 1 < 16 * subChunks.length)
-				subChunks[(y + 1) / 16].rebuild();
+			int l = layer + faceY.getYOffset();
+			if (!(l < 0 || l >= getSubChunks().length))
+				sc.getParent().getSubChunk(l).updateAllLayers();
 		}
+
+		chunk = getNeighbouringChunk(faceZ);
+		if (chunk != null)
+		{
+			SubChunk subChunk = chunk.getSubChunk(layer);
+			if (subChunk != null)
+				subChunk.updateAllLayers();
+		}
+	}
+
+	public int getBlock(int x, int y, int z)
+	{
+		if (isOutOfChunkBounds(x, y, z))
+			return Block.air.getId();
+
+		SubChunk sc = subChunks[y / 16];
+		return sc.getIds()[x][y % 16][z];
 	}
 
 	public World getWorld()
@@ -183,24 +188,31 @@ public class Chunk
 		return getSubChunks()[layer];
 	}
 
-	public Block getBlock(int x, int y, int z)
-	{
-		if (isOutOfChunkBounds(x, y, z)) return Block.air;
-
-		SubChunk sc = subChunks[y / 16];
-		return BlockRegistry.getBlockById(sc.getIds()[x][y % 16][z]);
-	}
-
-	public int getBlockId(int x, int y, int z)
-	{
-		if (isOutOfChunkBounds(x, y, z)) return Block.air.getId();
-
-		SubChunk sc = subChunks[y / 16];
-		return sc.getIds()[x][y % 16][z];
-	}
-
 	private boolean isOutOfChunkBounds(int x, int y, int z)
 	{
 		return x < 0 || x >= 16 || z < 0 || z >= 16 || y < 0 || y >= 16 * subChunks.length;
+	}
+
+	public void setNeighbouringChunk(EnumFace face, Chunk chunk)
+	{
+		switch (face)
+		{
+			case NORTH -> NORTH = chunk;
+			case EAST -> EAST = chunk;
+			case SOUTH -> SOUTH = chunk;
+			case WEST -> WEST = chunk;
+		}
+	}
+
+	public Chunk getNeighbouringChunk(EnumFace face)
+	{
+		return switch (face)
+			{
+				case NORTH -> NORTH;
+				case EAST -> EAST;
+				case SOUTH -> SOUTH;
+				case WEST -> WEST;
+				default -> null;
+			};
 	}
 }

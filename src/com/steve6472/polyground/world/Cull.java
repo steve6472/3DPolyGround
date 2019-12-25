@@ -99,24 +99,15 @@ public class Cull
 
 	private static Block getBlock(SubChunk sc, int x, int y, int z)
 	{
-		if (y < 0 || y >= 16)
-		{
-			if (y < 0 && sc.getLayer() == 0)
-				return Block.air;
-			else if (y >= 16 && sc.getLayer() >= sc.getParent().getSubChunks().length - 1)
-				return Block.air;
-			else if (y < 0)
-				return getBlock(sc.getParent().getSubChunk(sc.getLayer() - 1), x, 15, z);
-			else
-			{
-				return getBlock(sc.getParent().getSubChunk(sc.getLayer() + 1), x, 0, z);
-			}
-		}
-		else if (x < 0 || z < 0 || z >= 16 || x >= 16)
-			return Block.air;
-		else
+		if (x >= 0 && x < 16 && z >= 0 && z < 16 && y >= 0 && y < 16)
 		{
 			return BlockRegistry.getBlockById(sc.getIds()[x][y][z]);
+		} else
+		{
+			SubChunk subChunk = sc.getNeighbouringSubChunk(x, y, z);
+			if (subChunk == null)
+				return Block.air;
+			return BlockRegistry.getBlockById(subChunk.getIds()[Math.floorMod(x, 16)][Math.floorMod(y, 16)][Math.floorMod(z, 16)]);
 		}
 	}
 }

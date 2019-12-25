@@ -97,7 +97,8 @@ public class SubChunkModel
 
 		if (CaveGame.getInstance().options.chunkModelDebug && triangleCount != 0)
 		{
-			System.out.println(String.format("Layer: %s, Triangle Count: %d, Vertices: %d, Colors: %d, Textures: %d, Light: %d", modelLayer, triangleCount, vertices.size(), colors.size(), textures.size(), light.size()));
+			System.out.println(String.format("Layer: %s, Triangle Count: %d, Vertices: %d, Colors: %d, Textures: %d, Light: %d", modelLayer, triangleCount,
+				vertices.size(), colors.size(), textures.size(), light.size()));
 		}
 
 		bindVAO(vao);
@@ -130,7 +131,7 @@ public class SubChunkModel
 		return vao;
 	}
 
-	public boolean isShouldUpdate()
+	public boolean shouldUpdate()
 	{
 		return shouldUpdate;
 	}

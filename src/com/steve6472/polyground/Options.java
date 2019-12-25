@@ -24,6 +24,7 @@ public class Options
 	public boolean showGCLog = false;
 	public boolean renderTeleporters = false;
 	public boolean renderRifts = false;
+	public boolean renderChunkOutline = false;
 
 	public float mouseSensitivity = 0.2f;
 

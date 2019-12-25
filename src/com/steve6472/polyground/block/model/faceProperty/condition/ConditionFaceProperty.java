@@ -2,12 +2,10 @@ package com.steve6472.polyground.block.model.faceProperty.condition;
 
 import com.steve6472.polyground.block.BlockTextureHolder;
 import com.steve6472.polyground.block.model.CubeFace;
-import com.steve6472.polyground.block.model.faceProperty.AutoUVFaceProperty;
-import com.steve6472.polyground.block.model.faceProperty.FaceProperty;
-import com.steve6472.polyground.block.model.faceProperty.TextureFaceProperty;
-import com.steve6472.polyground.block.model.faceProperty.UVFaceProperty;
+import com.steve6472.polyground.block.model.faceProperty.*;
 import com.steve6472.polyground.block.model.registry.face.FaceEntry;
 import com.steve6472.polyground.block.model.registry.face.FaceRegistry;
+import com.steve6472.polyground.world.chunk.ModelLayer;
 import com.steve6472.polyground.world.chunk.SubChunk;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -24,6 +22,7 @@ import java.util.List;
 public class ConditionFaceProperty extends FaceProperty
 {
 	private List<Result> results;
+	private boolean[] modelLayers;
 
 	public ConditionFaceProperty()
 	{
@@ -60,6 +59,42 @@ public class ConditionFaceProperty extends FaceProperty
 				texture.setTextureId(BlockTextureHolder.getTextureId(texture.getTexture()));
 			}
 		}
+	}
+
+	public void updateLayers()
+	{
+		modelLayers = new boolean[ModelLayer.values().length];
+
+		main:
+		for (int i = 0; i < modelLayers.length; i++)
+		{
+			ModelLayer layer = ModelLayer.values()[i];
+
+			for (Result r : results)
+			{
+				if (r.hasProperty(FaceRegistry.modelLayer))
+				{
+					LayerFaceProperty property = r.getProperty(FaceRegistry.modelLayer);
+					if (property.getLayer() == layer)
+					{
+						modelLayers[i] = true;
+						continue main;
+					}
+				} else
+				{
+					if (layer == ModelLayer.NORMAL)
+					{
+						modelLayers[i] = true;
+						continue main;
+					}
+				}
+			}
+		}
+	}
+
+	public boolean[] getModelLayers()
+	{
+		return modelLayers;
 	}
 
 	public static boolean editProperties(ConditionFaceProperty conditions, CubeFace cubeFace, int x, int y, int z, SubChunk sc)

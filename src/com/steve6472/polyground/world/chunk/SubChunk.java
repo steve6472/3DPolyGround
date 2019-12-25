@@ -30,6 +30,8 @@ public class SubChunk implements IBiomeProvider
 	private int layer;
 	public float renderTime = 0.1f;
 
+	private boolean shouldUpdate = true;
+
 	private int[][][] biomes;
 	private SubChunkLight light;
 	private SubChunkBlocks blocks;
@@ -111,6 +113,11 @@ public class SubChunk implements IBiomeProvider
 
 	public void rebuild()
 	{
+		if (!shouldUpdate)
+			return;
+
+		shouldUpdate = false;
+
 		long start = System.nanoTime();
 
 		if (CaveGame.getInstance().options.lightDebug)
@@ -222,42 +229,52 @@ public class SubChunk implements IBiomeProvider
 		getBlockData()[x][y][z] = blockData;
 	}
 
-	public SubChunk getNeighbouringChunk(int x, int y, int z)
+	public SubChunk getNeighbouringSubChunk(int x, int y, int z)
 	{
-		int maxLayer = parent.getSubChunks().length;
+		EnumFace faceX = x == 16 ? EnumFace.NORTH : x == -1 ? EnumFace.SOUTH : EnumFace.NONE;
+		EnumFace faceZ = z == 16 ? EnumFace.EAST : z == -1 ? EnumFace.WEST : EnumFace.NONE;
+		EnumFace faceY = y == 16 ? EnumFace.UP : y == -1 ? EnumFace.DOWN : EnumFace.NONE;
 
-		World world = getWorld();
+		int layer = getLayer() + faceY.getYOffset();
 
-		if (x >= 0 && x < 16 && z >= 0 && z < 16 && y >= 0 && y < 16)
+		if (layer < 0 || layer >= parent.getSubChunks().length)
+			return null;
+
+		if (faceX == EnumFace.NONE && faceZ == EnumFace.NONE)
 		{
-			return this;
+			return parent.getSubChunk(layer);
+		} else if (faceZ == EnumFace.NONE)
+		{
+			Chunk chunk = parent.getNeighbouringChunk(faceX);
+			if (chunk == null)
+				return null;
+			else
+				return parent.getNeighbouringChunk(faceX).getSubChunk(layer);
+		} else if (faceX == EnumFace.NONE)
+		{
+			Chunk chunk = parent.getNeighbouringChunk(faceZ);
+			if (chunk == null)
+				return null;
+			else
+				return parent.getNeighbouringChunk(faceZ).getSubChunk(layer);
 		} else
 		{
-			if (x == 16)
+			Chunk chunk = parent.getNeighbouringChunk(faceX);
+			if (chunk == null)
 			{
-				return world.getSubChunk(getX() + 1, getLayer(), getZ());
-			} else if (x == -1)
-			{
-				return world.getSubChunk(getX() - 1, getLayer(), getZ());
+				chunk = parent.getNeighbouringChunk(faceZ);
 			}
-
-			if (z == 16)
-			{
-				return world.getSubChunk(getX(), getLayer(), getZ() + 1);
-			} else if (z == -1)
-			{
-				return world.getSubChunk(getX(), getLayer(), getZ() - 1);
-			}
-
-			if (y == -1 && getLayer() > 0)
-			{
-				return parent.getSubChunks()[getLayer() - 1];
-			} else if (y == 16 && getLayer() + 1 < maxLayer)
-			{
-				return parent.getSubChunks()[getLayer() + 1];
-			} else
+			if (chunk == null)
 			{
 				return null;
+			} else
+			{
+				Chunk chunk_ = chunk.getNeighbouringChunk(faceZ);
+				if (chunk_ == null)
+					chunk_ = chunk.getNeighbouringChunk(faceX);
+				if (chunk_ == null)
+					return null;
+				return chunk_.getSubChunk(layer);
 			}
 		}
 	}
@@ -268,6 +285,7 @@ public class SubChunk implements IBiomeProvider
 		{
 			m.setShouldUpdate(true);
 		}
+		setShouldUpdate(true);
 	}
 
 	public Chunk getParent()
@@ -397,5 +415,15 @@ public class SubChunk implements IBiomeProvider
 	public void setBlock(int x, int y, int z, Block block)
 	{
 		blocks.setBlock(x, y, z, block);
+	}
+
+	public boolean shouldUpdate()
+	{
+		return shouldUpdate;
+	}
+
+	public void setShouldUpdate(boolean shouldUpdate)
+	{
+		this.shouldUpdate = shouldUpdate;
 	}
 }

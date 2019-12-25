@@ -224,7 +224,7 @@ public class AIEntity extends EntityBase
 				}
 				if (skip) continue;
 
-				Block b = world.getBlock(i - 1 + cx, 1, j - 1 + cz);
+				Block b = BlockRegistry.getBlockById(world.getBlock(i - 1 + cx, 1, j - 1 + cz));
 
 				if (blockData.get(b).canPass)
 				{

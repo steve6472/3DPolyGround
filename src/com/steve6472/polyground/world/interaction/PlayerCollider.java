@@ -20,7 +20,7 @@ public class PlayerCollider
 	private static void check(World world, int x, int y, int z, List<AABBf> aabbs, AABBf hitbox)
 	{
 		int id;
-		if ((id = world.getBlockId(x, y, z)) != Block.air.getId())
+		if ((id = world.getBlock(x, y, z)) != Block.air.getId())
 		{
 			Block b = BlockRegistry.getBlockById(id);
 			for (Cube t : b.getCubes(x, y, z))

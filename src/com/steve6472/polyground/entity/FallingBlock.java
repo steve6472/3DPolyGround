@@ -47,7 +47,7 @@ public class FallingBlock extends EntityBase
 		{
 			isDead = true;
 			World world = CaveGame.getInstance().world;
-			world.setBlock((int) Math.floor(getX()), (int) (getY() - 0.4999f), (int) Math.floor(getZ()), BlockRegistry.getBlockByName("gravel"), b -> b == Block.air);
+			world.setBlock((int) Math.floor(getX()), (int) (getY() - 0.4999f), (int) Math.floor(getZ()), BlockRegistry.getBlockByName("gravel").getId(), b -> b == Block.air.getId());
 		}
 
 		if (getY() < -16) isDead = true;

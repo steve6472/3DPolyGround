@@ -51,7 +51,7 @@ public class DoubleSlabBlock extends Block
 
 		HitResult hitResult = CaveGame.getInstance().hitPicker.getHitResult();
 
-		Block placed = subChunk.getWorld().getBlock(hitResult.getX(), hitResult.getY(), hitResult.getZ());
+		Block placed = BlockRegistry.getBlockById(subChunk.getWorld().getBlock(hitResult.getX(), hitResult.getY(), hitResult.getZ()));
 		Block tobeplaced = null;
 
 		if (hitResult.getFace() == EnumFace.UP)

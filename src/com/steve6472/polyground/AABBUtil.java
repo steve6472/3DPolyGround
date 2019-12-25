@@ -88,7 +88,7 @@ public class AABBUtil
 
 	public static void renderAABB(float minX, float minY, float minZ, float maxX, float maxY, float maxZ, float lineWidth, BasicTessellator tess, MainShader mainShader)
 	{
-		mainShader.getShader().bind();
+		mainShader.bind();
 		tess.begin(24);
 
 		GL11.glLineWidth(lineWidth);
@@ -126,6 +126,41 @@ public class AABBUtil
 		tess.draw(Tessellator.LINES);
 		tess.disable(0, 1, 2);
 		GL11.glLineWidth(1f);
+	}
+
+	public static void addAABB(AABBf box, BasicTessellator tess)
+	{
+		addAABB(box.minX, box.minY, box.minZ, box.maxX, box.maxY, box.maxZ, tess);
+	}
+
+	public static void addAABB(float minX, float minY, float minZ, float maxX, float maxY, float maxZ, BasicTessellator tess)
+	{
+		tess.pos(minX, minY, minZ).color(1f, 0f, 0f, 1f).endVertex();
+		tess.pos(maxX, minY, minZ).color(1f, 0f, 0f, 1f).endVertex();
+		tess.pos(minX, minY, minZ).color(0f, 0f, 1f, 1f).endVertex();
+		tess.pos(minX, minY, maxZ).color(0f, 0f, 1f, 1f).endVertex();
+		tess.pos(minX, minY, maxZ).color(1f, 1f, 1f, 1f).endVertex();
+		tess.pos(maxX, minY, maxZ).color(1f, 1f, 1f, 1f).endVertex();
+		tess.pos(maxX, minY, minZ).color(1f, 1f, 1f, 1f).endVertex();
+		tess.pos(maxX, minY, maxZ).color(1f, 1f, 1f, 1f).endVertex();
+
+		tess.pos(minX, minY, minZ).color(0f, 1f, 0f, 1f).endVertex();
+		tess.pos(minX, maxY, minZ).color(0f, 1f, 0f, 1f).endVertex();
+		tess.pos(maxX, minY, minZ).color(1f, 1f, 1f, 1f).endVertex();
+		tess.pos(maxX, maxY, minZ).color(1f, 1f, 1f, 1f).endVertex();
+		tess.pos(minX, minY, maxZ).color(1f, 1f, 1f, 1f).endVertex();
+		tess.pos(minX, maxY, maxZ).color(1f, 1f, 1f, 1f).endVertex();
+		tess.pos(maxX, minY, maxZ).color(1f, 1f, 1f, 1f).endVertex();
+		tess.pos(maxX, maxY, maxZ).color(1f, 1f, 1f, 1f).endVertex();
+
+		tess.pos(minX, maxY, minZ).color(1f, 1f, 1f, 1f).endVertex();
+		tess.pos(maxX, maxY, minZ).color(1f, 1f, 1f, 1f).endVertex();
+		tess.pos(minX, maxY, minZ).color(1f, 1f, 1f, 1f).endVertex();
+		tess.pos(minX, maxY, maxZ).color(1f, 1f, 1f, 1f).endVertex();
+		tess.pos(minX, maxY, maxZ).color(1f, 1f, 1f, 1f).endVertex();
+		tess.pos(maxX, maxY, maxZ).color(1f, 1f, 1f, 1f).endVertex();
+		tess.pos(maxX, maxY, minZ).color(1f, 1f, 1f, 1f).endVertex();
+		tess.pos(maxX, maxY, maxZ).color(1f, 1f, 1f, 1f).endVertex();
 	}
 
 	/*

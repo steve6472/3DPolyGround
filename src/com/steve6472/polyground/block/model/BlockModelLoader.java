@@ -132,6 +132,7 @@ public class BlockModelLoader
 				{
 					ConditionFaceProperty cfp = cf.getProperty(FaceRegistry.conditionedTexture);
 					cfp.loadTextures();
+					cfp.updateLayers();
 				}
 				TextureFaceProperty texture = new TextureFaceProperty();
 				texture.setTexture("null");

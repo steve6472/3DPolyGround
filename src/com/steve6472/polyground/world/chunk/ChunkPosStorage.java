@@ -66,6 +66,14 @@ public class ChunkPosStorage
 			pos.remove((Short) r);
 	}
 
+	public void set(int x, int y, int z, boolean flag)
+	{
+		if (flag)
+			add(x, y % 16, z);
+		else
+			remove(x, y % 16, z);
+	}
+
 	public boolean has(int x, int y, int z)
 	{
 		short r = (short) (x << 8 | y << 4 | z);

@@ -6,7 +6,6 @@ import com.steve6472.polyground.commands.Command;
 import com.steve6472.polyground.commands.CommandSource;
 import com.steve6472.polyground.commands.arguments.BlockArgument;
 import com.steve6472.polyground.item.special.WorldEditItem;
-import com.steve6472.polyground.world.chunk.Chunk;
 import com.steve6472.polyground.world.World;
 import org.joml.Vector3i;
 
@@ -71,20 +70,20 @@ public class SetCommand extends Command
 								{
 									for (int z = min.z; z <= max.z; z++)
 									{
-										w.setBlock(x, y, z, id, false);
+										w.setBlock(x, y, z, id);
 									}
 								}
 							}
 
-							for (int x = min.x >> 4; x <= max.x >> 4; x++)
-							{
-								for (int z = min.z >> 4; z <= max.z >> 4; z++)
-								{
-									Chunk chunk = w.getChunk(x, z);
-									if (chunk != null)
-										chunk.update();
-								}
-							}
+//							for (int x = min.x >> 4; x <= max.x >> 4; x++)
+//							{
+//								for (int z = min.z >> 4; z <= max.z >> 4; z++)
+//								{
+//									Chunk chunk = w.getChunk(x, z);
+//									if (chunk != null)
+//										chunk.update();
+//								}
+//							}
 
 							return filledBlocks;
 						})

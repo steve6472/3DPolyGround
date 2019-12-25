@@ -63,7 +63,8 @@ public class OptionsGui extends Gui implements IGamePause
 		checkBox("subChunkBuildTime",   10, 10 + x++ * 30, () -> options.subChunkBuildTime, b -> options.subChunkBuildTime = b);
 		checkBox("showGCLog",           10, 10 + x++ * 30, () -> options.showGCLog, b -> options.showGCLog = b);
 		checkBox("renderTeleporters",   10, 10 + x++ * 30, () -> options.renderTeleporters, b -> options.renderTeleporters = b);
-		checkBox("renderRifts",         10, 10 + x   * 30, () -> options.renderRifts, b -> options.renderRifts = b);
+		checkBox("renderRifts",         10, 10 + x++ * 30, () -> options.renderRifts, b -> options.renderRifts = b);
+		checkBox("renderChunkOutline",  10, 10 + x   * 30, () -> options.renderChunkOutline, b -> options.renderChunkOutline = b);
 
 		checkBox("enablePostProcessing", 300, 10, () -> options.enablePostProcessing, b -> options.enablePostProcessing = b);
 	}

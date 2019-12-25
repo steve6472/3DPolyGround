@@ -42,6 +42,7 @@ import com.steve6472.sge.main.game.Camera;
 import org.joml.AABBf;
 import org.joml.Vector3f;
 import org.lwjgl.glfw.GLFW;
+import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -332,8 +333,23 @@ public class CaveGame extends MainApp
 		if (world != null)
 			hitPicker.tick(player, this);
 
+		/* Render AABBs from t */
+		shaders.mainShader.bind();
+		basicTess.begin(t.size() * 24);
+
 		for (AABBf a : t)
-			AABBUtil.renderAABBf(a, basicTess, 1f, shaders.mainShader);
+		{
+			AABBUtil.addAABB(a, basicTess);
+		}
+
+		GL11.glLineWidth(1);
+		basicTess.loadPos(0);
+		basicTess.loadColor(1);
+		basicTess.loadNormal(2);
+		basicTess.draw(Tessellator.LINES);
+		basicTess.disable(0, 1, 2);
+
+		/* END */
 
 		if (options.renderTeleporters)
 		{

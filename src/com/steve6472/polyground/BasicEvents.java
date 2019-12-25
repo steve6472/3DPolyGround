@@ -31,8 +31,9 @@ public class BasicEvents
 		World world = CaveGame.getInstance().world;
 
 		SubChunk subChunk = world.getSubChunkFromBlockCoords(hr.getX() + xOffset, hr.getY() + yOffset, hr.getZ() + zOffset);
+		if (subChunk == null) return;
 
-		world.setBlock(hr.getX() + xOffset, hr.getY() + yOffset, hr.getZ() + zOffset, block, block.rebuildChunkOnPlace(), Block::isReplaceable);
+		world.setBlock(hr.getX() + xOffset, hr.getY() + yOffset, hr.getZ() + zOffset, block.getId(), (i) -> BlockRegistry.getBlockById(i).isReplaceable());
 		BlockData blockData = subChunk.getBlockData(hr.getCx() + xOffset, hr.getCy() + yOffset, hr.getCz() + zOffset);
 
 		block.onPlace(subChunk, blockData, player, face, hr.getX() + xOffset, hr.getY() + yOffset, hr.getZ() + zOffset);
@@ -56,7 +57,7 @@ public class BasicEvents
 
 		SubChunk subChunk = world.getSubChunkFromBlockCoords(hr.getX() + xOffset, hr.getY() + yOffset, hr.getZ() + zOffset);
 
-		world.setBlock(hr.getX() + xOffset, hr.getY() + yOffset, hr.getZ() + zOffset, block, block.rebuildChunkOnPlace());
+		world.setBlock(hr.getX() + xOffset, hr.getY() + yOffset, hr.getZ() + zOffset, block.getId());
 		BlockData blockData = subChunk.getBlockData(hr.getCx() + xOffset, hr.getCy() + yOffset, hr.getCz() + zOffset);
 
 		block.onPlace(subChunk, blockData, player, face, hr.getX() + xOffset, hr.getY() + yOffset, hr.getZ() + zOffset);
@@ -73,7 +74,7 @@ public class BasicEvents
 
 		BlockData data = subChunk.getBlockData(hr.getCx(), hr.getCy(), hr.getCz());
 
-		BlockRegistry.getBlockById(world.getBlockId(hr.getX(), hr.getY(), hr.getZ())).onBreak(subChunk, data, player, hr.getFace(), hr.getX(), hr.getY(), hr.getZ());
+		BlockRegistry.getBlockById(world.getBlock(hr.getX(), hr.getY(), hr.getZ())).onBreak(subChunk, data, player, hr.getFace(), hr.getX(), hr.getY(), hr.getZ());
 		world.setBlock(hr.getX(), hr.getY(), hr.getZ(), Block.air.getId());
 		updateAll(subChunk, hr.getX(), hr.getY(), hr.getZ());
 	}
@@ -85,7 +86,7 @@ public class BasicEvents
 		for (EnumFace face : EnumFace.getFaces())
 		{
 			update(
-				subChunk.getNeighbouringChunk(Math.floorMod(x, 16) + face.getXOffset(), Math.floorMod(y, 16) + face.getYOffset(), Math.floorMod(z, 16) + face.getZOffset()),
+				subChunk.getNeighbouringSubChunk(Math.floorMod(x, 16) + face.getXOffset(), Math.floorMod(y, 16) + face.getYOffset(), Math.floorMod(z, 16) + face.getZOffset()),
 				face, x + face.getXOffset(), y + face.getYOffset(), z + face.getZOffset());
 		}
 	}

@@ -211,7 +211,7 @@ public class Player implements IMotion3f, IPosition3f
 
 			BlockData data = subChunk.getBlockData(hr.getCx(), hr.getCy(), hr.getCz());
 
-			BlockRegistry.getBlockById(pg.world.getBlockId(hr.getX(), hr.getY(), hr.getZ()))
+			BlockRegistry.getBlockById(pg.world.getBlock(hr.getX(), hr.getY(), hr.getZ()))
 				.onClick(subChunk, data, this, hr.getFace(), event, hr.getX(), hr.getY(), hr.getZ());
 
 			CaveGame.itemInHand
@@ -256,7 +256,7 @@ public class Player implements IMotion3f, IPosition3f
 			if (pg.hitPicker.hit)
 			{
 				HitResult hr = pg.hitPicker.getHitResult();
-				Block block = pg.world.getBlock(hr.getX(), hr.getY(), hr.getZ());
+				Block block = BlockRegistry.getBlockById(pg.world.getBlock(hr.getX(), hr.getY(), hr.getZ()));
 
 				if (ItemRegistry.getItemByName(block.getName()) != null)
 				{

@@ -46,7 +46,7 @@ public class FillCommand extends Command
 												{
 													for (int z = min.z; z <= max.z; z++)
 													{
-														w.setBlock(x, y, z, id, false);
+														w.setBlock(x, y, z, id);
 													}
 												}
 											}

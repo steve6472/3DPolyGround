@@ -48,7 +48,7 @@ public class LightSourceBlock extends Block
 			int ly = y + face.getYOffset();
 			int lz = z + face.getZOffset();
 
-			if (sc.getNeighbouringChunk(lx, ly, lz) == null) continue;
+			if (sc.getNeighbouringSubChunk(lx, ly, lz) == null) continue;
 
 			if (lx >= 0 && lx < 16 && lz >= 0 && lz < 16 && ly >= 0 && ly < 16)
 				sc.setLight(lx, ly, lz, color);

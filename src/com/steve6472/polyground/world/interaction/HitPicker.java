@@ -65,7 +65,7 @@ public class HitPicker
 						if (i < c.getX() * 16 || i >= c.getX() * 16 + 16 || k < c.getZ() * 16 || k >= c.getZ() * 16 + 16)
 							continue;
 
-						int id = c.getWorld().getBlockId(i, j, k);
+						int id = c.getWorld().getBlock(i, j, k);
 						if (id != Block.air.getId())
 						{
 							Block b = BlockRegistry.getBlockById(id);
@@ -106,7 +106,7 @@ public class HitPicker
 			if (Math.abs(hitResult.getPz() - (hitResult.getAabb().maxZ + hitResult.getZ())) <= epsion) hitResult.setFace(EnumFace.EAST);
 			if (Math.abs(hitResult.getPz() - (hitResult.getAabb().minZ + hitResult.getZ())) <= epsion) hitResult.setFace(EnumFace.WEST);
 
-			hitResult.setBlock(BlockRegistry.getBlockById(world.getBlockId(hitResult.getX(), hitResult.getY(), hitResult.getZ())));
+			hitResult.setBlock(BlockRegistry.getBlockById(world.getBlock(hitResult.getX(), hitResult.getY(), hitResult.getZ())));
 
 			for (Cube t : hitResult.getBlock().getCubes(hitResult.getX(), hitResult.getY(), hitResult.getZ()))
 			{
@@ -115,7 +115,6 @@ public class HitPicker
 				AABBf aabb = t.getAabb();
 
 
-				CaveGame.shaders.mainShader.bind();
 				AABBUtil.renderAABB(
 					hitResult.getX() - 0.001f + aabb.minX, hitResult.getY() - 0.001f + aabb.minY, hitResult.getZ() - 0.001f + aabb.minZ,
 					hitResult.getX() + 0.001f + aabb.maxX, hitResult.getY() + 0.001f + aabb.maxY, hitResult.getZ() + 0.001f + aabb.maxZ,
