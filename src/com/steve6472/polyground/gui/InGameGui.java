@@ -27,6 +27,7 @@ public class InGameGui extends Gui implements IGamePause
 
 	public ItemBar itemBar;
 	public GameChat chat;
+	public Minimap minimap;
 
 	private GCLog gcLog;
 
@@ -37,6 +38,11 @@ public class InGameGui extends Gui implements IGamePause
 		chat.setLocation(2, getMainApp().getHeight() - 14);
 		chat.setSize((int) (getMainApp().getWidth() * 0.8), 14);
 		addComponent(chat);
+
+		minimap = new Minimap();
+		minimap.setSize(100, 100);
+		minimap.setLocation(getMainApp().getWidth() - 110, 20);
+		addComponent(minimap);
 
 		itemBar = new ItemBar();
 		addComponent(itemBar);

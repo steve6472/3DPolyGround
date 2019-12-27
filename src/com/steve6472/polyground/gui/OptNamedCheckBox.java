@@ -11,7 +11,7 @@ import java.util.function.Supplier;
  * Project: SJP
  *
  ***********************/
-public class BoxOfNamedChecks extends NamedCheckBox
+public class OptNamedCheckBox extends NamedCheckBox
 {
 	Supplier<Boolean> sup;
 

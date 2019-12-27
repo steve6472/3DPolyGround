@@ -451,8 +451,7 @@ public class BlockCreatorGui extends Gui
 
 		preview.renderBlock(this.blocks.get(this.blockList.getSelectedItems().get(0).getText()).getModel());
 
-		SpriteRender.renderSpriteInverted(0, 0, getMainApp().getWidth(), getMainApp().getHeight(), 0, preview.getId(),
-			getMainApp().getWidth(), getMainApp().getHeight());
+		SpriteRender.renderSpriteInverted(0, 0, getMainApp().getWidth(), getMainApp().getHeight(), 0, preview.getId());
 	}
 
 	private void loadAllTextures()

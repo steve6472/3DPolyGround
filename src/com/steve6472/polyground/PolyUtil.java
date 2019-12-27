@@ -29,12 +29,17 @@ public class PolyUtil
 
 	public static Matrix4f createProjectionMatrix(float width, float height, float farPlane, float fov)
 	{
+		Matrix4f projectionMatrix = new Matrix4f();
+		createProjectionMatrix(projectionMatrix, width, height, farPlane, fov);
+		return projectionMatrix;
+	}
+
+	public static void createProjectionMatrix(Matrix4f destination, float width, float height, float farPlane, float fov)
+	{
 		final float NEAR_PLANE = 0.1f;
 		float aspectRatio = width / height;
 
-		Matrix4f projectionMatrix = new Matrix4f();
-		projectionMatrix.perspective((float) Math.toRadians(fov), aspectRatio, NEAR_PLANE, farPlane);
-		return projectionMatrix;
+		destination.perspective((float) Math.toRadians(fov), aspectRatio, NEAR_PLANE, farPlane);
 	}
 
 	public static Matrix4f createProjectionMatrix(float width, float height, float farPlane)

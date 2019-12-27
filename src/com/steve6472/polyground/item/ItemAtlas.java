@@ -216,7 +216,7 @@ public class ItemAtlas
 		itemAtlas.bindFrameBuffer(totalSize, totalSize);
 
 		if (invert)
-			SpriteRender.renderSpriteInverted(x, y, itemSize, itemSize, 0, textureId, itemSize, itemSize);
+			SpriteRender.renderSpriteInverted(x, y, itemSize, itemSize, 0, textureId);
 		else
 			SpriteRender.renderSprite(x, y, itemSize, itemSize, 0, textureId);
 

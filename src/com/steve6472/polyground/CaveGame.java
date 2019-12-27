@@ -103,9 +103,6 @@ public class CaveGame extends MainApp
 		player = new Player(this);
 		getEventHandler().register(player);
 
-		options = new Options();
-		optionsGui = new OptionsGui(this);
-
 		buildHelper = new BuildHelper();
 		blockModelLoader = new BlockModelLoader();
 		new BlockRegistry(this);
@@ -119,6 +116,9 @@ public class CaveGame extends MainApp
 		inGameGui = new InGameGui(this);
 		mainMenu = new MainMenu(this);
 		mainMenu.setVisible(true);
+
+		options = new Options();
+		optionsGui = new OptionsGui(this);
 
 		commandRegistry = new CommandRegistry();
 		generatorRegistry = new GeneratorRegistry();
@@ -441,6 +441,8 @@ public class CaveGame extends MainApp
 
 		mainFrameBuffer.bindFrameBuffer(this);
 		DepthFrameBuffer.clearCurrentBuffer();
+		if (world != null)
+			world.shouldRebuild = true;
 		renderTheWorld();
 
 		mainFrameBuffer.unbindCurrentFrameBuffer(this);
@@ -456,6 +458,8 @@ public class CaveGame extends MainApp
 			mainFrameBuffer.unbindCurrentFrameBuffer(this);
 		}
 
+		inGameGui.minimap.renderWorld();
+
 		Shader.releaseShader();
 
 		if (options.enablePostProcessing)
@@ -466,9 +470,9 @@ public class CaveGame extends MainApp
 		glViewport(0, 0, getWidth(), getHeight());
 
 		if (options.enablePostProcessing)
-			SpriteRender.renderSpriteInverted(0, 0, getWidth(), getHeight(), 0, pp.combine.getOutTexture(), getWidth(), getHeight());
+			SpriteRender.renderSpriteInverted(0, 0, getWidth(), getHeight(), 0, pp.combine.getOutTexture());
 		else
-			SpriteRender.renderSpriteInverted(0, 0, getWidth(), getHeight(), 0, mainFrameBuffer.texture, getWidth(), getHeight());
+			SpriteRender.renderSpriteInverted(0, 0, getWidth(), getHeight(), 0, mainFrameBuffer.texture);
 
 		renderGui();
 

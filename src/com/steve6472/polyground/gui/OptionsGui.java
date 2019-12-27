@@ -2,13 +2,16 @@ package com.steve6472.polyground.gui;
 
 import com.steve6472.polyground.CaveGame;
 import com.steve6472.polyground.Options;
+import com.steve6472.sge.gfx.SpriteRender;
 import com.steve6472.sge.gfx.font.CustomChar;
 import com.steve6472.sge.gfx.font.Font;
 import com.steve6472.sge.gui.Gui;
 import com.steve6472.sge.gui.components.Background;
 import com.steve6472.sge.gui.components.Button;
+import com.steve6472.sge.gui.components.ComponentRender;
 import com.steve6472.sge.main.MainApp;
 import com.steve6472.sge.main.game.Tag;
+import com.steve6472.sge.test.Fex;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -66,7 +69,18 @@ public class OptionsGui extends Gui implements IGamePause
 		checkBox("renderRifts",         10, 10 + x++ * 30, () -> options.renderRifts, b -> options.renderRifts = b);
 		checkBox("renderChunkOutline",  10, 10 + x   * 30, () -> options.renderChunkOutline, b -> options.renderChunkOutline = b);
 
-		checkBox("enablePostProcessing", 300, 10, () -> options.enablePostProcessing, b -> options.enablePostProcessing = b);
+		checkBox("enablePostProcessing",300, 10, () -> options.enablePostProcessing, b -> options.enablePostProcessing = b);
+
+		x = 0;
+		/* Minimap */
+		addComponent(new ComponentRender(() -> {
+			SpriteRender.fillRect(500, 15, 200, 300, 0.35f, 0.35f, 0.35f, 1f);
+			SpriteRender.renderFrame("Minimap", 500, 15, 200, 300, Fex.H31, Fex.H31, Fex.H31);
+		}));
+		Minimap minimap = CaveGame.getInstance().inGameGui.minimap;
+		checkBox("Render",        512, 27 + x++ * 30, minimap::isRender, minimap::setRender);
+		checkBox("Rotate",        512, 27 + x++ * 30, minimap::isRotate, minimap::setRotate);
+		checkBox("Static Height", 512, 27 + x   * 30, minimap::isStaticPosition, minimap::setStaticPosition);
 	}
 
 	@Override
@@ -77,7 +91,7 @@ public class OptionsGui extends Gui implements IGamePause
 
 	private void checkBox(String text, int x, int y, Supplier<Boolean> get, Consumer<Boolean> toggle)
 	{
-		BoxOfNamedChecks box = new BoxOfNamedChecks();
+		OptNamedCheckBox box = new OptNamedCheckBox();
 		box.sup = get;
 		box.setText(text);
 		box.setLocation(x, y);
@@ -98,7 +112,6 @@ public class OptionsGui extends Gui implements IGamePause
 	@Override
 	public void render()
 	{
-
 	}
 
 	@Override

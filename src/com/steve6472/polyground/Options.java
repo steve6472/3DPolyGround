@@ -8,15 +8,19 @@ package com.steve6472.polyground;
  ***********************/
 public class Options
 {
+	/*
+	 * Gameplay
+	 */
 	public boolean enablePostProcessing = true;
+
 
 	public boolean isGamePaused = true;
 	public boolean isInMenu = true;
 	public boolean isMouseFree = false;
 
 	/*
-	* Debug
-	*/
+	 * Debug
+	 */
 	public boolean chunkModelDebug = false;
 	public boolean renderAtlases = false;
 	public boolean lightDebug = false;

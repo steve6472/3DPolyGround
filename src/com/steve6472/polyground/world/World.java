@@ -39,6 +39,7 @@ public class World implements IBlockProvider
 
 	private Random random;
 
+	public boolean shouldRebuild = false;
 	public String worldName = null;
 	private final int HEIGHT = 4;
 
@@ -163,7 +164,11 @@ public class World implements IBlockProvider
 
 	public void render()
 	{
-		rebuild();
+		if (shouldRebuild)
+		{
+			rebuild();
+			shouldRebuild = false;
+		}
 
 		CaveGame.shaders.dissoveWorldShader.bind();
 		CaveGame.shaders.dissoveWorldShader.setView(CaveGame.getInstance().getCamera().getViewMatrix());
