@@ -53,6 +53,7 @@ public class InGameGui extends Gui implements IGamePause
 	public void updatePosition(WindowSizeEvent e)
 	{
 		chat.setLocation(2, e.getHeight() - 14);
+		minimap.setLocation(e.getWidth() - 110, 20);
 	}
 
 	@Override
