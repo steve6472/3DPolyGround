@@ -121,11 +121,11 @@ public class Chunk
 
 		if (faceX == EnumFace.NONE && faceY == EnumFace.NONE && faceZ == EnumFace.NONE)
 		{
-			getSubChunk(layer).updateAllLayers();
+			getSubChunk(layer).rebuildAllLayers();
 			return;
 		} else
 		{
-			sc.updateAllLayers();
+			sc.rebuildAllLayers();
 		}
 
 		Chunk chunk;
@@ -135,14 +135,14 @@ public class Chunk
 		{
 			SubChunk subChunk = chunk.getSubChunk(layer);
 			if (subChunk != null)
-				subChunk.updateAllLayers();
+				subChunk.rebuildAllLayers();
 		}
 
 		if (faceY != EnumFace.NONE)
 		{
 			int l = layer + faceY.getYOffset();
 			if (!(l < 0 || l >= getSubChunks().length))
-				sc.getParent().getSubChunk(l).updateAllLayers();
+				sc.getParent().getSubChunk(l).rebuildAllLayers();
 		}
 
 		chunk = getNeighbouringChunk(faceZ);
@@ -150,7 +150,7 @@ public class Chunk
 		{
 			SubChunk subChunk = chunk.getSubChunk(layer);
 			if (subChunk != null)
-				subChunk.updateAllLayers();
+				subChunk.rebuildAllLayers();
 		}
 	}
 
@@ -214,5 +214,11 @@ public class Chunk
 				case WEST -> WEST;
 				default -> null;
 			};
+	}
+
+	@Override
+	public String toString()
+	{
+		return "Chunk{" + "x=" + x + ", z=" + z + '}';
 	}
 }

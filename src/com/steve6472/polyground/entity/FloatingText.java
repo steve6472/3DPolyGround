@@ -22,6 +22,7 @@ public class FloatingText extends EntityBase
 	private String text;
 
 	private Vector2f screen;
+	long spawnTime;
 
 	public FloatingText()
 	{
@@ -32,6 +33,7 @@ public class FloatingText extends EntityBase
 	{
 		this.text = text;
 		screen = new Vector2f();
+		spawnTime = System.currentTimeMillis();
 	}
 
 	public void setText(String text)
@@ -42,7 +44,7 @@ public class FloatingText extends EntityBase
 	@Override
 	public boolean isDead()
 	{
-		return isDead;
+		return isDead || spawnTime + 2000 < System.currentTimeMillis();
 	}
 
 	public void setDead()
@@ -78,6 +80,8 @@ public class FloatingText extends EntityBase
 	@Event
 	public void renderPos(InGameGuiEvent.PostRender e)
 	{
+		if (isDead())
+			return;
 		update();
 		renderPosition(screen);
 	}

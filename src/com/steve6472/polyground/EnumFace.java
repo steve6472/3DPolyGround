@@ -58,6 +58,11 @@ public enum EnumFace
 		return new EnumFace[] { UP, DOWN, NORTH, EAST, SOUTH, WEST };
 	}
 
+	public static EnumFace[] getFacesReversed()
+	{
+		return new EnumFace[] { WEST, SOUTH, EAST, NORTH, DOWN, UP };
+	}
+
 	public boolean isSide()
 	{
 		return this != UP && this != DOWN;

@@ -31,11 +31,14 @@ public class BlocksCommand extends Command
 
 						if (b.getBlockModel() != null)
 						{
-							for (Cube u : b.getCubes())
+							if (b.getCubes() != null)
 							{
-								System.out.println(u);
+								for (Cube u : b.getCubes())
+								{
+									System.out.println(u);
+								}
+								System.out.println();
 							}
-							System.out.println();
 						}
 					});
 

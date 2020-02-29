@@ -59,6 +59,7 @@ public class MainMenu extends Gui implements IGamePause
 			setVisible(false);
 			CaveGame.getInstance().inGameGui.setVisible(true);
 			CaveGame.getInstance().options.isGamePaused = false;
+			CaveGame.getInstance().placeRifts();
 
 			CaveGame.getInstance().setWorld(new World(CaveGame.getInstance()));
 			try

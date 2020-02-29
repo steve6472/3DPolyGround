@@ -41,7 +41,7 @@ public class ItemAtlas
 	private ItemTessellator itemTessellator;
 	private Sprite itemTexture;
 
-	private List<Float> vertices, textures, colors, light;
+	private List<Float> vertices, textures, colors;
 
 	public int totalSize;
 
@@ -55,7 +55,6 @@ public class ItemAtlas
 		vertices = new ArrayList<>();
 		textures = new ArrayList<>();
 		colors = new ArrayList<>();
-		light = new ArrayList<>();
 
 		itemTexture = new Sprite();
 
@@ -148,9 +147,8 @@ public class ItemAtlas
 		vertices.clear();
 		textures.clear();
 		colors.clear();
-		light.clear();
 
-		buildHelper.load(vertices, colors, textures, light);
+		buildHelper.load(vertices, colors, textures);
 		int tris = model(block, modelLayer);
 
 		itemTessellator.begin(tris * 3);

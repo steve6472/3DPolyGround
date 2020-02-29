@@ -1,3 +1,5 @@
 model = block/magical_coal
 special = light
-color = d8fff5
+color = 6c7f7a
+//color = d8fff5
+radius = 2

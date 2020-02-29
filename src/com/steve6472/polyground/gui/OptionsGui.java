@@ -9,11 +9,10 @@ import com.steve6472.sge.gui.Gui;
 import com.steve6472.sge.gui.components.Background;
 import com.steve6472.sge.gui.components.Button;
 import com.steve6472.sge.gui.components.ComponentRender;
+import com.steve6472.sge.gui.components.Slider;
 import com.steve6472.sge.main.MainApp;
-import com.steve6472.sge.main.game.Tag;
 import com.steve6472.sge.test.Fex;
 
-import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -40,21 +39,6 @@ public class OptionsGui extends Gui implements IGamePause
 		exit.setSize(100, 30);
 		exit.addClickEvent(c -> mainApp.exit());
 		addComponent(exit);
-		
-		Button clearLightDebug = new Button("Clear Light Debug");
-		clearLightDebug.setLocation(10, getMainApp().getHeight() - 40);
-		clearLightDebug.setSize(100, 30);
-		clearLightDebug.addClickEvent(c -> CaveGame.getInstance().particles.getMap().values().forEach(list -> list.forEach(particle ->
-		{
-			List<Tag> tags = particle.getTags();
-			for (Tag t : tags)
-				if (t.getName().startsWith("DebugLight"))
-				{
-					particle.forcedDeath = true;
-					break;
-				}
-		})));
-		addComponent(clearLightDebug);
 
 		Options options = CaveGame.getInstance().options;
 
@@ -62,7 +46,6 @@ public class OptionsGui extends Gui implements IGamePause
 
 		checkBox("chunkModelDebug",     10, 10 + x++ * 30, () -> options.chunkModelDebug, b -> options.chunkModelDebug = b);
 		checkBox("renderAtlases",       10, 10 + x++ * 30, () -> options.renderAtlases, b -> options.renderAtlases = b);
-		checkBox("lightDebug",          10, 10 + x++ * 30, () -> options.lightDebug, b -> options.lightDebug = b);
 		checkBox("subChunkBuildTime",   10, 10 + x++ * 30, () -> options.subChunkBuildTime, b -> options.subChunkBuildTime = b);
 		checkBox("showGCLog",           10, 10 + x++ * 30, () -> options.showGCLog, b -> options.showGCLog = b);
 		checkBox("renderTeleporters",   10, 10 + x++ * 30, () -> options.renderTeleporters, b -> options.renderTeleporters = b);
@@ -81,6 +64,15 @@ public class OptionsGui extends Gui implements IGamePause
 		checkBox("Render",        512, 27 + x++ * 30, minimap::isRender, minimap::setRender);
 		checkBox("Rotate",        512, 27 + x++ * 30, minimap::isRotate, minimap::setRotate);
 		checkBox("Static Height", 512, 27 + x   * 30, minimap::isStaticPosition, minimap::setStaticPosition);
+
+		/* Time Slider */
+		Slider time = new Slider();
+		time.setLocation(720, 15);
+		time.setSize(100, 20);
+		time.addChangeEvent(c -> {
+			CaveGame.getInstance().getWorld().shade = (float) c.getValue() / 100f;
+		});
+		addComponent(time);
 	}
 
 	@Override

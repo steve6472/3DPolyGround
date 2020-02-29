@@ -1,6 +1,5 @@
 package com.steve6472.polyground.world;
 
-import com.steve6472.polyground.CaveGame;
 import com.steve6472.polyground.EnumFace;
 import com.steve6472.polyground.block.model.CubeFace;
 import com.steve6472.polyground.block.model.faceProperty.RotationFaceProperty;
@@ -8,15 +7,10 @@ import com.steve6472.polyground.block.model.faceProperty.TintFaceProperty;
 import com.steve6472.polyground.block.model.faceProperty.UVFaceProperty;
 import com.steve6472.polyground.block.model.registry.Cube;
 import com.steve6472.polyground.block.model.registry.face.FaceRegistry;
-import com.steve6472.polyground.particle.particles.BasicParticle;
 import com.steve6472.polyground.world.biomes.Biome;
 import com.steve6472.polyground.world.biomes.registry.BiomeRegistry;
 import com.steve6472.polyground.world.chunk.SubChunk;
-import com.steve6472.sge.main.game.Tag;
-import com.steve6472.sge.main.util.ColorUtil;
 import org.joml.AABBf;
-import org.joml.Vector3f;
-import org.joml.Vector4f;
 
 import java.util.List;
 
@@ -38,16 +32,14 @@ public final class BuildHelper
 	private List<Float> vert;
 	private List<Float> col;
 	private List<Float> text;
-	private List<Float> light;
 	private Cube cube;
 	private SubChunk sc;
 
-	public void load(List<Float> vert, List<Float> col, List<Float> text, List<Float> light)
+	public void load(List<Float> vert, List<Float> col, List<Float> text)
 	{
 		this.vert = vert;
 		this.col = col;
 		this.text = text;
-		this.light = light;
 	}
 
 	public void load(int x, int y, int z)
@@ -185,31 +177,6 @@ public final class BuildHelper
 
 		if (verts != 0)
 		{
-			if (sc != null)
-			{
-				int lx = Math.floorMod(x, 16) + face.getXOffset();
-				int ly = Math.floorMod(y, 16) + face.getYOffset();
-				int lz = Math.floorMod(z, 16) + face.getZOffset();
-
-				int light = sc.getLightEfficiently(lx, ly, lz);
-
-				for (int i = 0; i < 6; i++)
-				{
-					this.light.add(Math.min(ColorUtil.getRed(light) / 255f, 1.0f));
-					this.light.add(Math.min(ColorUtil.getGreen(light) / 255f, 1.0f));
-					this.light.add(Math.min(ColorUtil.getBlue(light) / 255f, 1.0f));
-				}
-
-				createLightDebug(face, light);
-
-			} else
-			{
-				for (int i = 0; i < 6 * 3; i++)
-				{
-					this.light.add(0f);
-				}
-			}
-
 			if (cube.getFace(face).hasProperty(FaceRegistry.biomeTint))
 				biomeTint(cube.getFace(face));
 			if (cube.getFace(face).hasProperty(FaceRegistry.tint))
@@ -217,33 +184,6 @@ public final class BuildHelper
 		}
 
 		return verts;
-	}
-
-	private void createLightDebug(EnumFace face, int light)
-	{
-		if (CaveGame.getInstance().options.lightDebug)
-		{
-			BasicParticle l = new BasicParticle(
-				new Vector3f(
-					0,
-					0,
-					0),
-				new Vector3f(
-					x + face.getXOffset() * 0.5f + 0.5f + sc.getX() * 16,
-					y + face.getYOffset() * 0.5f + 0.5f + sc.getLayer() * 16,
-					z + face.getZOffset() * 0.5f + 0.5f + sc.getZ() * 16),
-			0.1f,
-				new Vector4f(
-					Math.min(ColorUtil.getRed(light) / 255f, 1.0f),
-					Math.min(ColorUtil.getGreen(light) / 255f, 1.0f),
-					Math.min(ColorUtil.getBlue(light) / 255f, 1.0f),
-					1.0f),
-				-1);
-
-			l.addTag(new Tag("DebugLight" + sc.getX() + "_" + sc.getLayer() + "_" + sc.getZ()));
-
-			CaveGame.getInstance().particles.addParticle(l);
-		}
 	}
 
 	private void removeFaceColors()
@@ -528,14 +468,11 @@ public final class BuildHelper
 			RotationFaceProperty.EnumRotation rotation = cube.getFace(face).getProperty(FaceRegistry.rotation).getRotation();
 			switch (rotation)
 			{
-
 				case R_90 ->
 				{
 					vert(a.minX, a.maxY, a.minZ);
 					vert(a.minX, a.maxY, a.maxZ);
 					vert(a.maxX, a.maxY, a.maxZ);
-
-					/* */
 
 					vert(a.maxX, a.maxY, a.maxZ);
 					vert(a.maxX, a.maxY, a.minZ);
@@ -547,8 +484,6 @@ public final class BuildHelper
 					vert(a.maxX, a.maxY, a.maxZ);
 					vert(a.maxX, a.maxY, a.minZ);
 
-					/* */
-
 					vert(a.maxX, a.maxY, a.minZ);
 					vert(a.minX, a.maxY, a.minZ);
 					vert(a.minX, a.maxY, a.maxZ);
@@ -558,8 +493,6 @@ public final class BuildHelper
 					vert(a.maxX, a.maxY, a.maxZ);
 					vert(a.maxX, a.maxY, a.minZ);
 					vert(a.minX, a.maxY, a.minZ);
-
-					/* */
 
 					vert(a.minX, a.maxY, a.minZ);
 					vert(a.minX, a.maxY, a.maxZ);
@@ -571,8 +504,6 @@ public final class BuildHelper
 			vert(a.maxX, a.maxY, a.minZ);
 			vert(a.minX, a.maxY, a.minZ);
 			vert(a.minX, a.maxY, a.maxZ);
-
-			/* */
 
 			vert(a.minX, a.maxY, a.maxZ);
 			vert(a.maxX, a.maxY, a.maxZ);

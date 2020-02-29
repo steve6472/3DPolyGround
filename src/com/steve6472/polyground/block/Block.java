@@ -142,7 +142,7 @@ public class Block
 
 	/* Something */
 
-	public void createLight(int x, int y, int z, SubChunk sc, BlockData blockData) {}
+	public void createLight(int x, int y, int z, SubChunk sc, BlockData blockData, boolean isInverted) {}
 
 	public int createModel(int x, int y, int z, SubChunk sc, BlockData blockData, BuildHelper buildHelper, ModelLayer modelLayer)
 	{

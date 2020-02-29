@@ -30,10 +30,9 @@ public class SubChunk implements IBiomeProvider
 	private int layer;
 	public float renderTime = 0.1f;
 
-	private boolean shouldUpdate = true;
+	private boolean shouldRebuild = true;
 
 	private int[][][] biomes;
-	private SubChunkLight light;
 	private SubChunkBlocks blocks;
 	private SubChunkBlockData blockData;
 
@@ -58,10 +57,7 @@ public class SubChunk implements IBiomeProvider
 		newScheduledUpdates = new ChunkPosStorage();
 
 		blockData = new SubChunkBlockData(this);
-		light = new SubChunkLight(this);
 		blocks = new SubChunkBlocks(this);
-
-		light.clearLight();
 	}
 
 	public static IGenerator generator;
@@ -113,10 +109,10 @@ public class SubChunk implements IBiomeProvider
 
 	public void rebuild()
 	{
-		if (!shouldUpdate)
+		if (!shouldRebuild)
 			return;
 
-		shouldUpdate = false;
+		shouldRebuild = false;
 
 		long start = System.nanoTime();
 
@@ -130,8 +126,6 @@ public class SubChunk implements IBiomeProvider
 				}
 			}));
 		}
-
-		clearLight();
 
 		for (int i = 0; i < MODEL_COUNT; i++)
 		{
@@ -152,7 +146,7 @@ public class SubChunk implements IBiomeProvider
 
 	public void forceRebuild()
 	{
-		updateAllLayers();
+		rebuildAllLayers();
 		rebuild();
 	}
 
@@ -231,9 +225,9 @@ public class SubChunk implements IBiomeProvider
 
 	public SubChunk getNeighbouringSubChunk(int x, int y, int z)
 	{
-		EnumFace faceX = x == 16 ? EnumFace.NORTH : x == -1 ? EnumFace.SOUTH : EnumFace.NONE;
-		EnumFace faceZ = z == 16 ? EnumFace.EAST : z == -1 ? EnumFace.WEST : EnumFace.NONE;
-		EnumFace faceY = y == 16 ? EnumFace.UP : y == -1 ? EnumFace.DOWN : EnumFace.NONE;
+		EnumFace faceX = x >= 16 ? EnumFace.NORTH : x <= -1 ? EnumFace.SOUTH : EnumFace.NONE;
+		EnumFace faceZ = z >= 16 ? EnumFace.EAST : z <= -1 ? EnumFace.WEST : EnumFace.NONE;
+		EnumFace faceY = y >= 16 ? EnumFace.UP : y <= -1 ? EnumFace.DOWN : EnumFace.NONE;
 
 		int layer = getLayer() + faceY.getYOffset();
 
@@ -279,13 +273,13 @@ public class SubChunk implements IBiomeProvider
 		}
 	}
 
-	public void updateAllLayers()
+	public void rebuildAllLayers()
 	{
 		for (SubChunkModel m : model)
 		{
 			m.setShouldUpdate(true);
 		}
-		setShouldUpdate(true);
+		setShouldRebuild(true);
 	}
 
 	public Chunk getParent()
@@ -330,49 +324,6 @@ public class SubChunk implements IBiomeProvider
 	}
 
 	/*
-	 * Light
-	 */
-
-	public void clearLight()
-	{
-		light.clearLight();
-	}
-
-	/**
-	 *
-	 * Can check neighbour chunks.
-	 * Should be more efficient for chunk border light checking
-	 * as it does not have to create new Chunk Key everytime
-	 *
-	 * @param x x coordinate of light
-	 * @param y y coordinate of light
-	 * @param z z coordinate of light
-	 * @return int Light
-	 */
-	public int getLightEfficiently(int x, int y, int z)
-	{
-		return light.getLightEfficiently(x, y, z);
-	}
-
-	/**
-	 * If the current light is not 0 (no color) it blends the two together
-	 *
-	 * @param x x coordinate
-	 * @param y y coordinate
-	 * @param z z coordinate
-	 * @param color light color
-	 */
-	public void setLight(int x, int y, int z, int color)
-	{
-		light.setLight(x, y, z, color);
-	}
-
-	public int getLight(int x, int y, int z)
-	{
-		return light.getLight(x, y, z);
-	}
-
-	/*
 	 * Blocks
 	 */
 
@@ -393,7 +344,14 @@ public class SubChunk implements IBiomeProvider
 
 	public void setBlock(int x, int y, int z, int id)
 	{
+		int old = blocks.getBlockId(x, y, z);
+
 		blocks.setBlock(x, y, z, id);
+	}
+
+	public void setBlock(int x, int y, int z, Block block)
+	{
+		setBlock(x, y, z, block.getId());
 	}
 
 	/**
@@ -412,18 +370,19 @@ public class SubChunk implements IBiomeProvider
 		return blocks.getBlockEfficiently(x, y, z);
 	}
 
-	public void setBlock(int x, int y, int z, Block block)
-	{
-		blocks.setBlock(x, y, z, block);
-	}
-
 	public boolean shouldUpdate()
 	{
-		return shouldUpdate;
+		return shouldRebuild;
 	}
 
-	public void setShouldUpdate(boolean shouldUpdate)
+	public void setShouldRebuild(boolean shouldRebuild)
 	{
-		this.shouldUpdate = shouldUpdate;
+		this.shouldRebuild = shouldRebuild;
+	}
+
+	@Override
+	public String toString()
+	{
+		return "SubChunk{" + "parent=" + parent + ", layer=" + layer + ", shouldUpdate=" + shouldRebuild + '}';
 	}
 }

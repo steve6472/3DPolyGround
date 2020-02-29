@@ -142,11 +142,9 @@ public class CaveGame extends MainApp
 //		hitboxList.add(new ParticleHitbox(0.05f, 0.1f, 0.05f, 0.1f, new Vector4f(2.5f, 2.5f, 2.5f, 1)));
 
 //		getWindow().maximize();
-
-		placeRifts();
 	}
 
-	private void placeRifts()
+	public void placeRifts()
 	{
 		{
 			List<Vector3f> vertices = new ArrayList<>();
@@ -442,7 +440,10 @@ public class CaveGame extends MainApp
 		mainFrameBuffer.bindFrameBuffer(this);
 		DepthFrameBuffer.clearCurrentBuffer();
 		if (world != null)
+		{
 			world.shouldRebuild = true;
+			world.tryRebuild();
+		}
 		renderTheWorld();
 
 		mainFrameBuffer.unbindCurrentFrameBuffer(this);

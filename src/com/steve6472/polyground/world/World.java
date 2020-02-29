@@ -162,14 +162,17 @@ public class World implements IBlockProvider
 
 	public static int enabled = -1;
 
-	public void render()
+	public void tryRebuild()
 	{
 		if (shouldRebuild)
 		{
 			rebuild();
 			shouldRebuild = false;
 		}
+	}
 
+	public void render()
+	{
 		CaveGame.shaders.dissoveWorldShader.bind();
 		CaveGame.shaders.dissoveWorldShader.setView(CaveGame.getInstance().getCamera().getViewMatrix());
 		CaveGame.shaders.dissoveWorldShader.setUniform(DissoveWorldShader.SHADE, shade);
@@ -196,7 +199,6 @@ public class World implements IBlockProvider
 				 */
 				for (int i = SubChunk.getModelCount() - 1; i >= 0; i--)
 				{
-
 					if (sc.isEmpty(i)) continue;
 
 					if (enabled != -1 && i != enabled)
@@ -209,7 +211,7 @@ public class World implements IBlockProvider
 
 					glBindVertexArray(sc.getModel(i).getVao());
 
-					for (int l = 0; l < 4; l++)
+					for (int l = 0; l < 3; l++)
 						glEnableVertexAttribArray(l);
 
 					glDrawArrays(Tessellator3D.TRIANGLES, 0, sc.getTriangleCount(i) * 3);
@@ -217,7 +219,7 @@ public class World implements IBlockProvider
 			}
 		}
 
-		for (int l = 0; l < 4; l++)
+		for (int l = 0; l < 3; l++)
 			glDisableVertexAttribArray(l);
 
 		glBindVertexArray(0);

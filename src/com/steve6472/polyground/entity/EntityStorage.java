@@ -51,8 +51,11 @@ public class EntityStorage
 				EntityBase next = iter.next();
 
 				if (next.isDead())
+				{
+					if (iter instanceof FloatingText)
+						CaveGame.getInstance().getEventHandler().unregister(iter);
 					iter.remove();
-				else
+				} else
 					next.tick();
 			}
 		}

@@ -19,7 +19,6 @@ public class SubChunkBuilder
 		sc.positionVbo = storeFloatDataInAttributeList(0, 3, new float[] {-1, 0, 1, -1, 0, -1, 1, 0, -1});
 		sc.colorVbo = storeFloatDataInAttributeList(1, 4, new float[] {1, 1, 1, 1});
 		sc.textureVbo = storeFloatDataInAttributeList(2, 2, new float[] {0, 0, 0, 1, 1, 1});
-		sc.lightVbo = storeFloatDataInAttributeList(3, 3, new float[] {0, 0, 0});
 	}
 
 	public static boolean cull(SubChunk sc, int x, int y, int z)

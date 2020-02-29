@@ -20,7 +20,7 @@ import static com.steve6472.sge.gfx.VertexObjectCreator.*;
 public class SubChunkModel
 {
 	/* Model Data */
-	int vao, positionVbo, colorVbo, textureVbo, lightVbo;
+	int vao, positionVbo, colorVbo, textureVbo;
 	int triangleCount;
 
 	private boolean shouldUpdate = true;
@@ -34,7 +34,7 @@ public class SubChunkModel
 
 	public void unload()
 	{
-		delete(vao, positionVbo, colorVbo, textureVbo, lightVbo);
+		delete(vao, positionVbo, colorVbo, textureVbo);
 	}
 
 	public void rebuild(SubChunk sc)
@@ -46,15 +46,12 @@ public class SubChunkModel
 		List<Float> vertices = new ArrayList<>(triangleCount * 3);
 		List<Float> colors = new ArrayList<>(triangleCount * 4);
 		List<Float> textures = new ArrayList<>(triangleCount * 2);
-		List<Float> light = new ArrayList<>(triangleCount * 3);
 
-		sc.getParent().getWorld().getPg().buildHelper.load(vertices, colors, textures, light);
+		sc.getParent().getWorld().getPg().buildHelper.load(vertices, colors, textures);
 
 		BuildHelper buildHelper = sc.getWorld().getPg().buildHelper;
 
 		triangleCount = 0;
-
-		setupLight(sc);
 
 		for (int i = 0; i < sc.getIds().length; i++)
 		{
@@ -97,8 +94,8 @@ public class SubChunkModel
 
 		if (CaveGame.getInstance().options.chunkModelDebug && triangleCount != 0)
 		{
-			System.out.println(String.format("Layer: %s, Triangle Count: %d, Vertices: %d, Colors: %d, Textures: %d, Light: %d", modelLayer, triangleCount,
-				vertices.size(), colors.size(), textures.size(), light.size()));
+			System.out.println(String.format("Layer: %s, Triangle Count: %d, Vertices: %d, Colors: %d, Textures: %d", modelLayer, triangleCount,
+				vertices.size(), colors.size(), textures.size()));
 		}
 
 		bindVAO(vao);
@@ -106,24 +103,6 @@ public class SubChunkModel
 		storeFloatDataInAttributeList(0, 3, positionVbo, vertices);
 		storeFloatDataInAttributeList(1, 4, colorVbo, colors);
 		storeFloatDataInAttributeList(2, 2, textureVbo, textures);
-		storeFloatDataInAttributeList(3, 3, lightVbo, light);
-	}
-
-	private void setupLight(SubChunk sc)
-	{
-		for (int i = 0; i < sc.getIds().length; i++)
-		{
-			for (int j = 0; j < sc.getIds()[i].length; j++)
-			{
-				for (int k = 0; k < sc.getIds()[i][j].length; k++)
-				{
-					int id = sc.getIds()[j][i][k];
-					BlockData blockData = sc.getBlockData(i, j, k);
-
-					BlockRegistry.getBlockById(id).createLight(j, i, k, sc, blockData);
-				}
-			}
-		}
 	}
 
 	public int getVao()

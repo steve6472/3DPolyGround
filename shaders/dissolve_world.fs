@@ -5,7 +5,6 @@
 in vec4 vColor;
 in vec2 vTexture;
 in vec4 glPos;
-in vec3 vLight;
 
 uniform sampler2D atlas;
 uniform float noiseResolution;
@@ -47,5 +46,5 @@ void main()
         fragColor = orig * vColor;
     }
 
-    fragColor.rgb = fragColor.rgb * shade + (fragColor.rgb * vLight * (1.0 - shade));
+    fragColor.rgb = fragColor.rgb * shade;
 }
