@@ -14,7 +14,7 @@ public class DebugShader extends StaticShader3D
 
 	public DebugShader()
 	{
-		super("shaders\\debug\\shader");
+		super("debug\\shader");
 	}
 
 	@Override

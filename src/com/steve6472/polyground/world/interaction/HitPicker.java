@@ -115,6 +115,7 @@ public class HitPicker
 				AABBf aabb = t.getAabb();
 
 
+				CaveGame.shaders.mainShader.bind(pg.getCamera().getViewMatrix());
 				AABBUtil.renderAABB(
 					hitResult.getX() - 0.001f + aabb.minX, hitResult.getY() - 0.001f + aabb.minY, hitResult.getZ() - 0.001f + aabb.minZ,
 					hitResult.getX() + 0.001f + aabb.maxX, hitResult.getY() + 0.001f + aabb.maxY, hitResult.getZ() + 0.001f + aabb.maxZ,

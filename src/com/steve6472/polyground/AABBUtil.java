@@ -122,9 +122,8 @@ public class AABBUtil
 
 		tess.loadPos(0);
 		tess.loadColor(1);
-		tess.loadNormal(2);
 		tess.draw(Tessellator.LINES);
-		tess.disable(0, 1, 2);
+		tess.disable(0, 1);
 		GL11.glLineWidth(1f);
 	}
 

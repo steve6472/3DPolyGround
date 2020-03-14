@@ -1,14 +1,6 @@
 package com.steve6472.polyground.shaders.particles;
 
-import com.steve6472.polyground.CaveGame;
-import com.steve6472.sge.gfx.GeometryShader;
-import org.joml.Matrix4f;
-import org.lwjgl.BufferUtils;
-
-import java.nio.FloatBuffer;
-
-import static org.lwjgl.opengl.GL20.glGetUniformLocation;
-import static org.lwjgl.opengl.GL20.glUniformMatrix4fv;
+import com.steve6472.sge.gfx.shaders.StaticGeometryShader3D;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
@@ -16,55 +8,15 @@ import static org.lwjgl.opengl.GL20.glUniformMatrix4fv;
  * Project: 3DTest
  *
  ***********************/
-public class BasicParticleShader
+public class BasicParticleShader extends StaticGeometryShader3D
 {
-	private final GeometryShader shader;
-
-	private final int transformation;
-	private final int projection;
-	private final int view;
-
 	public BasicParticleShader()
 	{
-		shader = new GeometryShader("shaders\\particles\\basic\\particleShader");
-
-		transformation = glGetUniformLocation(shader.getProgram(), "transformation");
-		projection = glGetUniformLocation(shader.getProgram(), "projection");
-		view = glGetUniformLocation(shader.getProgram(), "view");
-
-		shader.bind();
-		setTransformation(new Matrix4f());
+		super("particles/basic/particleShader");
 	}
 
-	public void bind()
+	@Override
+	protected void createUniforms()
 	{
-		shader.bind();
-		setView(CaveGame.getInstance().getCamera().getViewMatrix());
-	}
-
-	public void setTransformation(Matrix4f matrix4f)
-	{
-		FloatBuffer b1 = BufferUtils.createFloatBuffer(16);
-		matrix4f.get(b1);
-		glUniformMatrix4fv(transformation, false, b1);
-	}
-
-	public void setProjection(Matrix4f matrix4f)
-	{
-		FloatBuffer b1 = BufferUtils.createFloatBuffer(16);
-		matrix4f.get(b1);
-		glUniformMatrix4fv(projection, false, b1);
-	}
-
-	public void setView(Matrix4f matrix4f)
-	{
-		FloatBuffer b1 = BufferUtils.createFloatBuffer(16);
-		matrix4f.get(b1);
-		glUniformMatrix4fv(view, false, b1);
-	}
-
-	public GeometryShader getShader()
-	{
-		return shader;
 	}
 }

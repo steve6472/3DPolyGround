@@ -4,7 +4,7 @@ import com.steve6472.polyground.PolyUtil;
 import com.steve6472.polyground.shaders.particles.*;
 import com.steve6472.polyground.shaders.world.DissoveWorldShader;
 import com.steve6472.polyground.shaders.world.WorldShader;
-import com.steve6472.sge.gfx.Shader;
+import com.steve6472.sge.gfx.shaders.Shader;
 import com.steve6472.sge.main.events.Event;
 import com.steve6472.sge.main.events.WindowSizeEvent;
 import org.joml.Matrix4f;
@@ -21,8 +21,6 @@ public class ShaderStorage
 
 	public BasicParticleShader basicParticleShader;
 	public FlatParticleShader flatParticleShader;
-	public FlatTexturedParticleShader flatTexturedParticleShader;
-	public ShaderParticleShader softRingShader;
 
 	public WorldShader worldShader;
 	public DissoveWorldShader dissoveWorldShader;
@@ -44,8 +42,6 @@ public class ShaderStorage
 	{
 		basicParticleShader = new BasicParticleShader();
 		flatParticleShader = new FlatParticleShader();
-		flatTexturedParticleShader = new FlatTexturedParticleShader();
-		softRingShader = new ShaderParticleShader();
 
 		worldShader = new WorldShader();
 		dissoveWorldShader = new DissoveWorldShader();
@@ -70,12 +66,6 @@ public class ShaderStorage
 
 		flatParticleShader.getShader().bind();
 		flatParticleShader.setProjection(projectionMatrix);
-
-		flatTexturedParticleShader.getShader().bind();
-		flatTexturedParticleShader.setProjection(projectionMatrix);
-
-		softRingShader.getShader().bind();
-		softRingShader.setProjection(projectionMatrix);
 
 		worldShader.bind();
 		worldShader.setProjection(projectionMatrix);

@@ -14,7 +14,7 @@ public class WorldShader extends StaticShader3D
 
 	public WorldShader()
 	{
-		super("shaders\\world");
+		super("world");
 	}
 
 	@Override

@@ -14,7 +14,7 @@ public class BreakParticleShader extends StaticGeometryShader3D
 
 	public BreakParticleShader()
 	{
-		super("shaders\\particles\\break\\shader");
+		super("particles\\break\\shader");
 	}
 
 	@Override

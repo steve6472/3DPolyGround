@@ -6,7 +6,7 @@ import com.steve6472.polyground.block.model.registry.face.FaceRegistry;
 import com.steve6472.polyground.shaders.ItemTextureShader;
 import com.steve6472.polyground.tessellators.ItemTextureTessellator;
 import com.steve6472.sge.gfx.Atlas;
-import com.steve6472.sge.gfx.Shader;
+import com.steve6472.sge.gfx.shaders.Shader;
 import com.steve6472.sge.gfx.SpriteRender;
 import com.steve6472.sge.gfx.Tessellator;
 import com.steve6472.sge.gfx.font.CustomChar;

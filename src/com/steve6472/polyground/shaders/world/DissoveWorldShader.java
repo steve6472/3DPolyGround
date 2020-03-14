@@ -14,7 +14,7 @@ public class DissoveWorldShader extends StaticShader3D
 
 	public DissoveWorldShader()
 	{
-		super("shaders\\dissolve_world");
+		super("dissolve_world");
 	}
 
 	@Override

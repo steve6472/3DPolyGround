@@ -13,6 +13,7 @@ import com.steve6472.polyground.world.BuildHelper;
 import com.steve6472.polyground.world.chunk.ModelLayer;
 import com.steve6472.polyground.world.chunk.SubChunk;
 import com.steve6472.sge.gfx.*;
+import com.steve6472.sge.gfx.shaders.Shader;
 import com.steve6472.sge.main.events.WindowSizeEvent;
 import com.steve6472.sge.main.game.Camera;
 import org.joml.Matrix4f;

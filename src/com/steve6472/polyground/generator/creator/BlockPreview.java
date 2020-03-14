@@ -15,7 +15,7 @@ import com.steve6472.polyground.tessellators.ItemTessellator;
 import com.steve6472.polyground.world.BuildHelper;
 import com.steve6472.sge.gfx.Atlas;
 import com.steve6472.sge.gfx.DepthFrameBuffer;
-import com.steve6472.sge.gfx.Shader;
+import com.steve6472.sge.gfx.shaders.Shader;
 import com.steve6472.sge.gfx.Tessellator;
 import com.steve6472.sge.main.KeyList;
 import com.steve6472.sge.main.events.WindowSizeEvent;
@@ -219,9 +219,8 @@ public class BlockPreview
 
 		basicTessellator.loadPos(0);
 		basicTessellator.loadColor(1);
-		basicTessellator.loadNormal(2);
 		basicTessellator.draw(Tessellator.LINES);
-		basicTessellator.disable(0, 1, 2);
+		basicTessellator.disable(0, 1);
 	}
 
 	private void setupBlockItemRender()

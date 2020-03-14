@@ -30,6 +30,7 @@ import com.steve6472.polyground.world.generator.GeneratorRegistry;
 import com.steve6472.polyground.world.interaction.HitPicker;
 import com.steve6472.sge.gfx.*;
 import com.steve6472.sge.gfx.post.PostProcessing;
+import com.steve6472.sge.gfx.shaders.Shader;
 import com.steve6472.sge.gui.Gui;
 import com.steve6472.sge.main.KeyList;
 import com.steve6472.sge.main.MainApp;
@@ -332,7 +333,7 @@ public class CaveGame extends MainApp
 			hitPicker.tick(player, this);
 
 		/* Render AABBs from t */
-		shaders.mainShader.bind();
+		shaders.mainShader.bind(getCamera().getViewMatrix());
 		basicTess.begin(t.size() * 24);
 
 		for (AABBf a : t)
@@ -343,15 +344,14 @@ public class CaveGame extends MainApp
 		GL11.glLineWidth(1);
 		basicTess.loadPos(0);
 		basicTess.loadColor(1);
-		basicTess.loadNormal(2);
 		basicTess.draw(Tessellator.LINES);
-		basicTess.disable(0, 1, 2);
+		basicTess.disable(0, 1);
 
 		/* END */
 
 		if (options.renderTeleporters)
 		{
-			CaveGame.shaders.mainShader.bind();
+			CaveGame.shaders.mainShader.bind(getCamera().getViewMatrix());
 			for (Teleporter teleporter : teleporters.getTeleporters())
 			{
 				AABBUtil.renderAABBf(teleporter.getAabb(), basicTess, 3f, shaders.mainShader);
@@ -381,7 +381,7 @@ public class CaveGame extends MainApp
 			v += Math.max(t, 1);
 		}
 
-		CaveGame.shaders.mainShader.bind();
+		CaveGame.shaders.mainShader.bind(getCamera().getViewMatrix());
 		BasicTessellator tess = basicTess;
 		tess.begin(v);
 		tess.color(1, 1, 1, 1);
@@ -437,6 +437,7 @@ public class CaveGame extends MainApp
 	{
 		frustum.updateFrustum(shaders.getProjectionMatrix(), getCamera().getViewMatrix());
 
+
 		mainFrameBuffer.bindFrameBuffer(this);
 		DepthFrameBuffer.clearCurrentBuffer();
 		if (world != null)
@@ -485,7 +486,7 @@ public class CaveGame extends MainApp
 	private void renderFloor()
 	{
 		glDisable(GL_CULL_FACE);
-		CaveGame.shaders.mainShader.bind();
+		CaveGame.shaders.mainShader.bind(getCamera().getViewMatrix());
 		BasicTessellator tess = basicTess;
 		tess.begin(4);
 
@@ -496,9 +497,8 @@ public class CaveGame extends MainApp
 
 		tess.loadPos(0);
 		tess.loadColor(1);
-		tess.loadNormal(2);
 		tess.draw(Tessellator.QUADS);
-		tess.disable(0, 1, 2);
+		tess.disable(0, 1);
 		glEnable(GL_CULL_FACE);
 	}
 
