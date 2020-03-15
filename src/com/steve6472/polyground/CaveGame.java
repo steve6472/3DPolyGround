@@ -24,6 +24,7 @@ import com.steve6472.polyground.teleporter.TeleporterManager;
 import com.steve6472.polyground.tessellators.BasicTessellator;
 import com.steve6472.polyground.tessellators.EntityTessellator;
 import com.steve6472.polyground.world.BuildHelper;
+import com.steve6472.polyground.world.CaveGameSkybox;
 import com.steve6472.polyground.world.World;
 import com.steve6472.polyground.world.chunk.SubChunk;
 import com.steve6472.polyground.world.generator.GeneratorRegistry;
@@ -80,7 +81,7 @@ public class CaveGame extends MainApp
 	public BasicTessellator basicTess;
 	public EntityTessellator entityTessellator;
 	public Frustum frustum;
-	public Skybox skybox;
+	public CaveGameSkybox skybox;
 
 	/* GUI */
 	public InGameGui inGameGui;
@@ -138,7 +139,7 @@ public class CaveGame extends MainApp
 
 		itemInHand = ItemRegistry.getItemByName("stone");
 
-		skybox = new Skybox(StaticCubeMap.fromTextureFace("skybox", "png"), shaders.getProjectionMatrix());
+		skybox = new CaveGameSkybox(StaticCubeMap.fromTextureFaces("skybox", new String[] {"side", "side", "top", "bottom", "side", "side"}, "png"), shaders.getProjectionMatrix());
 
 		getEventHandler().runEvent(new WindowSizeEvent(getWindowWidth(), getWindowHeight()));
 
@@ -332,8 +333,10 @@ public class CaveGame extends MainApp
 
 	public void renderTheWorld()
 	{
-		if (world != null)
-			hitPicker.tick(player, this);
+		if (world == null)
+			return;
+
+		hitPicker.tick(player, this);
 
 		/* Render AABBs from t */
 		shaders.mainShader.bind(getCamera().getViewMatrix());
@@ -362,17 +365,15 @@ public class CaveGame extends MainApp
 			}
 		}
 
-		if (world != null)
-		{
-			if (!CaveGame.runGameEvent(new WorldEvent.PreRender(world)))
-				world.render();
-			CaveGame.runGameEvent(new WorldEvent.PostRender(world));
-		}
+		if (!CaveGame.runGameEvent(new WorldEvent.PreRender(world)))
+			world.render();
+		CaveGame.runGameEvent(new WorldEvent.PostRender(world));
 
 		particles.render();
 
 //		AABBUtil.renderAABBf(player.getHitbox().getHitbox(), this);
 
+		skybox.setShade(world.shade);
 		skybox.render(getCamera().getViewMatrix());
 	}
 

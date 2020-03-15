@@ -44,6 +44,7 @@ public class MainMenu extends Gui implements IGamePause
 			setVisible(false);
 			CaveGame.getInstance().inGameGui.setVisible(true);
 			CaveGame.getInstance().options.isGamePaused = false;
+			CaveGame.getInstance().options.enablePostProcessing = false;
 
 			CaveGame.getInstance().setWorld(new World(CaveGame.getInstance()));
 			CaveGame.getInstance().world.addChunk(new Chunk(0, 0, CaveGame.getInstance().world).generate(), false);
