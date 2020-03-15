@@ -28,7 +28,6 @@ public class SubChunk implements IBiomeProvider
 	private Chunk parent;
 
 	private int layer;
-	public float renderTime = 0.1f;
 
 	private boolean shouldRebuild = true;
 
@@ -69,9 +68,6 @@ public class SubChunk implements IBiomeProvider
 
 	public void tick()
 	{
-		if (renderTime <= 1.0f)
-			renderTime += 0.025f;
-
 		tickableBlocks.iterate((x, y, z) ->
 		{
 			Block blockToTick = BlockRegistry.getBlockById(blocks.getIds()[x][y][z]);
@@ -182,11 +178,6 @@ public class SubChunk implements IBiomeProvider
 	public World getWorld()
 	{
 		return getParent().getWorld();
-	}
-
-	public float getRenderTime()
-	{
-		return renderTime;
 	}
 
 	public BlockData[][][] getBlockData()

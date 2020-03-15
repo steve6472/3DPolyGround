@@ -57,7 +57,7 @@ public class ModelAI implements EntityModel<AIEntity>
 		transformation.rotate(entity.tick / (float) Math.PI, 1, 0, 0);
 		transformation.rotate(entity.tick / (float) Math.PI, 0, 1, 0);
 		transformation.rotate(entity.tick / (float) Math.PI, 0, 0, 1);
-		CaveGame.shaders.worldShader.setTransformation(transformation);
+		CaveGame.shaders.flatTexturedShader.setTransformation(transformation);
 
 		block.render();
 
@@ -66,7 +66,7 @@ public class ModelAI implements EntityModel<AIEntity>
 		transformation.rotate(-(entity.tick * 1.1f) / (float) Math.PI, 0, 0, 1);
 		transformation.rotate(-(entity.tick * 1.1f) / (float) Math.PI, 0, 1, 0);
 		transformation.rotate(-(entity.tick * 1.1f) / (float) Math.PI, 1, 0, 0);
-		CaveGame.shaders.worldShader.setTransformation(transformation);
+		CaveGame.shaders.flatTexturedShader.setTransformation(transformation);
 		frame.render();
 	}
 

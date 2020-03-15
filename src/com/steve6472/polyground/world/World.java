@@ -5,7 +5,7 @@ import com.steve6472.polyground.block.BlockTextureHolder;
 import com.steve6472.polyground.entity.EntityBase;
 import com.steve6472.polyground.entity.EntityStorage;
 import com.steve6472.polyground.entity.FloatingText;
-import com.steve6472.polyground.shaders.world.DissoveWorldShader;
+import com.steve6472.polyground.shaders.world.WorldShader;
 import com.steve6472.polyground.world.chunk.Chunk;
 import com.steve6472.polyground.world.chunk.ModelLayer;
 import com.steve6472.polyground.world.chunk.SubChunk;
@@ -173,9 +173,9 @@ public class World implements IBlockProvider
 
 	public void render()
 	{
-		CaveGame.shaders.dissoveWorldShader.bind();
-		CaveGame.shaders.dissoveWorldShader.setView(CaveGame.getInstance().getCamera().getViewMatrix());
-		CaveGame.shaders.dissoveWorldShader.setUniform(DissoveWorldShader.SHADE, shade);
+		CaveGame.shaders.worldShader.bind();
+		CaveGame.shaders.worldShader.setView(CaveGame.getInstance().getCamera().getViewMatrix());
+		CaveGame.shaders.worldShader.setUniform(WorldShader.SHADE, shade);
 
 		BlockTextureHolder.getAtlas().getSprite().bind(0);
 
@@ -190,8 +190,7 @@ public class World implements IBlockProvider
 				if (sc.isEmpty()) continue;
 				if (!subChunkFrustum(chunk.getX() * 16, k * 16, chunk.getZ() * 16)) continue;
 
-				CaveGame.shaders.dissoveWorldShader.setUniform(DissoveWorldShader.TIME, sc.getRenderTime());
-				CaveGame.shaders.dissoveWorldShader.setTransformation(new Matrix4f().translate(chunk.getX() * 16, k * 16, chunk.getZ() * 16));
+				CaveGame.shaders.worldShader.setTransformation(new Matrix4f().translate(chunk.getX() * 16, k * 16, chunk.getZ() * 16));
 
 				/*
 				 * Rendered in reverse order to get the desired effect
@@ -205,9 +204,9 @@ public class World implements IBlockProvider
 						continue;
 
 					if (ModelLayer.EMISSION_NORMAL.ordinal() == i || ModelLayer.EMISSION_OVERLAY.ordinal() == i)
-						CaveGame.shaders.dissoveWorldShader.setUniform(DissoveWorldShader.SHADE, 1.0f);
+						CaveGame.shaders.worldShader.setUniform(WorldShader.SHADE, 1.0f);
 					else
-						CaveGame.shaders.dissoveWorldShader.setUniform(DissoveWorldShader.SHADE, shade);
+						CaveGame.shaders.worldShader.setUniform(WorldShader.SHADE, shade);
 
 					glBindVertexArray(sc.getModel(i).getVao());
 

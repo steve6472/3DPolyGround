@@ -80,6 +80,7 @@ public class CaveGame extends MainApp
 	public BasicTessellator basicTess;
 	public EntityTessellator entityTessellator;
 	public Frustum frustum;
+	public Skybox skybox;
 
 	/* GUI */
 	public InGameGui inGameGui;
@@ -136,6 +137,8 @@ public class CaveGame extends MainApp
 		new ItemRegistry(this);
 
 		itemInHand = ItemRegistry.getItemByName("stone");
+
+		skybox = new Skybox(StaticCubeMap.fromTextureFace("skybox", "png"), shaders.getProjectionMatrix());
 
 		getEventHandler().runEvent(new WindowSizeEvent(getWindowWidth(), getWindowHeight()));
 
@@ -369,7 +372,8 @@ public class CaveGame extends MainApp
 		particles.render();
 
 //		AABBUtil.renderAABBf(player.getHitbox().getHitbox(), this);
-		renderFloor();
+
+		skybox.render(getCamera().getViewMatrix());
 	}
 
 	private void renderRifts()
@@ -483,25 +487,6 @@ public class CaveGame extends MainApp
 		glViewport(0, 0, getWidth(), getHeight());
 	}
 
-	private void renderFloor()
-	{
-		glDisable(GL_CULL_FACE);
-		CaveGame.shaders.mainShader.bind(getCamera().getViewMatrix());
-		BasicTessellator tess = basicTess;
-		tess.begin(4);
-
-		tess.pos(+128, -0.0001f, +128).color(0.5f, 0.5f, 0.5f, 0.9f).endVertex();
-		tess.pos(+128, -0.0001f, -128).color(0.5f, 0.5f, 0.5f, 0.9f).endVertex();
-		tess.pos(-128, -0.0001f, -128).color(0.5f, 0.5f, 0.5f, 0.9f).endVertex();
-		tess.pos(-128, -0.0001f, +128).color(0.5f, 0.5f, 0.5f, 0.9f).endVertex();
-
-		tess.loadPos(0);
-		tess.loadColor(1);
-		tess.draw(Tessellator.QUADS);
-		tess.disable(0, 1);
-		glEnable(GL_CULL_FACE);
-	}
-
 	@Event
 	public void keyEvent(KeyEvent e)
 	{
@@ -534,6 +519,7 @@ public class CaveGame extends MainApp
 	public void resize(WindowSizeEvent e)
 	{
 		mainFrameBuffer.resize(e.getWidth(), e.getHeight());
+		skybox.updateProjection(PolyUtil.createProjectionMatrix(e.getWidth(), e.getHeight()));
 	}
 
 	@Override

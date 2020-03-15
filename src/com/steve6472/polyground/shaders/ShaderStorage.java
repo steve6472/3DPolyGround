@@ -2,8 +2,8 @@ package com.steve6472.polyground.shaders;
 
 import com.steve6472.polyground.PolyUtil;
 import com.steve6472.polyground.shaders.particles.*;
-import com.steve6472.polyground.shaders.world.DissoveWorldShader;
 import com.steve6472.polyground.shaders.world.WorldShader;
+import com.steve6472.polyground.shaders.world.FlatTexturedShader;
 import com.steve6472.sge.gfx.shaders.Shader;
 import com.steve6472.sge.main.events.Event;
 import com.steve6472.sge.main.events.WindowSizeEvent;
@@ -22,8 +22,8 @@ public class ShaderStorage
 	public BasicParticleShader basicParticleShader;
 	public FlatParticleShader flatParticleShader;
 
+	public FlatTexturedShader flatTexturedShader;
 	public WorldShader worldShader;
-	public DissoveWorldShader dissoveWorldShader;
 	public BreakParticleShader breakParticleShader;
 	public ItemTextureShader itemTextureShader;
 	public DebugShader debugShader;
@@ -43,8 +43,8 @@ public class ShaderStorage
 		basicParticleShader = new BasicParticleShader();
 		flatParticleShader = new FlatParticleShader();
 
+		flatTexturedShader = new FlatTexturedShader();
 		worldShader = new WorldShader();
-		dissoveWorldShader = new DissoveWorldShader();
 		breakParticleShader = new BreakParticleShader();
 		itemTextureShader = new ItemTextureShader();
 		debugShader = new DebugShader();
@@ -67,13 +67,12 @@ public class ShaderStorage
 		flatParticleShader.getShader().bind();
 		flatParticleShader.setProjection(projectionMatrix);
 
+		flatTexturedShader.bind();
+		flatTexturedShader.setProjection(projectionMatrix);
+
 		worldShader.bind();
 		worldShader.setProjection(projectionMatrix);
-
-		dissoveWorldShader.bind();
-		dissoveWorldShader.setProjection(projectionMatrix);
-		dissoveWorldShader.setUniform(DissoveWorldShader.NOISERESOLUTION, 8f);
-		dissoveWorldShader.setUniform(DissoveWorldShader.ATLAS, 0);
+		worldShader.setUniform(WorldShader.ATLAS, 0);
 
 		breakParticleShader.bind();
 		breakParticleShader.setProjection(projectionMatrix);

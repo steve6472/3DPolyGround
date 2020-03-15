@@ -130,10 +130,10 @@ public class ItemAtlas
 
 		camera.updateViewMatrix();
 
-		CaveGame.shaders.worldShader.bind();
-		CaveGame.shaders.worldShader.setView(camera.getViewMatrix());
-		CaveGame.shaders.worldShader.setTransformation(transformationMatrix);
-		CaveGame.shaders.worldShader.setProjection(projectionMatrix);
+		CaveGame.shaders.flatTexturedShader.bind();
+		CaveGame.shaders.flatTexturedShader.setView(camera.getViewMatrix());
+		CaveGame.shaders.flatTexturedShader.setTransformation(transformationMatrix);
+		CaveGame.shaders.flatTexturedShader.setProjection(projectionMatrix);
 
 		BlockTextureHolder.getAtlas().getSprite().bind();
 	}

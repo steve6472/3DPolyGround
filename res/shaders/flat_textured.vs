@@ -15,7 +15,7 @@ void main()
 {
     vColor = color;
     vTexture = texture;
-
+	
 	vec4 worldPosition = transformation * vec4(position, 1.0);
 
 	gl_Position = projection * view * worldPosition;

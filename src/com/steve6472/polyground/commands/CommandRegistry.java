@@ -37,7 +37,6 @@ public class CommandRegistry
 		new HelpCommand(dispatcher);
 		new BlocksCommand(dispatcher);
 		new SpawnCommand(dispatcher);
-		new AnimateChunkCommand(dispatcher);
 		new SetCommand(dispatcher);
 		new SensitivityCommand(dispatcher);
 		new AICommand(dispatcher);

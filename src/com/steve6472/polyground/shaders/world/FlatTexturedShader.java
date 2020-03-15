@@ -4,23 +4,22 @@ import com.steve6472.sge.gfx.shaders.StaticShader3D;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
- * On date: 22.08.2019
+ * On date: 19.08.2019
  * Project: SJP
  *
  ***********************/
-public class WorldShader extends StaticShader3D
+public class FlatTexturedShader extends StaticShader3D
 {
-	public static Type ATLAS, SHADE;
+	public static Type ATLAS;
 
-	public WorldShader()
+	public FlatTexturedShader()
 	{
-		super("world");
+		super("flat_textured");
 	}
 
 	@Override
 	protected void createUniforms()
 	{
 		addUniform("atlas", ATLAS = new Type(EnumUniformType.INT_1));
-		addUniform("shade", SHADE = new Type(EnumUniformType.FLOAT_1));
 	}
 }

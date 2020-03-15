@@ -9,7 +9,7 @@ import com.steve6472.polyground.block.model.faceProperty.VisibleFaceProperty;
 import com.steve6472.polyground.block.model.registry.Cube;
 import com.steve6472.polyground.block.model.registry.face.FaceRegistry;
 import com.steve6472.polyground.shaders.MainShader;
-import com.steve6472.polyground.shaders.world.WorldShader;
+import com.steve6472.polyground.shaders.world.FlatTexturedShader;
 import com.steve6472.polyground.tessellators.BasicTessellator;
 import com.steve6472.polyground.tessellators.ItemTessellator;
 import com.steve6472.polyground.world.BuildHelper;
@@ -45,7 +45,7 @@ public class BlockPreview
 
 	private int w, h;
 
-	private WorldShader worldShader;
+	private FlatTexturedShader flatTexturedShader;
 	private MainShader mainShader;
 
 	private Atlas atlas;
@@ -66,7 +66,7 @@ public class BlockPreview
 		itemTessellator = new ItemTessellator();
 		basicTessellator = new BasicTessellator();
 
-		worldShader = new WorldShader();
+		flatTexturedShader = new FlatTexturedShader();
 		Matrix4f projectionMatrix = PolyUtil.createProjectionMatrix(16 * 70, 9 * 70, 3f, 80f);
 
 		Matrix4f transformationMatrix = new Matrix4f();
@@ -74,9 +74,9 @@ public class BlockPreview
 		transformationMatrix.scale(1f);
 		transformationMatrix.translate(-0.5f, -0.5f, -0.5f);
 
-		worldShader.getShader().bind();
-		worldShader.setProjection(projectionMatrix);
-		worldShader.setTransformation(transformationMatrix);
+		flatTexturedShader.getShader().bind();
+		flatTexturedShader.setProjection(projectionMatrix);
+		flatTexturedShader.setTransformation(transformationMatrix);
 
 		mainShader = new MainShader();
 		mainShader.getShader().bind();
@@ -112,8 +112,8 @@ public class BlockPreview
 
 		Matrix4f projectionMatrix = PolyUtil.createProjectionMatrix(w, h, 3f, 80f);
 
-		worldShader.getShader().bind();
-		worldShader.setProjection(projectionMatrix);
+		flatTexturedShader.getShader().bind();
+		flatTexturedShader.setProjection(projectionMatrix);
 
 		mainShader.getShader().bind();
 		mainShader.setProjection(projectionMatrix);
@@ -225,8 +225,8 @@ public class BlockPreview
 
 	private void setupBlockItemRender()
 	{
-		worldShader.bind();
-		worldShader.setView(camera.getViewMatrix());
+		flatTexturedShader.bind();
+		flatTexturedShader.setView(camera.getViewMatrix());
 
 		if (atlas != null)
 			atlas.getSprite().bind();

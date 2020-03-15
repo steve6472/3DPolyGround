@@ -85,8 +85,8 @@ public class Minimap extends Component
 		game.getPlayer().setCamera(camera);
 		game.frustum.updateFrustum(projectionMatrix, camera.getViewMatrix());
 
-		CaveGame.shaders.dissoveWorldShader.bind();
-		CaveGame.shaders.dissoveWorldShader.setProjection(projectionMatrix);
+		CaveGame.shaders.worldShader.bind();
+		CaveGame.shaders.worldShader.setProjection(projectionMatrix);
 
 		buffer.bindFrameBuffer(getWidth(), getHeight());
 		DepthFrameBuffer.clearCurrentBuffer();
@@ -99,8 +99,8 @@ public class Minimap extends Component
 			CaveGame.runGameEvent(new WorldEvent.PostRender(world));
 		}
 
-		CaveGame.shaders.dissoveWorldShader.bind();
-		CaveGame.shaders.dissoveWorldShader.setProjection(CaveGame.shaders.getProjectionMatrix());
+		CaveGame.shaders.worldShader.bind();
+		CaveGame.shaders.worldShader.setProjection(CaveGame.shaders.getProjectionMatrix());
 
 		game.getPlayer().setCamera(temp);
 		buffer.unbindCurrentFrameBuffer(game);

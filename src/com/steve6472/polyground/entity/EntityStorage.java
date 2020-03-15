@@ -63,8 +63,8 @@ public class EntityStorage
 
 	public void renderEntities()
 	{
-		CaveGame.shaders.worldShader.bind();
-		CaveGame.shaders.worldShader.setView(CaveGame.getInstance().getCamera().getViewMatrix());
+		CaveGame.shaders.flatTexturedShader.bind();
+		CaveGame.shaders.flatTexturedShader.setView(CaveGame.getInstance().getCamera().getViewMatrix());
 
 		for (EntityModel model : entities.keySet())
 		{
