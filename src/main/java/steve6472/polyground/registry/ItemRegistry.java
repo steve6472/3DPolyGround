@@ -1,7 +1,8 @@
-package steve6472.polyground.item.registry;
+package steve6472.polyground.registry;
 
 import steve6472.polyground.CaveGame;
 import steve6472.polyground.item.Item;
+import steve6472.polyground.registry.specialitem.SpecialItemRegistry;
 import steve6472.sge.main.MainApp;
 import steve6472.SSS;
 

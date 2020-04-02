@@ -3,7 +3,7 @@ package steve6472.polyground.gui;
 import steve6472.polyground.CaveGame;
 import steve6472.polyground.item.Item;
 import steve6472.polyground.item.ItemAtlas;
-import steve6472.polyground.item.registry.ItemRegistry;
+import steve6472.polyground.registry.ItemRegistry;
 import steve6472.polyground.gfx.shaders.ItemTextureShader;
 import steve6472.polyground.tessellators.ItemTextureTessellator;
 import steve6472.sge.gfx.Sprite;

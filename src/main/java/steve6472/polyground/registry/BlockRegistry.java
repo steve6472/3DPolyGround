@@ -1,9 +1,10 @@
-package steve6472.polyground.block.registry;
+package steve6472.polyground.registry;
 
+import steve6472.SSS;
 import steve6472.polyground.CaveGame;
 import steve6472.polyground.block.Block;
 import steve6472.polyground.block.BlockTextureHolder;
-import steve6472.SSS;
+import steve6472.polyground.registry.block.SpecialBlockRegistry;
 import steve6472.sge.main.MainApp;
 
 import java.io.File;

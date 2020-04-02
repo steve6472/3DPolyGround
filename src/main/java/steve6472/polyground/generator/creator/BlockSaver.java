@@ -2,8 +2,8 @@ package steve6472.polyground.generator.creator;
 
 import steve6472.polyground.EnumFace;
 import steve6472.polyground.block.model.CubeFace;
-import steve6472.polyground.block.model.registry.Cube;
-import steve6472.polyground.block.model.registry.face.FaceRegistry;
+import steve6472.polyground.block.model.Cube;
+import steve6472.polyground.registry.face.FaceRegistry;
 import org.json.JSONArray;
 import org.json.JSONObject;
 

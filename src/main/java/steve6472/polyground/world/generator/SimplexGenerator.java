@@ -1,7 +1,7 @@
 package steve6472.polyground.world.generator;
 
 import steve6472.polyground.block.Block;
-import steve6472.polyground.block.registry.BlockRegistry;
+import steve6472.polyground.registry.BlockRegistry;
 import steve6472.polyground.world.chunk.SubChunk;
 import org.joml.SimplexNoise;
 

@@ -7,7 +7,7 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import steve6472.polyground.block.Block;
-import steve6472.polyground.block.registry.BlockRegistry;
+import steve6472.polyground.registry.BlockRegistry;
 import steve6472.polyground.commands.Command;
 import steve6472.polyground.commands.CommandSource;
 

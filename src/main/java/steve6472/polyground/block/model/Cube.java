@@ -1,8 +1,6 @@
-package steve6472.polyground.block.model.registry;
+package steve6472.polyground.block.model;
 
 import steve6472.polyground.EnumFace;
-import steve6472.polyground.block.model.CubeFace;
-import steve6472.polyground.block.model.JsonHelper;
 import org.joml.AABBf;
 import org.json.JSONObject;
 

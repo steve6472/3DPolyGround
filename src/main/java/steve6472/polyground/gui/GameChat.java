@@ -6,7 +6,7 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.suggestion.Suggestion;
 import com.mojang.brigadier.suggestion.Suggestions;
 import steve6472.polyground.CaveGame;
-import steve6472.polyground.commands.CommandRegistry;
+import steve6472.polyground.registry.CommandRegistry;
 import steve6472.polyground.commands.CommandSource;
 import steve6472.sge.gfx.font.Font;
 import steve6472.sge.gui.components.TextField;

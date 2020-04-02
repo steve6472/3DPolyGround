@@ -2,7 +2,7 @@ package steve6472.polyground.gui;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import steve6472.polyground.CaveGame;
-import steve6472.polyground.commands.CommandRegistry;
+import steve6472.polyground.registry.CommandRegistry;
 import steve6472.polyground.world.World;
 import steve6472.polyground.world.chunk.Chunk;
 import steve6472.polyground.world.chunk.SubChunk;

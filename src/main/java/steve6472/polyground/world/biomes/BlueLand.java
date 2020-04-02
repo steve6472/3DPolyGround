@@ -1,7 +1,7 @@
 package steve6472.polyground.world.biomes;
 
 import steve6472.polyground.block.Block;
-import steve6472.polyground.block.registry.BlockRegistry;
+import steve6472.polyground.registry.BlockRegistry;
 import org.joml.Vector3f;
 
 /**********************

@@ -3,7 +3,7 @@ package steve6472.polyground.commands.coms;
 import com.mojang.brigadier.CommandDispatcher;
 import steve6472.polyground.EnumFace;
 import steve6472.polyground.block.Block;
-import steve6472.polyground.block.registry.BlockRegistry;
+import steve6472.polyground.registry.BlockRegistry;
 import steve6472.polyground.commands.Command;
 import steve6472.polyground.commands.CommandSource;
 import steve6472.polyground.commands.arguments.ChunkArgument;

@@ -1,7 +1,8 @@
-package steve6472.polyground.commands;
+package steve6472.polyground.registry;
 
 import com.mojang.brigadier.CommandDispatcher;
 import steve6472.polyground.CaveGame;
+import steve6472.polyground.commands.CommandSource;
 import steve6472.polyground.commands.coms.worldEdit.SetCommand;
 import steve6472.polyground.commands.coms.*;
 
@@ -36,10 +37,8 @@ public class CommandRegistry
 		new SetWorldName(dispatcher);
 		new HelpCommand(dispatcher);
 		new BlocksCommand(dispatcher);
-		new SpawnCommand(dispatcher);
 		new SetCommand(dispatcher);
 		new SensitivityCommand(dispatcher);
-		new AICommand(dispatcher);
 		new ModelLayerCommand(dispatcher);
 		new ParticleCommand(dispatcher);
 		new RiftCommand(dispatcher);

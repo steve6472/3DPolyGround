@@ -1,7 +1,7 @@
 package steve6472.polyground.block.model.faceProperty;
 
-import steve6472.polyground.block.model.registry.face.FaceEntry;
-import steve6472.polyground.block.model.registry.face.FaceRegistry;
+import steve6472.polyground.registry.face.FaceEntry;
+import steve6472.polyground.registry.face.FaceRegistry;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)

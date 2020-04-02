@@ -1,8 +1,8 @@
 package steve6472.polyground.world.interaction;
 
 import steve6472.polyground.block.Block;
-import steve6472.polyground.block.model.registry.Cube;
-import steve6472.polyground.block.registry.BlockRegistry;
+import steve6472.polyground.block.model.Cube;
+import steve6472.polyground.registry.BlockRegistry;
 import steve6472.polyground.world.World;
 import org.joml.AABBf;
 import org.joml.Intersectionf;

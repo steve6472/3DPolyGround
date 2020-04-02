@@ -1,6 +1,6 @@
 package steve6472.polyground.generator.creator;
 
-import steve6472.polyground.block.model.registry.Cube;
+import steve6472.polyground.block.model.Cube;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)

@@ -1,11 +1,8 @@
 package steve6472.polyground.block.special;
 
-import steve6472.polyground.BasicEvents;
 import steve6472.polyground.EnumFace;
 import steve6472.polyground.block.Block;
 import steve6472.polyground.block.blockdata.BlockData;
-import steve6472.polyground.entity.EntityBase;
-import steve6472.polyground.entity.registry.EntityRegistry;
 import steve6472.polyground.world.chunk.SubChunk;
 
 import java.io.File;
@@ -26,7 +23,7 @@ public class GravelBlock extends Block
 	@Override
 	public void onUpdate(SubChunk subChunk, BlockData blockData, EnumFace updateFrom, int x, int y, int z)
 	{
-		super.onUpdate(subChunk, blockData, updateFrom, x, y, z);
+		super.onUpdate(subChunk, blockData, updateFrom, x, y, z);/*
 		if (y <= 0)
 			return;
 
@@ -40,6 +37,6 @@ public class GravelBlock extends Block
 			e.setPosition(x + 0.5f + subChunk.getX() * 16, y + 0.5f + subChunk.getLayer() * 16, z + 0.5f + subChunk.getZ() * 16);
 
 			subChunk.getWorld().addEntity(e);
-		}
+		}*/
 	}
 }

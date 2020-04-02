@@ -1,7 +1,6 @@
 package steve6472.polyground.block.model;
 
 import steve6472.polyground.CaveGame;
-import steve6472.polyground.block.model.registry.Cube;
 import steve6472.SSS;
 
 import java.io.File;

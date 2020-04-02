@@ -1,4 +1,4 @@
-package steve6472.polyground.block.registry;
+package steve6472.polyground.registry.block;
 
 import steve6472.polyground.block.Block;
 import steve6472.polyground.block.special.*;

@@ -14,6 +14,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Class" />
+        <option value="Interface" />
       </list>
     </option>
   </component>
@@ -26,6 +27,7 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="com.intellij.ide.scratch.LRUPopupBuilder$1/New Scratch File" value="JShellLanguage" />
     <property name="ignore.preview.features.used" value="true" />
     <property name="restartRequiresConfirmation" value="false" />
     <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
@@ -83,10 +85,14 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="490" y="65" key="#com.intellij.ide.util.MemberChooser/0.0.1366.728@0.0.1366.728" timestamp="1585600855926" />
-    <state x="415" y="111" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1585572847875">
+    <state x="468" y="259" width="432" height="216" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.classes" timestamp="1585848360047">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="415" y="111" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1366.728@0.0.1366.728" timestamp="1585572847875" />
+    <state x="468" y="259" width="432" height="216" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.classes/0.0.1366.728@0.0.1366.728" timestamp="1585848360047" />
+    <state x="415" y="111" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1585849102760">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="415" y="111" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1366.728@0.0.1366.728" timestamp="1585849102760" />
     <state x="94" y="94" width="1178" height="540" maximized="true" key="DiffContextDialog" timestamp="1585591695030">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
@@ -95,22 +101,22 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="465" y="119" key="FileChooserDialogImpl/0.0.1366.728@0.0.1366.728" timestamp="1585076350949" />
-    <state width="1084" height="621" key="GridCell.Tab.0.bottom" timestamp="1585842553838">
+    <state width="1084" height="621" key="GridCell.Tab.0.bottom" timestamp="1585849294364">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1084" height="621" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1585842553838" />
-    <state width="1084" height="621" key="GridCell.Tab.0.center" timestamp="1585842553837">
+    <state width="1084" height="621" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1585849294364" />
+    <state width="1084" height="621" key="GridCell.Tab.0.center" timestamp="1585849294364">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1084" height="621" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1585842553837" />
-    <state width="1084" height="621" key="GridCell.Tab.0.left" timestamp="1585842553837">
+    <state width="1084" height="621" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1585849294364" />
+    <state width="1084" height="621" key="GridCell.Tab.0.left" timestamp="1585849294364">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1084" height="621" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1585842553837" />
-    <state width="1084" height="621" key="GridCell.Tab.0.right" timestamp="1585842553838">
+    <state width="1084" height="621" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1585849294364" />
+    <state width="1084" height="621" key="GridCell.Tab.0.right" timestamp="1585849294364">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1084" height="621" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1585842553838" />
+    <state width="1084" height="621" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1585849294364" />
     <state width="1323" height="227" key="GridCell.Tab.1.bottom" timestamp="1585739976022">
       <screen x="0" y="0" width="1366" height="728" />
     </state>

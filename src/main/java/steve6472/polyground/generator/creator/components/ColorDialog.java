@@ -1,7 +1,7 @@
 package steve6472.polyground.generator.creator.components;
 
 import steve6472.polyground.block.model.CubeFace;
-import steve6472.polyground.block.model.registry.face.FaceRegistry;
+import steve6472.polyground.registry.face.FaceRegistry;
 import steve6472.sge.gfx.font.CustomChar;
 import steve6472.sge.gui.components.Button;
 import steve6472.sge.gui.components.NamedCheckBox;

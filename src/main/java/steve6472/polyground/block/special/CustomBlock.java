@@ -3,7 +3,7 @@ package steve6472.polyground.block.special;
 import steve6472.polyground.EnumFace;
 import steve6472.polyground.block.blockdata.BlockData;
 import steve6472.polyground.block.model.faceProperty.LayerFaceProperty;
-import steve6472.polyground.block.model.registry.Cube;
+import steve6472.polyground.block.model.Cube;
 import steve6472.polyground.world.BuildHelper;
 import steve6472.polyground.world.chunk.ModelLayer;
 import steve6472.polyground.world.chunk.SubChunk;

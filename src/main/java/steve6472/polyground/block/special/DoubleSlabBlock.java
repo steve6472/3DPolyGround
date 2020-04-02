@@ -5,7 +5,7 @@ import steve6472.polyground.EnumFace;
 import steve6472.polyground.HitResult;
 import steve6472.polyground.block.Block;
 import steve6472.polyground.block.blockdata.BlockData;
-import steve6472.polyground.block.registry.BlockRegistry;
+import steve6472.polyground.registry.BlockRegistry;
 import steve6472.polyground.entity.Player;
 import steve6472.polyground.world.chunk.SubChunk;
 import steve6472.SSS;

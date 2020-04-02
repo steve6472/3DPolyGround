@@ -6,8 +6,8 @@ import steve6472.polyground.block.model.CubeFace;
 import steve6472.polyground.block.model.faceProperty.AutoUVFaceProperty;
 import steve6472.polyground.block.model.faceProperty.TextureFaceProperty;
 import steve6472.polyground.block.model.faceProperty.VisibleFaceProperty;
-import steve6472.polyground.block.model.registry.face.FaceEntry;
-import steve6472.polyground.block.model.registry.face.FaceRegistry;
+import steve6472.polyground.registry.face.FaceEntry;
+import steve6472.polyground.registry.face.FaceRegistry;
 import org.joml.AABBf;
 
 import java.io.File;

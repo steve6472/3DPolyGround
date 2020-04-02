@@ -1,7 +1,7 @@
 package steve6472.polyground.block.model.faceProperty;
 
 import steve6472.polyground.block.model.CubeFace;
-import steve6472.polyground.block.model.registry.face.FaceEntry;
+import steve6472.polyground.registry.face.FaceEntry;
 import org.json.JSONObject;
 
 /**********************

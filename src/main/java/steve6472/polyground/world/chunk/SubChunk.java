@@ -4,7 +4,7 @@ import steve6472.polyground.CaveGame;
 import steve6472.polyground.EnumFace;
 import steve6472.polyground.block.Block;
 import steve6472.polyground.block.blockdata.BlockData;
-import steve6472.polyground.block.registry.BlockRegistry;
+import steve6472.polyground.registry.BlockRegistry;
 import steve6472.polyground.world.World;
 import steve6472.polyground.world.biomes.IBiomeProvider;
 import steve6472.polyground.world.generator.IGenerator;

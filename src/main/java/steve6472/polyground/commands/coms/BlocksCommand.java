@@ -1,8 +1,8 @@
 package steve6472.polyground.commands.coms;
 
 import com.mojang.brigadier.CommandDispatcher;
-import steve6472.polyground.block.model.registry.Cube;
-import steve6472.polyground.block.registry.BlockRegistry;
+import steve6472.polyground.block.model.Cube;
+import steve6472.polyground.registry.BlockRegistry;
 import steve6472.polyground.commands.Command;
 import steve6472.polyground.commands.CommandSource;
 

@@ -2,7 +2,7 @@ package steve6472.polyground.generator.creator.dialogs;
 
 import steve6472.polyground.block.model.CubeFace;
 import steve6472.polyground.block.model.faceProperty.AutoUVFaceProperty;
-import steve6472.polyground.block.model.registry.face.FaceRegistry;
+import steve6472.polyground.registry.face.FaceRegistry;
 import steve6472.polyground.gfx.shaders.ItemTextureShader;
 import steve6472.polyground.tessellators.ItemTextureTessellator;
 import steve6472.sge.gfx.Atlas;

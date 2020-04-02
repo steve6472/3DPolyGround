@@ -5,7 +5,7 @@ import steve6472.polyground.block.Block;
 import steve6472.polyground.block.blockdata.BlockData;
 import steve6472.polyground.block.blockdata.IBlockData;
 import steve6472.polyground.block.blockdata.RotationData;
-import steve6472.polyground.block.model.registry.Cube;
+import steve6472.polyground.block.model.Cube;
 import steve6472.polyground.entity.Player;
 import steve6472.polyground.world.chunk.SubChunk;
 

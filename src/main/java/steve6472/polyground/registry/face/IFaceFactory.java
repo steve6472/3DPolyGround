@@ -1,4 +1,4 @@
-package steve6472.polyground.block.model.registry.face;
+package steve6472.polyground.registry.face;
 
 import steve6472.polyground.block.model.faceProperty.FaceProperty;
 

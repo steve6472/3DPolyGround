@@ -1,10 +1,10 @@
 package steve6472.polyground.world;
 
+import org.joml.AABBf;
+import org.joml.Matrix4f;
+import org.joml.Random;
 import steve6472.polyground.CaveGame;
 import steve6472.polyground.block.BlockTextureHolder;
-import steve6472.polyground.entity.EntityBase;
-import steve6472.polyground.entity.EntityStorage;
-import steve6472.polyground.entity.FloatingText;
 import steve6472.polyground.gfx.shaders.CGGShader;
 import steve6472.polyground.gfx.shaders.world.WorldShader;
 import steve6472.polyground.world.chunk.Chunk;
@@ -13,9 +13,6 @@ import steve6472.polyground.world.chunk.SubChunk;
 import steve6472.sge.gfx.GBuffer;
 import steve6472.sge.gfx.Tessellator3D;
 import steve6472.sge.main.game.GridStorage;
-import org.joml.AABBf;
-import org.joml.Matrix4f;
-import org.joml.Random;
 
 import java.io.File;
 import java.io.IOException;
@@ -37,8 +34,6 @@ public class World implements IBlockProvider
 	private GridStorage<Chunk> chunks;
 	private CaveGame pg;
 
-	private EntityStorage entityStorage;
-
 	private Random random;
 
 	public boolean shouldRebuild = false;
@@ -54,8 +49,6 @@ public class World implements IBlockProvider
 	{
 		this.pg = pg;
 		chunks = new GridStorage<>();
-		entityStorage = new EntityStorage();
-		entityStorage.fillList();
 
 		random = new Random(4);
 
@@ -69,8 +62,6 @@ public class World implements IBlockProvider
 	public void tick()
 	{
 		chunks.getMap().values().forEach(Chunk::tick);
-
-		entityStorage.tickEntities();
 
 		renderChunkOutlines();
 
@@ -261,8 +252,6 @@ public class World implements IBlockProvider
 		{
 			CaveGame.getInstance().gBuffer.unbindCurrentFrameBuffer();
 		}
-
-		renderEntities();
 	}
 
 	private void rebuild()
@@ -301,23 +290,6 @@ public class World implements IBlockProvider
 					CaveGame.t.add(new AABBf(chunk.getX() * 16, k * 16, chunk.getZ() * 16, chunk.getX() * 16 + 16, k * 16 + 16, chunk.getZ() * 16 + 16));
 			}
 		}
-	}
-
-	public void addEntity(EntityBase e)
-	{
-		if (e instanceof FloatingText)
-			pg.getEventHandler().register(e);
-		entityStorage.addEntity(e);
-	}
-
-	public void renderEntities()
-	{
-		entityStorage.renderEntities();
-	}
-
-	public EntityStorage getEntityStorage()
-	{
-		return entityStorage;
 	}
 
 	public Random getRandom()

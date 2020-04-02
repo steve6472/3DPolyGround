@@ -1,6 +1,6 @@
 package steve6472.polyground.world.chunk;
 
-import steve6472.polyground.block.registry.BlockRegistry;
+import steve6472.polyground.registry.BlockRegistry;
 import steve6472.sge.main.smartsave.SmartSave;
 import steve6472.sge.main.util.Pair;
 

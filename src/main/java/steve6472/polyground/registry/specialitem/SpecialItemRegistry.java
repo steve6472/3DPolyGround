@@ -1,4 +1,4 @@
-package steve6472.polyground.item.registry;
+package steve6472.polyground.registry.specialitem;
 
 import steve6472.polyground.item.Item;
 import steve6472.polyground.item.special.*;

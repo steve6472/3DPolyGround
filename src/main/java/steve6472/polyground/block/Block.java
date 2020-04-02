@@ -7,7 +7,7 @@ import steve6472.polyground.block.model.CubeFace;
 import steve6472.polyground.block.model.faceProperty.LayerFaceProperty;
 import steve6472.polyground.block.model.faceProperty.TextureFaceProperty;
 import steve6472.polyground.block.model.faceProperty.UVFaceProperty;
-import steve6472.polyground.block.model.registry.Cube;
+import steve6472.polyground.block.model.Cube;
 import steve6472.polyground.block.special.SnapBlock;
 import steve6472.polyground.entity.Player;
 import steve6472.polyground.world.BuildHelper;

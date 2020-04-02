@@ -2,7 +2,7 @@ package steve6472.polyground.world.generator;
 
 import steve6472.polyground.CaveGame;
 import steve6472.polyground.block.Block;
-import steve6472.polyground.block.registry.BlockRegistry;
+import steve6472.polyground.registry.BlockRegistry;
 import steve6472.polyground.gfx.particle.ParticleStorage;
 import steve6472.polyground.world.chunk.SubChunk;
 import steve6472.sge.main.TriConsumer;

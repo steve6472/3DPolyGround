@@ -1,7 +1,7 @@
 package steve6472.polyground.generator.creator.dialogs;
 
 import steve6472.polyground.block.model.CubeFace;
-import steve6472.polyground.block.model.registry.face.FaceRegistry;
+import steve6472.polyground.registry.face.FaceRegistry;
 import steve6472.sge.gfx.Atlas;
 import steve6472.sge.gfx.SpriteRender;
 import steve6472.sge.gui.components.Button;

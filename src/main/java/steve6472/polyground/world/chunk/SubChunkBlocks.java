@@ -1,7 +1,7 @@
 package steve6472.polyground.world.chunk;
 
 import steve6472.polyground.block.Block;
-import steve6472.polyground.block.registry.BlockRegistry;
+import steve6472.polyground.registry.BlockRegistry;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)

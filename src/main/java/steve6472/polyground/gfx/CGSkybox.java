@@ -1,4 +1,4 @@
-package steve6472.polyground.world;
+package steve6472.polyground.gfx;
 
 import steve6472.polyground.gfx.shaders.CGSkyboxShader;
 import steve6472.sge.gfx.Skybox;

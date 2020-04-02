@@ -1,7 +1,7 @@
 package steve6472.polyground.block.model.faceProperty;
 
 import steve6472.polyground.EnumFace;
-import steve6472.polyground.block.model.registry.Cube;
+import steve6472.polyground.block.model.Cube;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
