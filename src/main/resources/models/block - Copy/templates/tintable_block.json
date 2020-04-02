@@ -1,0 +1,40 @@
+{
+	"tintedCubes": 
+	[
+		{
+			"red": "#red",
+			"green": "#green",
+			"blue": "#blue",
+			
+			"from": [ 0, 0, 0 ],
+			"to": [ 16, 16, 16 ],
+			
+			"faces": {
+				"east": {
+					"cullface": "east",
+					"texture": "#texture"
+				},
+				"south": {
+					"cullface": "south",
+					"texture": "#texture"
+				},
+				"north": {
+					"cullface": "north",
+					"texture": "#texture"
+				},
+				"west": {
+					"cullface": "west",
+					"texture": "#texture"
+				},
+				"up": {
+					"cullface": "up",
+					"texture": "#texture"
+				},
+				"down": {
+					"cullface": "down",
+					"texture": "#texture"
+				}
+			}
+		}
+	]
+}

@@ -1,0 +1,7 @@
+{
+	"parent": "block/templates/button",
+	"textures":
+	{
+		"texture" : "iron_block"
+	}
+}

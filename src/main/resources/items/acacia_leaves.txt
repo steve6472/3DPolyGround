@@ -1,0 +1,2 @@
+model = item/acacia_leaves
+place = acacia_leaves

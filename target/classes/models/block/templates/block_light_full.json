@@ -1,0 +1,18 @@
+{
+  "cubes": 
+  [
+    {
+      "from": [ 0, 0, 0 ],
+      "to": [ 16, 16, 16 ],
+      "faces": 
+	  {
+        "down":  { "texture": "#texture", "modelLayer": "LIGHT" },
+        "up":    { "texture": "#texture", "modelLayer": "LIGHT" },
+        "north": { "texture": "#texture", "modelLayer": "LIGHT" },
+        "south": { "texture": "#texture", "modelLayer": "LIGHT" },
+        "west":  { "texture": "#texture", "modelLayer": "LIGHT" },
+        "east":  { "texture": "#texture", "modelLayer": "LIGHT" }
+      }
+    }
+  ]
+}

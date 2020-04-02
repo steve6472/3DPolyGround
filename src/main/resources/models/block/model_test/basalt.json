@@ -1,0 +1,18 @@
+{
+	"cubes": 
+	[
+		{
+			"from": [ 0, 0, 0 ],
+			"to": [ 16, 16, 16 ],
+			
+			"faces": {
+				"east":  { "texture": "stone", "tint": [64, 64, 64] },
+				"south": { "texture": "stone", "tint": [64, 64, 64] },
+				"north": { "texture": "stone", "tint": [64, 64, 64] },
+				"west":  { "texture": "stone", "tint": [64, 64, 64] },
+				"up":    { "texture": "stone", "tint": [64, 64, 64] },
+				"down":  { "texture": "stone", "tint": [64, 64, 64] }
+			}
+		}
+	]
+}

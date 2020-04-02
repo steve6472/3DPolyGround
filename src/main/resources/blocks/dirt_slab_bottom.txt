@@ -1,0 +1,9 @@
+model = block/dirt_slab_bottom
+special = slab
+type = bottom
+
+tags:
+{
+	slab
+	slab_bottom
+}

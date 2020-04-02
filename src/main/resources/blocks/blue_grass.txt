@@ -1,0 +1,2 @@
+model = block/blue_grass
+special = tinted

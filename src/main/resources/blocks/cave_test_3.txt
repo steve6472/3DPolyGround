@@ -1,0 +1,1 @@
+model = block/cave_test_3

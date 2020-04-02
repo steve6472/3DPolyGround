@@ -1,5 +1,5 @@
-button = *dark/button.txt
-slider = *dark/slider.txt
-background = *dark/background.txt
 listItemButton = *dark/listItemButton.txt
+button = *dark/button.txt
+background = *dark/background.txt
 textField = *dark/textField.txt
+slider = *dark/slider.txt

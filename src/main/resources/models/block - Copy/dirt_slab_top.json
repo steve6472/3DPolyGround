@@ -1,0 +1,4 @@
+{
+    "parent": "block/templates/slab_top_full",
+    "textures": {"texture": "dirt"}
+}

@@ -1,0 +1,11 @@
+{
+    "parent": "block/templates/block",
+    "textures": {
+        "east": "smooth_stone_slab",
+        "south": "smooth_stone_slab",
+        "north": "smooth_stone_slab",
+        "west": "smooth_stone_slab",
+        "up": "smooth_stone",
+        "down": "smooth_stone"
+    }
+}

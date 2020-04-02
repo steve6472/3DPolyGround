@@ -1,0 +1,2 @@
+model = item/smooth_stone
+place = smooth_stone

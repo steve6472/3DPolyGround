@@ -1,0 +1,2 @@
+model = block/birch_leaves
+special = leaves

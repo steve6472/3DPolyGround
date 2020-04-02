@@ -1,0 +1,2 @@
+model = block/green_grass
+special = tinted

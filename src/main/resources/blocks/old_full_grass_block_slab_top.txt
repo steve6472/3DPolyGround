@@ -1,0 +1,9 @@
+model = block/old_full_grass_block_slab_top
+special = slab
+type = top
+
+tags:
+{
+	slab
+	slab_top
+}

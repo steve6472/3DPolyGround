@@ -1,0 +1,11 @@
+{
+    "parent": "block/templates/slab_top",
+    "textures": {
+        "east": "old_grass_block_slab_side",
+        "south": "old_grass_block_slab_side",
+        "north": "old_grass_block_slab_side",
+        "west": "old_grass_block_slab_side",
+        "up": "old_grass_block_top",
+        "down": "dirt"
+    }
+}

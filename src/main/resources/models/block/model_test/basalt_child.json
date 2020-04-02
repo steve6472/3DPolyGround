@@ -1,0 +1,11 @@
+{
+	"parent": "block/templates/tintable_block",
+	"textures":
+	{
+		"texture": "stone"
+	},
+	"tints":
+	{
+		"tint": [64, 64, 64]
+	}
+}

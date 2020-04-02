@@ -1,0 +1,2 @@
+model = item/red_grass
+place = red_grass

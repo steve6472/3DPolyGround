@@ -1,0 +1,19 @@
+{
+  "cubes": 
+  [
+    {
+	  "isCollisionBox": false,
+      "from": [ 0, 0, 0 ],
+      "to": [ 16, 1, 16 ],
+      "faces": 
+	  {
+        "down":  { "texture": "lava", "modelLayer": "LIGHT", "autoUV": true },
+        "up":    { "texture": "lava", "modelLayer": "LIGHT", "autoUV": true },
+        "north": { "texture": "lava", "modelLayer": "LIGHT", "autoUV": true },
+        "south": { "texture": "lava", "modelLayer": "LIGHT", "autoUV": true },
+        "west":  { "texture": "lava", "modelLayer": "LIGHT", "autoUV": true },
+        "east":  { "texture": "lava", "modelLayer": "LIGHT", "autoUV": true }
+      }
+    }
+  ]
+}

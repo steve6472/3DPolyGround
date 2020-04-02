@@ -1,0 +1,6 @@
+model = item/dirt_slab
+special = slab
+top = dirt_slab_top
+bottom = dirt_slab_bottom
+both = dirt
+place = dirt_slab_bottom

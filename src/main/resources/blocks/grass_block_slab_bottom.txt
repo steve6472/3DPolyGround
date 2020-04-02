@@ -1,0 +1,10 @@
+model = block/grass_block_slab_bottom
+special = slab
+type = bottom
+
+
+tags:
+{
+	slab
+	slab_bottom
+}

@@ -1,0 +1,23 @@
+model = block/lava_pond
+special = torch
+
+color = ffff0000
+constant = 2.7
+linear = 0.6
+quadratic = 1
+
+motionFormula = ACID
+
+spawner = BOX
+spawnerData :
+{
+    sizeScale = 0.0625
+    sizeX = 8
+    sizeY = 0
+    sizeZ = 8
+
+    offsetScale = 0.0625
+    offsetX = 8
+    offsetY = 1
+    offsetZ = 8
+}

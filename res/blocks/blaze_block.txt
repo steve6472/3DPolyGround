@@ -1,4 +1,0 @@
-model = block/blaze_block
-special = light
-color = FDEA49
-radius = 15

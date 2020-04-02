@@ -1,0 +1,23 @@
+model = block/slime_torch
+special = torch
+
+color = ff86ff4a
+constant = 2.7
+linear = 0.6
+quadratic = 1
+
+motionFormula = TORCH
+
+spawner = BOX
+spawnerData :
+{
+    sizeScale = 0.0625
+    sizeX = 1.5
+    sizeY = 1.5
+    sizeZ = 1.5
+
+    offsetScale = 0.0625
+    offsetX = 8
+    offsetY = 9.25
+    offsetZ = 8
+}

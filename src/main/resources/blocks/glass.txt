@@ -1,0 +1,7 @@
+model = block/glass
+special = transparent
+
+tags:
+{
+	transparent
+}

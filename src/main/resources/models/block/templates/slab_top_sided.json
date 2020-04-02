@@ -1,0 +1,12 @@
+{
+	"parent": "block/templates/slab_top",
+	"textures":
+	{
+		"up" : "#top",
+		"down" : "#bottom",
+		"north" : "#side",
+		"east" : "#side",
+		"south" : "#side",
+		"west" : "#side"
+	}
+}

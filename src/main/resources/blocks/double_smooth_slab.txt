@@ -1,0 +1,4 @@
+model = block/double_smooth_slab
+special = double_slab
+top = smooth_slab_top
+bottom = smooth_slab_bottom

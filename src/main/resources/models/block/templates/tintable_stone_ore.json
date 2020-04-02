@@ -1,0 +1,32 @@
+{
+  "cubes": 
+  [
+    {
+      "from": [ 0, 0, 0 ],
+      "to": [ 16, 16, 16 ],
+      "faces": 
+	  {
+        "down":  { "texture": "#down" },
+        "up":    { "texture": "#up" },
+        "north": { "texture": "#north" },
+        "south": { "texture": "#south" },
+        "west":  { "texture": "#west" },
+        "east":  { "texture": "#east" }
+      }
+    },
+	{
+	   "from": [ 0, 0, 0 ],
+	   "to": [ 16, 16, 16 ],
+
+	   "faces":
+	   {
+	   	  "east":  { "texture": "#o_east" , "refTint": "#overlay", "modelLayer": "OVERLAY_0" },
+	   	  "south": { "texture": "#o_south", "refTint": "#overlay", "modelLayer": "OVERLAY_0" },
+	   	  "north": { "texture": "#o_north", "refTint": "#overlay", "modelLayer": "OVERLAY_0" },
+	   	  "west":  { "texture": "#o_west" , "refTint": "#overlay", "modelLayer": "OVERLAY_0" },
+	   	  "up":    { "texture": "#o_up"   , "refTint": "#overlay", "modelLayer": "OVERLAY_0" },
+	   	  "down":  { "texture": "#o_down" , "refTint": "#overlay", "modelLayer": "OVERLAY_0" }
+	   }
+	}
+  ]
+}

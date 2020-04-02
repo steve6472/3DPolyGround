@@ -1,0 +1,11 @@
+{
+    "parent": "block/templates/tintable_stone_ore_full",
+    "textures": {
+        "overlay": "ore_overlay",
+        "texture": "stone"
+    },
+    "tints":
+    {
+        "overlay": [77, 77, 77]
+    }
+}

@@ -1,0 +1,32 @@
+{
+    "cubes":
+    [
+        {
+            "from": [ 0, 0, 0 ],
+            "to": [ 16, 16, 16 ],
+            "faces":
+            {
+                "down":  { "texture": "stone" },
+                "up":    { "texture": "stone" },
+                "north": { "texture": "stone" },
+                "south": { "texture": "stone" },
+                "west":  { "texture": "stone" },
+                "east":  { "texture": "stone" }
+            }
+        },
+        {
+            "from": [ 0, 0, 0 ],
+            "to": [ 16, 16, 16 ],
+
+            "faces":
+            {
+                "east":  { "texture": "ore_overlay", "tint": [26, 204, 204], "modelLayer": "EMISSION_OVERLAY" },
+                "south": { "texture": "ore_overlay", "tint": [26, 204, 204], "modelLayer": "EMISSION_OVERLAY" },
+                "north": { "texture": "ore_overlay", "tint": [26, 204, 204], "modelLayer": "EMISSION_OVERLAY" },
+                "west":  { "texture": "ore_overlay", "tint": [26, 204, 204], "modelLayer": "EMISSION_OVERLAY" },
+                "up":    { "texture": "ore_overlay", "tint": [26, 204, 204], "modelLayer": "EMISSION_OVERLAY" },
+                "down":  { "texture": "ore_overlay", "tint": [26, 204, 204], "modelLayer": "EMISSION_OVERLAY" }
+            }
+        }
+    ]
+}

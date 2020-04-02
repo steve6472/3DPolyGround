@@ -1,0 +1,7 @@
+model = block/magical_coal
+special = light
+color = 6c7f7a
+//color = d8fff5
+constant = 1.0
+linear = 0.7
+quadratic = 1.8

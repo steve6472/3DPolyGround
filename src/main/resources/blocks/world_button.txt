@@ -1,0 +1,3 @@
+model = block/world_button
+
+special = world_button

@@ -1,0 +1,2 @@
+model = item/birch_leaves
+place = birch_leaves

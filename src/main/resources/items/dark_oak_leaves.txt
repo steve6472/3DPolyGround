@@ -1,0 +1,2 @@
+model = item/dark_oak_leaves
+place = dark_oak_leaves

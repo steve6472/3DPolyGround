@@ -1,0 +1,8 @@
+{
+    "parent": "block/templates/tintable_block",
+    "textures": {"texture": "dark_oak_leaves"},
+    "tints":
+    {
+        "tint": [118, 171, 47]
+    }
+}

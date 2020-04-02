@@ -1,0 +1,4 @@
+{
+    "parent": "block/templates/stair/stair_north",
+    "textures": {"texture": "stone"}
+}
