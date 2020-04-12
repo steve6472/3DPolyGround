@@ -1,4 +1,0 @@
-{
-    "parent": "block/templates/slab_top_full",
-    "textures": {"texture": "old_grass_block_top"}
-}

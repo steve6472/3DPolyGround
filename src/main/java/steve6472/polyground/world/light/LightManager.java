@@ -19,7 +19,7 @@ import static org.lwjgl.opengl.GL11.glPointSize;
  ***********************/
 public class LightManager
 {
-	public static final int LIGHT_COUNT = 256;
+	public static final int LIGHT_COUNT = 64;
 
 	public static List<Light> lights;
 
@@ -32,8 +32,16 @@ public class LightManager
 			lights.add(new Light(i));
 		}
 
-		addLight(EnumLightSource.SKY, -16, 48, 32, 1, 1, 1, 1, 0, 0);
-		addLight(EnumLightSource.SKY, 32, -48, -16, 0.2f, 0.2f, 0.2f, 1, 0, 0);
+		int m = Integer.MAX_VALUE;
+
+		float intensity = 0.9f;
+
+		addLight(EnumLightSource.SKY, -m, 0, 0, intensity, intensity, intensity, 1, 0, 0);
+		addLight(EnumLightSource.SKY, m, 0, 0, intensity, intensity, intensity, 1, 0, 0);
+		addLight(EnumLightSource.SKY, 0, -m, 0, intensity, intensity, intensity, 1, 0, 0);
+		addLight(EnumLightSource.SKY, 0, m, 0, intensity, intensity, intensity, 1, 0, 0);
+		addLight(EnumLightSource.SKY, 0, 0, -m, intensity, intensity, intensity, 1, 0, 0);
+		addLight(EnumLightSource.SKY, 0, 0, m, intensity, intensity, intensity, 1, 0, 0);
 	}
 
 	public static boolean removeLight(EnumLightSource source, float x, float y, float z)

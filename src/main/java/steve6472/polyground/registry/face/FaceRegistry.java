@@ -1,6 +1,7 @@
 package steve6472.polyground.registry.face;
 
 import steve6472.polyground.block.model.faceProperty.*;
+import steve6472.polyground.block.model.faceProperty.condition.AndChainCondProperty;
 import steve6472.polyground.block.model.faceProperty.condition.CondProperty;
 import steve6472.polyground.block.model.faceProperty.condition.ConditionFaceProperty;
 
@@ -32,6 +33,7 @@ public class FaceRegistry
 	/* Conditioned Properties */
 	public static final FaceEntry<ConditionFaceProperty> conditionedTexture = register("conditionedTexture", ConditionFaceProperty::new);
 	public static final FaceEntry<CondProperty> condition = register("condition", CondProperty::new);
+	public static final FaceEntry<AndChainCondProperty> andChain = register("andChain", AndChainCondProperty::new);
 
 	public static <T extends FaceProperty> FaceEntry<T> register(String id, IFaceFactory<T> factory)
 	{

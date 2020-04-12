@@ -92,10 +92,6 @@ public class CaveGame extends MainApp
 	public CGGBuffer gBuffer;
 	private int finalRenderQuad;
 
-	/* Sun Shadow */
-	private steve6472.polyground.gfx.DepthFrameBuffer shadowBuffer;
-
-
 	/* GUI */
 	public InGameGui inGameGui;
 	public MainMenu mainMenu;
@@ -127,7 +123,7 @@ public class CaveGame extends MainApp
 
 		buildHelper = new BuildHelper();
 		blockModelLoader = new BlockModelLoader();
-		new BlockRegistry(this);
+		BlockRegistry.register(this);
 
 		frustum = new Frustum();
 		rifts = new RiftManager(this);
@@ -154,9 +150,9 @@ public class CaveGame extends MainApp
 		getEventHandler().register(shaders);
 
 		itemAtlas = new ItemAtlas(this);
-		new ItemRegistry(this);
+		ItemRegistry.register(this);
 
-		itemInHand = ItemRegistry.getItemByName("slime_torch");
+		itemInHand = ItemRegistry.getItemByName("stone");
 
 		skybox = new CGSkybox(StaticCubeMap.fromTextureFaces("skybox", new String[]{"side", "side", "top", "bottom", "side", "side"}, "png"), shaders.getProjectionMatrix());
 
@@ -165,12 +161,10 @@ public class CaveGame extends MainApp
 
 		getEventHandler().runEvent(new WindowSizeEvent(getWindowWidth(), getWindowHeight()));
 
-		shadowBuffer = new steve6472.polyground.gfx.DepthFrameBuffer(getWidth(), getHeight());
-
 		hitboxList = new ArrayList<>();
 		//		hitboxList.add(new ParticleHitbox(0.05f, 0.1f, 0.05f, 0.1f, new Vector4f(2.5f, 2.5f, 2.5f, 1)));
 
-		//		getWindow().maximize();
+//				getWindow().maximize();
 	}
 
 	public void placeRifts()

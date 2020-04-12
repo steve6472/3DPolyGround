@@ -15,7 +15,7 @@ import org.lwjgl.opengl.GL11;
  ***********************/
 public class AABBUtil
 {
-	private static float epsilon = 0.000001f;
+	private static final float EPSILON = 0.000001f;
 
 	public static float clipXCollide(AABBf box, AABBf block, float xa)
 	{
@@ -27,14 +27,14 @@ public class AABBUtil
 		float max;
 		if (xa > 0.0F && box.maxX <= block.minX)
 		{
-			max = block.minX - box.maxX - epsilon;
+			max = block.minX - box.maxX - EPSILON;
 			if (max < xa)
 				xa = max;
 		}
 
 		if (xa < 0.0F && box.minX >= block.maxX)
 		{
-			max = block.maxX - box.minX + epsilon;
+			max = block.maxX - box.minX + EPSILON;
 			if (max > xa)
 				xa = max;
 		}
@@ -52,14 +52,14 @@ public class AABBUtil
 		float max;
 		if (ya > 0.0F && box.maxY <= block.minY)
 		{
-			max = block.minY - box.maxY - epsilon;
+			max = block.minY - box.maxY - EPSILON;
 			if (max < ya)
 				ya = max;
 		}
 
 		if (ya < 0.0F && box.minY >= block.maxY)
 		{
-			max = block.maxY - box.minY + epsilon;
+			max = block.maxY - box.minY + EPSILON;
 			if (max > ya)
 				ya = max;
 		}
@@ -77,14 +77,14 @@ public class AABBUtil
 		float max;
 		if (za > 0.0F && box.maxZ <= block.minZ)
 		{
-			max = block.minZ - box.maxZ - epsilon;
+			max = block.minZ - box.maxZ - EPSILON;
 			if (max < za)
 				za = max;
 		}
 
 		if (za < 0.0F && box.minZ >= block.maxZ)
 		{
-			max = block.maxZ - box.minZ + epsilon;
+			max = block.maxZ - box.minZ + EPSILON;
 			if (max > za)
 				za = max;
 		}

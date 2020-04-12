@@ -1,7 +1,0 @@
-{
-	"parent": "block/templates/button",
-	"textures":
-	{
-		"texture" : "gold_block"
-	}
-}

@@ -5,6 +5,7 @@ import org.joml.Matrix4f;
 import org.joml.Random;
 import steve6472.polyground.CaveGame;
 import steve6472.polyground.block.BlockTextureHolder;
+import steve6472.polyground.entity.EntityManager;
 import steve6472.polyground.gfx.shaders.CGGShader;
 import steve6472.polyground.gfx.shaders.world.WorldShader;
 import steve6472.polyground.world.chunk.Chunk;
@@ -32,6 +33,8 @@ import static org.lwjgl.opengl.GL30.glBindVertexArray;
 public class World implements IBlockProvider
 {
 	private GridStorage<Chunk> chunks;
+	private EntityManager entityManager;
+
 	private CaveGame pg;
 
 	private Random random;
@@ -40,17 +43,13 @@ public class World implements IBlockProvider
 	public String worldName = null;
 	private final int HEIGHT = 4;
 
-	public World()
-	{
-
-	}
-
 	public World(CaveGame pg)
 	{
 		this.pg = pg;
 		chunks = new GridStorage<>();
 
 		random = new Random(4);
+		entityManager = new EntityManager(this);
 
 		//
 		//		if (worldName == null)
@@ -64,6 +63,8 @@ public class World implements IBlockProvider
 		chunks.getMap().values().forEach(Chunk::tick);
 
 		renderChunkOutlines();
+
+		entityManager.tick();
 
 		//		delay++;
 		//		if (delay >= 30)
@@ -325,5 +326,10 @@ public class World implements IBlockProvider
 	public int getHeight()
 	{
 		return HEIGHT;
+	}
+
+	public EntityManager getEntityManager()
+	{
+		return entityManager;
 	}
 }

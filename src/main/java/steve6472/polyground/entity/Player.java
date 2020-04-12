@@ -1,5 +1,7 @@
 package steve6472.polyground.entity;
 
+import org.joml.Math;
+import org.joml.Vector3f;
 import steve6472.polyground.BasicEvents;
 import steve6472.polyground.CaveGame;
 import steve6472.polyground.HitResult;
@@ -8,8 +10,6 @@ import steve6472.polyground.block.blockdata.BlockData;
 import steve6472.polyground.registry.BlockRegistry;
 import steve6472.polyground.registry.ItemRegistry;
 import steve6472.polyground.world.chunk.SubChunk;
-import org.joml.Math;
-import org.joml.Vector3f;
 import steve6472.sge.main.KeyList;
 import steve6472.sge.main.events.Event;
 import steve6472.sge.main.events.KeyEvent;
@@ -50,11 +50,12 @@ public class Player implements IMotion3f, IPosition3f
 	public Player(CaveGame pg)
 	{
 		camera = new Camera();
-		hitbox = new EntityHitbox(0.3f, 0.9f, 0.3f);
 
 		position = new Vector3f(-2, 0.05f, 0);
 		motion = new Vector3f();
 		viewDir = new Vector3f();
+
+		hitbox = new EntityHitbox(0.3f, 0.9f, 0.3f, this, this);
 
 		//65 m/s terminal vel
 
@@ -119,7 +120,7 @@ public class Player implements IMotion3f, IPosition3f
 
 		if (!noClip)
 		{
-			isOnBlock = hitbox.collideWithWorld(this, this);
+			isOnBlock = hitbox.collideWithWorld(pg.getWorld());
 		}
 
 		getMotion().x *= 0.91f;
@@ -219,7 +220,6 @@ public class Player implements IMotion3f, IPosition3f
 		{
 			flag = false;
 		}
-
 
 		if (pg.hitPicker.hit)
 		{

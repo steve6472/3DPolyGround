@@ -18,7 +18,7 @@ public class FallingBlock extends EntityBase
 
 	public FallingBlock()
 	{
-		hitbox = new EntityHitbox(0.4999f, 0.4999f, 0.4999f);
+		hitbox = new EntityHitbox(0.4999f, 0.4999f, 0.4999f, this, this);
 	}
 
 	@Override
@@ -34,7 +34,7 @@ public class FallingBlock extends EntityBase
 		if (getMotion().y > 9.5f)
 			getMotion().y = 9.5f;
 
-		boolean isOnBlock = hitbox.collideWithWorld(this, this);
+		boolean isOnBlock = hitbox.collideWithWorld(CaveGame.getInstance().getWorld());
 
 		getMotion().x *= 0.91f;
 		getMotion().y *= 0.98f;

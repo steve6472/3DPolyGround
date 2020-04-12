@@ -57,6 +57,6 @@ public class RotationFaceProperty extends FaceProperty
 
 	public enum EnumRotation
 	{
-		R_90, R_180, R_270
+		R_90, R_180, R_270, R_0
 	}
 }

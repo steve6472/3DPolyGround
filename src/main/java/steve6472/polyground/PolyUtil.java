@@ -15,16 +15,17 @@ import org.joml.Vector4f;
  ***********************/
 public class PolyUtil
 {
-	private static final float farPlane = 1024f;
+	private static final float FAR_PLANE = 1024f;
+	private static final double RAD_90 = Math.PI / 2.0;
 
 	public static Matrix4f createProjectionMatrix(MainApp app)
 	{
-		return createProjectionMatrix(app.getWidth(), app.getHeight(), farPlane);
+		return createProjectionMatrix(app.getWidth(), app.getHeight(), FAR_PLANE);
 	}
 
 	public static Matrix4f createProjectionMatrix(float width, float height)
 	{
-		return createProjectionMatrix(width, height, farPlane);
+		return createProjectionMatrix(width, height, FAR_PLANE);
 	}
 
 	public static Matrix4f createProjectionMatrix(float width, float height, float farPlane, float fov)
@@ -40,6 +41,15 @@ public class PolyUtil
 		float aspectRatio = width / height;
 
 		destination.perspective((float) Math.toRadians(fov), aspectRatio, NEAR_PLANE, farPlane);
+	}
+
+	public static void toDirectionalVector(Camera camera, Vector3f dest)
+	{
+		float xzLen = (float) Math.cos(camera.getPitch());
+		float x = (float) (xzLen * Math.cos(camera.getYaw() + RAD_90));
+		float y = (float) Math.sin(camera.getPitch());
+		float z = (float) (xzLen * -Math.sin(camera.getYaw() + RAD_90));
+		dest.set(x, y, z);
 	}
 
 	public static Matrix4f createProjectionMatrix(float width, float height, float farPlane)

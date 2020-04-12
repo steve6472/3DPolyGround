@@ -18,15 +18,15 @@ public class FlatGenerator implements IGenerator
 			return;
 
 		int stone = BlockRegistry.getBlockIdByName("stone");
-		int cobblestone = BlockRegistry.getBlockIdByName("cobblestone");
+//		int cobblestone = BlockRegistry.getBlockIdByName("cobblestone");
 
 		for (int i = 0; i < subChunk.getIds().length; i++)
 		{
 			for (int j = 0; j < subChunk.getIds()[i].length; j++)
 			{
-				if (i == 15 || j == 15)
-					subChunk.getIds()[i][0][j] = cobblestone;
-				else
+//				if (i == 15 || j == 15)
+//					subChunk.getIds()[i][0][j] = cobblestone;
+//				else
 					subChunk.getIds()[i][0][j] = stone;
 			}
 		}

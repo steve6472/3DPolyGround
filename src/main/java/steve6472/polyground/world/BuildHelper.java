@@ -2,11 +2,11 @@ package steve6472.polyground.world;
 
 import org.joml.AABBf;
 import steve6472.polyground.EnumFace;
+import steve6472.polyground.block.model.Cube;
 import steve6472.polyground.block.model.CubeFace;
 import steve6472.polyground.block.model.faceProperty.RotationFaceProperty;
 import steve6472.polyground.block.model.faceProperty.TintFaceProperty;
 import steve6472.polyground.block.model.faceProperty.UVFaceProperty;
-import steve6472.polyground.block.model.Cube;
 import steve6472.polyground.registry.face.FaceRegistry;
 import steve6472.polyground.world.biomes.Biome;
 import steve6472.polyground.world.biomes.registry.BiomeRegistry;
@@ -444,6 +444,15 @@ public final class BuildHelper
 					vert(a.minX, a.maxY, a.minZ);
 					vert(a.minX, a.maxY, a.maxZ);
 					vert(a.maxX, a.maxY, a.maxZ);
+				}
+				case R_0 -> {
+					vert(a.maxX, a.maxY, a.minZ);
+					vert(a.minX, a.maxY, a.minZ);
+					vert(a.minX, a.maxY, a.maxZ);
+
+					vert(a.minX, a.maxY, a.maxZ);
+					vert(a.maxX, a.maxY, a.maxZ);
+					vert(a.maxX, a.maxY, a.minZ);
 				}
 			}
 		} else

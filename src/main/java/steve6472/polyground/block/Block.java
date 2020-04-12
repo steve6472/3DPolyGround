@@ -1,20 +1,22 @@
 package steve6472.polyground.block;
 
+import org.joml.AABBf;
 import steve6472.polyground.EnumFace;
 import steve6472.polyground.block.blockdata.BlockData;
 import steve6472.polyground.block.model.BlockModel;
+import steve6472.polyground.block.model.Cube;
 import steve6472.polyground.block.model.CubeFace;
 import steve6472.polyground.block.model.faceProperty.LayerFaceProperty;
 import steve6472.polyground.block.model.faceProperty.TextureFaceProperty;
 import steve6472.polyground.block.model.faceProperty.UVFaceProperty;
-import steve6472.polyground.block.model.Cube;
+import steve6472.polyground.block.model.faceProperty.condition.ConditionFaceProperty;
 import steve6472.polyground.block.special.SnapBlock;
 import steve6472.polyground.entity.Player;
+import steve6472.polyground.registry.face.FaceRegistry;
 import steve6472.polyground.world.BuildHelper;
 import steve6472.polyground.world.Cull;
 import steve6472.polyground.world.chunk.ModelLayer;
 import steve6472.polyground.world.chunk.SubChunk;
-import org.joml.AABBf;
 import steve6472.sge.main.events.MouseEvent;
 
 import java.io.File;
@@ -161,10 +163,29 @@ public class Block
 			buildHelper.setCube(c);
 			for (EnumFace face : EnumFace.getFaces())
 			{
+				CubeFace cubeFace = c.getFace(face);
+				boolean flag = false;
+				boolean hasCondTexture = false;
+				if (cubeFace != null && cubeFace.hasProperty(FaceRegistry.conditionedTexture))
+				{
+					flag = ConditionFaceProperty.editProperties(cubeFace.getProperty(FaceRegistry.conditionedTexture), cubeFace, x, y, z, sc);
+					hasCondTexture = true;
+				}
+
 				/* Check if face is in correct (Chunk) Model Layer */
 				if (LayerFaceProperty.getModelLayer(c.getFace(face)) == modelLayer)
-					if (Cull.renderFace(x, y, z, c, face, this, sc))
+				{
+					if (hasCondTexture)
+					{
+						if (flag)
+						{
+							tris += buildHelper.face(face);
+						}
+					} else if (Cull.renderFace(x, y, z, c, face, this, sc))
+					{
 						tris += buildHelper.face(face);
+					}
+				}
 			}
 		}
 

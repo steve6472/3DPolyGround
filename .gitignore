@@ -23,6 +23,7 @@
 creator/blocks/textures/
 res/textures/
 mc_textures/
+target/
 textureAtlas.png
 
 # World Folder #
@@ -31,3 +32,6 @@ worlds/
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+*.png
+*.png
+*.png

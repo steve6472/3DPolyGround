@@ -2,12 +2,9 @@ package steve6472.polyground.world;
 
 import steve6472.polyground.EnumFace;
 import steve6472.polyground.block.Block;
-import steve6472.polyground.block.model.CubeFace;
-import steve6472.polyground.block.model.faceProperty.condition.ConditionFaceProperty;
 import steve6472.polyground.block.model.Cube;
-import steve6472.polyground.registry.face.FaceRegistry;
-import steve6472.polyground.registry.BlockRegistry;
 import steve6472.polyground.block.special.*;
+import steve6472.polyground.registry.BlockRegistry;
 import steve6472.polyground.world.chunk.SubChunk;
 import steve6472.polyground.world.chunk.SubChunkBuilder;
 
@@ -61,6 +58,9 @@ public class Cull
 						return false;
 				}
 			}
+			/*
+
+			Tested in Block instead!
 
 			CubeFace cubeFace = cube.getFace(face);
 
@@ -68,6 +68,7 @@ public class Cull
 			{
 				return ConditionFaceProperty.editProperties(cubeFace.getProperty(FaceRegistry.conditionedTexture), cubeFace, x, y, z, subChunk);
 			}
+			*/
 
 			return SubChunkBuilder.cull(subChunk, x + face.getXOffset(), y + face.getYOffset(), z + face.getZOffset());
 		}

@@ -22,7 +22,7 @@ public class ItemRegistry
 	private static HashMap<String, Item> items;
 	private static HashMap<Integer, String> reference;
 
-	public ItemRegistry(CaveGame pg)
+	public static void register(CaveGame pg)
 	{
 		File[] blocks = new File(MainApp.class.getResource("/items").getFile()).listFiles();
 		//		File[] blocks = new File("items").listFiles();

@@ -1,13 +1,17 @@
 package steve6472.polyground.item;
 
+import org.joml.Matrix4f;
 import steve6472.polyground.CaveGame;
 import steve6472.polyground.EnumFace;
 import steve6472.polyground.PolyUtil;
 import steve6472.polyground.block.Block;
 import steve6472.polyground.block.BlockTextureHolder;
-import steve6472.polyground.block.model.faceProperty.LayerFaceProperty;
 import steve6472.polyground.block.model.Cube;
+import steve6472.polyground.block.model.CubeFace;
+import steve6472.polyground.block.model.faceProperty.LayerFaceProperty;
+import steve6472.polyground.block.model.faceProperty.condition.ConditionFaceProperty;
 import steve6472.polyground.registry.BlockRegistry;
+import steve6472.polyground.registry.face.FaceRegistry;
 import steve6472.polyground.tessellators.ItemTessellator;
 import steve6472.polyground.world.BuildHelper;
 import steve6472.polyground.world.chunk.ModelLayer;
@@ -16,7 +20,6 @@ import steve6472.sge.gfx.*;
 import steve6472.sge.gfx.shaders.Shader;
 import steve6472.sge.main.events.WindowSizeEvent;
 import steve6472.sge.main.game.Camera;
-import org.joml.Matrix4f;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -195,9 +198,30 @@ public class ItemAtlas
 
 			for (EnumFace face : EnumFace.getFaces())
 			{
+				CubeFace cubeFace = c.getFace(face);
+				boolean flag = false;
+				boolean hasCondTexture = false;
+				if (cubeFace != null && cubeFace.hasProperty(FaceRegistry.conditionedTexture))
+				{
+					ConditionFaceProperty faceProperty = cubeFace.getProperty(FaceRegistry.conditionedTexture);
+					flag = faceProperty.updateToLastResult(cubeFace);
+					hasCondTexture = true;
+				}
+
 				/* Check if face is in correct (Chunk) Model Layer */
 				if (LayerFaceProperty.getModelLayer(c.getFace(face)) == modelLayer)
-					tris += buildHelper.face(face);
+				{
+					if (hasCondTexture)
+					{
+						if (flag)
+						{
+							tris += buildHelper.face(face);
+						}
+					} else
+					{
+						tris += buildHelper.face(face);
+					}
+				}
 			}
 		}
 

@@ -58,7 +58,8 @@
 							"isVisible": false
 						}
 					]
-				}
+				},
+				"up":    { "texture": "grass_block_top", "tint": [0, 127, 255] }
 			}
 		},
 		{
@@ -153,9 +154,7 @@
 							"isVisible": false
 						}
 					]
-				},
-
-				"up":    { "texture": "grass_block_top", "tint": [0, 127, 255] }
+				}
 			}
 		}
 	]

@@ -1,19 +1,19 @@
 package steve6472.polyground.block.special;
 
+import org.joml.Vector3f;
+import org.joml.Vector4f;
 import steve6472.polyground.EnumFace;
 import steve6472.polyground.block.Block;
 import steve6472.polyground.block.BlockTextureHolder;
 import steve6472.polyground.block.blockdata.BlockData;
-import steve6472.polyground.block.model.CubeFace;
 import steve6472.polyground.block.model.Cube;
-import steve6472.polyground.registry.face.FaceRegistry;
+import steve6472.polyground.block.model.CubeFace;
 import steve6472.polyground.entity.Player;
 import steve6472.polyground.gfx.particle.particles.BreakParticle;
+import steve6472.polyground.registry.face.FaceRegistry;
 import steve6472.polyground.world.BuildHelper;
 import steve6472.polyground.world.World;
 import steve6472.polyground.world.chunk.SubChunk;
-import org.joml.Vector3f;
-import org.joml.Vector4f;
 import steve6472.sge.main.util.RandomUtil;
 
 import java.io.File;
@@ -103,9 +103,13 @@ public class SnapBlock extends Block
 		if (cf == null)
 			return;
 
+		if (!cf.hasProperty(FaceRegistry.texture))
+			return;
+
 		BuildHelper bh = world.getPg().buildHelper;
 
 		float tx = cf.getProperty(FaceRegistry.texture).getTextureId() % bh.atlasSize;
+		//noinspection IntegerDivisionInFloatingPointContext
 		float ty = cf.getProperty(FaceRegistry.texture).getTextureId() / bh.atlasSize;
 
 		tx /= (float) BlockTextureHolder.getAtlas().getTileCount();

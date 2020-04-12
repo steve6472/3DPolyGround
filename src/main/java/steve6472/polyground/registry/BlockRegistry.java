@@ -28,7 +28,7 @@ public class BlockRegistry
 	//	private static HashMap<Integer, Block> blocks;
 	private static HashMap<String, Integer> reference;
 
-	public BlockRegistry(CaveGame pg)
+	public static void register(CaveGame pg)
 	{
 		File[] blocksFile = new File(MainApp.class.getResource("/blocks").getFile()).listFiles();
 		//		File[] blocksFile = new File("blocks").listFiles();

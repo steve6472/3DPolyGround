@@ -4,6 +4,7 @@ import org.joml.Math;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
+import steve6472.polyground.CaveGame;
 import steve6472.polyground.entity.EntityHitbox;
 import steve6472.sge.main.game.mixable.IMotion3f;
 import steve6472.sge.main.game.mixable.IPosition3f;
@@ -37,7 +38,7 @@ public class ParkourEntity implements IPosition3f, IMotion3f
 		position = new Vector3f(ParkourTest.START_POSITION);
 		motion = new Vector3f();
 		brain = new Brain();
-		hitbox = new EntityHitbox(0.3f, 0.9f, 0.3f);
+		hitbox = new EntityHitbox(0.3f, 0.9f, 0.3f, this, this);
 	}
 
 	public ParkourEntity(Brain brain)
@@ -45,7 +46,7 @@ public class ParkourEntity implements IPosition3f, IMotion3f
 		position = new Vector3f(ParkourTest.START_POSITION);
 		motion = new Vector3f();
 		this.brain = brain;
-		hitbox = new EntityHitbox(0.3f, 0.9f, 0.3f);
+		hitbox = new EntityHitbox(0.3f, 0.9f, 0.3f, this, this);
 	}
 
 	@Override
@@ -132,7 +133,7 @@ public class ParkourEntity implements IPosition3f, IMotion3f
 		if (getMotion().y > 9.5f)
 			getMotion().y = 9.5f;
 
-		isOnBlock = hitbox.collideWithWorld(this, this);
+		isOnBlock = hitbox.collideWithWorld(CaveGame.getInstance().getWorld());
 
 		getMotion().x *= 0.91f;
 		getMotion().y *= 0.98f;

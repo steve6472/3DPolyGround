@@ -1,12 +1,11 @@
 package steve6472.polyground.entity;
 
+import org.joml.Vector2i;
+import org.joml.Vector3f;
 import steve6472.polyground.CaveGame;
 import steve6472.polyground.block.Block;
 import steve6472.polyground.registry.BlockRegistry;
 import steve6472.polyground.world.World;
-import org.joml.AABBf;
-import org.joml.Vector2i;
-import org.joml.Vector3f;
 import steve6472.sge.main.util.RandomUtil;
 
 import java.util.ArrayList;
@@ -35,7 +34,7 @@ public class AIEntity extends EntityBase
 	public AIEntity()
 	{
 		addPosition(0, 0.5f, 0);
-		hitbox = new EntityHitbox(0.4999f, 0.4999f, 0.4999f);
+//		hitbox = new EntityHitbox(0.4999f, 0.4999f, 0.4999f);
 		nodes = new ArrayList<>();
 		obstacleNodes = new ArrayList<>();
 		blockData = new HashMap<>();
@@ -261,7 +260,7 @@ public class AIEntity extends EntityBase
 	}
 
 	private void render()
-	{
+	{/*
 		EntityHitbox plate = new EntityHitbox(0.4f, 1f / 32f, 0.4f);
 		plate.setHitbox((int) Math.floor(getX()) + 0.5f, (int) Math.floor(getY()) + 1f / 32f, (int) Math.floor(getZ()) + 0.5f);
 
@@ -281,7 +280,7 @@ public class AIEntity extends EntityBase
 		{
 			node.setHitbox(n.x + 0.5f, n.y + 0.5f, n.z + 0.5f);
 			CaveGame.t.add(new AABBf(node.getHitbox()));
-		}
+		}*/
 	}
 
 	@Override

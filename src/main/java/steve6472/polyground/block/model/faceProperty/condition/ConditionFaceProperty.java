@@ -1,14 +1,13 @@
 package steve6472.polyground.block.model.faceProperty.condition;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import steve6472.polyground.block.BlockTextureHolder;
 import steve6472.polyground.block.model.CubeFace;
 import steve6472.polyground.block.model.faceProperty.*;
 import steve6472.polyground.registry.face.FaceEntry;
 import steve6472.polyground.registry.face.FaceRegistry;
-import steve6472.polyground.world.chunk.ModelLayer;
 import steve6472.polyground.world.chunk.SubChunk;
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,8 +20,10 @@ import java.util.List;
  ***********************/
 public class ConditionFaceProperty extends FaceProperty
 {
-	private List<Result> results;
-	private boolean[] modelLayers;
+	private static final VisibleFaceProperty INVISIBLE = new VisibleFaceProperty(false);
+	private static final VisibleFaceProperty VISIBLE = new VisibleFaceProperty(true);
+
+	private final List<Result> results;
 
 	public ConditionFaceProperty()
 	{
@@ -61,103 +62,65 @@ public class ConditionFaceProperty extends FaceProperty
 		}
 	}
 
-	public void updateLayers()
-	{
-		modelLayers = new boolean[ModelLayer.values().length];
-
-		main:
-		for (int i = 0; i < modelLayers.length; i++)
-		{
-			ModelLayer layer = ModelLayer.values()[i];
-
-			for (Result r : results)
-			{
-				if (r.hasProperty(FaceRegistry.modelLayer))
-				{
-					LayerFaceProperty property = r.getProperty(FaceRegistry.modelLayer);
-					if (property.getLayer() == layer)
-					{
-						modelLayers[i] = true;
-						continue main;
-					}
-				} else
-				{
-					if (layer == ModelLayer.NORMAL)
-					{
-						modelLayers[i] = true;
-						continue main;
-					}
-				}
-			}
-		}
-	}
-
-	public boolean[] getModelLayers()
-	{
-		return modelLayers;
-	}
-
 	public static boolean editProperties(ConditionFaceProperty conditions, CubeFace cubeFace, int x, int y, int z, SubChunk sc)
 	{
 		for (int i = 0; i < conditions.results.size() - 1; i++)
 		{
 			Result result = conditions.results.get(i);
 
-			boolean flag = result.testBlock(x + sc.getX() * 16, y, z + sc.getZ() * 16, sc);
-
-			if (flag)
+			if (result.testBlock(x + sc.getX() * 16, y, z + sc.getZ() * 16, sc))
 			{
-				for (FaceEntry<? extends FaceProperty> e : FaceRegistry.getEntries())
-				{
-					if (e.getInstance() instanceof ConditionFaceProperty || e.getInstance() instanceof CondProperty)
-						continue;
-					cubeFace.removeProperty(e);
-				}
-
-				for (FaceProperty p : result.properties)
-				{
-					if (p instanceof ConditionFaceProperty || p instanceof CondProperty)
-						continue;
-					cubeFace.addProperty(p.createCopy());
-				}
-
-				if (cubeFace.hasProperty(FaceRegistry.texture))
-				{
-					TextureFaceProperty texture = cubeFace.getProperty(FaceRegistry.texture);
-					if (!texture.isReference())
-					{
-						texture.setTextureId(BlockTextureHolder.getTextureId(texture.getTexture()));
-					}
-				}
-
-				if (!cubeFace.hasProperty(FaceRegistry.uv))
-					cubeFace.addProperty(new UVFaceProperty());
-
-				if (AutoUVFaceProperty.check(cubeFace))
-				{
-					cubeFace.getProperty(FaceRegistry.uv).autoUV(cubeFace.getParent(), cubeFace.getFace());
-				}
-				/*
-				for (FaceProperty p : result.properties)
-				{
-					if (p instanceof ConditionFaceProperty || p instanceof CondProperty)
-						continue;
-					cubeFace.removeProperty(FaceRegistry.getEntry(p.getId()));
-					cubeFace.addProperty(p.createCopy());
-				}*/
-
-				if (result.hasProperty(FaceRegistry.isVisible))
-				{
-					return result.getProperty(FaceRegistry.isVisible).isVisible();
-				}
-				return true;
+				return updateToResult(result, cubeFace);
 			}
 		}
 
-		if (cubeFace.hasProperty(FaceRegistry.texture))
-			cubeFace.getProperty(FaceRegistry.texture).setTextureId(conditions.results.get(conditions.results.size() - 1).getLastTexture());
+		Result last = conditions.results.get(conditions.results.size() - 1);
 
-		return conditions.results.get(conditions.results.size() - 1).getLast();
+		return updateToResult(last, cubeFace);
+	}
+
+	public boolean updateToLastResult(CubeFace cubeFace)
+	{
+		return updateToResult(results.get(results.size() - 1), cubeFace);
+	}
+
+	private static boolean updateToResult(Result result, CubeFace cubeFace)
+	{
+		for (FaceEntry<? extends FaceProperty> e : FaceRegistry.getEntries())
+		{
+			if (e.getInstance() instanceof ConditionFaceProperty)
+				continue;
+			cubeFace.removeProperty(e);
+		}
+
+		for (FaceProperty p : result.properties)
+		{
+			if (p instanceof ConditionFaceProperty)
+				continue;
+			cubeFace.addProperty(p);
+		}
+
+		if (cubeFace.hasProperty(FaceRegistry.texture))
+		{
+			TextureFaceProperty texture = cubeFace.getProperty(FaceRegistry.texture);
+			if (!texture.isReference())
+			{
+				texture.setTextureId(BlockTextureHolder.getTextureId(texture.getTexture()));
+			}
+		}
+
+		if (!cubeFace.hasProperty(FaceRegistry.uv))
+			cubeFace.addProperty(new UVFaceProperty());
+
+		if (AutoUVFaceProperty.check(cubeFace))
+			cubeFace.getProperty(FaceRegistry.uv).autoUV(cubeFace.getParent(), cubeFace.getFace());
+
+		if (cubeFace.hasProperty(FaceRegistry.isVisible))
+		{
+			return cubeFace.getProperty(FaceRegistry.isVisible).isVisible();
+		}
+
+		return true;
 	}
 
 	@Override
@@ -174,45 +137,32 @@ public class ConditionFaceProperty extends FaceProperty
 
 	private static class Result
 	{
-		private List<FaceProperty> properties;
+		private final List<FaceProperty> properties;
+		private CondProperty condProperty;
+		private AndChainCondProperty andChainCondProperty;
 
 		Result(JSONObject conditionJson)
 		{
 			properties = new ArrayList<>();
 			loadFromJSON(conditionJson);
+
+			if (!hasProperty(FaceRegistry.isVisible))
+				properties.add(VISIBLE);
 		}
 
 		boolean testBlock(int x, int y, int z, SubChunk subChunk)
 		{
-			if (hasProperty(FaceRegistry.condition))
+			if (condProperty != null)
 			{
-				CondProperty c = getProperty(FaceRegistry.condition);
-				return c.test(x, y, z, subChunk);
+				return condProperty.test(x, y, z, subChunk);
+			} else if (andChainCondProperty != null)
+			{
+				return andChainCondProperty.test(x, y, z, subChunk);
 			} else
 			{
 				System.err.println("No condition found!");
 				return false;
 			}
-		}
-
-		boolean getLast()
-		{
-			if (hasProperty(FaceRegistry.isVisible))
-			{
-				return getProperty(FaceRegistry.isVisible).isVisible();
-			}
-
-			return false;
-		}
-
-		int getLastTexture()
-		{
-			if (hasProperty(FaceRegistry.texture))
-			{
-				return getProperty(FaceRegistry.texture).getTextureId();
-			}
-
-			return -1;
 		}
 
 		public void loadFromJSON(JSONObject faceJson)
@@ -223,7 +173,19 @@ public class ConditionFaceProperty extends FaceProperty
 				{
 					FaceProperty newProperty = FaceRegistry.createProperty(key);
 					newProperty.loadFromJSON(faceJson);
-					properties.add(newProperty);
+					if (newProperty.getId().equals(FaceRegistry.condition.getInstance().getId()))
+					{
+						condProperty = (CondProperty) newProperty;
+					} else if (newProperty.getId().equals(FaceRegistry.andChain.getInstance().getId()))
+					{
+						andChainCondProperty = (AndChainCondProperty) newProperty;
+					} else if (newProperty.getId().equals(FaceRegistry.conditionedTexture.getInstance().getId()))
+					{
+						throw new IllegalArgumentException(key + " is not allowed here!");
+					} else
+					{
+						properties.add(newProperty);
+					}
 				} else
 				{
 					throw new IllegalArgumentException(key + " is not valid key!");
@@ -242,7 +204,7 @@ public class ConditionFaceProperty extends FaceProperty
 			return false;
 		}
 
-		public boolean hasProperty(FaceEntry property)
+		public boolean hasProperty(FaceEntry<? extends FaceProperty> property)
 		{
 			return hasProperty(property.getInstance().getId());
 		}

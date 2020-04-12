@@ -1,19 +1,20 @@
 package steve6472.polyground.generator.creator;
 
+import org.joml.Matrix4f;
 import steve6472.polyground.AABBUtil;
 import steve6472.polyground.EnumFace;
 import steve6472.polyground.PolyUtil;
 import steve6472.polyground.block.model.BlockModel;
+import steve6472.polyground.block.model.Cube;
 import steve6472.polyground.block.model.CubeFace;
 import steve6472.polyground.block.model.faceProperty.VisibleFaceProperty;
-import steve6472.polyground.block.model.Cube;
-import steve6472.polyground.registry.face.FaceRegistry;
+import steve6472.polyground.block.model.faceProperty.condition.ConditionFaceProperty;
 import steve6472.polyground.gfx.shaders.MainShader;
 import steve6472.polyground.gfx.shaders.world.FlatTexturedShader;
+import steve6472.polyground.registry.face.FaceRegistry;
 import steve6472.polyground.tessellators.BasicTessellator;
 import steve6472.polyground.tessellators.ItemTessellator;
 import steve6472.polyground.world.BuildHelper;
-import org.joml.Matrix4f;
 import steve6472.sge.gfx.Atlas;
 import steve6472.sge.gfx.DepthFrameBuffer;
 import steve6472.sge.gfx.Tessellator;
@@ -248,15 +249,33 @@ public class BlockPreview
 
 				if (cubeFace != null)
 				{
+					boolean flag = false;
+					boolean hasCondTexture = false;
+					if (cubeFace.hasProperty(FaceRegistry.conditionedTexture))
+					{
+						ConditionFaceProperty faceProperty = cubeFace.getProperty(FaceRegistry.conditionedTexture);
+						flag = faceProperty.updateToLastResult(cubeFace);
+						hasCondTexture = true;
+					}
+
 					if (!VisibleFaceProperty.check(cubeFace))
 						continue;
 
-					tris += buildHelper.face(face);
+					System.out.println(cubeFace.getProperty(FaceRegistry.texture).isReference());
+					System.out.println(cubeFace.getProperty(FaceRegistry.texture).getTextureId());
 
-					if (c.getFace(face).getProperty(FaceRegistry.texture).isReference())
+					if (hasCondTexture && flag)
+					{
+						tris += buildHelper.face(face);
+					}
+
+					if (!hasCondTexture)
+						tris += buildHelper.face(face);
+
+					if (cubeFace.getProperty(FaceRegistry.texture).isReference())
 					{
 						buildHelper.replaceLastFaceWithErrorTexture(256, 0, 256, 0, 256, 0);
-					} else if (c.getFace(face).getProperty(FaceRegistry.texture).getTextureId() == -1)
+					} else if (cubeFace.getProperty(FaceRegistry.texture).getTextureId() == -1)
 					{
 						buildHelper.replaceLastFaceWithErrorTexture();
 					}
