@@ -111,9 +111,18 @@ class MainCheck implements ICheck
 	}
 
 	@Override
+	public void fixBlockId()
+	{
+		for (ICheck value : map.values())
+		{
+			value.fixBlockId();
+		}
+	}
+
+	@Override
 	public boolean test(int x, int y, int z, SubChunk subChunk)
 	{
-		print("-+".repeat(32));
+//		print("-+".repeat(32));
 		ICheck left = null, right = null;
 
 		int i = 0;
@@ -153,7 +162,7 @@ class MainCheck implements ICheck
 				default -> throw new IllegalStateException("Unexpected value: " + type);
 			};
 
-		print(String.format("Main Condition \"%s\" is %b", raw, flag));
+//		print(String.format("Main Condition \"%s\" is %b", raw, flag));
 
 		return flag;
 	}

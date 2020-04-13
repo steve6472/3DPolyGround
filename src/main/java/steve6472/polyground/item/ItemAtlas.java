@@ -65,7 +65,7 @@ public class ItemAtlas
 
 		itemTessellator = new ItemTessellator();
 
-		s = Atlas.getNextPowerOfTwo((int) Math.ceil(Math.sqrt(BlockRegistry.getAllBlocks().size())));
+		s = Atlas.getNextPowerOfTwo((int) Math.ceil(Math.sqrt(BlockRegistry.getAllBlocks().length)));
 		totalSize = s * itemSize;
 		itemAtlas = new FrameBuffer(totalSize, totalSize, true);
 		textureBuffer = new DepthFrameBuffer(itemSize, itemSize, true);

@@ -25,6 +25,11 @@ public class CondProperty extends FaceProperty
 		check = new MainCheck(condition);
 	}
 
+	public void fixBlockId()
+	{
+		check.fixBlockId();
+	}
+
 	boolean test(int x, int y, int z, SubChunk subChunk)
 	{
 		return check.test(x, y, z, subChunk);

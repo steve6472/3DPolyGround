@@ -1,10 +1,11 @@
 package steve6472.polyground.commands.coms;
 
 import com.mojang.brigadier.CommandDispatcher;
+import steve6472.polyground.block.Block;
 import steve6472.polyground.block.model.Cube;
-import steve6472.polyground.registry.BlockRegistry;
 import steve6472.polyground.commands.Command;
 import steve6472.polyground.commands.CommandSource;
+import steve6472.polyground.registry.BlockRegistry;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
@@ -24,7 +25,7 @@ public class BlocksCommand extends Command
 		dispatcher.register(literal("blocks").executes(c ->
 		{
 
-			BlockRegistry.getAllBlocks().forEach(b ->
+			for (Block b : BlockRegistry.getAllBlocks())
 			{
 				System.out.println(b.getName() + " " + b.getId());
 
@@ -39,7 +40,7 @@ public class BlocksCommand extends Command
 						System.out.println();
 					}
 				}
-			});
+			}
 
 			return 1;
 		}));

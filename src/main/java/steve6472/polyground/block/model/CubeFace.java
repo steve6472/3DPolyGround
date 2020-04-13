@@ -17,7 +17,7 @@ import java.util.List;
  ***********************/
 public class CubeFace
 {
-	private Cube parent;
+	private final Cube parent;
 	private EnumFace face;
 
 	private List<FaceProperty> properties;
@@ -89,7 +89,7 @@ public class CubeFace
 		return false;
 	}
 
-	public boolean hasProperty(FaceEntry property)
+	public boolean hasProperty(FaceEntry<?> property)
 	{
 		return hasProperty(property.getInstance().getId());
 	}
@@ -139,9 +139,14 @@ public class CubeFace
 		properties.clear();
 	}
 
-	public void setProperties(List<FaceProperty> properties)
+	public void addProperties(List<FaceProperty> properties)
 	{
 		this.properties.addAll(properties);
+	}
+
+	public void overriteProperties(List<FaceProperty> properties)
+	{
+		this.properties = properties;
 	}
 
 	public EnumFace getFace()

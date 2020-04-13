@@ -35,6 +35,7 @@ public class SpecialBlockRegistry
 	public static final SpecialBlockEntry<LightSourceBlock> light = register("light", LightSourceBlock::new);
 	public static final SpecialBlockEntry<TorchBlock> torch = register("torch", TorchBlock::new);
 	public static final SpecialBlockEntry<MicroBlock> microBlock = register("micro_block", MicroBlock::new);
+	public static final SpecialBlockEntry<WaterGeneratorBlock> waterGenerator = register("watergenerator", WaterGeneratorBlock::new);
 
 	public static <T extends Block> SpecialBlockEntry<T> register(String id, ISpecialBlockFactory<T> factory)
 	{

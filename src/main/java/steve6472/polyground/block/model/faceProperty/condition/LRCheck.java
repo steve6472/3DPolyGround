@@ -29,6 +29,13 @@ class LRCheck implements ICheck
 	}
 
 	@Override
+	public void fixBlockId()
+	{
+		left.fixBlockId();
+		right.fixBlockId();
+	}
+
+	@Override
 	public boolean test(int x, int y, int z, SubChunk subChunk)
 	{
 		boolean l = left.test(x, y, z, subChunk);
@@ -43,7 +50,7 @@ class LRCheck implements ICheck
 				default -> throw new IllegalStateException("Unexpected value: " + type);
 			};
 
-		print(String.format("LR Condition \"%s\" is %b", raw, flag));
+//		print(String.format("LR Condition \"%s\" is %b", raw, flag));
 
 		return flag;
 	}

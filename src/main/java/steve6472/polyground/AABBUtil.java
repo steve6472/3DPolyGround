@@ -1,11 +1,12 @@
 package steve6472.polyground;
 
-import steve6472.polyground.gfx.shaders.MainShader;
-import steve6472.polyground.tessellators.BasicTessellator;
-import steve6472.sge.gfx.Tessellator;
 import org.joml.AABBf;
 import org.joml.Vector3f;
 import org.lwjgl.opengl.GL11;
+import steve6472.polyground.gfx.shaders.MainShader;
+import steve6472.polyground.tessellators.BasicTessellator;
+import steve6472.sge.gfx.Tessellator;
+import steve6472.sge.main.Util;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
@@ -166,6 +167,80 @@ public class AABBUtil
 		tess.pos(maxX, maxY, maxZ).color(1f, 1f, 1f, 1f).endVertex();
 		tess.pos(maxX, maxY, minZ).color(1f, 1f, 1f, 1f).endVertex();
 		tess.pos(maxX, maxY, maxZ).color(1f, 1f, 1f, 1f).endVertex();
+	}
+
+	public static void addWater(float x, float y, float z, float height, BasicTessellator tess)
+	{
+		float density = 1;
+		if (height > 1)
+			density = Util.clamp(0, 1f, 1f - (float) Math.log10(height));
+
+		height = Util.clamp(0.0005f, 1f, height);
+
+		tess.color(0.5f * density, 0.75f * density, 0.9f * density, 0.5f);
+
+		// Top
+		tess.pos(+1 + x, +1 * height + y, +0 + z).endVertex();
+		tess.pos(+0 + x, +1 * height + y, +0 + z).endVertex();
+		tess.pos(+0 + x, +1 * height + y, +1 + z).endVertex();
+
+		tess.pos(+0 + x, +1 * height + y, +1 + z).endVertex();
+		tess.pos(+1 + x, +1 * height + y, +1 + z).endVertex();
+		tess.pos(+1 + x, +1 * height + y, +0 + z).endVertex();
+
+		tess.color(0.5f * 0.8f * density, 0.75f * 0.8f * density, 0.9f * 0.8f * density, 0.5f);
+
+		// East
+		tess.pos(+0 + x, +1 * height + y, +0 + z).endVertex();
+		tess.pos(+0 + x, +0 * height + y, +0 + z).endVertex();
+		tess.pos(+0 + x, +0 * height + y, +1 + z).endVertex();
+
+		tess.pos(+0 + x, +0 * height + y, +1 + z).endVertex();
+		tess.pos(+0 + x, +1 * height + y, +1 + z).endVertex();
+		tess.pos(+0 + x, +1 * height + y, +0 + z).endVertex();
+
+		tess.color(0.5f * 0.5f * density, 0.75f * 0.5f * density, 0.9f * 0.5f * density, 0.5f);
+
+		// North
+		tess.pos(+0 + x, +1 * height + y, +1 + z).endVertex();
+		tess.pos(+0 + x, +0 * height + y, +1 + z).endVertex();
+		tess.pos(+1 + x, +0 * height + y, +1 + z).endVertex();
+
+		tess.pos(+1 + x, +0 * height + y, +1 + z).endVertex();
+		tess.pos(+1 + x, +1 * height + y, +1 + z).endVertex();
+		tess.pos(+0 + x, +1 * height + y, +1 + z).endVertex();
+		tess.color(0.5f * 0.8f * density, 0.75f * 0.8f * density, 0.9f * 0.8f * density, 0.5f);
+
+		// West
+		tess.pos(+1 + x, +1 * height + y, +1 + z).endVertex();
+		tess.pos(+1 + x, +0 * height + y, +1 + z).endVertex();
+		tess.pos(+1 + x, +0 * height + y, +0 + z).endVertex();
+
+		tess.pos(+1 + x, +0 * height + y, +0 + z).endVertex();
+		tess.pos(+1 + x, +1 * height + y, +0 + z).endVertex();
+		tess.pos(+1 + x, +1 * height + y, +1 + z).endVertex();
+
+		tess.color(0.5f * 0.5f * density, 0.75f * 0.5f * density, 0.9f * 0.5f * density, 0.5f);
+
+		// South
+		tess.pos(+1 + x, +1 * height + y, +0 + z).endVertex();
+		tess.pos(+1 + x, +0 * height + y, +0 + z).endVertex();
+		tess.pos(+0 + x, +0 * height + y, +0 + z).endVertex();
+
+		tess.pos(+0 + x, +0 * height + y, +0 + z).endVertex();
+		tess.pos(+0 + x, +1 * height + y, +0 + z).endVertex();
+		tess.pos(+1 + x, +1 * height + y, +0 + z).endVertex();
+
+		tess.color(0.5f * 0.2f * density, 0.75f * 0.2f * density, 0.9f * 0.2f * density, 0.5f);
+
+		// Bottom
+		tess.pos(+0 + x, +0 + y, +1 + z).endVertex();
+		tess.pos(+0 + x, +0 + y, +0 + z).endVertex();
+		tess.pos(+1 + x, +0 + y, +0 + z).endVertex();
+
+		tess.pos(+1 + x, +0 + y, +0 + z).endVertex();
+		tess.pos(+1 + x, +0 + y, +1 + z).endVertex();
+		tess.pos(+0 + x, +0 + y, +1 + z).endVertex();
 	}
 
 	/*

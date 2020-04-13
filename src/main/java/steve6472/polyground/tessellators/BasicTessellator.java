@@ -18,7 +18,8 @@ public class BasicTessellator extends TessellatorCreator
 
 	private float x, y, z;
 	private float r, g, b, a;
-	private float nx, ny, nz;
+
+	public int current, size;
 
 	public BasicTessellator pos(float x, float y, float z)
 	{
@@ -50,6 +51,7 @@ public class BasicTessellator extends TessellatorCreator
 	{
 		put(pos, x, y, z);
 		put(color, r, g, b, a);
+		current++;
 		super.endVertex();
 	}
 
@@ -58,8 +60,15 @@ public class BasicTessellator extends TessellatorCreator
 	{
 		pos = createBuffer(vertexCount * 3);
 		color = createBuffer(vertexCount * 4);
+		current = 0;
+		size = vertexCount;
 
 		super.begin(vertexCount);
+	}
+
+	public boolean hasSpace()
+	{
+		return current < size;
 	}
 
 	public void loadPos(int index)

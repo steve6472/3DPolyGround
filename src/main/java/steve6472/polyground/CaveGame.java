@@ -4,15 +4,15 @@ import org.joml.AABBf;
 import org.joml.Vector3f;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 import steve6472.polyground.block.model.BlockModelLoader;
-import steve6472.polyground.registry.BlockRegistry;
-import steve6472.polyground.registry.CommandRegistry;
 import steve6472.polyground.commands.CommandSource;
 import steve6472.polyground.entity.Player;
 import steve6472.polyground.events.CancellableEvent;
 import steve6472.polyground.events.WorldEvent;
 import steve6472.polyground.gfx.CGGBuffer;
+import steve6472.polyground.gfx.CGSkybox;
 import steve6472.polyground.gfx.particle.ParticleStorage;
 import steve6472.polyground.gfx.shaders.ShaderStorage;
 import steve6472.polyground.gui.IGamePause;
@@ -21,7 +21,10 @@ import steve6472.polyground.gui.MainMenu;
 import steve6472.polyground.gui.OptionsGui;
 import steve6472.polyground.item.Item;
 import steve6472.polyground.item.ItemAtlas;
+import steve6472.polyground.registry.BlockRegistry;
+import steve6472.polyground.registry.CommandRegistry;
 import steve6472.polyground.registry.ItemRegistry;
+import steve6472.polyground.registry.WaterRegistry;
 import steve6472.polyground.rift.Rift;
 import steve6472.polyground.rift.RiftManager;
 import steve6472.polyground.rift.RiftModel;
@@ -30,9 +33,9 @@ import steve6472.polyground.teleporter.TeleporterManager;
 import steve6472.polyground.tessellators.BasicTessellator;
 import steve6472.polyground.tessellators.EntityTessellator;
 import steve6472.polyground.world.BuildHelper;
-import steve6472.polyground.gfx.CGSkybox;
 import steve6472.polyground.world.World;
 import steve6472.polyground.world.chunk.SubChunk;
+import steve6472.polyground.world.chunk.water.Water;
 import steve6472.polyground.world.generator.GeneratorRegistry;
 import steve6472.polyground.world.interaction.HitPicker;
 import steve6472.polyground.world.light.LightManager;
@@ -83,7 +86,7 @@ public class CaveGame extends MainApp
 	private DepthFrameBuffer mainFrameBuffer;
 	private PostProcessing pp;
 	public BuildHelper buildHelper;
-	public BasicTessellator basicTess;
+	public BasicTessellator basicTess, waterTess;
 	public EntityTessellator entityTessellator;
 	public Frustum frustum;
 	public CGSkybox skybox;
@@ -124,6 +127,7 @@ public class CaveGame extends MainApp
 		buildHelper = new BuildHelper();
 		blockModelLoader = new BlockModelLoader();
 		BlockRegistry.register(this);
+		WaterRegistry.init();
 
 		frustum = new Frustum();
 		rifts = new RiftManager(this);
@@ -145,6 +149,7 @@ public class CaveGame extends MainApp
 		particles = new ParticleStorage(this);
 
 		basicTess = new BasicTessellator();
+		waterTess = new BasicTessellator();
 
 		shaders = new ShaderStorage();
 		getEventHandler().register(shaders);
@@ -255,9 +260,16 @@ public class CaveGame extends MainApp
 
 	private int oldx, oldy;
 
+	public static int lastWaterCount;
+	private int currentWaterCount;
+
 	@Override
 	public void tick()
 	{
+		currentWaterCount = lastWaterCount * 36;
+		lastWaterCount = 0;
+		waterTess.begin(currentWaterCount);
+
 		options.isInMenu = false;
 		options.isMouseFree = false;
 
@@ -270,6 +282,7 @@ public class CaveGame extends MainApp
 			particles.tick();
 
 		t.clear();
+		water.clear();
 
 		handleCamera();
 
@@ -292,6 +305,8 @@ public class CaveGame extends MainApp
 
 		tickGui();
 		getCamera().updateViewMatrix();
+
+//		QuickSort.sortWaterByDistance(water, getCamera().getPosition());
 	}
 
 	private void handleCamera()
@@ -351,6 +366,7 @@ public class CaveGame extends MainApp
 	}
 
 	public static List<AABBf> t = new ArrayList<>();
+	public static List<Water> water = new ArrayList<>();
 
 	public void renderTheWorld(boolean deferred)
 	{
@@ -375,6 +391,14 @@ public class CaveGame extends MainApp
 		basicTess.loadColor(1);
 		basicTess.draw(Tessellator.LINES);
 		basicTess.disable(0, 1);
+
+
+		/* Render water */
+		shaders.mainShader.bind(getCamera().getViewMatrix());
+		waterTess.loadPos(0);
+		waterTess.loadColor(1);
+		GL20.glDrawArrays(Tessellator.TRIANGLES, 0, currentWaterCount);
+		waterTess.disable(0, 1);
 
 		/* END */
 

@@ -2,6 +2,7 @@ package steve6472.polyground.block.model;
 
 import steve6472.polyground.CaveGame;
 import steve6472.SSS;
+import steve6472.polyground.registry.WaterRegistry;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -45,6 +46,21 @@ public class BlockModel
 				for (String s : sss.getStringArray("tags"))
 					addTag(s);
 			}
+
+			double volume = 0;
+
+			for (Cube c : cubes)
+			{
+				if (c.isCollisionBox() && c.isHitbox())
+					volume += (c.getAabb().maxX - c.getAabb().minX) * (c.getAabb().maxY - c.getAabb().minY) * (c.getAabb().maxZ - c.getAabb().minZ);
+			}
+			WaterRegistry.tempVolumes.add((1.0 - Math.min(volume, 1.0)) * 1000.0);
+
+			/*
+			System.out.println("----" + sss.getString("model") + "----");
+			System.out.println("Used volume: " + volume);
+			System.out.println("Free volume: " + (1.0 - Math.min(volume, 1.0)) * 1000.0);
+			*/
 		}
 	}
 

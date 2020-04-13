@@ -1,0 +1,30 @@
+{
+  "cubes": 
+  [
+    {
+      "from": [ 0, 0, 0 ],
+      "to": [ 16, 8, 16 ],
+      "faces": 
+	  {
+        "down":  { "texture": "water_generator/bottom" },
+        "up":    { "texture": "water_generator/top" },
+        "north": { "texture": "water_generator/side", "uv": [0, 8, 16, 16] },
+        "south": { "texture": "water_generator/side", "uv": [0, 8, 16, 16] },
+        "west":  { "texture": "water_generator/side", "uv": [0, 8, 16, 16] },
+        "east":  { "texture": "water_generator/side", "uv": [0, 8, 16, 16] }
+      }
+    },
+    {
+      "from": [ 3, 8, 3 ],
+      "to": [ 13, 16, 13 ],
+      "faces": 
+	  {
+        "up":    { "texture": "water_generator/top", "uv": [3, 3, 13, 13] },
+        "north": { "texture": "water_generator/other_side", "uv": [0, 0, 10, 10] },
+        "south": { "texture": "water_generator/other_side", "uv": [0, 0, 10, 10] },
+        "west":  { "texture": "water_generator/other_side", "uv": [0, 0, 10, 10] },
+        "east":  { "texture": "water_generator/other_side", "uv": [0, 0, 10, 10] }
+      }
+    }
+  ]
+}

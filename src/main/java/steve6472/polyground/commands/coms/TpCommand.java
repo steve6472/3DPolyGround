@@ -21,7 +21,7 @@ public class TpCommand extends Command
 	{
 		dispatcher.register(literal("tp").then(argument("x", floatArg()).then(argument("y", floatArg()).then(argument("z", floatArg()).executes(c ->
 		{
-
+			c.getSource().getPlayer().getHitbox().setHitbox(getFloat(c, "x"), getFloat(c, "y"), getFloat(c, "z"));
 			c.getSource().getPlayer().setPosition(getFloat(c, "x"), getFloat(c, "y"), getFloat(c, "z"));
 			c.getSource().getPlayer().setMotion(0, 0, 0);
 

@@ -19,6 +19,13 @@ class AndChain implements ICheck
 	}
 
 	@Override
+	public void fixBlockId()
+	{
+		for (ICheck c : checks)
+			c.fixBlockId();
+	}
+
+	@Override
 	public boolean test(int x, int y, int z, SubChunk subChunk)
 	{
 		for (ICheck c : checks)

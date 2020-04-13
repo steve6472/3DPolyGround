@@ -19,23 +19,23 @@ class Cube implements Comparable<Cube>
 		this.z = z;
 
 		tris = new ArrayList<>(12);
-		tris.add(new Tri(-1, 1, -1, -1, -1, -1, -1, -1, 1, r, g, b, a).mul(shade ? 0.8f : 1f));
-		tris.add(new Tri(-1, -1, 1, -1, 1, 1, -1, 1, -1, r, g, b, a).mul(shade ? 0.8f : 1f));
+		tris.add(new Tri(-1, +1, -1, -1, -1, -1, -1, -1, +1, r, g, b, a).mul(shade ? 0.8f : 1f));
+		tris.add(new Tri(-1, -1, +1, -1, +1, +1, -1, +1, -1, r, g, b, a).mul(shade ? 0.8f : 1f));
 
-		tris.add(new Tri(-1, 1, 1, -1, -1, 1, 1, -1, 1, r, g, b, a).mul(shade ? 0.5f : 1f));
-		tris.add(new Tri(1, -1, 1, 1, 1, 1, -1, 1, 1, r, g, b, a).mul(shade ? 0.5f : 1f));
+		tris.add(new Tri(-1, +1, +1, -1, -1, +1, +1, -1, +1, r, g, b, a).mul(shade ? 0.5f : 1f));
+		tris.add(new Tri(+1, -1, +1, +1, +1, +1, -1, +1, +1, r, g, b, a).mul(shade ? 0.5f : 1f));
 
-		tris.add(new Tri(1, 1, 1, 1, -1, 1, 1, -1, -1, r, g, b, a).mul(shade ? 0.8f : 1f));
-		tris.add(new Tri(1, -1, -1, 1, 1, -1, 1, 1, 1, r, g, b, a).mul(shade ? 0.8f : 1f));
+		tris.add(new Tri(+1, +1, +1, +1, -1, +1, +1, -1, -1, r, g, b, a).mul(shade ? 0.8f : 1f));
+		tris.add(new Tri(+1, -1, -1, +1, +1, -1, +1, +1, +1, r, g, b, a).mul(shade ? 0.8f : 1f));
 
-		tris.add(new Tri(1, 1, -1, 1, -1, -1, -1, -1, -1, r, g, b, a).mul(shade ? 0.5f : 1f));
-		tris.add(new Tri(-1, -1, -1, -1, 1, -1, 1, 1, -1, r, g, b, a).mul(shade ? 0.5f : 1f));
+		tris.add(new Tri(+1, +1, -1, +1, -1, -1, -1, -1, -1, r, g, b, a).mul(shade ? 0.5f : 1f));
+		tris.add(new Tri(-1, -1, -1, -1, +1, -1, +1, +1, -1, r, g, b, a).mul(shade ? 0.5f : 1f));
 
-		tris.add(new Tri(1, 1, -1, -1, 1, -1, -1, 1, 1, r, g, b, a));
-		tris.add(new Tri(-1, 1, 1, 1, 1, 1, 1, 1, -1, r, g, b, a));
+		tris.add(new Tri(+1, +1, -1, -1, +1, -1, -1, +1, +1, r, g, b, a));
+		tris.add(new Tri(-1, +1, +1, +1, +1, +1, +1, +1, -1, r, g, b, a));
 
-		tris.add(new Tri(-1, -1, 1, -1, -1, -1, 1, -1, -1, r, g, b, a).mul(shade ? 0.2f : 1f));
-		tris.add(new Tri(1, -1, -1, 1, -1, 1, -1, -1, 1, r, g, b, a).mul(shade ? 0.2f : 1f));
+		tris.add(new Tri(-1, -1, +1, -1, -1, -1, +1, -1, -1, r, g, b, a).mul(shade ? 0.2f : 1f));
+		tris.add(new Tri(+1, -1, -1, +1, -1, +1, -1, -1, +1, r, g, b, a).mul(shade ? 0.2f : 1f));
 
 		for (Tri t : tris)
 		{

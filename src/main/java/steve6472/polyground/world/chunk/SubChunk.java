@@ -7,6 +7,7 @@ import steve6472.polyground.block.blockdata.BlockData;
 import steve6472.polyground.registry.BlockRegistry;
 import steve6472.polyground.world.World;
 import steve6472.polyground.world.biomes.IBiomeProvider;
+import steve6472.polyground.world.chunk.water.SubChunkWater;
 import steve6472.polyground.world.generator.IGenerator;
 
 import java.io.IOException;
@@ -34,6 +35,7 @@ public class SubChunk implements IBiomeProvider
 	private int[][][] biomes;
 	private SubChunkBlocks blocks;
 	private SubChunkBlockData blockData;
+	private SubChunkWater water;
 
 	private ChunkPosStorage tickableBlocks, scheduledUpdates, newScheduledUpdates;
 
@@ -57,6 +59,7 @@ public class SubChunk implements IBiomeProvider
 
 		blockData = new SubChunkBlockData(this);
 		blocks = new SubChunkBlocks(this);
+		water = new SubChunkWater(this);
 	}
 
 	public static IGenerator generator;
@@ -89,6 +92,8 @@ public class SubChunk implements IBiomeProvider
 			blockToUpdate.onUpdate(this, blockData.getBlockData(x, y, z), EnumFace.NONE, x, y, z);
 			iter.remove();
 		}
+
+		water.tick();
 	}
 
 	public void saveSubChunk() throws IOException
@@ -342,6 +347,26 @@ public class SubChunk implements IBiomeProvider
 	public void setBlock(int x, int y, int z, Block block)
 	{
 		setBlock(x, y, z, block.getId());
+	}
+
+	public double getLiquidVolumeEfficiently(int x, int y, int z)
+	{
+		return water.getLiquidVolumeEfficiently(x, y, z);
+	}
+
+	public double getLiquidVolume(int x, int y, int z)
+	{
+		return water.getLiquidVolume(x, y, z);
+	}
+
+	public void setLiquidVolume(int x, int y, int z, double volume)
+	{
+		water.setLiquidVolume(x, y, z, volume);
+	}
+
+	public void setLiquidVolumeEfficiently(int x, int y, int z, double volume)
+	{
+		water.setLiquidVolumeEfficiently(x, y, z, volume);
 	}
 
 	/**

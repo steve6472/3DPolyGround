@@ -6,6 +6,8 @@ interface ICheck
 {
 	boolean test(int x, int y, int z, SubChunk subChunk);
 
+	default void fixBlockId() {}
+
 	default boolean hasCheckSign(String s)
 	{
 		return s.contains("||") || s.contains("&&") || s.contains("!=") || s.contains("==");

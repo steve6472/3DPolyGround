@@ -1,0 +1,2 @@
+model = item/bucket_of_void
+special = voidbucket

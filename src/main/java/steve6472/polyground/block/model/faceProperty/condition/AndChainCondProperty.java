@@ -25,6 +25,11 @@ public class AndChainCondProperty extends FaceProperty
 		check = new AndChain(condition);
 	}
 
+	public void fixBlockId()
+	{
+		check.fixBlockId();
+	}
+
 	boolean test(int x, int y, int z, SubChunk subChunk)
 	{
 		return check.test(x, y, z, subChunk);

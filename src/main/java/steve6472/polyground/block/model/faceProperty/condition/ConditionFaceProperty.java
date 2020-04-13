@@ -30,6 +30,17 @@ public class ConditionFaceProperty extends FaceProperty
 		results = new ArrayList<>();
 	}
 
+	public void fixBlockId()
+	{
+		for (Result r : results)
+		{
+			if (r.andChainCondProperty != null)
+				r.andChainCondProperty.fixBlockId();
+			if (r.condProperty != null)
+				r.condProperty.fixBlockId();
+		}
+	}
+
 	@Override
 	public void loadFromJSON(JSONObject json)
 	{
@@ -107,6 +118,9 @@ public class ConditionFaceProperty extends FaceProperty
 			{
 				texture.setTextureId(BlockTextureHolder.getTextureId(texture.getTexture()));
 			}
+		} else
+		{
+			cubeFace.addProperty(new TextureFaceProperty(0, ""));
 		}
 
 		if (!cubeFace.hasProperty(FaceRegistry.uv))
@@ -182,10 +196,9 @@ public class ConditionFaceProperty extends FaceProperty
 					} else if (newProperty.getId().equals(FaceRegistry.conditionedTexture.getInstance().getId()))
 					{
 						throw new IllegalArgumentException(key + " is not allowed here!");
-					} else
-					{
-						properties.add(newProperty);
 					}
+
+					properties.add(newProperty);
 				} else
 				{
 					throw new IllegalArgumentException(key + " is not valid key!");

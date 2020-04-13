@@ -1,10 +1,12 @@
 package steve6472.polyground.block.model.faceProperty.condition;
 
+import steve6472.polyground.registry.BlockRegistry;
 import steve6472.polyground.world.chunk.SubChunk;
 
 class BlockCheck implements ICheck
 {
 	int relX, relY, relZ;
+	int blockId;
 	String block;
 	Type type;
 
@@ -47,17 +49,27 @@ class BlockCheck implements ICheck
 		relZ = Integer.parseInt(arr[2].trim());
 	}
 
+	@Override
+	public void fixBlockId()
+	{
+		if (block.startsWith("#"))
+			blockId = -1;
+		else
+			blockId = BlockRegistry.getBlockIdByName(block);
+	}
+
 	public boolean test(int x, int y, int z, SubChunk subChunk)
 	{
 		boolean f;
-		if (block.startsWith("#"))
+		if (blockId == -1)
 		{
 			f = subChunk.getBlockEfficiently(relX + Math.floorMod(x, 16), relY + Math.floorMod(y, 16), relZ + Math.floorMod(z, 16)).hasTag(block.substring(1));
 			print("Checked for block tag \"%s\" with result %b", block.substring(1), f);
 		} else
 		{
-			f = subChunk.getBlockEfficiently(relX + Math.floorMod(x, 16), relY + Math.floorMod(y, 16), relZ + Math.floorMod(z, 16)).getName().equals(block);
+			f = subChunk.getBlockEfficiently(relX + Math.floorMod(x, 16), relY + Math.floorMod(y, 16), relZ + Math.floorMod(z, 16)).getId() == blockId;
 		}
+
 		boolean flag = switch (type)
 			{
 				case EQUALS -> f;
@@ -65,7 +77,7 @@ class BlockCheck implements ICheck
 				default -> throw new IllegalStateException("Unexpected value: " + type);
 			};
 
-		print(String.format("Block Condition \"%s\" is %b", raw, flag));
+//		print(String.format("Block Condition \"%s\" is %b", raw, flag));
 
 		return flag;
 	}

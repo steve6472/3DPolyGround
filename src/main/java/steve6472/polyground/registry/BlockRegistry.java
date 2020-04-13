@@ -4,7 +4,10 @@ import steve6472.SSS;
 import steve6472.polyground.CaveGame;
 import steve6472.polyground.block.Block;
 import steve6472.polyground.block.BlockTextureHolder;
+import steve6472.polyground.block.model.Cube;
+import steve6472.polyground.block.model.CubeFace;
 import steve6472.polyground.registry.block.SpecialBlockRegistry;
+import steve6472.polyground.registry.face.FaceRegistry;
 import steve6472.sge.main.MainApp;
 
 import java.io.File;
@@ -21,33 +24,23 @@ import java.util.Objects;
  ***********************/
 public class BlockRegistry
 {
-	//	private static HashMap<String, Block> blocks;
-	//	private static HashMap<Integer, String> reference;
-
-	private static List<Block> blocks;
-	//	private static HashMap<Integer, Block> blocks;
+	private static Block[] blocks;
 	private static HashMap<String, Integer> reference;
 
 	public static void register(CaveGame pg)
 	{
 		File[] blocksFile = new File(MainApp.class.getResource("/blocks").getFile()).listFiles();
-		//		File[] blocksFile = new File("blocks").listFiles();
 
 		reference = new HashMap<>();
-		//		blocks = new HashMap<>();
-		blocks = new ArrayList<>();
+		List<Block> tempBlocks = new ArrayList<>();
 
-		blocks.add(Block.createAir());
+		tempBlocks.add(Block.createAir());
 		reference.put("air", 0);
+		WaterRegistry.tempVolumes.add(1000.0);
 
-		//		blocks.put("air", Block.createAir());
-		//		reference.put(0, "air");
-
-		blocks.add(Block.createError());
+		tempBlocks.add(Block.createError());
 		reference.put("error", 1);
-
-		//		blocks.put("error", Block.createError());
-		//		reference.put(1, "error");
+		WaterRegistry.tempVolumes.add(0.0);
 
 		int systemBlocks = 2;
 
@@ -71,17 +64,36 @@ public class BlockRegistry
 
 			if (!reference.containsKey(block.getName()))
 			{
-				blocks.add(block);
+				tempBlocks.add(block);
 				reference.put(block.getName(), i + systemBlocks);
-				//				BlockRegistry.blocks.put(block.getName(), block);
-				//				reference.put(i + systemBlocks, block.getName());
 			} else
 			{
 				throw new IllegalArgumentException("Duplicate block name " + block.getName());
 			}
 		}
 
-		getAllBlocks().forEach(Block::postLoad);
+		blocks = new Block[tempBlocks.size()];
+
+		for (int i = 0; i < tempBlocks.size(); i++)
+		{
+			blocks[i] = tempBlocks.get(i);
+		}
+
+		tempBlocks.forEach(Block::postLoad);
+
+		for (int i = 0; i < tempBlocks.size(); i++)
+		{
+			if (blocks[i].getBlockModel() != null && blocks[i].getBlockModel().getCubes() != null)
+			for (Cube c : blocks[i].getBlockModel().getCubes())
+			{
+				for (CubeFace f : c.getFaces())
+				{
+					if (f != null)
+					if (f.hasProperty(FaceRegistry.conditionedTexture))
+						f.getProperty(FaceRegistry.conditionedTexture).fixBlockId();
+				}
+			}
+		}
 
 		BlockTextureHolder.compileTextures();
 
@@ -91,26 +103,21 @@ public class BlockRegistry
 
 	public static int getBlockIdByName(String name)
 	{
-		//		return blocks.get(name).getId();
 		return reference.get(name);
 	}
 
 	public static Block getBlockByName(String name)
 	{
-		//		return blocks.get(name);
 		int ref = reference.get(name);
-		return blocks.get(ref);
+		return blocks[ref];
 	}
 
 	public static Block getBlockById(int id)
 	{
-		if (id == -1)
-			return Block.air;
-		return blocks.get(id);
-		//		return blocks.get(reference.get(id));
+		return blocks[id];
 	}
 
-	public static List<Block> getAllBlocks()
+	public static Block[] getAllBlocks()
 	{
 		return blocks;
 	}

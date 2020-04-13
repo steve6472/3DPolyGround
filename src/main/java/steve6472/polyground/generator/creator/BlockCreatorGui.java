@@ -265,7 +265,7 @@ public class BlockCreatorGui extends Gui
 					continue;
 
 				getSelectedCube().getFace(face).clearProperties();
-				getSelectedCube().getFace(face).setProperties(getSelectedFace().copyProperties());
+				getSelectedCube().getFace(face).addProperties(getSelectedFace().copyProperties());
 			}
 		});
 	}

@@ -24,7 +24,7 @@
 					"conditionedTexture":
 					[
 						{
-							"andChain": "([1, 0, 0] == grass) && ([-1, 0, 0] == grass) && ([0, 0, 1] == grass) && ([0, 0, -1] == grass)",
+							"andChain": "[1, 0, 0] == grass && [-1, 0, 0] == grass && [0, 0, 1] == grass && [0, 0, -1] == grass",
 							"texture": "gravel/all",
 							"modelLayer": "OVERLAY_0",
 							"tint": [145, 189, 89]
