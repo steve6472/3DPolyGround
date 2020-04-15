@@ -1,2 +1,3 @@
 model = block/water_generator
 special = watergenerator
+isFull = false

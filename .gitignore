@@ -24,6 +24,7 @@ creator/blocks/textures/
 res/textures/
 mc_textures/
 target/
+game/worlds_old/
 textureAtlas.png
 
 # World Folder #
