@@ -1,9 +1,7 @@
 package steve6472.polyground.world.generator;
 
-import steve6472.polyground.CaveGame;
 import steve6472.polyground.block.Block;
 import steve6472.polyground.registry.BlockRegistry;
-import steve6472.polyground.gfx.particle.ParticleStorage;
 import steve6472.polyground.world.chunk.SubChunk;
 import steve6472.sge.main.TriConsumer;
 
@@ -75,41 +73,24 @@ public class CaveGenerator implements IGenerator
 
 		public void generate(SubChunk sc, int block)
 		{
-			ParticleStorage par = CaveGame.getInstance().particles;
-			par.addBasicParticle(x + 0.5f, y + 0.5f, z + 0.5f, 0.5f, 1, 1, 1, 1f, -1);
+			int ox = sc.getX() * 16;
+			int oy = sc.getLayer() * 16;
+			int oz = sc.getZ() * 16;
 
-			int ox = sc.getX() * 16 + x;
-			int oy = sc.getLayer() * 16 + y;
-			int oz = sc.getZ() * 16 + z;
-
-			int rx = radius + ox;
-			int ry = radius + oy;
-			int rz = radius + oz;
-
-			//			if (rx >= 16) return;
-
-			for (int i = Math.max(-rx, sc.getX() * 16); i < Math.min(rx, sc.getX() * 16 + 15); i++)
+			for (int i = 0; i < 16; i++)
 			{
-				for (int j = Math.max(-ry, sc.getLayer() * 16); j < Math.min(ry, sc.getLayer() * 16 + 15); j++)
+				for (int j = 0; j < 16; j++)
 				{
-					for (int k = Math.max(-rz, sc.getZ() * 16); k < Math.min(rz, sc.getZ() * 16 + 15); k++)
+					for (int k = 0; k < 16; k++)
 					{
-						double a = (i - x);
-						double b = (j - y);
-						double c = (k - z);
+						double a = (i - x) + ox;
+						double b = (j - y) + oy;
+						double c = (k - z) + oz;
 						double distance = a * a + b * b + c * c;
-						double distanceSqrd = Math.sqrt(distance);
 
-						if (distanceSqrd < radius)
+						if (distance < radius * radius)
 						{
-							try
-							{
-								sc.setBlock(i, j, k, block);
-								par.addBasicParticle(i + 0.5f, j + 0.5f, k + 0.5f, 0.01f, 0f, 1, 0, 1f, -1);
-							} catch (Exception ignored)
-							{
-								par.addBasicParticle(i + 0.5f, j + 0.5f, k + 0.5f, 0.025f, 1f, 0, 0, 1, -1);
-							}
+							sc.setBlock(i, j, k, block);
 						}
 					}
 				}

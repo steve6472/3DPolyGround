@@ -46,7 +46,7 @@ public class BasicParticle extends Particle
 	@Override
 	public boolean sort()
 	{
-		return true;
+		return false;
 	}
 
 	@Override

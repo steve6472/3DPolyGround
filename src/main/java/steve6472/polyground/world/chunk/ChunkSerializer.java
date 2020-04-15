@@ -20,11 +20,11 @@ public class ChunkSerializer
 {
 	public static void serialize(SubChunk subChunk) throws IOException
 	{
-		File chunk = new File("worlds\\" + subChunk.getWorld().worldName + "\\chunk_" + subChunk.getParent().getX() + "_" + subChunk.getParent().getZ());
+		File chunk = new File("game/worlds/" + subChunk.getWorld().worldName + "/chunk_" + subChunk.getParent().getX() + "_" + subChunk.getParent().getZ());
 		if (!chunk.exists())
 			chunk.mkdir();
 
-		File subChunkPath = new File("worlds\\" + subChunk.getWorld().worldName + "\\chunk_" + subChunk.getParent().getX() + "_" + subChunk.getParent().getZ() + "\\sub_" + subChunk.getLayer() + ".txt");
+		File subChunkPath = new File("game/worlds/" + subChunk.getWorld().worldName + "/chunk_" + subChunk.getParent().getX() + "_" + subChunk.getParent().getZ() + "/sub_" + subChunk.getLayer() + ".txt");
 
 		SmartSave.openOutput(subChunkPath);
 
@@ -33,7 +33,7 @@ public class ChunkSerializer
 		HashMap<Integer, Short> map = pair.getB();
 
 		short[] ids = createPalleteIdArray(pallete);
-		String names = createPalleteNames(pallete);
+		String[] names = createPalleteNames(pallete);
 
 		SmartSave.writeData("pallete_ids", ids);
 		SmartSave.writeData("pallete_names", names);
@@ -45,15 +45,18 @@ public class ChunkSerializer
 
 	private static void saveToChunk(SubChunk subChunk, HashMap<Integer, Short> map) throws IOException
 	{
+		short[][][] ids = new short[16][16][16];
 		for (int i = 0; i < subChunk.getIds().length; i++)
 		{
 			for (int j = 0; j < subChunk.getIds()[i].length; j++)
 			{
-				int[] id = subChunk.getIds()[i][j];
-				short[] translated = translate(map, id);
-				SmartSave.writeData(i + "_" + j, translated);
+				for (int k = 0; k < subChunk.getIds()[i][j].length; k++)
+				{
+					ids[i][j][k] = map.get(subChunk.getIds()[i][j][k]);
+				}
 			}
 		}
+		SmartSave.writeData("blocks", ids);
 	}
 
 	private static short[] translate(HashMap<Integer, Short> map, int[] array)
@@ -111,24 +114,26 @@ public class ChunkSerializer
 		return ids;
 	}
 
-	private static String createPalleteNames(HashMap<Short, String> pallete)
+	private static String[] createPalleteNames(HashMap<Short, String> pallete)
 	{
-		StringBuilder names = new StringBuilder();
+		String[] a = new String[pallete.size()];
+		int i = 0;
 		for (String s : pallete.values())
 		{
-			names.append(s).append(" ");
+			a[i] = s;
+			i++;
 		}
-		return names.toString();
+		return a;
 	}
 
 	public static SubChunk deserialize(SubChunk subChunk) throws IOException
 	{
-		File subChunkPath = new File("worlds\\" + subChunk.getWorld().worldName + "\\chunk_" + subChunk.getX() + "_" + subChunk.getZ() + "\\sub_" + subChunk.getLayer() + ".txt");
+		File subChunkPath = new File("game/worlds/" + subChunk.getWorld().worldName + "/chunk_" + subChunk.getX() + "_" + subChunk.getZ() + "/sub_" + subChunk.getLayer() + ".txt");
 		SmartSave.openInput(subChunkPath);
 		SmartSave.readFull();
 
 		short[] idList = (short[]) SmartSave.get("pallete_ids");
-		String[] nameList = ((String) SmartSave.get("pallete_names")).split(" ");
+		String[] nameList = (String[]) SmartSave.get("pallete_names");
 
 		HashMap<Short, String> pallete = new HashMap<>();
 		for (short i = 0; i < idList.length; i++)
@@ -136,15 +141,15 @@ public class ChunkSerializer
 			pallete.put(idList[i], nameList[i]);
 		}
 
+		short[][][] blocks = (short[][][]) SmartSave.get("blocks");
+
 		for (int i = 0; i < subChunk.getIds().length; i++)
 		{
 			for (int j = 0; j < subChunk.getIds()[i].length; j++)
 			{
-				short[] ids = (short[]) SmartSave.get(i + "_" + j);
-				for (int k = 0; k < ids.length; k++)
+				for (int k = 0; k < subChunk.getIds()[i][j].length; k++)
 				{
-					short sid = ids[k];
-					subChunk.getIds()[i][j][k] = BlockRegistry.getBlockByName(pallete.get(sid)).getId();
+					subChunk.getIds()[i][j][k] = BlockRegistry.getBlockByName(pallete.get(blocks[i][j][k])).getId();
 				}
 			}
 		}

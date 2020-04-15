@@ -32,7 +32,7 @@ public class SubChunkWater
 
 		for (int i = 0; i < 16; i++)
 		{
-			for (int j = 15; j >= 0; j--)
+			for (int j = 0; j < 16; j++)
 			{
 				for (int k = 0; k < 16; k++)
 				{
@@ -45,6 +45,30 @@ public class SubChunkWater
 
 					if (getLiquidVolume(i, j, k) == 0)
 						continue;
+
+					{
+						double vol = getLiquidVolume(i, j, k);
+						totalVolume += vol;
+
+						if (vol > 0.0)
+						{
+							CaveGame.lastWaterCount++;
+							if (CaveGame.getInstance().waterTess.hasSpace())
+							{
+								if (j != 15 || subChunk.getLayer() != subChunk.getParent().getSubChunks().length)
+								{
+									double down = subChunk.getLiquidVolumeEfficiently(i, j + 1, k);
+									if (down > 0)
+										AABBUtil.addWater(i + subChunk.getX() * 16, j + subChunk.getLayer() * 16, k + subChunk.getZ() * 16, 1f, CaveGame.getInstance().waterTess);
+									else
+										AABBUtil.addWater(i + subChunk.getX() * 16, j + subChunk.getLayer() * 16, k + subChunk.getZ() * 16, (float) (vol / 1000.0), CaveGame.getInstance().waterTess);
+								} else
+								{
+									AABBUtil.addWater(i + subChunk.getX() * 16, j + subChunk.getLayer() * 16, k + subChunk.getZ() * 16, (float) (vol / 1000.0), CaveGame.getInstance().waterTess);
+								}
+							}
+						}
+					}
 
 					// Flow Down
 					if (j != 0 || subChunk.getLayer() != 0)
@@ -97,16 +121,6 @@ public class SubChunkWater
 								setLiquidVolumeEfficiently(i, j + 1, k, getLiquidVolumeEfficiently(i, j + 1, k) + flow);
 							}
 						}
-					}
-
-					double vol = getLiquidVolume(i, j, k);
-					totalVolume += vol;
-
-					if (vol > 0.0)
-					{
-						CaveGame.lastWaterCount++;
-						if (CaveGame.getInstance().waterTess.hasSpace())
-							AABBUtil.addWater(i + subChunk.getX() * 16, j + subChunk.getLayer() * 16, k + subChunk.getZ() * 16, (float) (vol / 1000.0), CaveGame.getInstance().waterTess);
 					}
 				}
 			}

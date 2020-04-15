@@ -72,7 +72,7 @@ public class Chunk
 
 	public void saveChunk(World world) throws IOException
 	{
-		File chunk = new File("worlds\\" + world.worldName + "\\chunk_" + x + "_" + z);
+		File chunk = new File("game/worlds/" + world.worldName + "/chunk_" + x + "_" + z);
 		if (!chunk.exists())
 			chunk.mkdir();
 
@@ -82,7 +82,7 @@ public class Chunk
 
 	public void loadChunk(World world) throws IOException
 	{
-		File chunk = new File("worlds\\" + world.worldName + "\\chunk_" + x + "_" + z);
+		File chunk = new File("game/worlds/" + world.worldName + "/chunk_" + x + "_" + z);
 		if (!chunk.exists())
 			throw new FileNotFoundException();
 

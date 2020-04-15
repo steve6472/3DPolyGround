@@ -17,7 +17,7 @@ public class WorldSerializer
 {
 	public static void serialize(World world) throws IOException
 	{
-		File worldFile = new File("worlds\\" + world.worldName);
+		File worldFile = new File("game/worlds/" + world.worldName);
 		if (!worldFile.exists())
 			worldFile.mkdirs();
 
@@ -29,14 +29,14 @@ public class WorldSerializer
 			} catch (IOException e)
 			{
 				System.err.println("Chunk " + c.getX() + "/" + c.getZ() + " failed to save");
-				System.err.println("    " + e.getMessage() + "\n");
+				e.printStackTrace();
 			}
 		});
 	}
 
 	public static World deserialize(World world) throws IOException
 	{
-		File worldFile = new File("worlds\\" + world.worldName);
+		File worldFile = new File("game/worlds/" + world.worldName);
 		if (!worldFile.exists())
 		{
 			try
@@ -45,6 +45,7 @@ public class WorldSerializer
 			} catch (FileNotFoundException e)
 			{
 				e.printStackTrace();
+				return null;
 			}
 		}
 
@@ -58,7 +59,7 @@ public class WorldSerializer
 			} catch (IOException e)
 			{
 				System.err.println("Chunk " + c.getX() + "/" + c.getZ() + " failed to load");
-				System.err.println("    " + e.getMessage() + "\n");
+				e.printStackTrace();
 			}
 			Chunk oldChunk = world.getChunk(c.getX(), c.getZ());
 			if (oldChunk != null)
