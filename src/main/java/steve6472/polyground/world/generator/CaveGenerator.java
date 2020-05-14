@@ -1,5 +1,6 @@
 package steve6472.polyground.world.generator;
 
+import org.joml.SimplexNoise;
 import steve6472.polyground.block.Block;
 import steve6472.polyground.registry.BlockRegistry;
 import steve6472.polyground.world.chunk.SubChunk;
@@ -24,7 +25,22 @@ public class CaveGenerator implements IGenerator
 
 		Block stone = BlockRegistry.getBlockByName("stone");
 
-		iterate((x, y, z) -> subChunk.setBlock(x, y, z, stone));
+//		iterate((x, y, z) -> subChunk.setBlock(x, y, z, stone));
+		long start = System.nanoTime();
+		iterate((x, y, z) -> {
+
+			float scale = 3f;
+
+			float s0 = noise(x + subChunk.getX() * 16, y + subChunk.getLayer() * 16, z + subChunk.getZ() * 16, scale * 0.01f);
+			float s1 = noise(x + subChunk.getX() * 16, y + subChunk.getLayer() * 16, z + subChunk.getZ() * 16, scale * 0.03f);
+			float s2 = noise(x + subChunk.getX() * 16, y + subChunk.getLayer() * 16, z + subChunk.getZ() * 16, scale * 0.03f);
+
+			if (s0 * (s1 + 1) * 2f + s2 < 0.3f)
+				subChunk.setBlock(x, y, z, stone);
+
+//			points[i][j][k] = (s0 * (s1 + 1) * 2f + s2 < 0.3f);
+		});
+		System.out.println((System.nanoTime() - start) / 1000000f);
 
 		//		new SphereCaveFeature(8, 8, 8, 6).generate(subChunk, stone.getId());
 		//		new SphereCaveFeature(8, 15, 8, 4).generate(subChunk, 0);
@@ -32,7 +48,12 @@ public class CaveGenerator implements IGenerator
 
 		//		new EllipsoidCaveFeature(8, 8, 8, 7, 4, 7).generate(subChunk, 0);
 
-		new SphereCaveFeature(8, 24, 8, 20).generate(subChunk, 0);
+//		new SphereCaveFeature(8, 24, 8, 20).generate(subChunk, 0);
+	}
+
+	private static float noise(float x, float y, float z, float scale)
+	{
+		return SimplexNoise.noise(x * scale, y * scale, z * scale);
 	}
 
 	private void iterate(TriConsumer<Integer, Integer, Integer> consumer)

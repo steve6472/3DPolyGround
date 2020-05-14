@@ -35,6 +35,11 @@ public class Frustum
 		return frustumInt.testSphere(x, y, z, radius);
 	}
 
+	public boolean insideFrsutum(float x, float y, float z)
+	{
+		return frustumInt.testPoint(x, y, z);
+	}
+
 	public boolean insideFrsutum(float sx, float sy, float sz, float ex, float ey, float ez)
 	{
 		return frustumInt.testAab(sx, sy, sz, ex, ey, ez);

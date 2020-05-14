@@ -25,13 +25,11 @@ public class ParticleStorage
 	HashMap<Class<? extends Particle>, List<Particle>> particles;
 	HashMap<Class<? extends Particle>, List<Particle>> tickParticles;
 
-	private ParticleTessellator particleTess;
-	private CaveGame pg;
+	private final ParticleTessellator particleTess;
 
-	public ParticleStorage(CaveGame pg)
+	public ParticleStorage()
 	{
-		this.pg = pg;
-		particleTess = new ParticleTessellator();
+		particleTess = new ParticleTessellator(1000000);
 
 		particles = new HashMap<>();
 		tickParticles = new HashMap<>();

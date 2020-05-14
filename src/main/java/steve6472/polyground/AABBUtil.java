@@ -177,7 +177,13 @@ public class AABBUtil
 
 		height = Util.clamp(0.0005f, 1f, height);
 
-		tess.color(0.5f * density, 0.75f * density, 0.9f * density, 0.5f);
+		float r = 0.5f;
+		float g = 0.75f;
+		float b = 0.9f;
+		float a = 1f;
+
+//		tess.color((0.5f) * density, 0.75f * density, 0.9f * density, 0.5f);
+		tess.color(r * density, g * density, b * density, a);
 
 		// Top
 		tess.pos(+1 + x, +1 * height + y, +0 + z).endVertex();
@@ -188,7 +194,8 @@ public class AABBUtil
 		tess.pos(+1 + x, +1 * height + y, +1 + z).endVertex();
 		tess.pos(+1 + x, +1 * height + y, +0 + z).endVertex();
 
-		tess.color(0.5f * 0.8f * density, 0.75f * 0.8f * density, 0.9f * 0.8f * density, 0.5f);
+//		tess.color(0.5f * 0.8f * density, 0.75f * 0.8f * density, 0.9f * 0.8f * density, 0.5f);
+		tess.color(r * 0.8f * density, g * 0.8f * density, b * 0.8f * density, a);
 
 		// East
 		tess.pos(+0 + x, +1 * height + y, +0 + z).endVertex();
@@ -199,7 +206,8 @@ public class AABBUtil
 		tess.pos(+0 + x, +1 * height + y, +1 + z).endVertex();
 		tess.pos(+0 + x, +1 * height + y, +0 + z).endVertex();
 
-		tess.color(0.5f * 0.5f * density, 0.75f * 0.5f * density, 0.9f * 0.5f * density, 0.5f);
+//		tess.color(0.5f * 0.5f * density, 0.75f * 0.5f * density, 0.9f * 0.5f * density, 0.5f);
+		tess.color(r * 0.5f * density, g * 0.5f * density, b * 0.5f * density, a);
 
 		// North
 		tess.pos(+0 + x, +1 * height + y, +1 + z).endVertex();
@@ -209,7 +217,8 @@ public class AABBUtil
 		tess.pos(+1 + x, +0 * height + y, +1 + z).endVertex();
 		tess.pos(+1 + x, +1 * height + y, +1 + z).endVertex();
 		tess.pos(+0 + x, +1 * height + y, +1 + z).endVertex();
-		tess.color(0.5f * 0.8f * density, 0.75f * 0.8f * density, 0.9f * 0.8f * density, 0.5f);
+//		tess.color(0.5f * 0.8f * density, 0.75f * 0.8f * density, 0.9f * 0.8f * density, 0.5f);
+		tess.color(r * 0.8f * density, g * 0.8f * density, b * 0.8f * density, a);
 
 		// West
 		tess.pos(+1 + x, +1 * height + y, +1 + z).endVertex();
@@ -220,7 +229,8 @@ public class AABBUtil
 		tess.pos(+1 + x, +1 * height + y, +0 + z).endVertex();
 		tess.pos(+1 + x, +1 * height + y, +1 + z).endVertex();
 
-		tess.color(0.5f * 0.5f * density, 0.75f * 0.5f * density, 0.9f * 0.5f * density, 0.5f);
+//		tess.color(0.5f * 0.5f * density, 0.75f * 0.5f * density, 0.9f * 0.5f * density, 0.5f);
+		tess.color(r * 0.5f * density, g * 0.5f * density, b * 0.5f * density, a);
 
 		// South
 		tess.pos(+1 + x, +1 * height + y, +0 + z).endVertex();
@@ -231,7 +241,8 @@ public class AABBUtil
 		tess.pos(+0 + x, +1 * height + y, +0 + z).endVertex();
 		tess.pos(+1 + x, +1 * height + y, +0 + z).endVertex();
 
-		tess.color(0.5f * 0.2f * density, 0.75f * 0.2f * density, 0.9f * 0.2f * density, 0.5f);
+//		tess.color(0.5f * 0.2f * density, 0.75f * 0.2f * density, 0.9f * 0.2f * density, 0.5f);
+		tess.color(r * 0.2f * density, g * 0.2f * density, b * 0.2f * density, a);
 
 		// Bottom
 		tess.pos(+0 + x, +0 + y, +1 + z).endVertex();

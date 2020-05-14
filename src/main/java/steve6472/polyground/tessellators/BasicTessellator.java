@@ -1,7 +1,7 @@
 package steve6472.polyground.tessellators;
 
-import steve6472.sge.gfx.TessellatorCreator;
 import org.joml.Vector3f;
+import steve6472.sge.gfx.AbstractTessellator;
 
 import java.nio.FloatBuffer;
 
@@ -11,15 +11,21 @@ import java.nio.FloatBuffer;
  * Project: Poly Creator 2.0
  *
  ***********************/
-public class BasicTessellator extends TessellatorCreator
+public class BasicTessellator extends AbstractTessellator
 {
-	private FloatBuffer pos;
-	private FloatBuffer color;
+	private final FloatBuffer pos;
+	private final FloatBuffer color;
 
 	private float x, y, z;
 	private float r, g, b, a;
 
 	public int current, size;
+
+	public BasicTessellator(int maxLength)
+	{
+		this.pos = this.createBuffer(maxLength * 3);
+		this.color = this.createBuffer(maxLength * 4);
+	}
 
 	public BasicTessellator pos(float x, float y, float z)
 	{
@@ -49,8 +55,8 @@ public class BasicTessellator extends TessellatorCreator
 	@Override
 	public void endVertex()
 	{
-		put(pos, x, y, z);
-		put(color, r, g, b, a);
+		pos.put(x).put(y).put(z);
+		color.put(r).put(g).put(b).put(a);
 		current++;
 		super.endVertex();
 	}
@@ -58,8 +64,9 @@ public class BasicTessellator extends TessellatorCreator
 	@Override
 	public void begin(int vertexCount)
 	{
-		pos = createBuffer(vertexCount * 3);
-		color = createBuffer(vertexCount * 4);
+		setBuffer(pos, vertexCount * 3);
+		setBuffer(color, vertexCount * 4);
+
 		current = 0;
 		size = vertexCount;
 

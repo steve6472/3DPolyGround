@@ -19,16 +19,23 @@ public class SubChunkWater
 	private double totalVolume = 0;
 	private final double[][][] liquid;
 	private final SubChunk subChunk;
+	private boolean isActive;
 
 	public SubChunkWater(SubChunk subChunk)
 	{
 		liquid = new double[16][16][16];
 		this.subChunk = subChunk;
+		isActive = false;
 	}
 
 	public void tick()
 	{
+		if (!isActive)
+			return;
+
 		totalVolume = 0;
+
+		boolean shouldRender = subChunk.getWorld().getPg().frustum.insideFrsutum(subChunk.getX() * 16, subChunk.getLayer() * 16, subChunk.getZ() * 16, subChunk.getX() * 16 + 16, subChunk.getLayer() * 16 + 16, subChunk.getZ() * 16 + 16);
 
 		for (int i = 0; i < 16; i++)
 		{
@@ -46,19 +53,29 @@ public class SubChunkWater
 					if (getLiquidVolume(i, j, k) == 0)
 						continue;
 
-					{
-						double vol = getLiquidVolume(i, j, k);
-						totalVolume += vol;
+					double vol = getLiquidVolume(i, j, k);
+					totalVolume += vol;
 
-						if (vol > 0.0)
+					if (shouldRender &&
+						(getLiquidVolumeEfficiently(i, j + 1, k) <= 1000
+						|| getLiquidVolumeEfficiently(i, j - 1, k) <= 1000
+						|| getLiquidVolumeEfficiently(i, j, k + 1) <= 1000
+						|| getLiquidVolumeEfficiently(i, j, k - 1) <= 1000
+						|| getLiquidVolumeEfficiently(i + 1, j, k) <= 1000
+						|| getLiquidVolumeEfficiently(i - 1, j, k) <= 1000))
+					{
+
+						boolean inFrustum = subChunk.getWorld().getPg().frustum.insideFrsutum(i + subChunk.getX() * 16, j + subChunk.getLayer() * 16, k + subChunk.getZ() * 16, 1.4f);
+
+						if (inFrustum)
 						{
 							CaveGame.lastWaterCount++;
 							if (CaveGame.getInstance().waterTess.hasSpace())
 							{
 								if (j != 15 || subChunk.getLayer() != subChunk.getParent().getSubChunks().length)
 								{
-									double down = subChunk.getLiquidVolumeEfficiently(i, j + 1, k);
-									if (down > 0)
+									double upVolume = subChunk.getLiquidVolumeEfficiently(i, j + 1, k);
+									if (upVolume > 0)
 										AABBUtil.addWater(i + subChunk.getX() * 16, j + subChunk.getLayer() * 16, k + subChunk.getZ() * 16, 1f, CaveGame.getInstance().waterTess);
 									else
 										AABBUtil.addWater(i + subChunk.getX() * 16, j + subChunk.getLayer() * 16, k + subChunk.getZ() * 16, (float) (vol / 1000.0), CaveGame.getInstance().waterTess);
@@ -99,7 +116,7 @@ public class SubChunkWater
 					// Flow South
 					if (i != 0 || subChunk.getParent().getNeighbouringChunk(EnumFace.SOUTH) != null)
 						flowSide(i, j, k, -1, 0);
-					// Flow East
+					// Flow west
 					if (k != 0 || subChunk.getParent().getNeighbouringChunk(EnumFace.WEST) != null)
 						flowSide(i, j, k, 0, -1);
 
@@ -125,9 +142,12 @@ public class SubChunkWater
 				}
 			}
 		}
+
+		if (totalVolume == 0)
+			isActive = false;
 	}
 
-	private void flowSide(int i, int j, int k, int dx, int dz)
+	private boolean flowSide(int i, int j, int k, int dx, int dz)
 	{
 		double volume = getLiquidVolume(i, j, k);
 		Block north = subChunk.getBlockEfficiently(i + dx, j, k + dz);
@@ -144,8 +164,10 @@ public class SubChunkWater
 				flow /= 5.0;
 				setLiquidVolume(i, j, k, volume - flow);
 				setLiquidVolumeEfficiently(i + dx, j, k + dz, getLiquidVolumeEfficiently(i + dx, j, k + dz) + flow);
+				return true;
 			}
 		}
+		return false;
 	}
 
 	public double getLiquidVolume(int x, int y, int z)
@@ -170,6 +192,8 @@ public class SubChunkWater
 	public void setLiquidVolume(int x, int y, int z, double volume)
 	{
 		liquid[x][y][z] = volume;
+		if (volume > 0)
+			isActive = true;
 	}
 
 	public void setLiquidVolumeEfficiently(int x, int y, int z, double volume)
@@ -184,5 +208,10 @@ public class SubChunkWater
 				return;
 			sc.setLiquidVolume(Math.floorMod(x, 16), Math.floorMod(y, 16), Math.floorMod(z, 16), volume);
 		}
+	}
+
+	public boolean isActive()
+	{
+		return isActive;
 	}
 }

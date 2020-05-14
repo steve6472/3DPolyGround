@@ -29,7 +29,7 @@ public class ItemBar extends Component
 	@Override
 	public void init(MainApp main)
 	{
-		itemTextureTessellator = new ItemTextureTessellator();
+		itemTextureTessellator = new ItemTextureTessellator(6 * 7 * 2);
 	}
 
 	@Override

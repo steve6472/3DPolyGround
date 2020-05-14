@@ -79,7 +79,7 @@ public class BlockCreatorGui extends Gui
 		textureNames = new HashMap<>();
 		textureNamesReference = new HashMap<>();
 		preview = new BlockPreview(this);
-		loadAllTextures();
+//		loadAllTextures();
 		getMainApp().getEventHandler().register(preview);
 
 		buttonSheme = MainApp.getSchemeRegistry().copyDefaultScheme(SchemeButton.class);
@@ -97,7 +97,7 @@ public class BlockCreatorGui extends Gui
 		textureShader.bind();
 		textureShader.setUniform(ItemTextureShader.ATLAS, 0);
 
-		tessellator = new ItemTextureTessellator();
+		tessellator = new ItemTextureTessellator(6);
 
 		Background.createComponent(this);
 

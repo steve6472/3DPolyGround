@@ -10,6 +10,7 @@ import steve6472.polyground.block.model.BlockModelLoader;
 import steve6472.polyground.commands.CommandSource;
 import steve6472.polyground.entity.Player;
 import steve6472.polyground.events.CancellableEvent;
+import steve6472.polyground.events.SpecialBlockRegistryEvent;
 import steve6472.polyground.events.WorldEvent;
 import steve6472.polyground.gfx.CGGBuffer;
 import steve6472.polyground.gfx.CGSkybox;
@@ -31,7 +32,6 @@ import steve6472.polyground.rift.RiftModel;
 import steve6472.polyground.teleporter.Teleporter;
 import steve6472.polyground.teleporter.TeleporterManager;
 import steve6472.polyground.tessellators.BasicTessellator;
-import steve6472.polyground.tessellators.EntityTessellator;
 import steve6472.polyground.world.BuildHelper;
 import steve6472.polyground.world.World;
 import steve6472.polyground.world.chunk.SubChunk;
@@ -84,10 +84,10 @@ public class CaveGame extends MainApp
 
 	public static ShaderStorage shaders;
 	private DepthFrameBuffer mainFrameBuffer;
+	private DepthFrameBuffer waterFrameBuffer;
 	private PostProcessing pp;
 	public BuildHelper buildHelper;
 	public BasicTessellator basicTess, waterTess;
-	public EntityTessellator entityTessellator;
 	public Frustum frustum;
 	public CGSkybox skybox;
 
@@ -116,13 +116,14 @@ public class CaveGame extends MainApp
 		unbindVAO();
 
 		mainFrameBuffer = new DepthFrameBuffer(getWidth(), getHeight(), true);
+		waterFrameBuffer = new DepthFrameBuffer(getWidth(), getHeight());
 		pp = new PostProcessing(getWidth(), getHeight());
 		getEventHandler().register(pp);
 
-		entityTessellator = new EntityTessellator();
-
 		player = new Player(this);
 		getEventHandler().register(player);
+
+		getEventHandler().runEvent(new SpecialBlockRegistryEvent());
 
 		buildHelper = new BuildHelper();
 		blockModelLoader = new BlockModelLoader();
@@ -146,10 +147,10 @@ public class CaveGame extends MainApp
 		generatorRegistry = new GeneratorRegistry();
 		SubChunk.generator = generatorRegistry.getGenerator("flat");
 
-		particles = new ParticleStorage(this);
+		particles = new ParticleStorage();
 
-		basicTess = new BasicTessellator();
-		waterTess = new BasicTessellator();
+		basicTess = new BasicTessellator(1000000);
+		waterTess = new BasicTessellator(16777216);
 
 		shaders = new ShaderStorage();
 		getEventHandler().register(shaders);
@@ -170,6 +171,7 @@ public class CaveGame extends MainApp
 		//		hitboxList.add(new ParticleHitbox(0.05f, 0.1f, 0.05f, 0.1f, new Vector4f(2.5f, 2.5f, 2.5f, 1)));
 
 //				getWindow().maximize();
+		Window.enableVSync(true);
 	}
 
 	public void placeRifts()
@@ -268,7 +270,7 @@ public class CaveGame extends MainApp
 	{
 		currentWaterCount = lastWaterCount * 36;
 		lastWaterCount = 0;
-		waterTess.begin(currentWaterCount);
+		waterTess.begin(Math.min(currentWaterCount, 16777216));
 
 		options.isInMenu = false;
 		options.isMouseFree = false;
@@ -368,9 +370,14 @@ public class CaveGame extends MainApp
 	public static List<AABBf> t = new ArrayList<>();
 	public static List<Water> water = new ArrayList<>();
 
-	public void renderTheWorld(boolean deferred)
+	public void resetFrustum()
 	{
 		frustum.updateFrustum(shaders.getProjectionMatrix(), getCamera().getViewMatrix());
+	}
+
+	public void renderTheWorld(boolean deferred)
+	{
+		resetFrustum();
 
 		if (world == null)
 			return;
@@ -392,14 +399,6 @@ public class CaveGame extends MainApp
 		basicTess.draw(Tessellator.LINES);
 		basicTess.disable(0, 1);
 
-
-		/* Render water */
-		shaders.mainShader.bind(getCamera().getViewMatrix());
-		waterTess.loadPos(0);
-		waterTess.loadColor(1);
-		GL20.glDrawArrays(Tessellator.TRIANGLES, 0, currentWaterCount);
-		waterTess.disable(0, 1);
-
 		/* END */
 
 		if (options.renderTeleporters)
@@ -417,7 +416,7 @@ public class CaveGame extends MainApp
 		if (!deferred)
 		{
 			if (!CaveGame.runGameEvent(new WorldEvent.PreRender(world)))
-				world.render(false);
+				world.render(false, false);
 			CaveGame.runGameEvent(new WorldEvent.PostRender(world));
 		}
 
@@ -450,10 +449,10 @@ public class CaveGame extends MainApp
 	/**
 	 * Copies Depth Buffer from gBuffer to gBufferOutput
 	 */
-	private void copyDepthToForwardBuffer()
+	private void copyDepthToBuffer(int bufferToCopyTo)
 	{
 		GL30.glBindFramebuffer(GL30.GL_READ_FRAMEBUFFER, gBuffer.frameBuffer);
-		GL30.glBindFramebuffer(GL30.GL_DRAW_FRAMEBUFFER, mainFrameBuffer.frameBuffer);
+		GL30.glBindFramebuffer(GL30.GL_DRAW_FRAMEBUFFER, bufferToCopyTo);
 		GL30.glBlitFramebuffer(0, 0, gBuffer.getWidth(), gBuffer.getHeight(), 0, 0, getWidth(), getHeight(), GL_DEPTH_BUFFER_BIT, GL_NEAREST);
 		GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, 0);
 	}
@@ -469,7 +468,7 @@ public class CaveGame extends MainApp
 			world.tryRebuild();
 
 			if (!CaveGame.runGameEvent(new WorldEvent.PreRender(world)))
-				world.render(true);
+				world.render(true, true);
 			CaveGame.runGameEvent(new WorldEvent.PostRender(world));
 
 			mainFrameBuffer.bindFrameBuffer(this);
@@ -487,14 +486,28 @@ public class CaveGame extends MainApp
 
 			mainFrameBuffer.unbindCurrentFrameBuffer(this);
 
-			copyDepthToForwardBuffer();
-
+			copyDepthToBuffer(mainFrameBuffer.frameBuffer);
 		}
+
+		/* Render water */
+		waterFrameBuffer.bindFrameBuffer(this);
+		DepthFrameBuffer.clearCurrentBuffer();
+		copyDepthToBuffer(waterFrameBuffer.frameBuffer);
+		waterFrameBuffer.bindFrameBuffer(this);
+		shaders.mainShader.bind(getCamera().getViewMatrix());
+		waterTess.loadPos(0);
+		waterTess.loadColor(1);
+		GL20.glDrawArrays(Tessellator.TRIANGLES, 0, currentWaterCount);
+		waterTess.disable(0, 1);
 
 		getRifts().render();
 
 		mainFrameBuffer.bindFrameBuffer(this);
 		renderTheWorld(false);
+
+		shaders.waterShader.bind();
+		Sprite.bind(0, waterFrameBuffer.texture);
+		VertexObjectCreator.basicRender(finalRenderQuad, 2, 6, Tessellator.TRIANGLES);
 
 		if (options.renderLights)
 			LightManager.renderLights();
@@ -522,9 +535,9 @@ public class CaveGame extends MainApp
 		glViewport(0, 0, getWidth(), getHeight());
 
 		if (options.enablePostProcessing)
-			SpriteRender.renderSpriteInverted(0, 0, getWidth(), getHeight(), 0, pp.combine.getOutTexture());
+			SpriteRender.renderSpriteInverted(0, 0, getWidth(), getHeight(), pp.combine.getOutTexture());
 		else
-			SpriteRender.renderSpriteInverted(0, 0, getWidth(), getHeight(), 0, mainFrameBuffer.texture);
+			SpriteRender.renderSpriteInverted(0, 0, getWidth(), getHeight(), mainFrameBuffer.texture);
 
 		renderGui();
 
@@ -565,6 +578,7 @@ public class CaveGame extends MainApp
 	public void resize(WindowSizeEvent e)
 	{
 		mainFrameBuffer.resize(e.getWidth(), e.getHeight());
+		waterFrameBuffer.resize(e.getWidth(), e.getHeight());
 		skybox.updateProjection(PolyUtil.createProjectionMatrix(e.getWidth(), e.getHeight()));
 	}
 

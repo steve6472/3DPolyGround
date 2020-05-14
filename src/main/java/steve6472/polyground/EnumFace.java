@@ -43,6 +43,9 @@ public enum EnumFace
 	 */
 	NONE;
 
+	private static final EnumFace[] FACES = new EnumFace[] {UP, DOWN, NORTH, EAST, SOUTH, WEST};
+	private static final EnumFace[] FACES_REVERSED = new EnumFace[] {WEST, SOUTH, EAST, NORTH, DOWN, UP};
+
 	public String getName()
 	{
 		return this.name().toLowerCase();
@@ -55,12 +58,12 @@ public enum EnumFace
 
 	public static EnumFace[] getFaces()
 	{
-		return new EnumFace[]{UP, DOWN, NORTH, EAST, SOUTH, WEST};
+		return FACES;
 	}
 
 	public static EnumFace[] getFacesReversed()
 	{
-		return new EnumFace[]{WEST, SOUTH, EAST, NORTH, DOWN, UP};
+		return FACES_REVERSED;
 	}
 
 	public boolean isSide()

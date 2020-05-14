@@ -23,7 +23,8 @@ public class WaterGeneratorBlock extends Block
 	@Override
 	public void tick(SubChunk subChunk, BlockData blockData, int x, int y, int z)
 	{
-		subChunk.setLiquidVolumeEfficiently(x, y + 1, z, subChunk.getLiquidVolumeEfficiently(x, y + 1, z) + 1000.0 / 60.0);
+//		subChunk.setLiquidVolumeEfficiently(x, y + 1, z, subChunk.getLiquidVolumeEfficiently(x, y + 1, z) + 1000.0 / 60.0);
+		subChunk.setLiquidVolumeEfficiently(x, y + 1, z, subChunk.getLiquidVolumeEfficiently(x, y + 1, z) + 10000.0);
 //		subChunk.setLiquidVolumeEfficiently(x, y + 1, z, 100000);
 	}
 

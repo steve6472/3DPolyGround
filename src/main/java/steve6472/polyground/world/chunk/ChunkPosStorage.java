@@ -97,6 +97,11 @@ public class ChunkPosStorage
 		}
 	}
 
+	public boolean isEmpty()
+	{
+		return pos.isEmpty();
+	}
+
 	public Iterator<Short> iterator()
 	{
 		return pos.iterator();

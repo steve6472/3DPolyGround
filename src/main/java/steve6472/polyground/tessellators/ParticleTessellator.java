@@ -1,7 +1,7 @@
 package steve6472.polyground.tessellators;
 
-import steve6472.sge.gfx.TessellatorCreator;
 import org.joml.Vector4f;
+import steve6472.sge.gfx.AbstractTessellator;
 
 import java.nio.FloatBuffer;
 
@@ -11,15 +11,22 @@ import java.nio.FloatBuffer;
  * Project: Main3D
  *
  ***********************/
-public class ParticleTessellator extends TessellatorCreator
+public class ParticleTessellator extends AbstractTessellator
 {
-	private FloatBuffer pos;
-	private FloatBuffer color;
-	private FloatBuffer size;
+	private final FloatBuffer pos;
+	private final FloatBuffer color;
+	private final FloatBuffer size;
 
 	private float x, y, z;
 	private float r, g, b, a;
 	private float s;
+
+	public ParticleTessellator(int maxLength)
+	{
+		this.pos = this.createBuffer(maxLength * 3);
+		this.color = this.createBuffer(maxLength * 4);
+		this.size = this.createBuffer(maxLength);
+	}
 
 	public ParticleTessellator pos(float x, float y, float z)
 	{
@@ -56,18 +63,18 @@ public class ParticleTessellator extends TessellatorCreator
 	@Override
 	public void endVertex()
 	{
-		put(pos, x, y, z);
-		put(color, r, g, b, a);
-		put(size, s);
+		pos.put(x).put(y).put(z);
+		color.put(r).put(g).put(b).put(a);
+		size.put(s);
 		super.endVertex();
 	}
 
 	@Override
 	public void begin(int vertexCount)
 	{
-		pos = createBuffer(vertexCount * 3);
-		color = createBuffer(vertexCount * 4);
-		size = createBuffer(vertexCount);
+		setBuffer(pos, vertexCount * 3);
+		setBuffer(color, vertexCount * 4);
+		setBuffer(size, vertexCount);
 
 		super.begin(vertexCount);
 	}

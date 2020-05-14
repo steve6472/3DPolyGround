@@ -23,8 +23,10 @@ public class Creator extends MainApp
 	@Override
 	public void init()
 	{
-		UI = new Sprite("*creator\\ui.png");
-		BUTTONS = new Sprite("*creator\\buttons.png");
+//		UI = new Sprite("*creator\\ui.png");
+//		BUTTONS = new Sprite("*creator\\buttons.png");
+		UI = new Sprite(new int[] {0xffff00ff}, 1, 1);
+		BUTTONS = new Sprite(new int[] {0xffff00ff}, 1, 1);
 
 		blockCreatorGui = new BlockCreatorGui(this);
 		blockCreatorGui.setVisible(true);

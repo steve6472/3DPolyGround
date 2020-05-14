@@ -43,7 +43,7 @@ public class View
 	{
 		this.conditionGenerator = conditionGenerator;
 		this.mainApp = conditionGenerator.getMainApp();
-		basicTess = new BasicTessellator();
+		basicTess = new BasicTessellator(12 * 27 * 24);
 
 		shader = new MainShader();
 		shader.bind();
@@ -219,5 +219,4 @@ public class View
 			tess.pos(t.x2, t.y2, t.z2).endVertex();
 		}
 	}
-
 }

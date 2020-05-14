@@ -4,6 +4,7 @@ import steve6472.polyground.CaveGame;
 import steve6472.polyground.EnumFace;
 import steve6472.polyground.block.Block;
 import steve6472.polyground.block.blockdata.BlockData;
+import steve6472.polyground.gui.InGameGui;
 import steve6472.polyground.registry.BlockRegistry;
 import steve6472.polyground.world.World;
 import steve6472.polyground.world.biomes.IBiomeProvider;
@@ -71,29 +72,38 @@ public class SubChunk implements IBiomeProvider
 
 	public void tick()
 	{
-		tickableBlocks.iterate((x, y, z) ->
+		if (!tickableBlocks.isEmpty())
 		{
-			Block blockToTick = BlockRegistry.getBlockById(blocks.getIds()[x][y][z]);
-			blockToTick.tick(this, blockData.getBlockData(x, y, z), x, y, z);
-		});
+			tickableBlocks.iterate((x, y, z) ->
+			{
+				Block blockToTick = BlockRegistry.getBlockById(blocks.getIds()[x][y][z]);
+				blockToTick.tick(this, blockData.getBlockData(x, y, z), x, y, z);
+			});
+		}
 
 		scheduledUpdates.addAll(newScheduledUpdates);
 		newScheduledUpdates.clear();
 
-		for (Iterator<Short> iter = scheduledUpdates.iterator(); iter.hasNext(); )
+		if (!scheduledUpdates.isEmpty())
 		{
-			short i = iter.next();
+			for (Iterator<Short> iter = scheduledUpdates.iterator(); iter.hasNext(); )
+			{
+				short i = iter.next();
 
-			short x = (short) (i >> 8);
-			short y = (short) ((i >> 4) & 0xf);
-			short z = (short) (i & 0xf);
+				short x = (short) (i >> 8);
+				short y = (short) ((i >> 4) & 0xf);
+				short z = (short) (i & 0xf);
 
-			Block blockToUpdate = BlockRegistry.getBlockById(blocks.getIds()[x][y][z]);
-			blockToUpdate.onUpdate(this, blockData.getBlockData(x, y, z), EnumFace.NONE, x, y, z);
-			iter.remove();
+				Block blockToUpdate = BlockRegistry.getBlockById(blocks.getIds()[x][y][z]);
+				blockToUpdate.onUpdate(this, blockData.getBlockData(x, y, z), EnumFace.NONE, x, y, z);
+				iter.remove();
+			}
 		}
 
 		water.tick();
+
+		if (water.isActive())
+			InGameGui.waterActive++;
 	}
 
 	public void saveSubChunk() throws IOException

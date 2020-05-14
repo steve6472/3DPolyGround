@@ -95,7 +95,7 @@ public class Minimap extends Component
 		if (world != null)
 		{
 			if (!CaveGame.runGameEvent(new WorldEvent.PreRender(world)))
-				world.render(false);
+				world.render(false, false);
 			CaveGame.runGameEvent(new WorldEvent.PostRender(world));
 		}
 
@@ -104,6 +104,7 @@ public class Minimap extends Component
 
 		game.getPlayer().setCamera(temp);
 		buffer.unbindCurrentFrameBuffer(game);
+		game.resetFrustum();
 	}
 
 	public boolean isRender()

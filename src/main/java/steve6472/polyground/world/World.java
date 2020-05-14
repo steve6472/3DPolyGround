@@ -8,6 +8,7 @@ import steve6472.polyground.block.BlockTextureHolder;
 import steve6472.polyground.entity.EntityManager;
 import steve6472.polyground.gfx.shaders.CGGShader;
 import steve6472.polyground.gfx.shaders.world.WorldShader;
+import steve6472.polyground.gui.InGameGui;
 import steve6472.polyground.world.chunk.Chunk;
 import steve6472.polyground.world.chunk.ModelLayer;
 import steve6472.polyground.world.chunk.SubChunk;
@@ -32,6 +33,8 @@ import static org.lwjgl.opengl.GL30.glBindVertexArray;
  ***********************/
 public class World implements IBlockProvider
 {
+	private final int HEIGHT = 8;
+
 	private GridStorage<Chunk> chunks;
 	private EntityManager entityManager;
 
@@ -41,10 +44,12 @@ public class World implements IBlockProvider
 
 	public boolean shouldRebuild = false;
 	public String worldName = null;
-	private final int HEIGHT = 4;
+
+	private Matrix4f mat;
 
 	public World(CaveGame pg)
 	{
+		mat = new Matrix4f();
 		this.pg = pg;
 		chunks = new GridStorage<>();
 
@@ -60,7 +65,11 @@ public class World implements IBlockProvider
 
 	public void tick()
 	{
-		chunks.getMap().values().forEach(Chunk::tick);
+		InGameGui.waterActive = 0;
+		for (Chunk chunk : chunks.getMap().values())
+		{
+			chunk.tick();
+		}
 
 		renderChunkOutlines();
 
@@ -165,8 +174,14 @@ public class World implements IBlockProvider
 		}
 	}
 
-	public void render(boolean deferred)
+	public void render(boolean deferred, boolean countChunks)
 	{
+		if (countChunks)
+		{
+			InGameGui.chunks = 0;
+			InGameGui.chunkLayers = 0;
+		}
+
 		if (deferred)
 		{
 			CaveGame.shaders.gShader.bind(CaveGame.getInstance().getCamera().getViewMatrix());
@@ -199,11 +214,14 @@ public class World implements IBlockProvider
 
 				if (deferred)
 				{
-					CaveGame.shaders.gShader.setTransformation(new Matrix4f().translate(chunk.getX() * 16, k * 16, chunk.getZ() * 16));
+					CaveGame.shaders.gShader.setTransformation(mat.identity().translate(chunk.getX() * 16, k * 16, chunk.getZ() * 16));
 				} else
 				{
-					CaveGame.shaders.worldShader.setTransformation(new Matrix4f().translate(chunk.getX() * 16, k * 16, chunk.getZ() * 16));
+					CaveGame.shaders.worldShader.setTransformation(mat.identity().translate(chunk.getX() * 16, k * 16, chunk.getZ() * 16));
 				}
+
+				if (countChunks)
+					InGameGui.chunks++;
 
 				/*
 				 * Rendered in reverse order to get the desired effect
@@ -233,6 +251,9 @@ public class World implements IBlockProvider
 							CaveGame.shaders.gShader.setUniform(CGGShader.EMISSION_TOGGLE, 0.0f);
 						}
 					}
+
+					if (countChunks)
+						InGameGui.chunkLayers++;
 
 					glBindVertexArray(sc.getModel(i).getVao());
 

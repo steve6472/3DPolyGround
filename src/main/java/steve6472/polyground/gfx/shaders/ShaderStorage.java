@@ -32,6 +32,7 @@ public class ShaderStorage
 	public ItemTextureShader itemTextureShader;
 	public DebugShader debugShader;
 	public RiftShader riftShader;
+	public WaterShader waterShader;
 
 	public CGGShader gShader;
 	public GenericDeferredShader<LightUniform> deferredShader;
@@ -56,6 +57,7 @@ public class ShaderStorage
 		itemTextureShader = new ItemTextureShader();
 		debugShader = new DebugShader();
 		riftShader = new RiftShader();
+		waterShader = new WaterShader();
 
 		gShader = new CGGShader("deferred/g");
 
@@ -113,6 +115,11 @@ public class ShaderStorage
 		deferredShader.setUniform(CGDeferredShader.emission, 3);
 		deferredShader.setUniform(CGDeferredShader.emissionPos, 4);
 		Shader.releaseShader();
+
+		waterShader.getShader().bind();
+		waterShader.setProjection(ortho);
+		waterShader.setTransformation(new Matrix4f());
+		waterShader.setUniform(WaterShader.TEXTURE, 0);
 	}
 
 	public Matrix4f getProjectionMatrix()

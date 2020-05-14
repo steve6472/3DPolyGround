@@ -1,6 +1,6 @@
 package steve6472.polyground.tessellators;
 
-import steve6472.sge.gfx.TessellatorCreator;
+import steve6472.sge.gfx.AbstractTessellator;
 
 import java.nio.FloatBuffer;
 
@@ -10,15 +10,22 @@ import java.nio.FloatBuffer;
  * Project: SJP
  *
  ***********************/
-public class ItemTextureTessellator extends TessellatorCreator
+public class ItemTextureTessellator extends AbstractTessellator
 {
-	private FloatBuffer pos;
-	private FloatBuffer texture;
-	private FloatBuffer alpha;
+	private final FloatBuffer pos;
+	private final FloatBuffer texture;
+	private final FloatBuffer alpha;
 
 	private float x, y;
 	private float u, v;
 	private float a;
+
+	public ItemTextureTessellator(int maxLimit)
+	{
+		pos = createBuffer(maxLimit * 2);
+		texture = createBuffer(maxLimit * 2);
+		alpha = createBuffer(maxLimit);
+	}
 
 	public ItemTextureTessellator pos(float x, float y)
 	{
@@ -43,18 +50,18 @@ public class ItemTextureTessellator extends TessellatorCreator
 	@Override
 	public void endVertex()
 	{
-		put(pos, x, y);
-		put(texture, u, v);
-		put(alpha, a);
+		pos.put(x).put(y);
+		texture.put(u).put(v);
+		alpha.put(a);
 		super.endVertex();
 	}
 
 	@Override
 	public void begin(int vertexCount)
 	{
-		pos = createBuffer(vertexCount * 2);
-		texture = createBuffer(vertexCount * 2);
-		alpha = createBuffer(vertexCount);
+		setBuffer(pos, vertexCount * 2);
+		setBuffer(texture, vertexCount * 2);
+		setBuffer(alpha, vertexCount);
 
 		super.begin(vertexCount);
 	}

@@ -99,6 +99,8 @@ public class InGameGui extends Gui implements IGamePause
 		CaveGame.runGameEvent(new InGameGuiEvent.PostRenderCrosshair(this));
 	}
 
+	public static int chunks, chunkLayers, waterActive;
+
 	public void renderTheRest()
 	{
 		CaveGame main = CaveGame.getInstance();
@@ -118,6 +120,8 @@ public class InGameGui extends Gui implements IGamePause
 		}
 
 		sb.append("Particles: ").append(main.particles.count()).append("\n");
+		sb.append("Chunks: ").append(chunks).append("/").append(chunkLayers).append("\n");
+		sb.append("Water Active Chunks: ").append(waterActive).append("\n");
 
 		int activeLightCount = 0;
 		for (Light light : LightManager.lights)

@@ -65,8 +65,8 @@ public class BlockPreview
 		normal = new ArrayList<>();
 
 		buildHelper = new BuildHelper();
-		itemTessellator = new ItemTessellator();
-		basicTessellator = new BasicTessellator();
+		itemTessellator = new ItemTessellator((int) Math.pow(2, 16));
+		basicTessellator = new BasicTessellator(6);
 
 		flatTexturedShader = new FlatTexturedShader();
 		Matrix4f projectionMatrix = PolyUtil.createProjectionMatrix(16 * 70, 9 * 70, 3f, 80f);

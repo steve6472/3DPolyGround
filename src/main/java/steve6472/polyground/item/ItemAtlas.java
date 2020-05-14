@@ -63,7 +63,7 @@ public class ItemAtlas
 
 		itemTexture = new Sprite();
 
-		itemTessellator = new ItemTessellator();
+		itemTessellator = new ItemTessellator((int) Math.pow(2, 16));
 
 		s = Atlas.getNextPowerOfTwo((int) Math.ceil(Math.sqrt(BlockRegistry.getAllBlocks().length)));
 		totalSize = s * itemSize;
