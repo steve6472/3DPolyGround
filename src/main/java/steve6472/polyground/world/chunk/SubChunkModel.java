@@ -48,9 +48,9 @@ public class SubChunkModel
 		List<Float> textures = new ArrayList<>(triangleCount * 2);
 		List<Float> normal = new ArrayList<>(triangleCount * 3);
 
-		sc.getParent().getWorld().getPg().buildHelper.load(vertices, colors, textures, normal);
+		sc.getParent().getWorld().getGame().mainRender.buildHelper.load(vertices, colors, textures, normal);
 
-		BuildHelper buildHelper = sc.getWorld().getPg().buildHelper;
+		BuildHelper buildHelper = sc.getWorld().getGame().mainRender.buildHelper;
 
 		triangleCount = 0;
 
@@ -69,7 +69,7 @@ public class SubChunkModel
 					{
 						if (b != null && b != Block.air)
 						{
-							sc.getParent().getWorld().getPg().buildHelper.load(j, i, k);
+							sc.getParent().getWorld().getGame().mainRender.buildHelper.load(j, i, k);
 							triangleCount += b.createModel(j, i, k, sc, blockData, buildHelper, modelLayer);
 						}
 

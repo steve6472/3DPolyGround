@@ -129,7 +129,7 @@ public class SubChunk implements IBiomeProvider
 
 		if (CaveGame.getInstance().options.lightDebug)
 		{
-			CaveGame.getInstance().particles.getMap().values().forEach(list -> list.forEach(particle ->
+			getWorld().getGame().mainRender.particles.getMap().values().forEach(list -> list.forEach(particle ->
 			{
 				if (particle.hasTag("DebugLight" + getX() + "_" + getLayer() + "_" + getZ()))
 				{

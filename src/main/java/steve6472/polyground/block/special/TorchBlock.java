@@ -161,7 +161,7 @@ public class TorchBlock extends Block
 			RandomUtil.randomFloat(1f / 48f, 1f / 24f),
 			r, g, b, a, l
 			);
-		subChunk.getWorld().getPg().particles.addParticle(p);
+		subChunk.getWorld().getGame().mainRender.particles.addParticle(p);
 	}
 
 	/**

@@ -2,6 +2,7 @@ package steve6472.polyground.entity.parkour;
 
 import steve6472.polyground.AABBUtil;
 import steve6472.polyground.CaveGame;
+import steve6472.polyground.gfx.MainRender;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +36,7 @@ public class Population
 		for (ParkourEntity parkourEntity : parkourEntities)
 		{
 			if (!parkourEntity.isDead() || parkourEntity.goalReached())
-				AABBUtil.renderAABBf(parkourEntity.getHitbox().getHitbox(), CaveGame.getInstance().basicTess, 1, CaveGame.shaders.mainShader);
+				AABBUtil.renderAABBf(parkourEntity.getHitbox().getHitbox(), CaveGame.getInstance().mainRender.basicTess, 1, MainRender.shaders.mainShader);
 		}
 	}
 

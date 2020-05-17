@@ -6,6 +6,7 @@ import org.joml.Vector4f;
 import steve6472.polyground.CaveGame;
 import steve6472.polyground.Particle;
 import steve6472.polyground.QuickSort;
+import steve6472.polyground.gfx.MainRender;
 import steve6472.polyground.gfx.particle.particles.BasicParticle;
 import steve6472.polyground.tessellators.ParticleTessellator;
 import steve6472.sge.gfx.Tessellator;
@@ -26,10 +27,12 @@ public class ParticleStorage
 	HashMap<Class<? extends Particle>, List<Particle>> tickParticles;
 
 	private final ParticleTessellator particleTess;
+	private final MainRender mainRender;
 
-	public ParticleStorage()
+	public ParticleStorage(MainRender mainRender)
 	{
 		particleTess = new ParticleTessellator(1000000);
+		this.mainRender = mainRender;
 
 		particles = new HashMap<>();
 		tickParticles = new HashMap<>();
@@ -99,7 +102,7 @@ public class ParticleStorage
 			for (Particle p : list)
 			{
 				//				p.applyInvidualShader();
-				if (CaveGame.getInstance().frustum.insideFrsutum(p.getX() - p.getSize(), p.getY() - p.getSize(), p.getZ() - p.getSize(), p.getX() + p.getSize(), p.getY() + p.getSize(), p.getZ() + p.getSize()))
+				if (mainRender.frustum.insideFrsutum(p.getX() - p.getSize(), p.getY() - p.getSize(), p.getZ() - p.getSize(), p.getX() + p.getSize(), p.getY() + p.getSize(), p.getZ() + p.getSize()))
 					tess.pos(p.getX(), p.getY(), p.getZ()).color(p.getColor()).size(p.getSize()).endVertex();
 			}
 

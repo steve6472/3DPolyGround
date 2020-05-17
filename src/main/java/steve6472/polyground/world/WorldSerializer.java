@@ -51,6 +51,9 @@ public class WorldSerializer
 
 		for (File chunkFile : Objects.requireNonNull(worldFile.listFiles()))
 		{
+			if (!chunkFile.isDirectory())
+				continue;
+
 			String[] name = chunkFile.getName().split("_");
 			Chunk c = new Chunk(Integer.parseInt(name[1]), Integer.parseInt(name[2]), world);
 			try

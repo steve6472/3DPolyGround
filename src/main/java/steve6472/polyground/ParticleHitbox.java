@@ -28,8 +28,8 @@ public class ParticleHitbox
 		return hitbox;
 	}
 
-	public void tick(CaveGame pg)
+	public void tick(CaveGame game)
 	{
-		pg.particles.addBasicTickParticle(hitbox.minX + size, hitbox.minY + size, hitbox.minZ + size, size, color.x, color.y, color.z, color.w);
+		game.mainRender.particles.addBasicTickParticle(hitbox.minX + size, hitbox.minY + size, hitbox.minZ + size, size, color.x, color.y, color.z, color.w);
 	}
 }

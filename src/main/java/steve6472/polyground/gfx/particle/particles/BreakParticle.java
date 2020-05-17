@@ -1,11 +1,12 @@
 package steve6472.polyground.gfx.particle.particles;
 
+import org.joml.Vector3f;
+import org.joml.Vector4f;
 import steve6472.polyground.CaveGame;
 import steve6472.polyground.Particle;
 import steve6472.polyground.block.BlockTextureHolder;
+import steve6472.polyground.gfx.MainRender;
 import steve6472.sge.main.game.Tag;
-import org.joml.Vector3f;
-import org.joml.Vector4f;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,7 +67,7 @@ public class BreakParticle extends Particle
 	@Override
 	public void applyShader()
 	{
-		CaveGame.shaders.breakParticleShader.bind(CaveGame.getInstance().getCamera().getViewMatrix());
+		MainRender.shaders.breakParticleShader.bind(CaveGame.getInstance().getCamera().getViewMatrix());
 		BlockTextureHolder.getAtlas().getSprite().bind(0);
 	}
 

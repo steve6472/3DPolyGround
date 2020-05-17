@@ -1,10 +1,11 @@
 package steve6472.polyground.gui;
 
 import steve6472.polyground.CaveGame;
+import steve6472.polyground.gfx.MainRender;
+import steve6472.polyground.gfx.shaders.ItemTextureShader;
 import steve6472.polyground.item.Item;
 import steve6472.polyground.item.ItemAtlas;
 import steve6472.polyground.registry.ItemRegistry;
-import steve6472.polyground.gfx.shaders.ItemTextureShader;
 import steve6472.polyground.tessellators.ItemTextureTessellator;
 import steve6472.sge.gfx.Sprite;
 import steve6472.sge.gfx.SpriteRender;
@@ -46,8 +47,8 @@ public class ItemBar extends Component
 		ItemAtlas itemAtlas = CaveGame.getInstance().itemAtlas;
 		Sprite.bind(0, itemAtlas.itemAtlas.texture);
 
-		CaveGame.shaders.itemTextureShader.bind();
-		CaveGame.shaders.itemTextureShader.setUniform(ItemTextureShader.ATLAS, 0);
+		MainRender.shaders.itemTextureShader.bind();
+		MainRender.shaders.itemTextureShader.setUniform(ItemTextureShader.ATLAS, 0);
 
 		itemTextureTessellator.begin(6 * 7);
 

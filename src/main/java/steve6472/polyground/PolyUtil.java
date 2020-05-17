@@ -1,5 +1,6 @@
 package steve6472.polyground;
 
+import steve6472.polyground.gfx.MainRender;
 import steve6472.sge.main.MainApp;
 import steve6472.sge.main.game.Camera;
 import org.joml.Matrix4f;
@@ -89,7 +90,7 @@ public class PolyUtil
 
 	private static Vector4f toEyeCoords(Vector4f clipCoords)
 	{
-		Matrix4f invertedProjection = new Matrix4f(CaveGame.shaders.getProjectionMatrix()).invert();
+		Matrix4f invertedProjection = new Matrix4f(MainRender.shaders.getProjectionMatrix()).invert();
 		Vector4f eyeCoords = invertedProjection.transform(clipCoords);
 		return new Vector4f(eyeCoords.x, eyeCoords.y, -1f, 0f);
 	}
@@ -110,7 +111,7 @@ public class PolyUtil
 	public static void toScreenPos(Vector3f worldPos, Vector2f destination)
 	{
 		Matrix4f viewMatrix = CaveGame.getInstance().getCamera().getViewMatrix();
-		Matrix4f projectionMatrix = CaveGame.shaders.getProjectionMatrix();
+		Matrix4f projectionMatrix = MainRender.shaders.getProjectionMatrix();
 
 		Vector4f clipSpacePos = new Vector4f(worldPos, 1.0f).mul(viewMatrix).mul(projectionMatrix);
 		Vector3f ndcSpacePos = new Vector3f(clipSpacePos.x, clipSpacePos.y, clipSpacePos.z).div(clipSpacePos.w);

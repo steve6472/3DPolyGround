@@ -1,19 +1,20 @@
 package steve6472.polyground.world.interaction;
 
+import org.joml.AABBf;
+import org.joml.Intersectionf;
+import org.joml.Math;
+import org.joml.Vector2f;
 import steve6472.polyground.AABBUtil;
 import steve6472.polyground.CaveGame;
 import steve6472.polyground.EnumFace;
 import steve6472.polyground.HitResult;
 import steve6472.polyground.block.Block;
 import steve6472.polyground.block.model.Cube;
-import steve6472.polyground.registry.BlockRegistry;
 import steve6472.polyground.entity.Player;
+import steve6472.polyground.gfx.MainRender;
+import steve6472.polyground.registry.BlockRegistry;
 import steve6472.polyground.world.World;
 import steve6472.polyground.world.chunk.Chunk;
-import org.joml.AABBf;
-import org.joml.Intersectionf;
-import org.joml.Math;
-import org.joml.Vector2f;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
@@ -38,7 +39,7 @@ public class HitPicker
 	private Vector2f hr;
 	public boolean hit;
 
-	public void tick(Player player, CaveGame pg)
+	public void tick(Player player, CaveGame game)
 	{
 		closest = Float.MAX_VALUE;
 		hit = false;
@@ -127,8 +128,8 @@ public class HitPicker
 				AABBf aabb = t.getAabb();
 
 
-				CaveGame.shaders.mainShader.bind(pg.getCamera().getViewMatrix());
-				AABBUtil.renderAABB(hitResult.getX() - 0.001f + aabb.minX, hitResult.getY() - 0.001f + aabb.minY, hitResult.getZ() - 0.001f + aabb.minZ, hitResult.getX() + 0.001f + aabb.maxX, hitResult.getY() + 0.001f + aabb.maxY, hitResult.getZ() + 0.001f + aabb.maxZ, 1f, pg.basicTess, CaveGame.shaders.mainShader);
+				MainRender.shaders.mainShader.bind(game.getCamera().getViewMatrix());
+				AABBUtil.renderAABB(hitResult.getX() - 0.001f + aabb.minX, hitResult.getY() - 0.001f + aabb.minY, hitResult.getZ() - 0.001f + aabb.minZ, hitResult.getX() + 0.001f + aabb.maxX, hitResult.getY() + 0.001f + aabb.maxY, hitResult.getZ() + 0.001f + aabb.maxZ, 1f, game.mainRender.basicTess, MainRender.shaders.mainShader);
 			}
 
 		}

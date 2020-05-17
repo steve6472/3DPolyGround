@@ -1,15 +1,16 @@
 package steve6472.polyground.gui;
 
+import org.joml.Matrix4f;
 import steve6472.polyground.CaveGame;
 import steve6472.polyground.PolyUtil;
 import steve6472.polyground.events.WorldEvent;
+import steve6472.polyground.gfx.MainRender;
 import steve6472.polyground.world.World;
 import steve6472.sge.gfx.DepthFrameBuffer;
 import steve6472.sge.gfx.SpriteRender;
 import steve6472.sge.gui.Component;
 import steve6472.sge.main.MainApp;
 import steve6472.sge.main.game.Camera;
-import org.joml.Matrix4f;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
@@ -83,10 +84,10 @@ public class Minimap extends Component
 
 		camera.updateViewMatrix();
 		game.getPlayer().setCamera(camera);
-		game.frustum.updateFrustum(projectionMatrix, camera.getViewMatrix());
+		game.mainRender.frustum.updateFrustum(projectionMatrix, camera.getViewMatrix());
 
-		CaveGame.shaders.worldShader.bind();
-		CaveGame.shaders.worldShader.setProjection(projectionMatrix);
+		MainRender.shaders.worldShader.bind();
+		MainRender.shaders.worldShader.setProjection(projectionMatrix);
 
 		buffer.bindFrameBuffer(getWidth(), getHeight());
 		DepthFrameBuffer.clearCurrentBuffer();
@@ -99,12 +100,12 @@ public class Minimap extends Component
 			CaveGame.runGameEvent(new WorldEvent.PostRender(world));
 		}
 
-		CaveGame.shaders.worldShader.bind();
-		CaveGame.shaders.worldShader.setProjection(CaveGame.shaders.getProjectionMatrix());
+		MainRender.shaders.worldShader.bind();
+		MainRender.shaders.worldShader.setProjection(MainRender.shaders.getProjectionMatrix());
 
 		game.getPlayer().setCamera(temp);
 		buffer.unbindCurrentFrameBuffer(game);
-		game.resetFrustum();
+		game.mainRender.resetFrustum();
 	}
 
 	public boolean isRender()

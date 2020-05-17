@@ -10,6 +10,7 @@ import steve6472.polyground.block.model.Cube;
 import steve6472.polyground.block.model.CubeFace;
 import steve6472.polyground.block.model.faceProperty.LayerFaceProperty;
 import steve6472.polyground.block.model.faceProperty.condition.ConditionFaceProperty;
+import steve6472.polyground.gfx.MainRender;
 import steve6472.polyground.registry.BlockRegistry;
 import steve6472.polyground.registry.face.FaceRegistry;
 import steve6472.polyground.tessellators.ItemTessellator;
@@ -134,10 +135,10 @@ public class ItemAtlas
 
 		camera.updateViewMatrix();
 
-		CaveGame.shaders.flatTexturedShader.bind();
-		CaveGame.shaders.flatTexturedShader.setView(camera.getViewMatrix());
-		CaveGame.shaders.flatTexturedShader.setTransformation(transformationMatrix);
-		CaveGame.shaders.flatTexturedShader.setProjection(projectionMatrix);
+		MainRender.shaders.flatTexturedShader.bind();
+		MainRender.shaders.flatTexturedShader.setView(camera.getViewMatrix());
+		MainRender.shaders.flatTexturedShader.setTransformation(transformationMatrix);
+		MainRender.shaders.flatTexturedShader.setProjection(projectionMatrix);
 
 		BlockTextureHolder.getAtlas().getSprite().bind();
 	}

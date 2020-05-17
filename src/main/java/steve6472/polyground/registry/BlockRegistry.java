@@ -27,7 +27,7 @@ public class BlockRegistry
 	private static Block[] blocks;
 	private static HashMap<String, Integer> reference;
 
-	public static void register(CaveGame pg)
+	public static void register(CaveGame game)
 	{
 		File[] blocksFile = new File(MainApp.class.getResource("/blocks").getFile()).listFiles();
 
@@ -60,7 +60,7 @@ public class BlockRegistry
 				block = new Block(blocksFile[i], i + systemBlocks);
 			}
 
-			pg.getEventHandler().register(block);
+			game.getEventHandler().register(block);
 
 			if (!reference.containsKey(block.getName()))
 			{
@@ -97,8 +97,8 @@ public class BlockRegistry
 
 		BlockTextureHolder.compileTextures();
 
-		pg.buildHelper.atlasSize = BlockTextureHolder.getAtlas().getTileCount();
-		pg.buildHelper.texel = 1f / (float) BlockTextureHolder.getAtlas().getTileCount();
+		game.mainRender.buildHelper.atlasSize = BlockTextureHolder.getAtlas().getTileCount();
+		game.mainRender.buildHelper.texel = 1f / (float) BlockTextureHolder.getAtlas().getTileCount();
 	}
 
 	public static int getBlockIdByName(String name)

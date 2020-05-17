@@ -62,9 +62,13 @@ public class MainMenu extends Gui implements IGamePause
 			setVisible(false);
 			CaveGame.getInstance().inGameGui.setVisible(true);
 			CaveGame.getInstance().options.isGamePaused = false;
-			CaveGame.getInstance().placeRifts();
 
 			CaveGame.getInstance().setWorld(new World(CaveGame.getInstance()));
+			CaveGame.getInstance().world.worldName = "house";
+
+			CaveGame.getInstance().world.placeRifts();
+			CaveGame.getInstance().world.teleporters.loadTeleporters();
+
 			try
 			{
 				CommandRegistry registry = CaveGame.getInstance().commandRegistry;

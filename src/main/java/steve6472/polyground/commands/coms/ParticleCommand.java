@@ -24,7 +24,7 @@ public class ParticleCommand extends Command
 		dispatcher.register(literal("particle").then(literal("clear").executes(c ->
 		{
 
-			CaveGame.getInstance().particles.getMap().forEach((k, v) -> v.forEach(p -> p.forcedDeath = true));
+			CaveGame.getInstance().mainRender.particles.getMap().forEach((k, v) -> v.forEach(p -> p.forcedDeath = true));
 
 			return 1;
 		})));

@@ -40,7 +40,7 @@ public class Bullet implements ITickable, IKillable, ICollideable, IPosition3f, 
 	public void tick()
 	{
 		getPosition().add(getMotion());
-		world.getPg().particles.addBasicTickParticle(getX(), getY(), getZ(), 1f / 32f, 0.6f, 0.6f, 0.6f, 1.0f);
+		world.getGame().mainRender.particles.addBasicTickParticle(getX(), getY(), getZ(), 1f / 32f, 0.6f, 0.6f, 0.6f, 1.0f);
 
 		if (getY() < -10 || getY() > 100)
 			die();

@@ -46,7 +46,7 @@ public class RiftPlacerItem extends Item
 			pos.set((float) Math.floor((pos.x + 0.25f) * 2.0f) / 2.0f, (float) Math.floor((pos.y + 0.25f) * 2.0f) / 2.0f, (float) Math.floor((pos.z + 0.25f) * 2.0f) / 2.0f);
 		}
 
-		CaveGame.getInstance().particles.addBasicTickParticle(pos.x, pos.y, pos.z, 0.05f, 0.6f, 1f, 0.6f, 1f);
+		CaveGame.getInstance().mainRender.particles.addBasicTickParticle(pos.x, pos.y, pos.z, 0.05f, 0.6f, 1f, 0.6f, 1f);
 
 		if (RiftCommand.rift != null)
 		{
@@ -65,7 +65,7 @@ public class RiftPlacerItem extends Item
 		}
 
 		if (sel != null)
-			CaveGame.getInstance().particles.addBasicTickParticle(sel.x, sel.y, sel.z, 0.09f, 1f, 0.6f, 0.6f, 1f);
+			CaveGame.getInstance().mainRender.particles.addBasicTickParticle(sel.x, sel.y, sel.z, 0.09f, 1f, 0.6f, 0.6f, 1f);
 	}
 
 	@Override

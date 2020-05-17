@@ -3,6 +3,8 @@ package steve6472.polyground.teleporter;
 import steve6472.polyground.entity.Player;
 import org.joml.AABBf;
 
+import java.util.UUID;
+
 /**********************
  * Created by steve6472 (Mirek Jozefek)
  * On date: 30.11.2019
@@ -14,10 +16,18 @@ public class Teleporter
 	private Teleporter other;
 	private AABBf aabb;
 	private boolean canTeleport;
+	public final UUID uuid;
+
+	public Teleporter(UUID uuid)
+	{
+		this.uuid = uuid;
+		canTeleport = true;
+	}
 
 	public Teleporter()
 	{
 		canTeleport = true;
+		uuid = UUID.randomUUID();
 	}
 
 	public void setOther(Teleporter other)
@@ -55,5 +65,10 @@ public class Teleporter
 	public Teleporter getOther()
 	{
 		return other;
+	}
+
+	public UUID getUuid()
+	{
+		return uuid;
 	}
 }

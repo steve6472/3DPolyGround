@@ -1,10 +1,11 @@
 package steve6472.polyground.gfx.particle.particles;
 
-import steve6472.polyground.CaveGame;
-import steve6472.polyground.Particle;
-import steve6472.sge.main.game.Tag;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
+import steve6472.polyground.CaveGame;
+import steve6472.polyground.Particle;
+import steve6472.polyground.gfx.MainRender;
+import steve6472.sge.main.game.Tag;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +35,7 @@ public class BasicParticle extends Particle
 	@Override
 	public void applyShader()
 	{
-		CaveGame.shaders.basicParticleShader.bind(CaveGame.getInstance().getCamera().getViewMatrix());
+		MainRender.shaders.basicParticleShader.bind(CaveGame.getInstance().getCamera().getViewMatrix());
 	}
 
 	@Override

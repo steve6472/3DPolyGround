@@ -4,6 +4,7 @@ import org.joml.Vector3f;
 import org.joml.Vector4f;
 import steve6472.polyground.CaveGame;
 import steve6472.polyground.Particle;
+import steve6472.polyground.gfx.MainRender;
 import steve6472.polyground.gfx.particle.particles.torch.motion.Formula;
 import steve6472.polyground.world.light.Light;
 import steve6472.sge.main.game.Tag;
@@ -81,7 +82,7 @@ public class LightParticle extends Particle
 	@Override
 	public void applyShader()
 	{
-		CaveGame.shaders.basicParticleShader.bind(CaveGame.getInstance().getCamera().getViewMatrix());
+		MainRender.shaders.basicParticleShader.bind(CaveGame.getInstance().getCamera().getViewMatrix());
 	}
 
 	@Override

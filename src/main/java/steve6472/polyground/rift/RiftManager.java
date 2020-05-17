@@ -1,9 +1,14 @@
 package steve6472.polyground.rift;
 
 import org.joml.Vector3f;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import steve6472.polyground.CaveGame;
+import steve6472.polyground.gfx.MainRender;
 import steve6472.polyground.gfx.shaders.RiftShader;
+import steve6472.polyground.teleporter.Teleporter;
 import steve6472.polyground.tessellators.BasicTessellator;
+import steve6472.polyground.world.World;
 import steve6472.sge.gfx.DepthFrameBuffer;
 import steve6472.sge.gfx.Sprite;
 import steve6472.sge.gfx.Tessellator;
@@ -12,6 +17,9 @@ import steve6472.sge.main.events.Event;
 import steve6472.sge.main.events.WindowSizeEvent;
 import steve6472.sge.main.game.Camera;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -31,15 +39,60 @@ import static steve6472.sge.gfx.VertexObjectCreator.unbindVAO;
  ***********************/
 public class RiftManager
 {
-	private List<Rift> rifts;
-	private CaveGame main;
-	private Camera camera;
+	private final List<Rift> rifts;
+	private final CaveGame main;
+	private final Camera camera;
+	private final World world;
 
-	public RiftManager(CaveGame main)
+	public RiftManager(CaveGame main, World world)
 	{
 		rifts = new ArrayList<>();
 		this.main = main;
 		camera = new Camera();
+		this.world = world;
+	}
+
+	public void loadRifts()
+	{
+
+	}
+
+	public void saveRifts()
+	{
+		if (world.worldName == null || world.worldName.isEmpty())
+		{
+			System.err.println("Can not save teleporters, world name is invalid");
+			return;
+		}
+
+		JSONObject main = new JSONObject();
+		JSONArray array = new JSONArray();
+
+		for (Rift t : rifts)
+		{
+			JSONObject json = new JSONObject();
+			JSONArray box = new JSONArray();
+			box.put(t.getAabb().minX).put(t.getAabb().minY).put(t.getAabb().minZ).put(t.getAabb().maxX).put(t.getAabb().maxY).put(t.getAabb().maxZ);
+			json.put("aabb", box);
+			json.put("uuid", t.getUuid());
+			json.put("other", t.getOther().getUuid());
+			array.put(json);
+		}
+		main.put("teleporters", array);
+
+		System.out.println(main.toString(4));
+
+		File f = new File("game/worlds/" + world.worldName + "/teleporters.json");
+		try
+		{
+			FileWriter writer = new FileWriter(f);
+			main.write(writer, 4, 4);
+			writer.flush();
+			writer.close();
+		} catch (IOException e)
+		{
+			e.printStackTrace();
+		}
 	}
 
 	public void renderRifts()
@@ -51,8 +104,8 @@ public class RiftManager
 			v += Math.max(t, 1);
 		}
 
-		CaveGame.shaders.mainShader.bind(main.getCamera().getViewMatrix());
-		BasicTessellator tess = main.basicTess;
+		MainRender.shaders.mainShader.bind(main.getCamera().getViewMatrix());
+		BasicTessellator tess = main.mainRender.basicTess;
 		tess.begin(v);
 		tess.color(1, 1, 1, 1);
 
@@ -96,11 +149,11 @@ public class RiftManager
 
 		camera.updateViewMatrix();
 		main.getPlayer().setCamera(camera);
-		main.frustum.updateFrustum(CaveGame.shaders.getProjectionMatrix(), camera.getViewMatrix());
+		main.mainRender.frustum.updateFrustum(MainRender.shaders.getProjectionMatrix(), camera.getViewMatrix());
 
 		rift.getBuffer().bindFrameBuffer(main);
 		DepthFrameBuffer.clearCurrentBuffer();
-		main.renderTheWorld(false);
+		main.mainRender.renderTheWorld(false);
 
 		main.getPlayer().setCamera(temp);
 		rift.getBuffer().unbindCurrentFrameBuffer(main);
@@ -108,9 +161,9 @@ public class RiftManager
 
 	private void renderToWorld(Rift rift)
 	{
-		CaveGame.shaders.riftShader.bind();
-		CaveGame.shaders.riftShader.setView(CaveGame.getInstance().getCamera().getViewMatrix());
-		CaveGame.shaders.riftShader.setUniform(RiftShader.TINT, 1f, 1f, 1f);
+		MainRender.shaders.riftShader.bind();
+		MainRender.shaders.riftShader.setView(CaveGame.getInstance().getCamera().getViewMatrix());
+		MainRender.shaders.riftShader.setUniform(RiftShader.TINT, 1f, 1f, 1f);
 
 		Sprite.bind(0, rift.getBuffer().texture);
 

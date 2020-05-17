@@ -47,7 +47,7 @@ public class LogBlock extends Block
 			{
 				for (CubeFace cf : c.getFaces())
 				{
-					BuildHelper bh = subChunk.getWorld().getPg().buildHelper;
+					BuildHelper bh = subChunk.getWorld().getGame().mainRender.buildHelper;
 
 					float tx = cf.getProperty(FaceRegistry.texture).getTextureId() % bh.atlasSize;
 					float ty = cf.getProperty(FaceRegistry.texture).getTextureId() / bh.atlasSize;
@@ -71,7 +71,7 @@ public class LogBlock extends Block
 
 					p.setGrowingSpeed(-0.07f / 60f);
 
-					subChunk.getWorld().getPg().particles.addParticle(p);
+					subChunk.getWorld().getGame().mainRender.particles.addParticle(p);
 				}
 			}
 	}

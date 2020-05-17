@@ -35,7 +35,7 @@ public class ScanBlock extends Block implements IBlockData
 		{
 			ScanBlockData scanBlockEntity = (ScanBlockData) blockData;
 			scanBlockEntity.addTime();
-			CaveGame.getInstance().particles.addBasicTickParticle(x + 0.5f, y + 1.5f, z + 0.5f, scanBlockEntity.getTime() / 2f, 0, 2, 2, 1);
+			CaveGame.getInstance().mainRender.particles.addBasicTickParticle(x + 0.5f, y + 1.5f, z + 0.5f, scanBlockEntity.getTime() / 2f, 0, 2, 2, 1);
 		}
 	}
 

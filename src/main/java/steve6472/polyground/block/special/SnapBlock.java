@@ -106,7 +106,7 @@ public class SnapBlock extends Block
 		if (!cf.hasProperty(FaceRegistry.texture))
 			return;
 
-		BuildHelper bh = world.getPg().buildHelper;
+		BuildHelper bh = world.getGame().mainRender.buildHelper;
 
 		float tx = cf.getProperty(FaceRegistry.texture).getTextureId() % bh.atlasSize;
 		//noinspection IntegerDivisionInFloatingPointContext
@@ -131,6 +131,6 @@ public class SnapBlock extends Block
 		//		p.setGrowingSpeed(-1f / 16f / 8f / 60f);
 		p.setGrowingSpeed(-1f / 16f / 8f / 5f);
 
-		world.getPg().particles.addParticle(p);
+		world.getGame().mainRender.particles.addParticle(p);
 	}
 }

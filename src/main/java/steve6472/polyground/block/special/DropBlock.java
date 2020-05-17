@@ -112,7 +112,7 @@ public class DropBlock extends Block
 
 	public static void drop(World world, CubeFace cf, float i, float j, float k, int x, int y, int z, float TX, float TY)
 	{
-		BuildHelper bh = world.getPg().buildHelper;
+		BuildHelper bh = world.getGame().mainRender.buildHelper;
 
 		float tx = cf.getProperty(FaceRegistry.texture).getTextureId() % bh.atlasSize;
 		float ty = cf.getProperty(FaceRegistry.texture).getTextureId() / bh.atlasSize;
@@ -135,7 +135,7 @@ public class DropBlock extends Block
 
 		//		p.setGrowingSpeed(-1f / 16f / 8f / 60f);
 
-		world.getPg().particles.addParticle(p);
+		world.getGame().mainRender.particles.addParticle(p);
 	}
 
 	@Override

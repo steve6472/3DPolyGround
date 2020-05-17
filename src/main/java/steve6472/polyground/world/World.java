@@ -3,12 +3,17 @@ package steve6472.polyground.world;
 import org.joml.AABBf;
 import org.joml.Matrix4f;
 import org.joml.Random;
+import org.joml.Vector3f;
 import steve6472.polyground.CaveGame;
 import steve6472.polyground.block.BlockTextureHolder;
 import steve6472.polyground.entity.EntityManager;
+import steve6472.polyground.gfx.MainRender;
 import steve6472.polyground.gfx.shaders.CGGShader;
 import steve6472.polyground.gfx.shaders.world.WorldShader;
 import steve6472.polyground.gui.InGameGui;
+import steve6472.polyground.rift.Rift;
+import steve6472.polyground.rift.RiftModel;
+import steve6472.polyground.teleporter.TeleporterManager;
 import steve6472.polyground.world.chunk.Chunk;
 import steve6472.polyground.world.chunk.ModelLayer;
 import steve6472.polyground.world.chunk.SubChunk;
@@ -18,7 +23,9 @@ import steve6472.sge.main.game.GridStorage;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import static org.lwjgl.opengl.GL11.glDrawArrays;
 import static org.lwjgl.opengl.GL20.glDisableVertexAttribArray;
@@ -33,12 +40,13 @@ import static org.lwjgl.opengl.GL30.glBindVertexArray;
  ***********************/
 public class World implements IBlockProvider
 {
-	private final int HEIGHT = 8;
+	private final int HEIGHT = 4;
 
 	private GridStorage<Chunk> chunks;
 	private EntityManager entityManager;
+	public TeleporterManager teleporters;
 
-	private CaveGame pg;
+	private CaveGame game;
 
 	private Random random;
 
@@ -47,14 +55,16 @@ public class World implements IBlockProvider
 
 	private Matrix4f mat;
 
-	public World(CaveGame pg)
+	public World(CaveGame game)
 	{
 		mat = new Matrix4f();
-		this.pg = pg;
+		this.game = game;
 		chunks = new GridStorage<>();
 
 		random = new Random(4);
 		entityManager = new EntityManager(this);
+
+		teleporters = new TeleporterManager(this);
 
 		//
 		//		if (worldName == null)
@@ -81,6 +91,36 @@ public class World implements IBlockProvider
 		//			generateChunks();
 		//			delay = 0;
 		//		}
+	}
+
+	public void placeRifts()
+	{
+		{
+			List<Vector3f> vertices = new ArrayList<>();
+			vertices.add(new Vector3f(1f, 1, 2));
+			vertices.add(new Vector3f(1f, 4, 2));
+			vertices.add(new Vector3f(1f, 1, -1));
+			vertices.add(new Vector3f(1f, 4, -1));
+			vertices.add(new Vector3f(1f, 1, 2));
+			vertices.add(new Vector3f(1f, 4, 2));
+
+			Rift portal = new Rift("Garage", new Vector3f(20.0f, 0, -9f), new Vector3f(), 0, 0, new RiftModel(vertices));
+			portal.setFinished(true);
+			game.getRifts().addRift(portal);
+		}
+
+		{
+			List<Vector3f> vertices = new ArrayList<>();
+			vertices.add(new Vector3f(20.00f, 1.00f, -10.00f));
+			vertices.add(new Vector3f(20.00f, 4.00f, -10.00f));
+			vertices.add(new Vector3f(20.00f, 1.00f, -7.00f));
+			vertices.add(new Vector3f(20.00f, 4.00f, -7.00f));
+			vertices.add(new Vector3f(20.00f, 1.00f, -10.00f));
+			vertices.add(new Vector3f(20.00f, 4.00f, -10.00f));
+			Rift portal = new Rift("Wild", new Vector3f(0.00f, 1.00f, 0.50f), new Vector3f(-20.00f, -1.00f, 8.50f), 0, 0, new RiftModel(vertices));
+			portal.setFinished(true);
+			game.getRifts().addRift(portal);
+		}
 	}
 
 	private void generateChunks()
@@ -153,12 +193,12 @@ public class World implements IBlockProvider
 
 	private boolean subChunkFrustum(int x, int y, int z)
 	{
-		return pg.frustum.insideFrsutum(x, y, z, x + 16, y + 16, z + 16);
+		return game.mainRender.frustum.insideFrsutum(x, y, z, x + 16, y + 16, z + 16);
 	}
 
 	private boolean chunkFrustum(int x, int z)
 	{
-		return pg.frustum.insideFrsutum(x, 0, z, x + 16, 16 * 16, z + 16);
+		return game.mainRender.frustum.insideFrsutum(x, 0, z, x + 16, 16 * 16, z + 16);
 	}
 
 	public float shade = 1f;
@@ -184,15 +224,15 @@ public class World implements IBlockProvider
 
 		if (deferred)
 		{
-			CaveGame.shaders.gShader.bind(CaveGame.getInstance().getCamera().getViewMatrix());
+			MainRender.shaders.gShader.bind(game.getCamera().getViewMatrix());
 
-			CaveGame.getInstance().gBuffer.bindFrameBuffer();
+			game.mainRender.gBuffer.bindFrameBuffer();
 			GBuffer.clearCurrentBuffer();
 		} else
 		{
-			CaveGame.shaders.worldShader.bind();
-			CaveGame.shaders.worldShader.setView(CaveGame.getInstance().getCamera().getViewMatrix());
-			CaveGame.shaders.worldShader.setUniform(WorldShader.SHADE, shade);
+			MainRender.shaders.worldShader.bind();
+			MainRender.shaders.worldShader.setView(game.getCamera().getViewMatrix());
+			MainRender.shaders.worldShader.setUniform(WorldShader.SHADE, shade);
 		}
 
 		BlockTextureHolder.getAtlas().getSprite().bind(0);
@@ -214,10 +254,10 @@ public class World implements IBlockProvider
 
 				if (deferred)
 				{
-					CaveGame.shaders.gShader.setTransformation(mat.identity().translate(chunk.getX() * 16, k * 16, chunk.getZ() * 16));
+					MainRender.shaders.gShader.setTransformation(mat.identity().translate(chunk.getX() * 16, k * 16, chunk.getZ() * 16));
 				} else
 				{
-					CaveGame.shaders.worldShader.setTransformation(mat.identity().translate(chunk.getX() * 16, k * 16, chunk.getZ() * 16));
+					MainRender.shaders.worldShader.setTransformation(mat.identity().translate(chunk.getX() * 16, k * 16, chunk.getZ() * 16));
 				}
 
 				if (countChunks)
@@ -238,17 +278,17 @@ public class World implements IBlockProvider
 					if (!deferred)
 					{
 						if (ModelLayer.EMISSION_NORMAL.ordinal() == i || ModelLayer.EMISSION_OVERLAY.ordinal() == i || ModelLayer.LIGHT.ordinal() == i)
-							CaveGame.shaders.worldShader.setUniform(WorldShader.SHADE, 1.0f);
+							MainRender.shaders.worldShader.setUniform(WorldShader.SHADE, 1.0f);
 						else
-							CaveGame.shaders.worldShader.setUniform(WorldShader.SHADE, shade);
+							MainRender.shaders.worldShader.setUniform(WorldShader.SHADE, shade);
 					} else
 					{
 						if (ModelLayer.EMISSION_NORMAL.ordinal() == i || ModelLayer.EMISSION_OVERLAY.ordinal() == i || ModelLayer.LIGHT.ordinal() == i)
 						{
-							CaveGame.shaders.gShader.setUniform(CGGShader.EMISSION_TOGGLE, 1.0f);
+							MainRender.shaders.gShader.setUniform(CGGShader.EMISSION_TOGGLE, 1.0f);
 						} else
 						{
-							CaveGame.shaders.gShader.setUniform(CGGShader.EMISSION_TOGGLE, 0.0f);
+							MainRender.shaders.gShader.setUniform(CGGShader.EMISSION_TOGGLE, 0.0f);
 						}
 					}
 
@@ -272,7 +312,7 @@ public class World implements IBlockProvider
 
 		if (deferred)
 		{
-			CaveGame.getInstance().gBuffer.unbindCurrentFrameBuffer();
+			game.mainRender.gBuffer.unbindCurrentFrameBuffer();
 		}
 	}
 
@@ -308,8 +348,8 @@ public class World implements IBlockProvider
 				if (!subChunkFrustum(chunk.getX() * 16, k * 16, chunk.getZ() * 16))
 					continue;
 
-				if (pg.options.renderChunkOutline)
-					CaveGame.t.add(new AABBf(chunk.getX() * 16, k * 16, chunk.getZ() * 16, chunk.getX() * 16 + 16, k * 16 + 16, chunk.getZ() * 16 + 16));
+				if (game.options.renderChunkOutline)
+					MainRender.t.add(new AABBf(chunk.getX() * 16, k * 16, chunk.getZ() * 16, chunk.getX() * 16 + 16, k * 16 + 16, chunk.getZ() * 16 + 16));
 			}
 		}
 	}
@@ -319,9 +359,9 @@ public class World implements IBlockProvider
 		return random;
 	}
 
-	public CaveGame getPg()
+	public CaveGame getGame()
 	{
-		return pg;
+		return game;
 	}
 
 	public void generateNewChunk(int x, int z)

@@ -35,7 +35,7 @@ public class SubChunkWater
 
 		totalVolume = 0;
 
-		boolean shouldRender = subChunk.getWorld().getPg().frustum.insideFrsutum(subChunk.getX() * 16, subChunk.getLayer() * 16, subChunk.getZ() * 16, subChunk.getX() * 16 + 16, subChunk.getLayer() * 16 + 16, subChunk.getZ() * 16 + 16);
+		boolean shouldRender = subChunk.getWorld().getGame().mainRender.frustum.insideFrsutum(subChunk.getX() * 16, subChunk.getLayer() * 16, subChunk.getZ() * 16, subChunk.getX() * 16 + 16, subChunk.getLayer() * 16 + 16, subChunk.getZ() * 16 + 16);
 
 		for (int i = 0; i < 16; i++)
 		{
@@ -65,23 +65,23 @@ public class SubChunkWater
 						|| getLiquidVolumeEfficiently(i - 1, j, k) <= 1000))
 					{
 
-						boolean inFrustum = subChunk.getWorld().getPg().frustum.insideFrsutum(i + subChunk.getX() * 16, j + subChunk.getLayer() * 16, k + subChunk.getZ() * 16, 1.4f);
+						boolean inFrustum = subChunk.getWorld().getGame().mainRender.frustum.insideFrsutum(i + subChunk.getX() * 16, j + subChunk.getLayer() * 16, k + subChunk.getZ() * 16, 1.4f);
 
 						if (inFrustum)
 						{
 							CaveGame.lastWaterCount++;
-							if (CaveGame.getInstance().waterTess.hasSpace())
+							if (subChunk.getWorld().getGame().mainRender.waterTess.hasSpace())
 							{
 								if (j != 15 || subChunk.getLayer() != subChunk.getParent().getSubChunks().length)
 								{
 									double upVolume = subChunk.getLiquidVolumeEfficiently(i, j + 1, k);
 									if (upVolume > 0)
-										AABBUtil.addWater(i + subChunk.getX() * 16, j + subChunk.getLayer() * 16, k + subChunk.getZ() * 16, 1f, CaveGame.getInstance().waterTess);
+										AABBUtil.addWater(i + subChunk.getX() * 16, j + subChunk.getLayer() * 16, k + subChunk.getZ() * 16, 1f, CaveGame.getInstance().mainRender.waterTess);
 									else
-										AABBUtil.addWater(i + subChunk.getX() * 16, j + subChunk.getLayer() * 16, k + subChunk.getZ() * 16, (float) (vol / 1000.0), CaveGame.getInstance().waterTess);
+										AABBUtil.addWater(i + subChunk.getX() * 16, j + subChunk.getLayer() * 16, k + subChunk.getZ() * 16, (float) (vol / 1000.0), CaveGame.getInstance().mainRender.waterTess);
 								} else
 								{
-									AABBUtil.addWater(i + subChunk.getX() * 16, j + subChunk.getLayer() * 16, k + subChunk.getZ() * 16, (float) (vol / 1000.0), CaveGame.getInstance().waterTess);
+									AABBUtil.addWater(i + subChunk.getX() * 16, j + subChunk.getLayer() * 16, k + subChunk.getZ() * 16, (float) (vol / 1000.0), CaveGame.getInstance().mainRender.waterTess);
 								}
 							}
 						}

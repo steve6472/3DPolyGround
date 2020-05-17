@@ -1,6 +1,7 @@
 package steve6472.polyground.world.light;
 
 import steve6472.polyground.CaveGame;
+import steve6472.polyground.gfx.MainRender;
 import steve6472.polyground.gfx.shaders.LightUniform;
 import steve6472.polyground.tessellators.BasicTessellator;
 import steve6472.sge.gfx.Tessellator;
@@ -168,14 +169,12 @@ public class LightManager
 		}
 	}
 
-
-
 	public static void renderLights()
 	{
 		//		glDisable(GL_DEPTH_TEST);
 
-		CaveGame.shaders.mainShader.bind(CaveGame.getInstance().getCamera().getViewMatrix());
-		BasicTessellator tess = CaveGame.getInstance().basicTess;
+		MainRender.shaders.mainShader.bind(CaveGame.getInstance().getCamera().getViewMatrix());
+		BasicTessellator tess = CaveGame.getInstance().mainRender.basicTess;
 		tess.begin(LightManager.LIGHT_COUNT);
 
 		for (Light light : LightManager.lights)

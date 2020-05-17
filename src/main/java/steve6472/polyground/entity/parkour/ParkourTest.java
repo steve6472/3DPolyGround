@@ -4,6 +4,7 @@ import org.joml.Vector3f;
 import org.joml.Vector4f;
 import steve6472.polyground.AABBUtil;
 import steve6472.polyground.CaveGame;
+import steve6472.polyground.gfx.MainRender;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,7 +60,7 @@ public class ParkourTest
 			START_POSITION.x() + 0.5f,
 			START_POSITION.y() + 0.5f,
 			START_POSITION.z() + 0.5f,
-			3, CaveGame.getInstance().basicTess, CaveGame.shaders.mainShader);
+			3, CaveGame.getInstance().mainRender.basicTess, MainRender.shaders.mainShader);
 
 		AABBUtil.renderAABB(
 			checkpoints.get(checkpoints.size() - 1).x() - 0.5f,
@@ -68,7 +69,7 @@ public class ParkourTest
 			checkpoints.get(checkpoints.size() - 1).x() + 0.5f,
 			checkpoints.get(checkpoints.size() - 1).y() + 0.5f,
 			checkpoints.get(checkpoints.size() - 1).z() + 0.5f,
-			5, CaveGame.getInstance().basicTess, CaveGame.shaders.mainShader);
+			5, CaveGame.getInstance().mainRender.basicTess, MainRender.shaders.mainShader);
 
 		populations.forEach(Population::render);
 
@@ -81,7 +82,7 @@ public class ParkourTest
 				v.x() + v.w(),
 				v.y() + v.w(),
 				v.z() + v.w(),
-				1, CaveGame.getInstance().basicTess, CaveGame.shaders.mainShader);
+				1, CaveGame.getInstance().mainRender.basicTess, MainRender.shaders.mainShader);
 		}
 	}
 
