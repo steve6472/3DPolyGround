@@ -43,5 +43,6 @@ public class CommandRegistry
 		new ParticleCommand(dispatcher);
 		new RiftCommand(dispatcher);
 		new TestSpeedCommand(dispatcher);
+		new TeleCommand(dispatcher);
 	}
 }

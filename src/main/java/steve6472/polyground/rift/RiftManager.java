@@ -6,7 +6,6 @@ import org.json.JSONObject;
 import steve6472.polyground.CaveGame;
 import steve6472.polyground.gfx.MainRender;
 import steve6472.polyground.gfx.shaders.RiftShader;
-import steve6472.polyground.teleporter.Teleporter;
 import steve6472.polyground.tessellators.BasicTessellator;
 import steve6472.polyground.world.World;
 import steve6472.sge.gfx.DepthFrameBuffer;
@@ -17,9 +16,7 @@ import steve6472.sge.main.events.Event;
 import steve6472.sge.main.events.WindowSizeEvent;
 import steve6472.sge.main.game.Camera;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -50,18 +47,77 @@ public class RiftManager
 		this.main = main;
 		camera = new Camera();
 		this.world = world;
+		main.getEventHandler().register(this);
 	}
 
 	public void loadRifts()
 	{
+		if (world.worldName == null || world.worldName.isEmpty())
+		{
+			System.err.println("Can not load teleporters, world name is invalid");
+			return;
+		}
 
+		JSONObject main;
+
+		File f = new File("game/worlds/" + world.worldName + "/rifts.json");
+		if (!f.exists())
+		{
+			System.err.println("World has no rifts!");
+			return;
+		} else
+		{
+			try
+			{
+				BufferedReader reader = new BufferedReader(new FileReader(f));
+				String line;
+				StringBuilder builder = new StringBuilder();
+				while ((line = reader.readLine()) != null)
+				{
+					builder.append(line);
+				}
+
+				main = new JSONObject(builder.toString());
+
+			} catch (IOException e)
+			{
+				e.printStackTrace();
+				return;
+			}
+		}
+
+		JSONArray array = main.getJSONArray("rifts");
+
+		for (int i = 0; i < array.length(); i++)
+		{
+			JSONObject json = array.getJSONObject(i);
+			JSONArray ver = json.getJSONArray("vertices");
+			JSONArray pos = json.getJSONArray("position");
+			JSONArray cor = json.getJSONArray("correction");
+
+			List<Vector3f> vertices = new ArrayList<>(ver.length());
+			for (int j = 0; j < ver.length() / 3; j++)
+				vertices.add(new Vector3f(ver.getFloat(j * 3), ver.getFloat(j * 3 + 1), ver.getFloat(j * 3 + 2)));
+
+			float yaw = json.getFloat("yaw");
+			float pitch = json.getFloat("pitch");
+			Vector3f position = new Vector3f(pos.getFloat(0), pos.getFloat(1), pos.getFloat(2));
+			Vector3f correction = new Vector3f(cor.getFloat(0), cor.getFloat(1), cor.getFloat(2));
+			String name = json.getString("name");
+
+			Rift rift = new Rift(name, position, correction, yaw, pitch, new RiftModel(vertices));
+			rift.getModel().setupModel();
+			rift.getModel().updateModel();
+			rift.setFinished(true);
+			rifts.add(rift);
+		}
 	}
 
 	public void saveRifts()
 	{
 		if (world.worldName == null || world.worldName.isEmpty())
 		{
-			System.err.println("Can not save teleporters, world name is invalid");
+			System.err.println("Can not save rifts, world name is invalid");
 			return;
 		}
 
@@ -70,19 +126,27 @@ public class RiftManager
 
 		for (Rift t : rifts)
 		{
+			if (!t.isFinished())
+			{
+				System.err.println("Can not save unfinished rift (" + t.getName() + ")");
+				continue;
+			}
 			JSONObject json = new JSONObject();
-			JSONArray box = new JSONArray();
-			box.put(t.getAabb().minX).put(t.getAabb().minY).put(t.getAabb().minZ).put(t.getAabb().maxX).put(t.getAabb().maxY).put(t.getAabb().maxZ);
-			json.put("aabb", box);
-			json.put("uuid", t.getUuid());
-			json.put("other", t.getOther().getUuid());
+			JSONArray vertices = new JSONArray();
+			for (Vector3f v : t.getModel().getVertices())
+				vertices.put(v.x).put(v.y).put(v.z);
+
+			json.put("vertices", vertices);
+			json.put("yaw", t.getYaw());
+			json.put("pitch", t.getPitch());
+			json.put("position", new JSONArray().put(t.getX()).put(t.getY()).put(t.getZ()));
+			json.put("correction", new JSONArray().put(t.getCorrection().x()).put(t.getCorrection().y()).put(t.getCorrection().z()));
+			json.put("name", t.getName());
 			array.put(json);
 		}
-		main.put("teleporters", array);
+		main.put("rifts", array);
 
-		System.out.println(main.toString(4));
-
-		File f = new File("game/worlds/" + world.worldName + "/teleporters.json");
+		File f = new File("game/worlds/" + world.worldName + "/rifts.json");
 		try
 		{
 			FileWriter writer = new FileWriter(f);

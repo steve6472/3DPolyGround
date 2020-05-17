@@ -135,32 +135,32 @@ public class MainRender
 			mainFrameBuffer.unbindCurrentFrameBuffer(game);
 
 			copyDepthToBuffer(mainFrameBuffer.frameBuffer);
+
+			/* Render water */
+			waterFrameBuffer.bindFrameBuffer(game);
+			DepthFrameBuffer.clearCurrentBuffer();
+			copyDepthToBuffer(waterFrameBuffer.frameBuffer);
+			waterFrameBuffer.bindFrameBuffer(game);
+			shaders.mainShader.bind(game.getCamera().getViewMatrix());
+			waterTess.loadPos(0);
+			waterTess.loadColor(1);
+			GL20.glDrawArrays(Tessellator.TRIANGLES, 0, game.currentWaterCount);
+			waterTess.disable(0, 1);
+
+			game.getRifts().render();
+
+			mainFrameBuffer.bindFrameBuffer(game);
+			renderTheWorld(false);
+
+			shaders.waterShader.bind();
+			Sprite.bind(0, waterFrameBuffer.texture);
+			VertexObjectCreator.basicRender(finalRenderQuad, 2, 6, Tessellator.TRIANGLES);
+
+			if (game.options.renderLights)
+				LightManager.renderLights();
+
+			mainFrameBuffer.unbindCurrentFrameBuffer(game);
 		}
-
-		/* Render water */
-		waterFrameBuffer.bindFrameBuffer(game);
-		DepthFrameBuffer.clearCurrentBuffer();
-		copyDepthToBuffer(waterFrameBuffer.frameBuffer);
-		waterFrameBuffer.bindFrameBuffer(game);
-		shaders.mainShader.bind(game.getCamera().getViewMatrix());
-		waterTess.loadPos(0);
-		waterTess.loadColor(1);
-		GL20.glDrawArrays(Tessellator.TRIANGLES, 0, game.currentWaterCount);
-		waterTess.disable(0, 1);
-
-		game.getRifts().render();
-
-		mainFrameBuffer.bindFrameBuffer(game);
-		renderTheWorld(false);
-
-		shaders.waterShader.bind();
-		Sprite.bind(0, waterFrameBuffer.texture);
-		VertexObjectCreator.basicRender(finalRenderQuad, 2, 6, Tessellator.TRIANGLES);
-
-		if (game.options.renderLights)
-			LightManager.renderLights();
-
-		mainFrameBuffer.unbindCurrentFrameBuffer(game);
 
 		if (game.options.renderRifts)
 		{
@@ -171,7 +171,8 @@ public class MainRender
 			mainFrameBuffer.unbindCurrentFrameBuffer(game);
 		}
 
-		game.inGameGui.minimap.renderWorld();
+		if (game.world != null)
+			game.inGameGui.minimap.renderWorld();
 
 		Shader.releaseShader();
 

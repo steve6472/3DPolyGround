@@ -66,9 +66,6 @@ public class MainMenu extends Gui implements IGamePause
 			CaveGame.getInstance().setWorld(new World(CaveGame.getInstance()));
 			CaveGame.getInstance().world.worldName = "house";
 
-			CaveGame.getInstance().world.placeRifts();
-			CaveGame.getInstance().world.teleporters.loadTeleporters();
-
 			try
 			{
 				CommandRegistry registry = CaveGame.getInstance().commandRegistry;

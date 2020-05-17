@@ -3,7 +3,6 @@ package steve6472.polyground.world;
 import org.joml.AABBf;
 import org.joml.Matrix4f;
 import org.joml.Random;
-import org.joml.Vector3f;
 import steve6472.polyground.CaveGame;
 import steve6472.polyground.block.BlockTextureHolder;
 import steve6472.polyground.entity.EntityManager;
@@ -11,8 +10,7 @@ import steve6472.polyground.gfx.MainRender;
 import steve6472.polyground.gfx.shaders.CGGShader;
 import steve6472.polyground.gfx.shaders.world.WorldShader;
 import steve6472.polyground.gui.InGameGui;
-import steve6472.polyground.rift.Rift;
-import steve6472.polyground.rift.RiftModel;
+import steve6472.polyground.rift.RiftManager;
 import steve6472.polyground.teleporter.TeleporterManager;
 import steve6472.polyground.world.chunk.Chunk;
 import steve6472.polyground.world.chunk.ModelLayer;
@@ -23,9 +21,7 @@ import steve6472.sge.main.game.GridStorage;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 
 import static org.lwjgl.opengl.GL11.glDrawArrays;
 import static org.lwjgl.opengl.GL20.glDisableVertexAttribArray;
@@ -45,6 +41,7 @@ public class World implements IBlockProvider
 	private GridStorage<Chunk> chunks;
 	private EntityManager entityManager;
 	public TeleporterManager teleporters;
+	private RiftManager rifts;
 
 	private CaveGame game;
 
@@ -65,6 +62,7 @@ public class World implements IBlockProvider
 		entityManager = new EntityManager(this);
 
 		teleporters = new TeleporterManager(this);
+		rifts = new RiftManager(game, this);
 
 		//
 		//		if (worldName == null)
@@ -91,36 +89,6 @@ public class World implements IBlockProvider
 		//			generateChunks();
 		//			delay = 0;
 		//		}
-	}
-
-	public void placeRifts()
-	{
-		{
-			List<Vector3f> vertices = new ArrayList<>();
-			vertices.add(new Vector3f(1f, 1, 2));
-			vertices.add(new Vector3f(1f, 4, 2));
-			vertices.add(new Vector3f(1f, 1, -1));
-			vertices.add(new Vector3f(1f, 4, -1));
-			vertices.add(new Vector3f(1f, 1, 2));
-			vertices.add(new Vector3f(1f, 4, 2));
-
-			Rift portal = new Rift("Garage", new Vector3f(20.0f, 0, -9f), new Vector3f(), 0, 0, new RiftModel(vertices));
-			portal.setFinished(true);
-			game.getRifts().addRift(portal);
-		}
-
-		{
-			List<Vector3f> vertices = new ArrayList<>();
-			vertices.add(new Vector3f(20.00f, 1.00f, -10.00f));
-			vertices.add(new Vector3f(20.00f, 4.00f, -10.00f));
-			vertices.add(new Vector3f(20.00f, 1.00f, -7.00f));
-			vertices.add(new Vector3f(20.00f, 4.00f, -7.00f));
-			vertices.add(new Vector3f(20.00f, 1.00f, -10.00f));
-			vertices.add(new Vector3f(20.00f, 4.00f, -10.00f));
-			Rift portal = new Rift("Wild", new Vector3f(0.00f, 1.00f, 0.50f), new Vector3f(-20.00f, -1.00f, 8.50f), 0, 0, new RiftModel(vertices));
-			portal.setFinished(true);
-			game.getRifts().addRift(portal);
-		}
 	}
 
 	private void generateChunks()
@@ -392,5 +360,10 @@ public class World implements IBlockProvider
 	public EntityManager getEntityManager()
 	{
 		return entityManager;
+	}
+
+	public RiftManager getRifts()
+	{
+		return rifts;
 	}
 }

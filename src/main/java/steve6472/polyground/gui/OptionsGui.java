@@ -3,6 +3,7 @@ package steve6472.polyground.gui;
 import steve6472.polyground.CaveGame;
 import steve6472.polyground.Options;
 import steve6472.polyground.world.World;
+import steve6472.polyground.world.WorldSerializer;
 import steve6472.polyground.world.chunk.ModelLayer;
 import steve6472.sge.gfx.SpriteRender;
 import steve6472.sge.gfx.font.CustomChar;
@@ -15,6 +16,7 @@ import steve6472.sge.gui.components.Slider;
 import steve6472.sge.main.MainApp;
 import steve6472.sge.test.Fex;
 
+import java.io.IOException;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -41,6 +43,29 @@ public class OptionsGui extends Gui implements IGamePause
 		exit.setSize(100, 30);
 		exit.addClickEvent(c -> mainApp.exit());
 		addComponent(exit);
+
+		Button save = new Button("Save World");
+		save.setLocation(getMainApp().getWidth() - 110, getMainApp().getHeight() - 80);
+		save.setSize(100, 30);
+		save.addClickEvent(c ->
+		{
+			try
+			{
+				World world = CaveGame.getInstance().getWorld();
+				if (world.worldName == null || world.worldName.isEmpty())
+				{
+					CaveGame.getInstance().inGameGui.chat.addText("[#FF5555]", "World has invalid name, please use command to save the world");
+					System.err.println("World has no name!");
+				} else
+				{
+					WorldSerializer.serialize(world);
+				}
+			} catch (IOException e)
+			{
+				e.printStackTrace();
+			}
+		});
+		addComponent(save);
 
 		Options options = CaveGame.getInstance().options;
 

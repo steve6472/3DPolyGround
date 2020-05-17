@@ -14,7 +14,7 @@ public class Rift implements IPosition3f
 {
 	private Vector3f cameraPosition, correction;
 	private RiftModel model;
-	private DepthFrameBuffer buffer;
+	private final DepthFrameBuffer buffer;
 	private float yaw, pitch;
 	private final String name;
 	private boolean finished;

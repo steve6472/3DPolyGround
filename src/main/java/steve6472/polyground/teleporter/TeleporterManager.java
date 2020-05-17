@@ -136,8 +136,6 @@ public class TeleporterManager
 		}
 		main.put("teleporters", array);
 
-		System.out.println(main.toString(4));
-
 		File f = new File("game/worlds/" + world.worldName + "/teleporters.json");
 		try
 		{

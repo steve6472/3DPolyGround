@@ -60,7 +60,6 @@ public class CaveGame extends MainApp
 	public BlockModelLoader blockModelLoader;
 	public ItemAtlas itemAtlas;
 	public HitPicker hitPicker;
-	private RiftManager rifts;
 
 	public MainRender mainRender;
 
@@ -88,9 +87,6 @@ public class CaveGame extends MainApp
 		blockModelLoader = new BlockModelLoader();
 		BlockRegistry.register(this);
 		WaterRegistry.init();
-
-		rifts = new RiftManager(this);
-		getEventHandler().register(rifts);
 
 		inGameGui = new InGameGui(this);
 		mainMenu = new MainMenu(this);
@@ -134,7 +130,7 @@ public class CaveGame extends MainApp
 
 	public RiftManager getRifts()
 	{
-		return rifts;
+		return world.getRifts();
 	}
 
 	public World getWorld()
@@ -206,8 +202,6 @@ public class CaveGame extends MainApp
 
 		tickGui();
 		getCamera().updateViewMatrix();
-
-//		QuickSort.sortWaterByDistance(water, getCamera().getPosition());
 	}
 
 	private void handleCamera()

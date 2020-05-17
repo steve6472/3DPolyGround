@@ -32,6 +32,9 @@ public class WorldSerializer
 				e.printStackTrace();
 			}
 		});
+
+		world.teleporters.saveTeleporters();
+		world.getRifts().saveRifts();
 	}
 
 	public static World deserialize(World world) throws IOException
@@ -70,6 +73,9 @@ public class WorldSerializer
 
 			world.addChunk(c, true);
 		}
+
+		world.teleporters.loadTeleporters();
+		world.getRifts().loadRifts();
 
 		return world;
 	}
