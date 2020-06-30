@@ -25,6 +25,7 @@ public class CaveGenerator implements IGenerator
 
 		Block stone = BlockRegistry.getBlockByName("stone");
 		Block cobblestone = BlockRegistry.getBlockByName("cobblestone");
+		Block bedrock = BlockRegistry.getBlockByName("bedrock");
 
 //		iterate((x, y, z) -> subChunk.setBlock(x, y, z, stone));
 //		long start = System.nanoTime();
@@ -36,10 +37,20 @@ public class CaveGenerator implements IGenerator
 			float s1 = noise(x + subChunk.getX() * 16, y + subChunk.getLayer() * 16, z + subChunk.getZ() * 16, scale * 0.03f);
 			float s2 = noise(x + subChunk.getX() * 16, y + subChunk.getLayer() * 16, z + subChunk.getZ() * 16, scale * 0.03f);
 
-			if (s0 * (s1 + 1) * 2f + s2 < -0.4f)
+			float mix = s0 * (s1 + 1) * 2f + s2;
+
+			if (subChunk.getLayer() == 0)
+			{
+				mix *= y / 16f;
+				mix -= (-y + 16) / 16f;
+			}
+			
+			if (subChunk.getLayer() == 0 && y == 0)
+				subChunk.getIds()[x][y][z] = bedrock.getId();
+			else if (mix < -0.4f)
 				subChunk.getIds()[x][y][z] = cobblestone.getId();
 //				subChunk.setBlock(x, y, z, cobblestone);
-			else if (s0 * (s1 + 1) * 2f + s2 < 0.3f)
+			else if (mix < 0.3f)
 //				subChunk.setBlock(x, y, z, stone);
 				subChunk.getIds()[x][y][z] = stone.getId();
 
