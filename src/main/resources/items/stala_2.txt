@@ -1,0 +1,2 @@
+model = item/stala_2
+place = stala_2

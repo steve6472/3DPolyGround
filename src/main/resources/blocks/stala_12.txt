@@ -1,0 +1,2 @@
+model = block/stala_12
+special = custom

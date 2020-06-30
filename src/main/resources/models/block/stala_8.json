@@ -1,0 +1,38 @@
+{"cubes": [{
+    "from": [
+        4,
+        0,
+        4
+    ],
+    "to": [
+        12,
+        16,
+        12
+    ],
+    "faces": {
+        "east": {
+            "texture": "stone",
+            "autoUV": true
+        },
+        "south": {
+            "texture": "stone",
+            "autoUV": true
+        },
+        "north": {
+            "texture": "stone",
+            "autoUV": true
+        },
+        "west": {
+            "texture": "stone",
+            "autoUV": true
+        },
+        "up": {
+            "texture": "stone",
+            "autoUV": true
+        },
+        "down": {
+            "texture": "stone",
+            "autoUV": true
+        }
+    }
+}]}
