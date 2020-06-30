@@ -20,81 +20,90 @@ import java.io.PrintWriter;
  ***********************/
 public class DataGenerator
 {
-	private File blocks = new File("res\\blocks");
-	private File items = new File("res\\items");
+	private File blocks = new File("src/main/resources/blocks");
+	private File items = new File("src/main/resources/items");
 
-	private File blockModels = new File("res\\models\\block");
-	private File itemModels = new File("res\\models\\item");
+	private File blockModels = new File("src/main/resources/models/block");
+	private File itemModels = new File("src/main/resources/models/item");
 
-	//	public static void main(String[] args)
-	//	{
-	//		try
-	//		{
-	//			new DataGenerator().generate();
-	//		} catch (IOException e)
-	//		{
-	//			e.printStackTrace();
-	//		}
-	//	}
+	public static void main(String[] args)
+	{
+		try
+		{
+			new DataGenerator().generate();
+		} catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+	}
 
 	public void generate() throws IOException
 	{
-		decorativeFullBlock("smooth_stone");
-		decorativeFullBlock("bricks");
-		decorativeFullBlock("oak_plank");
-		decorativeFullBlock("iron_block");
-		decorativeFullBlock("stone");
-		decorativeFullBlock("cobblestone");
-		decorativeFullBlock("bedrock");
-		decorativeFullBlock("green_screen");
+//		decorativeFullBlock("smooth_stone");
+//		decorativeFullBlock("bricks");
+//		decorativeFullBlock("oak_plank");
+//		decorativeFullBlock("iron_block");
+//		decorativeFullBlock("stone");
+//		decorativeFullBlock("cobblestone");
+//		decorativeFullBlock("bedrock");
+//		decorativeFullBlock("green_screen");
 
-		decorativeFullTintedBlock("full_grass_block", 0.5686275f, 0.7411765f, 0.34901962f, "grass_block_top");
+//		decorativeFullTintedBlock("full_grass_block", 0.5686275f, 0.7411765f, 0.34901962f, "grass_block_top");
 
-		decorativeFullTransparentBlock("glass");
-		decorativeFullTransparentBlock("framed_glass");
+//		decorativeFullTransparentBlock("glass");
+//		decorativeFullTransparentBlock("framed_glass");
 
+		blockWithModelSpecial("stala_14", new StalBlock(1), new SimpleSpecial("custom"));
+		blockWithModelSpecial("stala_12", new StalBlock(2), new SimpleSpecial("custom"));
+		blockWithModelSpecial("stala_10", new StalBlock(3), new SimpleSpecial("custom"));
+		blockWithModelSpecial("stala_8", new StalBlock(4), new SimpleSpecial("custom"));
+		blockWithModelSpecial("stala_6", new StalBlock(5), new SimpleSpecial("custom"));
+		blockWithModelSpecial("stala_4", new StalBlock(6), new SimpleSpecial("custom"));
+		blockWithModelSpecial("stala_2", new StalBlock(7), new SimpleSpecial("custom"));
+
+/*
 		decorativeFullLeavesBlock("oak_leaves", 48f / 104f, 67f / 100f, 19f / 104f);
 		decorativeFullLeavesBlock("dark_oak_leaves", 48f / 104f, 67f / 100f, 19f / 104f);
 		decorativeFullLeavesBlock("birch_leaves", 56f / 112f, 71f / 109f, 37f / 112f);
 		decorativeFullLeavesBlock("jungle_leaves", 52f / 112f, 73f / 109f, 21f / 112f);
 		decorativeFullLeavesBlock("spruce_leaves", 32f / 85f, 51f / 85f, 32f / 85f);
-		decorativeFullLeavesBlock("acacia_leaves", 74f / 158f, 106f / 158f, 29f / 158f);
+		decorativeFullLeavesBlock("acacia_leaves", 74f / 158f, 106f / 158f, 29f / 158f);*/
 
-		decorativeFullSidedBlock("oak_log", "oak_log", "oak_log", "oak_log_side");
+//		decorativeFullSidedBlock("oak_log", "oak_log", "oak_log", "oak_log_side");
 
-		grassBlock("grass", 0.5686275f, 0.7411765f, 0.34901962f);
-		grassBlock("red_grass", 1f, 0f, 0f);
-		grassBlock("green_grass", 0f, 1f, 0f);
-		grassBlock("blue_grass", 0f, 0f, 1f);
+//		grassBlock("grass", 0.5686275f, 0.7411765f, 0.34901962f);
+//		grassBlock("red_grass", 1f, 0f, 0f);
+//		grassBlock("green_grass", 0f, 1f, 0f);
+//		grassBlock("blue_grass", 0f, 0f, 1f);
 
 		/* Smooth Slab */
-		sidedSlabFamily("smooth_slab_top", "smooth_slab_bottom", "double_smooth_slab", "smooth_slab", "smooth_stone", "smooth_stone", "smooth_stone_slab");
+//		sidedSlabFamily("smooth_slab_top", "smooth_slab_bottom", "double_smooth_slab", "smooth_slab", "smooth_stone", "smooth_stone", "smooth_stone_slab");
 
 		/* Old Grass Block Slab */
-		sidedSlabFamily("old_grass_block_slab_top", "old_grass_block_slab_bottom", "old_grass_block", "old_grass_block_slab", "old_grass_block_top", "dirt", "old_grass_block_slab_side", "old_grass_block_side");
+//		sidedSlabFamily("old_grass_block_slab_top", "old_grass_block_slab_bottom", "old_grass_block", "old_grass_block_slab", "old_grass_block_top", "dirt", "old_grass_block_slab_side", "old_grass_block_side");
 
 		/* Dirt Slab */
-		fullSlabFamily("dirt_slab_top", "dirt_slab_bottom", "dirt", "dirt_slab", "dirt");
+//		fullSlabFamily("dirt_slab_top", "dirt_slab_bottom", "dirt", "dirt_slab", "dirt");
 
 		/* Old Full Grass Block Slab */
-		fullSlabFamily("old_full_grass_block_slab_top", "old_full_grass_block_slab_bottom", "old_full_grass_block", "old_full_grass_block_slab", "old_grass_block_top");
+//		fullSlabFamily("old_full_grass_block_slab_top", "old_full_grass_block_slab_bottom", "old_full_grass_block", "old_full_grass_block_slab", "old_grass_block_top");
 
 		/* Grass Block Slab */
-		topSlabGrassTinted("grass_block_slab_top", 0.5686275f, 0.7411765f, 0.34901962f);
-		bottomSlabGrassTinted("grass_block_slab_bottom", 0.5686275f, 0.7411765f, 0.34901962f);
-		item("grass_block_slab", new ItemFromBlock("grass_block_slab_bottom"), new SlabSpecial("grass_block_slab_top", "grass_block_slab_bottom", "grass"), "grass_block_slab_bottom");
+//		topSlabGrassTinted("grass_block_slab_top", 0.5686275f, 0.7411765f, 0.34901962f);
+//		bottomSlabGrassTinted("grass_block_slab_bottom", 0.5686275f, 0.7411765f, 0.34901962f);
+//		item("grass_block_slab", new ItemFromBlock("grass_block_slab_bottom"), new SlabSpecial("grass_block_slab_top", "grass_block_slab_bottom", "grass"), "grass_block_slab_bottom");
 
 
-		fallingFullBlock("sand");
-		fallingFullBlock("gravel");
+//		fallingFullBlock("sand");
+//		fallingFullBlock("gravel");
 
-		specialItem("speedometer", new SimpleSpecial("speedometer"));
-		specialItem("block_inspector", new SimpleSpecial("block_inspector"));
-		specialItem("wooden_axe", new SimpleSpecial("worldedit"));
+//		specialItem("speedometer", new SimpleSpecial("speedometer"));
+//		specialItem("block_inspector", new SimpleSpecial("block_inspector"));
+//		specialItem("wooden_axe", new SimpleSpecial("worldedit"));
 
-		stairFamily("stone_stair", "stone");
+//		stairFamily("stone_stair", "stone");
 
-		tintedOreBlock("coal", 0.3f, 0.3f, 0.3f);
+//		tintedOreBlock("coal", 0.3f, 0.3f, 0.3f);
 	}
 
 	/* Ores */
@@ -215,6 +224,18 @@ public class DataGenerator
 	private void decorativeFullBlock(String name) throws IOException
 	{
 		block(name, new FullBlock(name), null);
+		item(name, new ItemFromBlock(name), null, name);
+	}
+
+	private void blockWithModel(String name, IModel model) throws IOException
+	{
+		block(name, model, null);
+		item(name, new ItemFromBlock(name), null, name);
+	}
+
+	private void blockWithModelSpecial(String name, IModel model, ISpecial special) throws IOException
+	{
+		block(name, model, special);
 		item(name, new ItemFromBlock(name), null, name);
 	}
 

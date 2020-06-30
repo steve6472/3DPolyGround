@@ -4,7 +4,7 @@ import org.joml.Vector3f;
 import steve6472.polyground.block.Block;
 import steve6472.polyground.registry.BlockRegistry;
 import steve6472.polyground.world.generator.FeatureStage;
-import steve6472.polyground.world.generator.feature.cave.CrystalFeature;
+import steve6472.polyground.world.generator.feature.cave.StalaFeature;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
@@ -17,7 +17,7 @@ public class CrystalCaveBiome extends Biome
 	@Override
 	public void addFeatures()
 	{
-		addFeature(FeatureStage.CAVE_ALTER, new CrystalFeature(BlockRegistry.getBlockByName("glass")), 1 / 100d);
+		addFeature(FeatureStage.CAVE_ALTER, new StalaFeature(BlockRegistry.getBlockByName("stone"), 0.6f), 1 / 256d);
 	}
 
 	@Override

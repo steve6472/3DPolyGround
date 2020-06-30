@@ -91,6 +91,7 @@ public class SubChunkWater
 								if (j != 15 || subChunk.getLayer() != subChunk.getParent().getSubChunks().length)
 								{
 									double upVolume = subChunk.getLiquidVolumeEfficiently(i, j + 1, k);
+//									double blockVolume = WaterRegistry.volumes[subChunk.getBlockId(i, j, k)];
 									if (upVolume > 0)
 										AABBUtil.addWater(i + subChunk.getX() * 16, j + subChunk.getLayer() * 16, k + subChunk.getZ() * 16, 1f, CaveGame.getInstance().mainRender.waterTess);
 									else
