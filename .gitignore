@@ -36,3 +36,4 @@ hs_err_pid*
 *.png
 *.png
 *.png
+.idea/workspace.xml

@@ -126,13 +126,14 @@ public class MainMenu extends Gui implements IGamePause
 
 			CaveGame.getInstance().setWorld(new World(CaveGame.getInstance()));
 			SubChunk.generator = CaveGame.getInstance().generatorRegistry.getGenerator("cave");
+			CaveGame.getInstance().world.useGenerator = true;
 
 			int r = 3;
 			for (int i = -r; i <= r; i++)
 			{
 				for (int j = -r; j <= r; j++)
 				{
-					CaveGame.getInstance().world.addChunk(new Chunk(i, j, CaveGame.getInstance().world).generateNoRender(), true);
+//					CaveGame.getInstance().world.addChunk(new Chunk(i, j, CaveGame.getInstance().world).generateNoRender(), true);
 				}
 			}
 

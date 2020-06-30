@@ -209,14 +209,7 @@ public final class BuildHelper
 
 		int biomeId = sc == null ? 0 : sc.getBiomeId(x, y, z);
 
-		Biome b = switch (biomeId)
-			{
-				case 0 -> BiomeRegistry.voidBiome.getInstance();
-				case 1 -> BiomeRegistry.forest.getInstance();
-				case 2 -> BiomeRegistry.desert.getInstance();
-				case 3 -> BiomeRegistry.ocean.getInstance();
-				default -> throw new IllegalStateException("Unexpected value: " + biomeId);
-			};
+		Biome b = BiomeRegistry.getBiome(biomeId);
 
 		for (int j = 0; j < 6; j++)
 		{

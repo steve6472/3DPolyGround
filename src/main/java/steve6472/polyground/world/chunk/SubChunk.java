@@ -30,6 +30,7 @@ public class SubChunk implements IBiomeProvider
 {
 	private static final int MODEL_COUNT = ModelLayer.values().length;
 	public LinkedHashMap<Biome, BiomeEntry> presentBiomes;
+	public HashMap<FeatureStage, Integer> maxRange;
 
 	private final SubChunkModel[] model;
 	private final Chunk parent;
@@ -50,6 +51,7 @@ public class SubChunk implements IBiomeProvider
 	public SubChunk(Chunk parent, int layer)
 	{
 		presentBiomes = new LinkedHashMap<>();
+		maxRange = new HashMap<>();
 		state = EnumChunkState.NOT_GENERATED;
 		lastFeatureStage = FeatureStage.NONE;
 		this.parent = parent;
@@ -77,7 +79,25 @@ public class SubChunk implements IBiomeProvider
 
 	public void addBiome(Biome biome)
 	{
-		this.presentBiomes.put(biome, new BiomeEntry(biome));
+		if (!this.presentBiomes.containsKey(biome))
+		{
+			this.presentBiomes.put(biome, new BiomeEntry(biome));
+
+			for (FeatureStage stage : biome.getFeatures().keySet())
+			{
+				for (FeatureEntry entry : biome.getFeatures().get(stage))
+				{
+					if (maxRange.containsKey(stage))
+					{
+						int min = Math.max(maxRange.get(stage), entry.feature.size());
+						maxRange.replace(stage, min);
+					} else
+					{
+						maxRange.put(stage, entry.feature.size());
+					}
+				}
+			}
+		}
 	}
 
 	public boolean isBiomeGenerated(Biome biome)
@@ -513,7 +533,7 @@ public class SubChunk implements IBiomeProvider
 	@Override
 	public String toString()
 	{
-		return "SubChunk{" + "parent=" + parent + ", layer=" + layer + ", shouldUpdate=" + shouldRebuild + '}';
+		return "SubChunk{" + "parent=" + parent + ", state=" + state + ", lastFeatureStage=" + lastFeatureStage + ", layer=" + layer + ", shouldRebuild=" + shouldRebuild + '}';
 	}
 
 	public class BiomeEntry

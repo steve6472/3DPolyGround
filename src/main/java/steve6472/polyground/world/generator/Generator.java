@@ -36,37 +36,33 @@ public class Generator
 		this.world = world;
 		random = new Random();
 		toGenerate = new ArrayList<>();
-		Thread generatorThread = new Thread()
+		Thread generatorThread = new Thread(() ->
 		{
-			@Override
-			public void run()
+			while (true)
 			{
-				while (true)
+				if (current == null)
 				{
-					if (current == null)
+					if (!toGenerate.isEmpty())
 					{
-						if (!toGenerate.isEmpty())
-						{
-							current = toGenerate.get(0);
+						current = toGenerate.get(0);
 
-							current.generate();
-							current.setShouldRebuild(true);
+						current.generate();
+						current.setShouldRebuild(true);
 
-							toGenerate.remove(current);
-							current = null;
-						}
-					}
-
-					try
-					{
-						Thread.sleep(5);
-					} catch (InterruptedException e)
-					{
-						e.printStackTrace();
+						toGenerate.remove(current);
+						current = null;
 					}
 				}
+
+				try
+				{
+					Thread.sleep(5);
+				} catch (InterruptedException e)
+				{
+					e.printStackTrace();
+				}
 			}
-		};
+		});
 
 		generatorThread.start();
 	}
@@ -74,22 +70,22 @@ public class Generator
 	@Event
 	public void draw(InGameGuiEvent.PreRender e)
 	{
-//		Font.render(5, 100, "" + toGenerate.size());
-//		Font.render(5, 110, "" + CaveGame.getInstance().world.getChunk((int) Math.floor(CaveGame.getInstance().getPlayer().getX()) >> 4, (int) Math.floor(CaveGame.getInstance().getPlayer().getZ()) >> 4).getSubChunk((int) Math.floor(CaveGame.getInstance().getPlayer().getY()) >> 4));
+		//		Font.render(5, 100, "" + toGenerate.size());
+		//		Font.render(5, 110, "" + CaveGame.getInstance().world.getChunk((int) Math.floor(CaveGame.getInstance().getPlayer().getX()) >> 4, (int) Math.floor(CaveGame.getInstance().getPlayer().getZ()) >> 4).getSubChunk((int) Math.floor(CaveGame.getInstance().getPlayer().getY()) >> 4));
 	}
 
 	byte timer;
 
 	public void tick()
 	{
-//		timer++;
-//		if (timer < 10)
-//			return;
-//		timer = 0;
+		//		timer++;
+		//		if (timer < 10)
+		//			return;
+		//		timer = 0;
 		int px = (int) Math.floor(CaveGame.getInstance().getPlayer().getX()) >> 4;
 		int pz = (int) Math.floor(CaveGame.getInstance().getPlayer().getZ()) >> 4;
 
-		int range = 5;
+		int range = 3;
 
 		for (int i = -range; i <= range; i++)
 		{
@@ -111,8 +107,8 @@ public class Generator
 						{
 							if (!toGenerate.contains(sc))
 								toGenerate.add(sc);
-//							sc.generate();
-//							sc.rebuild();
+							//							sc.generate();
+							//							sc.rebuild();
 						}
 					}
 
@@ -136,7 +132,7 @@ public class Generator
 		boolean gen = false;
 
 		if (sc.lastFeatureStage == FeatureStage.NONE)
-			sc.lastFeatureStage = FeatureStage.LAND_ALTER;
+			sc.lastFeatureStage = FeatureStage.getValues()[1];
 
 		if (sc.areFeaturesGeneratedForStage(sc.lastFeatureStage))
 		{
@@ -144,7 +140,95 @@ public class Generator
 			return false;
 		}
 
+		if (sc.maxRange.containsKey(sc.lastFeatureStage))
+		{
+			if (sc.maxRange.get(sc.lastFeatureStage) > maxRange)
+			{
+				return false;
+			}
+		}
+
 		HashMap<Biome, LinkedHashSet<IFeature>> generated = new HashMap<>();
+
+		if (sc.lastFeatureStage.isOnGround())
+		{
+			gen = onGroundStage(sc, generated, maxRange);
+		} else
+		{
+			gen = inGroundStage(sc, generated, maxRange);
+		}
+
+		if (!generated.isEmpty())
+		{
+			for (Biome b : generated.keySet())
+			{
+				sc.markAsGenerated(b, sc.lastFeatureStage, generated.get(b));
+			}
+		}
+
+		moveStage(sc);
+
+		return gen;
+	}
+
+	private boolean inGroundStage(SubChunk sc, HashMap<Biome, LinkedHashSet<IFeature>> generated, int maxRange)
+	{
+		boolean gen = false;
+
+		for (int i = 0; i < 16; i++)
+		{
+			for (int j = 0; j < 16; j++)
+			{
+				for (int k = 0; k < 16; k++)
+				{
+					Biome biome;
+					biome = BiomeRegistry.getBiome(sc.getBiomeId(i, j, k));
+
+					if (sc.isBiomeGenerated(biome))
+						continue;
+
+					if (sc.areFeaturesGeneratedForStage(biome, sc.lastFeatureStage))
+						continue;
+
+					for (FeatureEntry e : biome.getFeatures().get(sc.lastFeatureStage))
+					{
+						if (e.feature.getPlacement() == EnumFeaturePlacement.IN_GROUND)
+							if (genInGround(sc, e, maxRange, i, j, k, generated))
+								gen = true;
+					}
+				}
+			}
+		}
+
+		return gen;
+	}
+
+	private boolean genInGround(SubChunk sc, FeatureEntry e, int maxRange, int i, int j, int k, HashMap<Biome, LinkedHashSet<IFeature>> generated)
+	{
+		if (maxRange < e.feature.size())
+			return false;
+
+		Biome biome = BiomeRegistry.getBiome(sc.getBiomeId(i, j, k));
+
+		if (sc.isFeatureGenerated(biome, sc.lastFeatureStage, e.feature))
+			return false;
+
+		if (random.nextDouble() < e.chance)
+		{
+			if (e.feature.canGenerate(sc, i, j, k))
+			{
+				e.feature.generate(sc, i, j, k);
+			}
+		}
+
+		setAsGenerated(biome, e.feature, generated);
+
+		return false;
+	}
+
+	private boolean onGroundStage(SubChunk sc, HashMap<Biome, LinkedHashSet<IFeature>> generated, int maxRange)
+	{
+		boolean gen = false;
 
 		for (int i = 0; i < 16; i++)
 		{
@@ -157,7 +241,8 @@ public class Generator
 					continue;
 
 				int y;
-				Biome biome = BiomeRegistry.getBiome(sc.getBiomeId(i, y = (sc.getParent().heightMap[i][j] % 16), j));
+				Biome biome;
+				biome = BiomeRegistry.getBiome(sc.getBiomeId(i, y = (sc.getParent().heightMap[i][j] % 16), j));
 
 				if (sc.isBiomeGenerated(biome))
 					continue;
@@ -167,145 +252,53 @@ public class Generator
 
 				for (FeatureEntry e : biome.getFeatures().get(sc.lastFeatureStage))
 				{
-					if (e.feature.getPlacement() != EnumFeaturePlacement.IN_HEIGHT_MAP && e.feature.getPlacement() != EnumFeaturePlacement.ON_HEIGHT_MAP)
-						continue;
-
-					if (sc.isFeatureGenerated(biome, sc.lastFeatureStage, e.feature))
-						continue;
-
-					if (maxRange >= e.feature.size())
+					if (e.feature.getPlacement() == EnumFeaturePlacement.IN_HEIGHT_MAP || e.feature.getPlacement() == EnumFeaturePlacement.ON_HEIGHT_MAP)
 					{
-						if (random.nextDouble() < e.chance)
-						{
-							if (e.feature.canGenerate(sc, i, y + (e.feature.getPlacement() == EnumFeaturePlacement.ON_HEIGHT_MAP ? 1 : 0), j))
-							{
-								e.feature.generate(sc, i, y + (e.feature.getPlacement() == EnumFeaturePlacement.ON_HEIGHT_MAP ? 1 : 0), j);
-							}
-						}
-
-						if (generated.containsKey(biome))
-						{
-							generated.get(biome).add(e.feature);
-						} else
-						{
-							LinkedHashSet<IFeature> list = new LinkedHashSet<>();
-							list.add(e.feature);
-							generated.put(biome, list);
-						}
-
-						gen = true;
+						if (genHeightMap(sc, biome, e, maxRange, i, y, j, generated))
+							gen = true;
 					}
+					else if (e.feature.getPlacement() == EnumFeaturePlacement.IN_GROUND)
+						if (genInGround(sc, e, maxRange, i, y, j, generated))
+							gen = true;
 				}
 			}
 		}
-
-		if (!generated.isEmpty())
-		{
-//			System.out.println("sc: " + sc.getX() + " " + sc.getLayer() + " " + sc.getZ() + " " + sc.lastFeatureStage);
-
-			for (Biome b : generated.keySet())
-			{/*
-				System.out.println("\t" + b.getName());
-				for (IFeature f : generated.get(b))
-				{
-					System.out.println("\t\t" + f.getClass().getSimpleName());
-				}*/
-				sc.markAsGenerated(b, sc.lastFeatureStage, generated.get(b));
-			}
-		}
-
-/*
-		if (!sc.featuresToGenerate.isEmpty())
-		{
-			List<FeatureEntry> toRemove = new ArrayList<>();
-
-			for (int i = 0; i < 16; i++)
-			{
-				for (int j = 0; j < 16; j++)
-				{
-					if (sc.getParent().heightMap[i][j] == -1)
-						continue;
-
-					if (sc.getParent().heightMap[i][j] / 16 != sc.getLayer())
-						continue;
-
-					int y;
-					Biome biome = BiomeRegistry.getBiome(sc.getBiomeId(i, y = (sc.getParent().heightMap[i][j] % 16), j));
-					for (FeatureEntry ce : sc.featuresToGenerate)
-					{
-						for (FeatureEntry e : biome.getFeatures())
-						{
-							if (e.feature.getPlacement() != EnumFeaturePlacement.IN_HEIGHT_MAP && e.feature.getPlacement() != EnumFeaturePlacement.ON_HEIGHT_MAP)
-								continue;
-
-							if (ce != e)
-								continue;
-
-							if (maxRange >= e.feature.size())
-							{
-								if (random.nextDouble() < e.chance)
-								{
-									if (e.feature.canGenerate(sc, i, y + (e.feature.getPlacement() == EnumFeaturePlacement.ON_HEIGHT_MAP ? 1 : 0), j))
-									{
-										e.feature.generate(sc, i, y + (e.feature.getPlacement() == EnumFeaturePlacement.ON_HEIGHT_MAP ? 1 : 0), j);
-									}
-								}
-								if (!toRemove.contains(e))
-									toRemove.add(e);
-								gen = true;
-							}
-						}
-					}
-				}
-			}
-			for (FeatureEntry fe : toRemove)
-			{
-				sc.featuresToGenerate.remove(fe);
-			}
-		} else
-		{
-			for (int i = 0; i < 16; i++)
-			{
-				for (int j = 0; j < 16; j++)
-				{
-					if (sc.getParent().heightMap[i][j] == -1)
-						continue;
-
-					if (sc.getParent().heightMap[i][j] / 16 != sc.getLayer())
-						continue;
-
-					int y;
-					Biome biome = BiomeRegistry.getBiome(sc.getBiomeId(i, y = (sc.getParent().heightMap[i][j] % 16), j));
-					for (FeatureEntry e : biome.getFeatures())
-					{
-						if (e.feature.getPlacement() == EnumFeaturePlacement.IN_HEIGHT_MAP || e.feature.getPlacement() == EnumFeaturePlacement.ON_HEIGHT_MAP)
-						{
-							if (maxRange >= e.feature.size())
-							{
-								if (random.nextDouble() < e.chance)
-								{
-									if (e.feature.canGenerate(sc, i, y + (e.feature.getPlacement() == EnumFeaturePlacement.ON_HEIGHT_MAP ? 1 : 0), j))
-									{
-										e.feature.generate(sc, i, y + (e.feature.getPlacement() == EnumFeaturePlacement.ON_HEIGHT_MAP ? 1 : 0), j);
-									}
-								}
-								gen = true;
-							} else
-							{
-								if (!sc.featuresToGenerate.contains(e))
-								{
-									sc.featuresToGenerate.add(e);
-								}
-							}
-						}
-					}
-				}
-			}
-		}*/
-
-		moveStage(sc);
 
 		return gen;
+	}
+
+	private boolean genHeightMap(SubChunk sc, Biome biome, FeatureEntry e, int maxRange, int i, int y, int j, HashMap<Biome, LinkedHashSet<IFeature>> generated)
+	{
+		if (sc.isFeatureGenerated(biome, sc.lastFeatureStage, e.feature))
+			return false;
+
+		if (maxRange < e.feature.size())
+			return false;
+
+		if (random.nextDouble() < e.chance)
+		{
+			if (e.feature.canGenerate(sc, i, y + (e.feature.getPlacement() == EnumFeaturePlacement.ON_HEIGHT_MAP ? 1 : 0), j))
+			{
+				e.feature.generate(sc, i, y + (e.feature.getPlacement() == EnumFeaturePlacement.ON_HEIGHT_MAP ? 1 : 0), j);
+			}
+		}
+
+		setAsGenerated(biome, e.feature, generated);
+
+		return true;
+	}
+
+	private void setAsGenerated(Biome biome, IFeature feature, HashMap<Biome, LinkedHashSet<IFeature>> generated)
+	{
+		if (generated.containsKey(biome))
+		{
+			generated.get(biome).add(feature);
+		} else
+		{
+			LinkedHashSet<IFeature> list = new LinkedHashSet<>();
+			list.add(feature);
+			generated.put(biome, list);
+		}
 	}
 
 	private void moveStage(SubChunk sc)

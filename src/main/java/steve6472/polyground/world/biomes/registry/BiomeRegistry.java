@@ -21,6 +21,7 @@ public class BiomeRegistry
 	public static final BiomeEntry<ForestBiome> forest = register("forest", ForestBiome::new);
 	public static final BiomeEntry<DesertBiome> desert = register("desert", DesertBiome::new);
 	public static final BiomeEntry<OceanBiome> ocean = register("ocean", OceanBiome::new);
+	public static final BiomeEntry<CrystalCaveBiome> crystalCave = register("crystal_cave", CrystalCaveBiome::new);
 //	public static final BiomeEntry<OceanBiome> plains = register("plains", OceanBiome::new);
 
 	public static <T extends Biome> BiomeEntry<T> register(String id, IBiomeFactory<T> factory)
