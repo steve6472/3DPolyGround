@@ -2,9 +2,11 @@ package steve6472.polyground.gui;
 
 import steve6472.polyground.CaveGame;
 import steve6472.polyground.Options;
+import steve6472.polyground.gfx.MainRender;
 import steve6472.polyground.world.World;
 import steve6472.polyground.world.WorldSerializer;
 import steve6472.polyground.world.chunk.ModelLayer;
+import steve6472.polyground.world.chunk.SubChunkModel;
 import steve6472.sge.gfx.SpriteRender;
 import steve6472.sge.gfx.font.CustomChar;
 import steve6472.sge.gfx.font.Font;
@@ -32,6 +34,8 @@ public class OptionsGui extends Gui implements IGamePause
 	{
 		super(mainApp);
 	}
+
+	private OptNamedCheckBox fastChunkBuildFix;
 
 	@Override
 	public void createGui()
@@ -67,6 +71,23 @@ public class OptionsGui extends Gui implements IGamePause
 		});
 		addComponent(save);
 
+		Button menu = new Button("Quit to Menu");
+		menu.setLocation(getMainApp().getWidth() - 110, getMainApp().getHeight() - 120);
+		menu.setSize(100, 30);
+		menu.addClickEvent(c ->
+		{
+			CaveGame.getInstance().getWorld().clearWorld();
+			CaveGame.getInstance().world = null;
+			CaveGame.getInstance().inGameGui.setVisible(false);
+			CaveGame.getInstance().options.isGamePaused = true;
+			CaveGame.getInstance().mainMenu.setVisible(true);
+			setVisible(false);
+			CaveGame.getInstance().getPlayer().setPosition(-2, 0.05f, 0);
+			CaveGame.getInstance().getPlayer().setMotion(0, 0, 0);
+			CaveGame.getInstance().getPlayer().updateHitbox();
+		});
+		addComponent(menu);
+
 		Options options = CaveGame.getInstance().options;
 
 		int x = 0;
@@ -82,7 +103,8 @@ public class OptionsGui extends Gui implements IGamePause
 
 		x = 0;
 		checkBox("enablePostProcessing", 300, 10 + x++ * 30, () -> options.enablePostProcessing, b -> options.enablePostProcessing = b);
-		checkBox("renderCrosshair", 300, 10 + x * 30, () -> options.renderCrosshair, b -> options.renderCrosshair = b);
+		checkBox("renderCrosshair", 300, 10 + x++ * 30, () -> options.renderCrosshair, b -> options.renderCrosshair = b);
+		fastChunkBuildFix = checkBox("fastChunkBuild", 300, 10 + x * 30, () -> options.fastChunkBuild, b -> options.fastChunkBuild = b);
 
 		x = 0;
 		/* Minimap */
@@ -130,7 +152,7 @@ public class OptionsGui extends Gui implements IGamePause
 		mainApp.runEvent(new ShowEvent());
 	}
 
-	private void checkBox(String text, int x, int y, Supplier<Boolean> get, Consumer<Boolean> toggle)
+	private OptNamedCheckBox checkBox(String text, int x, int y, Supplier<Boolean> get, Consumer<Boolean> toggle)
 	{
 		OptNamedCheckBox box = new OptNamedCheckBox();
 		box.sup = get;
@@ -142,12 +164,13 @@ public class OptionsGui extends Gui implements IGamePause
 		box.setBoxPadding(5, 5);
 		box.addChangeEvent(c -> toggle.accept(c.isToggled()));
 		addComponent(box);
+		return box;
 	}
 
 	@Override
 	public void guiTick()
 	{
-
+		fastChunkBuildFix.setEnabled(SubChunkModel.toBuildCount == 0 && MainRender.CHUNK_REBUILT == 0);
 	}
 
 	@Override

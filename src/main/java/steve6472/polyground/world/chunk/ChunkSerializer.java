@@ -157,6 +157,7 @@ public class ChunkSerializer
 		SmartSave.closeInput();
 
 		subChunk.rebuild();
+		subChunk.state = EnumChunkState.FULL;
 		return subChunk;
 	}
 }

@@ -9,6 +9,7 @@ import steve6472.polyground.world.World;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Arrays;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
@@ -23,12 +24,18 @@ public class Chunk
 	private final int x, z;
 	private final SubChunk[] subChunks;
 	private final World world;
+	public final int[][] heightMap;
 
 	public Chunk(int x, int z, World world)
 	{
 		this.x = x;
 		this.z = z;
 		this.world = world;
+		heightMap = new int[16][16];
+		for (int i = 0; i < 16; i++)
+		{
+			Arrays.fill(heightMap[i], -1);
+		}
 
 		subChunks = new SubChunk[world.getHeight()];
 		for (int i = 0; i < subChunks.length; i++)
@@ -43,6 +50,16 @@ public class Chunk
 		{
 			subChunk.generate();
 			subChunk.rebuild();
+		}
+
+		return this;
+	}
+
+	public Chunk generateNoRender()
+	{
+		for (SubChunk subChunk : subChunks)
+		{
+			subChunk.generate();
 		}
 
 		return this;
@@ -87,7 +104,9 @@ public class Chunk
 			throw new FileNotFoundException();
 
 		for (SubChunk subChunk : subChunks)
+		{
 			ChunkSerializer.deserialize(subChunk);
+		}
 	}
 
 	public void setBlock(int x, int y, int z, int id)

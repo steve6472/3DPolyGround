@@ -1,8 +1,8 @@
 package steve6472.polyground.world.biomes;
 
+import org.joml.Vector3f;
 import steve6472.polyground.block.Block;
 import steve6472.polyground.registry.BlockRegistry;
-import org.joml.Vector3f;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
@@ -13,6 +13,12 @@ import org.joml.Vector3f;
 public class VoidBiome extends Biome
 {
 	@Override
+	public void addFeatures()
+	{
+
+	}
+
+	@Override
 	public String getName()
 	{
 		return "void";
@@ -21,7 +27,7 @@ public class VoidBiome extends Biome
 	@Override
 	public Block getTopBlock()
 	{
-		return BlockRegistry.getBlockByName("air");
+		return BlockRegistry.getBlockByName("bedrock");
 	}
 
 	@Override

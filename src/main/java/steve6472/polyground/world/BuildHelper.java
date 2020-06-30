@@ -211,10 +211,10 @@ public final class BuildHelper
 
 		Biome b = switch (biomeId)
 			{
-				case 0 -> BiomeRegistry.voidBiome.createNew();
-				case 1 -> BiomeRegistry.redLand.createNew();
-				case 2 -> BiomeRegistry.greenLand.createNew();
-				case 3 -> BiomeRegistry.blueLand.createNew();
+				case 0 -> BiomeRegistry.voidBiome.getInstance();
+				case 1 -> BiomeRegistry.forest.getInstance();
+				case 2 -> BiomeRegistry.desert.getInstance();
+				case 3 -> BiomeRegistry.ocean.getInstance();
 				default -> throw new IllegalStateException("Unexpected value: " + biomeId);
 			};
 

@@ -15,6 +15,7 @@ import steve6472.polyground.teleporter.TeleporterManager;
 import steve6472.polyground.world.chunk.Chunk;
 import steve6472.polyground.world.chunk.ModelLayer;
 import steve6472.polyground.world.chunk.SubChunk;
+import steve6472.polyground.world.generator.Generator;
 import steve6472.sge.gfx.GBuffer;
 import steve6472.sge.gfx.Tessellator3D;
 import steve6472.sge.main.game.GridStorage;
@@ -38,10 +39,15 @@ public class World implements IBlockProvider
 {
 	private final int HEIGHT = 4;
 
+	public int lastWaterTickIndex = 0;
+	public int currentWaterTickIndex = 0;
+	public boolean reachedMax = false;
+
 	private GridStorage<Chunk> chunks;
 	private EntityManager entityManager;
 	public TeleporterManager teleporters;
 	private RiftManager rifts;
+	private Generator generator;
 
 	private CaveGame game;
 
@@ -49,6 +55,7 @@ public class World implements IBlockProvider
 
 	public boolean shouldRebuild = false;
 	public String worldName = null;
+	public boolean useGenerator;
 
 	private Matrix4f mat;
 
@@ -63,6 +70,8 @@ public class World implements IBlockProvider
 
 		teleporters = new TeleporterManager(this);
 		rifts = new RiftManager(game, this);
+		this.generator = new Generator(this);
+		game.getEventHandler().register(generator);
 
 		//
 		//		if (worldName == null)
@@ -73,11 +82,17 @@ public class World implements IBlockProvider
 
 	public void tick()
 	{
+		if (lastWaterTickIndex >= InGameGui.waterActive)
+			lastWaterTickIndex = 0;
+		reachedMax = false;
+		currentWaterTickIndex = 0;
 		InGameGui.waterActive = 0;
 		for (Chunk chunk : chunks.getMap().values())
 		{
 			chunk.tick();
 		}
+
+		lastWaterTickIndex += game.options.maxWaterTick;
 
 		renderChunkOutlines();
 
@@ -89,6 +104,8 @@ public class World implements IBlockProvider
 		//			generateChunks();
 		//			delay = 0;
 		//		}
+		if (useGenerator)
+			generator.tick();
 	}
 
 	private void generateChunks()

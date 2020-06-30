@@ -50,6 +50,7 @@ import static org.lwjgl.opengl.GL11.*;
 public class CaveGame extends MainApp
 {
 	private static CaveGame instance;
+	public static long MAIN_THREAD;
 
 	/* Game objects */
 	public static Item itemInHand;
@@ -76,6 +77,7 @@ public class CaveGame extends MainApp
 	public void init()
 	{
 		instance = this;
+		MAIN_THREAD = Thread.currentThread().getId();
 
 		mainRender = new MainRender(this);
 
@@ -179,7 +181,6 @@ public class CaveGame extends MainApp
 			mainRender.particles.tick();
 
 		MainRender.t.clear();
-		MainRender.water.clear();
 
 		handleCamera();
 

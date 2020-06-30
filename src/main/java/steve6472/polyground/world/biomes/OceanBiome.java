@@ -1,8 +1,8 @@
 package steve6472.polyground.world.biomes;
 
+import org.joml.Vector3f;
 import steve6472.polyground.block.Block;
 import steve6472.polyground.registry.BlockRegistry;
-import org.joml.Vector3f;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
@@ -10,24 +10,30 @@ import org.joml.Vector3f;
  * Project: SJP
  *
  ***********************/
-public class RedLand extends Biome
+public class OceanBiome extends Biome
 {
+	@Override
+	public void addFeatures()
+	{
+
+	}
+
 	@Override
 	public String getName()
 	{
-		return "red_land";
+		return "ocean";
 	}
 
 	@Override
 	public Block getTopBlock()
 	{
-		return BlockRegistry.getBlockByName("red_grass");
+		return BlockRegistry.getBlockByName("gravel");
 	}
 
 	@Override
 	public Block getUnderBlock()
 	{
-		return BlockRegistry.getBlockByName("dirt");
+		return BlockRegistry.getBlockByName("sand");
 	}
 
 	@Override
@@ -45,7 +51,7 @@ public class RedLand extends Biome
 	@Override
 	public int getIterationCount()
 	{
-		return 4;
+		return 64;
 	}
 
 	@Override
@@ -57,7 +63,7 @@ public class RedLand extends Biome
 	@Override
 	public float getScale()
 	{
-		return 0.007f;
+		return 0.0007f;
 	}
 
 	@Override
@@ -69,12 +75,12 @@ public class RedLand extends Biome
 	@Override
 	public float getHigh()
 	{
-		return 63;
+		return 20;
 	}
 
 	@Override
 	public Vector3f getColor()
 	{
-		return new Vector3f(1, 0, 0);
+		return new Vector3f(102 / 255f, 209 / 255f, 154 / 255f);
 	}
 }

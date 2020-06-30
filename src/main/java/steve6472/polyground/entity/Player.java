@@ -35,6 +35,7 @@ public class Player implements IMotion3f, IPosition3f
 	private Camera camera;
 
 	public Vector3f viewDir;
+	public boolean canFly = true;
 	public boolean isFlying;
 	public boolean isOnGround;
 	public boolean isOnBlock;
@@ -182,6 +183,8 @@ public class Player implements IMotion3f, IPosition3f
 	@Event
 	public void fly(KeyEvent e)
 	{
+		if (!canFly)
+			return;
 		if (pg.world == null || pg.options.isInMenu)
 			return;
 		if (pg.inGameGui.chat.isFocused())

@@ -24,9 +24,10 @@ public class CaveGenerator implements IGenerator
 		this.subChunk = subChunk;
 
 		Block stone = BlockRegistry.getBlockByName("stone");
+		Block cobblestone = BlockRegistry.getBlockByName("cobblestone");
 
 //		iterate((x, y, z) -> subChunk.setBlock(x, y, z, stone));
-		long start = System.nanoTime();
+//		long start = System.nanoTime();
 		iterate((x, y, z) -> {
 
 			float scale = 3f;
@@ -35,12 +36,16 @@ public class CaveGenerator implements IGenerator
 			float s1 = noise(x + subChunk.getX() * 16, y + subChunk.getLayer() * 16, z + subChunk.getZ() * 16, scale * 0.03f);
 			float s2 = noise(x + subChunk.getX() * 16, y + subChunk.getLayer() * 16, z + subChunk.getZ() * 16, scale * 0.03f);
 
-			if (s0 * (s1 + 1) * 2f + s2 < 0.3f)
-				subChunk.setBlock(x, y, z, stone);
+			if (s0 * (s1 + 1) * 2f + s2 < -0.4f)
+				subChunk.getIds()[x][y][z] = cobblestone.getId();
+//				subChunk.setBlock(x, y, z, cobblestone);
+			else if (s0 * (s1 + 1) * 2f + s2 < 0.3f)
+//				subChunk.setBlock(x, y, z, stone);
+				subChunk.getIds()[x][y][z] = stone.getId();
 
 //			points[i][j][k] = (s0 * (s1 + 1) * 2f + s2 < 0.3f);
 		});
-		System.out.println((System.nanoTime() - start) / 1000000f);
+//		System.out.println((System.nanoTime() - start) / 1000000f);
 
 		//		new SphereCaveFeature(8, 8, 8, 6).generate(subChunk, stone.getId());
 		//		new SphereCaveFeature(8, 15, 8, 4).generate(subChunk, 0);

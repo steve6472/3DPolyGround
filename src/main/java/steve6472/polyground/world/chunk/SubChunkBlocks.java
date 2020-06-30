@@ -72,6 +72,20 @@ public class SubChunkBlocks
 		}
 	}
 
+	public void setBlockEfficiently(int x, int y, int z, int id)
+	{
+		if (x >= 0 && x < 16 && z >= 0 && z < 16 && y >= 0 && y < 16)
+		{
+			setBlock(x, y, z, id);
+		} else
+		{
+			SubChunk sc = subChunk.getNeighbouringSubChunk(x, y, z);
+			if (sc == null)
+				return;
+			sc.setBlock(Math.floorMod(x, 16), Math.floorMod(y, 16), Math.floorMod(z, 16), id);
+		}
+	}
+
 	public void setBlock(int x, int y, int z, Block block)
 	{
 		setBlock(x, y, z, block.getId());

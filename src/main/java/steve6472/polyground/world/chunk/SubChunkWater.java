@@ -1,11 +1,10 @@
-package steve6472.polyground.world.chunk.water;
+package steve6472.polyground.world.chunk;
 
 import steve6472.polyground.AABBUtil;
 import steve6472.polyground.CaveGame;
 import steve6472.polyground.EnumFace;
 import steve6472.polyground.block.Block;
 import steve6472.polyground.registry.WaterRegistry;
-import steve6472.polyground.world.chunk.SubChunk;
 import steve6472.sge.main.Util;
 
 /**********************
@@ -32,6 +31,23 @@ public class SubChunkWater
 	{
 		if (!isActive)
 			return;
+
+		System.out.println("Last: " + subChunk.getWorld().lastWaterTickIndex);
+
+		int max = CaveGame.getInstance().options.maxWaterTick;
+
+		if (max != -1 && (subChunk.getWorld().reachedMax || subChunk.getWorld().currentWaterTickIndex < subChunk.getWorld().lastWaterTickIndex))
+		{
+			subChunk.getWorld().currentWaterTickIndex++;
+			return;
+		}
+
+		subChunk.getWorld().currentWaterTickIndex++;
+		if (subChunk.getWorld().currentWaterTickIndex == max || subChunk.getWorld().currentWaterTickIndex == subChunk.getWorld().lastWaterTickIndex + max)
+		{
+//			subChunk.getWorld().lastWaterTickIndex = subChunk.getWorld().currentWaterTickIndex;
+			subChunk.getWorld().reachedMax = true;
+		}
 
 		totalVolume = 0;
 

@@ -14,6 +14,22 @@ public class Options
 	public boolean enablePostProcessing = false;
 	public boolean renderCrosshair = true;
 
+	/**
+	 * -1 to disable limit
+	 */
+	public int maxChunkRebuild = 5;
+	/**
+	 * -1 to disable limit
+	 * Don't use this, it causes rapid flickering of water!
+	 */
+	public int maxWaterTick = -1;
+
+	/**
+	 * true - uses other thread to build chunks and main thread to upload the data to graphics card
+	 *        Placing blocks can be slow due to long queue for the thread
+	 *        Can be toggled only if no chunks are being built!
+	 */
+	public boolean fastChunkBuild = true;
 
 	public boolean isGamePaused = true;
 	public boolean isInMenu = true;

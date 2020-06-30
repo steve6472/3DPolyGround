@@ -15,7 +15,7 @@ import steve6472.polyground.gfx.shaders.ShaderStorage;
 import steve6472.polyground.teleporter.Teleporter;
 import steve6472.polyground.tessellators.BasicTessellator;
 import steve6472.polyground.world.BuildHelper;
-import steve6472.polyground.world.chunk.water.Water;
+import steve6472.polyground.world.chunk.SubChunkModel;
 import steve6472.polyground.world.light.LightManager;
 import steve6472.sge.gfx.DepthFrameBuffer;
 import steve6472.sge.gfx.*;
@@ -40,8 +40,9 @@ import static steve6472.sge.gfx.VertexObjectCreator.*;
 public class MainRender
 {
 	public static List<AABBf> t = new ArrayList<>();
-	public static List<Water> water = new ArrayList<>();
 	public static ShaderStorage shaders;
+
+	public static int CHUNK_REBUILT = 0;
 
 	private final CaveGame game;
 
@@ -60,7 +61,7 @@ public class MainRender
 	public final Frustum frustum;
 	public final ParticleStorage particles;
 
-	public BuildHelper buildHelper;
+	public BuildHelper buildHelper, lazyBuildHelper;
 	public BasicTessellator basicTess;
 	public BasicTessellator waterTess;
 
@@ -76,6 +77,7 @@ public class MainRender
 		unbindVAO();
 
 		buildHelper = new BuildHelper();
+		lazyBuildHelper = new BuildHelper();
 
 		mainFrameBuffer = new DepthFrameBuffer(game.getWidth(), game.getHeight(), true);
 		waterFrameBuffer = new DepthFrameBuffer(game.getWidth(), game.getHeight());
@@ -109,58 +111,60 @@ public class MainRender
 	public void render()
 	{
 		frustum.updateFrustum(shaders.getProjectionMatrix(), game.getCamera().getViewMatrix());
+		CHUNK_REBUILT = 0;
 
-		if (game.world != null)
-		{
-			game.world.shouldRebuild = true;
-			game.world.tryRebuild();
+		if (game.world == null)
+			return;
 
-			if (!CaveGame.runGameEvent(new WorldEvent.PreRender(game.world)))
-				game.world.render(true, true);
-			CaveGame.runGameEvent(new WorldEvent.PostRender(game.world));
+		game.world.shouldRebuild = true;
+		game.world.tryRebuild();
+		SubChunkModel.upload();
 
-			mainFrameBuffer.bindFrameBuffer(game);
-			steve6472.sge.gfx.DepthFrameBuffer.clearCurrentBuffer();
+		if (!CaveGame.runGameEvent(new WorldEvent.PreRender(game.world)))
+			game.world.render(true, true);
+		CaveGame.runGameEvent(new WorldEvent.PostRender(game.world));
 
-			shaders.deferredShader.bind();
-			shaders.deferredShader.setUniform(GenericDeferredShader.cameraPos, game.getCamera().getX(), game.getCamera().getY(), game.getCamera().getZ());
-			Sprite.bind(0, gBuffer.texture);
-			Sprite.bind(1, gBuffer.position);
-			Sprite.bind(2, gBuffer.normal);
-			Sprite.bind(3, gBuffer.emission);
-			Sprite.bind(4, gBuffer.emissionPos);
-			LightManager.updateLights(shaders.deferredShader);
-			VertexObjectCreator.basicRender(finalRenderQuad, 2, 6, Tessellator.TRIANGLES);
+		mainFrameBuffer.bindFrameBuffer(game);
+		steve6472.sge.gfx.DepthFrameBuffer.clearCurrentBuffer();
 
-			mainFrameBuffer.unbindCurrentFrameBuffer(game);
+		shaders.deferredShader.bind();
+		shaders.deferredShader.setUniform(GenericDeferredShader.cameraPos, game.getCamera().getX(), game.getCamera().getY(), game.getCamera().getZ());
+		Sprite.bind(0, gBuffer.texture);
+		Sprite.bind(1, gBuffer.position);
+		Sprite.bind(2, gBuffer.normal);
+		Sprite.bind(3, gBuffer.emission);
+		Sprite.bind(4, gBuffer.emissionPos);
+		LightManager.updateLights(shaders.deferredShader);
+		VertexObjectCreator.basicRender(finalRenderQuad, 2, 6, Tessellator.TRIANGLES);
 
-			copyDepthToBuffer(mainFrameBuffer.frameBuffer);
+		mainFrameBuffer.unbindCurrentFrameBuffer(game);
 
-			/* Render water */
-			waterFrameBuffer.bindFrameBuffer(game);
-			DepthFrameBuffer.clearCurrentBuffer();
-			copyDepthToBuffer(waterFrameBuffer.frameBuffer);
-			waterFrameBuffer.bindFrameBuffer(game);
-			shaders.mainShader.bind(game.getCamera().getViewMatrix());
-			waterTess.loadPos(0);
-			waterTess.loadColor(1);
-			GL20.glDrawArrays(Tessellator.TRIANGLES, 0, game.currentWaterCount);
-			waterTess.disable(0, 1);
+		copyDepthToBuffer(mainFrameBuffer.frameBuffer);
 
-			game.getRifts().render();
+		/* Render water */
+		waterFrameBuffer.bindFrameBuffer(game);
+		DepthFrameBuffer.clearCurrentBuffer();
+		copyDepthToBuffer(waterFrameBuffer.frameBuffer);
+		waterFrameBuffer.bindFrameBuffer(game);
+		shaders.mainShader.bind(game.getCamera().getViewMatrix());
+		waterTess.loadPos(0);
+		waterTess.loadColor(1);
+		GL20.glDrawArrays(Tessellator.TRIANGLES, 0, game.currentWaterCount);
+		waterTess.disable(0, 1);
 
-			mainFrameBuffer.bindFrameBuffer(game);
-			renderTheWorld(false);
+		game.getRifts().render();
 
-			shaders.waterShader.bind();
-			Sprite.bind(0, waterFrameBuffer.texture);
-			VertexObjectCreator.basicRender(finalRenderQuad, 2, 6, Tessellator.TRIANGLES);
+		mainFrameBuffer.bindFrameBuffer(game);
+		renderTheWorld(false);
 
-			if (game.options.renderLights)
-				LightManager.renderLights();
+		shaders.waterShader.bind();
+		Sprite.bind(0, waterFrameBuffer.texture);
+		VertexObjectCreator.basicRender(finalRenderQuad, 2, 6, Tessellator.TRIANGLES);
 
-			mainFrameBuffer.unbindCurrentFrameBuffer(game);
-		}
+		if (game.options.renderLights)
+			LightManager.renderLights();
+
+		mainFrameBuffer.unbindCurrentFrameBuffer(game);
 
 		if (game.options.renderRifts)
 		{
@@ -171,8 +175,7 @@ public class MainRender
 			mainFrameBuffer.unbindCurrentFrameBuffer(game);
 		}
 
-		if (game.world != null)
-			game.inGameGui.minimap.renderWorld();
+		game.inGameGui.minimap.renderWorld();
 
 		Shader.releaseShader();
 

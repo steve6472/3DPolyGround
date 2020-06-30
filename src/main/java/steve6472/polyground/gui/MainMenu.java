@@ -41,11 +41,11 @@ public class MainMenu extends Gui implements IGamePause
 		sandbox.setSize(100, 30);
 		sandbox.addClickEvent(c ->
 		{
-
 			setVisible(false);
 			CaveGame.getInstance().inGameGui.setVisible(true);
 			CaveGame.getInstance().options.isGamePaused = false;
 			CaveGame.getInstance().options.enablePostProcessing = false;
+			SubChunk.generator = CaveGame.getInstance().generatorRegistry.getGenerator("flat");
 
 			CaveGame.getInstance().setWorld(new World(CaveGame.getInstance()));
 			CaveGame.getInstance().world.addChunk(new Chunk(0, 0, CaveGame.getInstance().world).generate(), false);
@@ -84,20 +84,20 @@ public class MainMenu extends Gui implements IGamePause
 		world.setSize(100, 30);
 		world.addClickEvent(c ->
 		{
-
 			setVisible(false);
 			CaveGame.getInstance().inGameGui.setVisible(true);
 			CaveGame.getInstance().options.isGamePaused = false;
 
 			CaveGame.getInstance().setWorld(new World(CaveGame.getInstance()));
 			SubChunk.generator = CaveGame.getInstance().generatorRegistry.getGenerator("world");
+			CaveGame.getInstance().world.useGenerator = true;
 
-			int r = 3;
+			int r = 5;
 			for (int i = -r; i <= r; i++)
 			{
 				for (int j = -r; j <= r; j++)
 				{
-					CaveGame.getInstance().world.addChunk(new Chunk(i, j, CaveGame.getInstance().world).generate(), true);
+//					CaveGame.getInstance().world.addChunk(new Chunk(i, j, CaveGame.getInstance().world).generate(), true);
 				}
 			}
 
@@ -105,6 +105,7 @@ public class MainMenu extends Gui implements IGamePause
 			{
 				CommandRegistry registry = CaveGame.getInstance().commandRegistry;
 				registry.dispatcher.execute("tp 8 32 8", registry.commandSource);
+				registry.dispatcher.execute("speed 0.05", registry.commandSource);
 			} catch (CommandSyntaxException e)
 			{
 				e.printStackTrace();
@@ -126,12 +127,12 @@ public class MainMenu extends Gui implements IGamePause
 			CaveGame.getInstance().setWorld(new World(CaveGame.getInstance()));
 			SubChunk.generator = CaveGame.getInstance().generatorRegistry.getGenerator("cave");
 
-			int r = 1;
+			int r = 3;
 			for (int i = -r; i <= r; i++)
 			{
 				for (int j = -r; j <= r; j++)
 				{
-					CaveGame.getInstance().world.addChunk(new Chunk(i, j, CaveGame.getInstance().world).generate(), true);
+					CaveGame.getInstance().world.addChunk(new Chunk(i, j, CaveGame.getInstance().world).generateNoRender(), true);
 				}
 			}
 
