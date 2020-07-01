@@ -31,6 +31,8 @@ public class FlatGenerator implements IGenerator
 			}
 		}
 
+		subChunk.rebuildAllLayers();
+
 		/*
 		for (int i = 0; i < subChunk.getIds().length; i++)
 		{

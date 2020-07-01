@@ -1,4 +1,46 @@
-{
-    "parent": "block/templates/block_light_full",
-    "textures": {"texture": "blaze_block"}
-}
+{"cubes": [{
+    "isHitbox": true,
+    "isCollisionBox": true,
+    "from": [
+        0,
+        0,
+        0
+    ],
+    "to": [
+        16,
+        16,
+        16
+    ],
+    "faces": {
+        "east": {
+            "texture": "blaze_block",
+            "modelLayer": "LIGHT",
+            "autoUV": true
+        },
+        "south": {
+            "texture": "blaze_block",
+            "modelLayer": "LIGHT",
+            "autoUV": true
+        },
+        "north": {
+            "texture": "blaze_block",
+            "modelLayer": "LIGHT",
+            "autoUV": true
+        },
+        "west": {
+            "texture": "blaze_block",
+            "modelLayer": "LIGHT",
+            "autoUV": true
+        },
+        "up": {
+            "texture": "blaze_block",
+            "modelLayer": "LIGHT",
+            "autoUV": true
+        },
+        "down": {
+            "texture": "blaze_block",
+            "modelLayer": "LIGHT",
+            "autoUV": true
+        }
+    }
+}]}

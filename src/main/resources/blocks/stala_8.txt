@@ -1,2 +1,2 @@
-model = block/stala_8
+model = block/stala/stala_8
 special = custom

@@ -1,13 +1,15 @@
 {"cubes": [{
+    "isHitbox": true,
+    "isCollisionBox": true,
     "from": [
-        7,
+        4,
         0,
-        7
+        4
     ],
     "to": [
-        9,
+        12,
         16,
-        9
+        12
     ],
     "faces": {
         "east": {

@@ -1,0 +1,8 @@
+model = block/oak_plank_bottom
+special = slab
+type = bottom
+tags:
+{
+	slab
+	slab_bottom
+}

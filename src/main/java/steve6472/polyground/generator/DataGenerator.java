@@ -1,16 +1,12 @@
 package steve6472.polyground.generator;
 
-import steve6472.polyground.generator.models.stair.StairBlock;
-import steve6472.SSS;
-import org.json.JSONObject;
-import steve6472.polyground.generator.models.*;
-import steve6472.polyground.generator.models.slab.*;
-import steve6472.polyground.generator.special.*;
+import steve6472.polyground.EnumFace;
+import steve6472.polyground.generator.models.BlockModelBuilder;
+import steve6472.polyground.generator.models.CubeBuilder;
+import steve6472.polyground.generator.models.FaceBuilder;
+import steve6472.polyground.world.chunk.ModelLayer;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.PrintWriter;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
@@ -20,48 +16,88 @@ import java.io.PrintWriter;
  ***********************/
 public class DataGenerator
 {
-	private File blocks = new File("src/main/resources/blocks");
-	private File items = new File("src/main/resources/items");
+	static File blocks = new File("src/main/resources/blocks");
+	static File items = new File("src/main/resources/items");
 
-	private File blockModels = new File("src/main/resources/models/block");
-	private File itemModels = new File("src/main/resources/models/item");
+	static File blockModels = new File("src/main/resources/models/block");
+	static File itemModels = new File("src/main/resources/models/item");
 
 	public static void main(String[] args)
 	{
-		try
-		{
-			new DataGenerator().generate();
-		} catch (IOException e)
-		{
-			e.printStackTrace();
-		}
+		new DataGenerator().generate();
 	}
 
-	public void generate() throws IOException
+	public void generate()
 	{
-//		decorativeFullBlock("smooth_stone");
-//		decorativeFullBlock("bricks");
-//		decorativeFullBlock("oak_plank");
-//		decorativeFullBlock("iron_block");
-//		decorativeFullBlock("stone");
-//		decorativeFullBlock("cobblestone");
-//		decorativeFullBlock("bedrock");
-//		decorativeFullBlock("green_screen");
-
 //		decorativeFullTintedBlock("full_grass_block", 0.5686275f, 0.7411765f, 0.34901962f, "grass_block_top");
 
-//		decorativeFullTransparentBlock("glass");
-//		decorativeFullTransparentBlock("framed_glass");
+		DataBuilder.create().fullBlock("smooth_stone").generate();
+		DataBuilder.create().fullBlock("bricks").generate();
+		DataBuilder.create().fullBlock("iron_block").generate();
+		DataBuilder.create().fullBlock("stone").generate();
+		DataBuilder.create().fullBlock("cobblestone").generate();
+		DataBuilder.create().fullBlock("bedrock").generate();
 
-		blockWithModelSpecial("stala_14", new StalBlock(1), new SimpleSpecial("custom"));
-		blockWithModelSpecial("stala_12", new StalBlock(2), new SimpleSpecial("custom"));
-		blockWithModelSpecial("stala_10", new StalBlock(3), new SimpleSpecial("custom"));
-		blockWithModelSpecial("stala_8", new StalBlock(4), new SimpleSpecial("custom"));
-		blockWithModelSpecial("stala_6", new StalBlock(5), new SimpleSpecial("custom"));
-		blockWithModelSpecial("stala_4", new StalBlock(6), new SimpleSpecial("custom"));
-		blockWithModelSpecial("stala_2", new StalBlock(7), new SimpleSpecial("custom"));
+		DataBuilder.create().fullLightBlock("blaze_block", "FDEA49", 1.0f, 0.14f, 0.07f).generate();
+
+		DataBuilder.create().transparentFullBlock("glass").generate();
+		DataBuilder.create().transparentFullBlock("framed_glass").generate();
+
+		DataBuilder.create().doubleSlabBlock("oak_plank", "oak_plank_top", "oak_plank_bottom").generate();
+		DataBuilder.create().slabBlock("oak_plank_bottom", "oak_plank", true).generate();
+		DataBuilder.create().slabBlock("oak_plank_top", "oak_plank", false).generate();
+		DataBuilder.create().slabItem("oak_plank_slab", "oak_plank_top", "oak_plank_bottom", "oak_plank").generate();
+
+		for (int i = 1; i <= 7; i++)
+		{
+			DataBuilder.create().stalaBlock("stala_" + i * 2, "stone", i * 2).blockModelPath("stala").generate();
+		}
+
+		DataBuilder.create().fullBlock("biome_grass")
+			.blockModel(BlockModelBuilder.create()
+				.addCube(CubeBuilder.create()
+					.fullBlock()
+					.face(FaceBuilder.create().texture("dirt")))
+				.addCube(CubeBuilder.create()
+					.fullBlock()
+					.hitbox(false)
+					.collisionBox(false)
+					.face(FaceBuilder.create()
+							.texture("grass_block_side_overlay")
+							.biomeTint(true)
+							.modelLayer(ModelLayer.OVERLAY_0),
+						EnumFace.EAST, EnumFace.SOUTH, EnumFace.NORTH, EnumFace.WEST)
+					.face(FaceBuilder.create()
+						.texture("grass_block_top")
+						.biomeTint(true)
+						.modelLayer(ModelLayer.OVERLAY_0), EnumFace.UP
+					)).build()
+			).generate();
+
+		DataBuilder.create().fullBlock("green_screen")
+			.blockModel(BlockModelBuilder.create()
+				.addCube(CubeBuilder.create()
+					.fullBlock()
+					.face(FaceBuilder.create()
+						.texture("green_screen")
+						.modelLayer(ModelLayer.LIGHT))).build()).generate();
 
 /*
+		DataBuilder.create().fullBlock("bedrock").generate();
+		DataBuilder.create().fullBlock("bricks").generate();
+		DataBuilder.create().fullBlock("cobblestone").generate();
+		DataBuilder.create().fullBlock("green_screen").generate();
+		DataBuilder.create().fullBlock("oak_plank").generate();
+		DataBuilder.create().fullBlock("iron_block").generate();
+		DataBuilder.create().fullBlock("sand").generate();
+		DataBuilder.create().fullBlock("stone").generate();
+
+		DataBuilder.create().doubleSlabBlock("dirt", "dirt_slab_top", "dirt_slab_bottom").generate();
+		DataBuilder.create().doubleSlabBlock("double_smooth_slab", "smooth_slab_top", "smooth_slab_bottom").generate();
+
+		DataBuilder.create().transparentFullBlock("glass").generate();
+		DataBuilder.create().transparentFullBlock("framed_glass").generate();
+
 		decorativeFullLeavesBlock("oak_leaves", 48f / 104f, 67f / 100f, 19f / 104f);
 		decorativeFullLeavesBlock("dark_oak_leaves", 48f / 104f, 67f / 100f, 19f / 104f);
 		decorativeFullLeavesBlock("birch_leaves", 56f / 112f, 71f / 109f, 37f / 112f);
@@ -104,244 +140,6 @@ public class DataGenerator
 //		stairFamily("stone_stair", "stone");
 
 //		tintedOreBlock("coal", 0.3f, 0.3f, 0.3f);
-	}
-
-	/* Ores */
-
-	private void tintedOreBlock(String name, float red, float green, float blue) throws IOException
-	{
-		block(name, new TintedFullBlock("stone_cut", "ore_overlay", red, green, blue), new SimpleSpecial("tinted"));
-		item(name, new ItemFromBlock(name), null, name);
-	}
-
-	/* Stair */
-
-	private void stairFamily(String name, String texture) throws IOException
-	{
-		block(name + "_north", new StairBlock(texture), new SimpleSpecial("stair"));
-
-		item(name, new ItemFromBlock(name + "_north"), null, name + "_north");
-	}
-
-	/* Grass Block */
-
-	private void grassBlock(String name, float red, float green, float blue) throws IOException
-	{
-		block(name, new TintedGrassBlock(red, green, blue, "dirt_cut", "dirt", "grass_block_side_overlay", "grass_block_top"), new SimpleSpecial("tinted"));
-		item(name, new ItemFromBlock(name), null, name);
-	}
-
-	private void bottomSlabGrassTinted(String name, float red, float green, float blue) throws IOException
-	{
-		block(name, new SlabBottomTintedGrass(red, green, blue, "dirt_cut", "dirt", "grass_block_side_overlay", "grass_block_top"), new TintedSlabBlockSpecial("bottom"));
-	}
-
-	private void topSlabGrassTinted(String name, float red, float green, float blue) throws IOException
-	{
-		block(name, new SlabTopTintedGrass(red, green, blue, "dirt_cut", "dirt", "grass_block_side_overlay", "grass_block_top"), new TintedSlabBlockSpecial("top"));
-	}
-
-	/* Full Slab */
-
-	private void topSlabFull(String name, String texture) throws IOException
-	{
-		block(name, new SlabTopFullBlock(texture), new SlabBlockSpecial("top"));
-	}
-
-	private void bottomSlabFull(String name, String texture) throws IOException
-	{
-		block(name, new SlabBottomFullBlock(texture), new SlabBlockSpecial("bottom"));
-	}
-
-	private void doubleSlabFull(String name, String slabTop, String slabBottom) throws IOException
-	{
-		block(name, new FullBlock(name), new DoubleSlabSpecial(slabTop, slabBottom));
-		item(name, new ItemFromBlock(name), null, name);
-	}
-
-	private void doubleSlabFull(String name, String texture, String slabTop, String slabBottom) throws IOException
-	{
-		block(name, new FullBlock(texture), new DoubleSlabSpecial(slabTop, slabBottom));
-		item(name, new ItemFromBlock(name), null, name);
-	}
-
-	private void fullSlabFamily(String topName, String bottomName, String bothName, String itemName, String texture) throws IOException
-	{
-		topSlabFull(topName, texture);
-		bottomSlabFull(bottomName, texture);
-		doubleSlabFull(bothName, texture, topName, bottomName);
-		item(itemName, new ItemFromBlock(bottomName), new SlabSpecial(topName, bottomName, bothName), bottomName);
-	}
-
-	/* Sided Slab */
-
-	private void topSlabSided(String name, String top, String bottom, String side) throws IOException
-	{
-		block(name, new SlabTopSidedBlock(top, bottom, side), new SlabBlockSpecial("top"));
-	}
-
-	private void bottomSlabSided(String name, String top, String bottom, String side) throws IOException
-	{
-		block(name, new SlabBottomSidedBlock(top, bottom, side), new SlabBlockSpecial("bottom"));
-	}
-
-	private void doubleSlabSided(String name, String top, String bottom, String side, String slabTop, String slabBottom) throws IOException
-	{
-		doubleSlabSided(name, new FullSidedBlock(top, bottom, side), new DoubleSlabSpecial(slabTop, slabBottom));
-		item(name, new ItemFromBlock(name), null, name);
-	}
-
-	private void doubleSlabSided(String name, IModel model, DoubleSlabSpecial doubleSlabSpecial) throws IOException
-	{
-		block(name, model, doubleSlabSpecial);
-		item(name, new ItemFromBlock(name), null, name);
-	}
-
-	private void sidedSlabFamily(String topName, String bottomName, String bothName, String itemName, String topTexture, String bottomTexture, String sideTexture) throws IOException
-	{
-		topSlabSided(topName, topTexture, bottomTexture, sideTexture);
-		bottomSlabSided(bottomName, topTexture, bottomTexture, sideTexture);
-		doubleSlabSided(bothName, topTexture, bottomTexture, sideTexture, topName, bottomName);
-		item(itemName, new ItemFromBlock(bottomName), new SlabSpecial(topName, bottomName, bothName), bottomName);
-	}
-
-	private void sidedSlabFamily(String topName, String bottomName, String bothName, String itemName, String topTexture, String bottomTexture, String slabSideTexture, String blockSideTexture) throws IOException
-	{
-		topSlabSided(topName, topTexture, bottomTexture, slabSideTexture);
-		bottomSlabSided(bottomName, topTexture, bottomTexture, slabSideTexture);
-		doubleSlabSided(bothName, topTexture, bottomTexture, blockSideTexture, topName, bottomName);
-		item(itemName, new ItemFromBlock(bottomName), new SlabSpecial(topName, bottomName, bothName), bottomName);
-	}
-
-	/* Decorative */
-
-	private void decorativeFullSidedBlock(String name, String top, String bottom, String side) throws IOException
-	{
-		block(name, new FullSidedBlock(top, bottom, side), null);
-		item(name, new ItemFromBlock(name), null, name);
-	}
-
-	private void decorativeFullBlock(String name) throws IOException
-	{
-		block(name, new FullBlock(name), null);
-		item(name, new ItemFromBlock(name), null, name);
-	}
-
-	private void blockWithModel(String name, IModel model) throws IOException
-	{
-		block(name, model, null);
-		item(name, new ItemFromBlock(name), null, name);
-	}
-
-	private void blockWithModelSpecial(String name, IModel model, ISpecial special) throws IOException
-	{
-		block(name, model, special);
-		item(name, new ItemFromBlock(name), null, name);
-	}
-
-	private void decorativeFullBlock(String name, String texture) throws IOException
-	{
-		block(name, new FullBlock(texture), null);
-		item(name, new ItemFromBlock(name), null, name);
-	}
-
-	private void decorativeFullTintedBlock(String name, float r, float g, float b, String texture) throws IOException
-	{
-		block(name, new TintedBlock(r, g, b, texture), new SimpleSpecial("tinted"));
-		item(name, new ItemFromBlock(name), null, name);
-	}
-
-	private void decorativeFullLeavesBlock(String name, float r, float g, float b) throws IOException
-	{
-		block(name, new TintedBlock(r, g, b, name), new SimpleSpecial("leaves"));
-		item(name, new ItemFromBlock(name), null, name);
-	}
-
-	private void decorativeFullTransparentBlock(String name) throws IOException
-	{
-		block(name, new FullBlock(name), new SimpleSpecial("transparent"));
-		item(name, new ItemFromBlock(name), null, name);
-	}
-
-	/* Special Blocks */
-
-	private void fallingFullBlock(String name) throws IOException
-	{
-		block(name, new FullBlock(name), new SimpleSpecial("gravel"));
-		item(name, new ItemFromBlock(name), null, name);
-	}
-
-	/* Items */
-
-	private void normalItem(String name) throws IOException
-	{
-		item(name, new ItemFromTexture(name), null, name);
-	}
-
-	private void normalItemFromBlock(String name) throws IOException
-	{
-		item(name, new ItemFromBlock(name), null, name);
-	}
-
-	private void specialItem(String name, ISpecial special) throws IOException
-	{
-		item(name, new ItemFromTexture(name), special, name);
-	}
-
-	private void block(String name, IModel model, ISpecial special) throws IOException
-	{
-		File block = new File(blocks, name + ".txt");
-		block.createNewFile();
-
-		SSS sss = new SSS(block);
-		sss.clear();
-
-		sss.add("model", "block/" + name);
-		if (special != null)
-		{
-			sss.add("special", special.getName());
-			special.generate(sss);
-		}
-
-		sss.save(block);
-
-		save(new File(blockModels, name + ".json"), new JSONObject(model.build()).toString(4));
-	}
-
-	private void item(String name, IModel model, ISpecial special, String place) throws IOException
-	{
-		File item = new File(items, name + ".txt");
-		item.createNewFile();
-
-		SSS sss = new SSS(item);
-		sss.clear();
-
-		sss.add("model", "item/" + name);
-		if (special != null)
-		{
-			sss.add("special", special.getName());
-			special.generate(sss);
-		}
-
-		if (place != null)
-			sss.add("place", place);
-
-		sss.save(item);
-
-		save(new File(itemModels, name + ".json"), new JSONObject(model.build()).toString(4));
-	}
-
-
-	private void save(File file, String s)
-	{
-		try (PrintWriter out = new PrintWriter(file))
-		{
-			out.println(s);
-
-		} catch (FileNotFoundException e)
-		{
-			e.printStackTrace();
-		}
 	}
 
 }

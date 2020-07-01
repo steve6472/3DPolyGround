@@ -1,0 +1,6 @@
+model = item/oak_plank_slab
+special = slab
+top = oak_plank_top
+bottom = oak_plank_bottom
+both = oak_plank
+place = oak_plank_bottom

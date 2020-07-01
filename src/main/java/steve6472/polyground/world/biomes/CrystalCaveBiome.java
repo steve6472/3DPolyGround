@@ -35,7 +35,7 @@ public class CrystalCaveBiome extends Biome
 	@Override
 	public Block getUnderBlock()
 	{
-		return BlockRegistry.getBlockByName("cobblestone");
+		return BlockRegistry.getBlockByName("stone");
 	}
 
 	@Override

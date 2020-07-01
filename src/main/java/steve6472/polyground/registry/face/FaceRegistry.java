@@ -28,7 +28,7 @@ public class FaceRegistry
 	public static final FaceEntry<RotationFaceProperty> rotation = register("rotation", RotationFaceProperty::new);
 	public static final FaceEntry<LayerFaceProperty> modelLayer = register("modelLayer", LayerFaceProperty::new);
 	public static final FaceEntry<BiomeTintFaceProperty> biomeTint = register("biomeTint", BiomeTintFaceProperty::new);
-	public static final FaceEntry<LightFaceProperty> light = register("light", LightFaceProperty::new);
+	public static final FaceEntry<LightFaceProperty> light = register("light", LightFaceProperty::new); // Runtime added property!
 
 	/* Conditioned Properties */
 	public static final FaceEntry<ConditionFaceProperty> conditionedTexture = register("conditionedTexture", ConditionFaceProperty::new);
