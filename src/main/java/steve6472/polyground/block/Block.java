@@ -207,7 +207,7 @@ public class Block
 
 	public void onBreak(SubChunk subChunk, BlockState state, Player player, EnumFace breakedFrom, int x, int y, int z)
 	{
-		SnapBlock.activate(this, subChunk, x, y, z);
+		SnapBlock.activate(state, subChunk, x, y, z);
 	}
 
 	/**

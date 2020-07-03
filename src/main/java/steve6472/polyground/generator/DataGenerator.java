@@ -1,10 +1,7 @@
 package steve6472.polyground.generator;
 
 import steve6472.polyground.EnumFace;
-import steve6472.polyground.generator.models.BlockModelBuilder;
-import steve6472.polyground.generator.models.CondTest;
-import steve6472.polyground.generator.models.CubeBuilder;
-import steve6472.polyground.generator.models.FaceBuilder;
+import steve6472.polyground.generator.models.*;
 import steve6472.polyground.generator.special.SimpleSpecial;
 import steve6472.polyground.world.chunk.ModelLayer;
 
@@ -32,7 +29,8 @@ public class DataGenerator
 
 	public static void main(String[] args)
 	{
-		new DataGenerator().generate();
+//		new DataGenerator().generate();
+		new DataGenerator().generateDebug();
 	}
 
 	private void createFolders()
@@ -57,6 +55,15 @@ public class DataGenerator
 				System.out.println("Created new itemModels folder");
 			else
 				System.err.println("Error while creating new itemModels folder");
+	}
+
+	public void generateDebug()
+	{
+		createFolders();
+
+		DataBuilder.create().fullBlock("stone").generate();
+
+		DataBuilder.create().torch("slime_torch", true).blockSpecial(new SimpleSpecial("state_test")).itemModel(new ItemFromTexture("slime_torch")).generate();
 	}
 
 	public void generate()

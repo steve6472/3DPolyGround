@@ -30,6 +30,7 @@ public class DataBuilder
 	private String blockToPlace;
 	private String blockName, itemName;
 	private String blockModelPath, itemModelPath;
+	private boolean onlyBlockModel;
 
 	private final List<String> blockTags;
 
@@ -43,6 +44,12 @@ public class DataBuilder
 		blockModelPath = "";
 		itemModelPath = "";
 		blockTags = new ArrayList<>();
+	}
+
+	public DataBuilder onlyBlockModel(boolean onlyBlockModel)
+	{
+		this.onlyBlockModel = onlyBlockModel;
+		return this;
 	}
 
 	public DataBuilder blockModel(IModel model)
@@ -495,31 +502,34 @@ public class DataBuilder
 	private void block() throws IOException
 	{
 		System.out.println("Generating block " + blockName);
-		File block = new File(DataGenerator.blocks, blockName + ".txt");
-		block.createNewFile();
-
-		SSS sss = new SSS(block);
-		sss.clear();
-
-		sss.add("model", "block/" + blockModelPath + blockName);
-		if (blockSpecial != null)
+		if (!onlyBlockModel)
 		{
-			System.out.println("\tWith Special \"" + blockSpecial.getName() + "\"");
-			sss.add("special", blockSpecial.getName());
-			blockSpecial.generate(sss);
-		}
+			File block = new File(DataGenerator.blocks, blockName + ".txt");
+			block.createNewFile();
 
-		if (!blockTags.isEmpty())
-		{
-			System.out.println("\tWith tags: ");
-			for (String tag : blockTags)
+			SSS sss = new SSS(block);
+			sss.clear();
+
+			sss.add("model", "block/" + blockModelPath + blockName);
+			if (blockSpecial != null)
 			{
-				System.out.println("\t\t" + tag);
+				System.out.println("\tWith Special \"" + blockSpecial.getName() + "\"");
+				sss.add("special", blockSpecial.getName());
+				blockSpecial.generate(sss);
 			}
-			sss.addArray("tags", blockTags);
-		}
 
-		sss.save(block);
+			if (!blockTags.isEmpty())
+			{
+				System.out.println("\tWith tags: ");
+				for (String tag : blockTags)
+				{
+					System.out.println("\t\t" + tag);
+				}
+				sss.addArray("tags", blockTags);
+			}
+
+			sss.save(block);
+		}
 
 		if (!blockModelPath.isBlank())
 		{

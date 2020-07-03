@@ -4,6 +4,7 @@ import steve6472.polyground.block.Block;
 import steve6472.polyground.block.model.BlockModel;
 import steve6472.polyground.block.properties.IProperty;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -25,7 +26,14 @@ public class BlockState
 		this.block = block;
 		this.blockModel = model;
 		this.properties = properties;
-		this.possibleStates = possibleStates;
+		if (possibleStates == null)
+		{
+			this.possibleStates = new ArrayList<>(1);
+			this.possibleStates.add(this);
+		} else
+		{
+			this.possibleStates = possibleStates;
+		}
 	}
 
 	public <T extends Comparable<T>> T get(IProperty<T> property)
