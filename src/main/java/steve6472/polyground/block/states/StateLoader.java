@@ -4,6 +4,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import steve6472.polyground.block.Block;
 import steve6472.polyground.block.model.BlockModel;
+import steve6472.polyground.block.properties.EnumProperty;
 import steve6472.polyground.block.properties.IProperty;
 
 import java.util.ArrayList;
@@ -90,8 +91,15 @@ public class StateLoader
 				{
 					if (j.has(p.getName()))
 					{
-						if (j.get(p.getName()) != map.get(p))
-							match = false;
+						if (p instanceof EnumProperty e)
+						{
+							if (map.get(p) != j.getEnum(e.getClazz(), p.getName()))
+								match = false;
+						} else
+						{
+							if (map.get(p) != j.get(p.getName()))
+								match = false;
+						}
 					}
 				}
 				if (match)
@@ -101,10 +109,17 @@ public class StateLoader
 				}
 			}
 
-			BlockState state = new BlockState(block, new BlockModel(modelPath), map, tileStates);
-			if (block.getDefaultState() == null)
-				block.setDefaultState(state);
-			tileStates.add(state);
+			try
+			{
+				BlockState state = new BlockState(block, new BlockModel(modelPath), map, tileStates);
+				if (block.getDefaultState() == null)
+					block.setDefaultState(state);
+				tileStates.add(state);
+			} catch (IllegalArgumentException ex)
+			{
+				System.err.println("State for " + block.getName() + " failed " + map);
+				ex.printStackTrace();
+			}
 		}
 	}
 

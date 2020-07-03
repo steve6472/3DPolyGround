@@ -83,9 +83,4 @@ public class DoubleSlabBlock extends Block
 
 		player.processNextBlockBreak = false;
 	}
-
-	private enum EnumSlabType
-	{
-		TOP, BOTTOM, DOUBLE, OPPOSITE
-	}
 }

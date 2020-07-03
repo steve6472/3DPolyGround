@@ -23,6 +23,14 @@ public class BasicEvents
 		place(block, face, player, face.getXOffset(), face.getYOffset(), face.getZOffset());
 	}
 
+	public static void place(BlockState state, EnumFace face, Player player)
+	{
+		if (state == null)
+			return;
+
+		place(state, face, player, face.getXOffset(), face.getYOffset(), face.getZOffset());
+	}
+
 	public static void place(Block block, EnumFace face, Player player, int xOffset, int yOffset, int zOffset)
 	{
 		if (block == null)
@@ -42,6 +50,24 @@ public class BasicEvents
 		updateAll(subChunk, hr.getX() + xOffset, hr.getY() + yOffset, hr.getZ() + zOffset);
 	}
 
+	public static void place(BlockState state, EnumFace face, Player player, int xOffset, int yOffset, int zOffset)
+	{
+		if (state == null)
+			return;
+
+		HitResult hr = CaveGame.getInstance().hitPicker.getHitResult();
+		World world = CaveGame.getInstance().world;
+
+		SubChunk subChunk = world.getSubChunkFromBlockCoords(hr.getX() + xOffset, hr.getY() + yOffset, hr.getZ() + zOffset);
+		if (subChunk == null)
+			return;
+
+		world.setState(state, hr.getX() + xOffset, hr.getY() + yOffset, hr.getZ() + zOffset, Block::isReplaceable);
+
+		state.getBlock().onPlace(subChunk, state, player, face, hr.getX() + xOffset, hr.getY() + yOffset, hr.getZ() + zOffset);
+		updateAll(subChunk, hr.getX() + xOffset, hr.getY() + yOffset, hr.getZ() + zOffset);
+	}
+
 	/* Replacing Block */
 	public static void replace(Block block, EnumFace face, Player player)
 	{
@@ -49,6 +75,13 @@ public class BasicEvents
 			return;
 
 		replace(block, face, player, face.getXOffset(), face.getYOffset(), face.getZOffset());
+	}
+	public static void replace(BlockState state, EnumFace face, Player player)
+	{
+		if (state == null)
+			return;
+
+		replace(state, face, player, face.getXOffset(), face.getYOffset(), face.getZOffset());
 	}
 
 	public static void replace(Block block, EnumFace face, Player player, int xOffset, int yOffset, int zOffset)
@@ -65,6 +98,22 @@ public class BasicEvents
 		BlockState state = subChunk.getState(hr.getCx() + xOffset, hr.getCy() + yOffset, hr.getCz() + zOffset);
 
 		block.onPlace(subChunk, state, player, face, hr.getX() + xOffset, hr.getY() + yOffset, hr.getZ() + zOffset);
+		updateAll(subChunk, hr.getX() + xOffset, hr.getY() + yOffset, hr.getZ() + zOffset);
+	}
+
+	public static void replace(BlockState state, EnumFace face, Player player, int xOffset, int yOffset, int zOffset)
+	{
+		if (state == null)
+			return;
+
+		HitResult hr = CaveGame.getInstance().hitPicker.getHitResult();
+		World world = CaveGame.getInstance().world;
+
+		SubChunk subChunk = world.getSubChunkFromBlockCoords(hr.getX() + xOffset, hr.getY() + yOffset, hr.getZ() + zOffset);
+
+		world.setState(state, hr.getX() + xOffset, hr.getY() + yOffset, hr.getZ() + zOffset);
+
+		state.getBlock().onPlace(subChunk, state, player, face, hr.getX() + xOffset, hr.getY() + yOffset, hr.getZ() + zOffset);
 		updateAll(subChunk, hr.getX() + xOffset, hr.getY() + yOffset, hr.getZ() + zOffset);
 	}
 

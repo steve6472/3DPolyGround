@@ -194,6 +194,12 @@ public class Block
 		return tris;
 	}
 
+	@Override
+	public String toString()
+	{
+		return "Block{" + "isFull=" + isFull + ", id=" + id + ", name='" + name + '\'' + '}';
+	}
+
 	public void tick(SubChunk subChunk, BlockState state, int x, int y, int z)
 	{
 	}

@@ -30,6 +30,9 @@ public class BlockModel
 
 	public BlockModel(String path)
 	{
+		if (path.isBlank())
+			throw new IllegalArgumentException("Model path is blank! '" + path + "'");
+
 		cubes = new ArrayList<>();
 		tags = new ArrayList<>();
 

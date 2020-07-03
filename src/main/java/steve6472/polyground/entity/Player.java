@@ -17,6 +17,8 @@ import steve6472.sge.main.game.Camera;
 import steve6472.sge.main.game.mixable.IMotion3f;
 import steve6472.sge.main.game.mixable.IPosition3f;
 
+import static java.lang.Math.*;
+
 /**********************
  * Created by steve6472 (Mirek Jozefek)
  * On date: 19.07.2019
@@ -241,9 +243,9 @@ public class Player implements IMotion3f, IPosition3f
 
 			BlockState state = subChunk.getState(hr.getCx(), hr.getCy(), hr.getCz());
 
-			pg.world.getBlock(hr.getX(), hr.getY(), hr.getZ()).onClick(subChunk, state, this, hr.getFace(), event, hr.getX(), hr.getY(), hr.getZ());
+			pg.world.getBlock(hr.getX(), hr.getY(), hr.getZ()).onClick(subChunk, state, this, hr.getFace(), event, floorMod(hr.getX(), 16), floorMod(hr.getY(), 16), floorMod(hr.getZ(), 16));
 
-			CaveGame.itemInHand.onClick(subChunk, state, this, hr.getFace(), event, hr.getX(), hr.getY(), hr.getZ());
+			CaveGame.itemInHand.onClick(subChunk, state, this, hr.getFace(), event, floorMod(hr.getX(), 16), floorMod(hr.getY(), 16), floorMod(hr.getZ(), 16));
 		}
 
 		CaveGame.itemInHand.onClick(this, event);

@@ -48,15 +48,15 @@ public class Cull
 
 		if (!(middleBlock instanceof SlabBlock))
 		{
-			if (testedBlock instanceof SlabBlock)
-			{
-				if (!face.isSide())
-				{
-					SlabBlock slabBLock = (SlabBlock) testedBlock;
-					if (slabBLock.slabType == (face == EnumFace.UP ? SlabBlock.EnumSlabType.BOTTOM : SlabBlock.EnumSlabType.TOP))
-						return false;
-				}
-			}
+//			if (testedBlock instanceof SlabBlock)
+//			{
+//				if (!face.isSide())
+//				{
+//					SlabBlock slabBLock = (SlabBlock) testedBlock;
+//					if (slabBLock.slabType == (face == EnumFace.UP ? SlabBlock.EnumSlabType.BOTTOM : SlabBlock.EnumSlabType.TOP))
+//						return false;
+//				}
+//			}
 			/*
 
 			Tested in Block instead!
@@ -74,6 +74,10 @@ public class Cull
 
 		/* Slab */
 
+
+		if (testedBlock instanceof SlabBlock)
+			return true;
+/*
 		SlabBlock thisSlabBlock = (SlabBlock) middleBlock;
 		if (testedBlock instanceof SlabBlock)
 		{
@@ -101,7 +105,7 @@ public class Cull
 					return true;
 				}
 			}
-		}
+		}*/
 
 		return testedBlock == Block.air || !testedBlock.isFull;
 	}

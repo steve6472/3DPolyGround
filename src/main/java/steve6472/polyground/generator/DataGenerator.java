@@ -1,11 +1,12 @@
 package steve6472.polyground.generator;
 
 import steve6472.polyground.EnumFace;
+import steve6472.polyground.block.special.StalaBlock;
 import steve6472.polyground.block.states.States;
 import steve6472.polyground.generator.models.*;
 import steve6472.polyground.generator.special.SimpleSpecial;
-import steve6472.polyground.generator.state.StateBuilder;
 import steve6472.polyground.generator.state.PropertyBuilder;
+import steve6472.polyground.generator.state.StateBuilder;
 import steve6472.polyground.world.chunk.ModelLayer;
 
 import java.io.File;
@@ -87,12 +88,16 @@ public class DataGenerator
 		DataBuilder.create().fullBlock("bedrock").generate();
 		DataBuilder.create().fullBlock("sand").generate();
 		DataBuilder.create().fullBlock("gravel").generate();
+		DataBuilder.create().fullBlock("dirt").generate();
+		DataBuilder.create().fullBlock("oak_plank").generate();
 //		DataBuilder.create().fullBlock("cond_test").blockModel(new CondTest()).generate();
 
 //		DataBuilder.create().stairs("stone", "stone");
 //		DataBuilder.create().stairs("oak", "oak_plank");
 //		DataBuilder.create().stairs("cobblestone", "cobblestone");
 //		DataBuilder.create().stairs("brick", "bricks");
+
+		//TODO: Item has to be able to place different states! (Slabs have full block and slab)
 
 		DataBuilder.create().plusBlock("small_grass", true).generate();
 
@@ -105,59 +110,81 @@ public class DataGenerator
 		DataBuilder.create().transparentFullBlock("glass").generate();
 		DataBuilder.create().transparentFullBlock("framed_glass").generate();
 
-		DataBuilder.create().slabs("oak_plank", "oak_plank");
-		DataBuilder.create().slabs("dirt", "dirt");
-
-		DataBuilder.create().doubleSlabBlock("double_smooth_slab", "smooth_stone", "smooth_stone_slab", "smooth_slab_top", "smooth_slab_bottom").generate();
-		DataBuilder.create().slabBlock("smooth_slab_bottom", "smooth_stone", "smooth_stone_slab", true).generate();
-		DataBuilder.create().slabBlock("smooth_slab_top", "smooth_stone", "smooth_stone_slab", false).generate();
-		DataBuilder.create().slabItem("smooth_slab", "smooth_slab_top", "smooth_slab_bottom", "double_smooth_slab").generate();
+		DataBuilder.create().slab("dirt", "dirt").generate();
+		DataBuilder.create().slab("oak_plank", "oak_plank").generate();
+//
+//		DataBuilder.create().doubleSlabBlock("double_smooth_slab", "smooth_stone", "smooth_stone_slab", "smooth_slab_top", "smooth_slab_bottom").generate();
+//		DataBuilder.create().slabBlock("smooth_slab_bottom", "smooth_stone", "smooth_stone_slab", true).generate();
+//		DataBuilder.create().slabBlock("smooth_slab_top", "smooth_stone", "smooth_stone_slab", false).generate();
+//		DataBuilder.create().slabItem("smooth_slab", "smooth_slab_top", "smooth_slab_bottom", "double_smooth_slab").generate();
 
 		DataBuilder.create().pillarBlock("oak_log", "oak_log_side", "oak_log").generate();
 
-//		for (int i = 1; i <= 7; i++)
-//		{
-//			DataBuilder.create().stalaBlock("stala_" + i * 2, "stone", i * 2).blockModelPath("stala").generate();
-//		}
+		DataBuilder.create()
+			.blockName("stone_stala")
+			.itemName("stone_stala")
+			.blockToPlace("stone_stala")
+			.blockSpecial(new SimpleSpecial("stala"))
+			.itemModel(new ItemFromBlock("stone_stala"))
+			.blockState(StateBuilder.create()
+				.addState(stalaState(1), stalaModel(1, "stone", "stone"))
+				.addState(stalaState(2), stalaModel(2, "stone", "stone"))
+				.addState(stalaState(3), stalaModel(3, "stone", "stone"))
+				.addState(stalaState(4), stalaModel(4, "stone", "stone"))
+				.addState(stalaState(5), stalaModel(5, "stone", "stone"))
+				.addState(stalaState(6), stalaModel(6, "stone", "stone"))
+				.addState(stalaState(7), stalaModel(7, "stone", "stone"))
+			).generate();
 
-		DataBuilder.create().torch("slime_torch", true).generate();
 
 		DataBuilder.create().fullBlock("oak_leaves")
-			.blockModel(BlockModelBuilder.create()
-				.addCube(CubeBuilder.create()
-					.fullBlock()
-					.face(FaceBuilder.create().texture("oak_leaves").tint(118, 171, 47))
-				).build()
-			).blockSpecial(new SimpleSpecial("leaves")).generate();
+			.blockState(StateBuilder.create().singleModel(
+				BlockModelBuilder.create("oak_leaves")
+					.addCube(CubeBuilder.create()
+						.fullBlock()
+						.face(FaceBuilder.create().texture("oak_leaves").tint(118, 171, 47))
+					)
+				)
+			)
+			.blockSpecial(new SimpleSpecial("leaves")).generate();
 
 		DataBuilder.create().fullBlock("grass")
-			.blockModel(BlockModelBuilder.create()
-				.addCube(CubeBuilder.create()
-					.fullBlock()
-					.face(FaceBuilder.create().texture("dirt")))
-				.addCube(CubeBuilder.create()
-					.fullBlock()
-					.hitbox(false)
-					.collisionBox(false)
-					.face(FaceBuilder.create()
-							.texture("grass_block_side_overlay")
+			.blockState(StateBuilder.create().singleModel(
+				BlockModelBuilder.create("grass")
+					.addCube(CubeBuilder.create()
+						.fullBlock()
+						.face(FaceBuilder.create().texture("dirt")))
+					.addCube(CubeBuilder.create()
+						.fullBlock()
+						.hitbox(false)
+						.collisionBox(false)
+						.face(FaceBuilder.create()
+								.texture("grass_block_side_overlay")
+								.biomeTint(true)
+								.modelLayer(ModelLayer.OVERLAY_0),
+							CubeBuilder.SIDE)
+						.face(FaceBuilder.create()
+							.texture("grass_block_top")
 							.biomeTint(true)
-							.modelLayer(ModelLayer.OVERLAY_0),
-						CubeBuilder.SIDE)
-					.face(FaceBuilder.create()
-						.texture("grass_block_top")
-						.biomeTint(true)
-						.modelLayer(ModelLayer.OVERLAY_0), EnumFace.UP
-					)).build()
+							.modelLayer(ModelLayer.OVERLAY_0), EnumFace.UP
+						)
+					)
+				)
 			).generate();
 
 		DataBuilder.create().fullBlock("green_screen")
-			.blockModel(BlockModelBuilder.create()
-				.addCube(CubeBuilder.create()
-					.fullBlock()
-					.face(FaceBuilder.create()
-						.texture("green_screen")
-						.modelLayer(ModelLayer.LIGHT))).build()).generate();
+			.blockState(
+				StateBuilder.create().singleModel(
+				BlockModelBuilder.create("green_screen")
+					.addCube(CubeBuilder.create()
+						.fullBlock()
+						.face(FaceBuilder.create()
+							.texture("green_screen")
+							.modelLayer(ModelLayer.LIGHT)
+						)
+					)
+				)
+			).generate();
 
 		DataBuilder.create()
 			.itemName("slime_torch")
@@ -343,6 +370,24 @@ public class DataGenerator
 					)).build()
 			).generate();*/
 
+	}
+
+	private static PropertyBuilder stalaState(int width)
+	{
+		return PropertyBuilder.create().addProperty(StalaBlock.WIDTH, width);
+	}
+
+	private static BlockModelBuilder stalaModel(int width, String texture, String path)
+	{
+		return BlockModelBuilder.create("stala_" + width)
+			.modelPath("stala/" + path)
+			.addCube(CubeBuilder.create()
+				.min(8 - width, 0, 8 - width)
+				.max(8 + width, 16, 8 + width)
+				.face(FaceBuilder.create()
+					.texture(texture)
+					.autoUv(true))
+		);
 	}
 
 }

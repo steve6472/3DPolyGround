@@ -22,7 +22,7 @@ public class SpecialBlockRegistry
 	public static final SpecialBlockEntry<TransparentBlock> transparentBlock = register("transparent", TransparentBlock::new);
 	public static final SpecialBlockEntry<DropBlock> drop = register("drop", DropBlock::new);
 	public static final SpecialBlockEntry<SlabBlock> slab = register("slab", SlabBlock::new);
-	public static final SpecialBlockEntry<DoubleSlabBlock> doubleSlab = register("double_slab", DoubleSlabBlock::new);
+	public static final SpecialBlockEntry<StalaBlock> stalaBlock = register("stala", StalaBlock::new);
 	public static final SpecialBlockEntry<WorldButtonBlock> worldButton = register("world_button", WorldButtonBlock::new);
 	public static final SpecialBlockEntry<SnapButtonBlock> snapButton = register("snap_button", SnapButtonBlock::new);
 	public static final SpecialBlockEntry<StairBlock> stair = register("stair", StairBlock::new);

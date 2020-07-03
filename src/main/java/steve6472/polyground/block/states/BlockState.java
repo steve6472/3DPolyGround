@@ -64,6 +64,7 @@ public class BlockState
 	@Override
 	public String toString()
 	{
-		return "BlockState{" + "block=" + block + ", properties=" + properties + '}';
+		return "BlockState{" + "block=" + block.getName() + (properties == null ? "}" : ", properties=" + properties + '}');
+//		return "BlockState{" + "block=" + block.getName() + ", properties=" + properties + '}';
 	}
 }

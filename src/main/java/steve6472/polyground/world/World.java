@@ -37,7 +37,7 @@ import static org.lwjgl.opengl.GL30.glBindVertexArray;
  ***********************/
 public class World implements IBlockProvider
 {
-	private final int HEIGHT = 1;
+	private final int HEIGHT = 4;
 
 	public int lastWaterTickIndex = 0;
 	public int currentWaterTickIndex = 0;

@@ -1,6 +1,8 @@
 package steve6472.polyground.world.generator.feature.cave;
 
 import steve6472.polyground.block.Block;
+import steve6472.polyground.block.special.StalaBlock;
+import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.registry.BlockRegistry;
 import steve6472.polyground.world.chunk.SubChunk;
 import steve6472.polyground.world.generator.feature.EnumFeaturePlacement;
@@ -84,17 +86,17 @@ public class StalaFeature implements IFeature
 		};
 
 	private final Block baseBlock;
-	private final Block[] stalas;
+	private final BlockState[] stalas;
 	private final float doubleChance;
 
 	public StalaFeature(Block baseBlock, float doubleChance)
 	{
 		this.baseBlock = baseBlock;
 		this.doubleChance = doubleChance;
-		stalas = new Block[7];
-		for (int i = 0; i < 7; i++)
+		stalas = new BlockState[7];
+		for (int i = 1; i <= 7; i++)
 		{
-			stalas[i] = BlockRegistry.getBlockByName("stala_" + ((i + 1) * 2));
+			stalas[i - 1] = BlockRegistry.getBlockByName("stone_stala").getDefaultState().with(StalaBlock.WIDTH, i).get();
 		}
 	}
 
@@ -138,7 +140,7 @@ public class StalaFeature implements IFeature
 			int start = SIZES_BOTH_ALTS[max][0];
 			for (int i = 0; i < max; i++)
 			{
-				sc.setBlock(stalas[SIZES_BOTH[start + type][i]], x, y(y, i, stalagmite), z);
+				sc.setState(stalas[SIZES_BOTH[start + type][i]], x, y(y, i, stalagmite), z);
 			}
 		} else
 		{
@@ -146,7 +148,7 @@ public class StalaFeature implements IFeature
 			int start = SIZES_ALTS[max][0];
 			for (int i = 0; i <= max; i++)
 			{
-				sc.setBlock(stalas[SIZES[start + type][i]], x, y(y, i, stalagmite), z);
+				sc.setState(stalas[SIZES[start + type][i]], x, y(y, i, stalagmite), z);
 			}
 		}
 	}
