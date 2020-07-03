@@ -46,13 +46,13 @@ public class ChunkSerializer
 	private static void saveToChunk(SubChunk subChunk, HashMap<Integer, Short> map) throws IOException
 	{
 		short[][][] ids = new short[16][16][16];
-		for (int i = 0; i < subChunk.getIds().length; i++)
+		for (int i = 0; i < 16; i++)
 		{
-			for (int j = 0; j < subChunk.getIds()[i].length; j++)
+			for (int j = 0; j < 16; j++)
 			{
-				for (int k = 0; k < subChunk.getIds()[i][j].length; k++)
+				for (int k = 0; k < 16; k++)
 				{
-					ids[i][j][k] = map.get(subChunk.getIds()[i][j][k]);
+					ids[i][j][k] = map.get(subChunk.getBlock(i, j, k).getId());
 				}
 			}
 		}
@@ -79,13 +79,13 @@ public class ChunkSerializer
 
 		short lastId = 0;
 
-		for (int i = 0; i < subChunk.getIds().length; i++)
+		for (int i = 0; i < 16; i++)
 		{
-			for (int j = 0; j < subChunk.getIds()[i].length; j++)
+			for (int j = 0; j < 16; j++)
 			{
-				for (int k = 0; k < subChunk.getIds()[i][j].length; k++)
+				for (int k = 0; k < 16; k++)
 				{
-					int id = subChunk.getIds()[i][j][k];
+					int id = subChunk.getBlock(i, j, k).getId();
 					if (!registratedIds.contains(id))
 					{
 						map.put(id, lastId);
@@ -143,13 +143,13 @@ public class ChunkSerializer
 
 		short[][][] blocks = (short[][][]) SmartSave.get("blocks");
 
-		for (int i = 0; i < subChunk.getIds().length; i++)
+		for (int i = 0; i < 16; i++)
 		{
-			for (int j = 0; j < subChunk.getIds()[i].length; j++)
+			for (int j = 0; j < 16; j++)
 			{
-				for (int k = 0; k < subChunk.getIds()[i][j].length; k++)
+				for (int k = 0; k < 16; k++)
 				{
-					subChunk.getIds()[i][j][k] = BlockRegistry.getBlockByName(pallete.get(blocks[i][j][k])).getId();
+					subChunk.setBlock(BlockRegistry.getBlockByName(pallete.get(blocks[i][j][k])), i, j, k);
 				}
 			}
 		}

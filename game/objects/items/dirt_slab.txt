@@ -1,6 +1,0 @@
-model = item/dirt_slab
-special = slab
-top = dirt_top
-bottom = dirt_bottom
-both = dirt
-place = dirt_bottom

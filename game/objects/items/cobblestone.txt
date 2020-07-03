@@ -1,2 +1,0 @@
-model = item/cobblestone
-place = cobblestone

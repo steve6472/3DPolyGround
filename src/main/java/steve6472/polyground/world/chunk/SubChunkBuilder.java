@@ -24,7 +24,7 @@ public class SubChunkBuilder
 
 	public static boolean cull(SubChunk sc, int x, int y, int z)
 	{
-		Block b = sc.getBlockEfficiently(x, y, z);
+		Block b = sc.getBlock(x, y, z);
 		return !b.isFull || (b instanceof TransparentBlock);
 	}
 }

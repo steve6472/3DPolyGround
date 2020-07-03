@@ -1,15 +1,13 @@
 package steve6472.polyground.commands.coms;
 
 import com.mojang.brigadier.CommandDispatcher;
+import org.joml.Vector2i;
 import steve6472.polyground.EnumFace;
-import steve6472.polyground.block.Block;
-import steve6472.polyground.registry.BlockRegistry;
 import steve6472.polyground.commands.Command;
 import steve6472.polyground.commands.CommandSource;
 import steve6472.polyground.commands.arguments.ChunkArgument;
 import steve6472.polyground.world.chunk.Chunk;
 import steve6472.polyground.world.chunk.SubChunk;
-import org.joml.Vector2i;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
@@ -101,9 +99,7 @@ public class ChunkCommand extends Command
 						{
 							for (int k = 0; k < 16; k++)
 							{
-								int id = subChunk.getIds()[i][j][k];
-								Block b = BlockRegistry.getBlockById(id);
-								b.onBreak(subChunk, subChunk.getBlockData(i, j, k), c.getSource().getPlayer(), EnumFace.NONE, i, j, k);
+								subChunk.getBlock(i, j, k).onBreak(subChunk, subChunk.getState(i, j, k), c.getSource().getPlayer(), EnumFace.NONE, i, j, k);
 							}
 						}
 					}

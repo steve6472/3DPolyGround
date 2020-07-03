@@ -1,4 +1,0 @@
-model = block/oak_plank
-special = double_slab
-top = oak_plank_top
-bottom = oak_plank_bottom

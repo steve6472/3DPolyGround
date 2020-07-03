@@ -4,7 +4,7 @@ import steve6472.polyground.CaveGame;
 import steve6472.polyground.EnumFace;
 import steve6472.polyground.HitResult;
 import steve6472.polyground.block.Block;
-import steve6472.polyground.block.blockdata.BlockData;
+import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.entity.Player;
 import steve6472.polyground.world.World;
 import steve6472.polyground.world.chunk.SubChunk;
@@ -28,7 +28,7 @@ public class TimeSliderBlock extends Block
 	}
 
 	@Override
-	public void onClick(SubChunk subChunk, BlockData blockData, Player player, EnumFace clickedOn, MouseEvent click, int x, int y, int z)
+	public void onClick(SubChunk subChunk, BlockState state, Player player, EnumFace clickedOn, MouseEvent click, int x, int y, int z)
 	{
 		if (clickedOn == EnumFace.SOUTH && click.getButton() == KeyList.RMB && click.getAction() == KeyList.PRESS)
 		{

@@ -1,2 +1,0 @@
-model = block/stairs/brick/brick_stairs_west
-special = stair

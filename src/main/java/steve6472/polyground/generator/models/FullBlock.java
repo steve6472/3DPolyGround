@@ -12,6 +12,12 @@ public class FullBlock implements IModel
 	@Override
 	public String build()
 	{
-		return BlockModelBuilder.create().addCube(CubeBuilder.create().fullBlock().face(FaceBuilder.create().texture(texture))).build().build();
+		return "no";
 	}
+
+	//	@Override
+//	public String build()
+//	{
+//		return BlockModelBuilder.create().addCube(CubeBuilder.create().fullBlock().face(FaceBuilder.create().texture(texture))).build().build();
+//	}
 }

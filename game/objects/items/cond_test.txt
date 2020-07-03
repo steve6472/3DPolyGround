@@ -1,2 +1,0 @@
-model = item/cond_test
-place = cond_test

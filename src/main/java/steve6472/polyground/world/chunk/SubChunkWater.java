@@ -109,7 +109,7 @@ public class SubChunkWater
 					{
 						double volume = getLiquidVolume(i, j, k);
 
-						Block down = subChunk.getBlockEfficiently(i, j - 1, k);
+						Block down = subChunk.getBlock(i, j - 1, k);
 						double freeBlockVolume = WaterRegistry.volumes[down.getId()];
 						if (freeBlockVolume > 0)
 						{
@@ -141,11 +141,11 @@ public class SubChunkWater
 					if (j != 15 || subChunk.getLayer() != subChunk.getParent().getSubChunks().length)
 					{
 						double volume = getLiquidVolume(i, j, k);
-						double freeBlockVolumeThis = WaterRegistry.volumes[subChunk.getBlockEfficiently(i, j, k).getId()];
+						double freeBlockVolumeThis = WaterRegistry.volumes[subChunk.getBlock(i, j, k).getId()];
 
 						if (volume > freeBlockVolumeThis)
 						{
-							Block up = subChunk.getBlockEfficiently(i, j + 1, k);
+							Block up = subChunk.getBlock(i, j + 1, k);
 							double freeBlockVolume = WaterRegistry.volumes[up.getId()];
 
 							if (freeBlockVolume > 0)
@@ -167,7 +167,7 @@ public class SubChunkWater
 	private boolean flowSide(int i, int j, int k, int dx, int dz)
 	{
 		double volume = getLiquidVolume(i, j, k);
-		Block north = subChunk.getBlockEfficiently(i + dx, j, k + dz);
+		Block north = subChunk.getBlock(i + dx, j, k + dz);
 		double freeBlockVolume = WaterRegistry.volumes[north.getId()];
 
 		if (freeBlockVolume > 0)

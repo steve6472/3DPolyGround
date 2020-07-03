@@ -1,2 +1,0 @@
-model = block/oak_leaves
-special = leaves

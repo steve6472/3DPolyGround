@@ -188,12 +188,12 @@ public class ItemAtlas
 
 	private int model(Block block, ModelLayer modelLayer)
 	{
-		if (block == null || block.getCubes() == null)
+		if (block == null || block.getDefaultState().getBlockModel().getCubes() == null)
 			return 0;
 
 		int tris = 0;
 
-		for (Cube c : block.getBlockModel().getCubes())
+		for (Cube c : block.getDefaultState().getBlockModel().getCubes())
 		{
 			buildHelper.setCube(c);
 

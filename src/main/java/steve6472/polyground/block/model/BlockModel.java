@@ -1,10 +1,8 @@
 package steve6472.polyground.block.model;
 
 import steve6472.polyground.CaveGame;
-import steve6472.SSS;
 import steve6472.polyground.registry.WaterRegistry;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -30,38 +28,30 @@ public class BlockModel
 		tags.add("air");
 	}
 
-	public BlockModel(File f)
+	public BlockModel(String path)
 	{
+		if (path.isBlank())
+			throw new IllegalArgumentException("Model path is blank! '" + path + "'");
+
 		cubes = new ArrayList<>();
 		tags = new ArrayList<>();
 
-		if (f.isFile())
+		setCubes(CaveGame.getInstance().blockModelLoader.loadModel(path));
+
+		double volume = 0;
+
+		for (Cube c : cubes)
 		{
-			SSS sss = new SSS(f);
-
-			setCubes(CaveGame.getInstance().blockModelLoader.loadModel(sss.getString("model")));
-
-			if (sss.containsName("tags"))
-			{
-				for (String s : sss.getStringArray("tags"))
-					addTag(s);
-			}
-
-			double volume = 0;
-
-			for (Cube c : cubes)
-			{
-				if (c.isCollisionBox() && c.isHitbox())
-					volume += (c.getAabb().maxX - c.getAabb().minX) * (c.getAabb().maxY - c.getAabb().minY) * (c.getAabb().maxZ - c.getAabb().minZ);
-			}
-			WaterRegistry.tempVolumes.add((1.0 - Math.min(volume, 1.0)) * 1000.0);
-
-			/*
-			System.out.println("----" + sss.getString("model") + "----");
-			System.out.println("Used volume: " + volume);
-			System.out.println("Free volume: " + (1.0 - Math.min(volume, 1.0)) * 1000.0);
-			*/
+			if (c.isCollisionBox() && c.isHitbox())
+				volume += (c.getAabb().maxX - c.getAabb().minX) * (c.getAabb().maxY - c.getAabb().minY) * (c.getAabb().maxZ - c.getAabb().minZ);
 		}
+		WaterRegistry.tempVolumes.add((1.0 - Math.min(volume, 1.0)) * 1000.0);
+
+		/*
+		System.out.println("----" + sss.getString("model") + "----");
+		System.out.println("Used volume: " + volume);
+		System.out.println("Free volume: " + (1.0 - Math.min(volume, 1.0)) * 1000.0);
+		*/
 	}
 
 	public BlockModel(List<Cube> cubes)

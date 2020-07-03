@@ -25,6 +25,6 @@ public class BlockInspectorItem extends Item
 	public void renderBlock(InGameGuiEvent.PostRender e)
 	{
 		if (CaveGame.itemInHand == this && CaveGame.getInstance().hitPicker.hit)
-			Font.render("Block: " + CaveGame.getInstance().hitPicker.getHitResult().getBlock().getName(), 5, CaveGame.getInstance().getHeight() - 15);
+			Font.render("Block: " + CaveGame.getInstance().hitPicker.getHitResult().getState().getBlock().getName(), 5, CaveGame.getInstance().getHeight() - 15);
 	}
 }

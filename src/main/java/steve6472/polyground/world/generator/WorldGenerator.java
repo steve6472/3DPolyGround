@@ -79,36 +79,36 @@ public class WorldGenerator implements IGenerator
 
 	private void createSubChunk()
 	{
-		for (int i = 0; i < subChunk.getIds().length; i++)
+		for (int i = 0; i < 16; i++)
 		{
-			for (int j = 0; j < subChunk.getIds()[i].length; j++)
+			for (int j = 0; j < 16; j++)
 			{
-				for (int k = 0; k < subChunk.getIds()[i][j].length; k++)
+				for (int k = 0; k < 16; k++)
 				{
 					int maxHeight = (int) Math.ceil(heightMap[(i) + (k * 16)]);
 
 					Biome b = getBiome(i + subChunk.getX() * 16, k + subChunk.getZ() * 16);
 					subChunk.addBiome(b);
 
-					int top = b.getTopBlock().getId();
-					int fill = b.getCaveBlock().getId();
-					int under = b.getUnderBlock().getId();
+					Block top = b.getTopBlock();
+					Block fill = b.getCaveBlock();
+					Block under = b.getUnderBlock();
 
 					int y = j + subChunk.getLayer() * 16;
 
 					if (y == maxHeight)
 					{
 						subChunk.getParent().heightMap[i][k] = y;
-						subChunk.getIds()[i][j][k] = top;
+						subChunk.setBlock(top, i, j, k);
 					} else if (y < maxHeight - 1 - b.getUnderLayerHeight())
 					{
-						subChunk.getIds()[i][j][k] = fill;
+						subChunk.setBlock(fill, i, j, k);
 					} else if (y < maxHeight)
 					{
-						subChunk.getIds()[i][j][k] = under;
+						subChunk.setBlock(under, i, j, k);
 					} else
 					{
-						subChunk.getIds()[i][j][k] = Block.air.getId();
+						subChunk.setBlock(Block.air, i, j, k);
 					}
 
 					subChunk.setBiomeId(i, j, k, BiomeRegistry.getBiomeEntry(b.getName()).getId());

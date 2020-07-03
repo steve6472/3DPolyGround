@@ -2,8 +2,7 @@ package steve6472.polyground.world.chunk;
 
 import steve6472.polyground.EnumFace;
 import steve6472.polyground.block.Block;
-import steve6472.polyground.block.blockdata.IBlockData;
-import steve6472.polyground.registry.BlockRegistry;
+import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.world.World;
 
 import java.io.File;
@@ -109,21 +108,37 @@ public class Chunk
 		}
 	}
 
-	public void setBlock(int x, int y, int z, int id)
+	public void setBlock(Block block, int x, int y, int z)
 	{
 		if (isOutOfChunkBounds(x, y, z))
 			return;
 
 		SubChunk sc = subChunks[y / 16];
 
-		boolean shouldRebuild = sc.getBlockId(x, y % 16, z) != id;
+		boolean shouldRebuild = sc.getState(x, y % 16, z) != block.getDefaultState();
 
-		sc.setBlock(x, y % 16, z, id);
+		sc.setBlock(block, x, y % 16, z);
 
-		Block b = BlockRegistry.getBlockById(id);
+		sc.getTickableBlocks().set(x, y % 16, z, block.isTickable());
+//		sc.setBlockEntity(x, y % 16, z, b instanceof IBlockData ? ((IBlockData) b).createNewBlockEntity() : null);
 
-		sc.getTickableBlocks().set(x, y % 16, z, b.isTickable());
-		sc.setBlockEntity(x, y % 16, z, b instanceof IBlockData ? ((IBlockData) b).createNewBlockEntity() : null);
+		if (shouldRebuild)
+			updateNeighbours(sc, x, y, z);
+	}
+
+	public void setState(BlockState state, int x, int y, int z)
+	{
+		if (isOutOfChunkBounds(x, y, z))
+			return;
+
+		SubChunk sc = subChunks[y / 16];
+
+		boolean shouldRebuild = sc.getState(x, y % 16, z) != state;
+
+		sc.setState(state, x, y % 16, z);
+
+		sc.getTickableBlocks().set(x, y % 16, z, state.getBlock().isTickable());
+		//		sc.setBlockEntity(x, y % 16, z, b instanceof IBlockData ? ((IBlockData) b).createNewBlockEntity() : null);
 
 		if (shouldRebuild)
 			updateNeighbours(sc, x, y, z);
@@ -175,13 +190,22 @@ public class Chunk
 		}
 	}
 
-	public int getBlock(int x, int y, int z)
+	public Block getBlock(int x, int y, int z)
 	{
 		if (isOutOfChunkBounds(x, y, z))
-			return Block.air.getId();
+			return Block.air;
 
 		SubChunk sc = subChunks[y / 16];
-		return sc.getIds()[x][y % 16][z];
+		return sc.getBlock(x, y % 16, z);
+	}
+
+	public BlockState getState(int x, int y, int z)
+	{
+		if (isOutOfChunkBounds(x, y, z))
+			return Block.air.getDefaultState();
+
+		SubChunk sc = subChunks[y / 16];
+		return sc.getState(x, y % 16, z);
 	}
 
 	public World getWorld()

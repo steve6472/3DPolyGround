@@ -6,6 +6,7 @@ import steve6472.polyground.block.Block;
 import steve6472.polyground.block.BlockTextureHolder;
 import steve6472.polyground.block.model.Cube;
 import steve6472.polyground.block.model.CubeFace;
+import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.registry.block.SpecialBlockRegistry;
 import steve6472.polyground.registry.face.FaceRegistry;
 
@@ -83,14 +84,19 @@ public class BlockRegistry
 
 		for (int i = 0; i < tempBlocks.size(); i++)
 		{
-			if (blocks[i].getBlockModel() != null && blocks[i].getBlockModel().getCubes() != null)
-			for (Cube c : blocks[i].getBlockModel().getCubes())
+			for (BlockState bs : blocks[i].getDefaultState().getPossibleStates())
 			{
-				for (CubeFace f : c.getFaces())
+				if (bs.getBlockModel() != null && bs.getBlockModel().getCubes() != null)
 				{
-					if (f != null)
-					if (f.hasProperty(FaceRegistry.conditionedTexture))
-						f.getProperty(FaceRegistry.conditionedTexture).fixBlockId();
+					for (Cube c : bs.getBlockModel().getCubes())
+					{
+						for (CubeFace f : c.getFaces())
+						{
+							if (f != null)
+								if (f.hasProperty(FaceRegistry.conditionedTexture))
+									f.getProperty(FaceRegistry.conditionedTexture).fixBlockId();
+						}
+					}
 				}
 			}
 		}

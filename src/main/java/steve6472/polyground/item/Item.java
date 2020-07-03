@@ -2,7 +2,7 @@ package steve6472.polyground.item;
 
 import steve6472.polyground.EnumFace;
 import steve6472.polyground.block.Block;
-import steve6472.polyground.block.blockdata.BlockData;
+import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.registry.BlockRegistry;
 import steve6472.polyground.entity.Player;
 import steve6472.polyground.world.chunk.SubChunk;
@@ -81,9 +81,8 @@ public class Item
 
 	/**
 	 * Runs on block in the world
-	 *
-	 * @param subChunk  Sub Chunk
-	 * @param blockData Data of block
+	 *  @param subChunk  Sub Chunk
+	 * @param state Data of block
 	 * @param player    Player
 	 * @param clickedOn Side the player has clicked on
 	 * @param click     event
@@ -91,7 +90,7 @@ public class Item
 	 * @param y         y position of block
 	 * @param z         z position of block
 	 */
-	public void onClick(SubChunk subChunk, BlockData blockData, Player player, EnumFace clickedOn, MouseEvent click, int x, int y, int z)
+	public void onClick(SubChunk subChunk, BlockState state, Player player, EnumFace clickedOn, MouseEvent click, int x, int y, int z)
 	{
 	}
 

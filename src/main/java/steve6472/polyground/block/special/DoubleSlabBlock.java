@@ -4,7 +4,7 @@ import steve6472.polyground.CaveGame;
 import steve6472.polyground.EnumFace;
 import steve6472.polyground.HitResult;
 import steve6472.polyground.block.Block;
-import steve6472.polyground.block.blockdata.BlockData;
+import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.registry.BlockRegistry;
 import steve6472.polyground.entity.Player;
 import steve6472.polyground.world.chunk.SubChunk;
@@ -45,14 +45,14 @@ public class DoubleSlabBlock extends Block
 	}
 
 	@Override
-	public void onClick(SubChunk subChunk, BlockData blockData, Player player, EnumFace clickedOn, MouseEvent click, int x, int y, int z)
+	public void onClick(SubChunk subChunk, BlockState state, Player player, EnumFace clickedOn, MouseEvent click, int x, int y, int z)
 	{
 		if (!(click.getAction() == KeyList.PRESS && click.getButton() == KeyList.LMB))
 			return;
 
 		HitResult hitResult = CaveGame.getInstance().hitPicker.getHitResult();
 
-		Block placed = BlockRegistry.getBlockById(subChunk.getWorld().getBlock(hitResult.getX(), hitResult.getY(), hitResult.getZ()));
+		Block placed = subChunk.getWorld().getBlock(hitResult.getX(), hitResult.getY(), hitResult.getZ());
 		Block tobeplaced = null;
 
 		if (hitResult.getFace() == EnumFace.UP)
@@ -79,13 +79,8 @@ public class DoubleSlabBlock extends Block
 		else
 			tobeplaced = bottom;
 
-		tobeplaced.onBreak(subChunk, subChunk.getBlockData(hitResult.getX(), hitResult.getY(), hitResult.getZ()), player, hitResult.getFace(), hitResult.getX(), hitResult.getY(), hitResult.getZ());
+		tobeplaced.onBreak(subChunk, /*subChunk.getBlockData(hitResult.getX(), hitResult.getY(), hitResult.getZ())*/ null, player, hitResult.getFace(), hitResult.getX(), hitResult.getY(), hitResult.getZ());
 
 		player.processNextBlockBreak = false;
-	}
-
-	private enum EnumSlabType
-	{
-		TOP, BOTTOM, DOUBLE, OPPOSITE
 	}
 }

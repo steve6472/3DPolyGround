@@ -6,6 +6,7 @@ package steve6472.polyground.block.blockdata;
  * Project: SJP
  *
  ***********************/
+@Deprecated
 public interface IBlockData
 {
 	BlockData createNewBlockEntity();

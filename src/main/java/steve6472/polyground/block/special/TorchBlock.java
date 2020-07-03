@@ -3,11 +3,7 @@ package steve6472.polyground.block.special;
 import org.joml.Vector3f;
 import steve6472.SSS;
 import steve6472.polyground.block.Block;
-import steve6472.polyground.block.blockdata.BlockData;
-import steve6472.polyground.block.model.CubeFace;
-import steve6472.polyground.block.model.faceProperty.LightFaceProperty;
-import steve6472.polyground.block.model.Cube;
-import steve6472.polyground.registry.face.FaceRegistry;
+import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.gfx.particle.particles.LightParticle;
 import steve6472.polyground.gfx.particle.particles.torch.motion.AcidFormula;
 import steve6472.polyground.gfx.particle.particles.torch.motion.Formula;
@@ -118,28 +114,15 @@ public class TorchBlock extends Block
 			}
 			if (enumSpawner != null)
 				spawner = getSpawner(enumSpawner, spawnerData);
-		}
 
-		for (Cube cube : getBlockModel().getCubes())
-		{
-			for (CubeFace face : cube.getFaces())
-			{
-				if (face == null) continue;
-				if (face.hasProperty(FaceRegistry.light))
-				{
-					System.err.println("Replacing existing light property!");
-				}
-				face.removeProperty(FaceRegistry.light);
-
-				face.addProperty(new LightFaceProperty(r, g, b));
-			}
+			LightSourceBlock.setLightProperty(this, color);
 		}
 
 		f = null;
 	}
 
 	@Override
-	public void tick(SubChunk subChunk, BlockData blockData, int x, int y, int z)
+	public void tick(SubChunk subChunk, BlockState state, int x, int y, int z)
 	{
 		if (spawner == null)
 			return;

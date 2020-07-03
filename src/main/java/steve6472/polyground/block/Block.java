@@ -1,16 +1,21 @@
 package steve6472.polyground.block;
 
 import org.joml.AABBf;
+import org.json.JSONObject;
+import steve6472.SSS;
 import steve6472.polyground.EnumFace;
-import steve6472.polyground.block.blockdata.BlockData;
 import steve6472.polyground.block.model.BlockModel;
+import steve6472.polyground.block.model.BlockModelLoader;
 import steve6472.polyground.block.model.Cube;
 import steve6472.polyground.block.model.CubeFace;
 import steve6472.polyground.block.model.faceProperty.LayerFaceProperty;
 import steve6472.polyground.block.model.faceProperty.TextureFaceProperty;
 import steve6472.polyground.block.model.faceProperty.UVFaceProperty;
 import steve6472.polyground.block.model.faceProperty.condition.ConditionFaceProperty;
+import steve6472.polyground.block.properties.IProperty;
 import steve6472.polyground.block.special.SnapBlock;
+import steve6472.polyground.block.states.BlockState;
+import steve6472.polyground.block.states.StateLoader;
 import steve6472.polyground.entity.Player;
 import steve6472.polyground.registry.face.FaceRegistry;
 import steve6472.polyground.world.BuildHelper;
@@ -20,6 +25,7 @@ import steve6472.polyground.world.chunk.SubChunk;
 import steve6472.sge.main.events.MouseEvent;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 /**********************
@@ -37,7 +43,7 @@ public class Block
 	private final int id;
 
 	public String name;
-	private final BlockModel blockModel;
+	private BlockState defaultState;
 
 	public static Block createAir()
 	{
@@ -71,8 +77,8 @@ public class Block
 		BlockModel model = new BlockModel(cube);
 
 		error = new Block("error", 1, model);
-		error.addTag("error");
-		error.addTag("solid");
+		error.getDefaultState().getBlockModel().addTag("error");
+		error.getDefaultState().getBlockModel().addTag("solid");
 
 		return error;
 	}
@@ -82,26 +88,16 @@ public class Block
 		this.name = name;
 		this.id = id;
 		isFull = false;
-		this.blockModel = blockModel;
+		StateLoader.generateState(this, blockModel);
 	}
 
 	public Block(File f, int id)
 	{
 		isFull = true;
 		name = f.getName().substring(0, f.getName().length() - 4);
-		blockModel = new BlockModel(f);
+		generateStates(new SSS(f).getString("blockstate"));
 
 		this.id = id;
-	}
-
-	public Cube getCube(int i)
-	{
-		return blockModel.getCube(i);
-	}
-
-	public BlockModel getBlockModel()
-	{
-		return blockModel;
 	}
 
 	public String getName()
@@ -114,26 +110,32 @@ public class Block
 		return id;
 	}
 
-	public List<Cube> getCubes(int x, int y, int z)
+	/* States */
+
+	public BlockState getDefaultState()
 	{
-		return blockModel.getCubes();
+		return defaultState;
 	}
 
-	public List<Cube> getCubes()
+	public void setDefaultState(BlockState state)
 	{
-		return blockModel.getCubes();
+		this.defaultState = state;
 	}
 
-	/* Tags */
-
-	public boolean hasTag(String tag)
+	public void fillStates(List<IProperty<?>> properties)
 	{
-		return getBlockModel().hasTag(tag);
 	}
 
-	public void addTag(String tag)
+	private void generateStates(String blockState)
 	{
-		getBlockModel().addTag(tag);
+		List<IProperty<?>> properties = new ArrayList<>();
+		fillStates(properties);
+		StateLoader.generateStates(this, properties, new JSONObject(BlockModelLoader.read(new File("game/objects/blockstates/" + blockState + ".json"))));
+	}
+
+	public BlockState getStateForPlacement(SubChunk subChunk, int x, int y, int z)
+	{
+		return getDefaultState();
 	}
 
 	/* Other Something */
@@ -153,12 +155,12 @@ public class Block
 		return this == air;
 	}
 
-	public int createModel(int x, int y, int z, SubChunk sc, BlockData blockData, BuildHelper buildHelper, ModelLayer modelLayer)
+	public int createModel(int x, int y, int z, SubChunk sc, BlockState state, BuildHelper buildHelper, ModelLayer modelLayer)
 	{
 		int tris = 0;
 
 		buildHelper.setSubChunk(sc);
-		for (Cube c : blockModel.getCubes())
+		for (Cube c : state.getBlockModel().getCubes())
 		{
 			buildHelper.setCube(c);
 			for (EnumFace face : EnumFace.getFaces())
@@ -192,7 +194,13 @@ public class Block
 		return tris;
 	}
 
-	public void tick(SubChunk subChunk, BlockData blockData, int x, int y, int z)
+	@Override
+	public String toString()
+	{
+		return "Block{" + "isFull=" + isFull + ", id=" + id + ", name='" + name + '\'' + '}';
+	}
+
+	public void tick(SubChunk subChunk, BlockState state, int x, int y, int z)
 	{
 	}
 
@@ -202,20 +210,19 @@ public class Block
 
 	/* Events */
 
-	public void onPlace(SubChunk subChunk, BlockData blockData, Player player, EnumFace placedOn, int x, int y, int z)
+	public void onPlace(SubChunk subChunk, BlockState state, Player player, EnumFace placedOn, int x, int y, int z)
 	{
 	}
 
-	public void onBreak(SubChunk subChunk, BlockData blockData, Player player, EnumFace breakedFrom, int x, int y, int z)
+	public void onBreak(SubChunk subChunk, BlockState state, Player player, EnumFace breakedFrom, int x, int y, int z)
 	{
-		SnapBlock.activate(this, subChunk, x, y, z);
+		SnapBlock.activate(state, subChunk, x, y, z);
 	}
 
 	/**
 	 * Runs on block in the world
-	 *
-	 * @param subChunk  Sub Chunk
-	 * @param blockData Data of block
+	 *  @param subChunk  Sub Chunk
+	 * @param state Data of block
 	 * @param player    Player
 	 * @param clickedOn Side the player has clicked on
 	 * @param click     event
@@ -223,11 +230,11 @@ public class Block
 	 * @param y         y position of block
 	 * @param z         z position of block
 	 */
-	public void onClick(SubChunk subChunk, BlockData blockData, Player player, EnumFace clickedOn, MouseEvent click, int x, int y, int z)
+	public void onClick(SubChunk subChunk, BlockState state, Player player, EnumFace clickedOn, MouseEvent click, int x, int y, int z)
 	{
 	}
 
-	public void onUpdate(SubChunk subChunk, BlockData blockData, EnumFace updateFrom, int x, int y, int z)
+	public void onUpdate(SubChunk subChunk, BlockState state, EnumFace updateFrom, int x, int y, int z)
 	{
 	}
 }

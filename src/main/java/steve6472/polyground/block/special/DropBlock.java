@@ -3,9 +3,9 @@ package steve6472.polyground.block.special;
 import steve6472.polyground.EnumFace;
 import steve6472.polyground.block.Block;
 import steve6472.polyground.block.BlockTextureHolder;
-import steve6472.polyground.block.blockdata.BlockData;
 import steve6472.polyground.block.model.CubeFace;
 import steve6472.polyground.block.model.Cube;
+import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.registry.face.FaceRegistry;
 import steve6472.polyground.gfx.particle.particles.BreakParticle;
 import steve6472.polyground.world.BuildHelper;
@@ -32,18 +32,18 @@ public class DropBlock extends Block
 	}
 
 	@Override
-	public void tick(SubChunk subChunk, BlockData blockData, int x, int y, int z)
+	public void tick(SubChunk subChunk, BlockState state, int x, int y, int z)
 	{
-		activate(this, subChunk, blockData, x, y, z);
+		activate(this, subChunk, state, x, y, z);
 	}
 
 	@Override
-	public int createModel(int x, int y, int z, SubChunk sc, BlockData blockData, BuildHelper buildHelper, ModelLayer modelLayer)
+	public int createModel(int x, int y, int z, SubChunk sc, BlockState state, BuildHelper buildHelper, ModelLayer modelLayer)
 	{
 		return 0;
 	}
 
-	public static void activate(Block block, SubChunk subChunk, BlockData blockData, int x, int y, int z)
+	public static void activate(Block block, SubChunk subChunk, BlockState state, int x, int y, int z)
 	{
 		if (block == Block.air)
 			return;
@@ -52,7 +52,7 @@ public class DropBlock extends Block
 		float s = 1f / 16f / size;
 
 		//s - TY / size + s * 14f
-		for (Cube c : block.getCubes(x, y, z))
+		for (Cube c : state.getBlockModel().getCubes())
 		{
 			for (float i = c.getAabb().minX; i < c.getAabb().maxX; i += 1f / 16f)
 			{

@@ -1,2 +1,0 @@
-model = item/green_screen
-place = green_screen

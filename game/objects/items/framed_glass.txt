@@ -1,2 +1,0 @@
-model = item/framed_glass
-place = framed_glass

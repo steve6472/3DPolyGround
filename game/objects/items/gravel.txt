@@ -1,2 +1,0 @@
-model = item/gravel
-place = gravel

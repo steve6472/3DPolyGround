@@ -3,9 +3,9 @@ package steve6472.polyground.block.special;
 import steve6472.polyground.EnumFace;
 import steve6472.polyground.block.Block;
 import steve6472.polyground.block.BlockTextureHolder;
-import steve6472.polyground.block.blockdata.BlockData;
 import steve6472.polyground.block.model.CubeFace;
 import steve6472.polyground.block.model.Cube;
+import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.registry.face.FaceRegistry;
 import steve6472.polyground.entity.Player;
 import steve6472.polyground.gfx.particle.particles.BreakParticle;
@@ -31,19 +31,19 @@ public class LogBlock extends Block
 	}
 
 	@Override
-	public void onPlace(SubChunk subChunk, BlockData blockData, Player player, EnumFace placedOn, int x, int y, int z)
+	public void onPlace(SubChunk subChunk, BlockState state, Player player, EnumFace placedOn, int x, int y, int z)
 	{
 		//		subChunk.setProperties(x, y, z, new Properties(placedOn));
 		subChunk.rebuild();
 	}
 
 	@Override
-	public void onBreak(SubChunk subChunk, BlockData blockData, Player player, EnumFace breakedFrom, int x, int y, int z)
+	public void onBreak(SubChunk subChunk, BlockState state, Player player, EnumFace breakedFrom, int x, int y, int z)
 	{
 		//		subChunk.setProperties(x, y, z, null);
 
 		for (int i = 0; i < 8; i++)
-			for (Cube c : getCubes(x, y, z))
+			for (Cube c : state.getBlockModel().getCubes())
 			{
 				for (CubeFace cf : c.getFaces())
 				{

@@ -23,13 +23,13 @@ public class BushFeature implements IFeature
 	@Override
 	public void generate(SubChunk sc, int x, int y, int z)
 	{
-		sc.setBlockEfficiently(x, y + 1, z, log);
-		sc.setBlockEfficiently(x, y + 2, z, log);
-		sc.setBlockEfficiently(x, y + 3, z, leaves);
-		sc.setBlockEfficiently(x + 1, y + 2, z, leaves);
-		sc.setBlockEfficiently(x - 1, y + 2, z, leaves);
-		sc.setBlockEfficiently(x, y + 2, z + 1, leaves);
-		sc.setBlockEfficiently(x, y + 2, z - 1, leaves);
+		sc.setBlock(log, x, y + 1, z);
+		sc.setBlock(log, x, y + 2, z);
+		sc.setBlock(leaves, x, y + 3, z);
+		sc.setBlock(leaves, x + 1, y + 2, z);
+		sc.setBlock(leaves, x - 1, y + 2, z);
+		sc.setBlock(leaves, x, y + 2, z + 1);
+		sc.setBlock(leaves, x, y + 2, z - 1);
 	}
 
 	@Override
@@ -41,7 +41,7 @@ public class BushFeature implements IFeature
 	@Override
 	public boolean canGenerate(SubChunk sc, int x, int y, int z)
 	{
-		return sc.getBlockId(x, y, z) == blockUnder.getId();
+		return sc.getBlock(x, y, z) == blockUnder;
 	}
 
 	@Override

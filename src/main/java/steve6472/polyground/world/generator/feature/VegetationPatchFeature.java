@@ -36,15 +36,15 @@ public class VegetationPatchFeature implements IFeature
 			{
 				if (sc.getWorld().getRandom().nextFloat() < chance)
 				{
-					if (sc.getBlockEfficiently(x + i, y, z + j) == blockUnder)
+					if (sc.getBlock(x + i, y, z + j) == blockUnder)
 					{
 						if (decayFromCenter)
 						{
 							if (sc.getWorld().getRandom().nextFloat() < 1d / Vector2f.distanceSquared(x, y, x + i, y + j))
-								sc.setBlockEfficiently(x + i, y + 1, z + j, blockToPlace);
+								sc.setBlock(blockToPlace, x + i, y + 1, z + j);
 						} else
 						{
-							sc.setBlockEfficiently(x + i, y + 1, z + j, blockToPlace);
+							sc.setBlock(blockToPlace, x + i, y + 1, z + j);
 						}
 					}
 				}
@@ -61,7 +61,7 @@ public class VegetationPatchFeature implements IFeature
 	@Override
 	public boolean canGenerate(SubChunk sc, int x, int y, int z)
 	{
-		return sc.getBlockId(x, y, z) == blockUnder.getId();
+		return sc.getBlock(x, y, z) == blockUnder;
 	}
 
 	@Override
