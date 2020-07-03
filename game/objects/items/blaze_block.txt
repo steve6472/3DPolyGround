@@ -1,2 +1,0 @@
-model = item/blaze_block
-place = blaze_block

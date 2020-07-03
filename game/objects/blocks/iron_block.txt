@@ -1,1 +1,0 @@
-model = block/iron_block

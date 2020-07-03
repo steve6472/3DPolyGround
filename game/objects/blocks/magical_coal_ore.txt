@@ -1,6 +1,0 @@
-model = block/magical_coal_ore
-special = light
-color = 6c7f7a
-constant = 1.0
-linear = 0.7
-quadratic = 1.8

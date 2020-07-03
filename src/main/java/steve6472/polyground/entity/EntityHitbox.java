@@ -5,6 +5,7 @@ import org.joml.Intersectionf;
 import steve6472.polyground.AABBUtil;
 import steve6472.polyground.block.Block;
 import steve6472.polyground.block.model.Cube;
+import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.world.World;
 import steve6472.sge.main.game.mixable.IMotion3f;
 import steve6472.sge.main.game.mixable.IPosition3f;
@@ -113,10 +114,10 @@ public class EntityHitbox
 				{
 					int x = ix + i, y = iy + j, z = iz + k;
 
-					Block block;
-					if ((block = world.getBlock(x, y, z)) != Block.air)
+					BlockState state;
+					if ((state = world.getState(x, y, z)) != Block.air.getDefaultState())
 					{
-						for (Cube t : block.getCubes(x, y, z))
+						for (Cube t : state.getBlockModel().getCubes())
 						{
 							if (!t.isCollisionBox())
 								continue;

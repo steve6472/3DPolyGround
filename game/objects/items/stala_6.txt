@@ -1,2 +1,0 @@
-model = item/stala_6
-place = stala_6

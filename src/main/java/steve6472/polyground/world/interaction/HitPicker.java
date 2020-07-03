@@ -10,6 +10,7 @@ import steve6472.polyground.EnumFace;
 import steve6472.polyground.HitResult;
 import steve6472.polyground.block.Block;
 import steve6472.polyground.block.model.Cube;
+import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.entity.Player;
 import steve6472.polyground.gfx.MainRender;
 import steve6472.polyground.world.World;
@@ -69,10 +70,10 @@ public class HitPicker
 						if (i < c.getX() * 16 || i >= c.getX() * 16 + 16 || k < c.getZ() * 16 || k >= c.getZ() * 16 + 16)
 							continue;
 
-						Block block = c.getWorld().getBlock(i, j, k);
-						if (block != Block.air)
+						BlockState state = c.getWorld().getState(i, j, k);
+						if (state.getBlock() != Block.air)
 						{
-							for (Cube t : block.getCubes(i, j, k))
+							for (Cube t : state.getBlockModel().getCubes())
 							{
 								if (!t.isHitbox())
 									continue;
@@ -116,9 +117,9 @@ public class HitPicker
 			if (Math.abs(hitResult.getPz() - (hitResult.getAabb().minZ + hitResult.getZ())) <= epsion)
 				hitResult.setFace(EnumFace.WEST);
 
-			hitResult.setBlock(world.getBlock(hitResult.getX(), hitResult.getY(), hitResult.getZ()));
+			hitResult.setState(world.getState(hitResult.getX(), hitResult.getY(), hitResult.getZ()));
 
-			for (Cube t : hitResult.getBlock().getCubes(hitResult.getX(), hitResult.getY(), hitResult.getZ()))
+			for (Cube t : hitResult.getState().getBlockModel().getCubes())
 			{
 				if (!t.isHitbox())
 					continue;

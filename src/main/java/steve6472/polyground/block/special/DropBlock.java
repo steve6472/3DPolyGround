@@ -52,7 +52,7 @@ public class DropBlock extends Block
 		float s = 1f / 16f / size;
 
 		//s - TY / size + s * 14f
-		for (Cube c : block.getCubes(x, y, z))
+		for (Cube c : state.getBlockModel().getCubes())
 		{
 			for (float i = c.getAabb().minX; i < c.getAabb().maxX; i += 1f / 16f)
 			{

@@ -1,2 +1,0 @@
-model = item/oak_log
-place = oak_log

@@ -1,2 +1,0 @@
-model = block/stairs/cobblestone/cobblestone_stairs_east
-special = stair

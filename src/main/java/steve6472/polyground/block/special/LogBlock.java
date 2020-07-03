@@ -43,7 +43,7 @@ public class LogBlock extends Block
 		//		subChunk.setProperties(x, y, z, null);
 
 		for (int i = 0; i < 8; i++)
-			for (Cube c : getCubes(x, y, z))
+			for (Cube c : state.getBlockModel().getCubes())
 			{
 				for (CubeFace cf : c.getFaces())
 				{

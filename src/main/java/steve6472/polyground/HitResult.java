@@ -1,7 +1,7 @@
 package steve6472.polyground;
 
-import steve6472.polyground.block.Block;
 import org.joml.AABBf;
+import steve6472.polyground.block.states.BlockState;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
@@ -15,7 +15,7 @@ public class HitResult
 	private float px, py, pz;
 	private float distance;
 	private EnumFace face;
-	private Block block;
+	private BlockState state;
 	private AABBf aabb;
 
 	public HitResult()
@@ -52,9 +52,9 @@ public class HitResult
 		this.distance = distance;
 	}
 
-	public void setBlock(Block block)
+	public void setState(BlockState state)
 	{
-		this.block = block;
+		this.state = state;
 	}
 
 	public void setAabb(AABBf aabb)
@@ -112,9 +112,9 @@ public class HitResult
 		return distance;
 	}
 
-	public Block getBlock()
+	public BlockState getState()
 	{
-		return block;
+		return state;
 	}
 
 	public AABBf getAabb()

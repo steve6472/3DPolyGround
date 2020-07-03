@@ -29,7 +29,7 @@ public class CustomBlock extends TransparentBlock
 		int tris = 0;
 
 		buildHelper.setSubChunk(sc);
-		for (Cube c : getCubes())
+		for (Cube c : state.getBlockModel().getCubes())
 		{
 			buildHelper.setCube(c);
 

@@ -1,6 +1,0 @@
-model = block/framed_glass
-special = transparent
-tags:
-{
-	transparent
-}

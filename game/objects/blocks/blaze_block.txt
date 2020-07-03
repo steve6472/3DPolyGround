@@ -1,6 +1,0 @@
-model = block/blaze_block
-special = light
-color = FDEA49
-constant = 1.0
-linear = 0.14
-quadratic = 0.07

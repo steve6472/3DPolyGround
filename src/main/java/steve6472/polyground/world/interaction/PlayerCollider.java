@@ -4,6 +4,7 @@ import org.joml.AABBf;
 import org.joml.Intersectionf;
 import steve6472.polyground.block.Block;
 import steve6472.polyground.block.model.Cube;
+import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.world.World;
 
 import java.util.List;
@@ -18,10 +19,10 @@ public class PlayerCollider
 {
 	private static void check(World world, int x, int y, int z, List<AABBf> aabbs, AABBf hitbox)
 	{
-		Block block;
-		if ((block = world.getBlock(x, y, z)) != Block.air)
+		BlockState state;
+		if ((state = world.getState(x, y, z)) != Block.air.getDefaultState())
 		{
-			for (Cube t : block.getCubes(x, y, z))
+			for (Cube t : state.getBlockModel().getCubes())
 			{
 				if (!t.isCollisionBox())
 					continue;

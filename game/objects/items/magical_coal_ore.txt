@@ -1,2 +1,0 @@
-model = item/magical_coal_ore
-place = magical_coal_ore

@@ -40,7 +40,6 @@ public class Block
 	private final int id;
 
 	public String name;
-	private final BlockModel blockModel;
 	private BlockState defaultState;
 
 	public static Block createAir()
@@ -75,8 +74,8 @@ public class Block
 		BlockModel model = new BlockModel(cube);
 
 		error = new Block("error", 1, model);
-		error.addTag("error");
-		error.addTag("solid");
+		error.getDefaultState().getBlockModel().addTag("error");
+		error.getDefaultState().getBlockModel().addTag("solid");
 
 		return error;
 	}
@@ -86,28 +85,16 @@ public class Block
 		this.name = name;
 		this.id = id;
 		isFull = false;
-		this.blockModel = blockModel;
-		generateStates();
+		generateStates(blockModel);
 	}
 
 	public Block(File f, int id)
 	{
 		isFull = true;
 		name = f.getName().substring(0, f.getName().length() - 4);
-		blockModel = new BlockModel(f);
-		generateStates();
+		generateStates(new BlockModel(f));
 
 		this.id = id;
-	}
-
-	public Cube getCube(int i)
-	{
-		return blockModel.getCube(i);
-	}
-
-	public BlockModel getBlockModel()
-	{
-		return blockModel;
 	}
 
 	public String getName()
@@ -118,16 +105,6 @@ public class Block
 	public int getId()
 	{
 		return id;
-	}
-
-	public List<Cube> getCubes(int x, int y, int z)
-	{
-		return blockModel.getCubes();
-	}
-
-	public List<Cube> getCubes()
-	{
-		return blockModel.getCubes();
 	}
 
 	/* States */
@@ -146,29 +123,16 @@ public class Block
 	{
 	}
 
-	private void generateStates()
+	private void generateStates(BlockModel model)
 	{
 		List<IProperty<?>> properties = new ArrayList<>();
 		fillStates(properties);
-		StateBuilder.generateStates(this, properties);
+		StateBuilder.generateStates(this, model, properties);
 	}
 
 	public BlockState getStateForPlacement(SubChunk subChunk, int x, int y, int z)
 	{
 		return getDefaultState();
-	}
-
-
-	/* Tags */
-
-	public boolean hasTag(String tag)
-	{
-		return getBlockModel().hasTag(tag);
-	}
-
-	public void addTag(String tag)
-	{
-		getBlockModel().addTag(tag);
 	}
 
 	/* Other Something */
@@ -193,7 +157,7 @@ public class Block
 		int tris = 0;
 
 		buildHelper.setSubChunk(sc);
-		for (Cube c : blockModel.getCubes())
+		for (Cube c : state.getBlockModel().getCubes())
 		{
 			buildHelper.setCube(c);
 			for (EnumFace face : EnumFace.getFaces())

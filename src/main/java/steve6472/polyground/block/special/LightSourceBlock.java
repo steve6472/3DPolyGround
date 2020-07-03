@@ -60,23 +60,32 @@ public class LightSourceBlock extends Block
 				zOffset = sss.getFloat("lightZOffset") / 16f;
 		}
 
-		for (Cube cube : getBlockModel().getCubes())
-		{
-			for (CubeFace face : cube.getFaces())
-			{
-				if (face == null) continue;
-				if (face.hasProperty(FaceRegistry.light))
-				{
-					System.err.println("Replacing existing light property!");
-				}
-				face.removeProperty(FaceRegistry.light);
-
-				float[] col = ColorUtil.getColors(color);
-				face.addProperty(new LightFaceProperty(col[0], col[1], col[2]));
-			}
-		}
+		setLightProperty(this, color);
 
 		f = null;
+	}
+
+	public static void setLightProperty(Block block, int color)
+	{
+		for (BlockState s : block.getDefaultState().getPossibleStates())
+		{
+			for (Cube cube : s.getBlockModel().getCubes())
+			{
+				for (CubeFace face : cube.getFaces())
+				{
+					if (face == null)
+						continue;
+					if (face.hasProperty(FaceRegistry.light))
+					{
+						System.err.println("Replacing existing light property!");
+					}
+					face.removeProperty(FaceRegistry.light);
+
+					float[] col = ColorUtil.getColors(color);
+					face.addProperty(new LightFaceProperty(col[0], col[1], col[2]));
+				}
+			}
+		}
 	}
 
 	@Override

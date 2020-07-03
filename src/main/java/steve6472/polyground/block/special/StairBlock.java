@@ -2,13 +2,11 @@ package steve6472.polyground.block.special;
 
 import steve6472.polyground.EnumFace;
 import steve6472.polyground.block.Block;
-import steve6472.polyground.block.model.Cube;
 import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.entity.Player;
 import steve6472.polyground.world.chunk.SubChunk;
 
 import java.io.File;
-import java.util.List;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
@@ -39,17 +37,6 @@ public class StairBlock extends Block
 //
 //
 //		subChunk.rebuild();
-	}
-
-	@Override
-	public List<Cube> getCubes(int x, int y, int z)
-	{
-		//		World world = CaveGame.getInstance().world;
-		//
-		//		SubChunk subChunk = world.getSubChunkFromBlockCoords(x, y, z);
-		//		RotationData data = (RotationData) subChunk.getBlockData(x, y, z);
-		//
-		return super.getCubes(x, y, z);
 	}
 
 //	@Override

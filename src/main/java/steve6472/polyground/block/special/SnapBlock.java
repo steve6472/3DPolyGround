@@ -34,19 +34,19 @@ public class SnapBlock extends Block
 	@Override
 	public void onBreak(SubChunk subChunk, BlockState state, Player player, EnumFace breakedFrom, int x, int y, int z)
 	{
-		activate(this, subChunk, x, y, z);
+		activate(state, subChunk, x, y, z);
 	}
 
-	public static void activate(Block block, SubChunk subChunk, int x, int y, int z)
+	public static void activate(BlockState state, SubChunk subChunk, int x, int y, int z)
 	{
-		if (block == Block.air)
+		if (state == Block.air.getDefaultState())
 			return;
 
 		float size = BlockTextureHolder.getAtlas().getTileCount();
 		float s = 1f / 16f / size;
 
 		//s - TY / size + s * 14f
-		for (Cube c : block.getCubes(x, y, z))
+		for (Cube c : state.getBlockModel().getCubes())
 		{
 			for (float i = c.getAabb().minX; i < c.getAabb().maxX; i += 1f / 16f)
 			{

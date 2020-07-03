@@ -1,2 +1,0 @@
-model = item/small_grass
-place = small_grass

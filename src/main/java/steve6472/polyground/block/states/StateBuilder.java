@@ -1,6 +1,7 @@
 package steve6472.polyground.block.states;
 
 import steve6472.polyground.block.Block;
+import steve6472.polyground.block.model.BlockModel;
 import steve6472.polyground.block.properties.IProperty;
 
 import java.util.ArrayList;
@@ -15,11 +16,11 @@ import java.util.List;
  ***********************/
 public class StateBuilder
 {
-	public static void generateStates(Block block, List<IProperty<?>> properties)
+	public static void generateStates(Block block, BlockModel model, List<IProperty<?>> properties)
 	{
 		if (properties.isEmpty())
 		{
-			block.setDefaultState(new BlockState(block, null, null));
+			block.setDefaultState(new BlockState(block, model, null, null));
 			return;
 		}
 
@@ -63,7 +64,7 @@ public class StateBuilder
 				map.put(properties.get(i), list.get(i));
 			}
 
-			BlockState state = new BlockState(block, map, tileStates);
+			BlockState state = new BlockState(block, model, map, tileStates);
 			if (block.getDefaultState() == null)
 				block.setDefaultState(state);
 			tileStates.add(state);

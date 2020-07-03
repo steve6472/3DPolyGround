@@ -3,11 +3,7 @@ package steve6472.polyground.block.special;
 import org.joml.Vector3f;
 import steve6472.SSS;
 import steve6472.polyground.block.Block;
-import steve6472.polyground.block.model.CubeFace;
-import steve6472.polyground.block.model.faceProperty.LightFaceProperty;
-import steve6472.polyground.block.model.Cube;
 import steve6472.polyground.block.states.BlockState;
-import steve6472.polyground.registry.face.FaceRegistry;
 import steve6472.polyground.world.chunk.SubChunk;
 import steve6472.polyground.world.light.EnumLightSource;
 import steve6472.polyground.world.light.Light;
@@ -73,21 +69,8 @@ public class OldTorchBlock extends Block
 			if (sss.containsName("spawnRadius")) spawnRadius = sss.getFloat("spawnRadius") / 16f;
 
 			if (sss.containsName("sphereRadius")) sphereRadius = sss.getBoolean("sphereRadius");
-		}
 
-		for (Cube cube : getBlockModel().getCubes())
-		{
-			for (CubeFace face : cube.getFaces())
-			{
-				if (face == null) continue;
-				if (face.hasProperty(FaceRegistry.light))
-				{
-					System.err.println("Replacing existing light property!");
-				}
-				face.removeProperty(FaceRegistry.light);
-
-				face.addProperty(new LightFaceProperty(r, g, b));
-			}
+			LightSourceBlock.setLightProperty(this, color);
 		}
 
 		f = null;

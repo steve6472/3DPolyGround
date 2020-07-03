@@ -1,2 +1,0 @@
-model = block/stairs/oak/oak_stairs_west
-special = stair
