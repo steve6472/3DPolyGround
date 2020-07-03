@@ -49,7 +49,7 @@ public class Bullet implements ITickable, IKillable, ICollideable, IPosition3f, 
 	@Override
 	public void collide(SubChunk subChunk, int x, int y, int z)
 	{
-		subChunk.setBlock(x, y, z, Block.air);
+		subChunk.setBlock(Block.air, x, y, z);
 		//TODO: spawn particles
 		die();
 	}

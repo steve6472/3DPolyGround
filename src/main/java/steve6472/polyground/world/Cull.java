@@ -4,7 +4,6 @@ import steve6472.polyground.EnumFace;
 import steve6472.polyground.block.Block;
 import steve6472.polyground.block.model.Cube;
 import steve6472.polyground.block.special.*;
-import steve6472.polyground.registry.BlockRegistry;
 import steve6472.polyground.world.chunk.SubChunk;
 import steve6472.polyground.world.chunk.SubChunkBuilder;
 
@@ -111,13 +110,18 @@ public class Cull
 	{
 		if (x >= 0 && x < 16 && z >= 0 && z < 16 && y >= 0 && y < 16)
 		{
-			return BlockRegistry.getBlockById(sc.getIds()[x][y][z]);
+			return sc.getBlock(x, y, z);
 		} else
 		{
 			SubChunk subChunk = sc.getNeighbouringSubChunk(x, y, z);
 			if (subChunk == null)
 				return Block.air;
-			return BlockRegistry.getBlockById(subChunk.getIds()[Math.floorMod(x, 16)][Math.floorMod(y, 16)][Math.floorMod(z, 16)]);
+			return subChunk.getBlock(Math.floorMod(x, 16), Math.floorMod(y, 16), Math.floorMod(z, 16));
 		}
 	}
 }
+
+
+
+
+

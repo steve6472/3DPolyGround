@@ -1,11 +1,10 @@
 package steve6472.polyground.world.interaction;
 
-import steve6472.polyground.block.Block;
-import steve6472.polyground.block.model.Cube;
-import steve6472.polyground.registry.BlockRegistry;
-import steve6472.polyground.world.World;
 import org.joml.AABBf;
 import org.joml.Intersectionf;
+import steve6472.polyground.block.Block;
+import steve6472.polyground.block.model.Cube;
+import steve6472.polyground.world.World;
 
 import java.util.List;
 
@@ -19,11 +18,10 @@ public class PlayerCollider
 {
 	private static void check(World world, int x, int y, int z, List<AABBf> aabbs, AABBf hitbox)
 	{
-		int id;
-		if ((id = world.getBlock(x, y, z)) != Block.air.getId())
+		Block block;
+		if ((block = world.getBlock(x, y, z)) != Block.air)
 		{
-			Block b = BlockRegistry.getBlockById(id);
-			for (Cube t : b.getCubes(x, y, z))
+			for (Cube t : block.getCubes(x, y, z))
 			{
 				if (!t.isCollisionBox())
 					continue;

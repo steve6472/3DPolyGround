@@ -62,9 +62,9 @@ public class EntityManager
 				if (chunk != null)
 				{
 					int cx, cz;
-					int block = chunk.getBlock(cx = Math.floorMod(x, 16), y, cz = Math.floorMod(z, 16));
+					Block block = chunk.getBlock(cx = Math.floorMod(x, 16), y, cz = Math.floorMod(z, 16));
 
-					if (block != Block.air.getId())
+					if (block != Block.air)
 					{
 						int cy = Math.floorMod(y, 16);
 						c.collide(chunk.getSubChunk(cy), cx, cy, cz);

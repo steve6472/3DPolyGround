@@ -14,44 +14,38 @@ import java.util.function.Function;
  ***********************/
 public interface IBlockProvider extends IChunkProvider
 {
-	default int getBlock(int x, int y, int z)
+	default Block getBlock(int x, int y, int z)
 	{
 		Chunk c = getChunkFromBlockPos(x, z);
 		if (c == null)
-			return Block.air.getId();
+			return Block.air;
 		else
 			return c.getBlock(Math.floorMod(x, 16), y, Math.floorMod(z, 16));
 	}
 
-	default void setBlock(int x, int y, int z, int id)
+	default void setBlock(Block block, int x, int y, int z)
 	{
 		Chunk c = getChunkFromBlockPos(x, z);
 		if (c != null)
-			c.setBlock(Math.floorMod(x, 16), y, Math.floorMod(z, 16), id);
+			c.setBlock(block, Math.floorMod(x, 16), y, Math.floorMod(z, 16));
 	}
 
 	/**
 	 * @param x      x coordinate
 	 * @param y      y coordinate
 	 * @param z      z coordinate
-	 * @param id     Id of block to be set
 	 * @param canSet Type is id of block at xyz
 	 */
-	default void setBlock(int x, int y, int z, int id, Function<Integer, Boolean> canSet)
+	default void setBlock(Block block, int x, int y, int z, Function<Block, Boolean> canSet)
 	{
 		Chunk c = getChunkFromBlockPos(x, z);
 		if (c != null)
 			if (canSet.apply(c.getBlock(Math.floorMod(x, 16), y, Math.floorMod(z, 16))))
-				c.setBlock(Math.floorMod(x, 16), y, Math.floorMod(z, 16), id);
-	}
-
-	default void setBlock(int x, int y, int z, Block block)
-	{
-		setBlock(x, y, z, block.getId());
+				c.setBlock(block, Math.floorMod(x, 16), y, Math.floorMod(z, 16));
 	}
 
 	default void setBlock(HitResult hitResult, Block block)
 	{
-		setBlock(hitResult.getX(), hitResult.getY(), hitResult.getZ(), block.getId());
+		setBlock(block, hitResult.getX(), hitResult.getY(), hitResult.getZ());
 	}
 }

@@ -1,5 +1,6 @@
 package steve6472.polyground.world.generator;
 
+import steve6472.polyground.block.Block;
 import steve6472.polyground.registry.BlockRegistry;
 import steve6472.polyground.world.chunk.SubChunk;
 
@@ -17,17 +18,17 @@ public class FlatGenerator implements IGenerator
 		if (subChunk.getLayer() != 0)
 			return;
 
-		int stone = BlockRegistry.getBlockIdByName("stone");
+		Block stone = BlockRegistry.getBlockByName("stone");
 //		int cobblestone = BlockRegistry.getBlockIdByName("cobblestone");
 
-		for (int i = 0; i < subChunk.getIds().length; i++)
+		for (int i = 0; i < 16; i++)
 		{
-			for (int j = 0; j < subChunk.getIds()[i].length; j++)
+			for (int j = 0; j < 16; j++)
 			{
 //				if (i == 15 || j == 15)
 //					subChunk.getIds()[i][0][j] = cobblestone;
 //				else
-					subChunk.getIds()[i][0][j] = stone;
+					subChunk.setBlock(stone, i, 0, j);
 			}
 		}
 

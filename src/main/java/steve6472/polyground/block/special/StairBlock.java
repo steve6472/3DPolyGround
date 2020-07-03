@@ -2,10 +2,8 @@ package steve6472.polyground.block.special;
 
 import steve6472.polyground.EnumFace;
 import steve6472.polyground.block.Block;
-import steve6472.polyground.block.blockdata.BlockData;
-import steve6472.polyground.block.blockdata.IBlockData;
-import steve6472.polyground.block.blockdata.RotationData;
 import steve6472.polyground.block.model.Cube;
+import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.entity.Player;
 import steve6472.polyground.world.chunk.SubChunk;
 
@@ -18,7 +16,7 @@ import java.util.List;
  * Project: SJP
  *
  ***********************/
-public class StairBlock extends Block implements IBlockData
+public class StairBlock extends Block
 {
 	public StairBlock(File f, int id)
 	{
@@ -27,19 +25,20 @@ public class StairBlock extends Block implements IBlockData
 	}
 
 	@Override
-	public void onPlace(SubChunk subChunk, BlockData blockData, Player player, EnumFace placedOn, int x, int y, int z)
+	public void onPlace(SubChunk subChunk, BlockState state, Player player, EnumFace placedOn, int x, int y, int z)
 	{
-		if (!(blockData instanceof RotationData))
-		{
-			subChunk.rebuild();
-			return;
-		}
-
-		RotationData data = (RotationData) blockData;
-		data.facing = placedOn;
-
-
-		subChunk.rebuild();
+		super.onPlace(subChunk, state, player, placedOn, x, y, z);
+//		if (!(state instanceof RotationData))
+//		{
+//			subChunk.rebuild();
+//			return;
+//		}
+//
+//		RotationData data = (RotationData) state;
+//		data.facing = placedOn;
+//
+//
+//		subChunk.rebuild();
 	}
 
 	@Override
@@ -53,11 +52,11 @@ public class StairBlock extends Block implements IBlockData
 		return super.getCubes(x, y, z);
 	}
 
-	@Override
-	public BlockData createNewBlockEntity()
-	{
-		return new RotationData(EnumFace.NORTH);
-	}
+//	@Override
+//	public BlockData createNewBlockEntity()
+//	{
+//		return new RotationData(EnumFace.NORTH);
+//	}
 
 	@Override
 	public boolean rebuildChunkOnPlace()

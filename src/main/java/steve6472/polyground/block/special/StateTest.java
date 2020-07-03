@@ -1,53 +1,49 @@
 package steve6472.polyground.block.special;
 
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import steve6472.polyground.CaveGame;
 import steve6472.polyground.EnumFace;
 import steve6472.polyground.block.Block;
+import steve6472.polyground.block.properties.BooleanProperty;
+import steve6472.polyground.block.properties.IProperty;
 import steve6472.polyground.block.states.BlockState;
+import steve6472.polyground.block.states.States;
 import steve6472.polyground.entity.Player;
 import steve6472.polyground.world.chunk.SubChunk;
 import steve6472.sge.main.KeyList;
 import steve6472.sge.main.events.MouseEvent;
 
 import java.io.File;
+import java.util.List;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
- * On date: 26.08.2019
- * Project: SJP
+ * On date: 03.07.2020
+ * Project: CaveGame
  *
  ***********************/
-public class SnapButtonBlock extends Block
+public class StateTest extends Block
 {
-	public SnapButtonBlock(File f, int id)
+	private static final BooleanProperty LIT = States.LIT;
+
+	public StateTest(File f, int id)
 	{
 		super(f, id);
 		isFull = false;
+		setDefaultState(getDefaultState().with(LIT, true).get());
 	}
 
 	@Override
 	public void onClick(SubChunk subChunk, BlockState state, Player player, EnumFace clickedOn, MouseEvent click, int x, int y, int z)
 	{
-		if (click.getAction() != KeyList.PRESS)
-			return;
-
-		if (click.getButton() == KeyList.LMB)
+		if (click.getButton() == KeyList.RMB && click.getAction() == KeyList.PRESS)
 		{
-			player.processNextBlockBreak = false;
-			return;
-		}
-
-		if (click.getButton() != KeyList.RMB)
-			return;
-
-		try
-		{
+			subChunk.setState(state.with(LIT, !state.get(LIT)).get(), x, y, z);
 			player.processNextBlockPlace = false;
-			CaveGame.getInstance().commandRegistry.dispatcher.execute("snap", CaveGame.getInstance().commandRegistry.commandSource);
-		} catch (CommandSyntaxException e)
-		{
-			e.printStackTrace();
 		}
+	}
+
+	@Override
+	public void fillStates(List<IProperty<?>> properties)
+	{
+		properties.add(LIT);
 	}
 }

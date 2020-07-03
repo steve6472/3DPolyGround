@@ -5,9 +5,9 @@ import org.joml.Vector4f;
 import steve6472.polyground.EnumFace;
 import steve6472.polyground.block.Block;
 import steve6472.polyground.block.BlockTextureHolder;
-import steve6472.polyground.block.blockdata.BlockData;
 import steve6472.polyground.block.model.Cube;
 import steve6472.polyground.block.model.CubeFace;
+import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.entity.Player;
 import steve6472.polyground.gfx.particle.particles.BreakParticle;
 import steve6472.polyground.registry.face.FaceRegistry;
@@ -32,7 +32,7 @@ public class SnapBlock extends Block
 	}
 
 	@Override
-	public void onBreak(SubChunk subChunk, BlockData blockData, Player player, EnumFace breakedFrom, int x, int y, int z)
+	public void onBreak(SubChunk subChunk, BlockState state, Player player, EnumFace breakedFrom, int x, int y, int z)
 	{
 		activate(this, subChunk, x, y, z);
 	}

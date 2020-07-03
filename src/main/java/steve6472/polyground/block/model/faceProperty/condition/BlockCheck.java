@@ -63,11 +63,11 @@ class BlockCheck implements ICheck
 		boolean f;
 		if (blockId == -1)
 		{
-			f = subChunk.getBlockEfficiently(relX + Math.floorMod(x, 16), relY + Math.floorMod(y, 16), relZ + Math.floorMod(z, 16)).hasTag(block.substring(1));
+			f = subChunk.getBlock(relX + Math.floorMod(x, 16), relY + Math.floorMod(y, 16), relZ + Math.floorMod(z, 16)).hasTag(block.substring(1));
 			print("Checked for block tag \"%s\" with result %b", block.substring(1), f);
 		} else
 		{
-			f = subChunk.getBlockEfficiently(relX + Math.floorMod(x, 16), relY + Math.floorMod(y, 16), relZ + Math.floorMod(z, 16)).getId() == blockId;
+			f = subChunk.getBlock(relX + Math.floorMod(x, 16), relY + Math.floorMod(y, 16), relZ + Math.floorMod(z, 16)).getId() == blockId;
 		}
 
 		boolean flag = switch (type)

@@ -105,6 +105,8 @@ public class DataGenerator
 			DataBuilder.create().stalaBlock("stala_" + i * 2, "stone", i * 2).blockModelPath("stala").generate();
 		}
 
+		DataBuilder.create().torch("slime_torch", true).generate();
+
 		DataBuilder.create().fullBlock("oak_leaves")
 			.blockModel(BlockModelBuilder.create()
 				.addCube(CubeBuilder.create()

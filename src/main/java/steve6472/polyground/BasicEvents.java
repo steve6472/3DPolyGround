@@ -1,8 +1,7 @@
 package steve6472.polyground;
 
 import steve6472.polyground.block.Block;
-import steve6472.polyground.block.blockdata.BlockData;
-import steve6472.polyground.registry.BlockRegistry;
+import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.entity.Player;
 import steve6472.polyground.world.World;
 import steve6472.polyground.world.chunk.SubChunk;
@@ -36,10 +35,10 @@ public class BasicEvents
 		if (subChunk == null)
 			return;
 
-		world.setBlock(hr.getX() + xOffset, hr.getY() + yOffset, hr.getZ() + zOffset, block.getId(), (i) -> BlockRegistry.getBlockById(i).isReplaceable());
-		BlockData blockData = subChunk.getBlockData(hr.getCx() + xOffset, hr.getCy() + yOffset, hr.getCz() + zOffset);
+		world.setBlock(block, hr.getX() + xOffset, hr.getY() + yOffset, hr.getZ() + zOffset, Block::isReplaceable);
+		BlockState state = subChunk.getState(hr.getCx() + xOffset, hr.getCy() + yOffset, hr.getCz() + zOffset);
 
-		block.onPlace(subChunk, blockData, player, face, hr.getX() + xOffset, hr.getY() + yOffset, hr.getZ() + zOffset);
+		block.onPlace(subChunk, state, player, face, hr.getX() + xOffset, hr.getY() + yOffset, hr.getZ() + zOffset);
 		updateAll(subChunk, hr.getX() + xOffset, hr.getY() + yOffset, hr.getZ() + zOffset);
 	}
 
@@ -62,10 +61,10 @@ public class BasicEvents
 
 		SubChunk subChunk = world.getSubChunkFromBlockCoords(hr.getX() + xOffset, hr.getY() + yOffset, hr.getZ() + zOffset);
 
-		world.setBlock(hr.getX() + xOffset, hr.getY() + yOffset, hr.getZ() + zOffset, block.getId());
-		BlockData blockData = subChunk.getBlockData(hr.getCx() + xOffset, hr.getCy() + yOffset, hr.getCz() + zOffset);
+		world.setBlock(block, hr.getX() + xOffset, hr.getY() + yOffset, hr.getZ() + zOffset);
+		BlockState state = subChunk.getState(hr.getCx() + xOffset, hr.getCy() + yOffset, hr.getCz() + zOffset);
 
-		block.onPlace(subChunk, blockData, player, face, hr.getX() + xOffset, hr.getY() + yOffset, hr.getZ() + zOffset);
+		block.onPlace(subChunk, state, player, face, hr.getX() + xOffset, hr.getY() + yOffset, hr.getZ() + zOffset);
 		updateAll(subChunk, hr.getX() + xOffset, hr.getY() + yOffset, hr.getZ() + zOffset);
 	}
 
@@ -77,10 +76,10 @@ public class BasicEvents
 
 		SubChunk subChunk = world.getSubChunkFromBlockCoords(hr.getX(), hr.getY(), hr.getZ());
 
-		BlockData data = subChunk.getBlockData(hr.getCx(), hr.getCy(), hr.getCz());
+		BlockState state = subChunk.getState(hr.getCx(), hr.getCy(), hr.getCz());
 
-		BlockRegistry.getBlockById(world.getBlock(hr.getX(), hr.getY(), hr.getZ())).onBreak(subChunk, data, player, hr.getFace(), hr.getX(), hr.getY(), hr.getZ());
-		world.setBlock(hr.getX(), hr.getY(), hr.getZ(), Block.air.getId());
+		world.getBlock(hr.getX(), hr.getY(), hr.getZ()).onBreak(subChunk, state, player, hr.getFace(), hr.getX(), hr.getY(), hr.getZ());
+		world.setBlock(Block.air, hr.getX(), hr.getY(), hr.getZ());
 		updateAll(subChunk, hr.getX(), hr.getY(), hr.getZ());
 	}
 

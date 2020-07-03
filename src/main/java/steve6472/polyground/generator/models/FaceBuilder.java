@@ -92,6 +92,7 @@ public class FaceBuilder
 		this.minV = minV;
 		this.maxU = maxU;
 		this.maxV = maxV;
+		autoUv = false;
 		return this;
 	}
 

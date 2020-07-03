@@ -101,7 +101,7 @@ public class StalaFeature implements IFeature
 	@Override
 	public void generate(SubChunk sc, int x, int y, int z)
 	{
-		gen(sc, x, y, z, sc.getBlockEfficiently(x, y + 1, z) == Block.air);
+		gen(sc, x, y, z, sc.getBlock(x, y + 1, z) == Block.air);
 	}
 
 	private void gen(SubChunk sc, int x, int y, int z, boolean stalagmite)
@@ -110,7 +110,7 @@ public class StalaFeature implements IFeature
 		int max = -1;
 		for (int i = 0; i <= 6; i++)
 		{
-			if (sc.getBlockEfficiently(x, y(y, i, stalagmite), z) == baseBlock)
+			if (sc.getBlock(x, y(y, i, stalagmite), z) == baseBlock)
 			{
 				max = i;
 				if (sc.getWorld().getRandom().nextFloat() <= doubleChance)
@@ -138,7 +138,7 @@ public class StalaFeature implements IFeature
 			int start = SIZES_BOTH_ALTS[max][0];
 			for (int i = 0; i < max; i++)
 			{
-				sc.setBlockEfficiently(x, y(y, i, stalagmite), z, stalas[SIZES_BOTH[start + type][i]]);
+				sc.setBlock(stalas[SIZES_BOTH[start + type][i]], x, y(y, i, stalagmite), z);
 			}
 		} else
 		{
@@ -146,7 +146,7 @@ public class StalaFeature implements IFeature
 			int start = SIZES_ALTS[max][0];
 			for (int i = 0; i <= max; i++)
 			{
-				sc.setBlockEfficiently(x, y(y, i, stalagmite), z, stalas[SIZES[start + type][i]]);
+				sc.setBlock(stalas[SIZES[start + type][i]], x, y(y, i, stalagmite), z);
 			}
 		}
 	}
@@ -172,7 +172,7 @@ public class StalaFeature implements IFeature
 	@Override
 	public boolean canGenerate(SubChunk sc, int x, int y, int z)
 	{
-		return sc.getBlock(x, y, z) == baseBlock && (sc.getBlockEfficiently(x, y - 1, z) == Block.air || sc.getBlockEfficiently(x, y + 1, z) == Block.air);
+		return sc.getBlock(x, y, z) == baseBlock && (sc.getBlock(x, y - 1, z) == Block.air || sc.getBlock(x, y + 1, z) == Block.air);
 	}
 
 	@Override

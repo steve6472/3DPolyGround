@@ -41,9 +41,9 @@ public class LakeFeature implements IFeature
 
 					if (X + Y + Z < 1)
 					{
-						Block a = sc.getBlockEfficiently(i + x, j + y, k + z);
+						Block a = sc.getBlock(i + x, j + y, k + z);
 						if (a == b || a == this.d || a == e)
-							sc.setBlockEfficiently(i + x, j + y, k + z, c);
+							sc.setBlock(c, i + x, j + y, k + z);
 					}
 				}
 			}
@@ -61,7 +61,7 @@ public class LakeFeature implements IFeature
 
 					if (X + Y + Z < 1)
 					{
-						sc.setBlockEfficiently(i + x, j + y, k + z, 0);
+						sc.setBlock(Block.air, i + x, j + y, k + z);
 					}
 				}
 			}
@@ -77,7 +77,7 @@ public class LakeFeature implements IFeature
 	@Override
 	public boolean canGenerate(SubChunk sc, int x, int y, int z)
 	{
-		return (y + sc.getLayer() * 16) > 8 && (y + sc.getLayer() * 16) < 30 && sc.getBlockId(x, y, z) == b.getId();
+		return (y + sc.getLayer() * 16) > 8 && (y + sc.getLayer() * 16) < 30 && sc.getBlock(x, y, z) == b;
 	}
 
 	@Override

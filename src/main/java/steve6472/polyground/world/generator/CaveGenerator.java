@@ -49,13 +49,13 @@ public class CaveGenerator implements IGenerator
 			subChunk.getParent().heightMap[x][z] = subChunk.getWorld().getHeight() * 16;
 			
 			if (subChunk.getLayer() == 0 && y == 0)
-				subChunk.getIds()[x][y][z] = bedrock.getId();
+				subChunk.setBlock(bedrock, x, y, z);
 			else if (mix < -0.4f)
-				subChunk.getIds()[x][y][z] = cobblestone.getId();
+				subChunk.setBlock(cobblestone, x, y, z);
 //				subChunk.setBlock(x, y, z, cobblestone);
 			else if (mix < 0.3f)
 //				subChunk.setBlock(x, y, z, stone);
-				subChunk.getIds()[x][y][z] = stone.getId();
+				subChunk.setBlock(stone, x, y, z);
 
 			subChunk.setBiomeId(x, y, z, BiomeRegistry.crystalCave.getId());
 			subChunk.addBiome(BiomeRegistry.crystalCave.getInstance());
@@ -80,11 +80,11 @@ public class CaveGenerator implements IGenerator
 
 	private void iterate(TriConsumer<Integer, Integer, Integer> consumer)
 	{
-		for (int i = 0; i < subChunk.getIds().length; i++)
+		for (int i = 0; i < 16; i++)
 		{
-			for (int j = 0; j < subChunk.getIds()[i].length; j++)
+			for (int j = 0; j < 16; j++)
 			{
-				for (int k = 0; k < subChunk.getIds()[i][j].length; k++)
+				for (int k = 0; k < 16; k++)
 				{
 					consumer.apply(i, j, k);
 				}
@@ -114,7 +114,7 @@ public class CaveGenerator implements IGenerator
 			this.radius = radius;
 		}
 
-		public void generate(SubChunk sc, int block)
+		public void generate(SubChunk sc, Block block)
 		{
 			int ox = sc.getX() * 16;
 			int oy = sc.getLayer() * 16;
@@ -133,7 +133,7 @@ public class CaveGenerator implements IGenerator
 
 						if (distance < radius * radius)
 						{
-							sc.setBlock(i, j, k, block);
+							sc.setBlock(block, i, j, k);
 						}
 					}
 				}
@@ -160,7 +160,7 @@ public class CaveGenerator implements IGenerator
 			this.zRadius = zRadius;
 		}
 
-		public void generate(SubChunk sc, int block)
+		public void generate(SubChunk sc, Block block)
 		{
 			for (int i = -xRadius; i < xRadius; i++)
 			{
@@ -174,7 +174,7 @@ public class CaveGenerator implements IGenerator
 
 						if (X + Y + Z < 1)
 						{
-							sc.setBlock(i + x, j + y, k + z, block);
+							sc.setBlock(block, i + x, j + y, k + z);
 						}
 					}
 				}

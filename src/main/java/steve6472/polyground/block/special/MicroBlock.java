@@ -1,29 +1,8 @@
 package steve6472.polyground.block.special;
 
-import steve6472.polyground.CaveGame;
-import steve6472.polyground.EnumFace;
-import steve6472.polyground.HitResult;
 import steve6472.polyground.block.Block;
-import steve6472.polyground.block.blockdata.BlockData;
-import steve6472.polyground.block.blockdata.IBlockData;
-import steve6472.polyground.block.blockdata.MicroBlockData;
-import steve6472.polyground.block.model.faceProperty.LayerFaceProperty;
-import steve6472.polyground.block.model.Cube;
-import steve6472.polyground.registry.BlockRegistry;
-import steve6472.polyground.entity.Player;
-import steve6472.polyground.world.BuildHelper;
-import steve6472.polyground.world.Cull;
-import steve6472.polyground.world.chunk.ModelLayer;
-import steve6472.polyground.world.chunk.SubChunk;
-import org.joml.AABBf;
-import org.joml.Intersectionf;
-import org.joml.Vector2f;
-import steve6472.sge.main.KeyList;
-import steve6472.sge.main.events.MouseEvent;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
@@ -31,24 +10,24 @@ import java.util.List;
  * Project: SJP
  *
  ***********************/
-public class MicroBlock extends Block implements IBlockData
+public class MicroBlock extends Block// implements IBlockData
 {
-
 	public MicroBlock(File f, int id)
 	{
 		super(f, id);
 		isFull = false;
 	}
 
+	/*
 	@Override
-	public void onPlace(SubChunk subChunk, BlockData blockData, Player player, EnumFace placedOn, int x, int y, int z)
+	public void onPlace(SubChunk subChunk, BlockState state, Player player, EnumFace placedOn, int x, int y, int z)
 	{
-		if (!(blockData instanceof MicroBlockData))
+		if (!(state instanceof MicroBlockData))
 		{
-			throw new IllegalStateException("MicroBlockData expected. Found '" + (blockData == null ? null : blockData.getClass().getSimpleName()) + "'");
+			throw new IllegalStateException("MicroBlockData expected. Found '" + (state == null ? null : state.getClass().getSimpleName()) + "'");
 		}
 
-		MicroBlockData mbd = (MicroBlockData) blockData;
+		MicroBlockData mbd = (MicroBlockData) state;
 		for (int i = 0; i < 16; i++)
 		{
 			for (int j = 0; j < 16; j++)
@@ -61,12 +40,12 @@ public class MicroBlock extends Block implements IBlockData
 	}
 
 	@Override
-	public void onClick(SubChunk subChunk, BlockData blockData, Player player, EnumFace clickedOn, MouseEvent click, int x, int y, int z)
+	public void onClick(SubChunk subChunk, BlockState state, Player player, EnumFace clickedOn, MouseEvent click, int x, int y, int z)
 	{
 		player.processNextBlockBreak = false;
-		if (!(blockData instanceof MicroBlockData))
+		if (!(state instanceof MicroBlockData))
 		{
-			throw new IllegalStateException("MicroBlockData expected. Found '" + (blockData == null ? null : blockData.getClass().getSimpleName()) + "'");
+			throw new IllegalStateException("MicroBlockData expected. Found '" + (state == null ? null : state.getClass().getSimpleName()) + "'");
 		}
 
 		HitResult hr = player.getHitResult();
@@ -82,7 +61,7 @@ public class MicroBlock extends Block implements IBlockData
 			if (CaveGame.itemInHand.getBlockToPlace() == null && CaveGame.itemInHand.getBlockToPlace() != Block.air)
 				return;
 
-			MicroBlockData mbd = (MicroBlockData) blockData;
+			MicroBlockData mbd = (MicroBlockData) state;
 
 			float cx = (clickedOn == EnumFace.NORTH) ? -0.001f : 0;
 			float cy = (clickedOn == EnumFace.UP) ? -0.001f : 0;
@@ -114,7 +93,7 @@ public class MicroBlock extends Block implements IBlockData
 			buildHelper.setCube(c);
 			for (EnumFace face : EnumFace.getFaces())
 			{
-				/* Check if face is in correct (Chunk) Model Layer */
+				// Check if face is in correct (Chunk) Model Layer
 				if (LayerFaceProperty.getModelLayer(c.getFace(face)) == modelLayer)
 					if (Cull.renderFace(x, y, z, c, face, this, sc))
 						tris += buildHelper.face(face);
@@ -262,5 +241,5 @@ public class MicroBlock extends Block implements IBlockData
 	public BlockData createNewBlockEntity()
 	{
 		return new MicroBlockData();
-	}
+	}*/
 }

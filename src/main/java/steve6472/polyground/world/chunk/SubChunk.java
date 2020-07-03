@@ -4,9 +4,9 @@ import steve6472.polyground.CaveGame;
 import steve6472.polyground.EnumFace;
 import steve6472.polyground.block.Block;
 import steve6472.polyground.block.blockdata.BlockData;
+import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.gfx.MainRender;
 import steve6472.polyground.gui.InGameGui;
-import steve6472.polyground.registry.BlockRegistry;
 import steve6472.polyground.world.World;
 import steve6472.polyground.world.biomes.Biome;
 import steve6472.polyground.world.biomes.IBiomeProvider;
@@ -16,7 +16,10 @@ import steve6472.polyground.world.generator.feature.FeatureEntry;
 import steve6472.polyground.world.generator.feature.IFeature;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 
 import static steve6472.sge.gfx.VertexObjectCreator.unbindVAO;
 
@@ -186,8 +189,8 @@ public class SubChunk implements IBiomeProvider
 		{
 			tickableBlocks.iterate((x, y, z) ->
 			{
-				Block blockToTick = BlockRegistry.getBlockById(blocks.getIds()[x][y][z]);
-				blockToTick.tick(this, blockData.getBlockData(x, y, z), x, y, z);
+				Block blockToTick = blocks.getStates()[x][y][z].getBlock();
+//				blockToTick.tick(this, blockData.getBlockData(x, y, z), x, y, z);
 			});
 		}
 
@@ -204,8 +207,8 @@ public class SubChunk implements IBiomeProvider
 				short y = (short) ((i >> 4) & 0xf);
 				short z = (short) (i & 0xf);
 
-				Block blockToUpdate = BlockRegistry.getBlockById(blocks.getIds()[x][y][z]);
-				blockToUpdate.onUpdate(this, blockData.getBlockData(x, y, z), EnumFace.NONE, x, y, z);
+				Block blockToUpdate = blocks.getStates()[x][y][z].getBlock();
+//				blockToUpdate.onUpdate(this, blockData.getBlockData(x, y, z), EnumFace.NONE, x, y, z);
 				iter.remove();
 			}
 		}
@@ -311,11 +314,13 @@ public class SubChunk implements IBiomeProvider
 		return getParent().getWorld();
 	}
 
+	@Deprecated
 	public BlockData[][][] getBlockData()
 	{
 		return blockData.getBlockData();
 	}
 
+	@Deprecated
 	public BlockData getBlockData(int x, int y, int z)
 	{
 		if (x >= 0 && x < 16 && z >= 0 && z < 16 && y >= 0 && y < 16)
@@ -334,11 +339,13 @@ public class SubChunk implements IBiomeProvider
 	 * @param z z coordinate of light
 	 * @return int Light
 	 */
+	@Deprecated
 	public BlockData getBlockDataEfficiently(int x, int y, int z)
 	{
 		return blockData.getBlockDataEfficiently(x, y, z);
 	}
 
+	@Deprecated
 	public void setBlockEntity(int x, int y, int z, BlockData blockData)
 	{
 		getBlockData()[x][y][z] = blockData;
@@ -448,32 +455,29 @@ public class SubChunk implements IBiomeProvider
 	 * Blocks
 	 */
 
-	public int[][][] getIds()
-	{
-		return blocks.getIds();
-	}
-
-	public int getBlockId(int x, int y, int z)
-	{
-		return blocks.getBlockId(x, y, z);
-	}
-
 	public Block getBlock(int x, int y, int z)
 	{
-		return blocks.getBlock(x, y, z);
+		return getState(x, y, z).getBlock();
 	}
 
-	public void setBlock(int x, int y, int z, int id)
+	public BlockState getState(int x, int y, int z)
 	{
-		int old = blocks.getBlockId(x, y, z);
-
-		blocks.setBlock(x, y, z, id);
+		return blocks.getState(x, y, z);
 	}
 
-	public void setBlock(int x, int y, int z, Block block)
+	public void setBlock(Block block, int x, int y, int z)
 	{
-		setBlock(x, y, z, block.getId());
+		setState(block.getStateForPlacement(this, x, y, z), x, y, z);
 	}
+
+	public void setState(BlockState state, int x, int y, int z)
+	{
+		blocks.setState(state, x, y, z);
+	}
+
+	/*
+	 * Liquid
+	 */
 
 	public double getLiquidVolumeEfficiently(int x, int y, int z)
 	{
@@ -493,31 +497,6 @@ public class SubChunk implements IBiomeProvider
 	public void setLiquidVolumeEfficiently(int x, int y, int z, double volume)
 	{
 		water.setLiquidVolumeEfficiently(x, y, z, volume);
-	}
-
-	/**
-	 * Can check neighbour chunks.
-	 * Should be more efficient for chunk border block checking
-	 * as it does not have to create new Chunk Key everytime
-	 *
-	 * @param x x coordinate of block
-	 * @param y y coordinate of block
-	 * @param z z coordinate of block
-	 * @return Block
-	 */
-	public Block getBlockEfficiently(int x, int y, int z)
-	{
-		return blocks.getBlockEfficiently(x, y, z);
-	}
-
-	public void setBlockEfficiently(int x, int y, int z, int id)
-	{
-		blocks.setBlockEfficiently(x, y, z, id);
-	}
-
-	public void setBlockEfficiently(int x, int y, int z, Block block)
-	{
-		blocks.setBlockEfficiently(x, y, z, block.getId());
 	}
 
 	public boolean shouldUpdate()

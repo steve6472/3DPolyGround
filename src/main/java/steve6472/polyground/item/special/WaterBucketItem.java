@@ -1,7 +1,7 @@
 package steve6472.polyground.item.special;
 
 import steve6472.polyground.EnumFace;
-import steve6472.polyground.block.blockdata.BlockData;
+import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.entity.Player;
 import steve6472.polyground.item.Item;
 import steve6472.polyground.registry.WaterRegistry;
@@ -25,13 +25,13 @@ public class WaterBucketItem extends Item
 	}
 
 	@Override
-	public void onClick(SubChunk subChunk, BlockData blockData, Player player, EnumFace clickedOn, MouseEvent click, int x, int y, int z)
+	public void onClick(SubChunk subChunk, BlockState state, Player player, EnumFace clickedOn, MouseEvent click, int x, int y, int z)
 	{
 		if (click.getAction() == KeyList.PRESS)
 		{
 			if (click.getButton() == KeyList.RMB)
 			{
-				int blockId = subChunk.getBlockEfficiently(x + clickedOn.getXOffset() - subChunk.getX() * 16, y + clickedOn.getYOffset() - subChunk.getLayer() * 16, z + clickedOn.getZOffset() - subChunk.getZ() * 16).getId();
+				int blockId = subChunk.getBlock(x + clickedOn.getXOffset() - subChunk.getX() * 16, y + clickedOn.getYOffset() - subChunk.getLayer() * 16, z + clickedOn.getZOffset() - subChunk.getZ() * 16).getId();
 				if (WaterRegistry.volumes[blockId] > 0)
 				{
 					double liquid = subChunk.getLiquidVolumeEfficiently(x + clickedOn.getXOffset() - subChunk.getX() * 16, y + clickedOn.getYOffset() - subChunk.getLayer() * 16, z + clickedOn.getZOffset() - subChunk.getZ() * 16);

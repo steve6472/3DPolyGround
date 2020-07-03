@@ -95,6 +95,13 @@ public class CubeBuilder
 		return this;
 	}
 
+	public CubeBuilder torch()
+	{
+		min(7, 0, 7);
+		max(9, 10, 9);
+		return this;
+	}
+
 	public CubeBuilder bottomSlab()
 	{
 		min(0, 0, 0);

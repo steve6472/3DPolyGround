@@ -125,6 +125,36 @@ public class DataBuilder
 	 * Presets
 	 */
 
+	public DataBuilder torch(String name, boolean light)
+	{
+		blockName = name;
+		blockModel = BlockModelBuilder.create()
+			.addCube(CubeBuilder.create()
+				.torch()
+				.collisionBox(false)
+				.face(FaceBuilder.create()
+						.texture(name)
+						.modelLayer(light ? ModelLayer.LIGHT : ModelLayer.NORMAL),
+					CubeBuilder.SIDE)
+				.face(FaceBuilder.create()
+						.texture(name)
+						.modelLayer(light ? ModelLayer.LIGHT : ModelLayer.NORMAL)
+						.uv(7, 6, 9, 8)
+					,EnumFace.UP)
+				.face(FaceBuilder.create()
+						.texture(name)
+						.modelLayer(light ? ModelLayer.LIGHT : ModelLayer.NORMAL)
+						.uv(7, 11, 9, 13)
+					,EnumFace.DOWN)
+			).build();
+		itemName = name;
+		itemModel = new ItemFromBlock(name);
+		blockToPlace = name;
+		blockSpecial = new SimpleSpecial("custom");
+
+		return this;
+	}
+
 	public DataBuilder plusBlock(String name, boolean biomeTint)
 	{
 		blockModel = BlockModelBuilder.create()

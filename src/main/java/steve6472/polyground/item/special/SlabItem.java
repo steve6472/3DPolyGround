@@ -5,7 +5,7 @@ import steve6472.polyground.CaveGame;
 import steve6472.polyground.EnumFace;
 import steve6472.polyground.HitResult;
 import steve6472.polyground.block.Block;
-import steve6472.polyground.block.blockdata.BlockData;
+import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.registry.BlockRegistry;
 import steve6472.polyground.block.special.SlabBlock;
 import steve6472.polyground.entity.Player;
@@ -50,7 +50,7 @@ public class SlabItem extends Item
 	}
 
 	@Override
-	public void onClick(SubChunk subChunk, BlockData blockData, Player player, EnumFace clickedOn, MouseEvent click, int x, int y, int z)
+	public void onClick(SubChunk subChunk, BlockState state, Player player, EnumFace clickedOn, MouseEvent click, int x, int y, int z)
 	{
 		if (!player.processNextBlockPlace)
 			return;
@@ -68,7 +68,7 @@ public class SlabItem extends Item
 		Block placed;
 
 		/* Combining the slabs */
-		if ((placed = BlockRegistry.getBlockById(world.getBlock(hitResult.getX(), hitResult.getY(), hitResult.getZ()))) instanceof SlabBlock && !hitResult.getFace().isSide())
+		if ((placed = world.getBlock(hitResult.getX(), hitResult.getY(), hitResult.getZ())) instanceof SlabBlock && !hitResult.getFace().isSide())
 		{
 			if (!baseName(placed).equals(baseName(CaveGame.itemInHand.getBlockToPlace())))
 				return;
@@ -80,7 +80,7 @@ public class SlabItem extends Item
 				if (bottom == placed)
 				{
 					BasicEvents.replace(toPlace, EnumFace.UP, player, 0, 0, 0);
-				} else if (BlockRegistry.getBlockById(world.getBlock(hitResult.getX(), hitResult.getY() + 1, hitResult.getZ())).isReplaceable())
+				} else if (world.getBlock(hitResult.getX(), hitResult.getY() + 1, hitResult.getZ()).isReplaceable())
 				{
 					BasicEvents.place(bottom, EnumFace.UP, player);
 				} else if (top == placed)
@@ -97,7 +97,7 @@ public class SlabItem extends Item
 				if (top == placed)
 				{
 					BasicEvents.replace(toPlace, EnumFace.DOWN, player, 0, 0, 0);
-				} else if (BlockRegistry.getBlockById(world.getBlock(hitResult.getX(), hitResult.getY() - 1, hitResult.getZ())).isReplaceable())
+				} else if (world.getBlock(hitResult.getX(), hitResult.getY() - 1, hitResult.getZ()).isReplaceable())
 				{
 					BasicEvents.place(top, EnumFace.DOWN, player);
 				} else if (bottom == placed)
@@ -202,7 +202,7 @@ public class SlabItem extends Item
 	private Block getPlacedBlock(HitResult hitResult)
 	{
 		World world = CaveGame.getInstance().world;
-		int id = switch (hitResult.getFace())
+		return switch (hitResult.getFace())
 			{
 				case UP -> world.getBlock(hitResult.getX(), hitResult.getY() + 1, hitResult.getZ());
 				case DOWN -> world.getBlock(hitResult.getX(), hitResult.getY() - 1, hitResult.getZ());
@@ -210,8 +210,7 @@ public class SlabItem extends Item
 				case SOUTH -> world.getBlock(hitResult.getX() - 1, hitResult.getY(), hitResult.getZ());
 				case EAST -> world.getBlock(hitResult.getX(), hitResult.getY(), hitResult.getZ() + 1);
 				case WEST -> world.getBlock(hitResult.getX(), hitResult.getY(), hitResult.getZ() - 1);
-				case NONE -> Block.air.getId();
+				case NONE -> Block.air;
 			};
-		return BlockRegistry.getBlockById(id);
 	}
 }

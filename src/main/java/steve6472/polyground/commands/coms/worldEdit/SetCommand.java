@@ -1,13 +1,14 @@
 package steve6472.polyground.commands.coms.worldEdit;
 
 import com.mojang.brigadier.CommandDispatcher;
+import org.joml.Vector3i;
 import steve6472.polyground.CaveGame;
+import steve6472.polyground.block.Block;
 import steve6472.polyground.commands.Command;
 import steve6472.polyground.commands.CommandSource;
 import steve6472.polyground.commands.arguments.BlockArgument;
 import steve6472.polyground.item.special.WorldEditItem;
 import steve6472.polyground.world.World;
-import org.joml.Vector3i;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
@@ -35,7 +36,7 @@ public class SetCommand extends Command
 
 			int filledBlocks = 0;
 			World w = c.getSource().getWorld();
-			int id = BlockArgument.getBlock(c, "block").getId();
+			Block block = BlockArgument.getBlock(c, "block");
 
 			Vector3i min = new Vector3i((int) item.getFirstPos().x, (int) item.getFirstPos().y, (int) item.getFirstPos().z);
 			Vector3i max = new Vector3i((int) item.getSecondPos().x, (int) item.getSecondPos().y, (int) item.getSecondPos().z);
@@ -67,7 +68,7 @@ public class SetCommand extends Command
 				{
 					for (int z = min.z; z <= max.z; z++)
 					{
-						w.setBlock(x, y, z, id);
+						w.setBlock(block, x, y, z);
 					}
 				}
 			}

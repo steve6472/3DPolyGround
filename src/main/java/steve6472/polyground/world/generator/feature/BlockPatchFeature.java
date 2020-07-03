@@ -29,7 +29,7 @@ public class BlockPatchFeature implements IFeature
 	@Override
 	public void generate(SubChunk sc, int x, int y, int z)
 	{
-		sc.setBlock(x, y, z, blockToPlace);
+		sc.setBlock(blockToPlace, x, y, z);
 	}
 
 	@Override
@@ -41,7 +41,7 @@ public class BlockPatchFeature implements IFeature
 	@Override
 	public boolean canGenerate(SubChunk sc, int x, int y, int z)
 	{
-		return sc.getBlockId(x, y, z) == blockToReplace.getId();
+		return sc.getBlock(x, y, z) == blockToReplace;
 	}
 
 	@Override

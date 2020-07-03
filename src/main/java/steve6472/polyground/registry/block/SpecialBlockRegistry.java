@@ -23,7 +23,6 @@ public class SpecialBlockRegistry
 	public static final SpecialBlockEntry<DropBlock> drop = register("drop", DropBlock::new);
 	public static final SpecialBlockEntry<SlabBlock> slab = register("slab", SlabBlock::new);
 	public static final SpecialBlockEntry<DoubleSlabBlock> doubleSlab = register("double_slab", DoubleSlabBlock::new);
-	public static final SpecialBlockEntry<ScanBlock> scan = register("scan", ScanBlock::new);
 	public static final SpecialBlockEntry<WorldButtonBlock> worldButton = register("world_button", WorldButtonBlock::new);
 	public static final SpecialBlockEntry<SnapButtonBlock> snapButton = register("snap_button", SnapButtonBlock::new);
 	public static final SpecialBlockEntry<StairBlock> stair = register("stair", StairBlock::new);
@@ -36,6 +35,7 @@ public class SpecialBlockRegistry
 	public static final SpecialBlockEntry<TorchBlock> torch = register("torch", TorchBlock::new);
 	public static final SpecialBlockEntry<MicroBlock> microBlock = register("micro_block", MicroBlock::new);
 	public static final SpecialBlockEntry<WaterGeneratorBlock> waterGenerator = register("watergenerator", WaterGeneratorBlock::new);
+	public static final SpecialBlockEntry<StateTest> stateTest = register("state_test", StateTest::new);
 
 	public static <T extends Block> SpecialBlockEntry<T> register(String id, ISpecialBlockFactory<T> factory)
 	{

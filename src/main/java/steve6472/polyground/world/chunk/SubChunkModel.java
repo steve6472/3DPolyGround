@@ -2,8 +2,7 @@ package steve6472.polyground.world.chunk;
 
 import steve6472.polyground.CaveGame;
 import steve6472.polyground.block.Block;
-import steve6472.polyground.block.blockdata.BlockData;
-import steve6472.polyground.registry.BlockRegistry;
+import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.world.BuildHelper;
 
 import java.util.ArrayList;
@@ -55,26 +54,24 @@ public class SubChunkModel
 
 						buildHelper.load(vertices, colors, textures, normal);
 
-//						current.triangleCount = 0;
 						int triangleCount = 0;
 
-						for (int i = 0; i < current.subChunk.getIds().length; i++)
+						for (int i = 0; i < 16; i++)
 						{
-							for (int j = 0; j < current.subChunk.getIds()[i].length; j++)
+							for (int j = 0; j < 16; j++)
 							{
-								for (int k = 0; k < current.subChunk.getIds()[i][j].length; k++)
+								for (int k = 0; k < 16; k++)
 								{
-									int id = current.subChunk.getIds()[j][i][k];
-									BlockData blockData = current.subChunk.getBlockData(i, j, k);
+									BlockState state = current.subChunk.getState(j, i, k);
 
-									Block b = BlockRegistry.getBlockById(id);
+									Block b = state.getBlock();
 
 									try
 									{
 										if (b != null && b != Block.air)
 										{
 											buildHelper.load(j, i, k);
-											triangleCount += b.createModel(j, i, k, current.subChunk, blockData, buildHelper, current.modelLayer);
+											triangleCount += b.createModel(j, i, k, current.subChunk, state, buildHelper, current.modelLayer);
 										}
 
 									} catch (Exception ex)
@@ -83,7 +80,7 @@ public class SubChunkModel
 										ex.printStackTrace();
 										try
 										{
-											triangleCount += Block.error.createModel(j, i, k, current.subChunk, blockData, buildHelper, current.modelLayer);
+											triangleCount += Block.error.createModel(j, i, k, current.subChunk, state, buildHelper, current.modelLayer);
 										} catch (Exception ex1)
 										{
 											System.err.println("Error while building chunk error block!\nFrick! This should not happen :(");
@@ -91,7 +88,6 @@ public class SubChunkModel
 											CaveGame.getInstance().exit();
 											System.exit(2);
 										}
-										return;
 									}
 								}
 							}
@@ -217,23 +213,22 @@ public class SubChunkModel
 
 		triangleCount = 0;
 
-		for (int i = 0; i < subChunk.getIds().length; i++)
+		for (int i = 0; i < 16; i++)
 		{
-			for (int j = 0; j < subChunk.getIds()[i].length; j++)
+			for (int j = 0; j < 16; j++)
 			{
-				for (int k = 0; k < subChunk.getIds()[i][j].length; k++)
+				for (int k = 0; k < 16; k++)
 				{
-					int id = subChunk.getIds()[j][i][k];
-					BlockData blockData = subChunk.getBlockData(i, j, k);
+					BlockState state = subChunk.getState(j, i, k);
 
-					Block b = BlockRegistry.getBlockById(id);
+					Block b = state.getBlock();
 
 					try
 					{
 						if (b != null && b != Block.air)
 						{
 							subChunk.getParent().getWorld().getGame().mainRender.buildHelper.load(j, i, k);
-							triangleCount += b.createModel(j, i, k, subChunk, blockData, buildHelper, modelLayer);
+							triangleCount += b.createModel(j, i, k, subChunk, state, buildHelper, modelLayer);
 						}
 
 					} catch (Exception ex)
@@ -242,7 +237,7 @@ public class SubChunkModel
 						ex.printStackTrace();
 						try
 						{
-							triangleCount += Block.error.createModel(j, i, k, subChunk, blockData, buildHelper, modelLayer);
+							triangleCount += Block.error.createModel(j, i, k, subChunk, state, buildHelper, modelLayer);
 						} catch (Exception ex1)
 						{
 							System.err.println("Error while building chunk error block!\nFrick! This should not happen :(");
@@ -250,7 +245,6 @@ public class SubChunkModel
 							CaveGame.getInstance().exit();
 							System.exit(2);
 						}
-						return;
 					}
 				}
 			}
