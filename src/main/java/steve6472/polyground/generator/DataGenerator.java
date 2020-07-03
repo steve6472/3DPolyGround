@@ -1,8 +1,11 @@
 package steve6472.polyground.generator;
 
 import steve6472.polyground.EnumFace;
+import steve6472.polyground.block.states.States;
 import steve6472.polyground.generator.models.*;
 import steve6472.polyground.generator.special.SimpleSpecial;
+import steve6472.polyground.generator.state.StateBuilder;
+import steve6472.polyground.generator.state.PropertyBuilder;
 import steve6472.polyground.world.chunk.ModelLayer;
 
 import java.io.File;
@@ -21,49 +24,54 @@ public class DataGenerator
 	static File blockModels = new File("src/main/resources/models/block");
 	static File itemModels = new File("src/main/resources/models/item");*/
 
-	static File blocks = new File("game/objects/blocks");
-	static File items = new File("game/objects/items");
+	public static File BLOCKS = new File("game/objects/blocks");
+	public static File ITEMS = new File("game/objects/items");
 
-	static File blockModels = new File("game/objects/models/block");
-	static File itemModels = new File("game/objects/models/item");
+	public static File BLOCK_MODELS = new File("game/objects/models/block");
+	public static File ITEM_MODELS = new File("game/objects/models/item");
+
+	public static File BLOCK_STATES = new File("game/objects/blockstates");
 
 	public static void main(String[] args)
 	{
-//		new DataGenerator().generate();
-		new DataGenerator().generateDebug();
+		new DataGenerator().generate();
+//		new DataGenerator().generateDebug();
 	}
 
 	private void createFolders()
 	{
-		if (!blocks.exists())
-			if (blocks.mkdirs())
+		if (!BLOCKS.exists())
+			if (BLOCKS.mkdirs())
 				System.out.println("Created new blocks folder");
 			else
 				System.err.println("Error while creating new blocks folder");
-		if (!items.exists())
-			if (items.mkdirs())
+		if (!ITEMS.exists())
+			if (ITEMS.mkdirs())
 				System.out.println("Created new items folder");
 			else
 				System.err.println("Error while creating new items folder");
-		if (!blockModels.exists())
-			if (blockModels.mkdirs())
+		if (!BLOCK_MODELS.exists())
+			if (BLOCK_MODELS.mkdirs())
 				System.out.println("Created new blockModels folder");
 			else
 				System.err.println("Error while creating new blockModels folder");
-		if (!itemModels.exists())
-			if (itemModels.mkdirs())
+		if (!ITEM_MODELS.exists())
+			if (ITEM_MODELS.mkdirs())
 				System.out.println("Created new itemModels folder");
 			else
 				System.err.println("Error while creating new itemModels folder");
+		if (!BLOCK_STATES.exists())
+			if (BLOCK_STATES.mkdirs())
+				System.out.println("Created new blockStates folder");
+			else
+				System.err.println("Error while creating new blockStates folder");
 	}
 
 	public void generateDebug()
 	{
 		createFolders();
 
-		DataBuilder.create().fullBlock("stone").generate();
-
-		DataBuilder.create().torch("slime_torch", true).blockSpecial(new SimpleSpecial("state_test")).itemModel(new ItemFromTexture("slime_torch")).generate();
+//		DataBuilder.create().torch("slime_torch", true).blockSpecial(new SimpleSpecial("state_test")).itemModel(new ItemFromTexture("slime_torch")).generate();
 	}
 
 	public void generate()
@@ -79,12 +87,12 @@ public class DataGenerator
 		DataBuilder.create().fullBlock("bedrock").generate();
 		DataBuilder.create().fullBlock("sand").generate();
 		DataBuilder.create().fullBlock("gravel").generate();
-		DataBuilder.create().fullBlock("cond_test").blockModel(new CondTest()).generate();
+//		DataBuilder.create().fullBlock("cond_test").blockModel(new CondTest()).generate();
 
-		DataBuilder.create().stairs("stone", "stone");
-		DataBuilder.create().stairs("oak", "oak_plank");
-		DataBuilder.create().stairs("cobblestone", "cobblestone");
-		DataBuilder.create().stairs("brick", "bricks");
+//		DataBuilder.create().stairs("stone", "stone");
+//		DataBuilder.create().stairs("oak", "oak_plank");
+//		DataBuilder.create().stairs("cobblestone", "cobblestone");
+//		DataBuilder.create().stairs("brick", "bricks");
 
 		DataBuilder.create().plusBlock("small_grass", true).generate();
 
@@ -105,12 +113,12 @@ public class DataGenerator
 		DataBuilder.create().slabBlock("smooth_slab_top", "smooth_stone", "smooth_stone_slab", false).generate();
 		DataBuilder.create().slabItem("smooth_slab", "smooth_slab_top", "smooth_slab_bottom", "double_smooth_slab").generate();
 
-		DataBuilder.create().logBlock("oak_log", "oak_log_side", "oak_log").generate();
+		DataBuilder.create().pillarBlock("oak_log", "oak_log_side", "oak_log").generate();
 
-		for (int i = 1; i <= 7; i++)
-		{
-			DataBuilder.create().stalaBlock("stala_" + i * 2, "stone", i * 2).blockModelPath("stala").generate();
-		}
+//		for (int i = 1; i <= 7; i++)
+//		{
+//			DataBuilder.create().stalaBlock("stala_" + i * 2, "stone", i * 2).blockModelPath("stala").generate();
+//		}
 
 		DataBuilder.create().torch("slime_torch", true).generate();
 
@@ -150,6 +158,64 @@ public class DataGenerator
 					.face(FaceBuilder.create()
 						.texture("green_screen")
 						.modelLayer(ModelLayer.LIGHT))).build()).generate();
+
+		DataBuilder.create()
+			.itemName("slime_torch")
+			.itemModel(new ItemFromTexture("slime_torch"))
+			.blockToPlace("slime_torch")
+			.blockName("slime_torch")
+			.blockSpecial(new SimpleSpecial("state_test"))
+			.blockState(StateBuilder.create()
+				.addState(PropertyBuilder.create()
+						.addProperty(States.LIT, true),
+					BlockModelBuilder.create("slime_torch")
+						.addCube(CubeBuilder.create()
+							.torch()
+							.collisionBox(false)
+							.face(FaceBuilder.create()
+									.texture("slime_torch")
+									.modelLayer(ModelLayer.LIGHT)
+								,CubeBuilder.SIDE
+							)
+							.face(FaceBuilder.create()
+									.texture("slime_torch")
+									.modelLayer(ModelLayer.LIGHT)
+									.uv(7,  6, 9, 8)
+								, EnumFace.UP
+							)
+							.face(FaceBuilder.create()
+									.texture("slime_torch")
+									.modelLayer(ModelLayer.LIGHT)
+									.uv(7,  11, 9, 13)
+								, EnumFace.DOWN
+							)
+						)
+				).addState(PropertyBuilder.create()
+						.addProperty(States.LIT, false),
+					BlockModelBuilder.create("slime_torch_off")
+						.addCube(CubeBuilder.create()
+							.torch()
+							.collisionBox(false)
+							.face(FaceBuilder.create()
+									.texture("slime_torch_off")
+								,CubeBuilder.SIDE
+							)
+							.face(FaceBuilder.create()
+									.texture("slime_torch_off")
+									.modelLayer(ModelLayer.LIGHT)
+									.uv(7,  6, 9, 8)
+								, EnumFace.UP
+							)
+							.face(FaceBuilder.create()
+									.texture("slime_torch_off")
+									.modelLayer(ModelLayer.LIGHT)
+									.uv(7,  11, 9, 13)
+								, EnumFace.DOWN
+							)
+						)
+				)
+			).generate();
+
 
 /*
 		DataBuilder.create().fullBlock("bedrock").generate();

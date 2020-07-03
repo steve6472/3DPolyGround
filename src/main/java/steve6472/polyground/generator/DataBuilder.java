@@ -7,6 +7,7 @@ import steve6472.polyground.generator.models.*;
 import steve6472.polyground.generator.special.ISpecial;
 import steve6472.polyground.generator.special.SimpleSpecial;
 import steve6472.polyground.generator.special.SpecialBuilder;
+import steve6472.polyground.generator.state.StateBuilder;
 import steve6472.polyground.world.chunk.ModelLayer;
 
 import java.io.File;
@@ -25,12 +26,12 @@ import java.util.List;
  ***********************/
 public class DataBuilder
 {
-	private IModel blockModel, itemModel;
+	private IModel itemModel;
 	private ISpecial blockSpecial, itemSpecial;
 	private String blockToPlace;
 	private String blockName, itemName;
-	private String blockModelPath, itemModelPath;
-	private boolean onlyBlockModel;
+	private String itemModelPath;
+	private StateBuilder blockState;
 
 	private final List<String> blockTags;
 
@@ -41,20 +42,13 @@ public class DataBuilder
 
 	private DataBuilder()
 	{
-		blockModelPath = "";
 		itemModelPath = "";
 		blockTags = new ArrayList<>();
 	}
 
-	public DataBuilder onlyBlockModel(boolean onlyBlockModel)
+	public DataBuilder blockState(StateBuilder state)
 	{
-		this.onlyBlockModel = onlyBlockModel;
-		return this;
-	}
-
-	public DataBuilder blockModel(IModel model)
-	{
-		blockModel = model;
+		this.blockState = state;
 		return this;
 	}
 
@@ -91,12 +85,6 @@ public class DataBuilder
 	public DataBuilder itemSpecial(ISpecial special)
 	{
 		itemSpecial = special;
-		return this;
-	}
-
-	public DataBuilder blockModelPath(String path)
-	{
-		blockModelPath = path + "/";
 		return this;
 	}
 
@@ -147,7 +135,7 @@ public class DataBuilder
 						.texture(name)
 						.modelLayer(light ? ModelLayer.LIGHT : ModelLayer.NORMAL)
 						.uv(7, 6, 9, 8)
-					,EnumFace.UP)
+					, EnumFace.UP)
 				.face(FaceBuilder.create()
 						.texture(name)
 						.modelLayer(light ? ModelLayer.LIGHT : ModelLayer.NORMAL)
@@ -164,23 +152,25 @@ public class DataBuilder
 
 	public DataBuilder plusBlock(String name, boolean biomeTint)
 	{
-		blockModel = BlockModelBuilder.create()
-			.addCube(CubeBuilder.create()
-				.fullBlock()
-				.collisionBox(false)
-			).addCube(CubeBuilder.create()
-				.collisionBox(false)
-				.hitbox(false)
-				.min(8, 0, 0)
-				.max(8, 16, 16)
-				.face(FaceBuilder.create().texture(name).biomeTint(biomeTint), EnumFace.SOUTH, EnumFace.NORTH)
-			).addCube(CubeBuilder.create()
-				.collisionBox(false)
-				.hitbox(false)
-				.min(0, 0, 8)
-				.max(16, 16, 8)
-				.face(FaceBuilder.create().texture(name).biomeTint(biomeTint), EnumFace.EAST, EnumFace.WEST)
-			).build();
+		blockState = StateBuilder.create()
+			.singleModel(BlockModelBuilder.create(name)
+				.addCube(CubeBuilder.create()
+					.fullBlock()
+					.collisionBox(false)
+				).addCube(CubeBuilder.create()
+					.collisionBox(false)
+					.hitbox(false)
+					.min(8, 0, 0)
+					.max(8, 16, 16)
+					.face(FaceBuilder.create().texture(name).biomeTint(biomeTint), EnumFace.SOUTH, EnumFace.NORTH)
+				).addCube(CubeBuilder.create()
+					.collisionBox(false)
+					.hitbox(false)
+					.min(0, 0, 8)
+					.max(16, 16, 8)
+					.face(FaceBuilder.create().texture(name).biomeTint(biomeTint), EnumFace.EAST, EnumFace.WEST)
+				)
+			);
 		blockSpecial = new SimpleSpecial("custom");
 		itemModel = new ItemFromTexture(name);
 		blockName = name;
@@ -191,6 +181,7 @@ public class DataBuilder
 
 	public DataBuilder fullLightBlock(String name, String color, float constant, float linear, float quadratic)
 	{
+		blockState = StateBuilder.create()
 		blockModel = BlockModelBuilder.create()
 			.addCube(CubeBuilder.create()
 				.fullBlock()
@@ -253,19 +244,24 @@ public class DataBuilder
 				).build());
 	}
 
-	public DataBuilder logBlock(String name, String sideTexture, String topTexture)
+	public DataBuilder pillarBlock(String name, String sideTexture, String topTexture)
 	{
 		return DataBuilder.create().fullBlock(name)
-			.blockModel(BlockModelBuilder.create()
+			.blockState(StateBuilder.create()
+			.singleModel(BlockModelBuilder.create(name)
 				.addCube(CubeBuilder.create()
 					.fullBlock()
 					.face(FaceBuilder.create().texture(sideTexture), CubeBuilder.SIDE)
-					.face(FaceBuilder.create().texture(topTexture), CubeBuilder.TOP_BOTTOM)).build());
+					.face(FaceBuilder.create().texture(topTexture), CubeBuilder.TOP_BOTTOM))));
 	}
 
 	public DataBuilder fullBlock(String name)
 	{
-		blockModel = new FullBlock(name);
+		blockState = StateBuilder.create()
+			.singleModel(BlockModelBuilder.create(name)
+				.addCube(CubeBuilder.create()
+					.fullBlock().face(FaceBuilder.create()
+						.texture(name))));
 		itemModel = new ItemFromBlock(name);
 		blockName = name;
 		itemName = name;
@@ -273,14 +269,14 @@ public class DataBuilder
 		return this;
 	}
 
-	public void stairs(String name, String texture)
-	{
-		DataBuilder.create().stairBlock(name + "_stairs_north", texture, EnumFace.NORTH).blockModelPath("stairs/" + name).generate();
-		DataBuilder.create().stairBlock(name + "_stairs_east", texture, EnumFace.EAST).blockModelPath("stairs/" + name).generate();
-		DataBuilder.create().stairBlock(name + "_stairs_south", texture, EnumFace.SOUTH).blockModelPath("stairs/" + name).generate();
-		DataBuilder.create().stairBlock(name + "_stairs_west", texture, EnumFace.WEST).blockModelPath("stairs/" + name).generate();
-		DataBuilder.create().orientableItem(name + "_stairs", name + "_stairs_north", name + "_stairs_east", name + "_stairs_south", name + "_stairs_west").itemModel(new ItemFromBlock(name + "_stairs_north")).generate();
-	}
+//	public void stairs(String name, String texture)
+//	{
+//		DataBuilder.create().stairBlock(name + "_stairs_north", texture, EnumFace.NORTH).blockModelPath("stairs/" + name).generate();
+//		DataBuilder.create().stairBlock(name + "_stairs_east", texture, EnumFace.EAST).blockModelPath("stairs/" + name).generate();
+//		DataBuilder.create().stairBlock(name + "_stairs_south", texture, EnumFace.SOUTH).blockModelPath("stairs/" + name).generate();
+//		DataBuilder.create().stairBlock(name + "_stairs_west", texture, EnumFace.WEST).blockModelPath("stairs/" + name).generate();
+//		DataBuilder.create().orientableItem(name + "_stairs", name + "_stairs_north", name + "_stairs_east", name + "_stairs_south", name + "_stairs_west").itemModel(new ItemFromBlock(name + "_stairs_north")).generate();
+//	}
 
 	public void slabs(String name, String texture)
 	{
@@ -327,7 +323,7 @@ public class DataBuilder
 
 	public DataBuilder transparentFullBlock(String name)
 	{
-		blockModel = new FullBlock(name);
+		fullBlock(name);
 		itemModel = new ItemFromBlock(name);
 		blockName = name;
 		itemName = name;
@@ -461,7 +457,7 @@ public class DataBuilder
 	private void item() throws IOException
 	{
 		System.out.println("Generating item " + itemName);
-		File item = new File(DataGenerator.items, itemName + ".txt");
+		File item = new File(DataGenerator.ITEMS, itemName + ".txt");
 		item.createNewFile();
 
 		SSS sss = new SSS(item);
@@ -484,7 +480,7 @@ public class DataBuilder
 		if (!itemModelPath.isBlank())
 		{
 			System.out.println("\tWith path " + itemModelPath.substring(0, itemModelPath.length() - 1));
-			File f = new File(DataGenerator.itemModels, itemModelPath.substring(0, itemModelPath.length() - 1));
+			File f = new File(DataGenerator.ITEM_MODELS, itemModelPath.substring(0, itemModelPath.length() - 1));
 			if (!f.exists())
 			{
 				if (f.mkdirs())
@@ -496,57 +492,40 @@ public class DataBuilder
 
 		sss.save(item);
 
-		save(new File(DataGenerator.itemModels, itemModelPath + itemName + ".json"), new JSONObject(itemModel.build()).toString(4));
+		save(new File(DataGenerator.ITEM_MODELS, itemModelPath + itemName + ".json"), new JSONObject(itemModel.build()).toString(4));
 	}
 
 	private void block() throws IOException
 	{
 		System.out.println("Generating block " + blockName);
-		if (!onlyBlockModel)
+		File block = new File(DataGenerator.BLOCKS, blockName + ".txt");
+		block.createNewFile();
+
+		SSS sss = new SSS(block);
+		sss.clear();
+
+		sss.add("blockstate", blockName);
+		if (blockSpecial != null)
 		{
-			File block = new File(DataGenerator.blocks, blockName + ".txt");
-			block.createNewFile();
-
-			SSS sss = new SSS(block);
-			sss.clear();
-
-			sss.add("model", "block/" + blockModelPath + blockName);
-			if (blockSpecial != null)
-			{
-				System.out.println("\tWith Special \"" + blockSpecial.getName() + "\"");
-				sss.add("special", blockSpecial.getName());
-				blockSpecial.generate(sss);
-			}
-
-			if (!blockTags.isEmpty())
-			{
-				System.out.println("\tWith tags: ");
-				for (String tag : blockTags)
-				{
-					System.out.println("\t\t" + tag);
-				}
-				sss.addArray("tags", blockTags);
-			}
-
-			sss.save(block);
+			System.out.println("\tWith Special \"" + blockSpecial.getName() + "\"");
+			sss.add("special", blockSpecial.getName());
+			blockSpecial.generate(sss);
 		}
 
-		if (!blockModelPath.isBlank())
+		if (!blockTags.isEmpty())
 		{
-			System.out.println("\tWith path " + blockModelPath.substring(0, blockModelPath.length() - 1));
-			File f = new File(DataGenerator.blockModels, blockModelPath.substring(0, blockModelPath.length() - 1));
-			if (!f.exists())
+			System.out.println("\tWith tags: ");
+			for (String tag : blockTags)
 			{
-				if (f.mkdirs())
-				{
-					System.out.println("\tCreated new directory");
-				}
+				System.out.println("\t\t" + tag);
 			}
+			sss.addArray("tags", blockTags);
 		}
 
-		save(new File(DataGenerator.blockModels, blockModelPath + blockName + ".json"), new JSONObject(blockModel.build()).toString(4));
+		sss.save(block);
+
+		blockState.generate(blockName);
 	}
-
 
 	private void save(File file, String s)
 	{

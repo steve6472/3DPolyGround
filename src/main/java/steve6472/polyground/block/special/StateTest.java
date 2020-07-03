@@ -1,7 +1,6 @@
 package steve6472.polyground.block.special;
 
 import steve6472.polyground.EnumFace;
-import steve6472.polyground.block.Block;
 import steve6472.polyground.block.properties.BooleanProperty;
 import steve6472.polyground.block.properties.IProperty;
 import steve6472.polyground.block.states.BlockState;
@@ -20,7 +19,7 @@ import java.util.List;
  * Project: CaveGame
  *
  ***********************/
-public class StateTest extends Block
+public class StateTest extends CustomBlock
 {
 	private static final BooleanProperty LIT = States.LIT;
 
@@ -28,7 +27,7 @@ public class StateTest extends Block
 	{
 		super(f, id);
 		isFull = false;
-		setDefaultState(getDefaultState().with(LIT, true).get());
+		setDefaultState(getDefaultState().with(LIT, false).get());
 	}
 
 	@Override
@@ -38,6 +37,7 @@ public class StateTest extends Block
 		{
 			subChunk.setState(state.with(LIT, !state.get(LIT)).get(), x, y, z);
 			player.processNextBlockPlace = false;
+			subChunk.rebuildAllLayers();
 		}
 	}
 

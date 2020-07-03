@@ -1,5 +1,7 @@
 package steve6472.polyground.block.states;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import steve6472.polyground.block.Block;
 import steve6472.polyground.block.model.BlockModel;
 import steve6472.polyground.block.properties.IProperty;
@@ -7,6 +9,7 @@ import steve6472.polyground.block.properties.IProperty;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
@@ -14,14 +17,28 @@ import java.util.List;
  * Project: StateTest
  *
  ***********************/
-public class StateBuilder
+public class StateLoader
 {
-	public static void generateStates(Block block, BlockModel model, List<IProperty<?>> properties)
+	public static void generateState(Block block, BlockModel model)
+	{
+		block.setDefaultState(new BlockState(block, model, null, null));
+	}
+
+	public static void generateStates(Block block, List<IProperty<?>> properties, JSONObject blockstates)
 	{
 		if (properties.isEmpty())
 		{
-			block.setDefaultState(new BlockState(block, model, null, null));
+			block.setDefaultState(new BlockState(block, new BlockModel(blockstates.getString("model")), null, null));
 			return;
+		}
+
+
+		JSONArray array = blockstates.getJSONArray("models");
+		Map<JSONObject, String> models = new HashMap<>(array.length());
+		for (int i = 0; i < array.length(); i++)
+		{
+			JSONObject m = array.getJSONObject(i);
+			models.put(m.getJSONObject("state"), m.getString("model"));
 		}
 
 		// Generate all possible state values
@@ -64,7 +81,27 @@ public class StateBuilder
 				map.put(properties.get(i), list.get(i));
 			}
 
-			BlockState state = new BlockState(block, model, map, tileStates);
+			String modelPath = "";
+
+			for (JSONObject j : models.keySet())
+			{
+				boolean match = true;
+				for (IProperty<?> p : map.keySet())
+				{
+					if (j.has(p.getName()))
+					{
+						if (j.get(p.getName()) != map.get(p))
+							match = false;
+					}
+				}
+				if (match)
+				{
+					modelPath = models.get(j);
+					break;
+				}
+			}
+
+			BlockState state = new BlockState(block, new BlockModel(modelPath), map, tileStates);
 			if (block.getDefaultState() == null)
 				block.setDefaultState(state);
 			tileStates.add(state);

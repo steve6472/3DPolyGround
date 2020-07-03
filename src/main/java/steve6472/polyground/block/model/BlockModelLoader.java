@@ -156,7 +156,7 @@ public class BlockModelLoader
 		return parents;
 	}
 
-	private String read(File f)
+	public static String read(File f)
 	{
 		StringBuilder sb = new StringBuilder();
 		try

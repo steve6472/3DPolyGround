@@ -1,8 +1,11 @@
 package steve6472.polyground.block;
 
 import org.joml.AABBf;
+import org.json.JSONObject;
+import steve6472.SSS;
 import steve6472.polyground.EnumFace;
 import steve6472.polyground.block.model.BlockModel;
+import steve6472.polyground.block.model.BlockModelLoader;
 import steve6472.polyground.block.model.Cube;
 import steve6472.polyground.block.model.CubeFace;
 import steve6472.polyground.block.model.faceProperty.LayerFaceProperty;
@@ -12,7 +15,7 @@ import steve6472.polyground.block.model.faceProperty.condition.ConditionFaceProp
 import steve6472.polyground.block.properties.IProperty;
 import steve6472.polyground.block.special.SnapBlock;
 import steve6472.polyground.block.states.BlockState;
-import steve6472.polyground.block.states.StateBuilder;
+import steve6472.polyground.block.states.StateLoader;
 import steve6472.polyground.entity.Player;
 import steve6472.polyground.registry.face.FaceRegistry;
 import steve6472.polyground.world.BuildHelper;
@@ -85,14 +88,14 @@ public class Block
 		this.name = name;
 		this.id = id;
 		isFull = false;
-		generateStates(blockModel);
+		StateLoader.generateState(this, blockModel);
 	}
 
 	public Block(File f, int id)
 	{
 		isFull = true;
 		name = f.getName().substring(0, f.getName().length() - 4);
-		generateStates(new BlockModel(f));
+		generateStates(new SSS(f).getString("blockstate"));
 
 		this.id = id;
 	}
@@ -123,11 +126,11 @@ public class Block
 	{
 	}
 
-	private void generateStates(BlockModel model)
+	private void generateStates(String blockState)
 	{
 		List<IProperty<?>> properties = new ArrayList<>();
 		fillStates(properties);
-		StateBuilder.generateStates(this, model, properties);
+		StateLoader.generateStates(this, properties, new JSONObject(BlockModelLoader.read(new File("game/objects/blockstates/" + blockState + ".json"))));
 	}
 
 	public BlockState getStateForPlacement(SubChunk subChunk, int x, int y, int z)

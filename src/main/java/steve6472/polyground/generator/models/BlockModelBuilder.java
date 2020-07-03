@@ -15,21 +15,41 @@ import java.util.List;
 public class BlockModelBuilder
 {
 	private final List<CubeBuilder> cubes;
+	private final String modelName;
+	private String modelPath;
 
-	public static BlockModelBuilder create()
+	public static BlockModelBuilder create(String modelName)
 	{
-		return new BlockModelBuilder();
+		return new BlockModelBuilder(modelName);
 	}
 
-	private BlockModelBuilder()
+	private BlockModelBuilder(String modelName)
 	{
 		cubes = new ArrayList<>();
+		this.modelName = modelName;
+		this.modelPath = "";
+	}
+
+	public BlockModelBuilder modelPath(String path)
+	{
+		modelPath = path + "/";
+		return this;
 	}
 
 	public BlockModelBuilder addCube(CubeBuilder cubeBuilder)
 	{
 		cubes.add(cubeBuilder);
 		return this;
+	}
+
+	public String getModelName()
+	{
+		return modelName;
+	}
+
+	public String getModelPath()
+	{
+		return modelPath;
 	}
 
 	public IModel build()
