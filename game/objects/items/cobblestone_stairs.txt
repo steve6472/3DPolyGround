@@ -1,0 +1,6 @@
+model = item/cobblestone_stairs
+special = orientable
+north = cobblestone_stairs_north
+east = cobblestone_stairs_east
+south = cobblestone_stairs_south
+west = cobblestone_stairs_west

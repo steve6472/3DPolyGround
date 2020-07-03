@@ -8,7 +8,6 @@ import steve6472.polyground.block.model.Cube;
 import steve6472.polyground.block.model.CubeFace;
 import steve6472.polyground.registry.block.SpecialBlockRegistry;
 import steve6472.polyground.registry.face.FaceRegistry;
-import steve6472.sge.main.MainApp;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -29,7 +28,8 @@ public class BlockRegistry
 
 	public static void register(CaveGame game)
 	{
-		File[] blocksFile = new File(MainApp.class.getResource("/blocks").getFile()).listFiles();
+//		File[] blocksFile = new File(MainApp.class.getResource("/blocks").getFile()).listFiles();
+		File[] blocksFile = new File("game/objects/blocks").listFiles();
 
 		reference = new HashMap<>();
 		List<Block> tempBlocks = new ArrayList<>();

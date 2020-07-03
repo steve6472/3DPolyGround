@@ -1,2 +1,0 @@
-model = block/sand
-special = gravel

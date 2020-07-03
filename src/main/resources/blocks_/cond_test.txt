@@ -1,0 +1,1 @@
+model = block/cond_test

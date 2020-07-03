@@ -16,7 +16,7 @@ public class LakeFeature implements IFeature
 
 	public LakeFeature()
 	{
-		b = BlockRegistry.getBlockByName("biome_grass");
+		b = BlockRegistry.getBlockByName("grass");
 		c = BlockRegistry.getBlockByName("sand");
 		d = BlockRegistry.getBlockByName("dirt");
 		e = BlockRegistry.getBlockByName("cobblestone");

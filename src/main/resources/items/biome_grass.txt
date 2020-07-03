@@ -1,2 +1,0 @@
-model = item/biome_grass
-place = biome_grass

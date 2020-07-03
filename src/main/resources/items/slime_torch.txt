@@ -1,2 +1,0 @@
-model = item/slime_torch
-place = slime_torch

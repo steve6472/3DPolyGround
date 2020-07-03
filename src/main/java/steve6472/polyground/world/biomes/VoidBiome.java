@@ -81,6 +81,6 @@ public class VoidBiome extends Biome
 	@Override
 	public Vector3f getColor()
 	{
-		return new Vector3f(0.14f, 0.14f, 0.14f);
+		return new Vector3f(145 / 255f, 189 / 255f, 89 / 255f);
 	}
 }

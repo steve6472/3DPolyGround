@@ -1,0 +1,118 @@
+{"cubes": [
+    {
+        "isHitbox": true,
+        "isCollisionBox": true,
+        "from": [
+            0,
+            0,
+            0
+        ],
+        "to": [
+            16,
+            16,
+            16
+        ],
+        "faces": {
+            "east": {
+                "texture": "stone",
+                "autoUV": true
+            },
+            "south": {
+                "texture": "stone",
+                "autoUV": true
+            },
+            "north": {
+                "texture": "stone",
+                "autoUV": true
+            },
+            "west": {
+                "texture": "stone",
+                "autoUV": true
+            },
+            "up": {
+                "texture": "stone",
+                "autoUV": true
+            },
+            "down": {
+                "texture": "stone",
+                "autoUV": true
+            }
+        }
+    },
+    {
+        "isHitbox": true,
+        "isCollisionBox": true,
+        "from": [
+            0,
+            0,
+            0
+        ],
+        "to": [
+            16,
+            16,
+            16
+        ],
+        "faces": {
+            "east": {
+                "texture": "ore_overlay",
+                "modelLayer": "EMISSION_OVERLAY",
+                "autoUV": true,
+                "tint": [
+                    26,
+                    204,
+                    204
+                ]
+            },
+            "south": {
+                "texture": "ore_overlay",
+                "modelLayer": "EMISSION_OVERLAY",
+                "autoUV": true,
+                "tint": [
+                    26,
+                    204,
+                    204
+                ]
+            },
+            "north": {
+                "texture": "ore_overlay",
+                "modelLayer": "EMISSION_OVERLAY",
+                "autoUV": true,
+                "tint": [
+                    26,
+                    204,
+                    204
+                ]
+            },
+            "west": {
+                "texture": "ore_overlay",
+                "modelLayer": "EMISSION_OVERLAY",
+                "autoUV": true,
+                "tint": [
+                    26,
+                    204,
+                    204
+                ]
+            },
+            "up": {
+                "texture": "ore_overlay",
+                "modelLayer": "EMISSION_OVERLAY",
+                "autoUV": true,
+                "tint": [
+                    26,
+                    204,
+                    204
+                ]
+            },
+            "down": {
+                "texture": "ore_overlay",
+                "modelLayer": "EMISSION_OVERLAY",
+                "autoUV": true,
+                "tint": [
+                    26,
+                    204,
+                    204
+                ]
+            }
+        }
+    }
+]}

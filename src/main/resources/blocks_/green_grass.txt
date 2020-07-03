@@ -1,0 +1,1 @@
+model = block/green_grass

@@ -1,2 +1,0 @@
-model = item/jungle_leaves
-place = jungle_leaves

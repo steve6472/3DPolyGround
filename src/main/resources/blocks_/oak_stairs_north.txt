@@ -1,0 +1,2 @@
+model = block/stairs/oak/oak_stairs_north
+special = stair

@@ -1,2 +1,0 @@
-model = item/model_test
-place = model_test

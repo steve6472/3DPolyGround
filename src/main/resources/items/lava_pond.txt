@@ -1,2 +1,0 @@
-model = item/lava_pond
-place = lava_pond

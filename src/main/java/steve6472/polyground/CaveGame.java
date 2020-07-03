@@ -6,6 +6,7 @@ import steve6472.polyground.commands.CommandSource;
 import steve6472.polyground.entity.Player;
 import steve6472.polyground.events.CancellableEvent;
 import steve6472.polyground.events.SpecialBlockRegistryEvent;
+import steve6472.polyground.generator.DataGenerator;
 import steve6472.polyground.gfx.MainRender;
 import steve6472.polyground.gui.IGamePause;
 import steve6472.polyground.gui.InGameGui;
@@ -369,6 +370,10 @@ public class CaveGame extends MainApp
 		System.setProperty("joml.sinLookup", "true");
 
 		//		System.setProperty("debug_conditions", "true");
+
+		if (args.length == 1)
+			if (args[0].equals("-generators"))
+				new DataGenerator().generate();
 
 		new CaveGame();
 	}

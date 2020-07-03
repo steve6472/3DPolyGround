@@ -20,17 +20,17 @@ public class ForestBiome extends Biome
 	@Override
 	public void addFeatures()
 	{
-//		features.add(new FeatureEntry(new BlockPatchFeature(BlockRegistry.getBlockByName("biome_grass"), BlockRegistry.getBlockByName("dirt"), 0.6, 3, false), 2 / 256d));
+//		features.add(new FeatureEntry(new BlockPatchFeature(BlockRegistry.getBlockByName("grass"), BlockRegistry.getBlockByName("dirt"), 0.6, 3, false), 2 / 256d));
 
 		addFeature(FeatureStage.LAND_ALTER, new LakeFeature(), 1 / 3000d);
-		addFeature(FeatureStage.VEGETATION, new VegetationPatchFeature(BlockRegistry.getBlockByName("biome_grass"), BlockRegistry.getBlockByName("small_grass"), 0.3, 2, true), 1 / 100d);
-		addFeature(FeatureStage.TREE, new BushFeature(BlockRegistry.getBlockByName("biome_grass"), BlockRegistry.getBlockByName("oak_log"), BlockRegistry.getBlockByName("oak_leaves")), 1 / 200d);
-		addFeature(FeatureStage.TREE, new TreeFeature(BlockRegistry.getBlockByName("biome_grass"), BlockRegistry.getBlockByName("oak_log"), BlockRegistry.getBlockByName("oak_leaves"), BlockRegistry.getBlockByName("dirt")), 1 / 5d);
+		addFeature(FeatureStage.VEGETATION, new VegetationPatchFeature(BlockRegistry.getBlockByName("grass"), BlockRegistry.getBlockByName("small_grass"), 0.3, 2, true), 1 / 100d);
+		addFeature(FeatureStage.TREE, new BushFeature(BlockRegistry.getBlockByName("grass"), BlockRegistry.getBlockByName("oak_log"), BlockRegistry.getBlockByName("oak_leaves")), 1 / 200d);
+		addFeature(FeatureStage.TREE, new TreeFeature(BlockRegistry.getBlockByName("grass"), BlockRegistry.getBlockByName("oak_log"), BlockRegistry.getBlockByName("oak_leaves"), BlockRegistry.getBlockByName("dirt")), 1 / 5d);
 
 		//		features.add(new FeatureEntry(new LakeFeature(), 1 / 3000d));
-//		features.add(new FeatureEntry(new VegetationPatchFeature(BlockRegistry.getBlockByName("biome_grass"), BlockRegistry.getBlockByName("small_grass"), 0.3, 2, true), 1 / 100d));
-//		features.add(new FeatureEntry(new BushFeature(BlockRegistry.getBlockByName("biome_grass"), BlockRegistry.getBlockByName("oak_log"), BlockRegistry.getBlockByName("oak_leaves")), 1 / 200d));
-//		features.add(new FeatureEntry(new TreeFeature(BlockRegistry.getBlockByName("biome_grass"), BlockRegistry.getBlockByName("oak_log"), BlockRegistry.getBlockByName("oak_leaves"), BlockRegistry.getBlockByName("dirt")), 1 / 5d));
+//		features.add(new FeatureEntry(new VegetationPatchFeature(BlockRegistry.getBlockByName("grass"), BlockRegistry.getBlockByName("small_grass"), 0.3, 2, true), 1 / 100d));
+//		features.add(new FeatureEntry(new BushFeature(BlockRegistry.getBlockByName("grass"), BlockRegistry.getBlockByName("oak_log"), BlockRegistry.getBlockByName("oak_leaves")), 1 / 200d));
+//		features.add(new FeatureEntry(new TreeFeature(BlockRegistry.getBlockByName("grass"), BlockRegistry.getBlockByName("oak_log"), BlockRegistry.getBlockByName("oak_leaves"), BlockRegistry.getBlockByName("dirt")), 1 / 5d));
 	}
 
 	@Override
@@ -42,7 +42,7 @@ public class ForestBiome extends Biome
 	@Override
 	public Block getTopBlock()
 	{
-		return BlockRegistry.getBlockByName("biome_grass");
+		return BlockRegistry.getBlockByName("grass");
 	}
 
 	@Override

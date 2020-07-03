@@ -1,2 +1,0 @@
-model = item/stone_stair_east
-place = stone_stair_east

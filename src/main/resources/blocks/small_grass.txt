@@ -1,2 +1,0 @@
-model = block/small_grass
-special = custom

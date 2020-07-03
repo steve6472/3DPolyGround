@@ -166,6 +166,8 @@ public class Player implements IMotion3f, IPosition3f
 		getMotion().z += za * cos - xa * sin;
 	}
 
+	private static final double RAD_360 = Math.toRadians(360);
+
 	private void head()
 	{
 		if (camera.canMoveHead())
@@ -177,6 +179,14 @@ public class Player implements IMotion3f, IPosition3f
 				flag = true;
 			}
 			camera.head(pg.getMouseX(), pg.getMouseY(), CaveGame.getInstance().options.mouseSensitivity);
+			while (camera.getYaw() > RAD_360)
+			{
+				camera.setYaw((float) (camera.getYaw() - RAD_360));
+			}
+			while (camera.getYaw() < 0)
+			{
+				camera.setYaw((float) (camera.getYaw() + RAD_360));
+			}
 		}
 	}
 

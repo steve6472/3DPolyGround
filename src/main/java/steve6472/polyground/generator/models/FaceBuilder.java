@@ -43,7 +43,7 @@ public class FaceBuilder
 		if (!isVisible) main.put("isVisible", false);
 		if (biomeTint) main.put("biomeTint", true);
 		if (!autoUv) main.put("uv", new JSONArray().put(minU).put(minV).put(maxU).put(maxV));
-		if (red != 255 && green != 255 && blue != 255) main.put("tint", new JSONArray().put(red).put(green).put(blue));
+		if (red + green + blue != 255 * 3) main.put("tint", new JSONArray().put(red).put(green).put(blue));
 		if (rotation != RotationFaceProperty.EnumRotation.R_0) main.put("rotation", rotation);
 		if (layer != ModelLayer.NORMAL) main.put("modelLayer", layer);
 

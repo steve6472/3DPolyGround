@@ -1,0 +1,2 @@
+model = item/coal_ore
+place = coal_ore

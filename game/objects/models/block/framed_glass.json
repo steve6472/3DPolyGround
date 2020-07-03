@@ -1,0 +1,40 @@
+{"cubes": [{
+    "isHitbox": true,
+    "isCollisionBox": true,
+    "from": [
+        0,
+        0,
+        0
+    ],
+    "to": [
+        16,
+        16,
+        16
+    ],
+    "faces": {
+        "east": {
+            "texture": "framed_glass",
+            "autoUV": true
+        },
+        "south": {
+            "texture": "framed_glass",
+            "autoUV": true
+        },
+        "north": {
+            "texture": "framed_glass",
+            "autoUV": true
+        },
+        "west": {
+            "texture": "framed_glass",
+            "autoUV": true
+        },
+        "up": {
+            "texture": "framed_glass",
+            "autoUV": true
+        },
+        "down": {
+            "texture": "framed_glass",
+            "autoUV": true
+        }
+    }
+}]}

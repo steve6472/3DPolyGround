@@ -1,10 +1,9 @@
 package steve6472.polyground.registry;
 
+import steve6472.SSS;
 import steve6472.polyground.CaveGame;
 import steve6472.polyground.item.Item;
 import steve6472.polyground.registry.specialitem.SpecialItemRegistry;
-import steve6472.sge.main.MainApp;
-import steve6472.SSS;
 
 import java.io.File;
 import java.util.Collection;
@@ -24,7 +23,8 @@ public class ItemRegistry
 
 	public static void register(CaveGame pg)
 	{
-		File[] blocks = new File(MainApp.class.getResource("/items").getFile()).listFiles();
+//		File[] blocks = new File(MainApp.class.getResource("/items").getFile()).listFiles();
+		File[] items = new File("game/objects/items").listFiles();
 		//		File[] blocks = new File("items").listFiles();
 
 		reference = new HashMap<>();
@@ -33,20 +33,20 @@ public class ItemRegistry
 		ItemRegistry.items.put("air", Item.createAir());
 		reference.put(0, "air");
 
-		for (int i = 0; i < Objects.requireNonNull(blocks).length; i++)
+		for (int i = 0; i < Objects.requireNonNull(items).length; i++)
 		{
-			if (blocks[i].isDirectory())
+			if (items[i].isDirectory())
 				continue;
 
-			SSS t = new SSS(blocks[i]);
+			SSS t = new SSS(items[i]);
 			Item item;
 
 			if (t.containsName("special") && SpecialItemRegistry.getKeys().contains(t.getString("special")))
 			{
-				item = SpecialItemRegistry.createSpecialItem(t.getString("special"), blocks[i], i + 1);
+				item = SpecialItemRegistry.createSpecialItem(t.getString("special"), items[i], i + 1);
 			} else
 			{
-				item = new Item(blocks[i], i + 1);
+				item = new Item(items[i], i + 1);
 			}
 
 			pg.getEventHandler().register(item);

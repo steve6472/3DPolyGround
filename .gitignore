@@ -20,11 +20,10 @@
 *.rar
 
 # Texture Folders (Copyright Issue) #
+target/
 creator/blocks/textures/
 res/textures/
 mc_textures/
-target/
-target/*
 game/worlds_old/
 src/main/resources/textures/
 textureAtlas.png

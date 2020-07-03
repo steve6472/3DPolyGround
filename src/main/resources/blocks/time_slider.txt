@@ -1,2 +1,0 @@
-model = block/time_slider
-special = time_slider

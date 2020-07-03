@@ -6,6 +6,11 @@ import steve6472.polyground.EnumFace;
 
 public class CubeBuilder
 {
+	public static EnumFace[] SIDE = {EnumFace.NORTH, EnumFace.EAST, EnumFace.SOUTH, EnumFace.WEST};
+	public static EnumFace[] NO_TOP = {EnumFace.NORTH, EnumFace.EAST, EnumFace.SOUTH, EnumFace.WEST, EnumFace.DOWN};
+	public static EnumFace[] NO_BOTTOM = {EnumFace.NORTH, EnumFace.EAST, EnumFace.SOUTH, EnumFace.WEST, EnumFace.UP};
+	public static EnumFace[] TOP_BOTTOM = {EnumFace.UP, EnumFace.DOWN};
+
 	private float minX;
 	private float minY;
 	private float minZ;
@@ -100,6 +105,34 @@ public class CubeBuilder
 	public CubeBuilder topSlab()
 	{
 		min(0, 8, 0);
+		max(16, 16, 16);
+		return this;
+	}
+
+	public CubeBuilder northStairTop()
+	{
+		min(0, 8, 0);
+		max(8, 16, 16);
+		return this;
+	}
+
+	public CubeBuilder eastStairTop()
+	{
+		min(0, 8, 0);
+		max(16, 16, 8);
+		return this;
+	}
+
+	public CubeBuilder southStairTop()
+	{
+		min(8, 8, 0);
+		max(16, 16, 16);
+		return this;
+	}
+
+	public CubeBuilder westStairTop()
+	{
+		min(0, 8, 8);
 		max(16, 16, 16);
 		return this;
 	}

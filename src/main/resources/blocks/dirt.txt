@@ -1,4 +1,0 @@
-model = block/dirt
-special = double_slab
-top = dirt_slab_top
-bottom = dirt_slab_bottom

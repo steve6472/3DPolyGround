@@ -1,0 +1,8 @@
+model = block/dirt_top
+special = slab
+type = top
+tags:
+{
+	slab
+	slab_top
+}

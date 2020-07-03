@@ -1,8 +1,0 @@
-{
-    "parent": "block/templates/tintable_block",
-    "textures": {"texture": "grass_block_top"},
-    "tints":
-    {
-        "tint": [145, 189, 89]
-    }
-}

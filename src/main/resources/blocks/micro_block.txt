@@ -1,2 +1,0 @@
-model = block/micro
-special = micro_block

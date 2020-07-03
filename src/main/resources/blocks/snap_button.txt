@@ -1,3 +1,0 @@
-model = block/snap_button
-
-special = snap_button

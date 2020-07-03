@@ -1,0 +1,88 @@
+{"cubes": [
+    {
+        "isHitbox": true,
+        "isCollisionBox": true,
+        "from": [
+            0,
+            0,
+            0
+        ],
+        "to": [
+            16,
+            16,
+            16
+        ],
+        "faces": {
+            "east": {
+                "texture": "dirt",
+                "autoUV": true
+            },
+            "south": {
+                "texture": "dirt",
+                "autoUV": true
+            },
+            "north": {
+                "texture": "dirt",
+                "autoUV": true
+            },
+            "west": {
+                "texture": "dirt",
+                "autoUV": true
+            },
+            "up": {
+                "texture": "dirt",
+                "autoUV": true
+            },
+            "down": {
+                "texture": "dirt",
+                "autoUV": true
+            }
+        }
+    },
+    {
+        "isHitbox": false,
+        "isCollisionBox": false,
+        "from": [
+            0,
+            0,
+            0
+        ],
+        "to": [
+            16,
+            16,
+            16
+        ],
+        "faces": {
+            "east": {
+                "biomeTint": true,
+                "texture": "grass_block_side_overlay",
+                "modelLayer": "OVERLAY_0",
+                "autoUV": true
+            },
+            "south": {
+                "biomeTint": true,
+                "texture": "grass_block_side_overlay",
+                "modelLayer": "OVERLAY_0",
+                "autoUV": true
+            },
+            "north": {
+                "biomeTint": true,
+                "texture": "grass_block_side_overlay",
+                "modelLayer": "OVERLAY_0",
+                "autoUV": true
+            },
+            "west": {
+                "biomeTint": true,
+                "texture": "grass_block_side_overlay",
+                "modelLayer": "OVERLAY_0",
+                "autoUV": true
+            },
+            "up": {
+                "biomeTint": true,
+                "texture": "grass_block_top",
+                "modelLayer": "OVERLAY_0",
+                "autoUV": true
+            }
+        }
+    }
+]}

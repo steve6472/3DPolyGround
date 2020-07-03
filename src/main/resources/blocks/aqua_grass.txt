@@ -1,1 +1,0 @@
-model = block/aqua_grass

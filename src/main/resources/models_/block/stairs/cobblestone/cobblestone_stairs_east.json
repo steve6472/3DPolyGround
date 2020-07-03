@@ -1,0 +1,82 @@
+{"cubes": [
+    {
+        "isHitbox": true,
+        "isCollisionBox": true,
+        "from": [
+            0,
+            0,
+            0
+        ],
+        "to": [
+            16,
+            8,
+            16
+        ],
+        "faces": {
+            "east": {
+                "texture": "cobblestone",
+                "autoUV": true
+            },
+            "south": {
+                "texture": "cobblestone",
+                "autoUV": true
+            },
+            "north": {
+                "texture": "cobblestone",
+                "autoUV": true
+            },
+            "west": {
+                "texture": "cobblestone",
+                "autoUV": true
+            },
+            "up": {
+                "texture": "cobblestone",
+                "autoUV": true
+            },
+            "down": {
+                "texture": "cobblestone",
+                "autoUV": true
+            }
+        }
+    },
+    {
+        "isHitbox": true,
+        "isCollisionBox": true,
+        "from": [
+            0,
+            8,
+            0
+        ],
+        "to": [
+            16,
+            16,
+            8
+        ],
+        "faces": {
+            "east": {
+                "texture": "cobblestone",
+                "autoUV": true
+            },
+            "south": {
+                "texture": "cobblestone",
+                "autoUV": true
+            },
+            "north": {
+                "texture": "cobblestone",
+                "autoUV": true
+            },
+            "west": {
+                "texture": "cobblestone",
+                "autoUV": true
+            },
+            "up": {
+                "texture": "cobblestone",
+                "autoUV": true
+            },
+            "down": {
+                "texture": "cobblestone",
+                "autoUV": true
+            }
+        }
+    }
+]}

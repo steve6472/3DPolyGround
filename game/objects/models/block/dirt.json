@@ -1,0 +1,40 @@
+{"cubes": [{
+    "isHitbox": true,
+    "isCollisionBox": true,
+    "from": [
+        0,
+        0,
+        0
+    ],
+    "to": [
+        16,
+        16,
+        16
+    ],
+    "faces": {
+        "east": {
+            "texture": "dirt",
+            "autoUV": true
+        },
+        "south": {
+            "texture": "dirt",
+            "autoUV": true
+        },
+        "north": {
+            "texture": "dirt",
+            "autoUV": true
+        },
+        "west": {
+            "texture": "dirt",
+            "autoUV": true
+        },
+        "up": {
+            "texture": "dirt",
+            "autoUV": true
+        },
+        "down": {
+            "texture": "dirt",
+            "autoUV": true
+        }
+    }
+}]}

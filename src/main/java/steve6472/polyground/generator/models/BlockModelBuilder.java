@@ -14,7 +14,7 @@ import java.util.List;
  ***********************/
 public class BlockModelBuilder
 {
-	private List<CubeBuilder> cubes;
+	private final List<CubeBuilder> cubes;
 
 	public static BlockModelBuilder create()
 	{

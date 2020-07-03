@@ -1,0 +1,6 @@
+model = item/brick_stairs
+special = orientable
+north = brick_stairs_north
+east = brick_stairs_east
+south = brick_stairs_south
+west = brick_stairs_west

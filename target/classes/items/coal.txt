@@ -1,2 +1,0 @@
-model = item/coal
-place = coal

@@ -1,0 +1,2 @@
+model = block/stairs/stone/stone_stairs_west
+special = stair

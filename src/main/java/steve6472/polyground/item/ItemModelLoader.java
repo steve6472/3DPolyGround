@@ -1,10 +1,9 @@
 package steve6472.polyground.item;
 
+import org.json.JSONObject;
 import steve6472.polyground.CaveGame;
 import steve6472.polyground.block.Block;
 import steve6472.polyground.registry.BlockRegistry;
-import steve6472.sge.main.MainApp;
-import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -25,7 +24,8 @@ public class ItemModelLoader
 
 		try
 		{
-			json = new JSONObject(read(new File(MainApp.class.getResource("/models/" + name + ".json").getFile())));
+//			json = new JSONObject(read(new File(MainApp.class.getResource("/models/" + name + ".json").getFile())));
+			json = new JSONObject(read(new File("game/objects/models/" + name + ".json")));
 			//			json = new JSONObject(read(new File("models/" + name + ".json")));
 		} catch (Exception e)
 		{

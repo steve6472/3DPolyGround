@@ -1,0 +1,6 @@
+model = item/oak_stairs
+special = orientable
+north = oak_stairs_north
+east = oak_stairs_east
+south = oak_stairs_south
+west = oak_stairs_west

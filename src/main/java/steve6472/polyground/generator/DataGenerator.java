@@ -2,8 +2,10 @@ package steve6472.polyground.generator;
 
 import steve6472.polyground.EnumFace;
 import steve6472.polyground.generator.models.BlockModelBuilder;
+import steve6472.polyground.generator.models.CondTest;
 import steve6472.polyground.generator.models.CubeBuilder;
 import steve6472.polyground.generator.models.FaceBuilder;
+import steve6472.polyground.generator.special.SimpleSpecial;
 import steve6472.polyground.world.chunk.ModelLayer;
 
 import java.io.File;
@@ -15,20 +17,51 @@ import java.io.File;
  *
  ***********************/
 public class DataGenerator
-{
+{/*
 	static File blocks = new File("src/main/resources/blocks");
 	static File items = new File("src/main/resources/items");
 
 	static File blockModels = new File("src/main/resources/models/block");
-	static File itemModels = new File("src/main/resources/models/item");
+	static File itemModels = new File("src/main/resources/models/item");*/
+
+	static File blocks = new File("game/objects/blocks");
+	static File items = new File("game/objects/items");
+
+	static File blockModels = new File("game/objects/models/block");
+	static File itemModels = new File("game/objects/models/item");
 
 	public static void main(String[] args)
 	{
 		new DataGenerator().generate();
 	}
 
+	private void createFolders()
+	{
+		if (!blocks.exists())
+			if (blocks.mkdirs())
+				System.out.println("Created new blocks folder");
+			else
+				System.err.println("Error while creating new blocks folder");
+		if (!items.exists())
+			if (items.mkdirs())
+				System.out.println("Created new items folder");
+			else
+				System.err.println("Error while creating new items folder");
+		if (!blockModels.exists())
+			if (blockModels.mkdirs())
+				System.out.println("Created new blockModels folder");
+			else
+				System.err.println("Error while creating new blockModels folder");
+		if (!itemModels.exists())
+			if (itemModels.mkdirs())
+				System.out.println("Created new itemModels folder");
+			else
+				System.err.println("Error while creating new itemModels folder");
+	}
+
 	public void generate()
 	{
+		createFolders();
 //		decorativeFullTintedBlock("full_grass_block", 0.5686275f, 0.7411765f, 0.34901962f, "grass_block_top");
 
 		DataBuilder.create().fullBlock("smooth_stone").generate();
@@ -37,23 +70,50 @@ public class DataGenerator
 		DataBuilder.create().fullBlock("stone").generate();
 		DataBuilder.create().fullBlock("cobblestone").generate();
 		DataBuilder.create().fullBlock("bedrock").generate();
+		DataBuilder.create().fullBlock("sand").generate();
+		DataBuilder.create().fullBlock("gravel").generate();
+		DataBuilder.create().fullBlock("cond_test").blockModel(new CondTest()).generate();
+
+		DataBuilder.create().stairs("stone", "stone");
+		DataBuilder.create().stairs("oak", "oak_plank");
+		DataBuilder.create().stairs("cobblestone", "cobblestone");
+		DataBuilder.create().stairs("brick", "bricks");
+
+		DataBuilder.create().plusBlock("small_grass", true).generate();
+
+		DataBuilder.create().oreBlock("coal_ore", "stone", "ore_overlay", 77, 77, 77).generate();
+
+		DataBuilder.create().lightOreBlock("magical_coal_ore", "stone", "ore_overlay", 26, 204, 204, "6c7f7a", 1.0f, 0.7f, 1.8f).generate();
 
 		DataBuilder.create().fullLightBlock("blaze_block", "FDEA49", 1.0f, 0.14f, 0.07f).generate();
 
 		DataBuilder.create().transparentFullBlock("glass").generate();
 		DataBuilder.create().transparentFullBlock("framed_glass").generate();
 
-		DataBuilder.create().doubleSlabBlock("oak_plank", "oak_plank_top", "oak_plank_bottom").generate();
-		DataBuilder.create().slabBlock("oak_plank_bottom", "oak_plank", true).generate();
-		DataBuilder.create().slabBlock("oak_plank_top", "oak_plank", false).generate();
-		DataBuilder.create().slabItem("oak_plank_slab", "oak_plank_top", "oak_plank_bottom", "oak_plank").generate();
+		DataBuilder.create().slabs("oak_plank", "oak_plank");
+		DataBuilder.create().slabs("dirt", "dirt");
+
+		DataBuilder.create().doubleSlabBlock("double_smooth_slab", "smooth_stone", "smooth_stone_slab", "smooth_slab_top", "smooth_slab_bottom").generate();
+		DataBuilder.create().slabBlock("smooth_slab_bottom", "smooth_stone", "smooth_stone_slab", true).generate();
+		DataBuilder.create().slabBlock("smooth_slab_top", "smooth_stone", "smooth_stone_slab", false).generate();
+		DataBuilder.create().slabItem("smooth_slab", "smooth_slab_top", "smooth_slab_bottom", "double_smooth_slab").generate();
+
+		DataBuilder.create().logBlock("oak_log", "oak_log_side", "oak_log").generate();
 
 		for (int i = 1; i <= 7; i++)
 		{
 			DataBuilder.create().stalaBlock("stala_" + i * 2, "stone", i * 2).blockModelPath("stala").generate();
 		}
 
-		DataBuilder.create().fullBlock("biome_grass")
+		DataBuilder.create().fullBlock("oak_leaves")
+			.blockModel(BlockModelBuilder.create()
+				.addCube(CubeBuilder.create()
+					.fullBlock()
+					.face(FaceBuilder.create().texture("oak_leaves").tint(118, 171, 47))
+				).build()
+			).blockSpecial(new SimpleSpecial("leaves")).generate();
+
+		DataBuilder.create().fullBlock("grass")
 			.blockModel(BlockModelBuilder.create()
 				.addCube(CubeBuilder.create()
 					.fullBlock()
@@ -66,7 +126,7 @@ public class DataGenerator
 							.texture("grass_block_side_overlay")
 							.biomeTint(true)
 							.modelLayer(ModelLayer.OVERLAY_0),
-						EnumFace.EAST, EnumFace.SOUTH, EnumFace.NORTH, EnumFace.WEST)
+						CubeBuilder.SIDE)
 					.face(FaceBuilder.create()
 						.texture("grass_block_top")
 						.biomeTint(true)
@@ -140,6 +200,74 @@ public class DataGenerator
 //		stairFamily("stone_stair", "stone");
 
 //		tintedOreBlock("coal", 0.3f, 0.3f, 0.3f);
+
+		/*
+		 * Dead Blocks
+		 */
+/*
+		DataBuilder.create().fullBlock("blue_grass")
+			.blockModel(BlockModelBuilder.create()
+				.addCube(CubeBuilder.create()
+					.fullBlock()
+					.face(FaceBuilder.create().texture("dirt"), CubeBuilder.NO_TOP))
+				.addCube(CubeBuilder.create()
+					.fullBlock()
+					.hitbox(false)
+					.collisionBox(false)
+					.face(FaceBuilder.create()
+							.texture("grass_block_side_overlay")
+							.tint(0, 0, 255)
+							.modelLayer(ModelLayer.OVERLAY_0),
+						CubeBuilder.SIDE)
+					.face(FaceBuilder.create()
+						.texture("grass_block_top")
+						.tint(0, 0, 255)
+						.modelLayer(ModelLayer.OVERLAY_0), EnumFace.UP
+					)).build()
+			).generate();
+
+		DataBuilder.create().fullBlock("red_grass")
+			.blockModel(BlockModelBuilder.create()
+				.addCube(CubeBuilder.create()
+					.fullBlock()
+					.face(FaceBuilder.create().texture("dirt"), CubeBuilder.NO_TOP))
+				.addCube(CubeBuilder.create()
+					.fullBlock()
+					.hitbox(false)
+					.collisionBox(false)
+					.face(FaceBuilder.create()
+							.texture("grass_block_side_overlay")
+							.tint(255, 0, 0)
+							.modelLayer(ModelLayer.OVERLAY_0),
+						CubeBuilder.SIDE)
+					.face(FaceBuilder.create()
+						.texture("grass_block_top")
+						.tint(255, 0, 0)
+						.modelLayer(ModelLayer.OVERLAY_0), EnumFace.UP
+					)).build()
+			).generate();
+
+		DataBuilder.create().fullBlock("green_grass")
+			.blockModel(BlockModelBuilder.create()
+				.addCube(CubeBuilder.create()
+					.fullBlock()
+					.face(FaceBuilder.create().texture("dirt"), CubeBuilder.NO_TOP))
+				.addCube(CubeBuilder.create()
+					.fullBlock()
+					.hitbox(false)
+					.collisionBox(false)
+					.face(FaceBuilder.create()
+							.texture("grass_block_side_overlay")
+							.tint(0, 254, 0)
+							.modelLayer(ModelLayer.OVERLAY_0),
+						CubeBuilder.SIDE)
+					.face(FaceBuilder.create()
+						.texture("grass_block_top")
+						.tint(0, 255, 0)
+						.modelLayer(ModelLayer.OVERLAY_0), EnumFace.UP
+					)).build()
+			).generate();*/
+
 	}
 
 }

@@ -1,2 +1,0 @@
-model = item/slime_pond
-place = slime_pond

@@ -1,2 +1,0 @@
-model = block/spruce_leaves
-special = leaves

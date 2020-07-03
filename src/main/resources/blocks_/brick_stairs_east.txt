@@ -1,0 +1,2 @@
+model = block/stairs/brick/brick_stairs_east
+special = stair

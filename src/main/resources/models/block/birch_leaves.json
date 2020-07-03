@@ -1,8 +1,0 @@
-{
-    "parent": "block/templates/tintable_block",
-    "textures": {"texture": "birch_leaves"},
-    "tints":
-    {
-        "tint": [127, 166, 84]
-    }
-}

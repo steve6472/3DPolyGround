@@ -1,2 +1,0 @@
-model = item/block_inspector
-special = block_inspector

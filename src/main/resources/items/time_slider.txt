@@ -1,2 +1,0 @@
-model = item/time_slider
-place = time_slider

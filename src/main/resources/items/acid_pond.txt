@@ -1,2 +1,0 @@
-model = item/acid_pond
-place = acid_pond

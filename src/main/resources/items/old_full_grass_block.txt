@@ -1,2 +1,0 @@
-model = item/old_full_grass_block
-place = old_full_grass_block

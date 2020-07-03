@@ -1,5 +1,8 @@
 package steve6472.polyground.block.model;
 
+import org.joml.AABBf;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import steve6472.polyground.CaveGame;
 import steve6472.polyground.EnumFace;
 import steve6472.polyground.block.BlockTextureHolder;
@@ -8,10 +11,6 @@ import steve6472.polyground.block.model.faceProperty.TextureFaceProperty;
 import steve6472.polyground.block.model.faceProperty.UVFaceProperty;
 import steve6472.polyground.block.model.faceProperty.condition.ConditionFaceProperty;
 import steve6472.polyground.registry.face.FaceRegistry;
-import org.joml.AABBf;
-import org.json.JSONArray;
-import org.json.JSONObject;
-import steve6472.sge.main.MainApp;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -34,7 +33,8 @@ public class BlockModelLoader
 
 		try
 		{
-			json = new JSONObject(read(new File(MainApp.class.getResource("/models/" + name + ".json").getFile())));
+//			json = new JSONObject(read(new File(MainApp.class.getResource("/models/" + name + ".json").getFile())));
+			json = new JSONObject(read(new File("game/objects/models/" + name + ".json")));
 		} catch (Exception e)
 		{
 			System.err.println("Could not load block model " + name);

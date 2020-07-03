@@ -1,4 +1,0 @@
-model = block/old_full_grass_block
-special = double_slab
-top = old_full_grass_block_slab_top
-bottom = old_full_grass_block_slab_bottom
