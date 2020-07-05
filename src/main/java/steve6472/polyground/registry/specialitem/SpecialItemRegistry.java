@@ -27,7 +27,6 @@ public class SpecialItemRegistry
 	public static final SpecialItemEntry<GunItem> gun = register("gun", GunItem::new);
 	public static final SpecialItemEntry<WaterBucketItem> waterBucket = register("waterbucket", WaterBucketItem::new);
 	public static final SpecialItemEntry<VoidBucketItem> voidBucket = register("voidbucket", VoidBucketItem::new);
-	public static final SpecialItemEntry<OrientableItem> orientable = register("orientable", OrientableItem::new);
 
 	public static <T extends Item> SpecialItemEntry<T> register(String id, ISpecialItemFactory<T> factory)
 	{

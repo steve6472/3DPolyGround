@@ -15,6 +15,7 @@ import java.util.Map;
 public class PropertyBuilder
 {
 	Map<IProperty<?>, Comparable<?>> map;
+	private int rotation;
 
 	public static PropertyBuilder create()
 	{
@@ -30,6 +31,17 @@ public class PropertyBuilder
 	{
 		map.put(property, value);
 		return this;
+	}
+
+	public PropertyBuilder rotation(int rotation)
+	{
+		this.rotation = rotation;
+		return this;
+	}
+
+	public int getRotation()
+	{
+		return rotation;
 	}
 
 	public JSONObject build()

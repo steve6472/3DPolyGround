@@ -3,8 +3,11 @@ package steve6472.polyground.generator;
 import org.json.JSONObject;
 import steve6472.SSS;
 import steve6472.polyground.EnumFace;
+import steve6472.polyground.block.properties.enums.EnumAxis;
 import steve6472.polyground.block.properties.enums.EnumSlabType;
+import steve6472.polyground.block.special.PilliarBlock;
 import steve6472.polyground.block.special.SlabBlock;
+import steve6472.polyground.block.special.StairBlock;
 import steve6472.polyground.generator.models.*;
 import steve6472.polyground.generator.special.ISpecial;
 import steve6472.polyground.generator.special.SimpleSpecial;
@@ -255,12 +258,28 @@ public class DataBuilder
 	public DataBuilder pillarBlock(String name, String sideTexture, String topTexture)
 	{
 		return DataBuilder.create().fullBlock(name)
+			.blockSpecial(new SimpleSpecial("pilliar"))
 			.blockState(StateBuilder.create()
-			.singleModel(BlockModelBuilder.create(name)
-				.addCube(CubeBuilder.create()
-					.fullBlock()
-					.face(FaceBuilder.create().texture(sideTexture), CubeBuilder.SIDE)
-					.face(FaceBuilder.create().texture(topTexture), CubeBuilder.TOP_BOTTOM))));
+				.addState(PropertyBuilder.create()
+						.addProperty(PilliarBlock.AXIS, EnumAxis.Y),
+					BlockModelBuilder.create(name)
+						.addCube(CubeBuilder.create()
+							.fullBlock()
+							.face(FaceBuilder.create().texture(sideTexture), CubeBuilder.SIDE)
+							.face(FaceBuilder.create().texture(topTexture), CubeBuilder.TOP_BOTTOM)
+						)
+				)
+				.addState(PropertyBuilder.create()
+					.addProperty(PilliarBlock.AXIS, EnumAxis.X),
+					BlockModelBuilder.create(name + "_side")
+						.addCube(CubeBuilder.create()
+							.fullBlock()
+							.face(FaceBuilder.create().texture(sideTexture), EnumFace.UP, EnumFace.DOWN)
+							.face(FaceBuilder.create().texture(sideTexture).rotation(90), EnumFace.EAST, EnumFace.WEST)
+							.face(FaceBuilder.create().texture(topTexture), EnumFace.NORTH, EnumFace.SOUTH)
+						)
+				).addState(PropertyBuilder.create().addProperty(PilliarBlock.AXIS, EnumAxis.Z).rotation(90), BlockModelBuilder.noGen(name + "_side"))
+			);
 	}
 
 	public DataBuilder fullBlock(String name)
@@ -277,97 +296,129 @@ public class DataBuilder
 		return this;
 	}
 
+	public DataBuilder leaves(String name)
+	{
+		return DataBuilder.create().fullBlock(name)
+			.blockSpecial(new SimpleSpecial("leaves"))
+			.blockState(StateBuilder.create().singleModel(
+				BlockModelBuilder.create(name)
+					.addCube(CubeBuilder.create()
+						.fullBlock()
+						.face(FaceBuilder.create().texture(name).biomeTint(true))
+					)
+				)
+			);
+	}
+
 	public DataBuilder slab(String name, String texture)
 	{
 		return DataBuilder.create()
-			.blockName(name + "_double_slab")
-			.itemName(name + "_slab")
-			.blockToPlace(name + "_double_slab")
+			.blockName(name)
+			.itemName(name)
+			.blockToPlace(name)
 			.blockSpecial(new SimpleSpecial("slab"))
-			.itemModel(new ItemFromBlock(name + "_double_slab"))
+			.itemModel(new ItemFromBlock(name))
 			.itemSpecial(new SimpleSpecial("slab"))
 			.blockState(StateBuilder.create()
 				.addState(PropertyBuilder.create()
-						.addProperty(SlabBlock.TYPE, EnumSlabType.BOTTOM),
-					BlockModelBuilder.create(name + "_slab_bottom")
+						.addProperty(SlabBlock.TYPE, EnumSlabType.BOTTOM)
+						.addProperty(SlabBlock.AXIS, EnumAxis.Y),
+					BlockModelBuilder.create(name + "_bottom")
 						.modelPath("slab")
 						.addCube(CubeBuilder.create()
 							.bottomSlab()
 							.face(FaceBuilder.create()
-								.texture(texture))
+								.texture(texture)
+								.uvlock(true))
 						)
 				).addState(PropertyBuilder.create()
-						.addProperty(SlabBlock.TYPE, EnumSlabType.TOP),
-					BlockModelBuilder.create(name + "_slab_top")
+						.addProperty(SlabBlock.TYPE, EnumSlabType.TOP)
+						.addProperty(SlabBlock.AXIS, EnumAxis.Y),
+					BlockModelBuilder.create(name + "_top")
 						.modelPath("slab")
 						.addCube(CubeBuilder.create()
 							.topSlab()
 							.face(FaceBuilder.create()
-								.texture(texture))
+								.texture(texture)
+								.uvlock(true))
 						)
 				).addState(PropertyBuilder.create()
-						.addProperty(SlabBlock.TYPE, EnumSlabType.DOUBLE),
+						.addProperty(SlabBlock.TYPE, EnumSlabType.DOUBLE)
+						.addProperty(SlabBlock.AXIS, EnumAxis.Y),
 					BlockModelBuilder.create(name + "_double")
 						.modelPath("slab")
 						.addCube(CubeBuilder.create()
 							.fullBlock()
 							.face(FaceBuilder.create()
-								.texture(texture))
+								.texture(texture)
+								.uvlock(true))
 						)
+				).addState(PropertyBuilder.create()
+						.addProperty(SlabBlock.TYPE, EnumSlabType.BOTTOM)
+						.addProperty(SlabBlock.AXIS, EnumAxis.X),
+					BlockModelBuilder.create(name + "_side")
+						.modelPath("slab")
+						.addCube(CubeBuilder.create()
+							.min(0, 0, 0)
+							.max(8, 16, 16)
+							.face(FaceBuilder.create()
+								.texture(texture)
+								.uvlock(true))
+						)
+				).addState(PropertyBuilder.create()
+						.addProperty(SlabBlock.TYPE, EnumSlabType.TOP)
+						.addProperty(SlabBlock.AXIS, EnumAxis.X).rotation(180),
+					BlockModelBuilder.noGen(name + "_side").modelPath("slab")
+				).addState(PropertyBuilder.create()
+						.addProperty(SlabBlock.TYPE, EnumSlabType.BOTTOM)
+						.addProperty(SlabBlock.AXIS, EnumAxis.Z).rotation(90),
+					BlockModelBuilder.noGen(name + "_side").modelPath("slab")
+				).addState(PropertyBuilder.create()
+						.addProperty(SlabBlock.TYPE, EnumSlabType.TOP)
+						.addProperty(SlabBlock.AXIS, EnumAxis.Z).rotation(270),
+					BlockModelBuilder.noGen(name + "_side").modelPath("slab")
+				).addState(PropertyBuilder.create()
+						.addProperty(SlabBlock.TYPE, EnumSlabType.DOUBLE)
+						.addProperty(SlabBlock.AXIS, EnumAxis.Z),
+					BlockModelBuilder.noGen(name + "_double").modelPath("slab")
+				).addState(PropertyBuilder.create()
+						.addProperty(SlabBlock.TYPE, EnumSlabType.DOUBLE)
+						.addProperty(SlabBlock.AXIS, EnumAxis.X),
+					BlockModelBuilder.noGen(name + "_double").modelPath("slab")
 				)
 			);
 	}
 
-//	public void stairs(String name, String texture)
-//	{
-//		DataBuilder.create().stairBlock(name + "_stairs_north", texture, EnumFace.NORTH).blockModelPath("stairs/" + name).generate();
-//		DataBuilder.create().stairBlock(name + "_stairs_east", texture, EnumFace.EAST).blockModelPath("stairs/" + name).generate();
-//		DataBuilder.create().stairBlock(name + "_stairs_south", texture, EnumFace.SOUTH).blockModelPath("stairs/" + name).generate();
-//		DataBuilder.create().stairBlock(name + "_stairs_west", texture, EnumFace.WEST).blockModelPath("stairs/" + name).generate();
-//		DataBuilder.create().orientableItem(name + "_stairs", name + "_stairs_north", name + "_stairs_east", name + "_stairs_south", name + "_stairs_west").itemModel(new ItemFromBlock(name + "_stairs_north")).generate();
-//	}
-/*
-	public void slabs(String name, String texture)
+	public DataBuilder stairs(String name, String texture)
 	{
-		DataBuilder.create().doubleSlabBlock(name, name + "_top", name + "_bottom").generate();
-		DataBuilder.create().slabBlock(name + "_bottom", texture, true).generate();
-		DataBuilder.create().slabBlock(name + "_top", texture, false).generate();
-		DataBuilder.create().slabItem(name + "_slab", name + "_top", name + "_bottom", name).generate();
-	}*/
-/*
-	public DataBuilder stairBlock(String name, String texture, EnumFace face)
-	{
-		FaceBuilder tex = FaceBuilder.create().texture(texture);
-		CubeBuilder top = switch (face)
-			{
-				case NORTH -> CubeBuilder.create().northStairTop().face(tex);
-				case EAST -> CubeBuilder.create().eastStairTop().face(tex);
-				case SOUTH -> CubeBuilder.create().southStairTop().face(tex);
-				case WEST -> CubeBuilder.create().westStairTop().face(tex);
-				default -> throw new IllegalStateException("Unexpected value: " + face);
-			};
-		blockModel = BlockModelBuilder.create()
-			.addCube(CubeBuilder.create()
-				.bottomSlab()
-				.face(tex)
-			)
-			.addCube(top)
-			.build();
-		blockName = name;
-		blockSpecial = new SimpleSpecial("stair");
-
-		return this;
-	}*/
-
-	public DataBuilder orientableItem(String name, String north, String east, String south, String west)
-	{
-		itemName = name;
-		itemSpecial = SpecialBuilder.create("orientable")
-			.addValue("north", north)
-			.addValue("east", east)
-			.addValue("south", south)
-			.addValue("west", west);
-		return this;
+		return DataBuilder.create()
+			.blockName(name)
+			.itemName(name)
+			.blockToPlace(name)
+			.blockSpecial(new SimpleSpecial("stairs"))
+			.itemModel(new ItemFromBlock(name))
+			.blockState(StateBuilder.create()
+				.addState(PropertyBuilder.create().addProperty(StairBlock.FACING, EnumFace.NORTH), BlockModelBuilder.create(name)
+					.addCube(CubeBuilder.create()
+						.bottomSlab()
+						.face(FaceBuilder.create()
+							.texture(texture)
+							.uvlock(true)
+						)
+					)
+					.addCube(CubeBuilder.create()
+						.stairTop()
+						.face(FaceBuilder.create()
+							.texture(texture)
+							.uvlock(true)
+							, EnumFace.UP, EnumFace.NORTH, EnumFace.EAST, EnumFace.SOUTH, EnumFace.WEST
+						)
+					)
+				)
+				.addState(PropertyBuilder.create().addProperty(StairBlock.FACING, EnumFace.EAST).rotation(270), BlockModelBuilder.noGen(name))
+				.addState(PropertyBuilder.create().addProperty(StairBlock.FACING, EnumFace.SOUTH).rotation(180), BlockModelBuilder.noGen(name))
+				.addState(PropertyBuilder.create().addProperty(StairBlock.FACING, EnumFace.WEST).rotation(90), BlockModelBuilder.noGen(name))
+			);
 	}
 
 	public DataBuilder transparentFullBlock(String name)
@@ -453,28 +504,6 @@ public class DataBuilder
 
 		return this;
 	}
-/*
-	public DataBuilder stalaBlock(String name, String texture, float width)
-	{
-		width /= 2f;
-		blockModel = BlockModelBuilder.create()
-			.addCube(
-				CubeBuilder.create()
-					.min(8 - width, 0, 8 - width)
-					.max(8 + width, 16, 8 + width)
-					.face(FaceBuilder.create()
-						.texture(texture)
-						.autoUv(true))
-			).build();
-		blockSpecial = new SimpleSpecial("custom");
-
-		blockToPlace = name;
-		blockName = name;
-		itemName = name;
-		itemModel = new ItemFromBlock(name);
-
-		return this;
-	}*/
 
 	/*
 	 * Generation

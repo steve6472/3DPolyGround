@@ -80,6 +80,10 @@ public class DataGenerator
 		createFolders();
 //		decorativeFullTintedBlock("full_grass_block", 0.5686275f, 0.7411765f, 0.34901962f, "grass_block_top");
 
+		// Items
+		DataBuilder.create().itemModel(new ItemFromTexture("block_inspector")).itemName("block_inspector").itemSpecial(new SimpleSpecial("block_inspector")).generate();
+
+		// Blocks
 		DataBuilder.create().fullBlock("smooth_stone").generate();
 		DataBuilder.create().fullBlock("bricks").generate();
 		DataBuilder.create().fullBlock("iron_block").generate();
@@ -90,14 +94,13 @@ public class DataGenerator
 		DataBuilder.create().fullBlock("gravel").generate();
 		DataBuilder.create().fullBlock("dirt").generate();
 		DataBuilder.create().fullBlock("oak_plank").generate();
-//		DataBuilder.create().fullBlock("cond_test").blockModel(new CondTest()).generate();
+		DataBuilder.create().fullBlock("null").noItem().generate();
+//		DataBuilder.create().fullBlock("cond_test").blockState(StateBuilder.create().singleModel(new CondTest())).blockModel().generate();
 
-//		DataBuilder.create().stairs("stone", "stone");
-//		DataBuilder.create().stairs("oak", "oak_plank");
-//		DataBuilder.create().stairs("cobblestone", "cobblestone");
-//		DataBuilder.create().stairs("brick", "bricks");
-
-		//TODO: Item has to be able to place different states! (Slabs have full block and slab)
+		DataBuilder.create().stairs("stone_stairs", "stone").generate();
+		DataBuilder.create().stairs("oak_plank_stairs", "oak_plank").generate();
+		DataBuilder.create().stairs("cobblestone_stairs", "cobblestone").generate();
+		DataBuilder.create().stairs("brick_stairs", "bricks").generate();
 
 		DataBuilder.create().plusBlock("small_grass", true).generate();
 
@@ -110,15 +113,20 @@ public class DataGenerator
 		DataBuilder.create().transparentFullBlock("glass").generate();
 		DataBuilder.create().transparentFullBlock("framed_glass").generate();
 
-		DataBuilder.create().slab("dirt", "dirt").generate();
-		DataBuilder.create().slab("oak_plank", "oak_plank").generate();
-//
-//		DataBuilder.create().doubleSlabBlock("double_smooth_slab", "smooth_stone", "smooth_stone_slab", "smooth_slab_top", "smooth_slab_bottom").generate();
+		DataBuilder.create().leaves("oak_leaves").generate();
+
+		DataBuilder.create().slab("dirt_slab", "dirt").generate();
+		DataBuilder.create().slab("stone_slab", "stone").generate();
+		DataBuilder.create().slab("oak_plank_slab", "oak_plank").generate();
+		DataBuilder.create().slab("cobblestone_slab", "cobblestone").generate();
+		DataBuilder.create().slab("brick_slab", "bricks").generate();
+
+		DataBuilder.create().pillarBlock("oak_log", "oak_log_side", "oak_log").generate();
+
+		//		DataBuilder.create().doubleSlabBlock("double_smooth_slab", "smooth_stone", "smooth_stone_slab", "smooth_slab_top", "smooth_slab_bottom").generate();
 //		DataBuilder.create().slabBlock("smooth_slab_bottom", "smooth_stone", "smooth_stone_slab", true).generate();
 //		DataBuilder.create().slabBlock("smooth_slab_top", "smooth_stone", "smooth_stone_slab", false).generate();
 //		DataBuilder.create().slabItem("smooth_slab", "smooth_slab_top", "smooth_slab_bottom", "double_smooth_slab").generate();
-
-		DataBuilder.create().pillarBlock("oak_log", "oak_log_side", "oak_log").generate();
 
 		DataBuilder.create()
 			.blockName("stone_stala")
@@ -135,18 +143,6 @@ public class DataGenerator
 				.addState(stalaState(6), stalaModel(6, "stone", "stone"))
 				.addState(stalaState(7), stalaModel(7, "stone", "stone"))
 			).generate();
-
-
-		DataBuilder.create().fullBlock("oak_leaves")
-			.blockState(StateBuilder.create().singleModel(
-				BlockModelBuilder.create("oak_leaves")
-					.addCube(CubeBuilder.create()
-						.fullBlock()
-						.face(FaceBuilder.create().texture("oak_leaves").tint(118, 171, 47))
-					)
-				)
-			)
-			.blockSpecial(new SimpleSpecial("leaves")).generate();
 
 		DataBuilder.create().fullBlock("grass")
 			.blockState(StateBuilder.create().singleModel(

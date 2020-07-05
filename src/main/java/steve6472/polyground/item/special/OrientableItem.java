@@ -48,11 +48,6 @@ public class OrientableItem extends Item
 		}
 	}
 
-	private static final double A = Math.toRadians(-45);
-	private static final double B = Math.toRadians(45);
-	private static final double C = Math.toRadians(135);
-	private static final double D = Math.toRadians(225);
-
 	@Override
 	public void onClick(SubChunk subChunk, BlockState state, Player player, EnumFace clickedOn, MouseEvent click, int x, int y, int z)
 	{

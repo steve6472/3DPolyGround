@@ -130,10 +130,17 @@ public class Block
 	{
 		List<IProperty<?>> properties = new ArrayList<>();
 		fillStates(properties);
-		StateLoader.generateStates(this, properties, new JSONObject(BlockModelLoader.read(new File("game/objects/blockstates/" + blockState + ".json"))));
+		try
+		{
+			StateLoader.generateStates(this, properties, new JSONObject(BlockModelLoader.read(new File("game/objects/blockstates/" + blockState + ".json"))));
+		} catch (Exception ex)
+		{
+			System.out.println("Error while loading blockstate " + blockState);
+			ex.printStackTrace();
+		}
 	}
 
-	public BlockState getStateForPlacement(SubChunk subChunk, int x, int y, int z)
+	public BlockState getStateForPlacement(SubChunk subChunk, Player player, EnumFace placedOn, int x, int y, int z)
 	{
 		return getDefaultState();
 	}

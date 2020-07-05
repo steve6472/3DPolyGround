@@ -61,6 +61,11 @@ public class BlockState
 		return possibleStates;
 	}
 
+	public HashMap<IProperty<?>, Comparable<?>> getProperties()
+	{
+		return properties;
+	}
+
 	@Override
 	public String toString()
 	{

@@ -116,31 +116,10 @@ public class CubeBuilder
 		return this;
 	}
 
-	public CubeBuilder northStairTop()
+	public CubeBuilder stairTop()
 	{
 		min(0, 8, 0);
 		max(8, 16, 16);
-		return this;
-	}
-
-	public CubeBuilder eastStairTop()
-	{
-		min(0, 8, 0);
-		max(16, 16, 8);
-		return this;
-	}
-
-	public CubeBuilder southStairTop()
-	{
-		min(8, 8, 0);
-		max(16, 16, 16);
-		return this;
-	}
-
-	public CubeBuilder westStairTop()
-	{
-		min(0, 8, 8);
-		max(16, 16, 16);
 		return this;
 	}
 

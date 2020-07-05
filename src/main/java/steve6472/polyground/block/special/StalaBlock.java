@@ -27,6 +27,7 @@ public class StalaBlock extends CustomBlock
 	public StalaBlock(File f, int id)
 	{
 		super(f, id);
+		isFull = false;
 		setDefaultState(getDefaultState().with(WIDTH, 1).get());
 	}
 

@@ -61,11 +61,11 @@ public interface IBlockProvider extends IChunkProvider
 				c.setBlock(block, Math.floorMod(x, 16), y, Math.floorMod(z, 16));
 	}
 
-	default void setState(BlockState state, int x, int y, int z, Function<Block, Boolean> canSet)
+	default void setState(BlockState state, int x, int y, int z, Function<BlockState, Boolean> canSet)
 	{
 		Chunk c = getChunkFromBlockPos(x, z);
 		if (c != null)
-			if (canSet.apply(c.getBlock(Math.floorMod(x, 16), y, Math.floorMod(z, 16))))
+			if (canSet.apply(c.getState(Math.floorMod(x, 16), y, Math.floorMod(z, 16))))
 				c.setState(state, Math.floorMod(x, 16), y, Math.floorMod(z, 16));
 	}
 

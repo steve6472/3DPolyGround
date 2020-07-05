@@ -67,11 +67,16 @@ public class StateBuilder
 			{
 				JSONObject model = new JSONObject();
 				model.put("state", s.getA().build());
+				if (s.getA().getRotation() != 0)
+					model.put("rotation", s.getA().getRotation());
 				model.put("model", "block/" + s.getB().getModelPath() + s.getB().getModelName());
 				modelArray.put(model);
 
-				createModelFile(s.getB().getModelPath());
-				save(new File(DataGenerator.BLOCK_MODELS, s.getB().getModelPath() + s.getB().getModelName() + ".json"), new JSONObject(s.getB().build().build()).toString(4));
+				if (s.getB().generateModel())
+				{
+					createModelFile(s.getB().getModelPath());
+					save(new File(DataGenerator.BLOCK_MODELS, s.getB().getModelPath() + s.getB().getModelName() + ".json"), new JSONObject(s.getB().build().build()).toString(4));
+				}
 			}
 
 			// Save block state

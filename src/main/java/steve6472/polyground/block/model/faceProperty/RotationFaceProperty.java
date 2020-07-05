@@ -10,13 +10,13 @@ import org.json.JSONObject;
  ***********************/
 public class RotationFaceProperty extends FaceProperty
 {
-	private EnumRotation rotation;
+	private int rotation;
 
 	public RotationFaceProperty()
 	{
 	}
 
-	public RotationFaceProperty(EnumRotation rotation)
+	public RotationFaceProperty(int rotation)
 	{
 		this.rotation = rotation;
 	}
@@ -24,7 +24,7 @@ public class RotationFaceProperty extends FaceProperty
 	@Override
 	public void loadFromJSON(JSONObject json)
 	{
-		rotation = json.getEnum(EnumRotation.class, "rotation");
+		rotation = json.getInt("rotation");
 	}
 
 	@Override
@@ -33,12 +33,12 @@ public class RotationFaceProperty extends FaceProperty
 		faceJson.put("rotation", rotation);
 	}
 
-	public EnumRotation getRotation()
+	public int getRotation()
 	{
 		return rotation;
 	}
 
-	public void setRotation(EnumRotation rotation)
+	public void setRotation(int rotation)
 	{
 		this.rotation = rotation;
 	}
@@ -53,10 +53,5 @@ public class RotationFaceProperty extends FaceProperty
 	public FaceProperty createCopy()
 	{
 		return new RotationFaceProperty(rotation);
-	}
-
-	public enum EnumRotation
-	{
-		R_90, R_180, R_270, R_0
 	}
 }

@@ -4,6 +4,7 @@ import steve6472.polyground.EnumFace;
 import steve6472.polyground.block.Block;
 import steve6472.polyground.block.properties.EnumProperty;
 import steve6472.polyground.block.properties.IProperty;
+import steve6472.polyground.block.properties.enums.EnumAxis;
 import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.block.states.States;
 import steve6472.polyground.entity.Player;
@@ -14,42 +15,38 @@ import java.util.List;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
- * On date: 21.09.2019
- * Project: SJP
+ * On date: 05.07.2020
+ * Project: CaveGame
  *
  ***********************/
-public class StairBlock extends Block
+public class PilliarBlock extends Block
 {
-	public static final EnumProperty<EnumFace> FACING = States.FACING_BLOCK;
+	public static final EnumProperty<EnumAxis> AXIS = States.AXIS;
 
-	public StairBlock(File f, int id)
+	public PilliarBlock(File f, int id)
 	{
 		super(f, id);
-		isFull = false;
-		setDefaultState(getDefaultState().with(FACING, EnumFace.NORTH).get());
+		setDefaultState(getDefaultState().with(AXIS, EnumAxis.Y).get());
 	}
 
 	@Override
 	public BlockState getStateForPlacement(SubChunk subChunk, Player player, EnumFace placedOn, int x, int y, int z)
 	{
-		if (player == null)
+		if (placedOn == null)
 			return getDefaultState();
 
-		//TODO: Change to radians
-		double yaw = Math.toDegrees(player.getCamera().getYaw());
-		if (yaw < 45 || yaw > 315)
-			return getDefaultState().with(FACING, EnumFace.EAST).get();
-		else if (yaw < 315 && yaw > 225)
-			return getDefaultState().with(FACING, EnumFace.SOUTH).get();
-		else if (yaw < 225 && yaw > 135)
-			return getDefaultState().with(FACING, EnumFace.WEST).get();
-		else
-			return getDefaultState().with(FACING, EnumFace.NORTH).get();
+		return switch (placedOn)
+			{
+				case UP, DOWN -> getDefaultState().with(AXIS, EnumAxis.Y).get();
+				case NORTH, SOUTH -> getDefaultState().with(AXIS, EnumAxis.X).get();
+				case EAST, WEST -> getDefaultState().with(AXIS, EnumAxis.Z).get();
+				case NONE -> getDefaultState();
+			};
 	}
 
 	@Override
 	public void fillStates(List<IProperty<?>> properties)
 	{
-		properties.add(FACING);
+		properties.add(AXIS);
 	}
 }

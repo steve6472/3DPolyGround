@@ -1,10 +1,10 @@
 package steve6472.polyground.world;
 
 import org.joml.AABBf;
+import org.joml.Vector3f;
 import steve6472.polyground.EnumFace;
 import steve6472.polyground.block.model.Cube;
 import steve6472.polyground.block.model.CubeFace;
-import steve6472.polyground.block.model.faceProperty.RotationFaceProperty;
 import steve6472.polyground.block.model.faceProperty.TintFaceProperty;
 import steve6472.polyground.block.model.faceProperty.UVFaceProperty;
 import steve6472.polyground.registry.face.FaceRegistry;
@@ -64,6 +64,12 @@ public final class BuildHelper
 	private int getTextureId(Cube cube, EnumFace face)
 	{
 		return cube.getFace(face).getProperty(FaceRegistry.texture).getTextureId();
+	}
+
+	private void vert(Vector3f... vertices)
+	{
+		for (Vector3f v : vertices)
+			vert(v.x, v.y, v.z);
 	}
 
 	private void vert(float ox, float oy, float oz)
@@ -270,15 +276,23 @@ public final class BuildHelper
 			norm.add(-1f);
 		}
 
-		vert(a.maxX, a.maxY, a.minZ);
-		vert(a.maxX, a.minY, a.minZ);
-		vert(a.minX, a.minY, a.minZ);
+		Vector3f v1 = new Vector3f(a.maxX, a.maxY, a.minZ);
+		Vector3f v2 = new Vector3f(a.maxX, a.minY, a.minZ);
+		Vector3f v3 = new Vector3f(a.minX, a.minY, a.minZ);
+		Vector3f v4 = new Vector3f(a.minX, a.maxY, a.minZ);
 
-		/* */
+		int rotation =
+			cube.getFace(face).hasProperty(FaceRegistry.rotation) ?
+				cube.getFace(face).getProperty(FaceRegistry.rotation).getRotation() :
+				0;
 
-		vert(a.minX, a.minY, a.minZ);
-		vert(a.minX, a.maxY, a.minZ);
-		vert(a.maxX, a.maxY, a.minZ);
+		switch (rotation)
+		{
+			case 90 -> vert(v2, v3, v4, v4, v1, v2);
+			case 180 -> vert(v3, v4, v1, v1, v2, v3);
+			case 270 -> vert(v4, v4, v2, v2, v3, v4);
+			default -> vert(v1, v2, v3, v3, v4, v1);
+		}
 
 		return 6;
 	}
@@ -304,15 +318,23 @@ public final class BuildHelper
 			norm.add(1f);
 		}
 
-		vert(a.minX, a.maxY, a.maxZ);
-		vert(a.minX, a.minY, a.maxZ);
-		vert(a.maxX, a.minY, a.maxZ);
+		Vector3f v1 = new Vector3f(a.minX, a.maxY, a.maxZ);
+		Vector3f v2 = new Vector3f(a.minX, a.minY, a.maxZ);
+		Vector3f v3 = new Vector3f(a.maxX, a.minY, a.maxZ);
+		Vector3f v4 = new Vector3f(a.maxX, a.maxY, a.maxZ);
 
-		/* */
+		int rotation =
+			cube.getFace(face).hasProperty(FaceRegistry.rotation) ?
+				cube.getFace(face).getProperty(FaceRegistry.rotation).getRotation() :
+				0;
 
-		vert(a.maxX, a.minY, a.maxZ);
-		vert(a.maxX, a.maxY, a.maxZ);
-		vert(a.minX, a.maxY, a.maxZ);
+		switch (rotation)
+		{
+			case 90 -> vert(v2, v3, v4, v4, v1, v2);
+			case 180 -> vert(v3, v4, v1, v1, v2, v3);
+			case 270 -> vert(v4, v4, v2, v2, v3, v4);
+			default -> vert(v1, v2, v3, v3, v4, v1);
+		}
 
 		return 6;
 	}
@@ -338,15 +360,23 @@ public final class BuildHelper
 			norm.add(0f);
 		}
 
-		vert(a.minX, a.maxY, a.minZ);
-		vert(a.minX, a.minY, a.minZ);
-		vert(a.minX, a.minY, a.maxZ);
+		Vector3f v1 = new Vector3f(a.minX, a.maxY, a.minZ);
+		Vector3f v2 = new Vector3f(a.minX, a.minY, a.minZ);
+		Vector3f v3 = new Vector3f(a.minX, a.minY, a.maxZ);
+		Vector3f v4 = new Vector3f(a.minX, a.maxY, a.maxZ);
 
-		/* */
+		int rotation =
+			cube.getFace(face).hasProperty(FaceRegistry.rotation) ?
+				cube.getFace(face).getProperty(FaceRegistry.rotation).getRotation() :
+				0;
 
-		vert(a.minX, a.minY, a.maxZ);
-		vert(a.minX, a.maxY, a.maxZ);
-		vert(a.minX, a.maxY, a.minZ);
+		switch (rotation)
+		{
+			case 90 -> vert(v2, v3, v4, v4, v1, v2);
+			case 180 -> vert(v3, v4, v1, v1, v2, v3);
+			case 270 -> vert(v4, v4, v2, v2, v3, v4);
+			default -> vert(v1, v2, v3, v3, v4, v1);
+		}
 
 		return 6;
 	}
@@ -372,15 +402,23 @@ public final class BuildHelper
 			norm.add(0f);
 		}
 
-		vert(a.maxX, a.maxY, a.maxZ);
-		vert(a.maxX, a.minY, a.maxZ);
-		vert(a.maxX, a.minY, a.minZ);
+		Vector3f v1 = new Vector3f(a.maxX, a.maxY, a.maxZ);
+		Vector3f v2 = new Vector3f(a.maxX, a.minY, a.maxZ);
+		Vector3f v3 = new Vector3f(a.maxX, a.minY, a.minZ);
+		Vector3f v4 = new Vector3f(a.maxX, a.maxY, a.minZ);
 
-		/* */
+		int rotation =
+			cube.getFace(face).hasProperty(FaceRegistry.rotation) ?
+				cube.getFace(face).getProperty(FaceRegistry.rotation).getRotation() :
+				0;
 
-		vert(a.maxX, a.minY, a.minZ);
-		vert(a.maxX, a.maxY, a.minZ);
-		vert(a.maxX, a.maxY, a.maxZ);
+		switch (rotation)
+		{
+			case 90 -> vert(v2, v3, v4, v4, v1, v2);
+			case 180 -> vert(v3, v4, v1, v1, v2, v3);
+			case 270 -> vert(v4, v4, v2, v2, v3, v4);
+			default -> vert(v1, v2, v3, v3, v4, v1);
+		}
 
 		return 6;
 	}
@@ -406,57 +444,22 @@ public final class BuildHelper
 			norm.add(0f);
 		}
 
-		if (cube.getFace(face).hasProperty(FaceRegistry.rotation))
+		Vector3f v1 = new Vector3f(a.maxX, a.maxY, a.minZ);
+		Vector3f v2 = new Vector3f(a.minX, a.maxY, a.minZ);
+		Vector3f v3 = new Vector3f(a.minX, a.maxY, a.maxZ);
+		Vector3f v4 = new Vector3f(a.maxX, a.maxY, a.maxZ);
+
+		int rotation =
+			cube.getFace(face).hasProperty(FaceRegistry.rotation) ?
+				cube.getFace(face).getProperty(FaceRegistry.rotation).getRotation() :
+				0;
+
+		switch (rotation)
 		{
-			RotationFaceProperty.EnumRotation rotation = cube.getFace(face).getProperty(FaceRegistry.rotation).getRotation();
-			switch (rotation)
-			{
-				case R_90 -> {
-					vert(a.minX, a.maxY, a.minZ);
-					vert(a.minX, a.maxY, a.maxZ);
-					vert(a.maxX, a.maxY, a.maxZ);
-
-					vert(a.maxX, a.maxY, a.maxZ);
-					vert(a.maxX, a.maxY, a.minZ);
-					vert(a.minX, a.maxY, a.minZ);
-				}
-				case R_180 -> {
-					vert(a.minX, a.maxY, a.maxZ);
-					vert(a.maxX, a.maxY, a.maxZ);
-					vert(a.maxX, a.maxY, a.minZ);
-
-					vert(a.maxX, a.maxY, a.minZ);
-					vert(a.minX, a.maxY, a.minZ);
-					vert(a.minX, a.maxY, a.maxZ);
-				}
-				case R_270 -> {
-					vert(a.maxX, a.maxY, a.maxZ);
-					vert(a.maxX, a.maxY, a.minZ);
-					vert(a.minX, a.maxY, a.minZ);
-
-					vert(a.minX, a.maxY, a.minZ);
-					vert(a.minX, a.maxY, a.maxZ);
-					vert(a.maxX, a.maxY, a.maxZ);
-				}
-				case R_0 -> {
-					vert(a.maxX, a.maxY, a.minZ);
-					vert(a.minX, a.maxY, a.minZ);
-					vert(a.minX, a.maxY, a.maxZ);
-
-					vert(a.minX, a.maxY, a.maxZ);
-					vert(a.maxX, a.maxY, a.maxZ);
-					vert(a.maxX, a.maxY, a.minZ);
-				}
-			}
-		} else
-		{
-			vert(a.maxX, a.maxY, a.minZ);
-			vert(a.minX, a.maxY, a.minZ);
-			vert(a.minX, a.maxY, a.maxZ);
-
-			vert(a.minX, a.maxY, a.maxZ);
-			vert(a.maxX, a.maxY, a.maxZ);
-			vert(a.maxX, a.maxY, a.minZ);
+			case 90 -> vert(v2, v3, v4, v4, v1, v2);
+			case 180 -> vert(v3, v4, v1, v1, v2, v3);
+			case 270 -> vert(v4, v4, v2, v2, v3, v4);
+			default -> vert(v1, v2, v3, v3, v4, v1);
 		}
 
 		return 6;
@@ -482,21 +485,23 @@ public final class BuildHelper
 			norm.add(-1f);
 			norm.add(0f);
 		}
-/*
-		if (cube.getFace(face).hasProperty(FaceRegistry.rotation))
-		{
-			RotationFaceProperty.EnumRotation rotation = cube.getFace(face).getProperty(FaceRegistry.rotation).getRotation();
-		} else*/
-		{
-			vert(a.minX, a.minY, a.minZ);
-			vert(a.maxX, a.minY, a.minZ);
-			vert(a.maxX, a.minY, a.maxZ);
 
-			/* */
+		Vector3f v1 = new Vector3f(a.minX, a.minY, a.minZ);
+		Vector3f v2 = new Vector3f(a.maxX, a.minY, a.minZ);
+		Vector3f v3 = new Vector3f(a.maxX, a.minY, a.maxZ);
+		Vector3f v4 = new Vector3f(a.minX, a.minY, a.maxZ);
 
-			vert(a.maxX, a.minY, a.maxZ);
-			vert(a.minX, a.minY, a.maxZ);
-			vert(a.minX, a.minY, a.minZ);
+		int rotation =
+			cube.getFace(face).hasProperty(FaceRegistry.rotation) ?
+				cube.getFace(face).getProperty(FaceRegistry.rotation).getRotation() :
+				0;
+
+		switch (rotation)
+		{
+			case 90 -> vert(v2, v3, v4, v4, v1, v2);
+			case 180 -> vert(v3, v4, v1, v1, v2, v3);
+			case 270 -> vert(v4, v4, v2, v2, v3, v4);
+			default -> vert(v1, v2, v3, v3, v4, v1);
 		}
 
 		return 6;

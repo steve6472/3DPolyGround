@@ -18,14 +18,14 @@ public class SpecialBlockRegistry
 {
 	private static final HashMap<String, SpecialBlockEntry<? extends Block>> specialBlockRegistry = new HashMap<>();
 
-	public static final SpecialBlockEntry<LogBlock> log = register("log", LogBlock::new);
+	public static final SpecialBlockEntry<PilliarBlock> pilliar = register("pilliar", PilliarBlock::new);
 	public static final SpecialBlockEntry<TransparentBlock> transparentBlock = register("transparent", TransparentBlock::new);
 	public static final SpecialBlockEntry<DropBlock> drop = register("drop", DropBlock::new);
 	public static final SpecialBlockEntry<SlabBlock> slab = register("slab", SlabBlock::new);
 	public static final SpecialBlockEntry<StalaBlock> stalaBlock = register("stala", StalaBlock::new);
 	public static final SpecialBlockEntry<WorldButtonBlock> worldButton = register("world_button", WorldButtonBlock::new);
 	public static final SpecialBlockEntry<SnapButtonBlock> snapButton = register("snap_button", SnapButtonBlock::new);
-	public static final SpecialBlockEntry<StairBlock> stair = register("stair", StairBlock::new);
+	public static final SpecialBlockEntry<StairBlock> stairs = register("stairs", StairBlock::new);
 	public static final SpecialBlockEntry<LeavesBlock> leaves = register("leaves", LeavesBlock::new);
 	public static final SpecialBlockEntry<GravelBlock> gravel = register("gravel", GravelBlock::new);
 	public static final SpecialBlockEntry<DoubleSlabBlockTinted> doubleSlabTinted = register("double_slab_tinted", DoubleSlabBlockTinted::new);

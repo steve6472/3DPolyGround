@@ -28,7 +28,7 @@ public class BlockModel
 		tags.add("air");
 	}
 
-	public BlockModel(String path)
+	public BlockModel(String path, int rot)
 	{
 		if (path.isBlank())
 			throw new IllegalArgumentException("Model path is blank! '" + path + "'");
@@ -36,7 +36,7 @@ public class BlockModel
 		cubes = new ArrayList<>();
 		tags = new ArrayList<>();
 
-		setCubes(CaveGame.getInstance().blockModelLoader.loadModel(path));
+		setCubes(CaveGame.getInstance().blockModelLoader.loadModel(path, rot));
 
 		double volume = 0;
 

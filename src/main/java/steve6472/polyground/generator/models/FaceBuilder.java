@@ -2,7 +2,6 @@ package steve6472.polyground.generator.models;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import steve6472.polyground.block.model.faceProperty.RotationFaceProperty;
 import steve6472.polyground.world.chunk.ModelLayer;
 
 /**********************
@@ -14,10 +13,10 @@ import steve6472.polyground.world.chunk.ModelLayer;
 public class FaceBuilder
 {
 	private String texture;
-	private boolean autoUv, isVisible, biomeTint;
+	private boolean autoUv, isVisible, biomeTint, uvlock;
 	private float minU, minV, maxU, maxV;
 	private float red, green, blue;
-	private RotationFaceProperty.EnumRotation rotation;
+	private int rotation;
 	private ModelLayer layer;
 
 	public static FaceBuilder create()
@@ -29,9 +28,10 @@ public class FaceBuilder
 	{
 		red = green = blue = 255f;
 		layer = ModelLayer.NORMAL;
-		rotation = RotationFaceProperty.EnumRotation.R_0;
+		rotation = 0;
 		isVisible = true;
 		autoUv = true;
+		uvlock = false;
 	}
 
 	public JSONObject build()
@@ -41,10 +41,11 @@ public class FaceBuilder
 
 		if (autoUv) main.put("autoUV", true);
 		if (!isVisible) main.put("isVisible", false);
+		if (uvlock) main.put("uvlock", true);
 		if (biomeTint) main.put("biomeTint", true);
 		if (!autoUv) main.put("uv", new JSONArray().put(minU).put(minV).put(maxU).put(maxV));
-		if (red + green + blue != 255 * 3) main.put("tint", new JSONArray().put(red).put(green).put(blue));
-		if (rotation != RotationFaceProperty.EnumRotation.R_0) main.put("rotation", rotation);
+		if (red + green + blue != 765) main.put("tint", new JSONArray().put(red).put(green).put(blue));
+		if (rotation != 0) main.put("rotation", rotation);
 		if (layer != ModelLayer.NORMAL) main.put("modelLayer", layer);
 
 		return main;
@@ -63,6 +64,12 @@ public class FaceBuilder
 	/*
 	 * Boolean
 	 */
+
+	public FaceBuilder uvlock(boolean uvlock)
+	{
+		this.uvlock = uvlock;
+		return this;
+	}
 
 	public FaceBuilder autoUv(boolean autoUv)
 	{
@@ -108,7 +115,7 @@ public class FaceBuilder
 	 * Enum
 	 */
 
-	public FaceBuilder rotation(RotationFaceProperty.EnumRotation rotation)
+	public FaceBuilder rotation(int rotation)
 	{
 		this.rotation = rotation;
 		return this;

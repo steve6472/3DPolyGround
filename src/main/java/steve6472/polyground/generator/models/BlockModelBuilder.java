@@ -17,6 +17,12 @@ public class BlockModelBuilder
 	private final List<CubeBuilder> cubes;
 	private final String modelName;
 	private String modelPath;
+	private boolean generate;
+
+	public static BlockModelBuilder noGen(String modelName)
+	{
+		return new BlockModelBuilder(modelName).generate(false);
+	}
 
 	public static BlockModelBuilder create(String modelName)
 	{
@@ -28,6 +34,18 @@ public class BlockModelBuilder
 		cubes = new ArrayList<>();
 		this.modelName = modelName;
 		this.modelPath = "";
+		generate = true;
+	}
+
+	public BlockModelBuilder generate(boolean generateModel)
+	{
+		this.generate = generateModel;
+		return this;
+	}
+
+	public boolean generateModel()
+	{
+		return generate;
 	}
 
 	public BlockModelBuilder modelPath(String path)

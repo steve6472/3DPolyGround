@@ -243,7 +243,7 @@ public class Player implements IMotion3f, IPosition3f
 
 			BlockState state = subChunk.getState(hr.getCx(), hr.getCy(), hr.getCz());
 
-			pg.world.getBlock(hr.getX(), hr.getY(), hr.getZ()).onClick(subChunk, state, this, hr.getFace(), event, floorMod(hr.getX(), 16), floorMod(hr.getY(), 16), floorMod(hr.getZ(), 16));
+			pg.world.getBlock(hr.getX(), hr.getY(), hr.getZ()).onClick(subChunk, state, this, hr.getFace(), event, hr.getCx(), hr.getCy(), hr.getCz());
 
 			CaveGame.itemInHand.onClick(subChunk, state, this, hr.getFace(), event, floorMod(hr.getX(), 16), floorMod(hr.getY(), 16), floorMod(hr.getZ(), 16));
 		}

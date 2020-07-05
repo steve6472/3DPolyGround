@@ -43,8 +43,9 @@ public class BasicEvents
 		if (subChunk == null)
 			return;
 
-		world.setBlock(block, hr.getX() + xOffset, hr.getY() + yOffset, hr.getZ() + zOffset, Block::isReplaceable);
-		BlockState state = subChunk.getState(hr.getCx() + xOffset, hr.getCy() + yOffset, hr.getCz() + zOffset);
+		BlockState state = block.getStateForPlacement(subChunk, player, face, hr.getCx(), hr.getCy(), hr.getCz());
+
+		world.setState(state, hr.getX() + xOffset, hr.getY() + yOffset, hr.getZ() + zOffset, blockState -> blockState.getBlock().isReplaceable());
 
 		block.onPlace(subChunk, state, player, face, hr.getX() + xOffset, hr.getY() + yOffset, hr.getZ() + zOffset);
 		updateAll(subChunk, hr.getX() + xOffset, hr.getY() + yOffset, hr.getZ() + zOffset);
@@ -62,7 +63,7 @@ public class BasicEvents
 		if (subChunk == null)
 			return;
 
-		world.setState(state, hr.getX() + xOffset, hr.getY() + yOffset, hr.getZ() + zOffset, Block::isReplaceable);
+		world.setState(state, hr.getX() + xOffset, hr.getY() + yOffset, hr.getZ() + zOffset, blockState -> blockState.getBlock().isReplaceable());
 
 		state.getBlock().onPlace(subChunk, state, player, face, hr.getX() + xOffset, hr.getY() + yOffset, hr.getZ() + zOffset);
 		updateAll(subChunk, hr.getX() + xOffset, hr.getY() + yOffset, hr.getZ() + zOffset);

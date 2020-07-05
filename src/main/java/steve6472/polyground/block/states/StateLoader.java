@@ -29,17 +29,18 @@ public class StateLoader
 	{
 		if (properties.isEmpty())
 		{
-			block.setDefaultState(new BlockState(block, new BlockModel(blockstates.getString("model")), null, null));
+			block.setDefaultState(new BlockState(block, new BlockModel(blockstates.getString("model"), 0), null, null));
 			return;
 		}
 
 
 		JSONArray array = blockstates.getJSONArray("models");
-		Map<JSONObject, String> models = new HashMap<>(array.length());
+
+		Map<JSONObject, JSONObject> models = new HashMap<>(array.length());
 		for (int i = 0; i < array.length(); i++)
 		{
 			JSONObject m = array.getJSONObject(i);
-			models.put(m.getJSONObject("state"), m.getString("model"));
+			models.put(m.getJSONObject("state"), m);
 		}
 
 		// Generate all possible state values
@@ -83,6 +84,7 @@ public class StateLoader
 			}
 
 			String modelPath = "";
+			int rotation = 0;
 
 			for (JSONObject j : models.keySet())
 			{
@@ -104,14 +106,15 @@ public class StateLoader
 				}
 				if (match)
 				{
-					modelPath = models.get(j);
+					modelPath = models.get(j).getString("model");
+					rotation = models.get(j).optInt("rotation");
 					break;
 				}
 			}
 
 			try
 			{
-				BlockState state = new BlockState(block, new BlockModel(modelPath), map, tileStates);
+				BlockState state = new BlockState(block, new BlockModel(modelPath, rotation), map, tileStates);
 				if (block.getDefaultState() == null)
 					block.setDefaultState(state);
 				tileStates.add(state);
