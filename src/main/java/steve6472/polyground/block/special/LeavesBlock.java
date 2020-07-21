@@ -12,9 +12,9 @@ import java.io.File;
  ***********************/
 public class LeavesBlock extends Block
 {
-	public LeavesBlock(File f, int id)
+	public LeavesBlock(File f)
 	{
-		super(f, id);
+		super(f);
 		isFull = false;
 	}
 

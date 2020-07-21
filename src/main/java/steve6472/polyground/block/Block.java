@@ -40,14 +40,12 @@ public class Block
 
 	public boolean isFull;
 
-	private final int id;
-
 	public String name;
 	private BlockState defaultState;
 
 	public static Block createAir()
 	{
-		return air = new Block("air", 0, new BlockModel());
+		return air = new Block("air", new BlockModel());
 	}
 
 	public static Block createError()
@@ -76,38 +74,30 @@ public class Block
 
 		BlockModel model = new BlockModel(cube);
 
-		error = new Block("error", 1, model);
+		error = new Block("error", model);
 		error.getDefaultState().getBlockModel().addTag("error");
 		error.getDefaultState().getBlockModel().addTag("solid");
 
 		return error;
 	}
 
-	private Block(String name, int id, BlockModel blockModel)
+	private Block(String name, BlockModel blockModel)
 	{
 		this.name = name;
-		this.id = id;
 		isFull = false;
 		StateLoader.generateState(this, blockModel);
 	}
 
-	public Block(File f, int id)
+	public Block(File f)
 	{
 		isFull = true;
 		name = f.getName().substring(0, f.getName().length() - 4);
 		generateStates(new SSS(f).getString("blockstate"));
-
-		this.id = id;
 	}
 
 	public String getName()
 	{
 		return name;
-	}
-
-	public int getId()
-	{
-		return id;
 	}
 
 	/* States */
@@ -141,6 +131,11 @@ public class Block
 	}
 
 	public BlockState getStateForPlacement(SubChunk subChunk, Player player, EnumFace placedOn, int x, int y, int z)
+	{
+		return getDefaultState();
+	}
+
+	public BlockState getStateForPlacement(SubChunk subChunk, BlockState state, int x, int y, int z)
 	{
 		return getDefaultState();
 	}
@@ -204,7 +199,7 @@ public class Block
 	@Override
 	public String toString()
 	{
-		return "Block{" + "isFull=" + isFull + ", id=" + id + ", name='" + name + '\'' + '}';
+		return "Block{" + "isFull=" + isFull + ", id=" + -1 + ", name='" + name + '\'' + '}';
 	}
 
 	public void tick(SubChunk subChunk, BlockState state, int x, int y, int z)

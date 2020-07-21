@@ -13,8 +13,8 @@ public class SpecialBlockEntry<T extends Block>
 		this.factory = factory;
 	}
 
-	public T createNew(File f, int id)
+	public T createNew(File f)
 	{
-		return factory.create(f, id);
+		return factory.create(f);
 	}
 }

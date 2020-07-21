@@ -290,7 +290,7 @@ public final class BuildHelper
 		{
 			case 90 -> vert(v2, v3, v4, v4, v1, v2);
 			case 180 -> vert(v3, v4, v1, v1, v2, v3);
-			case 270 -> vert(v4, v4, v2, v2, v3, v4);
+			case 270 -> vert(v4, v1, v2, v2, v3, v4);
 			default -> vert(v1, v2, v3, v3, v4, v1);
 		}
 
@@ -332,7 +332,7 @@ public final class BuildHelper
 		{
 			case 90 -> vert(v2, v3, v4, v4, v1, v2);
 			case 180 -> vert(v3, v4, v1, v1, v2, v3);
-			case 270 -> vert(v4, v4, v2, v2, v3, v4);
+			case 270 -> vert(v4, v1, v2, v2, v3, v4);
 			default -> vert(v1, v2, v3, v3, v4, v1);
 		}
 
@@ -374,7 +374,7 @@ public final class BuildHelper
 		{
 			case 90 -> vert(v2, v3, v4, v4, v1, v2);
 			case 180 -> vert(v3, v4, v1, v1, v2, v3);
-			case 270 -> vert(v4, v4, v2, v2, v3, v4);
+			case 270 -> vert(v4, v1, v2, v2, v3, v4);
 			default -> vert(v1, v2, v3, v3, v4, v1);
 		}
 
@@ -416,7 +416,7 @@ public final class BuildHelper
 		{
 			case 90 -> vert(v2, v3, v4, v4, v1, v2);
 			case 180 -> vert(v3, v4, v1, v1, v2, v3);
-			case 270 -> vert(v4, v4, v2, v2, v3, v4);
+			case 270 -> vert(v4, v1, v2, v2, v3, v4);
 			default -> vert(v1, v2, v3, v3, v4, v1);
 		}
 
@@ -458,7 +458,7 @@ public final class BuildHelper
 		{
 			case 90 -> vert(v2, v3, v4, v4, v1, v2);
 			case 180 -> vert(v3, v4, v1, v1, v2, v3);
-			case 270 -> vert(v4, v4, v2, v2, v3, v4);
+			case 270 -> vert(v4, v1, v2, v2, v3, v4);
 			default -> vert(v1, v2, v3, v3, v4, v1);
 		}
 

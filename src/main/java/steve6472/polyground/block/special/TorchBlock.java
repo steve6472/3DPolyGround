@@ -66,9 +66,9 @@ public class TorchBlock extends Block
 		return f;
 	}
 
-	public TorchBlock(File f, int id)
+	public TorchBlock(File f)
 	{
-		super(f, id);
+		super(f);
 		this.f = f;
 	}
 

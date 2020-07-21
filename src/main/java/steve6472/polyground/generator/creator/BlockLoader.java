@@ -28,7 +28,7 @@ import java.util.List;
  ***********************/
 class BlockLoader
 {
-	private static List<FaceEntry> ignoredProperties = new ArrayList<>();
+	private static final List<FaceEntry<?>> ignoredProperties = new ArrayList<>();
 
 	static
 	{
@@ -88,7 +88,7 @@ class BlockLoader
 		main:
 		for (String key : FaceRegistry.getKeys())
 		{
-			for (FaceEntry f : ignoredProperties)
+			for (FaceEntry<?> f : ignoredProperties)
 			{
 				if (f.getInstance().getId().equals(key))
 				{

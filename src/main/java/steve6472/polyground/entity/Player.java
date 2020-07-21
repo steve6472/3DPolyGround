@@ -17,8 +17,6 @@ import steve6472.sge.main.game.Camera;
 import steve6472.sge.main.game.mixable.IMotion3f;
 import steve6472.sge.main.game.mixable.IPosition3f;
 
-import static java.lang.Math.*;
-
 /**********************
  * Created by steve6472 (Mirek Jozefek)
  * On date: 19.07.2019
@@ -79,7 +77,7 @@ public class Player implements IMotion3f, IPosition3f
 		if (flyTimer > 0)
 			flyTimer--;
 
-		head();
+//		head();
 
 		if (isFlying)
 			isOnGround = false;
@@ -180,14 +178,6 @@ public class Player implements IMotion3f, IPosition3f
 				flag = true;
 			}
 			camera.head(pg.getMouseX(), pg.getMouseY(), CaveGame.getInstance().options.mouseSensitivity);
-			while (camera.getYaw() > RAD_360)
-			{
-				camera.setYaw((float) (camera.getYaw() - RAD_360));
-			}
-			while (camera.getYaw() < 0)
-			{
-				camera.setYaw((float) (camera.getYaw() + RAD_360));
-			}
 		}
 	}
 
@@ -245,7 +235,7 @@ public class Player implements IMotion3f, IPosition3f
 
 			pg.world.getBlock(hr.getX(), hr.getY(), hr.getZ()).onClick(subChunk, state, this, hr.getFace(), event, hr.getCx(), hr.getCy(), hr.getCz());
 
-			CaveGame.itemInHand.onClick(subChunk, state, this, hr.getFace(), event, floorMod(hr.getX(), 16), floorMod(hr.getY(), 16), floorMod(hr.getZ(), 16));
+			CaveGame.itemInHand.onClick(subChunk, state, this, hr.getFace(), event, hr.getCx(), hr.getCy(), hr.getCz());
 		}
 
 		CaveGame.itemInHand.onClick(this, event);

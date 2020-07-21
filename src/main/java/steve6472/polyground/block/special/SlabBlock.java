@@ -29,9 +29,9 @@ public class SlabBlock extends Block
 	public static final EnumProperty<EnumSlabType> TYPE = States.SLAB_TYPE;
 	public static final EnumProperty<EnumAxis> AXIS = States.AXIS;
 
-	public SlabBlock(File f, int id)
+	public SlabBlock(File f)
 	{
-		super(f, id);
+		super(f);
 		isFull = false;
 		setDefaultState(getDefaultState().with(TYPE, EnumSlabType.BOTTOM).with(AXIS, EnumAxis.Y).get());
 	}
@@ -39,6 +39,9 @@ public class SlabBlock extends Block
 	@Override
 	public BlockState getStateForPlacement(SubChunk subChunk, Player player, EnumFace placedOn, int x, int y, int z)
 	{
+		if (player == null || placedOn == null)
+			return getDefaultState();
+
 		if (placedOn == EnumFace.DOWN)
 			return getDefaultState().with(TYPE, EnumSlabType.TOP).with(AXIS, EnumAxis.Y).get();
 

@@ -20,9 +20,9 @@ import java.io.File;
  ***********************/
 public class SnapButtonBlock extends Block
 {
-	public SnapButtonBlock(File f, int id)
+	public SnapButtonBlock(File f)
 	{
-		super(f, id);
+		super(f);
 		isFull = false;
 	}
 

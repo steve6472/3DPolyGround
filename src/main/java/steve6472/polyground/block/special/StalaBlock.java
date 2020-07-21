@@ -24,9 +24,9 @@ public class StalaBlock extends CustomBlock
 {
 	public static final IntProperty WIDTH = States.STALA_WIDTH;
 
-	public StalaBlock(File f, int id)
+	public StalaBlock(File f)
 	{
-		super(f, id);
+		super(f);
 		isFull = false;
 		setDefaultState(getDefaultState().with(WIDTH, 1).get());
 	}

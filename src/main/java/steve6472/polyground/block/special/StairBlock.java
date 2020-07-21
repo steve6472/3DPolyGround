@@ -22,9 +22,9 @@ public class StairBlock extends Block
 {
 	public static final EnumProperty<EnumFace> FACING = States.FACING_BLOCK;
 
-	public StairBlock(File f, int id)
+	public StairBlock(File f)
 	{
-		super(f, id);
+		super(f);
 		isFull = false;
 		setDefaultState(getDefaultState().with(FACING, EnumFace.NORTH).get());
 	}

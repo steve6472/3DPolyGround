@@ -31,7 +31,7 @@ public class VoidBucketItem extends Item
 		{
 			if (click.getButton() == KeyList.RMB)
 			{
-				int blockId = subChunk.getBlock(x + clickedOn.getXOffset() - subChunk.getX() * 16, y + clickedOn.getYOffset() - subChunk.getLayer() * 16, z + clickedOn.getZOffset() - subChunk.getZ() * 16).getId();
+				int blockId = subChunk.getState(x + clickedOn.getXOffset() - subChunk.getX() * 16, y + clickedOn.getYOffset() - subChunk.getLayer() * 16, z + clickedOn.getZOffset() - subChunk.getZ() * 16).getId();
 				if (WaterRegistry.volumes[blockId] > 0)
 					subChunk.setLiquidVolumeEfficiently(x + clickedOn.getXOffset() - subChunk.getX() * 16, y + clickedOn.getYOffset() - subChunk.getLayer() * 16, z + clickedOn.getZOffset() - subChunk.getZ() * 16, 0.0);
 			}

@@ -18,9 +18,9 @@ import java.io.File;
  ***********************/
 public class CustomBlock extends TransparentBlock
 {
-	public CustomBlock(File f, int id)
+	public CustomBlock(File f)
 	{
-		super(f, id);
+		super(f);
 	}
 
 	@Override

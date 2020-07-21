@@ -1,12 +1,13 @@
 package steve6472.polyground.block.model.faceProperty.condition;
 
+import steve6472.polyground.block.Block;
 import steve6472.polyground.registry.BlockRegistry;
 import steve6472.polyground.world.chunk.SubChunk;
 
 class BlockCheck implements ICheck
 {
 	int relX, relY, relZ;
-	int blockId;
+	Block blockId;
 	String block;
 	Type type;
 
@@ -53,21 +54,21 @@ class BlockCheck implements ICheck
 	public void fixBlockId()
 	{
 		if (block.startsWith("#"))
-			blockId = -1;
+			blockId = Block.error;
 		else
-			blockId = BlockRegistry.getBlockIdByName(block);
+			blockId = BlockRegistry.getBlockByName(block);
 	}
 
 	public boolean test(int x, int y, int z, SubChunk subChunk)
 	{
 		boolean f;
-		if (blockId == -1)
+		if (blockId == Block.error)
 		{
 			f = subChunk.getState(relX + Math.floorMod(x, 16), relY + Math.floorMod(y, 16), relZ + Math.floorMod(z, 16)).getBlockModel().hasTag(block.substring(1));
 			print("Checked for block tag \"%s\" with result %b", block.substring(1), f);
 		} else
 		{
-			f = subChunk.getBlock(relX + Math.floorMod(x, 16), relY + Math.floorMod(y, 16), relZ + Math.floorMod(z, 16)).getId() == blockId;
+			f = subChunk.getBlock(relX + Math.floorMod(x, 16), relY + Math.floorMod(y, 16), relZ + Math.floorMod(z, 16)) == blockId;
 		}
 
 		boolean flag = switch (type)

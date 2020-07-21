@@ -1,6 +1,7 @@
 package steve6472.polyground.commands.coms;
 
 import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.brigadier.tree.LiteralCommandNode;
 import steve6472.polyground.commands.Command;
 import steve6472.polyground.commands.CommandSource;
 import steve6472.polyground.world.WorldSerializer;
@@ -23,7 +24,7 @@ public class LoadWorldCommand extends Command
 	@Override
 	protected void register(CommandDispatcher<CommandSource> dispatcher)
 	{
-		dispatcher.register(literal("loadworld").then(argument("name", string()).executes(c ->
+		LiteralCommandNode<CommandSource> node = dispatcher.register(literal("loadworld").then(argument("name", string()).executes(c ->
 		{
 			c.getSource().getWorld().worldName = getString(c, "name");
 
@@ -37,5 +38,7 @@ public class LoadWorldCommand extends Command
 
 			return 1;
 		})));
+
+		dispatcher.register(literal("lw").redirect(node));
 	}
 }

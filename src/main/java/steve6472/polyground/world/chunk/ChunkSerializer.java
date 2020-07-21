@@ -1,5 +1,6 @@
 package steve6472.polyground.world.chunk;
 
+import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.registry.BlockRegistry;
 import steve6472.sge.main.smartsave.SmartSave;
 import steve6472.sge.main.util.Pair;
@@ -25,6 +26,8 @@ public class ChunkSerializer
 			chunk.mkdir();
 
 		File subChunkPath = new File("game/worlds/" + subChunk.getWorld().worldName + "/chunk_" + subChunk.getParent().getX() + "_" + subChunk.getParent().getZ() + "/sub_" + subChunk.getLayer() + ".txt");
+		if (!subChunkPath.exists())
+			chunk.createNewFile();
 
 		SmartSave.openOutput(subChunkPath);
 
@@ -52,7 +55,7 @@ public class ChunkSerializer
 			{
 				for (int k = 0; k < 16; k++)
 				{
-					ids[i][j][k] = map.get(subChunk.getBlock(i, j, k).getId());
+					ids[i][j][k] = map.get(subChunk.getState(i, j, k).getId());
 				}
 			}
 		}
@@ -85,12 +88,13 @@ public class ChunkSerializer
 			{
 				for (int k = 0; k < 16; k++)
 				{
-					int id = subChunk.getBlock(i, j, k).getId();
+					BlockState state = subChunk.getState(i, j, k);
+					int id = state.getId();
 					if (!registratedIds.contains(id))
 					{
 						map.put(id, lastId);
 						registratedIds.add(id);
-						pallete.put(lastId, BlockRegistry.getBlockById(id).getName());
+						pallete.put(lastId, state.getBlock().getName() + state.getStateString());
 						lastId++;
 					}
 				}
@@ -149,7 +153,23 @@ public class ChunkSerializer
 			{
 				for (int k = 0; k < 16; k++)
 				{
-					subChunk.setBlock(BlockRegistry.getBlockByName(pallete.get(blocks[i][j][k])), i, j, k);
+					try
+					{
+						String block = pallete.get(blocks[i][j][k]);
+						if (block.contains("[") && block.contains("]"))
+						{
+							String[] s = pallete.get(blocks[i][j][k]).split("\\[");
+//							subChunk.setBlock(BlockRegistry.getBlockByName(pallete.get(blocks[i][j][k])), i, j, k);
+							subChunk.setState(BlockRegistry.getStateByName(s[0], "[" + s[1]), i, j, k);
+						} else
+						{
+							subChunk.setState(BlockRegistry.getBlockByName(block).getDefaultState(), i, j, k);
+						}
+					} catch (Exception ex)
+					{
+						System.err.println("Could not find " + pallete.get(blocks[i][j][k]) + "! Replacing will error");
+						subChunk.setBlock(BlockRegistry.getBlockByName("error"), i, j, k);
+					}
 				}
 			}
 		}

@@ -55,10 +55,10 @@ public class BlockRegistry
 
 			if (t.containsName("special") && SpecialBlockRegistry.getKeys().contains(t.getString("special")))
 			{
-				block = SpecialBlockRegistry.createSpecialBlock(t.getString("special"), blocksFile[i], i + systemBlocks);
+				block = SpecialBlockRegistry.createSpecialBlock(t.getString("special"), blocksFile[i]);
 			} else
 			{
-				block = new Block(blocksFile[i], i + systemBlocks);
+				block = new Block(blocksFile[i]);
 			}
 
 			game.getEventHandler().register(block);
@@ -116,6 +116,13 @@ public class BlockRegistry
 	{
 		int ref = reference.get(name);
 		return blocks[ref];
+	}
+
+	public static BlockState getStateByName(String name, String states)
+	{
+		int ref = reference.get(name);
+		Block block = blocks[ref];
+		return block.getDefaultState().fromStateString(states);
 	}
 
 	public static Block getBlockById(int id)

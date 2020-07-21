@@ -148,6 +148,8 @@ public class BasicEvents
 		if (subChunk == null)
 			return;
 
+//		BlockState state = subChunk.getState(Math.floorMod(x, 16), Math.floorMod(y, 16), Math.floorMod(z, 16));
+//		subChunk.setState(state.getBlock().getStateForPlacement(subChunk, null, null, Math.floorMod(x, 16), Math.floorMod(y, 16), Math.floorMod(z, 16)), Math.floorMod(x, 16), Math.floorMod(y, 16), Math.floorMod(z, 16));
 		subChunk.addScheduledUpdate(Math.floorMod(x, 16), Math.floorMod(y, 16), Math.floorMod(z, 16));
 
 		//		Block block = world.getBlock(x, y, z);

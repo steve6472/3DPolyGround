@@ -14,9 +14,9 @@ import java.io.File;
  ***********************/
 public class WaterGeneratorBlock extends Block
 {
-	public WaterGeneratorBlock(File f, int id)
+	public WaterGeneratorBlock(File f)
 	{
-		super(f, id);
+		super(f);
 		isFull = false;
 	}
 

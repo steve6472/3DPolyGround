@@ -23,10 +23,9 @@ public class BlocksCommand extends Command
 	{
 		dispatcher.register(literal("blocks").executes(c ->
 		{
-
 			for (Block b : BlockRegistry.getAllBlocks())
 			{
-				System.out.println(b.getName() + " " + b.getId());
+				System.out.println(b.getName());
 			}
 
 			return 1;

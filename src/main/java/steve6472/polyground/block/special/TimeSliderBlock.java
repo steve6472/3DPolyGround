@@ -22,9 +22,9 @@ import java.io.File;
  ***********************/
 public class TimeSliderBlock extends Block
 {
-	public TimeSliderBlock(File f, int id)
+	public TimeSliderBlock(File f)
 	{
-		super(f, id);
+		super(f);
 	}
 
 	@Override

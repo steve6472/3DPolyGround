@@ -179,8 +179,8 @@ public class SubChunk implements IBiomeProvider
 
 	public void generate()
 	{
-		generator.generate(this);
 		state = EnumChunkState.SHAPE;
+		generator.generate(this);
 	}
 
 	public void tick()

@@ -16,13 +16,17 @@ import java.util.List;
  ***********************/
 public class BlockState
 {
+	private static int ID = 0;
+
 	private final Block block;
 	private final HashMap<IProperty<?>, Comparable<?>> properties;
 	private final List<BlockState> possibleStates;
 	private final BlockModel blockModel;
+	private final int id;
 
 	public BlockState(Block block, BlockModel model, HashMap<IProperty<?>, Comparable<?>> properties, List<BlockState> possibleStates)
 	{
+		this.id = ID++;
 		this.block = block;
 		this.blockModel = model;
 		this.properties = properties;
@@ -66,10 +70,60 @@ public class BlockState
 		return properties;
 	}
 
+	public int getId()
+	{
+		return id;
+	}
+
+	public BlockState fromStateString(String stateString)
+	{
+		if (stateString.isBlank())
+			return this;
+		String[] states = stateString.substring(1, stateString.length() - 1).split(",");
+		HashMap<String, String> map = new HashMap<>();
+		for (String s : states)
+		{
+			String[] a = s.split("=");
+			map.put(a[0], a[1]);
+		}
+
+		for (BlockState state : possibleStates)
+		{
+			boolean match = true;
+			for (IProperty<?> property : state.getProperties().keySet())
+			{
+				String val = map.get(property.getName());
+				Comparable<?> c = state.getProperties().get(property);
+				if (!val.equals(c.toString()))
+				{
+					match = false;
+					break;
+				}
+			}
+			if (match)
+				return state;
+		}
+
+		return getBlock().getDefaultState();
+	}
+
+	public String getStateString()
+	{
+		if (properties == null)
+			return "";
+		StringBuilder sb = new StringBuilder("[");
+		for (IProperty<?> property : properties.keySet())
+		{
+			sb.append(property.getName()).append("=").append(properties.get(property).toString()).append(",");
+		}
+		sb.setLength(sb.length() - 1);
+		sb.append("]");
+		return sb.toString();
+	}
+
 	@Override
 	public String toString()
 	{
 		return "BlockState{" + "block=" + block.getName() + (properties == null ? "}" : ", properties=" + properties + '}');
-//		return "BlockState{" + "block=" + block.getName() + ", properties=" + properties + '}';
 	}
 }

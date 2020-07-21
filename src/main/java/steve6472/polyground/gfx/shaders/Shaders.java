@@ -8,6 +8,7 @@ import steve6472.polyground.gfx.shaders.particles.FlatParticleShader;
 import steve6472.polyground.gfx.shaders.world.FlatTexturedShader;
 import steve6472.polyground.gfx.shaders.world.WorldShader;
 import steve6472.polyground.world.light.LightManager;
+import steve6472.sge.gfx.shaders.DialogShader;
 import steve6472.sge.gfx.shaders.GenericDeferredShader;
 import steve6472.sge.gfx.shaders.Shader;
 import steve6472.sge.main.events.Event;
@@ -19,7 +20,7 @@ import steve6472.sge.main.events.WindowSizeEvent;
  * Project: SJP
  *
  ***********************/
-public class ShaderStorage
+public class Shaders
 {
 	private Matrix4f projectionMatrix;
 
@@ -33,13 +34,14 @@ public class ShaderStorage
 	public DebugShader debugShader;
 	public RiftShader riftShader;
 	public WaterShader waterShader;
+	public DialogShader dialogShader;
 
 	public CGGShader gShader;
 	public GenericDeferredShader<LightUniform> deferredShader;
 
 	public MainShader mainShader;
 
-	public ShaderStorage()
+	public Shaders()
 	{
 		projectionMatrix = new Matrix4f();
 
@@ -58,6 +60,7 @@ public class ShaderStorage
 		debugShader = new DebugShader();
 		riftShader = new RiftShader();
 		waterShader = new WaterShader();
+		dialogShader = new DialogShader();
 
 		gShader = new CGGShader("deferred/g");
 
@@ -87,6 +90,10 @@ public class ShaderStorage
 		worldShader.bind();
 		worldShader.setProjection(projectionMatrix);
 		worldShader.setUniform(WorldShader.ATLAS, 0);
+
+		dialogShader.bind();
+		dialogShader.setProjection(projectionMatrix);
+		dialogShader.setUniform(DialogShader.SAMPLER, 0);
 
 		breakParticleShader.bind();
 		breakParticleShader.setProjection(projectionMatrix);

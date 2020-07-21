@@ -23,9 +23,9 @@ public class PilliarBlock extends Block
 {
 	public static final EnumProperty<EnumAxis> AXIS = States.AXIS;
 
-	public PilliarBlock(File f, int id)
+	public PilliarBlock(File f)
 	{
-		super(f, id);
+		super(f);
 		setDefaultState(getDefaultState().with(AXIS, EnumAxis.Y).get());
 	}
 

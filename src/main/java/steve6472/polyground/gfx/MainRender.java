@@ -11,7 +11,7 @@ import steve6472.polyground.Frustum;
 import steve6472.polyground.PolyUtil;
 import steve6472.polyground.events.WorldEvent;
 import steve6472.polyground.gfx.particle.ParticleStorage;
-import steve6472.polyground.gfx.shaders.ShaderStorage;
+import steve6472.polyground.gfx.shaders.Shaders;
 import steve6472.polyground.teleporter.Teleporter;
 import steve6472.polyground.tessellators.BasicTessellator;
 import steve6472.polyground.world.BuildHelper;
@@ -22,6 +22,7 @@ import steve6472.sge.gfx.*;
 import steve6472.sge.gfx.post.PostProcessing;
 import steve6472.sge.gfx.shaders.GenericDeferredShader;
 import steve6472.sge.gfx.shaders.Shader;
+import steve6472.sge.gui.floatingdialog.DialogManager;
 import steve6472.sge.main.events.Event;
 import steve6472.sge.main.events.WindowSizeEvent;
 
@@ -40,7 +41,7 @@ import static steve6472.sge.gfx.VertexObjectCreator.*;
 public class MainRender
 {
 	public static List<AABBf> t = new ArrayList<>();
-	public static ShaderStorage shaders;
+	public static Shaders shaders;
 
 	public static int CHUNK_REBUILT = 0;
 
@@ -60,6 +61,7 @@ public class MainRender
 	public final CGSkybox skybox;
 	public final Frustum frustum;
 	public final ParticleStorage particles;
+	public final DialogManager dialogManager;
 
 	public BuildHelper buildHelper, lazyBuildHelper;
 	public BasicTessellator basicTess;
@@ -87,6 +89,7 @@ public class MainRender
 		frustum = new Frustum();
 
 		particles = new ParticleStorage(this);
+		dialogManager = new DialogManager();
 
 		basicTess = new BasicTessellator(1000000);
 		waterTess = new BasicTessellator(16777216);
@@ -94,7 +97,7 @@ public class MainRender
 		gBuffer = new CGGBuffer(game.getWindowWidth(), game.getWindowHeight());
 		game.getEventHandler().register(gBuffer);
 
-		shaders = new ShaderStorage();
+		shaders = new Shaders();
 		game.getEventHandler().register(shaders);
 
 		skybox = new CGSkybox(StaticCubeMap.fromTextureFaces("skybox", new String[]{"side", "side", "top", "bottom", "side", "side"}, "png"), shaders.getProjectionMatrix());
@@ -108,6 +111,7 @@ public class MainRender
 		skybox.updateProjection(PolyUtil.createProjectionMatrix(e.getWidth(), e.getHeight()));
 	}
 
+	@SuppressWarnings("removal")
 	public void render()
 	{
 		frustum.updateFrustum(shaders.getProjectionMatrix(), game.getCamera().getViewMatrix());
@@ -140,6 +144,10 @@ public class MainRender
 		mainFrameBuffer.unbindCurrentFrameBuffer(game);
 
 		copyDepthToBuffer(mainFrameBuffer.frameBuffer);
+
+		// Render floating dialogs
+
+		dialogManager.render(game, MainRender.shaders.dialogShader, game.getCamera().getViewMatrix(), game.getCamera().getYaw(), game.getCamera().getPitch(), mainFrameBuffer.frameBuffer);
 
 		/* Render water */
 		waterFrameBuffer.bindFrameBuffer(game);
@@ -231,8 +239,11 @@ public class MainRender
 		//		CaveGame.shaders.mainShader.bind(getCamera().getViewMatrix());
 		//		AABBUtil.renderAABBf(player.getHitbox().getHitbox(), basicTess, 1, shaders.mainShader);
 
-		skybox.setShade(game.world.shade);
-		skybox.render(game.getCamera().getViewMatrix());
+		if (game.options.renderSkybox)
+		{
+			skybox.setShade(game.world.shade);
+			skybox.render(game.getCamera().getViewMatrix());
+		}
 
 		particles.render();
 	}

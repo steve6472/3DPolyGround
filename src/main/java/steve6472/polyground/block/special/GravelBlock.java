@@ -15,9 +15,9 @@ import java.io.File;
  ***********************/
 public class GravelBlock extends Block
 {
-	public GravelBlock(File f, int id)
+	public GravelBlock(File f)
 	{
-		super(f, id);
+		super(f);
 	}
 
 	@Override

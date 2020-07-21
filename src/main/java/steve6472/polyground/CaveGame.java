@@ -114,6 +114,7 @@ public class CaveGame extends MainApp
 
 //				getWindow().maximize();
 		Window.enableVSync(true);
+		mouseUpdated = true;
 	}
 
 	public Camera getCamera()
@@ -158,8 +159,6 @@ public class CaveGame extends MainApp
 		return instance;
 	}
 
-	private int oldx, oldy;
-
 	public static int lastWaterCount;
 	public int currentWaterCount;
 
@@ -177,6 +176,9 @@ public class CaveGame extends MainApp
 			world.teleporters.tick(player);
 
 		tickGui();
+
+		mainRender.dialogManager.tick();
+		getMouseHandler().tick();
 
 		if (world != null)
 			mainRender.particles.tick();
@@ -206,46 +208,62 @@ public class CaveGame extends MainApp
 		getCamera().updateViewMatrix();
 	}
 
+	private int oldx, oldy;
+	private boolean mouseUpdated;
+
 	private void handleCamera()
 	{
 		options.isInMenu = updateMenuFlag();
 		boolean flag = !(options.isInMenu || options.isMouseFree);
-		if (flag != getCamera().canMoveHead())
-		{
-			pickMouse(flag);
 
-			if (getCamera().canMoveHead())
-			{
-				oldx = getMouseX() % getWidth();
-				oldy = getMouseY() % getHeight();
-				getMouseHandler().tick();
-				GLFW.glfwSetCursorPos(getWindowId(), getWidth() / 2d, getHeight() / 2d);
-			} else
-			{
-				GLFW.glfwSetCursorPos(getWindowId(), oldx, oldy);
-				getCamera().head(oldx, oldy, options.mouseSensitivity);
-			}
-			getMouseHandler().tick();
-		} else
+		if (flag && mouseUpdated)
 		{
-			pickMouse(getCamera().canMoveHead());
+			GLFW.glfwSetCursorPos(getWindowId(), getWidth() / 2f, getHeight() / 2f);
+			getMouseHandler().tick();
 		}
-		getCamera().setCanMoveHead(flag);
+
+		pickMouse(flag);
+		if (flag)
+		{
+			mouseUpdated = false;
+			int mx = getMouseX();
+			int my = getMouseY();
+
+			int dx = mx - getWidth() / 2;
+			int dy = my - getHeight() / 2;
+
+			oldx += dx;
+			oldy += dy;
+
+			GLFW.glfwSetCursorPos(getWindowId(), getWidth() / 2f, getHeight() / 2f);
+			getMouseHandler().tick();
+
+			getCamera().head(oldx, oldy, options.mouseSensitivity);
+		}
+
+		if (!flag && !mouseUpdated)
+		{
+			mouseUpdated = true;
+			GLFW.glfwSetCursorPos(getWindowId(), getWidth() / 2f, getHeight() / 2f);
+		}
 	}
 
 	private void pickMouse(boolean flag)
 	{
-		if (flag)
+		if (mainRender.dialogManager.isActive())
 		{
-			GLFW.glfwSetInputMode(getWindowId(), GLFW.GLFW_CURSOR, GLFW.GLFW_CURSOR_DISABLED);
+			GLFW.glfwSetInputMode(getWindowId(), GLFW.GLFW_CURSOR, GLFW.GLFW_CURSOR_HIDDEN);
 		} else
 		{
-			GLFW.glfwSetInputMode(getWindowId(), GLFW.GLFW_CURSOR, GLFW.GLFW_CURSOR_NORMAL);
+			GLFW.glfwSetInputMode(getWindowId(), GLFW.GLFW_CURSOR, flag ? GLFW.GLFW_CURSOR_DISABLED : GLFW.GLFW_CURSOR_NORMAL);
 		}
 	}
 
 	private boolean updateMenuFlag()
 	{
+		if (mainRender.dialogManager.isActive())
+			return true;
+
 		Gui[] guis = new Gui[]{mainMenu, inGameGui, optionsGui};
 		for (Gui g : guis)
 		{

@@ -1,6 +1,9 @@
 package steve6472.polyground.generator;
 
 import steve6472.polyground.EnumFace;
+import steve6472.polyground.block.properties.enums.EnumAxis;
+import steve6472.polyground.block.properties.enums.EnumSlabType;
+import steve6472.polyground.block.special.SlabBlock;
 import steve6472.polyground.block.special.StalaBlock;
 import steve6472.polyground.block.states.States;
 import steve6472.polyground.generator.models.*;
@@ -123,11 +126,6 @@ public class DataGenerator
 
 		DataBuilder.create().pillarBlock("oak_log", "oak_log_side", "oak_log").generate();
 
-		//		DataBuilder.create().doubleSlabBlock("double_smooth_slab", "smooth_stone", "smooth_stone_slab", "smooth_slab_top", "smooth_slab_bottom").generate();
-//		DataBuilder.create().slabBlock("smooth_slab_bottom", "smooth_stone", "smooth_stone_slab", true).generate();
-//		DataBuilder.create().slabBlock("smooth_slab_top", "smooth_stone", "smooth_stone_slab", false).generate();
-//		DataBuilder.create().slabItem("smooth_slab", "smooth_slab_top", "smooth_slab_bottom", "double_smooth_slab").generate();
-
 		DataBuilder.create()
 			.blockName("stone_stala")
 			.itemName("stone_stala")
@@ -239,6 +237,136 @@ public class DataGenerator
 				)
 			).generate();
 
+		//		DataBuilder.create().doubleSlabBlock("double_smooth_slab", "smooth_stone", "smooth_stone_slab", "smooth_slab_top", "smooth_slab_bottom").generate();
+		//		DataBuilder.create().slabBlock("smooth_slab_bottom", "smooth_stone", "smooth_stone_slab", true).generate();
+		//		DataBuilder.create().slabBlock("smooth_slab_top", "smooth_stone", "smooth_stone_slab", false).generate();
+		//		DataBuilder.create().slabItem("smooth_slab", "smooth_slab_top", "smooth_slab_bottom", "double_smooth_slab").generate();
+
+		DataBuilder.create()
+			.blockName("smooth_slab")
+			.itemName("smooth_slab")
+			.blockToPlace("smooth_slab")
+			.blockSpecial(new SimpleSpecial("slab"))
+			.itemModel(new ItemFromBlock("smooth_slab"))
+			.itemSpecial(new SimpleSpecial("slab"))
+			.blockState(StateBuilder.create()
+				.addState(PropertyBuilder.create()
+						.addProperty(SlabBlock.TYPE, EnumSlabType.BOTTOM)
+						.addProperty(SlabBlock.AXIS, EnumAxis.Y),
+					BlockModelBuilder.create("smooth_slab" + "_bottom")
+						.modelPath("slab")
+						.addCube(CubeBuilder.create()
+							.bottomSlab()
+							.face(FaceBuilder.create()
+								.texture("smooth_stone")
+								.uvlock(true), CubeBuilder.TOP_BOTTOM)
+							.face(FaceBuilder.create()
+								.texture("smooth_stone_slab")
+								.uvlock(true), CubeBuilder.SIDE)
+						)
+				).addState(PropertyBuilder.create()
+						.addProperty(SlabBlock.TYPE, EnumSlabType.TOP)
+						.addProperty(SlabBlock.AXIS, EnumAxis.Y),
+					BlockModelBuilder.create("smooth_slab" + "_top")
+						.modelPath("slab")
+						.addCube(CubeBuilder.create()
+							.topSlab()
+							.face(FaceBuilder.create()
+								.texture("smooth_stone")
+								.uvlock(true), CubeBuilder.TOP_BOTTOM)
+							.face(FaceBuilder.create()
+								.texture("smooth_stone_slab")
+								.uvlock(true), CubeBuilder.SIDE)
+						)
+				).addState(PropertyBuilder.create()
+						.addProperty(SlabBlock.TYPE, EnumSlabType.DOUBLE)
+						.addProperty(SlabBlock.AXIS, EnumAxis.Y),
+					BlockModelBuilder.create("smooth_slab" + "_double")
+						.modelPath("slab")
+						.addCube(CubeBuilder.create()
+							.fullBlock()
+							.face(FaceBuilder.create()
+								.texture("smooth_stone")
+								.uvlock(true), CubeBuilder.TOP_BOTTOM)
+							.face(FaceBuilder.create()
+								.texture("smooth_stone_slab")
+								.uvlock(true), CubeBuilder.SIDE)
+						)
+				).addState(PropertyBuilder.create()
+						.addProperty(SlabBlock.TYPE, EnumSlabType.BOTTOM)
+						.addProperty(SlabBlock.AXIS, EnumAxis.X),
+					BlockModelBuilder.create("smooth_slab" + "_side_x")
+						.modelPath("slab")
+						.addCube(CubeBuilder.create()
+							.min(0, 0, 0)
+							.max(8, 16, 16)
+							.face(FaceBuilder.create()
+								.texture("smooth_stone_slab_side")
+								, CubeBuilder.TOP_BOTTOM)
+							.face(FaceBuilder.create()
+								.texture("smooth_stone")
+								, EnumFace.NORTH, EnumFace.SOUTH)
+							.face(FaceBuilder.create()
+								.texture("smooth_stone_slab_side")
+								.uv(0, 8, 16, 0)
+								.rotation(90)
+								, EnumFace.EAST, EnumFace.WEST)
+						)
+				).addState(PropertyBuilder.create()
+						.addProperty(SlabBlock.TYPE, EnumSlabType.TOP)
+						.addProperty(SlabBlock.AXIS, EnumAxis.X).rotation(180),
+					BlockModelBuilder.noGen("smooth_slab" + "_side_x").modelPath("slab")
+				).addState(PropertyBuilder.create()
+						.addProperty(SlabBlock.TYPE, EnumSlabType.BOTTOM)
+						.addProperty(SlabBlock.AXIS, EnumAxis.Z),
+					BlockModelBuilder.create("smooth_slab" + "_side_z")
+						.modelPath("slab")
+						.addCube(CubeBuilder.create()
+							.min(0, 0, 8)
+							.max(16, 16, 16)
+							.face(FaceBuilder.create()
+								.texture("smooth_stone_slab_side")
+								.uv(0, 0, 16, 8)
+								.rotation(90)
+								, CubeBuilder.TOP_BOTTOM)
+							.face(FaceBuilder.create()
+								.texture("smooth_stone_slab_side")
+								.uv(0, 8, 16, 0)
+								.rotation(90)
+								, EnumFace.NORTH, EnumFace.SOUTH)
+							.face(FaceBuilder.create()
+								.texture("smooth_stone")
+								, EnumFace.EAST, EnumFace.WEST)
+						)
+				).addState(PropertyBuilder.create()
+						.addProperty(SlabBlock.TYPE, EnumSlabType.TOP)
+						.addProperty(SlabBlock.AXIS, EnumAxis.Z).rotation(180),
+					BlockModelBuilder.noGen("smooth_slab" + "_side_z").modelPath("slab")
+				).addState(PropertyBuilder.create()
+						.addProperty(SlabBlock.TYPE, EnumSlabType.DOUBLE)
+						.addProperty(SlabBlock.AXIS, EnumAxis.Z)
+						.rotation(90),
+					BlockModelBuilder.noGen("smooth_slab" + "_double_x").modelPath("slab")
+				).addState(PropertyBuilder.create()
+						.addProperty(SlabBlock.TYPE, EnumSlabType.DOUBLE)
+						.addProperty(SlabBlock.AXIS, EnumAxis.X),
+					BlockModelBuilder.create("smooth_slab" + "_double_x")
+						.modelPath("slab")
+						.addCube(CubeBuilder.create()
+							.fullBlock()
+							.face(FaceBuilder.create()
+								.texture("smooth_stone")
+								.uvlock(true), EnumFace.NORTH, EnumFace.SOUTH)
+							.face(FaceBuilder.create()
+								.texture("smooth_stone_slab")
+								, EnumFace.UP, EnumFace.DOWN)
+							.face(FaceBuilder.create()
+								.texture("smooth_stone_slab")
+								.rotation(90)
+								.uvlock(true), EnumFace.EAST, EnumFace.WEST)
+						)
+				)
+			).generate();
 
 /*
 		DataBuilder.create().fullBlock("bedrock").generate();

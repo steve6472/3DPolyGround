@@ -2,6 +2,7 @@ package steve6472.polyground.world.generator;
 
 import steve6472.polyground.block.Block;
 import steve6472.polyground.registry.BlockRegistry;
+import steve6472.polyground.world.chunk.EnumChunkState;
 import steve6472.polyground.world.chunk.SubChunk;
 
 /**********************
@@ -15,6 +16,7 @@ public class FlatGenerator implements IGenerator
 	@Override
 	public void generate(SubChunk subChunk)
 	{
+		subChunk.state = EnumChunkState.FULL;
 		if (subChunk.getLayer() != 0)
 			return;
 

@@ -23,9 +23,9 @@ public class StateTest extends CustomBlock
 {
 	private static final BooleanProperty LIT = States.LIT;
 
-	public StateTest(File f, int id)
+	public StateTest(File f)
 	{
-		super(f, id);
+		super(f);
 		isFull = false;
 		setDefaultState(getDefaultState().with(LIT, false).get());
 	}

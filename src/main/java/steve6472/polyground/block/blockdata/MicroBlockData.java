@@ -73,7 +73,7 @@ public class MicroBlockData extends BlockData
 			}
 		}*/
 	}
-
+/*
 	public void setBlock(int id, int x, int y, int z)
 	{
 		if (!(x >= 0 && x < 16 && y >= 0 && y < 16 && z >= 0 && z < 16))
@@ -106,7 +106,7 @@ public class MicroBlockData extends BlockData
 				pallete.remove(old);
 			}
 		}
-	}
+	}*/
 
 	public int getBlock(int x, int y, int z)
 	{

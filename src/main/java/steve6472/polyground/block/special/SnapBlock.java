@@ -26,9 +26,9 @@ import java.io.File;
  ***********************/
 public class SnapBlock extends Block
 {
-	public SnapBlock(File f, int id)
+	public SnapBlock(File f)
 	{
-		super(f, id);
+		super(f);
 	}
 
 	@Override

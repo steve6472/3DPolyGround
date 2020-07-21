@@ -29,9 +29,9 @@ public class LightSourceBlock extends Block
 	private float constant, linear, quadratic;
 	private float xOffset, yOffset, zOffset;
 
-	public LightSourceBlock(File f, int id)
+	public LightSourceBlock(File f)
 	{
-		super(f, id);
+		super(f);
 		this.f = f;
 	}
 

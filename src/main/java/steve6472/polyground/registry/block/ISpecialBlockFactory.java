@@ -7,5 +7,5 @@ import java.io.File;
 @FunctionalInterface
 public interface ISpecialBlockFactory<T extends Block>
 {
-	T create(File f, int id);
+	T create(File f);
 }

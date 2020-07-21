@@ -12,8 +12,8 @@ import java.io.File;
  ***********************/
 public class TransparentBlock extends Block
 {
-	public TransparentBlock(File f, int id)
+	public TransparentBlock(File f)
 	{
-		super(f, id);
+		super(f);
 	}
 }

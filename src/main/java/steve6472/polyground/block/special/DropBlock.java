@@ -26,9 +26,9 @@ import java.io.File;
  ***********************/
 public class DropBlock extends Block
 {
-	public DropBlock(File f, int id)
+	public DropBlock(File f)
 	{
-		super(f, id);
+		super(f);
 	}
 
 	@Override

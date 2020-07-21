@@ -76,7 +76,7 @@ public class SubChunkModel
 
 									} catch (Exception ex)
 									{
-										System.err.println("Error while building chunk with block '" + b.getName() + "' id '" + b.getId() + "'");
+										System.err.println("Error while building chunk with block '" + b.getName() + "' state '" + state + "'");
 										ex.printStackTrace();
 										try
 										{
@@ -233,7 +233,7 @@ public class SubChunkModel
 
 					} catch (Exception ex)
 					{
-						System.err.println("Error while building chunk with block '" + b.getName() + "' id '" + b.getId() + "'");
+						System.err.println("Error while building chunk with block '" + b.getName() + "' state '" + state + "'");
 						ex.printStackTrace();
 						try
 						{

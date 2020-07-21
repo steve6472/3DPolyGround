@@ -20,9 +20,9 @@ import java.io.File;
  ***********************/
 public class WorldButtonBlock extends Block
 {
-	public WorldButtonBlock(File f, int id)
+	public WorldButtonBlock(File f)
 	{
-		super(f, id);
+		super(f);
 		isFull = false;
 	}
 

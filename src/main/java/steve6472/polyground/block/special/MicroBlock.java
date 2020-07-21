@@ -12,9 +12,9 @@ import java.io.File;
  ***********************/
 public class MicroBlock extends Block// implements IBlockData
 {
-	public MicroBlock(File f, int id)
+	public MicroBlock(File f)
 	{
-		super(f, id);
+		super(f);
 		isFull = false;
 	}
 

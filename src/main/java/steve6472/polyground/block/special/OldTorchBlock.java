@@ -28,9 +28,9 @@ public class OldTorchBlock extends Block
 	private float spawnRadiusX, spawnRadiusY, spawnRadiusZ, spawnRadius;
 	private boolean sphereRadius;
 
-	public OldTorchBlock(File f, int id)
+	public OldTorchBlock(File f)
 	{
-		super(f, id);
+		super(f);
 		this.f = f;
 	}
 
