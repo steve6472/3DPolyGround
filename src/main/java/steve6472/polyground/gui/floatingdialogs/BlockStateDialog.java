@@ -20,7 +20,7 @@ public class BlockStateDialog extends FloatingDialog
 
 	public BlockStateDialog(MainApp main)
 	{
-		super(main, 16 * 70, 9 * 70);
+		super(main, 16 * 20, 9 * 20);
 		setVisible(true);
 	}
 
@@ -45,7 +45,8 @@ public class BlockStateDialog extends FloatingDialog
 	@Override
 	public void render()
 	{
-		SpriteRender.drawCircle(getMainApp().getMouseX(), getMainApp().getMouseY(), 2f, 1, 1, 1, 1);
+		if(isActive())
+			SpriteRender.drawCircle(getMainApp().getMouseX(), getMainApp().getMouseY(), 2f, 1, 1, 1, 1);
 	}
 
 	@Override

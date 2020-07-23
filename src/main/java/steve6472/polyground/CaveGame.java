@@ -28,10 +28,7 @@ import steve6472.sge.gfx.FrameBuffer;
 import steve6472.sge.gfx.SpriteRender;
 import steve6472.sge.gfx.VertexObjectCreator;
 import steve6472.sge.gui.Gui;
-import steve6472.sge.main.KeyList;
-import steve6472.sge.main.MainApp;
-import steve6472.sge.main.MainFlags;
-import steve6472.sge.main.Window;
+import steve6472.sge.main.*;
 import steve6472.sge.main.events.Event;
 import steve6472.sge.main.events.KeyEvent;
 import steve6472.sge.main.events.WindowSizeEvent;
@@ -209,20 +206,29 @@ public class CaveGame extends MainApp
 	}
 
 	private int oldx, oldy;
-	private boolean mouseUpdated;
+	private boolean mouseUpdated, dialogFlag;
 
 	private void handleCamera()
 	{
 		options.isInMenu = updateMenuFlag();
 		boolean flag = !(options.isInMenu || options.isMouseFree);
 
-		if (flag && mouseUpdated)
+		if (mainRender.dialogManager.isActive() && !options.isInMenu)
 		{
+			handleCursorInDialog();
+			return;
+		}
+
+		// Move mouse to center when exiting a dialog. Do NOT move the cursor when opening the game
+		if ((flag && mouseUpdated) || dialogFlag)
+		{
+			dialogFlag = false;
 			GLFW.glfwSetCursorPos(getWindowId(), getWidth() / 2f, getHeight() / 2f);
 			getMouseHandler().tick();
 		}
 
 		pickMouse(flag);
+
 		if (flag)
 		{
 			mouseUpdated = false;
@@ -248,22 +254,35 @@ public class CaveGame extends MainApp
 		}
 	}
 
-	private void pickMouse(boolean flag)
+	private void handleCursorInDialog()
 	{
-		if (mainRender.dialogManager.isActive())
+		// Center cursor when activating dialog
+		if (!dialogFlag)
 		{
-			GLFW.glfwSetInputMode(getWindowId(), GLFW.GLFW_CURSOR, GLFW.GLFW_CURSOR_HIDDEN);
-		} else
-		{
-			GLFW.glfwSetInputMode(getWindowId(), GLFW.GLFW_CURSOR, flag ? GLFW.GLFW_CURSOR_DISABLED : GLFW.GLFW_CURSOR_NORMAL);
+			dialogFlag = true;
+			pickMouse(true);
+			GLFW.glfwSetCursorPos(getWindowId(),
+				mainRender.dialogManager.getFirstActiveDialog().getWidth() / 2f,
+				mainRender.dialogManager.getFirstActiveDialog().getHeight() / 2f);
+			getMouseHandler().tick();
+			return;
 		}
+
+		// Keep cursor in dialog bounds
+		pickMouse(true);
+		GLFW.glfwSetCursorPos(getWindowId(),
+			Util.clamp(0, mainRender.dialogManager.getFirstActiveDialog().getWidth(), getMouseX()),
+			Util.clamp(0, mainRender.dialogManager.getFirstActiveDialog().getHeight(), getMouseY()));
+		getMouseHandler().tick();
+	}
+
+	private void pickMouse(boolean disableCursor)
+	{
+		GLFW.glfwSetInputMode(getWindowId(), GLFW.GLFW_CURSOR, disableCursor ? GLFW.GLFW_CURSOR_DISABLED : GLFW.GLFW_CURSOR_NORMAL);
 	}
 
 	private boolean updateMenuFlag()
 	{
-		if (mainRender.dialogManager.isActive())
-			return true;
-
 		Gui[] guis = new Gui[]{mainMenu, inGameGui, optionsGui};
 		for (Gui g : guis)
 		{

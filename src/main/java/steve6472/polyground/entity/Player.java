@@ -28,7 +28,7 @@ public class Player implements IMotion3f, IPosition3f
 	private static final float RAD_90 = Math.toRadians(90f);
 
 	private final Vector3f motion, position;
-	private final CaveGame pg;
+	private final CaveGame game;
 	private final EntityHitbox hitbox;
 
 	private Camera camera;
@@ -47,7 +47,7 @@ public class Player implements IMotion3f, IPosition3f
 	public boolean processNextBlockPlace = true;
 	public boolean processNextBlockBreak = true;
 
-	public Player(CaveGame pg)
+	public Player(CaveGame game)
 	{
 		camera = new Camera();
 
@@ -59,7 +59,7 @@ public class Player implements IMotion3f, IPosition3f
 
 		//65 m/s terminal vel
 
-		this.pg = pg;
+		this.game = game;
 	}
 
 	public EntityHitbox getHitbox()
@@ -67,7 +67,6 @@ public class Player implements IMotion3f, IPosition3f
 		return hitbox;
 	}
 
-	private boolean flag;
 	private byte flyTimer = 0;
 
 	public void tick()
@@ -90,21 +89,21 @@ public class Player implements IMotion3f, IPosition3f
 
 		float xa = 0, za = 0;
 
-		if (pg.isKeyPressed(KeyList.W))
+		if (game.isKeyPressed(KeyList.W))
 			xa += 1;
-		if (pg.isKeyPressed(KeyList.A))
+		if (game.isKeyPressed(KeyList.A))
 			za += -1;
-		if (pg.isKeyPressed(KeyList.S))
+		if (game.isKeyPressed(KeyList.S))
 			xa += -1;
-		if (pg.isKeyPressed(KeyList.D))
+		if (game.isKeyPressed(KeyList.D))
 			za += 1;
-		if (pg.isKeyPressed(KeyList.SPACE) && isOnGround && !isFlying)
+		if (game.isKeyPressed(KeyList.SPACE) && isOnGround && !isFlying)
 			getMotion().y = 0.155f;
-		if (pg.isKeyPressed(KeyList.SPACE) && isFlying)
+		if (game.isKeyPressed(KeyList.SPACE) && isFlying)
 			getMotion().y = flySpeed * 6f;
-		if (pg.isKeyPressed(KeyList.L_CONTROL) && isFlying)
+		if (game.isKeyPressed(KeyList.L_CONTROL) && isFlying)
 			getMotion().y = -flySpeed * 6f;
-		if (isSprinting = pg.isKeyPressed(KeyList.L_SHIFT))
+		if (isSprinting = game.isKeyPressed(KeyList.L_SHIFT))
 			speed *= 1.5;
 
 		move(xa, za, speed);
@@ -120,7 +119,7 @@ public class Player implements IMotion3f, IPosition3f
 
 		if (!noClip)
 		{
-			isOnBlock = hitbox.collideWithWorld(pg.getWorld());
+			isOnBlock = hitbox.collideWithWorld(game.getWorld());
 		}
 
 		getMotion().x *= 0.91f;
@@ -165,30 +164,14 @@ public class Player implements IMotion3f, IPosition3f
 		getMotion().z += za * cos - xa * sin;
 	}
 
-	private static final double RAD_360 = Math.toRadians(360);
-
-	private void head()
-	{
-		if (camera.canMoveHead())
-		{
-			if (!flag)
-			{
-				camera.oldx = pg.getMouseX();
-				camera.oldy = pg.getMouseY();
-				flag = true;
-			}
-			camera.head(pg.getMouseX(), pg.getMouseY(), CaveGame.getInstance().options.mouseSensitivity);
-		}
-	}
-
 	@Event
 	public void fly(KeyEvent e)
 	{
 		if (!canFly)
 			return;
-		if (pg.world == null || pg.options.isInMenu)
+		if (game.world == null || game.options.isInMenu)
 			return;
-		if (pg.inGameGui.chat.isFocused())
+		if (game.inGameGui.chat.isFocused())
 			return;
 
 		if (e.getAction() == KeyList.PRESS && e.getKey() == KeyList.SPACE)
@@ -215,25 +198,22 @@ public class Player implements IMotion3f, IPosition3f
 	@Event
 	public void mouseEvent(MouseEvent event)
 	{
-		if (pg.world == null || pg.options.isInMenu)
+		if (game.world == null || game.options.isInMenu)
 			return;
-		if (pg.inGameGui.chat.isFocused())
+		if (game.inGameGui.chat.isFocused())
+			return;
+		if (game.mainRender.dialogManager.isActive())
 			return;
 
-		if (camera.canMoveHead() && event.getAction() == KeyList.RELEASE && event.getButton() == KeyList.RMB)
+		if (game.hitPicker.hit)
 		{
-			flag = false;
-		}
+			HitResult hr = game.hitPicker.getHitResult();
 
-		if (pg.hitPicker.hit)
-		{
-			HitResult hr = pg.hitPicker.getHitResult();
-
-			SubChunk subChunk = pg.world.getSubChunkFromBlockCoords(hr.getX(), hr.getY(), hr.getZ());
+			SubChunk subChunk = game.world.getSubChunkFromBlockCoords(hr.getX(), hr.getY(), hr.getZ());
 
 			BlockState state = subChunk.getState(hr.getCx(), hr.getCy(), hr.getCz());
 
-			pg.world.getBlock(hr.getX(), hr.getY(), hr.getZ()).onClick(subChunk, state, this, hr.getFace(), event, hr.getCx(), hr.getCy(), hr.getCz());
+			game.world.getBlock(hr.getX(), hr.getY(), hr.getZ()).onClick(subChunk, state, this, hr.getFace(), event, hr.getCx(), hr.getCy(), hr.getCz());
 
 			CaveGame.itemInHand.onClick(subChunk, state, this, hr.getFace(), event, hr.getCx(), hr.getCy(), hr.getCz());
 		}
@@ -242,9 +222,9 @@ public class Player implements IMotion3f, IPosition3f
 
 		if (event.getButton() == KeyList.RMB && event.getAction() == KeyList.PRESS)
 		{
-			if (pg.hitPicker.hit)
+			if (game.hitPicker.hit)
 			{
-				HitResult hr = pg.hitPicker.getHitResult();
+				HitResult hr = game.hitPicker.getHitResult();
 
 				if (processNextBlockPlace)
 				{
@@ -258,7 +238,7 @@ public class Player implements IMotion3f, IPosition3f
 
 		if (event.getButton() == KeyList.LMB && event.getAction() == KeyList.PRESS)
 		{
-			if (pg.hitPicker.hit)
+			if (game.hitPicker.hit)
 			{
 				if (processNextBlockBreak)
 				{
@@ -272,10 +252,10 @@ public class Player implements IMotion3f, IPosition3f
 
 		if (event.getButton() == KeyList.MMB && event.getAction() == KeyList.PRESS)
 		{
-			if (pg.hitPicker.hit)
+			if (game.hitPicker.hit)
 			{
-				HitResult hr = pg.hitPicker.getHitResult();
-				Block block = pg.world.getBlock(hr.getX(), hr.getY(), hr.getZ());
+				HitResult hr = game.hitPicker.getHitResult();
+				Block block = game.world.getBlock(hr.getX(), hr.getY(), hr.getZ());
 
 				if (ItemRegistry.getItemByName(block.getName()) != null)
 				{
@@ -309,7 +289,7 @@ public class Player implements IMotion3f, IPosition3f
 
 	public HitResult getHitResult()
 	{
-		return pg.hitPicker.getHitResult();
+		return game.hitPicker.getHitResult();
 	}
 
 	public void setCamera(Camera camera)
