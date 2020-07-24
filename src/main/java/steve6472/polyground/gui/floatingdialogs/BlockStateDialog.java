@@ -1,10 +1,8 @@
 package steve6472.polyground.gui.floatingdialogs;
 
 import steve6472.polyground.CaveGame;
-import steve6472.sge.gfx.SpriteRender;
 import steve6472.sge.gfx.font.CustomChar;
 import steve6472.sge.gui.components.Button;
-import steve6472.sge.gui.components.ComponentRender;
 import steve6472.sge.gui.floatingdialog.FloatingDialog;
 import steve6472.sge.main.MainApp;
 
@@ -27,7 +25,7 @@ public class BlockStateDialog extends FloatingDialog
 	@Override
 	public void createGUI()
 	{
-		addComponent(new ComponentRender(() -> SpriteRender.fillRect(0, 0, getWidth(), getHeight(), 0.4f, 0.4f, 0.4f, 1f)));
+		DialogUtil.createDialogBackground(this);
 
 		Button close = new Button(CustomChar.CROSS);
 		close.setLocation(getWidth() - 20, 0);
@@ -46,7 +44,7 @@ public class BlockStateDialog extends FloatingDialog
 	public void render()
 	{
 		if(isActive())
-			SpriteRender.drawCircle(getMainApp().getMouseX(), getMainApp().getMouseY(), 2f, 1, 1, 1, 1);
+			DialogUtil.renderCursor(getMainApp());
 	}
 
 	@Override

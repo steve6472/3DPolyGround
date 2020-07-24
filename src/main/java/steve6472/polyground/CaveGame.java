@@ -158,6 +158,8 @@ public class CaveGame extends MainApp
 
 	public static int lastWaterCount;
 	public int currentWaterCount;
+	private boolean oldCrosshair;
+	private boolean oldCrosshairFlag;
 
 	@Override
 	public void tick()
@@ -177,6 +179,19 @@ public class CaveGame extends MainApp
 		mainRender.dialogManager.tick();
 		getMouseHandler().tick();
 
+		if (mainRender.dialogManager.isActive() && !oldCrosshairFlag)
+		{
+			oldCrosshair = options.renderCrosshair;
+			oldCrosshairFlag = true;
+			options.renderCrosshair = false;
+		}
+
+		if (!mainRender.dialogManager.isActive() && oldCrosshairFlag)
+		{
+			options.renderCrosshair = oldCrosshair;
+			oldCrosshairFlag = false;
+		}
+
 		if (world != null)
 			mainRender.particles.tick();
 
@@ -186,7 +201,7 @@ public class CaveGame extends MainApp
 
 		if (world != null)
 		{
-			if (getCamera().canMoveHead())
+			if (!options.isInMenu && !options.isGamePaused && !mainRender.dialogManager.isActive() && !inGameGui.chat.isFocused())
 				player.tick();
 		}
 

@@ -30,7 +30,6 @@ public class RiftCommand extends Command
 	{
 		dispatcher.register(literal("rift").then(literal("print").executes(c ->
 		{
-
 			for (Rift r : CaveGame.getInstance().getRifts().getRifts())
 			{
 				c.getSource().sendFeedback(r.getName());

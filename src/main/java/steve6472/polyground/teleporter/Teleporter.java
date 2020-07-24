@@ -17,6 +17,7 @@ public class Teleporter
 	private AABBf aabb;
 	private boolean canTeleport;
 	public final UUID uuid;
+	private String name;
 
 	public Teleporter(UUID uuid)
 	{
@@ -28,6 +29,16 @@ public class Teleporter
 	{
 		canTeleport = true;
 		uuid = UUID.randomUUID();
+	}
+
+	public void setName(String name)
+	{
+		this.name = name;
+	}
+
+	public String getName()
+	{
+		return name;
 	}
 
 	public void setOther(Teleporter other)
@@ -47,6 +58,9 @@ public class Teleporter
 
 	public void test(Player player)
 	{
+		if (getOther() == null)
+			return;
+
 		boolean playerFlag = player.getHitbox().getHitbox().testAABB(aabb);
 
 		if (playerFlag && canTeleport)

@@ -42,6 +42,16 @@ public class TeleporterManager
 		}
 	}
 
+	public void addTeleporter(Teleporter teleporter)
+	{
+		teleporters.add(teleporter);
+	}
+
+	public void removeTemeporter(Teleporter teleporter)
+	{
+		teleporters.remove(teleporter);
+	}
+
 	public void loadTeleporters()
 	{
 		if (world.worldName == null || world.worldName.isEmpty())
@@ -94,6 +104,10 @@ public class TeleporterManager
 
 			Teleporter teleporter = new Teleporter(uuid);
 			teleporter.setAabb(aabb);
+			if (json.has("name"))
+				teleporter.setName(json.getString("name"));
+			else
+				teleporter.setName("<unnamed>");
 			tempTeleporters[i] = teleporter;
 
 			tempUuids[i] = otherUuid;
@@ -132,6 +146,10 @@ public class TeleporterManager
 			json.put("aabb", box);
 			json.put("uuid", t.getUuid());
 			json.put("other", t.getOther().getUuid());
+			if (t.getName().isBlank())
+				json.put("name", "<unnamed>");
+			else
+				json.put("name", t.getName());
 			array.put(json);
 		}
 		main.put("teleporters", array);

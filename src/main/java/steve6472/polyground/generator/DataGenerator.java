@@ -85,6 +85,8 @@ public class DataGenerator
 
 		// Items
 		DataBuilder.create().itemModel(new ItemFromTexture("block_inspector")).itemName("block_inspector").itemSpecial(new SimpleSpecial("block_inspector")).generate();
+		DataBuilder.create().itemModel(new ItemFromTexture("rift_placer")).itemName("rift_placer").itemSpecial(new SimpleSpecial("riftplacer")).generate();
+		DataBuilder.create().itemModel(new ItemFromTexture("tele_placer")).itemName("atele_placer").itemSpecial(new SimpleSpecial("tele_placer")).generate();
 
 		// Blocks
 		DataBuilder.create().fullBlock("smooth_stone").generate();
