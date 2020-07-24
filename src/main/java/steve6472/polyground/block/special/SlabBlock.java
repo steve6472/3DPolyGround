@@ -11,7 +11,7 @@ import steve6472.polyground.block.properties.enums.EnumSlabType;
 import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.block.states.States;
 import steve6472.polyground.entity.Player;
-import steve6472.polyground.world.chunk.SubChunk;
+import steve6472.polyground.world.World;
 import steve6472.sge.main.KeyList;
 import steve6472.sge.main.events.MouseEvent;
 
@@ -37,7 +37,7 @@ public class SlabBlock extends Block
 	}
 
 	@Override
-	public BlockState getStateForPlacement(SubChunk subChunk, Player player, EnumFace placedOn, int x, int y, int z)
+	public BlockState getStateForPlacement(World world, Player player, EnumFace placedOn, int x, int y, int z)
 	{
 		if (player == null || placedOn == null)
 			return getDefaultState();
@@ -70,7 +70,7 @@ public class SlabBlock extends Block
 	}
 
 	@Override
-	public void onClick(SubChunk subChunk, BlockState state, Player player, EnumFace clickedOn, MouseEvent click, int x, int y, int z)
+	public void onClick(World world, BlockState state, Player player, EnumFace clickedOn, MouseEvent click, int x, int y, int z)
 	{
 		if (click.getAction() != KeyList.PRESS)
 			return;
@@ -86,25 +86,22 @@ public class SlabBlock extends Block
 			{
 				if ((state.get(TYPE) == EnumSlabType.BOTTOM && clickedOn == EnumFace.UP) || (state.get(TYPE) == EnumSlabType.TOP && clickedOn == EnumFace.DOWN))
 				{
-					subChunk.setState(state.with(TYPE, EnumSlabType.DOUBLE).with(AXIS, EnumAxis.Y).get(), x, y, z);
+					world.setState(state.with(TYPE, EnumSlabType.DOUBLE).with(AXIS, EnumAxis.Y).get(), x, y, z);
 
-					subChunk.rebuildAllLayers();
 					player.processNextBlockPlace = false;
 				}
 			} else if (state.get(AXIS) == EnumAxis.X)
 			{
 				if ((state.get(TYPE) == EnumSlabType.BOTTOM && clickedOn == EnumFace.NORTH) || (state.get(TYPE) == EnumSlabType.TOP && clickedOn == EnumFace.SOUTH))
 				{
-					subChunk.setState(state.with(TYPE, EnumSlabType.DOUBLE).with(AXIS, EnumAxis.X).get(), x, y, z);
-					subChunk.rebuildAllLayers();
+					world.setState(state.with(TYPE, EnumSlabType.DOUBLE).with(AXIS, EnumAxis.X).get(), x, y, z);
 					player.processNextBlockPlace = false;
 				}
 			} else if (state.get(AXIS) == EnumAxis.Z)
 			{
 				if ((state.get(TYPE) == EnumSlabType.BOTTOM && clickedOn == EnumFace.WEST) || (state.get(TYPE) == EnumSlabType.TOP && clickedOn == EnumFace.EAST))
 				{
-					subChunk.setState(state.with(TYPE, EnumSlabType.DOUBLE).with(AXIS, EnumAxis.Z).get(), x, y, z);
-					subChunk.rebuildAllLayers();
+					world.setState(state.with(TYPE, EnumSlabType.DOUBLE).with(AXIS, EnumAxis.Z).get(), x, y, z);
 					player.processNextBlockPlace = false;
 				}
 			}
@@ -126,20 +123,20 @@ public class SlabBlock extends Block
 		{
 			if (hitResult.getFace() == EnumFace.UP)
 			{
-				subChunk.getWorld().setState(hitResult, tobeplaced = bottom);
+				world.setState(hitResult, tobeplaced = bottom);
 			} else if (hitResult.getFace() == EnumFace.DOWN)
 			{
-				subChunk.getWorld().setState(hitResult, tobeplaced = top);
+				world.setState(hitResult, tobeplaced = top);
 			} else if (hitResult.getFace().isSide())
 			{
 				double h = Double.parseDouble("0." + ("" + hitResult.getPy()).split("\\.")[1]);
 
 				if (h <= 0.25d)
 				{
-					subChunk.setState(tobeplaced = top, x, y, z);
+					world.setState(tobeplaced = top, x, y, z);
 				} else if (h >= 0.75d)
 				{
-					subChunk.setState(tobeplaced = bottom, x, y, z);
+					world.setState(tobeplaced = bottom, x, y, z);
 				} else
 				{
 					tobeplaced = switch (hitResult.getFace())
@@ -150,17 +147,15 @@ public class SlabBlock extends Block
 							case WEST -> west;
 							default -> bottom;
 						};
-					subChunk.setState(tobeplaced, x, y, z);
+					world.setState(tobeplaced, x, y, z);
 				}
-
-				subChunk.rebuildAllLayers();
 			}
 		} else
 		{
-			subChunk.getWorld().setBlock(hitResult, Block.air);
+			world.setBlock(hitResult, Block.air);
 		}
 
-		tobeplaced.getBlock().onBreak(subChunk, state, player, hitResult.getFace(), hitResult.getX(), hitResult.getY(), hitResult.getZ());
+		tobeplaced.getBlock().onBreak(world, state, player, hitResult.getFace(), hitResult.getX(), hitResult.getY(), hitResult.getZ());
 
 		player.processNextBlockBreak = false;
 	}

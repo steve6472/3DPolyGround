@@ -7,7 +7,7 @@ import steve6472.polyground.block.model.CubeFace;
 import steve6472.polyground.block.model.faceProperty.*;
 import steve6472.polyground.registry.face.FaceEntry;
 import steve6472.polyground.registry.face.FaceRegistry;
-import steve6472.polyground.world.chunk.SubChunk;
+import steve6472.polyground.world.World;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -73,13 +73,13 @@ public class ConditionFaceProperty extends FaceProperty
 		}
 	}
 
-	public static boolean editProperties(ConditionFaceProperty conditions, CubeFace cubeFace, int x, int y, int z, SubChunk sc)
+	public static boolean editProperties(ConditionFaceProperty conditions, CubeFace cubeFace, int x, int y, int z, World world)
 	{
 		for (int i = 0; i < conditions.results.size() - 1; i++)
 		{
 			Result result = conditions.results.get(i);
 
-			if (result.testBlock(x + sc.getX() * 16, y, z + sc.getZ() * 16, sc))
+			if (result.testBlock(x, y, z, world))
 			{
 				return updateToResult(result, cubeFace);
 			}
@@ -164,14 +164,14 @@ public class ConditionFaceProperty extends FaceProperty
 				properties.add(VISIBLE);
 		}
 
-		boolean testBlock(int x, int y, int z, SubChunk subChunk)
+		boolean testBlock(int x, int y, int z, World world)
 		{
 			if (condProperty != null)
 			{
-				return condProperty.test(x, y, z, subChunk);
+				return condProperty.test(x, y, z, world);
 			} else if (andChainCondProperty != null)
 			{
-				return andChainCondProperty.test(x, y, z, subChunk);
+				return andChainCondProperty.test(x, y, z, world);
 			} else
 			{
 				System.err.println("No condition found!");

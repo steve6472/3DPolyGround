@@ -7,7 +7,6 @@ import steve6472.polyground.block.Block;
 import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.entity.Player;
 import steve6472.polyground.world.World;
-import steve6472.polyground.world.chunk.SubChunk;
 import steve6472.sge.main.KeyList;
 import steve6472.sge.main.Util;
 import steve6472.sge.main.events.MouseEvent;
@@ -28,12 +27,11 @@ public class TimeSliderBlock extends Block
 	}
 
 	@Override
-	public void onClick(SubChunk subChunk, BlockState state, Player player, EnumFace clickedOn, MouseEvent click, int x, int y, int z)
+	public void onClick(World world, BlockState state, Player player, EnumFace clickedOn, MouseEvent click, int x, int y, int z)
 	{
 		if (clickedOn == EnumFace.SOUTH && click.getButton() == KeyList.RMB && click.getAction() == KeyList.PRESS)
 		{
 			HitResult hr = CaveGame.getInstance().hitPicker.getHitResult();
-			World world = CaveGame.getInstance().world;
 
 			world.shade = ((float) (hr.getPz() - Math.ceil(hr.getPz()) + 1));
 			world.shade = (world.shade - 0.5f) * (1.2f) + 0.5f;

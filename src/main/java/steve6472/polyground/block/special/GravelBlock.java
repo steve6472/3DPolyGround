@@ -3,7 +3,7 @@ package steve6472.polyground.block.special;
 import steve6472.polyground.EnumFace;
 import steve6472.polyground.block.Block;
 import steve6472.polyground.block.states.BlockState;
-import steve6472.polyground.world.chunk.SubChunk;
+import steve6472.polyground.world.World;
 
 import java.io.File;
 
@@ -21,9 +21,9 @@ public class GravelBlock extends Block
 	}
 
 	@Override
-	public void onUpdate(SubChunk subChunk, BlockState state, EnumFace updateFrom, int x, int y, int z)
+	public void onUpdate(World world, BlockState state, EnumFace updateFrom, int x, int y, int z)
 	{
-		super.onUpdate(subChunk, state, updateFrom, x, y, z);/*
+		super.onUpdate(world, state, updateFrom, x, y, z);/*
 		if (y <= 0)
 			return;
 

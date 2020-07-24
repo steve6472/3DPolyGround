@@ -35,12 +35,12 @@ public class SubChunkBlocks
 		return states;
 	}
 
-	public void setStateNC(BlockState state, int x, int y, int z)
+	public void setState(BlockState state, int x, int y, int z)
 	{
 		states[x][y][z] = state;
 	}
 
-	public BlockState getStateNC(int x, int y, int z)
+	public BlockState getState(int x, int y, int z)
 	{
 		return states[x][y][z];
 	}
@@ -48,43 +48,5 @@ public class SubChunkBlocks
 	private void updateNeighbours(int x, int y, int z)
 	{
 		subChunk.getParent().updateNeighbours(subChunk, x, y, z);
-	}
-
-	/**
-	 * Can check neighbour chunks.
-	 * Should be more efficient for chunk border block checking
-	 * as it does not have to create new Chunk Key everytime
-	 *
-	 * @param x x coordinate of block
-	 * @param y y coordinate of block
-	 * @param z z coordinate of block
-	 * @return Block
-	 */
-	public BlockState getState(int x, int y, int z)
-	{
-		if (x >= 0 && x < 16 && z >= 0 && z < 16 && y >= 0 && y < 16)
-		{
-			return getStateNC(x, y, z);
-		} else
-		{
-			SubChunk sc = subChunk.getNeighbouringSubChunk(x, y, z);
-			if (sc == null)
-				return Block.air.getDefaultState();
-			return sc.getState(Math.floorMod(x, 16), Math.floorMod(y, 16), Math.floorMod(z, 16));
-		}
-	}
-
-	public void setState(BlockState state, int x, int y, int z)
-	{
-		if (x >= 0 && x < 16 && z >= 0 && z < 16 && y >= 0 && y < 16)
-		{
-			setStateNC(state, x, y, z);
-		} else
-		{
-			SubChunk sc = subChunk.getNeighbouringSubChunk(x, y, z);
-			if (sc == null)
-				return;
-			sc.setState(state, Math.floorMod(x, 16), Math.floorMod(y, 16), Math.floorMod(z, 16));
-		}
 	}
 }

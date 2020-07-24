@@ -99,13 +99,24 @@ public class ChunkCommand extends Command
 						{
 							for (int k = 0; k < 16; k++)
 							{
-								subChunk.getBlock(i, j, k).onBreak(subChunk, subChunk.getState(i, j, k), c.getSource().getPlayer(), EnumFace.NONE, i, j, k);
+								subChunk.getBlock(i, j, k).onBreak(subChunk.getWorld(), subChunk.getState(i, j, k), c.getSource().getPlayer(), EnumFace.NONE, i, j, k);
 							}
 						}
 					}
 				}
 			}
 
+			return 1;
+		})).then(literal("dump").executes(c ->
+		{
+			Chunk chunk = c.getSource().getWorld().getChunk((int) Math.floor(c.getSource().getPlayer().getX()) >> 4, (int) Math.floor(c.getSource().getPlayer().getZ()) >> 4);
+			for (SubChunk sc : chunk.getSubChunks())
+			{
+				System.out.println(sc);
+				System.out.println("--areFeaturesGeneratedForStage=" + sc.areFeaturesGeneratedForStage(sc.lastFeatureStage));
+				System.out.println("--maxRange=" + sc.maxRange);
+				System.out.println("--presentBiomes=" + sc.presentBiomes);
+			}
 			return 1;
 		})));
 	}

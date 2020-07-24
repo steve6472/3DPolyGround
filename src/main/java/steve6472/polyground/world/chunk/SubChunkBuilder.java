@@ -2,8 +2,10 @@ package steve6472.polyground.world.chunk;
 
 import steve6472.polyground.block.Block;
 import steve6472.polyground.block.special.TransparentBlock;
+import steve6472.polyground.world.World;
 
-import static steve6472.sge.gfx.VertexObjectCreator.*;
+import static steve6472.sge.gfx.VertexObjectCreator.createVAO;
+import static steve6472.sge.gfx.VertexObjectCreator.storeFloatDataInAttributeList;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
@@ -22,9 +24,9 @@ public class SubChunkBuilder
 		sc.vboNorm = storeFloatDataInAttributeList(3, 3, new float[]{0, 0, 0, 1, 1, 1, 0, 0, 0});
 	}
 
-	public static boolean cull(SubChunk sc, int x, int y, int z)
+	public static boolean cull(World world, int x, int y, int z)
 	{
-		Block b = sc.getBlock(x, y, z);
+		Block b = world.getBlock(x, y, z);
 		return !b.isFull || (b instanceof TransparentBlock);
 	}
 }

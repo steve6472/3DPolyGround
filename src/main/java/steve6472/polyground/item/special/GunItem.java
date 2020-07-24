@@ -6,7 +6,7 @@ import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.entity.Bullet;
 import steve6472.polyground.entity.Player;
 import steve6472.polyground.item.Item;
-import steve6472.polyground.world.chunk.SubChunk;
+import steve6472.polyground.world.World;
 import steve6472.sge.main.KeyList;
 import steve6472.sge.main.events.MouseEvent;
 
@@ -38,7 +38,7 @@ public class GunItem extends Item
 	}
 
 	@Override
-	public void onClick(SubChunk subChunk, BlockState state, Player player, EnumFace clickedOn, MouseEvent click, int x, int y, int z)
+	public void onClick(World world, BlockState state, Player player, EnumFace clickedOn, MouseEvent click, int x, int y, int z)
 	{
 		if (click.getAction() == KeyList.PRESS)
 		{

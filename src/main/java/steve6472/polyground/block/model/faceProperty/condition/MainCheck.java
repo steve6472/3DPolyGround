@@ -1,7 +1,8 @@
 package steve6472.polyground.block.model.faceProperty.condition;
 
 import steve6472.polyground.CaveGame;
-import steve6472.polyground.world.chunk.SubChunk;
+import steve6472.polyground.world.World;
+
 import java.util.HashMap;
 
 class MainCheck implements ICheck
@@ -120,7 +121,7 @@ class MainCheck implements ICheck
 	}
 
 	@Override
-	public boolean test(int x, int y, int z, SubChunk subChunk)
+	public boolean test(int x, int y, int z, World world)
 	{
 //		print("-+".repeat(32));
 		ICheck left = null, right = null;
@@ -147,11 +148,11 @@ class MainCheck implements ICheck
 
 		if (right == null)
 		{
-			return left.test(x, y, z, subChunk);
+			return left.test(x, y, z, world);
 		}
 
-		boolean l = left.test(x, y, z, subChunk);
-		boolean r = right.test(x, y, z, subChunk);
+		boolean l = left.test(x, y, z, world);
+		boolean r = right.test(x, y, z, world);
 
 		boolean flag = switch (type)
 			{

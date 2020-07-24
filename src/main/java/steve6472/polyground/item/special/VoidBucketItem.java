@@ -5,7 +5,7 @@ import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.entity.Player;
 import steve6472.polyground.item.Item;
 import steve6472.polyground.registry.WaterRegistry;
-import steve6472.polyground.world.chunk.SubChunk;
+import steve6472.polyground.world.World;
 import steve6472.sge.main.KeyList;
 import steve6472.sge.main.events.MouseEvent;
 
@@ -25,15 +25,15 @@ public class VoidBucketItem extends Item
 	}
 
 	@Override
-	public void onClick(SubChunk subChunk, BlockState state, Player player, EnumFace clickedOn, MouseEvent click, int x, int y, int z)
+	public void onClick(World world, BlockState state, Player player, EnumFace clickedOn, MouseEvent click, int x, int y, int z)
 	{
 		if (click.getAction() == KeyList.PRESS)
 		{
 			if (click.getButton() == KeyList.RMB)
 			{
-				int blockId = subChunk.getState(x + clickedOn.getXOffset() - subChunk.getX() * 16, y + clickedOn.getYOffset() - subChunk.getLayer() * 16, z + clickedOn.getZOffset() - subChunk.getZ() * 16).getId();
+				int blockId = world.getState(x + clickedOn.getXOffset(), y + clickedOn.getYOffset(), z + clickedOn.getZOffset()).getId();
 				if (WaterRegistry.volumes[blockId] > 0)
-					subChunk.setLiquidVolumeEfficiently(x + clickedOn.getXOffset() - subChunk.getX() * 16, y + clickedOn.getYOffset() - subChunk.getLayer() * 16, z + clickedOn.getZOffset() - subChunk.getZ() * 16, 0.0);
+					world.setLiquidVolume(x + clickedOn.getXOffset(), y + clickedOn.getYOffset(), z + clickedOn.getZOffset(), 0.0);
 			}
 		}
 	}

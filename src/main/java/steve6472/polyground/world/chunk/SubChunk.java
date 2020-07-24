@@ -189,8 +189,8 @@ public class SubChunk implements IBiomeProvider
 		{
 			tickableBlocks.iterate((x, y, z) ->
 			{
-				Block blockToTick = blocks.getStates()[x][y][z].getBlock();
-//				blockToTick.tick(this, blockData.getBlockData(x, y, z), x, y, z);
+				BlockState blockToTick = blocks.getStates()[x][y][z];
+				blockToTick.getBlock().tick(getWorld(), blockToTick, x, y, z);
 			});
 		}
 
@@ -207,8 +207,8 @@ public class SubChunk implements IBiomeProvider
 				short y = (short) ((i >> 4) & 0xf);
 				short z = (short) (i & 0xf);
 
-				Block blockToUpdate = blocks.getStates()[x][y][z].getBlock();
-//				blockToUpdate.onUpdate(this, blockData.getBlockData(x, y, z), EnumFace.NONE, x, y, z);
+				BlockState blockToUpdate = blocks.getStates()[x][y][z];
+				blockToUpdate.getBlock().onUpdate(getWorld(), blockToUpdate, EnumFace.NONE, x, y, z);
 				iter.remove();
 			}
 		}
@@ -329,76 +329,10 @@ public class SubChunk implements IBiomeProvider
 			return null;
 	}
 
-	/**
-	 * Can check neighbour chunks.
-	 * Should be more efficient for chunk border block data checking
-	 * as it does not have to create new Chunk Key everytime
-	 *
-	 * @param x x coordinate of light
-	 * @param y y coordinate of light
-	 * @param z z coordinate of light
-	 * @return int Light
-	 */
-	@Deprecated
-	public BlockData getBlockDataEfficiently(int x, int y, int z)
-	{
-		return blockData.getBlockDataEfficiently(x, y, z);
-	}
-
 	@Deprecated
 	public void setBlockEntity(int x, int y, int z, BlockData blockData)
 	{
 		getBlockData()[x][y][z] = blockData;
-	}
-
-	public SubChunk getNeighbouringSubChunk(int x, int y, int z)
-	{
-		EnumFace faceX = x >= 16 ? EnumFace.NORTH : x <= -1 ? EnumFace.SOUTH : EnumFace.NONE;
-		EnumFace faceZ = z >= 16 ? EnumFace.EAST : z <= -1 ? EnumFace.WEST : EnumFace.NONE;
-		EnumFace faceY = y >= 16 ? EnumFace.UP : y <= -1 ? EnumFace.DOWN : EnumFace.NONE;
-
-		int layer = getLayer() + faceY.getYOffset();
-
-		if (layer < 0 || layer >= parent.getSubChunks().length)
-			return null;
-
-		if (faceX == EnumFace.NONE && faceZ == EnumFace.NONE)
-		{
-			return parent.getSubChunk(layer);
-		} else if (faceZ == EnumFace.NONE)
-		{
-			Chunk chunk = parent.getNeighbouringChunk(faceX);
-			if (chunk == null)
-				return null;
-			else
-				return parent.getNeighbouringChunk(faceX).getSubChunk(layer);
-		} else if (faceX == EnumFace.NONE)
-		{
-			Chunk chunk = parent.getNeighbouringChunk(faceZ);
-			if (chunk == null)
-				return null;
-			else
-				return parent.getNeighbouringChunk(faceZ).getSubChunk(layer);
-		} else
-		{
-			Chunk chunk = parent.getNeighbouringChunk(faceX);
-			if (chunk == null)
-			{
-				chunk = parent.getNeighbouringChunk(faceZ);
-			}
-			if (chunk == null)
-			{
-				return null;
-			} else
-			{
-				Chunk chunk_ = chunk.getNeighbouringChunk(faceZ);
-				if (chunk_ == null)
-					chunk_ = chunk.getNeighbouringChunk(faceX);
-				if (chunk_ == null)
-					return null;
-				return chunk_.getSubChunk(layer);
-			}
-		}
 	}
 
 	public void rebuildAllLayers()
@@ -467,7 +401,7 @@ public class SubChunk implements IBiomeProvider
 
 	public void setBlock(Block block, int x, int y, int z)
 	{
-		setState(block.getStateForPlacement(this, null, null, x, y, z), x, y, z);
+		setState(block.getStateForPlacement(getWorld(), null, null, x, y, z), x, y, z);
 	}
 
 	public void setState(BlockState state, int x, int y, int z)
@@ -479,11 +413,6 @@ public class SubChunk implements IBiomeProvider
 	 * Liquid
 	 */
 
-	public double getLiquidVolumeEfficiently(int x, int y, int z)
-	{
-		return water.getLiquidVolumeEfficiently(x, y, z);
-	}
-
 	public double getLiquidVolume(int x, int y, int z)
 	{
 		return water.getLiquidVolume(x, y, z);
@@ -492,11 +421,6 @@ public class SubChunk implements IBiomeProvider
 	public void setLiquidVolume(int x, int y, int z, double volume)
 	{
 		water.setLiquidVolume(x, y, z, volume);
-	}
-
-	public void setLiquidVolumeEfficiently(int x, int y, int z, double volume)
-	{
-		water.setLiquidVolumeEfficiently(x, y, z, volume);
 	}
 
 	public boolean shouldUpdate()
@@ -539,6 +463,12 @@ public class SubChunk implements IBiomeProvider
 				}
 			}
 			isFullyGenerated = generated.size() == 0;
+		}
+
+		@Override
+		public String toString()
+		{
+			return "BiomeEntry{" + "generated=" + generated + ", isFullyGenerated=" + isFullyGenerated + '}';
 		}
 	}
 }

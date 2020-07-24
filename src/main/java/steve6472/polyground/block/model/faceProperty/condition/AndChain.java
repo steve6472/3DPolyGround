@@ -1,6 +1,6 @@
 package steve6472.polyground.block.model.faceProperty.condition;
 
-import steve6472.polyground.world.chunk.SubChunk;
+import steve6472.polyground.world.World;
 
 class AndChain implements ICheck
 {
@@ -26,11 +26,11 @@ class AndChain implements ICheck
 	}
 
 	@Override
-	public boolean test(int x, int y, int z, SubChunk subChunk)
+	public boolean test(int x, int y, int z, World world)
 	{
 		for (ICheck c : checks)
 		{
-			if (!c.test(x, y, z, subChunk))
+			if (!c.test(x, y, z, world))
 				return false;
 		}
 		return true;

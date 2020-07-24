@@ -71,7 +71,7 @@ public class SubChunkModel
 										if (b != null && b != Block.air)
 										{
 											buildHelper.load(j, i, k);
-											triangleCount += b.createModel(j, i, k, current.subChunk, state, buildHelper, current.modelLayer);
+											triangleCount += b.createModel(j + current.subChunk.getX() * 16, i + current.subChunk.getLayer() * 16, k + current.subChunk.getZ() * 16, current.subChunk.getWorld(), state, buildHelper, current.modelLayer);
 										}
 
 									} catch (Exception ex)
@@ -80,7 +80,7 @@ public class SubChunkModel
 										ex.printStackTrace();
 										try
 										{
-											triangleCount += Block.error.createModel(j, i, k, current.subChunk, state, buildHelper, current.modelLayer);
+											triangleCount += Block.error.createModel(j + current.subChunk.getX() * 16, i + current.subChunk.getLayer() * 16, k + current.subChunk.getZ() * 16, current.subChunk.getWorld(), state, buildHelper, current.modelLayer);
 										} catch (Exception ex1)
 										{
 											System.err.println("Error while building chunk error block!\nFrick! This should not happen :(");
@@ -228,7 +228,7 @@ public class SubChunkModel
 						if (b != null && b != Block.air)
 						{
 							subChunk.getParent().getWorld().getGame().mainRender.buildHelper.load(j, i, k);
-							triangleCount += b.createModel(j, i, k, subChunk, state, buildHelper, modelLayer);
+							triangleCount += b.createModel(j + subChunk.getX() * 16, i + subChunk.getLayer() * 16, k + subChunk.getZ() * 16, subChunk.getWorld(), state, buildHelper, modelLayer);
 						}
 
 					} catch (Exception ex)
@@ -237,7 +237,7 @@ public class SubChunkModel
 						ex.printStackTrace();
 						try
 						{
-							triangleCount += Block.error.createModel(j, i, k, subChunk, state, buildHelper, modelLayer);
+							triangleCount += Block.error.createModel(j + subChunk.getX() * 16, i + subChunk.getLayer() * 16, k + subChunk.getZ() * 16, subChunk.getWorld(), state, buildHelper, modelLayer);
 						} catch (Exception ex1)
 						{
 							System.err.println("Error while building chunk error block!\nFrick! This should not happen :(");

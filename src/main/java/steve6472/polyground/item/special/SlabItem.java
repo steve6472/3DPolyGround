@@ -6,7 +6,7 @@ import steve6472.polyground.block.special.SlabBlock;
 import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.entity.Player;
 import steve6472.polyground.item.Item;
-import steve6472.polyground.world.chunk.SubChunk;
+import steve6472.polyground.world.World;
 import steve6472.sge.main.KeyList;
 import steve6472.sge.main.events.MouseEvent;
 
@@ -26,23 +26,22 @@ public class SlabItem extends Item
 	}
 
 	@Override
-	public void onClick(SubChunk subChunk, BlockState state, Player player, EnumFace clickedOn, MouseEvent click, int x, int y, int z)
+	public void onClick(World world, BlockState state, Player player, EnumFace clickedOn, MouseEvent click, int x, int y, int z)
 	{
 		if (click.getAction() == KeyList.PRESS && click.getButton() == KeyList.RMB)
 		{
 			if (!player.processNextBlockPlace)
 				return;
 
-			BlockState placed = subChunk.getState(x + clickedOn.getXOffset(), y + clickedOn.getYOffset(), z + clickedOn.getZOffset());
+			BlockState placed = world.getState(x + clickedOn.getXOffset(), y + clickedOn.getYOffset(), z + clickedOn.getZOffset());
 
 			if (!(placed.getBlock() instanceof SlabBlock))
 				return;
 
 			if (placed.get(SlabBlock.TYPE) != EnumSlabType.DOUBLE)
 			{
-				subChunk.setState(placed.with(SlabBlock.TYPE, EnumSlabType.DOUBLE).with(SlabBlock.AXIS, placed.get(SlabBlock.AXIS)).get(),
+				world.setState(placed.with(SlabBlock.TYPE, EnumSlabType.DOUBLE).with(SlabBlock.AXIS, placed.get(SlabBlock.AXIS)).get(),
 					x + clickedOn.getXOffset(), y + clickedOn.getYOffset(), z + clickedOn.getZOffset());
-				subChunk.rebuildAllLayers();
 			}
 		}
 	}

@@ -1,6 +1,6 @@
 package steve6472.polyground.world.generator.feature;
 
-import steve6472.polyground.world.chunk.SubChunk;
+import steve6472.polyground.world.World;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
@@ -10,7 +10,7 @@ import steve6472.polyground.world.chunk.SubChunk;
  ***********************/
 public interface IFeature
 {
-	void generate(SubChunk sc, int x, int y, int z);
+	void generate(World world, int x, int y, int z);
 
 	/**
 	 * Specifies how many chunks in square radius have to be present for this feature to generate
@@ -21,7 +21,7 @@ public interface IFeature
 	 */
 	int size();
 
-	boolean canGenerate(SubChunk sc, int x, int y, int z);
+	boolean canGenerate(World world, int x, int y, int z);
 
 	EnumFeaturePlacement getPlacement();
 }

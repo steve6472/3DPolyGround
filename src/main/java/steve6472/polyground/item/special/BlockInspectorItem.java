@@ -8,7 +8,7 @@ import steve6472.polyground.entity.Player;
 import steve6472.polyground.events.InGameGuiEvent;
 import steve6472.polyground.gui.floatingdialogs.BlockStateDialog;
 import steve6472.polyground.item.Item;
-import steve6472.polyground.world.chunk.SubChunk;
+import steve6472.polyground.world.World;
 import steve6472.sge.gfx.font.Font;
 import steve6472.sge.gui.floatingdialog.FloatingDialog;
 import steve6472.sge.main.KeyList;
@@ -31,11 +31,11 @@ public class BlockInspectorItem extends Item
 	}
 
 	@Override
-	public void onClick(SubChunk subChunk, BlockState state, Player player, EnumFace clickedOn, MouseEvent click, int x, int y, int z)
+	public void onClick(World world, BlockState state, Player player, EnumFace clickedOn, MouseEvent click, int x, int y, int z)
 	{
 		if (click.getButton() == KeyList.RMB && click.getAction() == KeyList.PRESS)
 		{
-			FloatingDialog dialog = new BlockStateDialog(subChunk.getWorld().getGame());
+			FloatingDialog dialog = new BlockStateDialog(world.getGame());
 			dialog.setPosition(x + .5f + clickedOn.getXOffset(), y + .5f + clickedOn.getYOffset(), z + .5f + clickedOn.getZOffset());
 			CaveGame.getInstance().mainRender.dialogManager.addDialog(dialog);
 		}

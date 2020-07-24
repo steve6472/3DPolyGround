@@ -2,7 +2,7 @@ package steve6472.polyground.gfx.particle.particles.torch.spawner;
 
 import org.joml.Vector3f;
 import steve6472.SSS;
-import steve6472.polyground.world.chunk.SubChunk;
+import steve6472.polyground.world.World;
 import steve6472.sge.main.util.RandomUtil;
 
 /**********************
@@ -17,11 +17,11 @@ public class SphereSpawner extends Spawner
 	private float offsetX, offsetY, offsetZ;
 
 	@Override
-	public void spawn(Vector3f position, SubChunk subChunk, float x, float y, float z)
+	public void spawn(Vector3f position, World world, float x, float y, float z)
 	{
-		float sx = x + offsetX + subChunk.getX() * 16f;
-		float sy = y + offsetY + subChunk.getLayer() * 16f;
-		float sz = z + offsetZ + subChunk.getZ() * 16f;
+		float sx = x + offsetX;
+		float sy = y + offsetY;
+		float sz = z + offsetZ;
 
 		getRandomSpherePos(position, radius);
 		position.add(sx, sy, sz);

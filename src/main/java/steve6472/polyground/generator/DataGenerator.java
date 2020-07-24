@@ -117,6 +117,7 @@ public class DataGenerator
 		DataBuilder.create().transparentFullBlock("framed_glass").generate();
 
 		DataBuilder.create().leaves("oak_leaves").generate();
+		DataBuilder.create().leaves("crystal_leaves").generate();
 
 		DataBuilder.create().slab("dirt_slab", "dirt").generate();
 		DataBuilder.create().slab("stone_slab", "stone").generate();
@@ -125,6 +126,7 @@ public class DataGenerator
 		DataBuilder.create().slab("brick_slab", "bricks").generate();
 
 		DataBuilder.create().pillarBlock("oak_log", "oak_log_side", "oak_log").generate();
+		DataBuilder.create().pillarBlock("crystal_log", "crystal_log_side", "crystal_log").generate();
 
 		DataBuilder.create()
 			.blockName("stone_stala")

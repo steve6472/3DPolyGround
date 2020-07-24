@@ -4,7 +4,7 @@ import org.joml.Vector3f;
 import steve6472.SSS;
 import steve6472.polyground.block.Block;
 import steve6472.polyground.block.states.BlockState;
-import steve6472.polyground.world.chunk.SubChunk;
+import steve6472.polyground.world.World;
 import steve6472.polyground.world.light.EnumLightSource;
 import steve6472.polyground.world.light.Light;
 import steve6472.polyground.world.light.LightManager;
@@ -77,7 +77,7 @@ public class OldTorchBlock extends Block
 	}
 
 	@Override
-	public void tick(SubChunk subChunk, BlockState state, int x, int y, int z)
+	public void tick(World world, BlockState state, int x, int y, int z)
 	{
 		if (!RandomUtil.decide(6))
 			return;
@@ -110,10 +110,6 @@ public class OldTorchBlock extends Block
 		}
 		posX += dx;
 		posZ += dz;
-
-		posX += subChunk.getX() * 16;
-		posY += subChunk.getLayer() * 16;
-		posZ += subChunk.getZ() * 16;
 /*
 		LightParticle p = new LightParticle(
 			new Vector3f(-dx / 30f, RandomUtil.randomFloat(0.015f, 0.025f), -dz / 30f),

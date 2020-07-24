@@ -2,7 +2,7 @@ package steve6472.polyground.world.generator.feature;
 
 import org.joml.Vector2f;
 import steve6472.polyground.block.Block;
-import steve6472.polyground.world.chunk.SubChunk;
+import steve6472.polyground.world.World;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
@@ -28,23 +28,23 @@ public class VegetationPatchFeature implements IFeature
 	}
 
 	@Override
-	public void generate(SubChunk sc, int x, int y, int z)
+	public void generate(World world, int x, int y, int z)
 	{
 		for (int i = -radius; i <= radius; i++)
 		{
 			for (int j = -radius; j <= radius; j++)
 			{
-				if (sc.getWorld().getRandom().nextFloat() < chance)
+				if (world.getRandom().nextFloat() < chance)
 				{
-					if (sc.getBlock(x + i, y, z + j) == blockUnder)
+					if (world.getBlock(x + i, y, z + j) == blockUnder)
 					{
 						if (decayFromCenter)
 						{
-							if (sc.getWorld().getRandom().nextFloat() < 1d / Vector2f.distanceSquared(x, y, x + i, y + j))
-								sc.setBlock(blockToPlace, x + i, y + 1, z + j);
+							if (world.getRandom().nextFloat() < 1d / Vector2f.distanceSquared(x, y, x + i, y + j))
+								world.setBlock(blockToPlace, x + i, y + 1, z + j);
 						} else
 						{
-							sc.setBlock(blockToPlace, x + i, y + 1, z + j);
+							world.setBlock(blockToPlace, x + i, y + 1, z + j);
 						}
 					}
 				}
@@ -59,9 +59,9 @@ public class VegetationPatchFeature implements IFeature
 	}
 
 	@Override
-	public boolean canGenerate(SubChunk sc, int x, int y, int z)
+	public boolean canGenerate(World world, int x, int y, int z)
 	{
-		return sc.getBlock(x, y, z) == blockUnder;
+		return world.getBlock(x, y, z) == blockUnder;
 	}
 
 	@Override

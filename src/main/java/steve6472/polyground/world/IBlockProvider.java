@@ -33,18 +33,12 @@ public interface IBlockProvider extends IChunkProvider
 
 	default Block getBlock(int x, int y, int z)
 	{
-		Chunk c = getChunkFromBlockPos(x, z);
-		if (c == null)
-			return Block.air;
-		else
-			return c.getBlock(Math.floorMod(x, 16), y, Math.floorMod(z, 16));
+		return getState(x, y, z).getBlock();
 	}
 
 	default void setBlock(Block block, int x, int y, int z)
 	{
-		Chunk c = getChunkFromBlockPos(x, z);
-		if (c != null)
-			c.setBlock(block, Math.floorMod(x, 16), y, Math.floorMod(z, 16));
+		setState(block.getDefaultState(), x, y, z);
 	}
 
 	/**
@@ -55,18 +49,14 @@ public interface IBlockProvider extends IChunkProvider
 	 */
 	default void setBlock(Block block, int x, int y, int z, Function<Block, Boolean> canSet)
 	{
-		Chunk c = getChunkFromBlockPos(x, z);
-		if (c != null)
-			if (canSet.apply(c.getBlock(Math.floorMod(x, 16), y, Math.floorMod(z, 16))))
-				c.setBlock(block, Math.floorMod(x, 16), y, Math.floorMod(z, 16));
+		if (canSet.apply(getBlock(x, y, z)))
+			setBlock(block, x, y, z);
 	}
 
 	default void setState(BlockState state, int x, int y, int z, Function<BlockState, Boolean> canSet)
 	{
-		Chunk c = getChunkFromBlockPos(x, z);
-		if (c != null)
-			if (canSet.apply(c.getState(Math.floorMod(x, 16), y, Math.floorMod(z, 16))))
-				c.setState(state, Math.floorMod(x, 16), y, Math.floorMod(z, 16));
+		if (canSet.apply(getState(x, y, z)))
+			setState(state, x, y, z);
 	}
 
 	default void setBlock(HitResult hitResult, Block block)
@@ -77,5 +67,16 @@ public interface IBlockProvider extends IChunkProvider
 	default void setState(HitResult hitResult, BlockState state)
 	{
 		setState(state, hitResult.getX(), hitResult.getY(), hitResult.getZ());
+	}
+
+	// Water
+	default void setLiquidVolume(int x, int y, int z, double amount)
+	{
+		getSubChunk(x, y, z).setLiquidVolume(Math.floorMod(x, 16), Math.floorMod(y, 16), Math.floorMod(z, 16), amount);
+	}
+
+	default double getLiquidVolume(int x, int y, int z)
+	{
+		return getSubChunk(x, y, z).getLiquidVolume(Math.floorMod(x, 16), Math.floorMod(y, 16), Math.floorMod(z, 16));
 	}
 }

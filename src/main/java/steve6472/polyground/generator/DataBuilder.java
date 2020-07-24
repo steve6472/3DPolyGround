@@ -298,13 +298,18 @@ public class DataBuilder
 
 	public DataBuilder leaves(String name)
 	{
+		return leaves(name, true);
+	}
+
+	public DataBuilder leaves(String name, boolean biomeTint)
+	{
 		return DataBuilder.create().fullBlock(name)
 			.blockSpecial(new SimpleSpecial("leaves"))
 			.blockState(StateBuilder.create().singleModel(
 				BlockModelBuilder.create(name)
 					.addCube(CubeBuilder.create()
 						.fullBlock()
-						.face(FaceBuilder.create().texture(name).biomeTint(true))
+						.face(FaceBuilder.create().texture(name).biomeTint(biomeTint))
 					)
 				)
 			);

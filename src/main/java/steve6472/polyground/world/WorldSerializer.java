@@ -71,7 +71,7 @@ public class WorldSerializer
 			if (oldChunk != null)
 				world.deleteChunk(oldChunk.getX(), oldChunk.getZ());
 
-			world.addChunk(c, true);
+			world.addChunk(c);
 		}
 
 		world.teleporters.loadTeleporters();

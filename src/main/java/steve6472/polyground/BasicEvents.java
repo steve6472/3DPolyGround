@@ -43,11 +43,11 @@ public class BasicEvents
 		if (subChunk == null)
 			return;
 
-		BlockState state = block.getStateForPlacement(subChunk, player, face, hr.getCx(), hr.getCy(), hr.getCz());
+		BlockState state = block.getStateForPlacement(world, player, face, hr.getCx(), hr.getCy(), hr.getCz());
 
 		world.setState(state, hr.getX() + xOffset, hr.getY() + yOffset, hr.getZ() + zOffset, blockState -> blockState.getBlock().isReplaceable());
 
-		block.onPlace(subChunk, state, player, face, hr.getX() + xOffset, hr.getY() + yOffset, hr.getZ() + zOffset);
+		block.onPlace(world, state, player, face, hr.getX() + xOffset, hr.getY() + yOffset, hr.getZ() + zOffset);
 		updateAll(subChunk, hr.getX() + xOffset, hr.getY() + yOffset, hr.getZ() + zOffset);
 	}
 
@@ -65,7 +65,7 @@ public class BasicEvents
 
 		world.setState(state, hr.getX() + xOffset, hr.getY() + yOffset, hr.getZ() + zOffset, blockState -> blockState.getBlock().isReplaceable());
 
-		state.getBlock().onPlace(subChunk, state, player, face, hr.getX() + xOffset, hr.getY() + yOffset, hr.getZ() + zOffset);
+		state.getBlock().onPlace(world, state, player, face, hr.getX() + xOffset, hr.getY() + yOffset, hr.getZ() + zOffset);
 		updateAll(subChunk, hr.getX() + xOffset, hr.getY() + yOffset, hr.getZ() + zOffset);
 	}
 
@@ -96,9 +96,9 @@ public class BasicEvents
 		SubChunk subChunk = world.getSubChunkFromBlockCoords(hr.getX() + xOffset, hr.getY() + yOffset, hr.getZ() + zOffset);
 
 		world.setBlock(block, hr.getX() + xOffset, hr.getY() + yOffset, hr.getZ() + zOffset);
-		BlockState state = subChunk.getState(hr.getCx() + xOffset, hr.getCy() + yOffset, hr.getCz() + zOffset);
+		BlockState state = world.getState(hr.getX() + xOffset, hr.getY() + yOffset, hr.getZ() + zOffset);
 
-		block.onPlace(subChunk, state, player, face, hr.getX() + xOffset, hr.getY() + yOffset, hr.getZ() + zOffset);
+		block.onPlace(world, state, player, face, hr.getX() + xOffset, hr.getY() + yOffset, hr.getZ() + zOffset);
 		updateAll(subChunk, hr.getX() + xOffset, hr.getY() + yOffset, hr.getZ() + zOffset);
 	}
 
@@ -114,7 +114,7 @@ public class BasicEvents
 
 		world.setState(state, hr.getX() + xOffset, hr.getY() + yOffset, hr.getZ() + zOffset);
 
-		state.getBlock().onPlace(subChunk, state, player, face, hr.getX() + xOffset, hr.getY() + yOffset, hr.getZ() + zOffset);
+		state.getBlock().onPlace(world, state, player, face, hr.getX() + xOffset, hr.getY() + yOffset, hr.getZ() + zOffset);
 		updateAll(subChunk, hr.getX() + xOffset, hr.getY() + yOffset, hr.getZ() + zOffset);
 	}
 
@@ -128,7 +128,7 @@ public class BasicEvents
 
 		BlockState state = subChunk.getState(hr.getCx(), hr.getCy(), hr.getCz());
 
-		world.getBlock(hr.getX(), hr.getY(), hr.getZ()).onBreak(subChunk, state, player, hr.getFace(), hr.getX(), hr.getY(), hr.getZ());
+		world.getBlock(hr.getX(), hr.getY(), hr.getZ()).onBreak(world, state, player, hr.getFace(), hr.getX(), hr.getY(), hr.getZ());
 		world.setBlock(Block.air, hr.getX(), hr.getY(), hr.getZ());
 		updateAll(subChunk, hr.getX(), hr.getY(), hr.getZ());
 	}
@@ -139,7 +139,7 @@ public class BasicEvents
 		update(subChunk, EnumFace.NONE, x, y, z);
 		for (EnumFace face : EnumFace.getFaces())
 		{
-			update(subChunk.getNeighbouringSubChunk(Math.floorMod(x, 16) + face.getXOffset(), Math.floorMod(y, 16) + face.getYOffset(), Math.floorMod(z, 16) + face.getZOffset()), face, x + face.getXOffset(), y + face.getYOffset(), z + face.getZOffset());
+			update(subChunk.getWorld().getSubChunk(x >> 4 + face.getXOffset(), y >> 4 + face.getYOffset(), z >> 4 + face.getZOffset()), face, x + face.getXOffset(), y + face.getYOffset(), z + face.getZOffset());
 		}
 	}
 

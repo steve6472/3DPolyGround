@@ -58,11 +58,12 @@ public class EntityManager
 				int y = (int) Math.floor(p.getY());
 				int z = (int) Math.floor(p.getZ());
 
+
 				Chunk chunk = world.getChunkFromBlockPos(x, z);
 				if (chunk != null)
 				{
 					int cx, cz;
-					Block block = chunk.getBlock(cx = Math.floorMod(x, 16), y, cz = Math.floorMod(z, 16));
+					Block block = chunk.getState(cx = Math.floorMod(x, 16), y, cz = Math.floorMod(z, 16)).getBlock();
 
 					if (block != Block.air)
 					{

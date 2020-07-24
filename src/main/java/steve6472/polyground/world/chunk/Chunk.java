@@ -18,8 +18,6 @@ import java.util.Arrays;
  ***********************/
 public class Chunk
 {
-	private Chunk NORTH, EAST, SOUTH, WEST;
-
 	private final int x, z;
 	private final SubChunk[] subChunks;
 	private final World world;
@@ -108,24 +106,6 @@ public class Chunk
 		}
 	}
 
-	public void setBlock(Block block, int x, int y, int z)
-	{
-		if (isOutOfChunkBounds(x, y, z))
-			return;
-
-		SubChunk sc = subChunks[y / 16];
-
-		boolean shouldRebuild = sc.getState(x, y % 16, z) != block.getDefaultState();
-
-		sc.setBlock(block, x, y % 16, z);
-
-		sc.getTickableBlocks().set(x, y % 16, z, block.isTickable());
-//		sc.setBlockEntity(x, y % 16, z, b instanceof IBlockData ? ((IBlockData) b).createNewBlockEntity() : null);
-
-		if (shouldRebuild)
-			updateNeighbours(sc, x, y, z);
-	}
-
 	public void setState(BlockState state, int x, int y, int z)
 	{
 		if (isOutOfChunkBounds(x, y, z))
@@ -134,6 +114,7 @@ public class Chunk
 		SubChunk sc = subChunks[y / 16];
 
 		boolean shouldRebuild = sc.getState(x, y % 16, z) != state;
+		sc.setShouldRebuild(shouldRebuild);
 
 		sc.setState(state, x, y % 16, z);
 
@@ -166,7 +147,7 @@ public class Chunk
 
 		Chunk chunk;
 
-		chunk = getNeighbouringChunk(faceX);
+		chunk = world.getChunk(sc.getX() + faceX.getXOffset(), sc.getZ());
 		if (chunk != null)
 		{
 			SubChunk subChunk = chunk.getSubChunk(layer);
@@ -181,22 +162,13 @@ public class Chunk
 				sc.getParent().getSubChunk(l).rebuildAllLayers();
 		}
 
-		chunk = getNeighbouringChunk(faceZ);
+		chunk = world.getChunk(sc.getX(), sc.getZ() + faceZ.getZOffset());
 		if (chunk != null)
 		{
 			SubChunk subChunk = chunk.getSubChunk(layer);
 			if (subChunk != null)
 				subChunk.rebuildAllLayers();
 		}
-	}
-
-	public Block getBlock(int x, int y, int z)
-	{
-		if (isOutOfChunkBounds(x, y, z))
-			return Block.air;
-
-		SubChunk sc = subChunks[y / 16];
-		return sc.getBlock(x, y % 16, z);
 	}
 
 	public BlockState getState(int x, int y, int z)
@@ -236,29 +208,6 @@ public class Chunk
 	private boolean isOutOfChunkBounds(int x, int y, int z)
 	{
 		return x < 0 || x >= 16 || z < 0 || z >= 16 || y < 0 || y >= 16 * subChunks.length;
-	}
-
-	public void setNeighbouringChunk(EnumFace face, Chunk chunk)
-	{
-		switch (face)
-		{
-			case NORTH -> NORTH = chunk;
-			case EAST -> EAST = chunk;
-			case SOUTH -> SOUTH = chunk;
-			case WEST -> WEST = chunk;
-		}
-	}
-
-	public Chunk getNeighbouringChunk(EnumFace face)
-	{
-		return switch (face)
-			{
-				case NORTH -> NORTH;
-				case EAST -> EAST;
-				case SOUTH -> SOUTH;
-				case WEST -> WEST;
-				default -> null;
-			};
 	}
 
 	@Override

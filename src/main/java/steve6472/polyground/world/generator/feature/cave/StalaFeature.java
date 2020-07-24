@@ -4,7 +4,7 @@ import steve6472.polyground.block.Block;
 import steve6472.polyground.block.special.StalaBlock;
 import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.registry.BlockRegistry;
-import steve6472.polyground.world.chunk.SubChunk;
+import steve6472.polyground.world.World;
 import steve6472.polyground.world.generator.feature.EnumFeaturePlacement;
 import steve6472.polyground.world.generator.feature.IFeature;
 import steve6472.sge.main.util.RandomUtil;
@@ -101,21 +101,21 @@ public class StalaFeature implements IFeature
 	}
 
 	@Override
-	public void generate(SubChunk sc, int x, int y, int z)
+	public void generate(World world, int x, int y, int z)
 	{
-		gen(sc, x, y, z, sc.getBlock(x, y + 1, z) == Block.air);
+		gen(world, x, y, z, world.getBlock(x, y + 1, z) == Block.air);
 	}
 
-	private void gen(SubChunk sc, int x, int y, int z, boolean stalagmite)
+	private void gen(World world, int x, int y, int z, boolean stalagmite)
 	{
 		boolean canBeBoth = false;
 		int max = -1;
 		for (int i = 0; i <= 6; i++)
 		{
-			if (sc.getBlock(x, y(y, i, stalagmite), z) == baseBlock)
+			if (world.getBlock(x, y(y, i, stalagmite), z) == baseBlock)
 			{
 				max = i;
-				if (sc.getWorld().getRandom().nextFloat() <= doubleChance)
+				if (world.getRandom().nextFloat() <= doubleChance)
 				{
 					canBeBoth = true;
 				}
@@ -140,7 +140,7 @@ public class StalaFeature implements IFeature
 			int start = SIZES_BOTH_ALTS[max][0];
 			for (int i = 0; i < max; i++)
 			{
-				sc.setState(stalas[SIZES_BOTH[start + type][i]], x, y(y, i, stalagmite), z);
+				world.setState(stalas[SIZES_BOTH[start + type][i]], x, y(y, i, stalagmite), z);
 			}
 		} else
 		{
@@ -148,7 +148,7 @@ public class StalaFeature implements IFeature
 			int start = SIZES_ALTS[max][0];
 			for (int i = 0; i <= max; i++)
 			{
-				sc.setState(stalas[SIZES[start + type][i]], x, y(y, i, stalagmite), z);
+				world.setState(stalas[SIZES[start + type][i]], x, y(y, i, stalagmite), z);
 			}
 		}
 	}
@@ -172,14 +172,20 @@ public class StalaFeature implements IFeature
 	}
 
 	@Override
-	public boolean canGenerate(SubChunk sc, int x, int y, int z)
+	public boolean canGenerate(World world, int x, int y, int z)
 	{
-		return sc.getBlock(x, y, z) == baseBlock && (sc.getBlock(x, y - 1, z) == Block.air || sc.getBlock(x, y + 1, z) == Block.air);
+		return world.getBlock(x, y, z) == baseBlock && (world.getBlock(x, y - 1, z) == Block.air || world.getBlock(x, y + 1, z) == Block.air);
 	}
 
 	@Override
 	public EnumFeaturePlacement getPlacement()
 	{
 		return EnumFeaturePlacement.IN_GROUND;
+	}
+
+	@Override
+	public String toString()
+	{
+		return "StalaFeature{" + "baseBlock=" + baseBlock + ", doubleChance=" + doubleChance + '}';
 	}
 }

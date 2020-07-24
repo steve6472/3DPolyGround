@@ -1,10 +1,10 @@
 package steve6472.polyground.block.model.faceProperty.condition;
 
-import steve6472.polyground.world.chunk.SubChunk;
+import steve6472.polyground.world.World;
 
 interface ICheck
 {
-	boolean test(int x, int y, int z, SubChunk subChunk);
+	boolean test(int x, int y, int z, World world);
 
 	default void fixBlockId() {}
 

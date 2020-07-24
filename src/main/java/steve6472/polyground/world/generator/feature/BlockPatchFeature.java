@@ -1,7 +1,7 @@
 package steve6472.polyground.world.generator.feature;
 
 import steve6472.polyground.block.Block;
-import steve6472.polyground.world.chunk.SubChunk;
+import steve6472.polyground.world.World;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
@@ -27,9 +27,9 @@ public class BlockPatchFeature implements IFeature
 	}
 
 	@Override
-	public void generate(SubChunk sc, int x, int y, int z)
+	public void generate(World world, int x, int y, int z)
 	{
-		sc.setBlock(blockToPlace, x, y, z);
+		world.setBlock(blockToPlace, x, y, z);
 	}
 
 	@Override
@@ -39,9 +39,9 @@ public class BlockPatchFeature implements IFeature
 	}
 
 	@Override
-	public boolean canGenerate(SubChunk sc, int x, int y, int z)
+	public boolean canGenerate(World world, int x, int y, int z)
 	{
-		return sc.getBlock(x, y, z) == blockToReplace;
+		return world.getBlock(x, y, z) == blockToReplace;
 	}
 
 	@Override

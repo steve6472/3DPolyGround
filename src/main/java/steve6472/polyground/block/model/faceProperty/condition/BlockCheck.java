@@ -2,7 +2,7 @@ package steve6472.polyground.block.model.faceProperty.condition;
 
 import steve6472.polyground.block.Block;
 import steve6472.polyground.registry.BlockRegistry;
-import steve6472.polyground.world.chunk.SubChunk;
+import steve6472.polyground.world.World;
 
 class BlockCheck implements ICheck
 {
@@ -59,16 +59,16 @@ class BlockCheck implements ICheck
 			blockId = BlockRegistry.getBlockByName(block);
 	}
 
-	public boolean test(int x, int y, int z, SubChunk subChunk)
+	public boolean test(int x, int y, int z, World world)
 	{
 		boolean f;
 		if (blockId == Block.error)
 		{
-			f = subChunk.getState(relX + Math.floorMod(x, 16), relY + Math.floorMod(y, 16), relZ + Math.floorMod(z, 16)).getBlockModel().hasTag(block.substring(1));
+			f = world.getState(relX + x, relY + y, relZ + z).getBlockModel().hasTag(block.substring(1));
 			print("Checked for block tag \"%s\" with result %b", block.substring(1), f);
 		} else
 		{
-			f = subChunk.getBlock(relX + Math.floorMod(x, 16), relY + Math.floorMod(y, 16), relZ + Math.floorMod(z, 16)) == blockId;
+			f = world.getBlock(relX + x, relY + y, relZ + z) == blockId;
 		}
 
 		boolean flag = switch (type)

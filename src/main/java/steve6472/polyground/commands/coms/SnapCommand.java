@@ -4,7 +4,6 @@ import com.mojang.brigadier.CommandDispatcher;
 import steve6472.polyground.EnumFace;
 import steve6472.polyground.block.Block;
 import steve6472.polyground.block.special.SnapButtonBlock;
-import steve6472.polyground.block.special.WorldButtonBlock;
 import steve6472.polyground.commands.Command;
 import steve6472.polyground.commands.CommandSource;
 import steve6472.polyground.world.chunk.Chunk;
@@ -43,10 +42,10 @@ public class SnapCommand extends Command
 								if (RandomUtil.flipACoin())
 								{
 									Block b = subChunk.getBlock(i, j, k);
-									if (b instanceof WorldButtonBlock || b instanceof SnapButtonBlock)
+									if (b instanceof SnapButtonBlock)
 										continue;
 
-									b.onBreak(subChunk, subChunk.getState(i, j, k), c.getSource().getPlayer(), EnumFace.NONE, i, j, k);
+									b.onBreak(c.getSource().getWorld(), subChunk.getState(i, j, k), c.getSource().getPlayer(), EnumFace.NONE, i, j, k);
 									subChunk.setBlock(Block.air, i, j, k);
 								}
 							}

@@ -4,7 +4,6 @@ import steve6472.polyground.EnumFace;
 import steve6472.polyground.block.Block;
 import steve6472.polyground.block.model.Cube;
 import steve6472.polyground.block.special.*;
-import steve6472.polyground.world.chunk.SubChunk;
 import steve6472.polyground.world.chunk.SubChunkBuilder;
 
 /**********************
@@ -15,9 +14,9 @@ import steve6472.polyground.world.chunk.SubChunkBuilder;
  ***********************/
 public class Cull
 {
-	public static boolean renderFace(int x, int y, int z, Cube cube, EnumFace face, Block middleBlock, SubChunk subChunk)
+	public static boolean renderFace(int x, int y, int z, Cube cube, EnumFace face, Block middleBlock, World world)
 	{
-		Block testedBlock = getBlock(subChunk, x + face.getXOffset(), y + face.getYOffset(), z + face.getZOffset());
+		Block testedBlock = world.getBlock(x + face.getXOffset(), y + face.getYOffset(), z + face.getZOffset());
 
 		if (middleBlock instanceof StairBlock)
 		{
@@ -69,7 +68,7 @@ public class Cull
 			}
 			*/
 
-			return SubChunkBuilder.cull(subChunk, x + face.getXOffset(), y + face.getYOffset(), z + face.getZOffset());
+			return SubChunkBuilder.cull(world, x + face.getXOffset(), y + face.getYOffset(), z + face.getZOffset());
 		}
 
 		/* Slab */
@@ -108,20 +107,6 @@ public class Cull
 		}*/
 
 		return testedBlock == Block.air || !testedBlock.isFull;
-	}
-
-	private static Block getBlock(SubChunk sc, int x, int y, int z)
-	{
-		if (x >= 0 && x < 16 && z >= 0 && z < 16 && y >= 0 && y < 16)
-		{
-			return sc.getBlock(x, y, z);
-		} else
-		{
-			SubChunk subChunk = sc.getNeighbouringSubChunk(x, y, z);
-			if (subChunk == null)
-				return Block.air;
-			return subChunk.getBlock(Math.floorMod(x, 16), Math.floorMod(y, 16), Math.floorMod(z, 16));
-		}
 	}
 }
 

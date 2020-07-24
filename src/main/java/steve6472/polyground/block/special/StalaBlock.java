@@ -7,7 +7,7 @@ import steve6472.polyground.block.properties.IntProperty;
 import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.block.states.States;
 import steve6472.polyground.entity.Player;
-import steve6472.polyground.world.chunk.SubChunk;
+import steve6472.polyground.world.World;
 import steve6472.sge.main.KeyList;
 import steve6472.sge.main.events.MouseEvent;
 
@@ -32,7 +32,7 @@ public class StalaBlock extends CustomBlock
 	}
 
 	@Override
-	public void onClick(SubChunk subChunk, BlockState state, Player player, EnumFace clickedOn, MouseEvent click, int x, int y, int z)
+	public void onClick(World world, BlockState state, Player player, EnumFace clickedOn, MouseEvent click, int x, int y, int z)
 	{
 		if (!clickedOn.isSide())
 			return;
@@ -45,9 +45,8 @@ public class StalaBlock extends CustomBlock
 
 				if (width < 7)
 				{
-					subChunk.setState(state.with(WIDTH, width + 1).get(), x, y, z);
+					world.setState(state.with(WIDTH, width + 1).get(), x, y, z);
 					player.processNextBlockPlace = false;
-					subChunk.rebuildAllLayers();
 				}
 			}
 		} else if (click.getAction() == KeyList.PRESS && click.getButton() == KeyList.LMB)
@@ -55,9 +54,8 @@ public class StalaBlock extends CustomBlock
 			int width = state.get(WIDTH);
 			if (width > 1)
 			{
-				subChunk.setState(state.with(WIDTH, width - 1).get(), x, y, z);
+				world.setState(state.with(WIDTH, width - 1).get(), x, y, z);
 				player.processNextBlockBreak = false;
-				subChunk.rebuildAllLayers();
 			}
 		}
 	}

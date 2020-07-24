@@ -2,7 +2,7 @@ package steve6472.polyground.block.model.faceProperty.condition;
 
 import org.json.JSONObject;
 import steve6472.polyground.block.model.faceProperty.FaceProperty;
-import steve6472.polyground.world.chunk.SubChunk;
+import steve6472.polyground.world.World;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
@@ -30,9 +30,9 @@ public class CondProperty extends FaceProperty
 		check.fixBlockId();
 	}
 
-	boolean test(int x, int y, int z, SubChunk subChunk)
+	boolean test(int x, int y, int z, World world)
 	{
-		return check.test(x, y, z, subChunk);
+		return check.test(x, y, z, world);
 	}
 
 	@Override

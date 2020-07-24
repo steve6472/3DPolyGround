@@ -97,7 +97,7 @@ public class Generator
 					Chunk newChunk = new Chunk(i + px, j + pz, world);
 					for (SubChunk sc : newChunk.getSubChunks())
 						sc.setShouldRebuild(false);
-					world.addChunk(newChunk, true);
+					world.addChunk(newChunk);
 					return;
 				} else
 				{
@@ -129,7 +129,7 @@ public class Generator
 	private boolean generateFeatures(SubChunk sc, int maxRange)
 	{
 		sc.state = EnumChunkState.FEATURES;
-		boolean gen = false;
+		boolean gen;
 
 		if (sc.lastFeatureStage == FeatureStage.NONE)
 			sc.lastFeatureStage = FeatureStage.getValues()[1];
@@ -213,17 +213,20 @@ public class Generator
 		if (sc.isFeatureGenerated(biome, sc.lastFeatureStage, e.feature))
 			return false;
 
+//		if (i == 0 && j == 0 && k == 0)
+//			System.out.println("Trying to generate " + e.feature);
+
 		if (random.nextDouble() < e.chance)
 		{
-			if (e.feature.canGenerate(sc, i, j, k))
+			if (e.feature.canGenerate(world, i + sc.getX() * 16, j + sc.getLayer() * 16, k + sc.getZ() * 16))
 			{
-				e.feature.generate(sc, i, j, k);
+				e.feature.generate(world, i + sc.getX() * 16, j + sc.getLayer() * 16, k + sc.getZ() * 16);
 			}
 		}
 
 		setAsGenerated(biome, e.feature, generated);
 
-		return false;
+		return true;
 	}
 
 	private boolean onGroundStage(SubChunk sc, HashMap<Biome, LinkedHashSet<IFeature>> generated, int maxRange)
@@ -277,9 +280,9 @@ public class Generator
 
 		if (random.nextDouble() < e.chance)
 		{
-			if (e.feature.canGenerate(sc, i, y + (e.feature.getPlacement() == EnumFeaturePlacement.ON_HEIGHT_MAP ? 1 : 0), j))
+			if (e.feature.canGenerate(world, i + sc.getX() * 16, y + (e.feature.getPlacement() == EnumFeaturePlacement.ON_HEIGHT_MAP ? 1 : 0) + sc.getLayer() * 16, j + sc.getZ() * 16))
 			{
-				e.feature.generate(sc, i, y + (e.feature.getPlacement() == EnumFeaturePlacement.ON_HEIGHT_MAP ? 1 : 0), j);
+				e.feature.generate(world, i + sc.getX() * 16, y + (e.feature.getPlacement() == EnumFeaturePlacement.ON_HEIGHT_MAP ? 1 : 0) + sc.getLayer() * 16, j + sc.getZ() * 16);
 			}
 		}
 

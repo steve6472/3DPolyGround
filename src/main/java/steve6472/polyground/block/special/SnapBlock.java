@@ -13,7 +13,6 @@ import steve6472.polyground.gfx.particle.particles.BreakParticle;
 import steve6472.polyground.registry.face.FaceRegistry;
 import steve6472.polyground.world.BuildHelper;
 import steve6472.polyground.world.World;
-import steve6472.polyground.world.chunk.SubChunk;
 import steve6472.sge.main.util.RandomUtil;
 
 import java.io.File;
@@ -32,12 +31,12 @@ public class SnapBlock extends Block
 	}
 
 	@Override
-	public void onBreak(SubChunk subChunk, BlockState state, Player player, EnumFace breakedFrom, int x, int y, int z)
+	public void onBreak(World world, BlockState state, Player player, EnumFace breakedFrom, int x, int y, int z)
 	{
-		activate(state, subChunk, x, y, z);
+		activate(state, world, x, y, z);
 	}
 
-	public static void activate(BlockState state, SubChunk subChunk, int x, int y, int z)
+	public static void activate(BlockState state, World world, int x, int y, int z)
 	{
 		if (state == Block.air.getDefaultState())
 			return;
@@ -56,9 +55,9 @@ public class SnapBlock extends Block
 					{
 						float ty = s - j / size + s * 14f;
 						if (cf == c.getFace(EnumFace.WEST))
-							snap(subChunk.getWorld(), cf, i, j, c.getAabb().minZ, x, y, z, s - i / size + s * 14f, ty);
+							snap(world, cf, i, j, c.getAabb().minZ, x, y, z, s - i / size + s * 14f, ty);
 						if (cf == c.getFace(EnumFace.EAST))
-							snap(subChunk.getWorld(), cf, i, j, c.getAabb().maxZ - 1f / 16f, x, y, z, i / size, ty);
+							snap(world, cf, i, j, c.getAabb().maxZ - 1f / 16f, x, y, z, i / size, ty);
 					}
 				}
 			}
@@ -73,9 +72,9 @@ public class SnapBlock extends Block
 						//s - TY / size + s * 14f
 						float ty = s - j / size + s * 14f;
 						if (cf == c.getFace(EnumFace.DOWN))
-							snap(subChunk.getWorld(), cf, i, c.getAabb().minY, j, x, y, z, i / size, ty);
+							snap(world, cf, i, c.getAabb().minY, j, x, y, z, i / size, ty);
 						if (cf == c.getFace(EnumFace.UP))
-							snap(subChunk.getWorld(), cf, i, c.getAabb().maxY - 1f / 16f, j, x, y, z, i / size, ty);
+							snap(world, cf, i, c.getAabb().maxY - 1f / 16f, j, x, y, z, i / size, ty);
 					}
 				}
 			}
@@ -89,15 +88,16 @@ public class SnapBlock extends Block
 					{
 						float ty = s - j / size + s * 14f;
 						if (cf == c.getFace(EnumFace.NORTH))
-							snap(subChunk.getWorld(), cf, c.getAabb().maxX - 1f / 16f, j, i, x, y, z, s - i / size + s * 14f, ty);
+							snap(world, cf, c.getAabb().maxX - 1f / 16f, j, i, x, y, z, s - i / size + s * 14f, ty);
 						if (cf == c.getFace(EnumFace.SOUTH))
-							snap(subChunk.getWorld(), cf, c.getAabb().minX, j, i, x, y, z, i / size, ty);
+							snap(world, cf, c.getAabb().minX, j, i, x, y, z, i / size, ty);
 					}
 				}
 			}
 		}
 	}
 
+	// TODO: fix rotations
 	public static void snap(World world, CubeFace cf, float i, float j, float k, int x, int y, int z, float TX, float TY)
 	{
 		if (cf == null)

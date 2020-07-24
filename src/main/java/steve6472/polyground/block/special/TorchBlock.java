@@ -11,7 +11,7 @@ import steve6472.polyground.gfx.particle.particles.torch.motion.TorchFormula;
 import steve6472.polyground.gfx.particle.particles.torch.spawner.BoxSpawner;
 import steve6472.polyground.gfx.particle.particles.torch.spawner.Spawner;
 import steve6472.polyground.gfx.particle.particles.torch.spawner.SphereSpawner;
-import steve6472.polyground.world.chunk.SubChunk;
+import steve6472.polyground.world.World;
 import steve6472.polyground.world.light.EnumLightSource;
 import steve6472.polyground.world.light.Light;
 import steve6472.polyground.world.light.LightManager;
@@ -122,7 +122,7 @@ public class TorchBlock extends Block
 	}
 
 	@Override
-	public void tick(SubChunk subChunk, BlockState state, int x, int y, int z)
+	public void tick(World world, BlockState state, int x, int y, int z)
 	{
 		if (spawner == null)
 			return;
@@ -136,7 +136,7 @@ public class TorchBlock extends Block
 			return;
 
 		Vector3f newPosition = new Vector3f();
-		spawner.spawn(newPosition, subChunk, x, y, z);
+		spawner.spawn(newPosition, world, x, y, z);
 
 		LightParticle p = new LightParticle(
 			getFormula(motionFormula, formulaData),
@@ -144,7 +144,7 @@ public class TorchBlock extends Block
 			RandomUtil.randomFloat(1f / 48f, 1f / 24f),
 			r, g, b, a, l
 			);
-		subChunk.getWorld().getGame().mainRender.particles.addParticle(p);
+		world.getGame().mainRender.particles.addParticle(p);
 	}
 
 	/**

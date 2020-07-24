@@ -1,7 +1,7 @@
 package steve6472.polyground.world.generator.feature;
 
 import steve6472.polyground.block.Block;
-import steve6472.polyground.world.chunk.SubChunk;
+import steve6472.polyground.world.World;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
@@ -22,15 +22,15 @@ public class TreeFeature implements IFeature
 	}
 
 	@Override
-	public void generate(SubChunk sc, int x, int y, int z)
+	public void generate(World world, int x, int y, int z)
 	{
-		int h = sc.getWorld().getRandom().nextInt(2) + 5;
+		int h = world.getRandom().nextInt(2) + 5;
 
 		for (int i = 0; i < h; i++)
 		{
-			sc.setBlock(log, x, y + i + 1, z);
+			world.setBlock(log, x, y + i + 1, z);
 		}
-		sc.setBlock(blockUnder, x, y, z);
+		world.setBlock(blockUnder, x, y, z);
 		for (int i = -2; i < 3; i++)
 		{
 			for (int j = -2; j < 3; j++)
@@ -39,8 +39,8 @@ public class TreeFeature implements IFeature
 				{
 					if (Math.abs(i) % 3 != 2 || Math.abs(j) % 3 != 2)
 					{
-						if (sc.getBlock(x + i, y + h - 2 + k, z + j) == Block.air)
-							sc.setBlock(leaves, x + i, y + h - 2 + k, z + j);
+						if (world.getBlock(x + i, y + h - 2 + k, z + j) == Block.air)
+							world.setBlock(leaves, x + i, y + h - 2 + k, z + j);
 					}
 				}
 			}
@@ -53,8 +53,8 @@ public class TreeFeature implements IFeature
 				{
 					if (Math.abs(i) % 2 != 1 || Math.abs(j) % 2 != 1)
 					{
-						if (sc.getBlock(x + i, y + h + k, z + j) == Block.air)
-							sc.setBlock(leaves, x + i, y + h + k, z + j);
+						if (world.getBlock(x + i, y + h + k, z + j) == Block.air)
+							world.setBlock(leaves, x + i, y + h + k, z + j);
 					}
 				}
 			}
@@ -68,9 +68,9 @@ public class TreeFeature implements IFeature
 	}
 
 	@Override
-	public boolean canGenerate(SubChunk sc, int x, int y, int z)
+	public boolean canGenerate(World world, int x, int y, int z)
 	{
-		if (sc.getBlock(x, y, z) != blockUnderMatch)
+		if (world.getBlock(x, y, z) != blockUnderMatch)
 			return false;
 		for (int i = -2; i < 3; i++)
 		{
@@ -80,7 +80,7 @@ public class TreeFeature implements IFeature
 				{
 					if (Math.abs(i) % 3 != 2 || Math.abs(j) % 3 != 2)
 					{
-						if (sc.getBlock(x + i, y + 5 - 2 + k, z + j) != Block.air)
+						if (world.getBlock(x + i, y + 5 - 2 + k, z + j) != Block.air)
 							return false;
 					}
 				}
@@ -94,7 +94,7 @@ public class TreeFeature implements IFeature
 				{
 					if (Math.abs(i) % 2 != 1 || Math.abs(j) % 2 != 1)
 					{
-						if (sc.getBlock(x + i, y + 5 + k, z + j) != Block.air)
+						if (world.getBlock(x + i, y + 5 + k, z + j) != Block.air)
 							return false;
 					}
 				}

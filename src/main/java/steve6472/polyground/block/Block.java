@@ -20,8 +20,8 @@ import steve6472.polyground.entity.Player;
 import steve6472.polyground.registry.face.FaceRegistry;
 import steve6472.polyground.world.BuildHelper;
 import steve6472.polyground.world.Cull;
+import steve6472.polyground.world.World;
 import steve6472.polyground.world.chunk.ModelLayer;
-import steve6472.polyground.world.chunk.SubChunk;
 import steve6472.sge.main.events.MouseEvent;
 
 import java.io.File;
@@ -130,12 +130,12 @@ public class Block
 		}
 	}
 
-	public BlockState getStateForPlacement(SubChunk subChunk, Player player, EnumFace placedOn, int x, int y, int z)
+	public BlockState getStateForPlacement(World world, Player player, EnumFace placedOn, int x, int y, int z)
 	{
 		return getDefaultState();
 	}
 
-	public BlockState getStateForPlacement(SubChunk subChunk, BlockState state, int x, int y, int z)
+	public BlockState getStateForPlacement(World world, BlockState state, int x, int y, int z)
 	{
 		return getDefaultState();
 	}
@@ -157,11 +157,11 @@ public class Block
 		return this == air;
 	}
 
-	public int createModel(int x, int y, int z, SubChunk sc, BlockState state, BuildHelper buildHelper, ModelLayer modelLayer)
+	public int createModel(int x, int y, int z, World world, BlockState state, BuildHelper buildHelper, ModelLayer modelLayer)
 	{
 		int tris = 0;
 
-		buildHelper.setSubChunk(sc);
+		buildHelper.setSubChunk(world.getSubChunkFromBlockCoords(x, y, z));
 		for (Cube c : state.getBlockModel().getCubes())
 		{
 			buildHelper.setCube(c);
@@ -172,7 +172,7 @@ public class Block
 				boolean hasCondTexture = false;
 				if (cubeFace != null && cubeFace.hasProperty(FaceRegistry.conditionedTexture))
 				{
-					flag = ConditionFaceProperty.editProperties(cubeFace.getProperty(FaceRegistry.conditionedTexture), cubeFace, x, y, z, sc);
+					flag = ConditionFaceProperty.editProperties(cubeFace.getProperty(FaceRegistry.conditionedTexture), cubeFace, x, y, z, world);
 					hasCondTexture = true;
 				}
 
@@ -185,7 +185,7 @@ public class Block
 						{
 							tris += buildHelper.face(face);
 						}
-					} else if (Cull.renderFace(x, y, z, c, face, this, sc))
+					} else if (Cull.renderFace(x, y, z, c, face, this, world))
 					{
 						tris += buildHelper.face(face);
 					}
@@ -202,7 +202,7 @@ public class Block
 		return "Block{" + "isFull=" + isFull + ", id=" + -1 + ", name='" + name + '\'' + '}';
 	}
 
-	public void tick(SubChunk subChunk, BlockState state, int x, int y, int z)
+	public void tick(World world, BlockState state, int x, int y, int z)
 	{
 	}
 
@@ -212,18 +212,18 @@ public class Block
 
 	/* Events */
 
-	public void onPlace(SubChunk subChunk, BlockState state, Player player, EnumFace placedOn, int x, int y, int z)
+	public void onPlace(World world, BlockState state, Player player, EnumFace placedOn, int x, int y, int z)
 	{
 	}
 
-	public void onBreak(SubChunk subChunk, BlockState state, Player player, EnumFace breakedFrom, int x, int y, int z)
+	public void onBreak(World world, BlockState state, Player player, EnumFace breakedFrom, int x, int y, int z)
 	{
-		SnapBlock.activate(state, subChunk, x, y, z);
+		SnapBlock.activate(state, world, x, y, z);
 	}
 
 	/**
 	 * Runs on block in the world
-	 *  @param subChunk  Sub Chunk
+	 * @param world  World
 	 * @param state Data of block
 	 * @param player    Player
 	 * @param clickedOn Side the player has clicked on
@@ -232,11 +232,11 @@ public class Block
 	 * @param y         y position of block
 	 * @param z         z position of block
 	 */
-	public void onClick(SubChunk subChunk, BlockState state, Player player, EnumFace clickedOn, MouseEvent click, int x, int y, int z)
+	public void onClick(World world, BlockState state, Player player, EnumFace clickedOn, MouseEvent click, int x, int y, int z)
 	{
 	}
 
-	public void onUpdate(SubChunk subChunk, BlockState state, EnumFace updateFrom, int x, int y, int z)
+	public void onUpdate(World world, BlockState state, EnumFace updateFrom, int x, int y, int z)
 	{
 	}
 }

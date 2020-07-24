@@ -1,6 +1,6 @@
 package steve6472.polyground.block.model.faceProperty.condition;
 
-import steve6472.polyground.world.chunk.SubChunk;
+import steve6472.polyground.world.World;
 
 class LRCheck implements ICheck
 {
@@ -36,10 +36,10 @@ class LRCheck implements ICheck
 	}
 
 	@Override
-	public boolean test(int x, int y, int z, SubChunk subChunk)
+	public boolean test(int x, int y, int z, World world)
 	{
-		boolean l = left.test(x, y, z, subChunk);
-		boolean r = right.test(x, y, z, subChunk);
+		boolean l = left.test(x, y, z, world);
+		boolean r = right.test(x, y, z, world);
 
 		boolean flag = switch (type)
 			{

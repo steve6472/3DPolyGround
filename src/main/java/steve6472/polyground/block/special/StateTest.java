@@ -6,7 +6,7 @@ import steve6472.polyground.block.properties.IProperty;
 import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.block.states.States;
 import steve6472.polyground.entity.Player;
-import steve6472.polyground.world.chunk.SubChunk;
+import steve6472.polyground.world.World;
 import steve6472.sge.main.KeyList;
 import steve6472.sge.main.events.MouseEvent;
 
@@ -31,13 +31,12 @@ public class StateTest extends CustomBlock
 	}
 
 	@Override
-	public void onClick(SubChunk subChunk, BlockState state, Player player, EnumFace clickedOn, MouseEvent click, int x, int y, int z)
+	public void onClick(World world, BlockState state, Player player, EnumFace clickedOn, MouseEvent click, int x, int y, int z)
 	{
 		if (click.getButton() == KeyList.RMB && click.getAction() == KeyList.PRESS)
 		{
-			subChunk.setState(state.with(LIT, !state.get(LIT)).get(), x, y, z);
+			world.setState(state.with(LIT, !state.get(LIT)).get(), x, y, z);
 			player.processNextBlockPlace = false;
-			subChunk.rebuildAllLayers();
 		}
 	}
 

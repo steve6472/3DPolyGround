@@ -156,7 +156,7 @@ public class World implements IBlockProvider
 							try
 							{
 								c.loadChunk(this);
-								addChunk(c, true);
+								addChunk(c);
 							} catch (IOException e)
 							{
 								System.err.println("Chunk " + c.getX() + "/" + c.getZ() + " failed to load");
@@ -355,7 +355,7 @@ public class World implements IBlockProvider
 		if (getChunk(x, z) != null)
 			return;
 
-		addChunk(new Chunk(x, z, this).generate(), true);
+		addChunk(new Chunk(x, z, this).generate());
 	}
 
 	@Override

@@ -8,7 +8,7 @@ import steve6472.polyground.block.properties.enums.EnumAxis;
 import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.block.states.States;
 import steve6472.polyground.entity.Player;
-import steve6472.polyground.world.chunk.SubChunk;
+import steve6472.polyground.world.World;
 
 import java.io.File;
 import java.util.List;
@@ -30,7 +30,7 @@ public class PilliarBlock extends Block
 	}
 
 	@Override
-	public BlockState getStateForPlacement(SubChunk subChunk, Player player, EnumFace placedOn, int x, int y, int z)
+	public BlockState getStateForPlacement(World world, Player player, EnumFace placedOn, int x, int y, int z)
 	{
 		if (placedOn == null)
 			return getDefaultState();

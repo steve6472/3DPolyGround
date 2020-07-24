@@ -3,13 +3,13 @@ package steve6472.polyground.block.special;
 import steve6472.SSS;
 import steve6472.polyground.EnumFace;
 import steve6472.polyground.block.Block;
+import steve6472.polyground.block.model.Cube;
 import steve6472.polyground.block.model.CubeFace;
 import steve6472.polyground.block.model.faceProperty.LightFaceProperty;
-import steve6472.polyground.block.model.Cube;
 import steve6472.polyground.block.states.BlockState;
-import steve6472.polyground.registry.face.FaceRegistry;
 import steve6472.polyground.entity.Player;
-import steve6472.polyground.world.chunk.SubChunk;
+import steve6472.polyground.registry.face.FaceRegistry;
+import steve6472.polyground.world.World;
 import steve6472.polyground.world.light.EnumLightSource;
 import steve6472.polyground.world.light.LightManager;
 import steve6472.sge.main.util.ColorUtil;
@@ -89,9 +89,9 @@ public class LightSourceBlock extends Block
 	}
 
 	@Override
-	public void onPlace(SubChunk subChunk, BlockState state, Player player, EnumFace placedOn, int x, int y, int z)
+	public void onPlace(World world, BlockState state, Player player, EnumFace placedOn, int x, int y, int z)
 	{
-		if (subChunk.getBlock(x - subChunk.getX() * 16, y - subChunk.getLayer() * 16, z - subChunk.getZ() * 16) != this)
+		if (world.getBlock(x, y, z) != this)
 			return;
 
 		float[] col = ColorUtil.getColors(color);
@@ -99,9 +99,9 @@ public class LightSourceBlock extends Block
 	}
 
 	@Override
-	public void onBreak(SubChunk subChunk, BlockState state, Player player, EnumFace breakedFrom, int x, int y, int z)
+	public void onBreak(World world, BlockState state, Player player, EnumFace breakedFrom, int x, int y, int z)
 	{
-		super.onBreak(subChunk, state, player, breakedFrom, x, y, z);
+		super.onBreak(world, state, player, breakedFrom, x, y, z);
 		LightManager.removeLight(EnumLightSource.BLOCK, x + 0.5f + xOffset, y + 0.5f + yOffset, z + 0.5f + zOffset);
 	}
 

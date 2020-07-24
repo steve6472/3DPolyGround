@@ -2,7 +2,7 @@ package steve6472.polyground.world.generator.feature;
 
 import steve6472.polyground.block.Block;
 import steve6472.polyground.registry.BlockRegistry;
-import steve6472.polyground.world.chunk.SubChunk;
+import steve6472.polyground.world.World;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
@@ -23,10 +23,10 @@ public class LakeFeature implements IFeature
 	}
 
 	@Override
-	public void generate(SubChunk sc, int x, int y, int z)
+	public void generate(World world, int x, int y, int z)
 	{
-		int w = sc.getWorld().getRandom().nextInt(4) + 3;
-		int h = sc.getWorld().getRandom().nextInt(2) + 2;
+		int w = world.getRandom().nextInt(4) + 3;
+		int h = world.getRandom().nextInt(2) + 2;
 		int d = w;
 
 		for (int i = -w - 1; i < w + 1; i++)
@@ -41,9 +41,9 @@ public class LakeFeature implements IFeature
 
 					if (X + Y + Z < 1)
 					{
-						Block a = sc.getBlock(i + x, j + y, k + z);
+						Block a = world.getBlock(i + x, j + y, k + z);
 						if (a == b || a == this.d || a == e)
-							sc.setBlock(c, i + x, j + y, k + z);
+							world.setBlock(c, i + x, j + y, k + z);
 					}
 				}
 			}
@@ -61,7 +61,7 @@ public class LakeFeature implements IFeature
 
 					if (X + Y + Z < 1)
 					{
-						sc.setBlock(Block.air, i + x, j + y, k + z);
+						world.setBlock(Block.air, i + x, j + y, k + z);
 					}
 				}
 			}
@@ -75,9 +75,9 @@ public class LakeFeature implements IFeature
 	}
 
 	@Override
-	public boolean canGenerate(SubChunk sc, int x, int y, int z)
+	public boolean canGenerate(World world, int x, int y, int z)
 	{
-		return (y + sc.getLayer() * 16) > 8 && (y + sc.getLayer() * 16) < 30 && sc.getBlock(x, y, z) == b;
+		return y > 8 && y < 30 && world.getBlock(x, y, z) == b;
 	}
 
 	@Override

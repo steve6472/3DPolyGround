@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="2f5192ae-f409-4e08-b230-25986fbeb1fd" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -19,6 +22,13 @@
       </list>
     </option>
   </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="mavenHome" value="D:\Toolbox\apps\IDEA-C\ch-0\202.6397.59\plugins\maven\lib\maven3" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
   <component name="ProjectId" id="1ZTuvkYYsXrUbdXdp4wzwE1yruE" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -33,7 +43,7 @@
     <property name="ignore.preview.features.used" value="true" />
     <property name="last_opened_file_path" value="$MAVEN_REPOSITORY$/steve6472/game-engine/1.0-SNAPSHOT/game-engine-1.0-SNAPSHOT.jar!/" />
     <property name="restartRequiresConfirmation" value="false" />
-    <property name="settings.editor.selected.configurable" value="Errors" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
   </component>
   <component name="RecentsManager">
     <key name="MoveMembersDialog.RECENTS_KEY">
@@ -54,7 +64,7 @@
   <component name="RunManager" selected="Application.CaveGame">
     <configuration name="AndChainGenerator" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="steve6472.polyground.generator.cond.AndChainGenerator" />
-      <module name="CaveGame" />
+      <module name="cavegame" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -75,14 +85,14 @@
     </configuration>
     <configuration name="Creator" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="steve6472.polyground.generator.creator.Creator" />
-      <module name="CaveGame" />
+      <module name="cavegame" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
     <configuration name="DataGenerator" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="steve6472.polyground.generator.DataGenerator" />
-      <module name="CaveGame" />
+      <module name="cavegame" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -112,6 +122,7 @@
       </list>
     </recent_temporary>
   </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="2f5192ae-f409-4e08-b230-25986fbeb1fd" name="Default Changelist" comment="" />
@@ -123,30 +134,34 @@
     <servers />
   </component>
   <component name="WindowStateProjectService">
-    <state x="140" y="19" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1593696808999">
+    <state x="140" y="0" width="1092" height="728" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1595586475126">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="140" y="19" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1366.728@0.0.1366.728" timestamp="1593696808999" />
-    <state x="270" y="26" width="464" height="598" key="#com.intellij.ide.util.MemberChooser" timestamp="1595350354491">
+    <state x="140" y="0" width="1092" height="728" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1366.728@0.0.1366.728" timestamp="1595586475126" />
+    <state x="270" y="26" width="476" height="598" key="#com.intellij.ide.util.MemberChooser" timestamp="1595541042083">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="270" y="26" width="464" height="598" key="#com.intellij.ide.util.MemberChooser/0.0.1366.728@0.0.1366.728" timestamp="1595350354491" />
+    <state x="270" y="26" width="476" height="598" key="#com.intellij.ide.util.MemberChooser/0.0.1366.728@0.0.1366.728" timestamp="1595541042083" />
     <state x="415" y="111" key="#com.intellij.ide.util.TreeClassChooserDialog" timestamp="1593696801649">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="415" y="111" key="#com.intellij.ide.util.TreeClassChooserDialog/0.0.1366.728@0.0.1366.728" timestamp="1593696801649" />
+    <state x="275" y="60" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog" timestamp="1595537568983">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="275" y="60" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog/0.0.1366.728@0.0.1366.728" timestamp="1595537568983" />
     <state x="394" y="80" key="#com.intellij.refactoring.move.moveMembers.MoveMembersDialog" timestamp="1589479256398">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="394" y="80" key="#com.intellij.refactoring.move.moveMembers.MoveMembersDialog/0.0.1366.728@0.0.1366.728" timestamp="1589479256398" />
-    <state x="114" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog" timestamp="1595507658159">
+    <state x="114" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog" timestamp="1595541360533">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="114" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.0.1366.728@0.0.1366.728" timestamp="1595507658159" />
-    <state x="415" y="111" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1593945225455">
+    <state x="114" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.0.1366.728@0.0.1366.728" timestamp="1595541360533" />
+    <state x="415" y="111" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1595535478110">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="415" y="111" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1366.728@0.0.1366.728" timestamp="1593945225455" />
+    <state x="415" y="111" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1366.728@0.0.1366.728" timestamp="1595535478110" />
     <state x="228" y="118" key="#org.jetbrains.debugger.memory.view.InstancesWindow" timestamp="1588855530345">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
@@ -159,42 +174,42 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="463" y="105" key="FileChooserDialogImpl/0.0.1366.728@0.0.1366.728" timestamp="1595339345169" />
-    <state width="1323" height="145" key="GridCell.Tab.0.bottom" timestamp="1595508004819">
+    <state width="1122" height="621" key="GridCell.Tab.0.bottom" timestamp="1595586730582">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1323" height="145" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1595508004819" />
-    <state width="1323" height="145" key="GridCell.Tab.0.center" timestamp="1595508004819">
+    <state width="1122" height="621" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1595586730582" />
+    <state width="1122" height="621" key="GridCell.Tab.0.center" timestamp="1595586730582">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1323" height="145" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1595508004819" />
-    <state width="1323" height="145" key="GridCell.Tab.0.left" timestamp="1595508004819">
+    <state width="1122" height="621" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1595586730582" />
+    <state width="1122" height="621" key="GridCell.Tab.0.left" timestamp="1595586730581">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1323" height="145" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1595508004819" />
-    <state width="1323" height="145" key="GridCell.Tab.0.right" timestamp="1595508004819">
+    <state width="1122" height="621" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1595586730581" />
+    <state width="1122" height="621" key="GridCell.Tab.0.right" timestamp="1595586730582">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1323" height="145" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1595508004819" />
-    <state width="1323" height="145" key="GridCell.Tab.1.bottom" timestamp="1595508004820">
+    <state width="1122" height="621" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1595586730582" />
+    <state width="1323" height="210" key="GridCell.Tab.1.bottom" timestamp="1595586359655">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1323" height="145" key="GridCell.Tab.1.bottom/0.0.1366.728@0.0.1366.728" timestamp="1595508004820" />
-    <state width="1323" height="145" key="GridCell.Tab.1.center" timestamp="1595508004819">
+    <state width="1323" height="210" key="GridCell.Tab.1.bottom/0.0.1366.728@0.0.1366.728" timestamp="1595586359655" />
+    <state width="1323" height="210" key="GridCell.Tab.1.center" timestamp="1595586359655">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1323" height="145" key="GridCell.Tab.1.center/0.0.1366.728@0.0.1366.728" timestamp="1595508004819" />
-    <state width="1323" height="145" key="GridCell.Tab.1.left" timestamp="1595508004819">
+    <state width="1323" height="210" key="GridCell.Tab.1.center/0.0.1366.728@0.0.1366.728" timestamp="1595586359655" />
+    <state width="1323" height="210" key="GridCell.Tab.1.left" timestamp="1595586359655">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1323" height="145" key="GridCell.Tab.1.left/0.0.1366.728@0.0.1366.728" timestamp="1595508004819" />
-    <state width="1323" height="145" key="GridCell.Tab.1.right" timestamp="1595508004819">
+    <state width="1323" height="210" key="GridCell.Tab.1.left/0.0.1366.728@0.0.1366.728" timestamp="1595586359655" />
+    <state width="1323" height="210" key="GridCell.Tab.1.right" timestamp="1595586359655">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1323" height="145" key="GridCell.Tab.1.right/0.0.1366.728@0.0.1366.728" timestamp="1595508004819" />
-    <state x="186" y="9" key="SettingsEditor" timestamp="1590678366966">
+    <state width="1323" height="210" key="GridCell.Tab.1.right/0.0.1366.728@0.0.1366.728" timestamp="1595586359655" />
+    <state x="186" y="9" key="SettingsEditor" timestamp="1595510524105">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="186" y="9" key="SettingsEditor/0.0.1366.728@0.0.1366.728" timestamp="1590678366966" />
+    <state x="186" y="9" key="SettingsEditor/0.0.1366.728@0.0.1366.728" timestamp="1595510524105" />
     <state x="404" y="105" width="540" height="524" key="StructurePopup" timestamp="1593623290788">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
@@ -227,9 +242,9 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="341" y="163" width="672" height="677" key="run.anything.popup/0.0.1366.728@0.0.1366.728" timestamp="1593786947043" />
-    <state x="346" y="49" width="672" height="160" key="search.everywhere.popup" timestamp="1595507629500">
+    <state x="346" y="49" width="672" height="160" key="search.everywhere.popup" timestamp="1595586866989">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="346" y="49" width="672" height="160" key="search.everywhere.popup/0.0.1366.728@0.0.1366.728" timestamp="1595507629500" />
+    <state x="346" y="49" width="672" height="160" key="search.everywhere.popup/0.0.1366.728@0.0.1366.728" timestamp="1595586866989" />
   </component>
 </project>

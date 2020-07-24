@@ -8,7 +8,7 @@ import steve6472.polyground.HitResult;
 import steve6472.polyground.block.Block;
 import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.registry.ItemRegistry;
-import steve6472.polyground.world.chunk.SubChunk;
+import steve6472.polyground.world.World;
 import steve6472.sge.main.KeyList;
 import steve6472.sge.main.events.Event;
 import steve6472.sge.main.events.KeyEvent;
@@ -208,14 +208,13 @@ public class Player implements IMotion3f, IPosition3f
 		if (game.hitPicker.hit)
 		{
 			HitResult hr = game.hitPicker.getHitResult();
+			World world = game.getWorld();
 
-			SubChunk subChunk = game.world.getSubChunkFromBlockCoords(hr.getX(), hr.getY(), hr.getZ());
+			BlockState state = world.getState(hr.getX(), hr.getY(), hr.getZ());
 
-			BlockState state = subChunk.getState(hr.getCx(), hr.getCy(), hr.getCz());
+			game.world.getBlock(hr.getX(), hr.getY(), hr.getZ()).onClick(world, state, this, hr.getFace(), event, hr.getX(), hr.getY(), hr.getZ());
 
-			game.world.getBlock(hr.getX(), hr.getY(), hr.getZ()).onClick(subChunk, state, this, hr.getFace(), event, hr.getCx(), hr.getCy(), hr.getCz());
-
-			CaveGame.itemInHand.onClick(subChunk, state, this, hr.getFace(), event, hr.getCx(), hr.getCy(), hr.getCz());
+			CaveGame.itemInHand.onClick(world, state, this, hr.getFace(), event, hr.getX(), hr.getY(), hr.getZ());
 		}
 
 		CaveGame.itemInHand.onClick(this, event);
@@ -241,12 +240,8 @@ public class Player implements IMotion3f, IPosition3f
 			if (game.hitPicker.hit)
 			{
 				if (processNextBlockBreak)
-				{
 					BasicEvents.breakBlock(this);
-				} else
-				{
-					processNextBlockBreak = true;
-				}
+				processNextBlockBreak = true;
 			}
 		}
 

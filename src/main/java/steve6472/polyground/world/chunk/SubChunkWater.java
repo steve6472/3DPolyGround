@@ -2,9 +2,9 @@ package steve6472.polyground.world.chunk;
 
 import steve6472.polyground.AABBUtil;
 import steve6472.polyground.CaveGame;
-import steve6472.polyground.EnumFace;
 import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.registry.WaterRegistry;
+import steve6472.polyground.world.World;
 import steve6472.sge.main.Util;
 
 /**********************
@@ -32,26 +32,26 @@ public class SubChunkWater
 		if (!isActive)
 			return;
 
-		System.out.println("Last: " + subChunk.getWorld().lastWaterTickIndex);
-
+		World world = subChunk.getWorld();
+		
 		int max = CaveGame.getInstance().options.maxWaterTick;
 
-		if (max != -1 && (subChunk.getWorld().reachedMax || subChunk.getWorld().currentWaterTickIndex < subChunk.getWorld().lastWaterTickIndex))
+		if (max != -1 && (world.reachedMax || world.currentWaterTickIndex < world.lastWaterTickIndex))
 		{
-			subChunk.getWorld().currentWaterTickIndex++;
+			world.currentWaterTickIndex++;
 			return;
 		}
 
-		subChunk.getWorld().currentWaterTickIndex++;
-		if (subChunk.getWorld().currentWaterTickIndex == max || subChunk.getWorld().currentWaterTickIndex == subChunk.getWorld().lastWaterTickIndex + max)
+		world.currentWaterTickIndex++;
+		if (world.currentWaterTickIndex == max || world.currentWaterTickIndex == world.lastWaterTickIndex + max)
 		{
-//			subChunk.getWorld().lastWaterTickIndex = subChunk.getWorld().currentWaterTickIndex;
-			subChunk.getWorld().reachedMax = true;
+//			world.lastWaterTickIndex = world.currentWaterTickIndex;
+			world.reachedMax = true;
 		}
 
 		totalVolume = 0;
 
-		boolean shouldRender = subChunk.getWorld().getGame().mainRender.frustum.insideFrsutum(subChunk.getX() * 16, subChunk.getLayer() * 16, subChunk.getZ() * 16, subChunk.getX() * 16 + 16, subChunk.getLayer() * 16 + 16, subChunk.getZ() * 16 + 16);
+		boolean shouldRender = world.getGame().mainRender.frustum.insideFrsutum(subChunk.getX() * 16, subChunk.getLayer() * 16, subChunk.getZ() * 16, subChunk.getX() * 16 + 16, subChunk.getLayer() * 16 + 16, subChunk.getZ() * 16 + 16);
 
 		for (int i = 0; i < 16; i++)
 		{
@@ -72,25 +72,25 @@ public class SubChunkWater
 					double vol = getLiquidVolume(i, j, k);
 					totalVolume += vol;
 
-					if (shouldRender &&
+					if (shouldRender/* &&
 						(getLiquidVolumeEfficiently(i, j + 1, k) <= 1000
 						|| getLiquidVolumeEfficiently(i, j - 1, k) <= 1000
 						|| getLiquidVolumeEfficiently(i, j, k + 1) <= 1000
 						|| getLiquidVolumeEfficiently(i, j, k - 1) <= 1000
 						|| getLiquidVolumeEfficiently(i + 1, j, k) <= 1000
-						|| getLiquidVolumeEfficiently(i - 1, j, k) <= 1000))
+						|| getLiquidVolumeEfficiently(i - 1, j, k) <= 1000)*/)
 					{
 
-						boolean inFrustum = subChunk.getWorld().getGame().mainRender.frustum.insideFrsutum(i + subChunk.getX() * 16, j + subChunk.getLayer() * 16, k + subChunk.getZ() * 16, 1.4f);
+						boolean inFrustum = world.getGame().mainRender.frustum.insideFrsutum(i + subChunk.getX() * 16, j + subChunk.getLayer() * 16, k + subChunk.getZ() * 16, 1.4f);
 
 						if (inFrustum)
 						{
 							CaveGame.lastWaterCount++;
-							if (subChunk.getWorld().getGame().mainRender.waterTess.hasSpace())
+							if (world.getGame().mainRender.waterTess.hasSpace())
 							{
 								if (j != 15 || subChunk.getLayer() != subChunk.getParent().getSubChunks().length)
 								{
-									double upVolume = subChunk.getLiquidVolumeEfficiently(i, j + 1, k);
+									double upVolume = subChunk.getLiquidVolume(i, j + 1, k);
 //									double blockVolume = WaterRegistry.volumes[subChunk.getBlockId(i, j, k)];
 									if (upVolume > 0)
 										AABBUtil.addWater(i + subChunk.getX() * 16, j + subChunk.getLayer() * 16, k + subChunk.getZ() * 16, 1f, CaveGame.getInstance().mainRender.waterTess);
@@ -113,28 +113,35 @@ public class SubChunkWater
 						double freeBlockVolume = WaterRegistry.volumes[down.getId()];
 						if (freeBlockVolume > 0)
 						{
-							double downVolume = subChunk.getLiquidVolumeEfficiently(i, j - 1, k);
+							double downVolume = subChunk.getLiquidVolume(i, j - 1, k);
 							double freeDownVolume = Util.clamp(0.0, 1000.0, freeBlockVolume - downVolume);
 							if (freeDownVolume > 0)
 							{
 								double flow = Util.clamp(0.0, freeDownVolume, volume);
 								setLiquidVolume(i, j, k, volume - flow);
-								setLiquidVolumeEfficiently(i, j - 1, k, getLiquidVolumeEfficiently(i, j - 1, k) + flow);
+								world.setLiquidVolume(
+									i + subChunk.getX() * 16,
+									j - 1 + subChunk.getLayer() * 16,
+									k + subChunk.getZ() * 16,
+									world.getLiquidVolume(
+										i + subChunk.getX() * 16,
+										j - 1 + subChunk.getLayer() * 16,
+										k + subChunk.getZ() * 16) + flow);
 							}
 						}
 					}
 
 					// Flow North
-					if (i != 15 || subChunk.getParent().getNeighbouringChunk(EnumFace.NORTH) != null)
+					if (i != 15 || world.getSubChunk(subChunk.getX() + 1, subChunk.getLayer(), subChunk.getZ()) != null)
 						flowSide(i, j, k, 1, 0);
 					// Flow East
-					if (k != 15 || subChunk.getParent().getNeighbouringChunk(EnumFace.EAST) != null)
+					if (k != 15 || world.getSubChunk(subChunk.getX(), subChunk.getLayer(), subChunk.getZ() + 1) != null)
 						flowSide(i, j, k, 0, 1);
 					// Flow South
-					if (i != 0 || subChunk.getParent().getNeighbouringChunk(EnumFace.SOUTH) != null)
+					if (i != 0 || world.getSubChunk(subChunk.getX() - 1, subChunk.getLayer(), subChunk.getZ()) != null)
 						flowSide(i, j, k, -1, 0);
 					// Flow west
-					if (k != 0 || subChunk.getParent().getNeighbouringChunk(EnumFace.WEST) != null)
+					if (k != 0 || world.getSubChunk(subChunk.getX(), subChunk.getLayer(), subChunk.getZ() - 1) != null)
 						flowSide(i, j, k, 0, -1);
 
 					// Pressure
@@ -152,7 +159,14 @@ public class SubChunkWater
 							{
 								double flow = (volume - freeBlockVolumeThis) / 20.0;
 								setLiquidVolume(i, j, k, volume - flow);
-								setLiquidVolumeEfficiently(i, j + 1, k, getLiquidVolumeEfficiently(i, j + 1, k) + flow);
+								world.setLiquidVolume(
+									i + subChunk.getX() * 16,
+									j + 1 + subChunk.getLayer() * 16,
+									k + subChunk.getZ() * 16,
+									world.getLiquidVolume(
+										i + subChunk.getX() * 16,
+										j + 1 + subChunk.getLayer() * 16,
+										k + subChunk.getZ() * 16) + flow);
 							}
 						}
 					}
@@ -172,7 +186,7 @@ public class SubChunkWater
 
 		if (freeBlockVolume > 0)
 		{
-			double sideVolume = subChunk.getLiquidVolumeEfficiently(i + dx, j, k + dz);
+			double sideVolume = subChunk.getLiquidVolume(i + dx, j, k + dz);
 //			double freeSideVolume = Util.clamp(0.0, 1000.0, freeBlockVolume - sideVolume);
 
 			if (sideVolume < volume)
@@ -180,7 +194,14 @@ public class SubChunkWater
 				double flow = volume - sideVolume;
 				flow /= 5.0;
 				setLiquidVolume(i, j, k, volume - flow);
-				setLiquidVolumeEfficiently(i + dx, j, k + dz, getLiquidVolumeEfficiently(i + dx, j, k + dz) + flow);
+				subChunk.getWorld().setLiquidVolume(
+					i + subChunk.getX() * 16 + dx,
+					j + subChunk.getLayer() * 16,
+					k + subChunk.getZ() * 16 + dz,
+					subChunk.getWorld().getLiquidVolume(
+						i + subChunk.getX() * 16 + dx,
+						j + subChunk.getLayer() * 16,
+						k + subChunk.getZ() * 16 + dz) + flow);
 				return true;
 			}
 		}
@@ -192,39 +213,11 @@ public class SubChunkWater
 		return liquid[x][y][z];
 	}
 
-	public double getLiquidVolumeEfficiently(int x, int y, int z)
-	{
-		if (x >= 0 && x < 16 && z >= 0 && z < 16 && y >= 0 && y < 16)
-		{
-			return getLiquidVolume(x, y, z);
-		} else
-		{
-			SubChunk sc = subChunk.getNeighbouringSubChunk(x, y, z);
-			if (sc == null)
-				return 1000.0;
-			return sc.getLiquidVolume(Math.floorMod(x, 16), Math.floorMod(y, 16), Math.floorMod(z, 16));
-		}
-	}
-
 	public void setLiquidVolume(int x, int y, int z, double volume)
 	{
 		liquid[x][y][z] = volume;
 		if (volume > 0)
 			isActive = true;
-	}
-
-	public void setLiquidVolumeEfficiently(int x, int y, int z, double volume)
-	{
-		if (x >= 0 && x < 16 && z >= 0 && z < 16 && y >= 0 && y < 16)
-		{
-			setLiquidVolume(x, y, z, volume);
-		} else
-		{
-			SubChunk sc = subChunk.getNeighbouringSubChunk(x, y, z);
-			if (sc == null)
-				return;
-			sc.setLiquidVolume(Math.floorMod(x, 16), Math.floorMod(y, 16), Math.floorMod(z, 16), volume);
-		}
 	}
 
 	public boolean isActive()
