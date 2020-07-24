@@ -7,7 +7,10 @@ import org.json.JSONObject;
 import steve6472.polyground.CaveGame;
 import steve6472.polyground.EnumFace;
 import steve6472.polyground.block.BlockTextureHolder;
-import steve6472.polyground.block.model.faceProperty.*;
+import steve6472.polyground.block.model.faceProperty.AutoUVFaceProperty;
+import steve6472.polyground.block.model.faceProperty.RotationFaceProperty;
+import steve6472.polyground.block.model.faceProperty.TextureFaceProperty;
+import steve6472.polyground.block.model.faceProperty.UVFaceProperty;
 import steve6472.polyground.block.model.faceProperty.condition.ConditionFaceProperty;
 import steve6472.polyground.registry.face.FaceRegistry;
 
@@ -15,7 +18,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 /**********************
@@ -26,7 +28,7 @@ import java.util.List;
  ***********************/
 public class BlockModelLoader
 {
-	public List<Cube> loadModel(String name, int rot)
+	public Cube[] loadModel(String name, int rot)
 	{
 		JSONObject json = null;
 
@@ -44,7 +46,8 @@ public class BlockModelLoader
 
 		if (json.has("parent"))
 		{
-			return createFromParent(json);
+			throw new IllegalArgumentException("Parent is currently not supported!");
+//			return createFromParent(json);
 		}
 
 		try
@@ -60,14 +63,15 @@ public class BlockModelLoader
 		}
 	}
 
-	private List<Cube> loadCubes(JSONObject json, int rot)
+	private Cube[] loadCubes(JSONObject json, int rot)
 	{
-		List<Cube> cubeList = new ArrayList<>();
-
 		if (!json.has("cubes"))
-			return cubeList;
+			return new Cube[0];
 
 		JSONArray array = json.getJSONArray("cubes");
+
+		Cube[] cubes = new Cube[array.length()];
+
 		for (int i = 0; i < array.length(); i++)
 		{
 			JSONObject c = array.getJSONObject(i);
@@ -126,10 +130,10 @@ public class BlockModelLoader
 			}
 
 			cube.loadFromJson(c);
-			cubeList.add(cube);
+			cubes[i] = cube;
 		}
 
-		return cubeList;
+		return cubes;
 	}
 
 	private static void fillMissingProperties(CubeFace face)
@@ -197,14 +201,15 @@ public class BlockModelLoader
 
 	private List<Cube> createFromParent(JSONObject json)
 	{
-		List<Cube> parents = loadModel(json.getString("parent"), 0);
-
-		for (Cube cube : parents)
-		{
-			cube.loadFromParent(json, cube);
-		}
-
-		return parents;
+//		List<Cube> parents = loadModel(json.getString("parent"), 0);
+//
+//		for (Cube cube : parents)
+//		{
+//			cube.loadFromParent(json, cube);
+//		}
+//
+//		return parents;
+		return null;
 	}
 
 	public static String read(File f)

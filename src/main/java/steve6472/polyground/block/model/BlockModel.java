@@ -4,7 +4,6 @@ import steve6472.polyground.CaveGame;
 import steve6472.polyground.registry.WaterRegistry;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**********************
@@ -15,7 +14,7 @@ import java.util.List;
  ***********************/
 public class BlockModel
 {
-	private List<Cube> cubes;
+	private Cube[] cubes;
 	private List<String> tags;
 
 	/**
@@ -33,10 +32,9 @@ public class BlockModel
 		if (path.isBlank())
 			throw new IllegalArgumentException("Model path is blank! '" + path + "'");
 
-		cubes = new ArrayList<>();
 		tags = new ArrayList<>();
 
-		setCubes(CaveGame.getInstance().blockModelLoader.loadModel(path, rot));
+		cubes = CaveGame.getInstance().blockModelLoader.loadModel(path, rot);
 
 		double volume = 0;
 
@@ -54,52 +52,20 @@ public class BlockModel
 		*/
 	}
 
-	public BlockModel(List<Cube> cubes)
-	{
-		this.cubes = new ArrayList<>();
-		tags = new ArrayList<>();
-
-		setCubes(cubes);
-	}
-
 	public BlockModel(Cube... cubes)
 	{
-		this.cubes = new ArrayList<>();
+		this.cubes = cubes;
 		tags = new ArrayList<>();
-
-		setCubes(cubes);
 	}
 
 	public Cube getCube(int index)
 	{
-		return cubes.get(index);
+		return cubes[index];
 	}
 
-	public List<Cube> getCubes()
+	public Cube[] getCubes()
 	{
 		return cubes;
-	}
-
-	public void removeCube(Cube cube)
-	{
-		cubes.remove(cube);
-	}
-
-	public void setCubes(Cube... cubes)
-	{
-		this.cubes.clear();
-		this.cubes = new ArrayList<>(Arrays.asList(cubes));
-	}
-
-	public void setCubes(List<Cube> cubes)
-	{
-		this.cubes.clear();
-		this.cubes.addAll(cubes);
-	}
-
-	public void addCube(Cube cube)
-	{
-		this.cubes.add(cube);
 	}
 
 	public boolean hasTag(String tag)
