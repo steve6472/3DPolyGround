@@ -1,6 +1,9 @@
 package steve6472.polyground.generator.creator;
 
 import org.joml.Matrix4f;
+import org.joml.Vector2f;
+import org.joml.Vector3f;
+import org.joml.Vector4f;
 import steve6472.polyground.AABBUtil;
 import steve6472.polyground.EnumFace;
 import steve6472.polyground.PolyUtil;
@@ -36,7 +39,9 @@ import static org.lwjgl.opengl.GL11.*;
  ***********************/
 public class BlockPreview
 {
-	private List<Float> vertices, textures, colors, normal;
+	private List<Vector3f> vertices, normal;
+	private List<Vector4f> colors;
+	private List<Vector2f> textures;
 
 	private BuildHelper buildHelper;
 	private DepthFrameBuffer preview;
@@ -167,19 +172,11 @@ public class BlockPreview
 
 		for (int i = 0; i < tris; i++)
 		{
-			float x = vertices.get(i * 3);
-			float y = vertices.get(i * 3 + 1);
-			float z = vertices.get(i * 3 + 2);
+			Vector3f vert = vertices.get(i);
+			Vector4f col = colors.get(i);
+			Vector2f text = textures.get(i);
 
-			float r = colors.get(i * 4);
-			float g = colors.get(i * 4 + 1);
-			float b = colors.get(i * 4 + 2);
-			float a = colors.get(i * 4 + 3);
-
-			float u = textures.get(i * 2);
-			float v = textures.get(i * 2 + 1);
-
-			itemTessellator.pos(x, y, z).color(r, g, b, a).texture(u, v).endVertex();
+			itemTessellator.pos(vert.x, vert.y, vert.z).color(col.x, col.y, col.z, col.w).texture(text.x, text.y).endVertex();
 		}
 
 		itemTessellator.loadPos(0);
@@ -229,6 +226,7 @@ public class BlockPreview
 		flatTexturedShader.setView(camera.getViewMatrix());
 
 		if (atlas != null)
+			//noinspection removal
 			atlas.getSprite().bind();
 	}
 

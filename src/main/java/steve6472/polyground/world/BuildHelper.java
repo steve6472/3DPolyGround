@@ -1,7 +1,9 @@
 package steve6472.polyground.world;
 
 import org.joml.AABBf;
+import org.joml.Vector2f;
 import org.joml.Vector3f;
+import org.joml.Vector4f;
 import steve6472.polyground.EnumFace;
 import steve6472.polyground.block.model.Cube;
 import steve6472.polyground.block.model.CubeFace;
@@ -29,14 +31,14 @@ public final class BuildHelper
 	private int x;
 	private int y;
 	private int z;
-	private List<Float> vert;
-	private List<Float> col;
-	private List<Float> text;
-	private List<Float> norm;
+	private List<Vector3f> vert;
+	private List<Vector4f> col;
+	private List<Vector2f> text;
+	private List<Vector3f> norm;
 	private Cube cube;
 	private SubChunk sc;
 
-	public void load(List<Float> vert, List<Float> col, List<Float> text, List<Float> norm)
+	public void load(List<Vector3f> vert, List<Vector4f> col, List<Vector2f> text, List<Vector3f> norm)
 	{
 		this.vert = vert;
 		this.col = col;
@@ -66,24 +68,14 @@ public final class BuildHelper
 		return cube.getFace(face).getProperty(FaceRegistry.texture).getTextureId();
 	}
 
-	private void vert(Vector3f... vertices)
+	private void quad(Vector3f v0, Vector3f v1, Vector3f v2, Vector3f v3, Vector3f v4, Vector3f v5)
 	{
-		for (Vector3f v : vertices)
-			vert(v.x, v.y, v.z);
-	}
-
-	private void vert(float ox, float oy, float oz)
-	{
-		vert.add(ox + x);
-		vert.add(oy + y);
-		vert.add(oz + z);
-	}
-
-	private void tri(float ix, float iy, float iz, float jx, float jy, float jz, float kx, float ky, float kz)
-	{
-		vert(ix, iy, iz);
-		vert(jx, jy, jz);
-		vert(kx, ky, kz);
+		vert.add(v0.add(x, y, z));
+		vert.add(v1.add(x, y, z));
+		vert.add(v2.add(x, y, z));
+		vert.add(v3);
+		vert.add(v4.add(x, y, z));
+		vert.add(v5);
 	}
 
 	private void texture00(EnumFace face, float minX, float minY, float maxX, float maxY)
@@ -91,8 +83,7 @@ public final class BuildHelper
 		float x = getTextureId(cube, face) % atlasSize;
 		//noinspection IntegerDivisionInFloatingPointContext
 		float y = getTextureId(cube, face) / atlasSize;
-		text.add(texel * x + minX * texel);
-		text.add(texel * y + minY * texel);
+		text.add(new Vector2f(texel * x + minX * texel, texel * y + minY * texel));
 	}
 
 	private void texture01(EnumFace face, float minX, float minY, float maxX, float maxY)
@@ -100,8 +91,7 @@ public final class BuildHelper
 		float x = getTextureId(cube, face) % atlasSize;
 		//noinspection IntegerDivisionInFloatingPointContext
 		float y = getTextureId(cube, face) / atlasSize;
-		text.add(texel * x + minX * texel);
-		text.add(texel * y + maxY * texel);
+		text.add(new Vector2f(texel * x + minX * texel, texel * y + maxY * texel));
 	}
 
 	private void texture10(EnumFace face, float minX, float minY, float maxX, float maxY)
@@ -109,8 +99,7 @@ public final class BuildHelper
 		float x = getTextureId(cube, face) % atlasSize;
 		//noinspection IntegerDivisionInFloatingPointContext
 		float y = getTextureId(cube, face) / atlasSize;
-		text.add(texel * x + maxX * texel);
-		text.add(texel * y + minY * texel);
+		text.add(new Vector2f(texel * x + maxX * texel, texel * y + minY * texel));
 	}
 
 	private void texture11(EnumFace face, float minX, float minY, float maxX, float maxY)
@@ -118,8 +107,7 @@ public final class BuildHelper
 		float x = getTextureId(cube, face) % atlasSize;
 		//noinspection IntegerDivisionInFloatingPointContext
 		float y = getTextureId(cube, face) / atlasSize;
-		text.add(texel * x + maxX * texel);
-		text.add(texel * y + maxY * texel);
+		text.add(new Vector2f(texel * x + maxX * texel, texel * y + maxY * texel));
 	}
 
 	private void sideTexture(EnumFace face)
@@ -203,7 +191,7 @@ public final class BuildHelper
 
 	private void removeFaceColors()
 	{
-		for (int j = 0; j < 24; j++)
+		for (int j = 0; j < 6; j++)
 		{
 			getCol().remove(getCol().size() - 1);
 		}
@@ -235,24 +223,29 @@ public final class BuildHelper
 		}
 	}
 
-	private void setShade(List<Float> color, CubeFace face)
+	private void setShade(List<Vector4f> color, CubeFace face)
 	{
 		for (int i = 0; i < 6; i++)
 		{
-			color.add(face.getShade());
-			color.add(face.getShade());
-			color.add(face.getShade());
-			color.add(1f);
+			float f = face.getShade();
+			color.add(new Vector4f(f, f, f, 1.0f));
 		}
 
 	}
 
 	private void shade(float r, float g, float b, CubeFace face)
 	{
-		getCol().add(r * face.getShade());
-		getCol().add(g * face.getShade());
-		getCol().add(b * face.getShade());
-		getCol().add(1.0f);
+		float f = face.getShade();
+		getCol().add(new Vector4f(r * f, g * f, b * f, 1.0f));
+	}
+
+	private void normal(float x, float y, float z)
+	{
+		Vector3f v = new Vector3f(x, y, z);
+		for (int i = 0; i < 6; i++)
+		{
+			norm.add(v);
+		}
 	}
 
 	public int negativeZFace()
@@ -269,12 +262,7 @@ public final class BuildHelper
 		texture(face);
 		AABBf a = cube.getAabb();
 
-		for (int i = 0; i < 6; i++)
-		{
-			norm.add(0f);
-			norm.add(0f);
-			norm.add(-1f);
-		}
+		normal(0, 0, -1);
 
 		Vector3f v1 = new Vector3f(a.maxX, a.maxY, a.minZ);
 		Vector3f v2 = new Vector3f(a.maxX, a.minY, a.minZ);
@@ -288,10 +276,10 @@ public final class BuildHelper
 
 		switch (rotation)
 		{
-			case 90 -> vert(v2, v3, v4, v4, v1, v2);
-			case 180 -> vert(v3, v4, v1, v1, v2, v3);
-			case 270 -> vert(v4, v1, v2, v2, v3, v4);
-			default -> vert(v1, v2, v3, v3, v4, v1);
+			case 90 -> quad(v2, v3, v4, v4, v1, v2);
+			case 180 -> quad(v3, v4, v1, v1, v2, v3);
+			case 270 -> quad(v4, v1, v2, v2, v3, v4);
+			default -> quad(v1, v2, v3, v3, v4, v1);
 		}
 
 		return 6;
@@ -311,12 +299,7 @@ public final class BuildHelper
 		texture(face);
 		AABBf a = cube.getAabb();
 
-		for (int i = 0; i < 6; i++)
-		{
-			norm.add(0f);
-			norm.add(0f);
-			norm.add(1f);
-		}
+		normal(0, 0, 1);
 
 		Vector3f v1 = new Vector3f(a.minX, a.maxY, a.maxZ);
 		Vector3f v2 = new Vector3f(a.minX, a.minY, a.maxZ);
@@ -330,10 +313,10 @@ public final class BuildHelper
 
 		switch (rotation)
 		{
-			case 90 -> vert(v2, v3, v4, v4, v1, v2);
-			case 180 -> vert(v3, v4, v1, v1, v2, v3);
-			case 270 -> vert(v4, v1, v2, v2, v3, v4);
-			default -> vert(v1, v2, v3, v3, v4, v1);
+			case 90 -> quad(v2, v3, v4, v4, v1, v2);
+			case 180 -> quad(v3, v4, v1, v1, v2, v3);
+			case 270 -> quad(v4, v1, v2, v2, v3, v4);
+			default -> quad(v1, v2, v3, v3, v4, v1);
 		}
 
 		return 6;
@@ -353,12 +336,7 @@ public final class BuildHelper
 		texture(face);
 		AABBf a = cube.getAabb();
 
-		for (int i = 0; i < 6; i++)
-		{
-			norm.add(-1f);
-			norm.add(0f);
-			norm.add(0f);
-		}
+		normal(-1, 0, 0);
 
 		Vector3f v1 = new Vector3f(a.minX, a.maxY, a.minZ);
 		Vector3f v2 = new Vector3f(a.minX, a.minY, a.minZ);
@@ -372,10 +350,10 @@ public final class BuildHelper
 
 		switch (rotation)
 		{
-			case 90 -> vert(v2, v3, v4, v4, v1, v2);
-			case 180 -> vert(v3, v4, v1, v1, v2, v3);
-			case 270 -> vert(v4, v1, v2, v2, v3, v4);
-			default -> vert(v1, v2, v3, v3, v4, v1);
+			case 90 -> quad(v2, v3, v4, v4, v1, v2);
+			case 180 -> quad(v3, v4, v1, v1, v2, v3);
+			case 270 -> quad(v4, v1, v2, v2, v3, v4);
+			default -> quad(v1, v2, v3, v3, v4, v1);
 		}
 
 		return 6;
@@ -395,12 +373,7 @@ public final class BuildHelper
 		texture(face);
 		AABBf a = cube.getAabb();
 
-		for (int i = 0; i < 6; i++)
-		{
-			norm.add(1f);
-			norm.add(0f);
-			norm.add(0f);
-		}
+		normal(1, 0, 0);
 
 		Vector3f v1 = new Vector3f(a.maxX, a.maxY, a.maxZ);
 		Vector3f v2 = new Vector3f(a.maxX, a.minY, a.maxZ);
@@ -414,10 +387,10 @@ public final class BuildHelper
 
 		switch (rotation)
 		{
-			case 90 -> vert(v2, v3, v4, v4, v1, v2);
-			case 180 -> vert(v3, v4, v1, v1, v2, v3);
-			case 270 -> vert(v4, v1, v2, v2, v3, v4);
-			default -> vert(v1, v2, v3, v3, v4, v1);
+			case 90 -> quad(v2, v3, v4, v4, v1, v2);
+			case 180 -> quad(v3, v4, v1, v1, v2, v3);
+			case 270 -> quad(v4, v1, v2, v2, v3, v4);
+			default -> quad(v1, v2, v3, v3, v4, v1);
 		}
 
 		return 6;
@@ -437,12 +410,7 @@ public final class BuildHelper
 		texture(face);
 		AABBf a = cube.getAabb();
 
-		for (int i = 0; i < 6; i++)
-		{
-			norm.add(0f);
-			norm.add(1f);
-			norm.add(0f);
-		}
+		normal(0, 1, 0);
 
 		Vector3f v1 = new Vector3f(a.maxX, a.maxY, a.minZ);
 		Vector3f v2 = new Vector3f(a.minX, a.maxY, a.minZ);
@@ -456,10 +424,10 @@ public final class BuildHelper
 
 		switch (rotation)
 		{
-			case 90 -> vert(v2, v3, v4, v4, v1, v2);
-			case 180 -> vert(v3, v4, v1, v1, v2, v3);
-			case 270 -> vert(v4, v1, v2, v2, v3, v4);
-			default -> vert(v1, v2, v3, v3, v4, v1);
+			case 90 -> quad(v2, v3, v4, v4, v1, v2);
+			case 180 -> quad(v3, v4, v1, v1, v2, v3);
+			case 270 -> quad(v4, v1, v2, v2, v3, v4);
+			default -> quad(v1, v2, v3, v3, v4, v1);
 		}
 
 		return 6;
@@ -479,12 +447,7 @@ public final class BuildHelper
 		texture(face);
 		AABBf a = cube.getAabb();
 
-		for (int i = 0; i < 6; i++)
-		{
-			norm.add(0f);
-			norm.add(-1f);
-			norm.add(0f);
-		}
+		normal(0, -1, 0);
 
 		Vector3f v1 = new Vector3f(a.minX, a.minY, a.minZ);
 		Vector3f v2 = new Vector3f(a.maxX, a.minY, a.minZ);
@@ -498,10 +461,10 @@ public final class BuildHelper
 
 		switch (rotation)
 		{
-			case 90 -> vert(v2, v3, v4, v4, v1, v2);
-			case 180 -> vert(v3, v4, v1, v1, v2, v3);
-			case 270 -> vert(v4, v4, v2, v2, v3, v4);
-			default -> vert(v1, v2, v3, v3, v4, v1);
+			case 90 -> quad(v2, v3, v4, v4, v1, v2);
+			case 180 -> quad(v3, v4, v1, v1, v2, v3);
+			case 270 -> quad(v4, v4, v2, v2, v3, v4);
+			default -> quad(v1, v2, v3, v3, v4, v1);
 		}
 
 		return 6;
@@ -509,25 +472,19 @@ public final class BuildHelper
 
 	public void replaceLastFaceWithErrorTexture(float r0, float g0, float b0, float r1, float g1, float b1)
 	{
-		for (int i = 0; i < 6 * 4; i++)
+		for (int i = 0; i < 6; i++)
 		{
 			col.remove(col.size() - 1);
 		}
 
 		for (int i = 0; i < 3; i++)
 		{
-			col.add(r0);
-			col.add(g0);
-			col.add(b0);
-			col.add(1f);
+			col.add(new Vector4f(r0, g0, b0, 1.0f));
 		}
 
 		for (int i = 0; i < 3; i++)
 		{
-			col.add(r1);
-			col.add(g1);
-			col.add(b1);
-			col.add(1f);
+			col.add(new Vector4f(r1, g1, b1, 1.0f));
 		}
 	}
 
@@ -536,17 +493,17 @@ public final class BuildHelper
 		replaceLastFaceWithErrorTexture(0, 256, 256, 0, 0, 0);
 	}
 
-	public List<Float> getVert()
+	public List<Vector3f> getVert()
 	{
 		return vert;
 	}
 
-	public List<Float> getCol()
+	public List<Vector4f> getCol()
 	{
 		return col;
 	}
 
-	public List<Float> getText()
+	public List<Vector2f> getText()
 	{
 		return text;
 	}

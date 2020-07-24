@@ -134,6 +134,10 @@
     <servers />
   </component>
   <component name="WindowStateProjectService">
+    <state x="309" y="42" key="#Inspections" timestamp="1595591518691">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="309" y="42" key="#Inspections/0.0.1366.728@0.0.1366.728" timestamp="1595591518691" />
     <state x="140" y="0" width="1092" height="728" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1595586475126">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
@@ -154,10 +158,10 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="394" y="80" key="#com.intellij.refactoring.move.moveMembers.MoveMembersDialog/0.0.1366.728@0.0.1366.728" timestamp="1589479256398" />
-    <state x="114" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog" timestamp="1595541360533">
+    <state x="114" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog" timestamp="1595587759958">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="114" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.0.1366.728@0.0.1366.728" timestamp="1595541360533" />
+    <state x="114" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.0.1366.728@0.0.1366.728" timestamp="1595587759958" />
     <state x="415" y="111" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1595535478110">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
@@ -174,22 +178,22 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="463" y="105" key="FileChooserDialogImpl/0.0.1366.728@0.0.1366.728" timestamp="1595339345169" />
-    <state width="1122" height="621" key="GridCell.Tab.0.bottom" timestamp="1595586730582">
+    <state width="1122" height="621" key="GridCell.Tab.0.bottom" timestamp="1595592108242">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1122" height="621" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1595586730582" />
-    <state width="1122" height="621" key="GridCell.Tab.0.center" timestamp="1595586730582">
+    <state width="1122" height="621" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1595592108242" />
+    <state width="1122" height="621" key="GridCell.Tab.0.center" timestamp="1595592108241">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1122" height="621" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1595586730582" />
-    <state width="1122" height="621" key="GridCell.Tab.0.left" timestamp="1595586730581">
+    <state width="1122" height="621" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1595592108241" />
+    <state width="1122" height="621" key="GridCell.Tab.0.left" timestamp="1595592108241">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1122" height="621" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1595586730581" />
-    <state width="1122" height="621" key="GridCell.Tab.0.right" timestamp="1595586730582">
+    <state width="1122" height="621" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1595592108241" />
+    <state width="1122" height="621" key="GridCell.Tab.0.right" timestamp="1595592108242">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1122" height="621" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1595586730582" />
+    <state width="1122" height="621" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1595592108242" />
     <state width="1323" height="210" key="GridCell.Tab.1.bottom" timestamp="1595586359655">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
