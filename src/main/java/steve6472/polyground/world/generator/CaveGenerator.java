@@ -3,7 +3,7 @@ package steve6472.polyground.world.generator;
 import org.joml.SimplexNoise;
 import steve6472.polyground.block.Block;
 import steve6472.polyground.registry.BlockRegistry;
-import steve6472.polyground.world.biomes.registry.BiomeRegistry;
+import steve6472.polyground.world.biomes.Biomes;
 import steve6472.polyground.world.chunk.SubChunk;
 import steve6472.sge.main.TriConsumer;
 
@@ -57,8 +57,7 @@ public class CaveGenerator implements IGenerator
 //				subChunk.setBlock(x, y, z, stone);
 				subChunk.setBlock(stone, x, y, z);
 
-			subChunk.setBiomeId(x, y, z, BiomeRegistry.crystalCave.getId());
-			subChunk.addBiome(BiomeRegistry.crystalCave.getInstance());
+			subChunk.setBiomeId(x, y, z, Biomes.CRYSTAL_CAVE.getId());
 
 //			points[i][j][k] = (s0 * (s1 + 1) * 2f + s2 < 0.3f);
 		});

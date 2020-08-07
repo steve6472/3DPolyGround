@@ -19,6 +19,12 @@ public class OceanBiome extends Biome
 	}
 
 	@Override
+	public float[] getParameters()
+	{
+		return new float[2];
+	}
+
+	@Override
 	public String getName()
 	{
 		return "ocean";
@@ -40,6 +46,17 @@ public class OceanBiome extends Biome
 	public Block getCaveBlock()
 	{
 		return BlockRegistry.getBlockByName("stone");
+	}
+
+	/**
+	 * Indicates how high the biome will stretch above surface
+	 *
+	 * @return biome height
+	 */
+	@Override
+	public int getBiomeHeight()
+	{
+		return 0;
 	}
 
 	@Override

@@ -167,18 +167,18 @@ public class Block
 			buildHelper.setCube(c);
 			for (EnumFace face : EnumFace.getFaces())
 			{
-				CubeFace cubeFace = c.getFace(face);
-				boolean flag = false;
-				boolean hasCondTexture = false;
-				if (cubeFace != null && cubeFace.hasProperty(FaceRegistry.conditionedTexture))
-				{
-					flag = ConditionFaceProperty.editProperties(cubeFace.getProperty(FaceRegistry.conditionedTexture), cubeFace, x, y, z, world);
-					hasCondTexture = true;
-				}
-
 				/* Check if face is in correct (Chunk) Model Layer */
 				if (LayerFaceProperty.getModelLayer(c.getFace(face)) == modelLayer)
 				{
+					CubeFace cubeFace = c.getFace(face);
+					boolean flag = false;
+					boolean hasCondTexture = false;
+					if (cubeFace != null && cubeFace.hasProperty(FaceRegistry.conditionedTexture))
+					{
+						flag = ConditionFaceProperty.editProperties(cubeFace.getProperty(FaceRegistry.conditionedTexture), cubeFace, x, y, z, world);
+						hasCondTexture = true;
+					}
+
 					if (hasCondTexture)
 					{
 						if (flag)

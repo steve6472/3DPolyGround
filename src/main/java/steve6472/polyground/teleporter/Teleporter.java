@@ -61,7 +61,7 @@ public class Teleporter
 		if (getOther() == null)
 			return;
 
-		boolean playerFlag = player.getHitbox().getHitbox().testAABB(aabb);
+		boolean playerFlag = player.getHitbox().getHitbox().intersectsAABB(aabb);
 
 		if (playerFlag && canTeleport)
 		{

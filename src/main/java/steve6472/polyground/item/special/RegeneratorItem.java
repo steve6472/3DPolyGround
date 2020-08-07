@@ -38,7 +38,7 @@ public class RegeneratorItem extends Item
 					}
 				});
 
-				CaveGame.getInstance().world.getChunks().forEach(Chunk::update);
+				CaveGame.getInstance().world.getChunks().forEach(Chunk::rebuild);
 			}
 		}
 	}

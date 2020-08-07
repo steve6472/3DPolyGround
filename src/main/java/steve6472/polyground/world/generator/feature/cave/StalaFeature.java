@@ -5,8 +5,8 @@ import steve6472.polyground.block.special.StalaBlock;
 import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.registry.BlockRegistry;
 import steve6472.polyground.world.World;
-import steve6472.polyground.world.generator.feature.EnumFeaturePlacement;
-import steve6472.polyground.world.generator.feature.IFeature;
+import steve6472.polyground.world.generator.EnumPlacement;
+import steve6472.polyground.world.generator.IFeature;
 import steve6472.sge.main.util.RandomUtil;
 
 /**********************
@@ -178,9 +178,9 @@ public class StalaFeature implements IFeature
 	}
 
 	@Override
-	public EnumFeaturePlacement getPlacement()
+	public EnumPlacement getPlacement()
 	{
-		return EnumFeaturePlacement.IN_GROUND;
+		return EnumPlacement.IN_GROUND;
 	}
 
 	@Override

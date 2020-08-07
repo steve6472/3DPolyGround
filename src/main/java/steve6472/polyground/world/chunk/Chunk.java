@@ -1,8 +1,8 @@
 package steve6472.polyground.world.chunk;
 
-import steve6472.polyground.EnumFace;
 import steve6472.polyground.block.Block;
 import steve6472.polyground.block.states.BlockState;
+import steve6472.polyground.gfx.ThreadedModelBuilder;
 import steve6472.polyground.world.World;
 
 import java.io.File;
@@ -22,6 +22,7 @@ public class Chunk
 	private final SubChunk[] subChunks;
 	private final World world;
 	public final int[][] heightMap;
+
 
 	public Chunk(int x, int z, World world)
 	{
@@ -52,14 +53,12 @@ public class Chunk
 		return this;
 	}
 
-	public Chunk generateNoRender()
+	public void checkRebuild(ThreadedModelBuilder builder)
 	{
 		for (SubChunk subChunk : subChunks)
 		{
-			subChunk.generate();
+			subChunk.tryRebuild(builder);
 		}
-
-		return this;
 	}
 
 	public void tick()
@@ -76,11 +75,11 @@ public class Chunk
 			subChunk.unload();
 	}
 
-	public void update()
+	public void rebuild()
 	{
 		for (SubChunk subChunk : subChunks)
 		{
-			subChunk.rebuildAllLayers();
+			subChunk.rebuild();
 		}
 	}
 
@@ -114,17 +113,18 @@ public class Chunk
 		SubChunk sc = subChunks[y / 16];
 
 		boolean shouldRebuild = sc.getState(x, y % 16, z) != state;
-		sc.setShouldRebuild(shouldRebuild);
+//		sc.rebuild();
 
 		sc.setState(state, x, y % 16, z);
 
 		sc.getTickableBlocks().set(x, y % 16, z, state.getBlock().isTickable());
 		//		sc.setBlockEntity(x, y % 16, z, b instanceof IBlockData ? ((IBlockData) b).createNewBlockEntity() : null);
 
-		if (shouldRebuild)
-			updateNeighbours(sc, x, y, z);
+//		if (shouldRebuild)
+//			updateNeighbours(sc, x, y, z);
 	}
 
+	/*
 	public void updateNeighbours(SubChunk sc, int x, int y, int z)
 	{
 		EnumFace faceX = x == 15 ? EnumFace.NORTH : x == 0 ? EnumFace.SOUTH : EnumFace.NONE;
@@ -138,11 +138,11 @@ public class Chunk
 
 		if (faceX == EnumFace.NONE && faceY == EnumFace.NONE && faceZ == EnumFace.NONE)
 		{
-			getSubChunk(layer).rebuildAllLayers();
+			getSubChunk(layer).rebuild();
 			return;
 		} else
 		{
-			sc.rebuildAllLayers();
+			sc.rebuild();
 		}
 
 		Chunk chunk;
@@ -152,14 +152,14 @@ public class Chunk
 		{
 			SubChunk subChunk = chunk.getSubChunk(layer);
 			if (subChunk != null)
-				subChunk.rebuildAllLayers();
+				subChunk.rebuild();
 		}
 
 		if (faceY != EnumFace.NONE)
 		{
 			int l = layer + faceY.getYOffset();
 			if (!(l < 0 || l >= getSubChunks().length))
-				sc.getParent().getSubChunk(l).rebuildAllLayers();
+				sc.getParent().getSubChunk(l).rebuild();
 		}
 
 		chunk = world.getChunk(sc.getX(), sc.getZ() + faceZ.getZOffset());
@@ -167,9 +167,9 @@ public class Chunk
 		{
 			SubChunk subChunk = chunk.getSubChunk(layer);
 			if (subChunk != null)
-				subChunk.rebuildAllLayers();
+				subChunk.rebuild();
 		}
-	}
+	}*/
 
 	public BlockState getState(int x, int y, int z)
 	{

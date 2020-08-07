@@ -2,11 +2,9 @@ package steve6472.polyground.gui;
 
 import steve6472.polyground.CaveGame;
 import steve6472.polyground.Options;
-import steve6472.polyground.gfx.MainRender;
 import steve6472.polyground.world.World;
 import steve6472.polyground.world.WorldSerializer;
 import steve6472.polyground.world.chunk.ModelLayer;
-import steve6472.polyground.world.chunk.SubChunkModel;
 import steve6472.sge.gfx.SpriteRender;
 import steve6472.sge.gfx.font.CustomChar;
 import steve6472.sge.gfx.font.Font;
@@ -171,7 +169,7 @@ public class OptionsGui extends Gui implements IGamePause
 	@Override
 	public void guiTick()
 	{
-		fastChunkBuildFix.setEnabled(SubChunkModel.toBuildCount == 0 && MainRender.CHUNK_REBUILT == 0);
+//		fastChunkBuildFix.setEnabled(SubChunkModel.toBuildCount == 0 && MainRender.CHUNK_REBUILT == 0);
 	}
 
 	@Override

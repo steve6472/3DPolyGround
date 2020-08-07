@@ -1,27 +1,21 @@
 package steve6472.polyground.world.chunk;
 
-import steve6472.polyground.CaveGame;
 import steve6472.polyground.EnumFace;
 import steve6472.polyground.block.Block;
 import steve6472.polyground.block.blockdata.BlockData;
 import steve6472.polyground.block.states.BlockState;
-import steve6472.polyground.gfx.MainRender;
+import steve6472.polyground.gfx.ModelData;
+import steve6472.polyground.gfx.ThreadedModelBuilder;
 import steve6472.polyground.gui.InGameGui;
 import steve6472.polyground.world.World;
 import steve6472.polyground.world.biomes.Biome;
+import steve6472.polyground.world.biomes.Biomes;
 import steve6472.polyground.world.biomes.IBiomeProvider;
-import steve6472.polyground.world.generator.FeatureStage;
+import steve6472.polyground.world.generator.EnumChunkStage;
 import steve6472.polyground.world.generator.IGenerator;
-import steve6472.polyground.world.generator.feature.FeatureEntry;
-import steve6472.polyground.world.generator.feature.IFeature;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
-
-import static steve6472.sge.gfx.VertexObjectCreator.unbindVAO;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
@@ -32,17 +26,14 @@ import static steve6472.sge.gfx.VertexObjectCreator.unbindVAO;
 public class SubChunk implements IBiomeProvider
 {
 	private static final int MODEL_COUNT = ModelLayer.values().length;
-	public LinkedHashMap<Biome, BiomeEntry> presentBiomes;
-	public HashMap<FeatureStage, Integer> maxRange;
 
 	private final SubChunkModel[] model;
 	private final Chunk parent;
-	public EnumChunkState state;
-	public FeatureStage lastFeatureStage;
+	public EnumChunkStage stage;
 
 	private final int layer;
 
-	private boolean shouldRebuild;
+	private boolean rebuild;
 
 	private final int[][][] biomes;
 	private final SubChunkBlocks blocks;
@@ -53,10 +44,7 @@ public class SubChunk implements IBiomeProvider
 
 	public SubChunk(Chunk parent, int layer)
 	{
-		presentBiomes = new LinkedHashMap<>();
-		maxRange = new HashMap<>();
-		state = EnumChunkState.NOT_GENERATED;
-		lastFeatureStage = FeatureStage.NONE;
+		stage = EnumChunkStage.NONE;
 		this.parent = parent;
 		this.layer = layer;
 
@@ -74,112 +62,15 @@ public class SubChunk implements IBiomeProvider
 		newScheduledUpdates = new ChunkPosStorage();
 
 		blockData = new SubChunkBlockData(this);
-		blocks = new SubChunkBlocks(this);
+		blocks = new SubChunkBlocks();
 		water = new SubChunkWater(this);
 	}
-
-	/* Biome and features */
-
-	public void addBiome(Biome biome)
-	{
-		if (!this.presentBiomes.containsKey(biome))
-		{
-			this.presentBiomes.put(biome, new BiomeEntry(biome));
-
-			for (FeatureStage stage : biome.getFeatures().keySet())
-			{
-				for (FeatureEntry entry : biome.getFeatures().get(stage))
-				{
-					if (maxRange.containsKey(stage))
-					{
-						int min = Math.max(maxRange.get(stage), entry.feature.size());
-						maxRange.replace(stage, min);
-					} else
-					{
-						maxRange.put(stage, entry.feature.size());
-					}
-				}
-			}
-		}
-	}
-
-	public boolean isBiomeGenerated(Biome biome)
-	{
-		if (presentBiomes.containsKey(biome))
-		{
-			return presentBiomes.get(biome).isFullyGenerated;
-		}
-		return true;
-	}
-
-	public boolean areFeaturesGeneratedForStage(FeatureStage stage)
-	{
-		for (BiomeEntry e : presentBiomes.values())
-		{
-			if (e.generated.get(stage) == null)
-				return true;
-
-			for (Boolean value : e.generated.get(stage).values())
-			{
-				if (!value)
-					return false;
-			}
-			return true;
-		}
-		return true;
-	}
-
-	public boolean areFeaturesGeneratedForStage(Biome biome, FeatureStage stage)
-	{
-		if (presentBiomes.containsKey(biome))
-		{
-			BiomeEntry e = presentBiomes.get(biome);
-			if (!e.generated.containsKey(stage))
-				return true;
-			for (Boolean value : e.generated.get(stage).values())
-			{
-				if (!value)
-					return false;
-			}
-			return true;
-			}
-		return true;
-	}
-
-	public boolean isFeatureGenerated(Biome biome, FeatureStage stage, IFeature feature)
-	{
-		if (!presentBiomes.containsKey(biome))
-			return false;
-
-		BiomeEntry e = presentBiomes.get(biome);
-		return e.generated.get(stage).get(feature);
-	}
-
-	public void markAsGenerated(Biome biome, FeatureStage stage, LinkedHashSet<IFeature> features)
-	{
-		BiomeEntry entry = presentBiomes.get(biome);
-
-		if (entry == null)
-			return;
-
-		for (IFeature feature : features)
-		{
-			HashMap<IFeature, Boolean> map = entry.generated.get(stage);
-			if (map == null)
-				return;
-
-			if (map.containsKey(feature))
-				map.replace(feature, true);
-		}
-	}
-
-	/* -------------------------- */
 
 	public static IGenerator generator;
 
 	public void generate()
 	{
-		state = EnumChunkState.SHAPE;
+		stage = EnumChunkStage.SHAPE;
 		generator.generate(this);
 	}
 
@@ -221,7 +112,7 @@ public class SubChunk implements IBiomeProvider
 
 	public void saveSubChunk() throws IOException
 	{
-		if (state == EnumChunkState.FULL)
+		if (stage == EnumChunkStage.FINISHED)
 			ChunkSerializer.serialize(this);
 	}
 
@@ -230,54 +121,6 @@ public class SubChunk implements IBiomeProvider
 		short r = (short) (x << 8 | y << 4 | z);
 		if (!scheduledUpdates.has(r) && !newScheduledUpdates.has(r))
 			newScheduledUpdates.addNonSafe(r);
-	}
-
-	public void rebuild()
-	{
-		if (!shouldRebuild)
-			return;
-
-		if (MainRender.CHUNK_REBUILT >= CaveGame.getInstance().options.maxChunkRebuild && CaveGame.getInstance().options.maxChunkRebuild != -1)
-			return;
-
-		MainRender.CHUNK_REBUILT++;
-
-		long start = System.nanoTime();
-
-		if (CaveGame.getInstance().options.lightDebug)
-		{
-			getWorld().getGame().mainRender.particles.getMap().values().forEach(list -> list.forEach(particle ->
-			{
-				if (particle.hasTag("DebugLight" + getX() + "_" + getLayer() + "_" + getZ()))
-				{
-					particle.forcedDeath = true;
-				}
-			}));
-		}
-
-		for (int i = 0; i < MODEL_COUNT; i++)
-		{
-			model[i].rebuild(getParent().getWorld().getGame().options.fastChunkBuild);
-		}
-
-		/* Can be called only once after finishing updating all sub-chunk models */
-		unbindVAO();
-
-		long end = System.nanoTime();
-
-		if (CaveGame.getInstance().options.subChunkBuildTime)
-			CaveGame.getInstance().inGameGui.chat.addText("SubChunk " + getX() + "/" + getLayer() + "/" + getZ() + " Took " + (end - start) / 1000000.0 + "ms to build");
-
-		if (CaveGame.getInstance().options.chunkModelDebug)
-			System.out.println("");
-
-		shouldRebuild = false;
-	}
-
-	public void forceRebuild()
-	{
-		rebuildAllLayers();
-		rebuild();
 	}
 
 	public void unload()
@@ -335,15 +178,6 @@ public class SubChunk implements IBiomeProvider
 		getBlockData()[x][y][z] = blockData;
 	}
 
-	public void rebuildAllLayers()
-	{
-		for (SubChunkModel m : model)
-		{
-			m.setShouldUpdate(true);
-		}
-		setShouldRebuild(true);
-	}
-
 	public Chunk getParent()
 	{
 		return parent;
@@ -385,6 +219,34 @@ public class SubChunk implements IBiomeProvider
 		return tickableBlocks;
 	}
 
+	public void rebuild()
+	{
+		rebuild = true;
+	}
+
+	public void tryRebuild(ThreadedModelBuilder builder)
+	{
+		if (!rebuild)
+			return;
+
+		for (SubChunkModel m : model)
+			builder.addToQueue(m);
+
+		rebuild = false;
+	}
+
+	public void updateModel(ModelData data)
+	{
+		model[data.modelLayer.index].update(data);
+	}
+
+	public void updateNeighbours()
+	{
+		SubChunk sc;
+		for (EnumFace f : EnumFace.getFaces())
+			if ((sc = getWorld().getSubChunk(getX() + f.getXOffset(), layer + f.getYOffset(), getZ() + f.getZOffset())) != null) sc.rebuild();
+	}
+
 	/*
 	 * Blocks
 	 */
@@ -423,52 +285,33 @@ public class SubChunk implements IBiomeProvider
 		water.setLiquidVolume(x, y, z, volume);
 	}
 
-	public boolean shouldUpdate()
+	/*
+	 * Biome
+	 */
+
+	public int getBiomeId(int x, int y, int z)
 	{
-		return shouldRebuild;
+		return biomes[x][y][z];
 	}
 
-	public void setShouldRebuild(boolean shouldRebuild)
+	public Biome getBiome(int x, int y, int z)
 	{
-		this.shouldRebuild = shouldRebuild;
+		return Biomes.getBiome(getBiomeId(x, y, z));
+	}
+
+	public void setBiome(int biomeId, int x, int y, int z)
+	{
+		biomes[x][y][z] = biomeId;
+	}
+
+	public void setBiome(Biome biome, int x, int y, int z)
+	{
+		setBiome(biome.getId(), x, y, z);
 	}
 
 	@Override
 	public String toString()
 	{
-		return "SubChunk{" + "parent=" + parent + ", state=" + state + ", lastFeatureStage=" + lastFeatureStage + ", layer=" + layer + ", shouldRebuild=" + shouldRebuild + '}';
-	}
-
-	public class BiomeEntry
-	{
-		public HashMap<FeatureStage, HashMap<IFeature, Boolean>> generated;
-		public boolean isFullyGenerated;
-
-		public BiomeEntry(Biome biome)
-		{
-			this.generated = new HashMap<>(FeatureStage.getValues().length);
-			for (FeatureStage key : biome.getFeatures().keySet())
-			{
-				for (FeatureEntry value : biome.getFeatures().get(key))
-				{
-					if (generated.containsKey(key))
-					{
-						generated.get(key).put(value.feature, false);
-					} else
-					{
-						HashMap<IFeature, Boolean> map = new HashMap<>();
-						map.put(value.feature, false);
-						generated.put(key, map);
-					}
-				}
-			}
-			isFullyGenerated = generated.size() == 0;
-		}
-
-		@Override
-		public String toString()
-		{
-			return "BiomeEntry{" + "generated=" + generated + ", isFullyGenerated=" + isFullyGenerated + '}';
-		}
+		return "SubChunk{" + "stage=" + stage + ", layer=" + layer + '}';
 	}
 }

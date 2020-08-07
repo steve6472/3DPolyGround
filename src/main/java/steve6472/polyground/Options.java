@@ -17,12 +17,18 @@ public class Options
 	/**
 	 * -1 to disable limit
 	 */
-	public int maxChunkRebuild = 5;
+	public int maxChunkRebuild = -1;
+
 	/**
 	 * -1 to disable limit
 	 * Don't use this, it causes rapid flickering of water!
 	 */
 	public int maxWaterTick = -1;
+
+	/**
+	 * Radius to generate new chunks around player
+	 */
+	public int generateDistance = 5;
 
 	/**
 	 * true - uses other thread to build chunks and main thread to upload the data to graphics card

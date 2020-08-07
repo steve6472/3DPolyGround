@@ -139,7 +139,7 @@ public class BasicEvents
 		update(subChunk, EnumFace.NONE, x, y, z);
 		for (EnumFace face : EnumFace.getFaces())
 		{
-			update(subChunk.getWorld().getSubChunk(x >> 4 + face.getXOffset(), y >> 4 + face.getYOffset(), z >> 4 + face.getZOffset()), face, x + face.getXOffset(), y + face.getYOffset(), z + face.getZOffset());
+			update(subChunk.getWorld().getSubChunk((x + face.getXOffset()) >> 4, (y+ face.getYOffset()) >> 4, (z+ face.getZOffset()) >> 4), face, x + face.getXOffset(), y + face.getYOffset(), z + face.getZOffset());
 		}
 	}
 
@@ -147,6 +147,8 @@ public class BasicEvents
 	{
 		if (subChunk == null)
 			return;
+
+		subChunk.rebuild();
 
 //		BlockState state = subChunk.getState(Math.floorMod(x, 16), Math.floorMod(y, 16), Math.floorMod(z, 16));
 //		subChunk.setState(state.getBlock().getStateForPlacement(subChunk, null, null, Math.floorMod(x, 16), Math.floorMod(y, 16), Math.floorMod(z, 16)), Math.floorMod(x, 16), Math.floorMod(y, 16), Math.floorMod(z, 16));

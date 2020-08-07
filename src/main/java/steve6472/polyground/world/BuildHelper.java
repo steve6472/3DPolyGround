@@ -11,7 +11,7 @@ import steve6472.polyground.block.model.faceProperty.TintFaceProperty;
 import steve6472.polyground.block.model.faceProperty.UVFaceProperty;
 import steve6472.polyground.registry.face.FaceRegistry;
 import steve6472.polyground.world.biomes.Biome;
-import steve6472.polyground.world.biomes.registry.BiomeRegistry;
+import steve6472.polyground.world.biomes.Biomes;
 import steve6472.polyground.world.chunk.SubChunk;
 
 import java.util.List;
@@ -203,7 +203,7 @@ public final class BuildHelper
 
 		int biomeId = sc == null ? 0 : sc.getBiomeId(x, y, z);
 
-		Biome b = BiomeRegistry.getBiome(biomeId);
+		Biome b = Biomes.getBiome(biomeId);
 
 		for (int j = 0; j < 6; j++)
 		{

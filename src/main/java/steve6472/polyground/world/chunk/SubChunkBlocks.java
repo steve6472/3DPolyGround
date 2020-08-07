@@ -11,12 +11,10 @@ import steve6472.polyground.block.states.BlockState;
  ***********************/
 public class SubChunkBlocks
 {
-	private final SubChunk subChunk;
 	private final BlockState[][][] states;
 
-	public SubChunkBlocks(SubChunk subChunk)
+	public SubChunkBlocks()
 	{
-		this.subChunk = subChunk;
 		states = new BlockState[16][16][16];
 		for (int i = 0; i < 16; i++)
 		{
@@ -43,10 +41,5 @@ public class SubChunkBlocks
 	public BlockState getState(int x, int y, int z)
 	{
 		return states[x][y][z];
-	}
-
-	private void updateNeighbours(int x, int y, int z)
-	{
-		subChunk.getParent().updateNeighbours(subChunk, x, y, z);
 	}
 }

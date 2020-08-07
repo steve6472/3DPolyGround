@@ -77,13 +77,13 @@ public class ChunkCommand extends Command
 		}))))).then(literal("regenerate").then(argument("chunk", ChunkArgument.chunkArgument()).executes(c ->
 		{
 
-			ChunkArgument.getChunk(c, "chunk").update();
+			ChunkArgument.getChunk(c, "chunk").rebuild();
 
 			return 1;
 		})).executes(c ->
 		{
 
-			c.getSource().getWorld().getChunks().forEach(Chunk::update);
+			c.getSource().getWorld().getChunks().forEach(Chunk::rebuild);
 
 			return 1;
 		})).then(literal("breakall").executes(c ->
@@ -113,9 +113,9 @@ public class ChunkCommand extends Command
 			for (SubChunk sc : chunk.getSubChunks())
 			{
 				System.out.println(sc);
-				System.out.println("--areFeaturesGeneratedForStage=" + sc.areFeaturesGeneratedForStage(sc.lastFeatureStage));
-				System.out.println("--maxRange=" + sc.maxRange);
-				System.out.println("--presentBiomes=" + sc.presentBiomes);
+//				System.out.println("--areFeaturesGeneratedForStage=" + sc.areFeaturesGeneratedForStage(sc.lastFeatureStage));
+//				System.out.println("--maxRange=" + sc.maxRange);
+//				System.out.println("--presentBiomes=" + sc.presentBiomes);
 			}
 			return 1;
 		})));

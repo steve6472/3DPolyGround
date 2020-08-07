@@ -50,7 +50,7 @@ public class FillCommand extends Command
 				{
 					Chunk chunk = w.getChunk(x, z);
 					if (chunk != null)
-						chunk.update();
+						chunk.rebuild();
 				}
 			}
 

@@ -2,9 +2,9 @@ package steve6472.polyground.world.biomes;
 
 import org.joml.Vector3f;
 import steve6472.polyground.block.Block;
-import steve6472.polyground.world.generator.FeatureStage;
-import steve6472.polyground.world.generator.feature.FeatureEntry;
-import steve6472.polyground.world.generator.feature.IFeature;
+import steve6472.polyground.world.generator.EnumFeatureStage;
+import steve6472.polyground.world.generator.FeatureEntry;
+import steve6472.polyground.world.generator.IFeature;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,15 +19,22 @@ import java.util.Map;
  ***********************/
 public abstract class Biome
 {
-	private final Map<FeatureStage, List<FeatureEntry>> features;
+	private final int id;
+	private final Map<EnumFeatureStage, List<FeatureEntry>> features;
 
 	public Biome()
 	{
+		id = Biomes.ID++;
 		features = new HashMap<>();
+		for (EnumFeatureStage stage : EnumFeatureStage.getValues())
+			features.put(stage, new ArrayList<>());
+
 		addFeatures();
 	}
 
 	public abstract void addFeatures();
+
+	public abstract float[] getParameters();
 
 	public abstract String getName();
 
@@ -36,6 +43,12 @@ public abstract class Biome
 	public abstract Block getUnderBlock();
 
 	public abstract Block getCaveBlock();
+
+	/**
+	 * Indicates how high the biome will stretch above surface
+	 * @return biome height
+	 */
+	public abstract int getBiomeHeight();
 
 	public abstract int getUnderLayerHeight();
 
@@ -51,17 +64,22 @@ public abstract class Biome
 
 	public abstract Vector3f getColor();
 
-	public Map<FeatureStage, List<FeatureEntry>> getFeatures()
+	public Map<EnumFeatureStage, List<FeatureEntry>> getFeatures()
 	{
 		return features;
 	}
 
-	protected void addFeature(FeatureStage stage, IFeature feature, double chance)
+	public List<FeatureEntry> getFeaturesForStage(EnumFeatureStage stage)
+	{
+		return features.get(stage);
+	}
+
+	protected void addFeature(EnumFeatureStage stage, double chance, IFeature feature)
 	{
 		addFeature(stage, new FeatureEntry(feature, chance));
 	}
 
-	protected void addFeature(FeatureStage stage, FeatureEntry feature)
+	protected void addFeature(EnumFeatureStage stage, FeatureEntry feature)
 	{
 		List<FeatureEntry> entries = features.get(stage);
 		if (entries == null)
@@ -73,5 +91,10 @@ public abstract class Biome
 		{
 			entries.add(feature);
 		}
+	}
+
+	public int getId()
+	{
+		return id;
 	}
 }

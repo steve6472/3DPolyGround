@@ -15,7 +15,7 @@ import steve6472.polyground.gfx.shaders.Shaders;
 import steve6472.polyground.teleporter.Teleporter;
 import steve6472.polyground.tessellators.BasicTessellator;
 import steve6472.polyground.world.BuildHelper;
-import steve6472.polyground.world.chunk.SubChunkModel;
+import steve6472.polyground.world.chunk.SubChunk;
 import steve6472.polyground.world.light.LightManager;
 import steve6472.sge.gfx.DepthFrameBuffer;
 import steve6472.sge.gfx.*;
@@ -56,6 +56,8 @@ public class MainRender
 	private final DepthFrameBuffer waterFrameBuffer;
 
 	public final PostProcessing postProcessing;
+
+	public final ThreadedModelBuilder modelBuilder;
 
 	/* World */
 	public final CGSkybox skybox;
@@ -100,6 +102,9 @@ public class MainRender
 		shaders = new Shaders();
 		game.getEventHandler().register(shaders);
 
+		modelBuilder = new ThreadedModelBuilder();
+		modelBuilder.start();
+
 		skybox = new CGSkybox(StaticCubeMap.fromTextureFaces("skybox", new String[]{"side", "side", "top", "bottom", "side", "side"}, "png"), shaders.getProjectionMatrix());
 	}
 
@@ -111,18 +116,32 @@ public class MainRender
 		skybox.updateProjection(PolyUtil.createProjectionMatrix(e.getWidth(), e.getHeight()));
 	}
 
-	@SuppressWarnings("removal")
 	public void render()
 	{
-		frustum.updateFrustum(shaders.getProjectionMatrix(), game.getCamera().getViewMatrix());
 		CHUNK_REBUILT = 0;
+		if (game.options.maxChunkRebuild == -1)
+		{
+			while (modelBuilder.canTake())
+			{
+				ModelData data = modelBuilder.take();
+				SubChunk subChunk = game.getWorld().getChunk(data.x, data.z).getSubChunk(data.layer);
+				subChunk.updateModel(data);
+			}
+		} else
+		{
+			while (modelBuilder.canTake() && CHUNK_REBUILT < game.options.maxChunkRebuild)
+			{
+				ModelData data = modelBuilder.take();
+				SubChunk subChunk = game.getWorld().getChunk(data.x, data.z).getSubChunk(data.layer);
+				subChunk.updateModel(data);
+				CHUNK_REBUILT++;
+			}
+		}
+
+		frustum.updateFrustum(shaders.getProjectionMatrix(), game.getCamera().getViewMatrix());
 
 		if (game.world == null)
 			return;
-
-		game.world.shouldRebuild = true;
-		game.world.tryRebuild();
-		SubChunkModel.upload();
 
 		if (!CaveGame.runGameEvent(new WorldEvent.PreRender(game.world)))
 			game.world.render(true, true);
@@ -133,11 +152,11 @@ public class MainRender
 
 		shaders.deferredShader.bind();
 		shaders.deferredShader.setUniform(GenericDeferredShader.cameraPos, game.getCamera().getX(), game.getCamera().getY(), game.getCamera().getZ());
-		Sprite.bind(0, gBuffer.texture);
-		Sprite.bind(1, gBuffer.position);
-		Sprite.bind(2, gBuffer.normal);
-		Sprite.bind(3, gBuffer.emission);
-		Sprite.bind(4, gBuffer.emissionPos);
+		StaticTexture.bind(0, gBuffer.texture);
+		StaticTexture.bind(1, gBuffer.position);
+		StaticTexture.bind(2, gBuffer.normal);
+		StaticTexture.bind(3, gBuffer.emission);
+		StaticTexture.bind(4, gBuffer.emissionPos);
 		LightManager.updateLights(shaders.deferredShader);
 		VertexObjectCreator.basicRender(finalRenderQuad, 2, 6, Tessellator.TRIANGLES);
 
@@ -166,7 +185,7 @@ public class MainRender
 		renderTheWorld(false);
 
 		shaders.waterShader.bind();
-		Sprite.bind(0, waterFrameBuffer.texture);
+		StaticTexture.bind(0, waterFrameBuffer.texture);
 		VertexObjectCreator.basicRender(finalRenderQuad, 2, 6, Tessellator.TRIANGLES);
 
 		if (game.options.renderLights)

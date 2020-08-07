@@ -6,8 +6,8 @@ import steve6472.polyground.registry.CommandRegistry;
 import steve6472.polyground.world.World;
 import steve6472.polyground.world.chunk.Chunk;
 import steve6472.polyground.world.chunk.SubChunk;
-import steve6472.sge.gfx.Sprite;
 import steve6472.sge.gfx.SpriteRender;
+import steve6472.sge.gfx.StaticTexture;
 import steve6472.sge.gui.Gui;
 import steve6472.sge.gui.components.Background;
 import steve6472.sge.gui.components.Button;
@@ -26,15 +26,14 @@ public class MainMenu extends Gui implements IGamePause
 		super(mainApp);
 	}
 
-	private Sprite main;
+	private StaticTexture main;
 
 	@Override
 	public void createGui()
 	{
 		Background.createComponent(this);
 
-		main = new Sprite("main_title.png");
-		main.change(false);
+		main = StaticTexture.fromTexture("main_title.png");
 
 		Button sandbox = new Button("Sandbox");
 		sandbox.setLocation(30, 30);
@@ -89,8 +88,8 @@ public class MainMenu extends Gui implements IGamePause
 			CaveGame.getInstance().options.isGamePaused = false;
 
 			CaveGame.getInstance().setWorld(new World(CaveGame.getInstance()));
-			SubChunk.generator = CaveGame.getInstance().generatorRegistry.getGenerator("world");
-			CaveGame.getInstance().world.useGenerator = true;
+//			SubChunk.generator = CaveGame.getInstance().generatorRegistry.getGenerator("world");
+//			CaveGame.getInstance().world.useGenerator = true;
 
 			int r = 5;
 			for (int i = -r; i <= r; i++)
@@ -188,7 +187,7 @@ public class MainMenu extends Gui implements IGamePause
 	public void render()
 	{
 		float f = (float) (getMainApp().getWidth() - 400) / ((float) getMainApp().getWidth());
-		SpriteRender.renderSprite(getMainApp().getWidth() / 2 - (int) (main.getWidth() * f) / 2, 100, (int) (main.getWidth() * f), (int) (main.getHeight() * f), 0, main);
+		SpriteRender.renderSprite(getMainApp().getWidth() / 2 - (int) (main.getWidth() * f) / 2, 100, (int) (main.getWidth() * f), (int) (main.getHeight() * f), 0, main.getId());
 	}
 
 	@Override

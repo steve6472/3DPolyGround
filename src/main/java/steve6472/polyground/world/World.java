@@ -2,20 +2,27 @@ package steve6472.polyground.world;
 
 import org.joml.AABBf;
 import org.joml.Matrix4f;
-import org.joml.Random;
 import steve6472.polyground.CaveGame;
 import steve6472.polyground.block.BlockTextureHolder;
 import steve6472.polyground.entity.EntityManager;
 import steve6472.polyground.gfx.MainRender;
+import steve6472.polyground.gfx.ThreadedModelBuilder;
 import steve6472.polyground.gfx.shaders.CGGShader;
 import steve6472.polyground.gfx.shaders.world.WorldShader;
 import steve6472.polyground.gui.InGameGui;
 import steve6472.polyground.rift.RiftManager;
 import steve6472.polyground.teleporter.TeleporterManager;
+import steve6472.polyground.world.biomes.Biome;
 import steve6472.polyground.world.chunk.Chunk;
 import steve6472.polyground.world.chunk.ModelLayer;
 import steve6472.polyground.world.chunk.SubChunk;
-import steve6472.polyground.world.generator.Generator;
+import steve6472.polyground.world.generator.EnumChunkStage;
+import steve6472.polyground.world.generator.ThreadedGenerator;
+import steve6472.polyground.world.generator.generators.IBiomeGenerator;
+import steve6472.polyground.world.generator.generators.IHeightMapGenerator;
+import steve6472.polyground.world.generator.generators.impl.HeightMapGenerator;
+import steve6472.polyground.world.generator.generators.impl.SurfaceGenerator;
+import steve6472.polyground.world.generator.generators.impl.Voronoi;
 import steve6472.sge.gfx.GBuffer;
 import steve6472.sge.gfx.Tessellator3D;
 import steve6472.sge.main.game.GridStorage;
@@ -23,6 +30,7 @@ import steve6472.sge.main.game.GridStorage;
 import java.io.File;
 import java.io.IOException;
 import java.util.Iterator;
+import java.util.Random;
 
 import static org.lwjgl.opengl.GL11.glDrawArrays;
 import static org.lwjgl.opengl.GL20.glDisableVertexAttribArray;
@@ -37,27 +45,24 @@ import static org.lwjgl.opengl.GL30.glBindVertexArray;
  ***********************/
 public class World implements IBlockProvider
 {
-	private final int HEIGHT = 4;
-
 	public int lastWaterTickIndex = 0;
 	public int currentWaterTickIndex = 0;
 	public boolean reachedMax = false;
 
-	private GridStorage<Chunk> chunks;
-	private EntityManager entityManager;
-	public TeleporterManager teleporters;
-	private RiftManager rifts;
-	private Generator generator;
+	public final TeleporterManager teleporters;
 
-	private CaveGame game;
+	private final GridStorage<Chunk> chunks;
+	private final EntityManager entityManager;
+	private final RiftManager rifts;
+	private final CaveGame game;
+	private final Random random;
 
-	private Random random;
-
-	public boolean shouldRebuild = false;
 	public String worldName = null;
 	public boolean useGenerator;
 
-	private Matrix4f mat;
+	private final Matrix4f mat;
+
+	private final ThreadedGenerator generator;
 
 	public World(CaveGame game)
 	{
@@ -70,8 +75,11 @@ public class World implements IBlockProvider
 
 		teleporters = new TeleporterManager(this);
 		rifts = new RiftManager(game, this);
-		this.generator = new Generator(this);
-		game.getEventHandler().register(generator);
+
+		IBiomeGenerator biomeGenerator = new Voronoi(9078317233835268558L, 32, 16, 2);
+		IHeightMapGenerator heightMapGenerator = new HeightMapGenerator(biomeGenerator, 10, 5);
+		generator = new ThreadedGenerator(this, biomeGenerator, heightMapGenerator, (cds) -> new SurfaceGenerator(heightMapGenerator, cds));
+		generator.start();
 
 		//
 		//		if (worldName == null)
@@ -80,8 +88,10 @@ public class World implements IBlockProvider
 
 	//	private byte delay = 0;
 
-	public void tick()
+	public void tick(ThreadedModelBuilder builder)
 	{
+		generateInRadius(game.options.generateDistance);
+
 		if (lastWaterTickIndex >= InGameGui.waterActive)
 			lastWaterTickIndex = 0;
 		reachedMax = false;
@@ -90,6 +100,7 @@ public class World implements IBlockProvider
 		for (Chunk chunk : chunks.getMap().values())
 		{
 			chunk.tick();
+			chunk.checkRebuild(builder);
 		}
 
 		lastWaterTickIndex += game.options.maxWaterTick;
@@ -104,8 +115,36 @@ public class World implements IBlockProvider
 		//			generateChunks();
 		//			delay = 0;
 		//		}
-		if (useGenerator)
-			generator.tick();
+	}
+
+	private void generateInRadius(int generateDistance)
+	{
+		int x = (int) Math.floor(game.getPlayer().getPosition().x) >> 4;
+		int z = (int) Math.floor(game.getPlayer().getPosition().z) >> 4;
+		for (int i = -generateDistance; i <= generateDistance; i++)
+		{
+			for (int j = -generateDistance; j <= generateDistance; j++)
+			{
+				gen(i + x, j + z);
+			}
+		}
+	}
+
+	private void gen(int x, int z)
+	{
+		Chunk chunk = getChunk(x, z);
+		if (chunk == null)
+		{
+			chunk = new Chunk(x, z, this);
+			addChunk(chunk);
+			for (SubChunk sc : chunk.getSubChunks())
+				generator.addToQueue(sc);
+		} else
+		{
+			for (SubChunk sc : chunk.getSubChunks())
+				if (sc.stage != EnumChunkStage.FINISHED)
+					generator.addToQueue(sc);
+		}
 	}
 
 	private void generateChunks()
@@ -189,15 +228,6 @@ public class World implements IBlockProvider
 	public float shade = 1f;
 
 	public static int enabled = -1;
-
-	public void tryRebuild()
-	{
-		if (shouldRebuild)
-		{
-			rebuild();
-			shouldRebuild = false;
-		}
-	}
 
 	public void render(boolean deferred, boolean countChunks)
 	{
@@ -302,24 +332,6 @@ public class World implements IBlockProvider
 		}
 	}
 
-	private void rebuild()
-	{
-		for (Chunk chunk : chunks.getMap().values())
-		{
-			if (chunk == null)
-				continue;
-
-			for (int k = 0; k < chunk.getSubChunks().length; k++)
-			{
-				SubChunk sc = chunk.getSubChunk(k);
-				if (sc == null)
-					continue;
-
-				sc.rebuild();
-			}
-		}
-	}
-
 	private void renderChunkOutlines()
 	{
 		for (Chunk chunk : chunks.getMap().values())
@@ -364,15 +376,23 @@ public class World implements IBlockProvider
 		return chunks;
 	}
 
+	@Override
+	public void addChunk(Chunk chunk)
+	{
+		getChunkStorage().put(chunk.getX(), chunk.getZ(), chunk);
+		for (SubChunk sc : chunk.getSubChunks())
+			generator.addToQueue(sc);
+	}
+
 	public void clearWorld()
 	{
 		getChunks().forEach(Chunk::unload);
-		chunks = new GridStorage<>();
+		chunks.getMap().clear();
 	}
 
 	public int getHeight()
 	{
-		return HEIGHT;
+		return 4;
 	}
 
 	public EntityManager getEntityManager()
@@ -383,5 +403,27 @@ public class World implements IBlockProvider
 	public RiftManager getRifts()
 	{
 		return rifts;
+	}
+
+	public void setBiome(Biome biome, int x, int y, int z)
+	{
+		Chunk c = getChunk(x >> 4, z >> 4);
+		if (c != null)
+			if (y < c.getSubChunks().length * 16)
+			{
+				c.getSubChunk(y / 16).setBiome(biome, Math.floorMod(x, 16), Math.floorMod(y, 16), Math.floorMod(z, 16));
+			}
+	}
+
+	public Biome getBiome(int x, int y, int z)
+	{
+		Chunk c = getChunk(x >> 4, z >> 4);
+		if (c != null)
+			if (y < c.getSubChunks().length * 16)
+			{
+				return c.getSubChunk(y / 16).getBiome(Math.floorMod(x, 16), Math.floorMod(y, 16), Math.floorMod(z, 16));
+			}
+
+		return null;
 	}
 }

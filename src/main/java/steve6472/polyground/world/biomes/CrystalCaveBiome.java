@@ -3,7 +3,7 @@ package steve6472.polyground.world.biomes;
 import org.joml.Vector3f;
 import steve6472.polyground.block.Block;
 import steve6472.polyground.registry.BlockRegistry;
-import steve6472.polyground.world.generator.FeatureStage;
+import steve6472.polyground.world.generator.EnumFeatureStage;
 import steve6472.polyground.world.generator.feature.BushFeature;
 import steve6472.polyground.world.generator.feature.cave.StalaFeature;
 
@@ -18,8 +18,14 @@ public class CrystalCaveBiome extends Biome
 	@Override
 	public void addFeatures()
 	{
-		addFeature(FeatureStage.CAVE_ALTER, new StalaFeature(BlockRegistry.getBlockByName("stone"), 0.6f), 1 / 256d);
-		addFeature(FeatureStage.CAVE_ALTER, new BushFeature(BlockRegistry.getBlockByName("stone"), BlockRegistry.getBlockByName("crystal_log"), BlockRegistry.getBlockByName("crystal_leaves"), true), 1d / 1024d / 16d);
+		addFeature(EnumFeatureStage.CAVE_ALTER, 1 / 256d, new StalaFeature(BlockRegistry.getBlockByName("stone"), 0.6f));
+		addFeature(EnumFeatureStage.CAVE_ALTER, 1d / 1024d / 16d, new BushFeature(BlockRegistry.getBlockByName("stone"), BlockRegistry.getBlockByName("crystal_log"), BlockRegistry.getBlockByName("crystal_leaves"), true));
+	}
+
+	@Override
+	public float[] getParameters()
+	{
+		return new float[2];
 	}
 
 	@Override
@@ -44,6 +50,17 @@ public class CrystalCaveBiome extends Biome
 	public Block getCaveBlock()
 	{
 		return BlockRegistry.getBlockByName("air");
+	}
+
+	/**
+	 * Indicates how high the biome will stretch above surface
+	 *
+	 * @return biome height
+	 */
+	@Override
+	public int getBiomeHeight()
+	{
+		return 0;
 	}
 
 	@Override

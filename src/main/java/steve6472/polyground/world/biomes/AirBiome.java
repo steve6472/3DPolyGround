@@ -2,50 +2,49 @@ package steve6472.polyground.world.biomes;
 
 import org.joml.Vector3f;
 import steve6472.polyground.block.Block;
-import steve6472.polyground.registry.BlockRegistry;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
- * On date: 01.11.2019
- * Project: SJP
+ * On date: 01.08.2020
+ * Project: ThreadedGenerator
  *
  ***********************/
-public class VoidBiome extends Biome
+public class AirBiome extends Biome
 {
 	@Override
 	public void addFeatures()
 	{
-
+//		addFeature(EnumFeatureStage.AIR, 1d / 4096d / 8d, new CloudFeature());
 	}
 
 	@Override
 	public float[] getParameters()
 	{
-		return new float[0];
+		return new float[] {0f};
 	}
 
 	@Override
 	public String getName()
 	{
-		return "void";
+		return "sky";
 	}
 
 	@Override
 	public Block getTopBlock()
 	{
-		return BlockRegistry.getBlockByName("bedrock");
+		return Block.air;
 	}
 
 	@Override
 	public Block getUnderBlock()
 	{
-		return BlockRegistry.getBlockByName("air");
+		return Block.air;
 	}
 
 	@Override
 	public Block getCaveBlock()
 	{
-		return BlockRegistry.getBlockByName("air");
+		return Block.air;
 	}
 
 	/**
@@ -65,6 +64,13 @@ public class VoidBiome extends Biome
 		return 0;
 	}
 
+	private final Vector3f FOLIAGE_COLOR = new Vector3f(0.8f, 0.8f, 1);
+	@Override
+	public Vector3f getColor()
+	{
+		return FOLIAGE_COLOR;
+	}
+
 	@Override
 	public int getIterationCount()
 	{
@@ -74,13 +80,13 @@ public class VoidBiome extends Biome
 	@Override
 	public float getPersistance()
 	{
-		return 0.0f;
+		return 0;
 	}
 
 	@Override
 	public float getScale()
 	{
-		return 0.0f;
+		return 0;
 	}
 
 	@Override
@@ -93,11 +99,5 @@ public class VoidBiome extends Biome
 	public float getHigh()
 	{
 		return 0;
-	}
-
-	@Override
-	public Vector3f getColor()
-	{
-		return new Vector3f(145 / 255f, 189 / 255f, 89 / 255f);
 	}
 }

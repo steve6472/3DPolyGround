@@ -3,7 +3,7 @@ package steve6472.polyground.world.biomes;
 import org.joml.Vector3f;
 import steve6472.polyground.block.Block;
 import steve6472.polyground.registry.BlockRegistry;
-import steve6472.polyground.world.generator.FeatureStage;
+import steve6472.polyground.world.generator.EnumFeatureStage;
 import steve6472.polyground.world.generator.feature.VegetationPatchFeature;
 
 /**********************
@@ -17,9 +17,15 @@ public class DesertBiome extends Biome
 	@Override
 	public void addFeatures()
 	{
-		addFeature(FeatureStage.VEGETATION, new VegetationPatchFeature(BlockRegistry.getBlockByName("sand"), BlockRegistry.getBlockByName("small_grass"), 0.5, 2, true), 1 / 100d);
+		addFeature(EnumFeatureStage.VEGETATION, 1 / 100d, new VegetationPatchFeature(BlockRegistry.getBlockByName("sand"), BlockRegistry.getBlockByName("small_grass"), 0.5, 2, true));
 
 //				features.add(new FeatureEntry(new VegetationPatchFeature(BlockRegistry.getBlockByName("sand"), BlockRegistry.getBlockByName("small_grass"), 0.5, 2, true), 1 / 100d));
+	}
+
+	@Override
+	public float[] getParameters()
+	{
+		return new float[2];
 	}
 
 	@Override
@@ -44,6 +50,17 @@ public class DesertBiome extends Biome
 	public Block getCaveBlock()
 	{
 		return BlockRegistry.getBlockByName("stone");
+	}
+
+	/**
+	 * Indicates how high the biome will stretch above surface
+	 *
+	 * @return biome height
+	 */
+	@Override
+	public int getBiomeHeight()
+	{
+		return 8;
 	}
 
 	@Override

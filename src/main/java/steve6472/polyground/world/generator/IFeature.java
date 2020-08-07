@@ -1,11 +1,11 @@
-package steve6472.polyground.world.generator.feature;
+package steve6472.polyground.world.generator;
 
 import steve6472.polyground.world.World;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
- * On date: 26.05.2020
- * Project: CaveGame
+ * On date: 28.07.2020
+ * Project: ThreadedGenerator
  *
  ***********************/
 public interface IFeature
@@ -23,5 +23,5 @@ public interface IFeature
 
 	boolean canGenerate(World world, int x, int y, int z);
 
-	EnumFeaturePlacement getPlacement();
+	EnumPlacement getPlacement();
 }

@@ -2,6 +2,7 @@ package steve6472.polyground.world.chunk;
 
 import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.registry.BlockRegistry;
+import steve6472.polyground.world.generator.EnumChunkStage;
 import steve6472.sge.main.smartsave.SmartSave;
 import steve6472.sge.main.util.Pair;
 
@@ -176,8 +177,8 @@ public class ChunkSerializer
 
 		SmartSave.closeInput();
 
-		subChunk.state = EnumChunkState.FULL;
-		subChunk.rebuildAllLayers();
+		subChunk.stage = EnumChunkStage.FINISHED;
+		subChunk.rebuild();
 		return subChunk;
 	}
 }

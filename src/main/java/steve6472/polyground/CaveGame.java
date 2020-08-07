@@ -211,7 +211,7 @@ public class CaveGame extends MainApp
 		//		particles.testParticle(player.viewDir.x * 4.2f + player.getX(), player.viewDir.y * 4.2f + player.getY() + player.getEyeHeight(), player.viewDir.z * 4.2f + player.getZ());
 
 		if (world != null)
-			world.tick();
+			world.tick(mainRender.modelBuilder);
 
 		if (world != null)
 			hitboxList.forEach(c -> c.tick(this));

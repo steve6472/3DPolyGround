@@ -55,6 +55,9 @@ public interface IChunkProvider
 		return getChunkStorage().get(x >> 4, z >> 4);
 	}
 
+	void addChunk(Chunk chunk);
+
+	/*
 	default void addChunk(Chunk chunk)
 	{
 		getChunkStorage().put(chunk.getX(), chunk.getZ(), chunk);
@@ -68,5 +71,5 @@ public interface IChunkProvider
 		if (c != null) c.update();
 		c = getChunk(chunk.getX(), chunk.getZ() - 1);
 		if (c != null) c.update();
-	}
+	}*/
 }

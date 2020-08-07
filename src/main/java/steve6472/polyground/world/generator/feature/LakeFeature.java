@@ -3,6 +3,8 @@ package steve6472.polyground.world.generator.feature;
 import steve6472.polyground.block.Block;
 import steve6472.polyground.registry.BlockRegistry;
 import steve6472.polyground.world.World;
+import steve6472.polyground.world.generator.EnumPlacement;
+import steve6472.polyground.world.generator.IFeature;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
@@ -81,8 +83,8 @@ public class LakeFeature implements IFeature
 	}
 
 	@Override
-	public EnumFeaturePlacement getPlacement()
+	public EnumPlacement getPlacement()
 	{
-		return EnumFeaturePlacement.IN_HEIGHT_MAP;
+		return EnumPlacement.IN_HEIGHT_MAP;
 	}
 }
