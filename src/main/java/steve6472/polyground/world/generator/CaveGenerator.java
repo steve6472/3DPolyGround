@@ -13,13 +13,12 @@ import steve6472.sge.main.TriConsumer;
  * Project: SJP
  *
  ***********************/
-public class CaveGenerator implements IGenerator
+public class CaveGenerator
 {
 	private SubChunk subChunk;
 
 	private long worldSeed = 4;
 
-	@Override
 	public void generate(SubChunk subChunk)
 	{
 		this.subChunk = subChunk;
@@ -89,13 +88,6 @@ public class CaveGenerator implements IGenerator
 				}
 			}
 		}
-	}
-
-	interface ICaveFeature
-	{
-		void generate(SubChunk subChunk, int block);
-
-
 	}
 
 	class SphereCaveFeature

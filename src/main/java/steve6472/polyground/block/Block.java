@@ -18,7 +18,7 @@ import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.block.states.StateLoader;
 import steve6472.polyground.entity.Player;
 import steve6472.polyground.registry.face.FaceRegistry;
-import steve6472.polyground.world.BuildHelper;
+import steve6472.polyground.world.ModelBuilder;
 import steve6472.polyground.world.Cull;
 import steve6472.polyground.world.World;
 import steve6472.polyground.world.chunk.ModelLayer;
@@ -157,7 +157,7 @@ public class Block
 		return this == air;
 	}
 
-	public int createModel(int x, int y, int z, World world, BlockState state, BuildHelper buildHelper, ModelLayer modelLayer)
+	public int createModel(int x, int y, int z, World world, BlockState state, ModelBuilder buildHelper, ModelLayer modelLayer)
 	{
 		int tris = 0;
 

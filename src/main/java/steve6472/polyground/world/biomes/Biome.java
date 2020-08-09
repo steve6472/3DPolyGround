@@ -1,7 +1,7 @@
 package steve6472.polyground.world.biomes;
 
 import org.joml.Vector3f;
-import steve6472.polyground.block.Block;
+import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.world.generator.EnumFeatureStage;
 import steve6472.polyground.world.generator.FeatureEntry;
 import steve6472.polyground.world.generator.IFeature;
@@ -38,11 +38,11 @@ public abstract class Biome
 
 	public abstract String getName();
 
-	public abstract Block getTopBlock();
+	public abstract BlockState getTopBlock();
 
-	public abstract Block getUnderBlock();
+	public abstract BlockState getUnderBlock();
 
-	public abstract Block getCaveBlock();
+	public abstract BlockState getCaveBlock();
 
 	/**
 	 * Indicates how high the biome will stretch above surface

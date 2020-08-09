@@ -17,7 +17,7 @@ import steve6472.polyground.gfx.shaders.world.FlatTexturedShader;
 import steve6472.polyground.registry.face.FaceRegistry;
 import steve6472.polyground.tessellators.BasicTessellator;
 import steve6472.polyground.tessellators.ItemTessellator;
-import steve6472.polyground.world.BuildHelper;
+import steve6472.polyground.world.ModelBuilder;
 import steve6472.sge.gfx.Atlas;
 import steve6472.sge.gfx.DepthFrameBuffer;
 import steve6472.sge.gfx.Tessellator;
@@ -43,7 +43,7 @@ public class BlockPreview
 	private List<Vector4f> colors;
 	private List<Vector2f> textures;
 
-	private BuildHelper buildHelper;
+	private ModelBuilder buildHelper;
 	private DepthFrameBuffer preview;
 	private ItemTessellator itemTessellator;
 	private BasicTessellator basicTessellator;
@@ -56,9 +56,9 @@ public class BlockPreview
 
 	private Atlas atlas;
 
-	private BlockCreatorGui creatorGui;
+	private steve6472.polyground.generator.creator.BlockCreatorGui creatorGui;
 
-	public BlockPreview(BlockCreatorGui creatorGui)
+	public BlockPreview(steve6472.polyground.generator.creator.BlockCreatorGui creatorGui)
 	{
 		this.creatorGui = creatorGui;
 
@@ -69,7 +69,7 @@ public class BlockPreview
 		colors = new ArrayList<>();
 		normal = new ArrayList<>();
 
-		buildHelper = new BuildHelper();
+		buildHelper = new ModelBuilder();
 		itemTessellator = new ItemTessellator((int) Math.pow(2, 16));
 		basicTessellator = new BasicTessellator(6);
 

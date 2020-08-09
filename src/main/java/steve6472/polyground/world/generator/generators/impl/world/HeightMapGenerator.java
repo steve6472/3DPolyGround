@@ -1,4 +1,4 @@
-package steve6472.polyground.world.generator.generators.impl;
+package steve6472.polyground.world.generator.generators.impl.world;
 
 import steve6472.polyground.SSimplexNoise;
 import steve6472.polyground.world.biomes.Biome;

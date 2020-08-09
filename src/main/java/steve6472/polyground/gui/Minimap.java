@@ -39,6 +39,7 @@ public class Minimap extends Component
 		buffer.resize(getWidth(), getHeight());
 		camera = new Camera();
 		projectionMatrix = PolyUtil.createProjectionMatrix(getWidth(), getHeight(), 512, 70);
+//		projectionMatrix = new Matrix4f().ortho(0, 0, getWidth(), getHeight(), 0.1f, 512);
 	}
 
 	public void tick()

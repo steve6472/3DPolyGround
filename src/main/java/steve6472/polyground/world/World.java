@@ -16,13 +16,12 @@ import steve6472.polyground.world.biomes.Biome;
 import steve6472.polyground.world.chunk.Chunk;
 import steve6472.polyground.world.chunk.ModelLayer;
 import steve6472.polyground.world.chunk.SubChunk;
+import steve6472.polyground.world.generator.ChunkGenDataStorage;
 import steve6472.polyground.world.generator.EnumChunkStage;
 import steve6472.polyground.world.generator.ThreadedGenerator;
 import steve6472.polyground.world.generator.generators.IBiomeGenerator;
 import steve6472.polyground.world.generator.generators.IHeightMapGenerator;
-import steve6472.polyground.world.generator.generators.impl.HeightMapGenerator;
-import steve6472.polyground.world.generator.generators.impl.SurfaceGenerator;
-import steve6472.polyground.world.generator.generators.impl.Voronoi;
+import steve6472.polyground.world.generator.generators.ISurfaceGenerator;
 import steve6472.sge.gfx.GBuffer;
 import steve6472.sge.gfx.Tessellator3D;
 import steve6472.sge.main.game.GridStorage;
@@ -31,6 +30,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.Random;
+import java.util.function.Function;
 
 import static org.lwjgl.opengl.GL11.glDrawArrays;
 import static org.lwjgl.opengl.GL20.glDisableVertexAttribArray;
@@ -58,13 +58,12 @@ public class World implements IBlockProvider
 	private final Random random;
 
 	public String worldName = null;
-	public boolean useGenerator;
 
 	private final Matrix4f mat;
 
 	private final ThreadedGenerator generator;
 
-	public World(CaveGame game)
+	public World(CaveGame game, IBiomeGenerator biomeGenerator, IHeightMapGenerator heightMapGenerator, Function<ChunkGenDataStorage, ISurfaceGenerator> surfaceGenerator)
 	{
 		mat = new Matrix4f();
 		this.game = game;
@@ -76,9 +75,7 @@ public class World implements IBlockProvider
 		teleporters = new TeleporterManager(this);
 		rifts = new RiftManager(game, this);
 
-		IBiomeGenerator biomeGenerator = new Voronoi(9078317233835268558L, 32, 16, 2);
-		IHeightMapGenerator heightMapGenerator = new HeightMapGenerator(biomeGenerator, 10, 5);
-		generator = new ThreadedGenerator(this, biomeGenerator, heightMapGenerator, (cds) -> new SurfaceGenerator(heightMapGenerator, cds));
+		this.generator = new ThreadedGenerator(this, biomeGenerator, heightMapGenerator, surfaceGenerator);
 		generator.start();
 
 		//
@@ -90,7 +87,8 @@ public class World implements IBlockProvider
 
 	public void tick(ThreadedModelBuilder builder)
 	{
-		generateInRadius(game.options.generateDistance);
+		if (game.options.generateDistance > -1)
+			generateInRadius(game.options.generateDistance);
 
 		if (lastWaterTickIndex >= InGameGui.waterActive)
 			lastWaterTickIndex = 0;
@@ -364,10 +362,8 @@ public class World implements IBlockProvider
 
 	public void generateNewChunk(int x, int z)
 	{
-		if (getChunk(x, z) != null)
-			return;
-
-		addChunk(new Chunk(x, z, this).generate());
+		if (getChunk(x, z) == null)
+			addChunk(new Chunk(x, z, this));
 	}
 
 	@Override

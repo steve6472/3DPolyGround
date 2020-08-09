@@ -20,8 +20,6 @@ import steve6472.polyground.registry.ItemRegistry;
 import steve6472.polyground.registry.WaterRegistry;
 import steve6472.polyground.rift.RiftManager;
 import steve6472.polyground.world.World;
-import steve6472.polyground.world.chunk.SubChunk;
-import steve6472.polyground.world.generator.GeneratorRegistry;
 import steve6472.polyground.world.interaction.HitPicker;
 import steve6472.sge.gfx.DepthFrameBuffer;
 import steve6472.sge.gfx.FrameBuffer;
@@ -55,7 +53,6 @@ public class CaveGame extends MainApp
 	private Player player;
 	public World world;
 	public CommandRegistry commandRegistry;
-	public GeneratorRegistry generatorRegistry;
 	public BlockModelLoader blockModelLoader;
 	public ItemAtlas itemAtlas;
 	public HitPicker hitPicker;
@@ -96,8 +93,6 @@ public class CaveGame extends MainApp
 		optionsGui = new OptionsGui(this);
 
 		commandRegistry = new CommandRegistry();
-		generatorRegistry = new GeneratorRegistry();
-		SubChunk.generator = generatorRegistry.getGenerator("flat");
 
 		itemAtlas = new ItemAtlas(this);
 		ItemRegistry.register(this);

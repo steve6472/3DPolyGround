@@ -4,7 +4,7 @@ import steve6472.polyground.EnumFace;
 import steve6472.polyground.block.model.Cube;
 import steve6472.polyground.block.model.faceProperty.LayerFaceProperty;
 import steve6472.polyground.block.states.BlockState;
-import steve6472.polyground.world.BuildHelper;
+import steve6472.polyground.world.ModelBuilder;
 import steve6472.polyground.world.World;
 import steve6472.polyground.world.chunk.ModelLayer;
 
@@ -24,11 +24,11 @@ public class CustomBlock extends TransparentBlock
 	}
 
 	@Override
-	public int createModel(int x, int y, int z, World world, BlockState state, BuildHelper buildHelper, ModelLayer modelLayer)
+	public int createModel(int x, int y, int z, World world, BlockState state, ModelBuilder buildHelper, ModelLayer modelLayer)
 	{
 		int tris = 0;
 
-		buildHelper.setSubChunk(world.getSubChunk(x, y, z));
+		buildHelper.setSubChunk(world.getSubChunkFromBlockCoords(x, y, z));
 		for (Cube c : state.getBlockModel().getCubes())
 		{
 			buildHelper.setCube(c);

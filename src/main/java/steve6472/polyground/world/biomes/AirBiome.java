@@ -2,6 +2,7 @@ package steve6472.polyground.world.biomes;
 
 import org.joml.Vector3f;
 import steve6472.polyground.block.Block;
+import steve6472.polyground.block.states.BlockState;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
@@ -30,21 +31,21 @@ public class AirBiome extends Biome
 	}
 
 	@Override
-	public Block getTopBlock()
+	public BlockState getTopBlock()
 	{
-		return Block.air;
+		return Block.air.getDefaultState();
 	}
 
 	@Override
-	public Block getUnderBlock()
+	public BlockState getUnderBlock()
 	{
-		return Block.air;
+		return Block.air.getDefaultState();
 	}
 
 	@Override
-	public Block getCaveBlock()
+	public BlockState getCaveBlock()
 	{
-		return Block.air;
+		return Block.air.getDefaultState();
 	}
 
 	/**

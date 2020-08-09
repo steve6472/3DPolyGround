@@ -144,7 +144,8 @@ public class CubeBuilder
 		if (this.faces[3] != null) faces.put("south", this.faces[3].build());
 		if (this.faces[4] != null) faces.put("east", this.faces[4].build());
 		if (this.faces[5] != null) faces.put("west", this.faces[5].build());
-		main.put("faces", faces);
+		if (!faces.isEmpty())
+			main.put("faces", faces);
 
 		return main;
 	}

@@ -22,7 +22,7 @@ import java.util.List;
  * Project: SJP
  *
  ***********************/
-public final class BuildHelper
+public final class ModelBuilder
 {
 	public int atlasSize;
 

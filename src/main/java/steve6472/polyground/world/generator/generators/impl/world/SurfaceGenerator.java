@@ -1,4 +1,4 @@
-package steve6472.polyground.world.generator.generators.impl;
+package steve6472.polyground.world.generator.generators.impl.world;
 
 import steve6472.polyground.world.biomes.Biome;
 import steve6472.polyground.world.biomes.Biomes;
@@ -52,14 +52,14 @@ public class SurfaceGenerator implements ISurfaceGenerator
 				setChunkData(biome, cx, subChunk.getLayer(), cz);
 
 				if (height / 16 == subChunk.getLayer())
-					subChunk.setBlock(biome.getTopBlock(), x, height % 16, z);
+					subChunk.setState(biome.getTopBlock(), x, height % 16, z);
 
 				// TODO: Clamp to subchunk
 				for (int k = height - 1; k >= height - biome.getUnderLayerHeight(); k--)
-					subChunk.getWorld().setBlock(biome.getUnderBlock(), x + cx * 16, k, z + cz * 16);
+					subChunk.getWorld().setState(biome.getUnderBlock(), x + cx * 16, k, z + cz * 16);
 
 				for (int k = height - 1 - biome.getUnderLayerHeight(); k >= 0; k--)
-					subChunk.getWorld().setBlock(biome.getCaveBlock(), x + cx * 16, k, z + cz * 16);
+					subChunk.getWorld().setState(biome.getCaveBlock(), x + cx * 16, k, z + cz * 16);
 
 				for (int k = subChunk.getLayer() * 16; k < Util.clamp(subChunk.getLayer() * 16, subChunk.getLayer() * 16 + 16, height + biome.getBiomeHeight()); k++)
 					subChunk.getWorld().setBiome(biome, x + cx * 16, k, z + cz * 16);

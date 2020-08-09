@@ -7,7 +7,7 @@ import org.lwjgl.BufferUtils;
 import steve6472.polyground.CaveGame;
 import steve6472.polyground.block.Block;
 import steve6472.polyground.block.states.BlockState;
-import steve6472.polyground.world.BuildHelper;
+import steve6472.polyground.world.ModelBuilder;
 import steve6472.polyground.world.chunk.SubChunkModel;
 
 import java.nio.FloatBuffer;
@@ -100,7 +100,7 @@ public class ThreadedModelBuilder extends Thread
 
 		model.getSubChunk().getParent().getWorld().getGame().mainRender.buildHelper.load(vertices, colors, textures, normal);
 
-		BuildHelper buildHelper = model.getSubChunk().getWorld().getGame().mainRender.buildHelper;
+		ModelBuilder buildHelper = model.getSubChunk().getWorld().getGame().mainRender.buildHelper;
 
 		for (int i = 0; i < 16; i++)
 		{

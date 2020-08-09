@@ -3,8 +3,6 @@ package steve6472.polyground.item.special;
 import steve6472.polyground.CaveGame;
 import steve6472.polyground.entity.Player;
 import steve6472.polyground.item.Item;
-import steve6472.polyground.world.chunk.Chunk;
-import steve6472.polyground.world.chunk.SubChunk;
 import steve6472.sge.main.KeyList;
 import steve6472.sge.main.events.MouseEvent;
 
@@ -30,15 +28,16 @@ public class RegeneratorItem extends Item
 		{
 			if (click.getButton() == KeyList.RMB)
 			{
-				CaveGame.getInstance().world.getChunks().forEach(c ->
-				{
-					for (SubChunk chunk : c.getSubChunks())
-					{
-						chunk.generate();
-					}
-				});
-
-				CaveGame.getInstance().world.getChunks().forEach(Chunk::rebuild);
+				CaveGame.getInstance().inGameGui.chat.addText("[#ff0000]", "Regenerator Item is no longer working");
+//				CaveGame.getInstance().world.getChunks().forEach(c ->
+//				{
+//					for (SubChunk chunk : c.getSubChunks())
+//					{
+//						chunk.generate();
+//					}
+//				});
+//
+//				CaveGame.getInstance().world.getChunks().forEach(Chunk::rebuild);
 			}
 		}
 	}

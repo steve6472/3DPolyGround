@@ -89,14 +89,14 @@ public class StalaFeature implements IFeature
 	private final BlockState[] stalas;
 	private final float doubleChance;
 
-	public StalaFeature(Block baseBlock, float doubleChance)
+	public StalaFeature(Block baseBlock, String stalaName, float doubleChance)
 	{
 		this.baseBlock = baseBlock;
 		this.doubleChance = doubleChance;
 		stalas = new BlockState[7];
 		for (int i = 1; i <= 7; i++)
 		{
-			stalas[i - 1] = BlockRegistry.getBlockByName("stone_stala").getDefaultState().with(StalaBlock.WIDTH, i).get();
+			stalas[i - 1] = BlockRegistry.getBlockByName(stalaName).getDefaultState().with(StalaBlock.WIDTH, i).get();
 		}
 	}
 

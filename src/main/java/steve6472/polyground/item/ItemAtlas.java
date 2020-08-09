@@ -17,7 +17,7 @@ import steve6472.polyground.gfx.MainRender;
 import steve6472.polyground.registry.BlockRegistry;
 import steve6472.polyground.registry.face.FaceRegistry;
 import steve6472.polyground.tessellators.ItemTessellator;
-import steve6472.polyground.world.BuildHelper;
+import steve6472.polyground.world.ModelBuilder;
 import steve6472.polyground.world.chunk.ModelLayer;
 import steve6472.polyground.world.chunk.SubChunk;
 import steve6472.sge.gfx.*;
@@ -44,7 +44,7 @@ public class ItemAtlas
 	public FrameBuffer itemAtlas;
 
 	public DepthFrameBuffer textureBuffer;
-	private BuildHelper buildHelper;
+	private ModelBuilder buildHelper;
 	private Matrix4f viewMatrix, transformationMatrix, projectionMatrix;
 	private Camera camera;
 	private ItemTessellator itemTessellator;
@@ -76,7 +76,7 @@ public class ItemAtlas
 		totalSize = s * itemSize;
 		itemAtlas = new FrameBuffer(totalSize, totalSize, true);
 		textureBuffer = new DepthFrameBuffer(itemSize, itemSize, true);
-		buildHelper = new BuildHelper();
+		buildHelper = new ModelBuilder();
 		camera = new Camera();
 		camera.calculateOrbit(0, 0, 0, 10f);
 

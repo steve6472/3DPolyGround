@@ -12,7 +12,6 @@ import steve6472.polyground.world.biomes.Biome;
 import steve6472.polyground.world.biomes.Biomes;
 import steve6472.polyground.world.biomes.IBiomeProvider;
 import steve6472.polyground.world.generator.EnumChunkStage;
-import steve6472.polyground.world.generator.IGenerator;
 
 import java.io.IOException;
 import java.util.Iterator;
@@ -64,14 +63,6 @@ public class SubChunk implements IBiomeProvider
 		blockData = new SubChunkBlockData(this);
 		blocks = new SubChunkBlocks();
 		water = new SubChunkWater(this);
-	}
-
-	public static IGenerator generator;
-
-	public void generate()
-	{
-		stage = EnumChunkStage.SHAPE;
-		generator.generate(this);
 	}
 
 	public void tick()

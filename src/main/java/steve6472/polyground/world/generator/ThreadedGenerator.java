@@ -142,7 +142,7 @@ public class ThreadedGenerator extends Thread
 							{
 								if (subChunk.getWorld().getRandom().nextDouble() <= featureEntry.getChance())
 								{
-									if (feature.getPlacement() == EnumPlacement.IN_AIR)
+									if (feature.getPlacement() == EnumPlacement.IN_AIR || feature.getPlacement() == EnumPlacement.IN_GROUND)
 									{
 										if (feature.canGenerate(subChunk.getWorld(), x + subChunk.getX() * 16, y + subChunk.getLayer() * 16, z + subChunk.getZ() * 16))
 										{

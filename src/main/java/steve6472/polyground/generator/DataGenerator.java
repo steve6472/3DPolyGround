@@ -89,6 +89,7 @@ public class DataGenerator
 		DataBuilder.create().itemModel(new ItemFromTexture("tele_placer")).itemName("atele_placer").itemSpecial(new SimpleSpecial("tele_placer")).generate();
 
 		// Blocks
+		DataBuilder.create().fullBlock("null").noItem().generate();
 		DataBuilder.create().fullBlock("smooth_stone").generate();
 		DataBuilder.create().fullBlock("bricks").generate();
 		DataBuilder.create().fullBlock("iron_block").generate();
@@ -99,7 +100,9 @@ public class DataGenerator
 		DataBuilder.create().fullBlock("gravel").generate();
 		DataBuilder.create().fullBlock("dirt").generate();
 		DataBuilder.create().fullBlock("oak_plank").generate();
-		DataBuilder.create().fullBlock("null").noItem().generate();
+		DataBuilder.create().fullBlock("andesite").generate();
+		DataBuilder.create().fullBlock("diorite").generate();
+		DataBuilder.create().fullBlock("granite").generate();
 //		DataBuilder.create().fullBlock("cond_test").blockState(StateBuilder.create().singleModel(new CondTest())).blockModel().generate();
 
 		DataBuilder.create().stairs("stone_stairs", "stone").generate();
@@ -130,21 +133,10 @@ public class DataGenerator
 		DataBuilder.create().pillarBlock("oak_log", "oak_log_side", "oak_log").generate();
 		DataBuilder.create().pillarBlock("crystal_log", "crystal_log_side", "crystal_log").generate();
 
-		DataBuilder.create()
-			.blockName("stone_stala")
-			.itemName("stone_stala")
-			.blockToPlace("stone_stala")
-			.blockSpecial(new SimpleSpecial("stala"))
-			.itemModel(new ItemFromBlock("stone_stala"))
-			.blockState(StateBuilder.create()
-				.addState(stalaState(1), stalaModel(1, "stone", "stone"))
-				.addState(stalaState(2), stalaModel(2, "stone", "stone"))
-				.addState(stalaState(3), stalaModel(3, "stone", "stone"))
-				.addState(stalaState(4), stalaModel(4, "stone", "stone"))
-				.addState(stalaState(5), stalaModel(5, "stone", "stone"))
-				.addState(stalaState(6), stalaModel(6, "stone", "stone"))
-				.addState(stalaState(7), stalaModel(7, "stone", "stone"))
-			).generate();
+		stala("stone_stala", "stone", "stone").generate();
+		stala("granite_stala", "granite", "granite").generate();
+		stala("andesite_stala", "andesite", "andesite").generate();
+		stala("diorite_stala", "diorite", "diorite").generate();
 
 		DataBuilder.create().fullBlock("grass")
 			.blockState(StateBuilder.create().singleModel(
@@ -394,7 +386,7 @@ public class DataGenerator
 		decorativeFullLeavesBlock("jungle_leaves", 52f / 112f, 73f / 109f, 21f / 112f);
 		decorativeFullLeavesBlock("spruce_leaves", 32f / 85f, 51f / 85f, 32f / 85f);
 		decorativeFullLeavesBlock("acacia_leaves", 74f / 158f, 106f / 158f, 29f / 158f);*/
-
+/*
 //		decorativeFullSidedBlock("oak_log", "oak_log", "oak_log", "oak_log_side");
 
 //		grassBlock("grass", 0.5686275f, 0.7411765f, 0.34901962f);
@@ -498,6 +490,25 @@ public class DataGenerator
 					)).build()
 			).generate();*/
 
+	}
+
+	private static DataBuilder stala(String name, String texture, String path)
+	{
+		return DataBuilder.create()
+			.blockName(name)
+			.itemName(name)
+			.blockToPlace(name)
+			.blockSpecial(new SimpleSpecial("stala"))
+			.itemModel(new ItemFromBlock(name))
+			.blockState(StateBuilder.create()
+				.addState(stalaState(1), stalaModel(1, texture, path))
+				.addState(stalaState(2), stalaModel(2, texture, path))
+				.addState(stalaState(3), stalaModel(3, texture, path))
+				.addState(stalaState(4), stalaModel(4, texture, path))
+				.addState(stalaState(5), stalaModel(5, texture, path))
+				.addState(stalaState(6), stalaModel(6, texture, path))
+				.addState(stalaState(7), stalaModel(7, texture, path))
+			);
 	}
 
 	private static PropertyBuilder stalaState(int width)

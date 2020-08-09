@@ -23,7 +23,6 @@ public class Chunk
 	private final World world;
 	public final int[][] heightMap;
 
-
 	public Chunk(int x, int z, World world)
 	{
 		this.x = x;
@@ -40,17 +39,6 @@ public class Chunk
 		{
 			subChunks[i] = new SubChunk(this, i);
 		}
-	}
-
-	public Chunk generate()
-	{
-		for (SubChunk subChunk : subChunks)
-		{
-			subChunk.generate();
-			subChunk.rebuild();
-		}
-
-		return this;
 	}
 
 	public void checkRebuild(ThreadedModelBuilder builder)
@@ -87,7 +75,8 @@ public class Chunk
 	{
 		File chunk = new File("game/worlds/" + world.worldName + "/chunk_" + x + "_" + z);
 		if (!chunk.exists())
-			chunk.mkdir();
+			if (chunk.mkdir())
+				System.out.println("Created folder for chunk " + chunk.getPath());
 
 		for (SubChunk subChunk : subChunks)
 			subChunk.saveSubChunk();
@@ -113,7 +102,8 @@ public class Chunk
 		SubChunk sc = subChunks[y / 16];
 
 		boolean shouldRebuild = sc.getState(x, y % 16, z) != state;
-//		sc.rebuild();
+		if (shouldRebuild)
+			sc.rebuild();
 
 		sc.setState(state, x, y % 16, z);
 

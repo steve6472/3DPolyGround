@@ -1,7 +1,7 @@
 package steve6472.polyground.world.biomes;
 
 import org.joml.Vector3f;
-import steve6472.polyground.block.Block;
+import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.registry.BlockRegistry;
 
 /**********************
@@ -31,21 +31,21 @@ public class OceanBiome extends Biome
 	}
 
 	@Override
-	public Block getTopBlock()
+	public BlockState getTopBlock()
 	{
-		return BlockRegistry.getBlockByName("gravel");
+		return BlockRegistry.getBlockByName("gravel").getDefaultState();
 	}
 
 	@Override
-	public Block getUnderBlock()
+	public BlockState getUnderBlock()
 	{
-		return BlockRegistry.getBlockByName("sand");
+		return BlockRegistry.getBlockByName("sand").getDefaultState();
 	}
 
 	@Override
-	public Block getCaveBlock()
+	public BlockState getCaveBlock()
 	{
-		return BlockRegistry.getBlockByName("stone");
+		return BlockRegistry.getBlockByName("stone").getDefaultState();
 	}
 
 	/**

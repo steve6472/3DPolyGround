@@ -1,10 +1,11 @@
 package steve6472.polyground.world.biomes;
 
 import org.joml.Vector3f;
-import steve6472.polyground.block.Block;
+import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.registry.BlockRegistry;
 import steve6472.polyground.world.generator.EnumFeatureStage;
 import steve6472.polyground.world.generator.feature.BushFeature;
+import steve6472.polyground.world.generator.feature.cave.OreVein;
 import steve6472.polyground.world.generator.feature.cave.StalaFeature;
 
 /**********************
@@ -18,8 +19,15 @@ public class CrystalCaveBiome extends Biome
 	@Override
 	public void addFeatures()
 	{
-		addFeature(EnumFeatureStage.CAVE_ALTER, 1 / 256d, new StalaFeature(BlockRegistry.getBlockByName("stone"), 0.6f));
 		addFeature(EnumFeatureStage.CAVE_ALTER, 1d / 1024d / 16d, new BushFeature(BlockRegistry.getBlockByName("stone"), BlockRegistry.getBlockByName("crystal_log"), BlockRegistry.getBlockByName("crystal_leaves"), true));
+		addFeature(EnumFeatureStage.CAVE_ALTER, 1d / 25000d, new OreVein(BlockRegistry.getDefaultState("stone"), BlockRegistry.getDefaultState("andesite"), 8, 24, 0.9d));
+		addFeature(EnumFeatureStage.CAVE_ALTER, 1d / 40000d, new OreVein(BlockRegistry.getDefaultState("stone"), BlockRegistry.getDefaultState("diorite"), 2, 10, 0.4d));
+		addFeature(EnumFeatureStage.CAVE_ALTER, 1d / 20000d, new OreVein(BlockRegistry.getDefaultState("stone"), BlockRegistry.getDefaultState("granite"), 4, 16, 0.8d));
+
+		addFeature(EnumFeatureStage.CAVE_ALTER, 1 / 256d, new StalaFeature(BlockRegistry.getBlockByName("stone"), "stone_stala", 0.6f));
+		addFeature(EnumFeatureStage.CAVE_ALTER, 1 / 256d, new StalaFeature(BlockRegistry.getBlockByName("andesite"), "andesite_stala", 0.55f));
+		addFeature(EnumFeatureStage.CAVE_ALTER, 1 / 256d, new StalaFeature(BlockRegistry.getBlockByName("diorite"), "diorite_stala", 0.2f));
+		addFeature(EnumFeatureStage.CAVE_ALTER, 1 / 256d, new StalaFeature(BlockRegistry.getBlockByName("granite"), "granite_stala", 0.45f));
 	}
 
 	@Override
@@ -35,21 +43,21 @@ public class CrystalCaveBiome extends Biome
 	}
 
 	@Override
-	public Block getTopBlock()
+	public BlockState getTopBlock()
 	{
-		return BlockRegistry.getBlockByName("stone");
+		return BlockRegistry.getBlockByName("stone").getDefaultState();
 	}
 
 	@Override
-	public Block getUnderBlock()
+	public BlockState getUnderBlock()
 	{
-		return BlockRegistry.getBlockByName("stone");
+		return BlockRegistry.getBlockByName("stone").getDefaultState();
 	}
 
 	@Override
-	public Block getCaveBlock()
+	public BlockState getCaveBlock()
 	{
-		return BlockRegistry.getBlockByName("air");
+		return BlockRegistry.getBlockByName("air").getDefaultState();
 	}
 
 	/**
@@ -60,7 +68,7 @@ public class CrystalCaveBiome extends Biome
 	@Override
 	public int getBiomeHeight()
 	{
-		return 0;
+		return 9;
 	}
 
 	@Override

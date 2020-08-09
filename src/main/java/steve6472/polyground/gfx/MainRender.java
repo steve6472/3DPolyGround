@@ -14,7 +14,7 @@ import steve6472.polyground.gfx.particle.ParticleStorage;
 import steve6472.polyground.gfx.shaders.Shaders;
 import steve6472.polyground.teleporter.Teleporter;
 import steve6472.polyground.tessellators.BasicTessellator;
-import steve6472.polyground.world.BuildHelper;
+import steve6472.polyground.world.ModelBuilder;
 import steve6472.polyground.world.chunk.SubChunk;
 import steve6472.polyground.world.light.LightManager;
 import steve6472.sge.gfx.DepthFrameBuffer;
@@ -65,7 +65,7 @@ public class MainRender
 	public final ParticleStorage particles;
 	public final DialogManager dialogManager;
 
-	public BuildHelper buildHelper, lazyBuildHelper;
+	public ModelBuilder buildHelper, lazyBuildHelper;
 	public BasicTessellator basicTess;
 	public BasicTessellator waterTess;
 
@@ -80,8 +80,8 @@ public class MainRender
 		storeFloatDataInAttributeList(1, 2, new float[] {0, 1, 0, 0, 1, 0, 1, 0, 1, 1, 0, 1});
 		unbindVAO();
 
-		buildHelper = new BuildHelper();
-		lazyBuildHelper = new BuildHelper();
+		buildHelper = new ModelBuilder();
+		lazyBuildHelper = new ModelBuilder();
 
 		mainFrameBuffer = new DepthFrameBuffer(game.getWidth(), game.getHeight(), true);
 		waterFrameBuffer = new DepthFrameBuffer(game.getWidth(), game.getHeight());

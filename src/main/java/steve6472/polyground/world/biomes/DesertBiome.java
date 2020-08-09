@@ -1,7 +1,7 @@
 package steve6472.polyground.world.biomes;
 
 import org.joml.Vector3f;
-import steve6472.polyground.block.Block;
+import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.registry.BlockRegistry;
 import steve6472.polyground.world.generator.EnumFeatureStage;
 import steve6472.polyground.world.generator.feature.VegetationPatchFeature;
@@ -35,21 +35,21 @@ public class DesertBiome extends Biome
 	}
 
 	@Override
-	public Block getTopBlock()
+	public BlockState getTopBlock()
 	{
-		return BlockRegistry.getBlockByName("sand");
+		return BlockRegistry.getBlockByName("sand").getDefaultState();
 	}
 
 	@Override
-	public Block getUnderBlock()
+	public BlockState getUnderBlock()
 	{
-		return BlockRegistry.getBlockByName("cobblestone");
+		return BlockRegistry.getBlockByName("cobblestone").getDefaultState();
 	}
 
 	@Override
-	public Block getCaveBlock()
+	public BlockState getCaveBlock()
 	{
-		return BlockRegistry.getBlockByName("stone");
+		return BlockRegistry.getBlockByName("stone").getDefaultState();
 	}
 
 	/**

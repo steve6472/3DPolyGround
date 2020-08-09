@@ -118,6 +118,11 @@ public class BlockRegistry
 		return blocks[ref];
 	}
 
+	public static BlockState getDefaultState(String blockName)
+	{
+		return getBlockByName(blockName).getDefaultState();
+	}
+
 	public static BlockState getStateByName(String name, String states)
 	{
 		int ref = reference.get(name);

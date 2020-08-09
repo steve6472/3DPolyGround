@@ -10,7 +10,7 @@ import steve6472.polyground.block.model.CubeFace;
 import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.gfx.particle.particles.BreakParticle;
 import steve6472.polyground.registry.face.FaceRegistry;
-import steve6472.polyground.world.BuildHelper;
+import steve6472.polyground.world.ModelBuilder;
 import steve6472.polyground.world.World;
 import steve6472.polyground.world.chunk.ModelLayer;
 import steve6472.sge.main.util.RandomUtil;
@@ -37,7 +37,7 @@ public class DropBlock extends Block
 	}
 
 	@Override
-	public int createModel(int x, int y, int z, World world, BlockState state, BuildHelper buildHelper, ModelLayer modelLayer)
+	public int createModel(int x, int y, int z, World world, BlockState state, ModelBuilder buildHelper, ModelLayer modelLayer)
 	{
 		return 0;
 	}
@@ -111,7 +111,7 @@ public class DropBlock extends Block
 
 	public static void drop(World world, CubeFace cf, float i, float j, float k, int x, int y, int z, float TX, float TY)
 	{
-		BuildHelper bh = world.getGame().mainRender.buildHelper;
+		ModelBuilder bh = world.getGame().mainRender.buildHelper;
 
 		float tx = cf.getProperty(FaceRegistry.texture).getTextureId() % bh.atlasSize;
 		float ty = cf.getProperty(FaceRegistry.texture).getTextureId() / bh.atlasSize;

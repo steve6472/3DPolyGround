@@ -1,4 +1,4 @@
-package steve6472.polyground.world.generator.generators.impl;
+package steve6472.polyground.world.generator.generators.impl.world;
 
 import org.joml.Vector2d;
 import org.joml.Vector3i;
@@ -22,7 +22,7 @@ import java.util.Random;
  * 'y' parameter is ignored
  *
  ***********************/
-public class Voronoi implements IBiomeGenerator
+public class VoronoiBiomeGen implements IBiomeGenerator
 {
 	private final int spread;       // tiles
 	private final int seedJitter;   // tiles
@@ -35,13 +35,15 @@ public class Voronoi implements IBiomeGenerator
 
 	private final GridStorage<Vector3i> seedCache;
 
+	private final List<Biome> biomeSet;
+
 	/**
 	 *
 	 * @param spread (tiles)
 	 * @param seedJitter (tiles)
 	 * @param searchRadius (grids)
 	 */
-	public Voronoi(long seed, int spread, int seedJitter, int searchRadius)
+	public VoronoiBiomeGen(long seed, int spread, int seedJitter, int searchRadius, List<Biome> biomes)
 	{
 		this.seed = seed;
 		this.spread = spread;
@@ -54,6 +56,8 @@ public class Voronoi implements IBiomeGenerator
 		};
 
 		jitterNoise = new SSimplexNoise(seed >> 32);
+
+		this.biomeSet = biomes;
 
 		// TODO: remove undusable after some time
 		seedCache = new GridStorage<>();
@@ -125,13 +129,13 @@ public class Voronoi implements IBiomeGenerator
 		for (int i = 0; i < targets.length; i++)
 			targets[i] = noises[i].noise(x * scale, z * scale);
 
-		float[] diffs = new float[Biomes.count()];
+		float[] diffs = new float[biomeSet.size()];
 
-		for (int i = 0; i < Biomes.count(); i++)
+		for (int i = 0; i < biomeSet.size(); i++)
 		{
 			float totalDiff = 0;
 			for (int j = 0; j < targets.length; j++)
-				totalDiff += Math.abs(Biomes.getBiome(i + 1).getParameters()[j] - targets[j]);
+				totalDiff += Math.abs(biomeSet.get(i).getParameters()[j] - targets[j]);
 			diffs[i] = totalDiff / (float) targets.length;
 		}
 
@@ -147,21 +151,27 @@ public class Voronoi implements IBiomeGenerator
 			if (v == diff)
 			{
 				if (same == null)
+				{
 					same = new ArrayList<>();
-				same.add(index);
+				}
+				if (!same.contains(i))
+					same.add(i);
+				if (!same.contains(index))
+					same.add(index);
 			} else if (v < diff)
 			{
-				index = i;
+				same = null;
 				diff = v;
 			}
+			index = i;
 		}
 
 		if (same != null && !same.isEmpty())
 		{
-			return Biomes.getBiome(new Random(getBiomeSeed(x, z)).nextInt(same.size()) + 1);
+			return biomeSet.get(new Random(getBiomeSeed(x, z)).nextInt(same.size()));
 		}
 
-		return Biomes.getBiome(index + 1);
+		return biomeSet.get(index);
 	}
 
 	private long getBiomeSeed(int gx, int gz)
