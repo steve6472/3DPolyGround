@@ -69,7 +69,7 @@ public class ItemModelLoader
 			CaveGame.getInstance().itemAtlas.finish();
 		} catch (Exception ex)
 		{
-			System.err.println(item.getName());
+			System.err.println("Error while creating texture for " + item.getName() + " (texture: " + name + ")");
 			ex.printStackTrace();
 			System.exit(1);
 		}

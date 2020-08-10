@@ -22,9 +22,9 @@ import steve6472.sge.gui.Gui;
 import steve6472.sge.gui.components.Background;
 import steve6472.sge.gui.components.Button;
 import steve6472.sge.main.MainApp;
-import steve6472.sge.main.util.RandomUtil;
 
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.Set;
 import java.util.function.Function;
 
@@ -50,10 +50,14 @@ public class MainMenu extends Gui implements IGamePause
 
 		main = StaticTexture.fromTexture("main_title.png");
 
-		long seed = RandomUtil.randomLong(Long.MIN_VALUE, Long.MAX_VALUE);
+		long seed = new Random().nextLong();
+//		long seed = 4419941787569665203L;
 		System.out.println("Seed: " + seed);
-		IBiomeGenerator worldBiomeGenerator = new VoronoiBiomeGen(seed, 32, 16, 2, new ArrayList<>(Set.of(Biomes.DESERT, Biomes.FOREST, Biomes.SAVANNA)));
+		IBiomeGenerator worldBiomeGenerator = new VoronoiBiomeGen(seed, 16, 8, 2, new ArrayList<>(Set.of(
+			Biomes.TUNDRA, Biomes.DESERT, Biomes.FOREST, Biomes.SAVANNA, Biomes.DESERT_HILLS, Biomes.MOUNTAINS, Biomes.PLAINS, Biomes.SAVANNA_PLATEAU
+		)));
 		IHeightMapGenerator worldHeightMapGenerator = new HeightMapGenerator(worldBiomeGenerator, 10, 5);
+//		IHeightMapGenerator worldHeightMapGenerator = new FlatHeightMapGen(worldBiomeGenerator, 0);
 		Function<ChunkGenDataStorage, ISurfaceGenerator> worldSurfaceGenerator = (cds) -> new SurfaceGenerator(worldHeightMapGenerator, cds);
 
 
@@ -72,7 +76,7 @@ public class MainMenu extends Gui implements IGamePause
 			CaveGame.getInstance().options.enablePostProcessing = false;
 			CaveGame.getInstance().options.generateDistance = -1;
 
-			CaveGame.getInstance().setWorld(new World(CaveGame.getInstance(), flatBiomeGenerator, flatHeightMapGenerator, flatSurfaceGenerator));
+			CaveGame.getInstance().setWorld(new World(CaveGame.getInstance(), 4, flatBiomeGenerator, flatHeightMapGenerator, flatSurfaceGenerator));
 			CaveGame.getInstance().world.addChunk(new Chunk(0, 0, CaveGame.getInstance().getWorld()));
 
 
@@ -90,7 +94,7 @@ public class MainMenu extends Gui implements IGamePause
 			CaveGame.getInstance().options.isGamePaused = false;
 			CaveGame.getInstance().options.generateDistance = -1;
 
-			CaveGame.getInstance().setWorld(new World(CaveGame.getInstance(), flatBiomeGenerator, flatHeightMapGenerator, flatSurfaceGenerator));
+			CaveGame.getInstance().setWorld(new World(CaveGame.getInstance(), 4, flatBiomeGenerator, flatHeightMapGenerator, flatSurfaceGenerator));
 			CaveGame.getInstance().world.worldName = "house";
 
 			try
@@ -115,7 +119,12 @@ public class MainMenu extends Gui implements IGamePause
 			CaveGame.getInstance().inGameGui.setVisible(true);
 			CaveGame.getInstance().options.isGamePaused = false;
 
-			CaveGame.getInstance().setWorld(new World(CaveGame.getInstance(), worldBiomeGenerator, worldHeightMapGenerator, worldSurfaceGenerator));
+//			IBiomeGenerator biomeGen = new SingleBiomeGen(seed, Biomes.FLAT);
+//			IHeightMapGenerator heightMapGen = new FlatHeightMapGen(biomeGen, 0);
+//			Function<ChunkGenDataStorage, ISurfaceGenerator> caveGen = (cds) -> new TestGen(heightMapGen, cds);
+
+			CaveGame.getInstance().setWorld(new World(CaveGame.getInstance(), 4, worldBiomeGenerator, worldHeightMapGenerator, worldSurfaceGenerator));
+//			CaveGame.getInstance().setWorld(new World(CaveGame.getInstance(), 1, biomeGen, heightMapGen, caveGen));
 
 			try
 			{
@@ -144,7 +153,7 @@ public class MainMenu extends Gui implements IGamePause
 			IHeightMapGenerator heightMapGen = new FlatHeightMapGen(biomeGen, 256);
 			Function<ChunkGenDataStorage, ISurfaceGenerator> caveGen = (cds) -> new CaveGenerator(heightMapGen, cds);
 
-			CaveGame.getInstance().setWorld(new World(CaveGame.getInstance(), biomeGen, heightMapGen, caveGen));
+			CaveGame.getInstance().setWorld(new World(CaveGame.getInstance(), 4, biomeGen, heightMapGen, caveGen));
 
 			try
 			{
@@ -169,8 +178,9 @@ public class MainMenu extends Gui implements IGamePause
 			setVisible(false);
 			CaveGame.getInstance().inGameGui.setVisible(true);
 			CaveGame.getInstance().options.isGamePaused = false;
+			CaveGame.getInstance().options.generateDistance = -1;
 
-			CaveGame.getInstance().setWorld(new World(CaveGame.getInstance(), flatBiomeGenerator, flatHeightMapGenerator, flatSurfaceGenerator));
+			CaveGame.getInstance().setWorld(new World(CaveGame.getInstance(), 0, flatBiomeGenerator, flatHeightMapGenerator, flatSurfaceGenerator));
 			try
 			{
 				CommandRegistry registry = CaveGame.getInstance().commandRegistry;

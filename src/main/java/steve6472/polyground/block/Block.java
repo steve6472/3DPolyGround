@@ -125,7 +125,7 @@ public class Block
 			StateLoader.generateStates(this, properties, new JSONObject(BlockModelLoader.read(new File("game/objects/blockstates/" + blockState + ".json"))));
 		} catch (Exception ex)
 		{
-			System.out.println("Error while loading blockstate " + blockState);
+			System.err.println("Error while loading blockstate " + blockState);
 			ex.printStackTrace();
 		}
 	}
@@ -152,7 +152,7 @@ public class Block
 		return false;
 	}
 
-	public boolean isReplaceable()
+	public boolean isReplaceable(BlockState state)
 	{
 		return this == air;
 	}

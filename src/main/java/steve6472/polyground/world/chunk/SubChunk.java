@@ -254,7 +254,7 @@ public class SubChunk implements IBiomeProvider
 
 	public void setBlock(Block block, int x, int y, int z)
 	{
-		setState(block.getStateForPlacement(getWorld(), null, null, x, y, z), x, y, z);
+		setState(block.getStateForPlacement(getWorld(), getWorld().getState(x, y, z), x, y, z), x, y, z);
 	}
 
 	public void setState(BlockState state, int x, int y, int z)

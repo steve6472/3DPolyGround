@@ -20,7 +20,8 @@ public class BasicEvents
 		if (block == null)
 			return;
 
-		place(block, face, player, face.getXOffset(), face.getYOffset(), face.getZOffset());
+		HitResult hr = CaveGame.getInstance().hitPicker.getHitResult();
+		place(block.getStateForPlacement(CaveGame.getInstance().getWorld(), player, face, hr.getX() + face.getXOffset(), hr.getY() + face.getYOffset(), hr.getZ() + face.getZOffset()), face, player);
 	}
 
 	public static void place(BlockState state, EnumFace face, Player player)
@@ -29,26 +30,6 @@ public class BasicEvents
 			return;
 
 		place(state, face, player, face.getXOffset(), face.getYOffset(), face.getZOffset());
-	}
-
-	public static void place(Block block, EnumFace face, Player player, int xOffset, int yOffset, int zOffset)
-	{
-		if (block == null)
-			return;
-
-		HitResult hr = CaveGame.getInstance().hitPicker.getHitResult();
-		World world = CaveGame.getInstance().world;
-
-		SubChunk subChunk = world.getSubChunkFromBlockCoords(hr.getX() + xOffset, hr.getY() + yOffset, hr.getZ() + zOffset);
-		if (subChunk == null)
-			return;
-
-		BlockState state = block.getStateForPlacement(world, player, face, hr.getCx(), hr.getCy(), hr.getCz());
-
-		world.setState(state, hr.getX() + xOffset, hr.getY() + yOffset, hr.getZ() + zOffset, blockState -> blockState.getBlock().isReplaceable());
-
-		block.onPlace(world, state, player, face, hr.getX() + xOffset, hr.getY() + yOffset, hr.getZ() + zOffset);
-		updateAll(subChunk, hr.getX() + xOffset, hr.getY() + yOffset, hr.getZ() + zOffset);
 	}
 
 	public static void place(BlockState state, EnumFace face, Player player, int xOffset, int yOffset, int zOffset)
@@ -63,10 +44,21 @@ public class BasicEvents
 		if (subChunk == null)
 			return;
 
-		world.setState(state, hr.getX() + xOffset, hr.getY() + yOffset, hr.getZ() + zOffset, blockState -> blockState.getBlock().isReplaceable());
+		world.setState(state, hr.getX() + xOffset, hr.getY() + yOffset, hr.getZ() + zOffset, blockState -> blockState.getBlock().isReplaceable(blockState));
 
 		state.getBlock().onPlace(world, state, player, face, hr.getX() + xOffset, hr.getY() + yOffset, hr.getZ() + zOffset);
 		updateAll(subChunk, hr.getX() + xOffset, hr.getY() + yOffset, hr.getZ() + zOffset);
+	}
+
+	public static void place(BlockState state, World world, int x, int y, int z)
+	{
+		if (state == null || world == null)
+			return;
+
+		world.setState(state, x, y, z, blockState -> blockState.getBlock().isReplaceable(blockState));
+
+		state.getBlock().onPlace(world, state, null, null, x, y, z);
+//		updateAll(world.getSubChunkFromBlockCoords(x, y, z), x, y, z);
 	}
 
 	/* Replacing Block */

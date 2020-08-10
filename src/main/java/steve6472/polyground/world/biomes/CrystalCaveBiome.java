@@ -33,7 +33,7 @@ public class CrystalCaveBiome extends Biome
 	@Override
 	public float[] getParameters()
 	{
-		return new float[2];
+		return new float[4];
 	}
 
 	@Override

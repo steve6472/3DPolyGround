@@ -1,6 +1,7 @@
 package steve6472.polyground.world.generator.feature;
 
 import org.joml.Vector2f;
+import steve6472.polyground.BasicEvents;
 import steve6472.polyground.block.Block;
 import steve6472.polyground.world.World;
 import steve6472.polyground.world.generator.EnumPlacement;
@@ -38,15 +39,15 @@ public class VegetationPatchFeature implements IFeature
 			{
 				if (world.getRandom().nextFloat() < chance)
 				{
-					if (world.getBlock(x + i, y, z + j) == blockUnder)
+					if (world.getBlock(x + i, y - 1, z + j) == blockUnder)
 					{
 						if (decayFromCenter)
 						{
 							if (world.getRandom().nextFloat() < 1d / Vector2f.distanceSquared(x, y, x + i, y + j))
-								world.setBlock(blockToPlace, x + i, y + 1, z + j);
+								BasicEvents.place(blockToPlace.getStateForPlacement(world, world.getState(x + i, y, z + j), x, y, z), world, x + i, y, z + j);
 						} else
 						{
-							world.setBlock(blockToPlace, x + i, y + 1, z + j);
+							BasicEvents.place(blockToPlace.getStateForPlacement(world, world.getState(x + i, y, z + j), x, y, z), world, x + i, y, z + j);
 						}
 					}
 				}
@@ -63,12 +64,12 @@ public class VegetationPatchFeature implements IFeature
 	@Override
 	public boolean canGenerate(World world, int x, int y, int z)
 	{
-		return world.getBlock(x, y, z) == blockUnder;
+		return world.getBlock(x, y - 1, z) == blockUnder;
 	}
 
 	@Override
 	public EnumPlacement getPlacement()
 	{
-		return EnumPlacement.IN_HEIGHT_MAP;
+		return EnumPlacement.ON_HEIGHT_MAP;
 	}
 }

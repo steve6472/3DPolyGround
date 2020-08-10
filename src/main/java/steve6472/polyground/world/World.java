@@ -45,6 +45,8 @@ import static org.lwjgl.opengl.GL30.glBindVertexArray;
  ***********************/
 public class World implements IBlockProvider
 {
+	private final int height;
+
 	public int lastWaterTickIndex = 0;
 	public int currentWaterTickIndex = 0;
 	public boolean reachedMax = false;
@@ -63,8 +65,9 @@ public class World implements IBlockProvider
 
 	private final ThreadedGenerator generator;
 
-	public World(CaveGame game, IBiomeGenerator biomeGenerator, IHeightMapGenerator heightMapGenerator, Function<ChunkGenDataStorage, ISurfaceGenerator> surfaceGenerator)
+	public World(CaveGame game, int height, IBiomeGenerator biomeGenerator, IHeightMapGenerator heightMapGenerator, Function<ChunkGenDataStorage, ISurfaceGenerator> surfaceGenerator)
 	{
+		this.height = height;
 		mat = new Matrix4f();
 		this.game = game;
 		chunks = new GridStorage<>();
@@ -388,7 +391,7 @@ public class World implements IBlockProvider
 
 	public int getHeight()
 	{
-		return 4;
+		return height;
 	}
 
 	public EntityManager getEntityManager()

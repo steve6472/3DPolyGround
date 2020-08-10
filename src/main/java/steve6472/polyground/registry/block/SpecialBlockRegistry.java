@@ -34,6 +34,8 @@ public class SpecialBlockRegistry
 	public static final SpecialBlockEntry<MicroBlock> microBlock = register("micro_block", MicroBlock::new);
 	public static final SpecialBlockEntry<WaterGeneratorBlock> waterGenerator = register("watergenerator", WaterGeneratorBlock::new);
 	public static final SpecialBlockEntry<StateTest> stateTest = register("state_test", StateTest::new);
+	public static final SpecialBlockEntry<SnowLayerBlock> snowLayer = register("snow_layer", SnowLayerBlock::new);
+	public static final SpecialBlockEntry<DoubleBlock> doubleBlock = register("double_block", DoubleBlock::new);
 
 	public static <T extends Block> SpecialBlockEntry<T> register(String id, ISpecialBlockFactory<T> factory)
 	{

@@ -18,9 +18,10 @@ public class DataBiome extends Biome
 	private final int biomeHeight, underLayerHeight, iterationCount;
 	private final Vector3f foliageColor;
 	private final float persistance, scale, low, high;
-	private final float[] parameters;
+	private float[] parameters;
+	private float altitude, temperature, weirdness, humidity;
 
-	public DataBiome(String name, BlockState topTile, BlockState underTile, BlockState caveTile, int biomeHeight, int underLayerHeight, int iterationCount, Vector3f foliageColor, float persistance, float scale, float low, float high, float... parameters)
+	public DataBiome(String name, BlockState topTile, BlockState underTile, BlockState caveTile, int biomeHeight, int underLayerHeight, int iterationCount, Vector3f foliageColor, float persistance, float scale, float low, float high)
 	{
 		super();
 		this.name = name;
@@ -35,7 +36,36 @@ public class DataBiome extends Biome
 		this.scale = scale;
 		this.low = low;
 		this.high = high;
-		this.parameters = parameters;
+	}
+
+	public DataBiome altitude(float altitude)
+	{
+		this.altitude = altitude;
+		return this;
+	}
+
+	public DataBiome temperature(float temperature)
+	{
+		this.temperature = temperature;
+		return this;
+	}
+
+	public DataBiome weirdness(float weirdness)
+	{
+		this.weirdness = weirdness;
+		return this;
+	}
+
+	public DataBiome humidity(float humidity)
+	{
+		this.humidity = humidity;
+		return this;
+	}
+
+	public DataBiome create()
+	{
+		parameters = new float[] {altitude, temperature, weirdness, humidity};
+		return this;
 	}
 
 	public DataBiome feature(EnumFeatureStage stage, double chance, IFeature feature)

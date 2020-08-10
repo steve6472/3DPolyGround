@@ -296,6 +296,40 @@ public class DataBuilder
 		return this;
 	}
 
+	public DataBuilder fullBlock(String name, String texture)
+	{
+		blockState = StateBuilder.create()
+			.singleModel(BlockModelBuilder.create(name)
+				.addCube(CubeBuilder.create()
+					.fullBlock().face(FaceBuilder.create()
+						.texture(texture))));
+		itemModel = new ItemFromBlock(name);
+		blockName = name;
+		itemName = name;
+		blockToPlace = name;
+		return this;
+	}
+
+	public DataBuilder fullBlock(String name, String textureTop, String textureSide, String textureBottom)
+	{
+		blockState = StateBuilder.create()
+			.singleModel(BlockModelBuilder.create(name)
+				.addCube(CubeBuilder.create()
+					.fullBlock()
+					.face(FaceBuilder.create()
+						.texture(textureTop), EnumFace.UP)
+					.face(FaceBuilder.create()
+						.texture(textureSide), CubeBuilder.SIDE)
+					.face(FaceBuilder.create()
+						.texture(textureBottom), EnumFace.DOWN)
+				));
+		itemModel = new ItemFromBlock(name);
+		blockName = name;
+		itemName = name;
+		blockToPlace = name;
+		return this;
+	}
+
 	public DataBuilder leaves(String name)
 	{
 		return leaves(name, true);

@@ -9,9 +9,7 @@ import steve6472.polyground.world.generator.generators.IBiomeGenerator;
 import steve6472.sge.main.game.GridStorage;
 import steve6472.sge.main.util.RandomUtil;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
@@ -51,8 +49,14 @@ public class VoronoiBiomeGen implements IBiomeGenerator
 		this.searchRadius = searchRadius;
 
 		noises = new SSimplexNoise[] {
-			new SSimplexNoise(seed >> 1),
-			new SSimplexNoise(seed >> 2)
+//			new SSimplexNoise(seed >> 1),
+//			new SSimplexNoise((seed * 8) >> 2),
+//			new SSimplexNoise((seed * 16) >> 3),
+//			new SSimplexNoise((seed * 32) >> 4)
+			new SSimplexNoise(-8376544303500664650L),
+			new SSimplexNoise(3096958501783446189L),
+			new SSimplexNoise(5852975705126687327L),
+			new SSimplexNoise(-319185951298012992L)
 		};
 
 		jitterNoise = new SSimplexNoise(seed >> 32);
@@ -125,53 +129,43 @@ public class VoronoiBiomeGen implements IBiomeGenerator
 	private Biome findBiome(int x, int z)
 	{
 		float scale = 0.0025f;
-		float[] targets = new float[noises.length];
-		for (int i = 0; i < targets.length; i++)
-			targets[i] = noises[i].noise(x * scale, z * scale);
 
-		float[] diffs = new float[biomeSet.size()];
+		float[] n = new float[this.noises.length];
+		for (int i = 0; i < n.length; i++)
+			n[i] = this.noises[i].noise(x * scale, z * scale);
+
+		float[] fitness = new float[biomeSet.size()];
 
 		for (int i = 0; i < biomeSet.size(); i++)
 		{
-			float totalDiff = 0;
-			for (int j = 0; j < targets.length; j++)
-				totalDiff += Math.abs(biomeSet.get(i).getParameters()[j] - targets[j]);
-			diffs[i] = totalDiff / (float) targets.length;
+			Biome b = biomeSet.get(i);
+			float[] p = b.getParameters();
+			// Don't ask, I aint changing it for a while, and yes, I know I don't need to match indices of noises with biome parameters
+			fitness[i] = fitness(p[1], p[3], p[0], p[2], n[1], n[3], n[0], n[2]);
 		}
 
 		int index = 0;
-		float diff = diffs[index];
+		float min = fitness[0];
 
-		List<Integer> same = null;
-
-		for (int i = 1; i < diffs.length; i++)
+		for (int i = 1; i < fitness.length; i++)
 		{
-			float v = diffs[i];
-
-			if (v == diff)
+			if (fitness[i] < min)
 			{
-				if (same == null)
-				{
-					same = new ArrayList<>();
-				}
-				if (!same.contains(i))
-					same.add(i);
-				if (!same.contains(index))
-					same.add(index);
-			} else if (v < diff)
-			{
-				same = null;
-				diff = v;
+				index = i;
+				min = fitness[i];
 			}
-			index = i;
-		}
-
-		if (same != null && !same.isEmpty())
-		{
-			return biomeSet.get(new Random(getBiomeSeed(x, z)).nextInt(same.size()));
 		}
 
 		return biomeSet.get(index);
+	}
+
+	private static float fitness(float biomeTemperature, float biomeHumidity, float biomeAltitude, float biomeWeirdness,
+	                             float noiseTemperature, float noiseHumidity, float noiseAltitude, float noiseWeirdness)
+	{
+		return (biomeTemperature - noiseTemperature) * (biomeTemperature - noiseTemperature)
+			+ (biomeHumidity - noiseHumidity) * (biomeHumidity - noiseHumidity)
+			+ (biomeAltitude - noiseAltitude) * (biomeAltitude - noiseAltitude)
+			+ (biomeWeirdness - noiseWeirdness) * (biomeWeirdness - noiseWeirdness);
 	}
 
 	private long getBiomeSeed(int gx, int gz)

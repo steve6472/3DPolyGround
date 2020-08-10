@@ -2,7 +2,9 @@ package steve6472.polyground.generator;
 
 import steve6472.polyground.EnumFace;
 import steve6472.polyground.block.properties.enums.EnumAxis;
+import steve6472.polyground.block.properties.enums.EnumHalf;
 import steve6472.polyground.block.properties.enums.EnumSlabType;
+import steve6472.polyground.block.special.DoubleBlock;
 import steve6472.polyground.block.special.SlabBlock;
 import steve6472.polyground.block.special.StalaBlock;
 import steve6472.polyground.block.states.States;
@@ -103,6 +105,11 @@ public class DataGenerator
 		DataBuilder.create().fullBlock("andesite").generate();
 		DataBuilder.create().fullBlock("diorite").generate();
 		DataBuilder.create().fullBlock("granite").generate();
+
+		DataBuilder.create().fullBlock("snow_block", "snow").generate();
+
+		DataBuilder.create().fullBlock("sandstone", "sandstone_top", "sandstone", "sandstone_bottom").generate();
+
 //		DataBuilder.create().fullBlock("cond_test").blockState(StateBuilder.create().singleModel(new CondTest())).blockModel().generate();
 
 		DataBuilder.create().stairs("stone_stairs", "stone").generate();
@@ -137,6 +144,103 @@ public class DataGenerator
 		stala("granite_stala", "granite", "granite").generate();
 		stala("andesite_stala", "andesite", "andesite").generate();
 		stala("diorite_stala", "diorite", "diorite").generate();
+
+		DataBuilder.create()
+			.blockName("tall_grass")
+			.itemName("tall_grass")
+			.blockToPlace("tall_grass")
+			.itemModel(new ItemFromTexture("tall_grass_top"))
+			.blockSpecial(new SimpleSpecial("double_block"))
+			.blockState(StateBuilder.create()
+				.addState(PropertyBuilder.create().addProperty(DoubleBlock.HALF, EnumHalf.BOTTOM), BlockModelBuilder.create("tall_grass_bottom")
+					.addCube(CubeBuilder.create()
+						.fullBlock()
+						.collisionBox(false)
+					).addCube(CubeBuilder.create()
+						.collisionBox(false)
+						.hitbox(false)
+						.min(8, 0, 0)
+						.max(8, 16, 16)
+						.face(FaceBuilder.create().texture("tall_grass_bottom").biomeTint(true), EnumFace.SOUTH, EnumFace.NORTH)
+					).addCube(CubeBuilder.create()
+						.collisionBox(false)
+						.hitbox(false)
+						.min(0, 0, 8)
+						.max(16, 16, 8)
+						.face(FaceBuilder.create().texture("tall_grass_bottom").biomeTint(true), EnumFace.EAST, EnumFace.WEST)
+					)
+				).addState(PropertyBuilder.create().addProperty(DoubleBlock.HALF, EnumHalf.TOP), BlockModelBuilder.create("tall_grass_top")
+					.addCube(CubeBuilder.create()
+						.fullBlock()
+						.collisionBox(false)
+					).addCube(CubeBuilder.create()
+						.collisionBox(false)
+						.hitbox(false)
+						.min(8, 0, 0)
+						.max(8, 16, 16)
+						.face(FaceBuilder.create().texture("tall_grass_top").biomeTint(true), EnumFace.SOUTH, EnumFace.NORTH)
+					).addCube(CubeBuilder.create()
+						.collisionBox(false)
+						.hitbox(false)
+						.min(0, 0, 8)
+						.max(16, 16, 8)
+						.face(FaceBuilder.create().texture("tall_grass_top").biomeTint(true), EnumFace.EAST, EnumFace.WEST)
+					)
+				)
+			).generate();
+
+		DataBuilder.create()
+			.blockName("cactus")
+			.itemName("cactus")
+			.blockToPlace("cactus")
+			.itemModel(new ItemFromBlock("cactus"))
+			.blockSpecial(new SimpleSpecial("custom"))
+			.blockState(StateBuilder.create().singleModel(BlockModelBuilder.create("cactus")
+				.addCube(CubeBuilder.create()
+					.min(1, 0, 1)
+					.max(15, 16, 15)
+					.face(FaceBuilder.create()
+						.texture("cactus_top")
+						.autoUv(true), EnumFace.UP)
+					.face(FaceBuilder.create()
+						.texture("cactus_bottom")
+						.autoUv(true), EnumFace.DOWN)
+				).addCube(CubeBuilder.create()
+					.collisionBox(false)
+					.hitbox(false)
+					.min(0, 0, 1)
+					.max(16, 16, 15)
+					.face(FaceBuilder.create()
+						.texture("cactus_side")
+						.autoUv(true), EnumFace.EAST, EnumFace.WEST)
+				).addCube(CubeBuilder.create()
+					.collisionBox(false)
+					.hitbox(false)
+					.min(1, 0, 0)
+					.max(15, 16, 16)
+					.face(FaceBuilder.create()
+						.texture("cactus_side")
+						.autoUv(true), EnumFace.NORTH, EnumFace.SOUTH)
+				)
+			))
+			.generate();
+
+		DataBuilder.create()
+			.blockName("snow_layer")
+			.itemName("snow_layer")
+			.blockToPlace("snow_layer")
+			.itemModel(new ItemFromBlock("snow_layer"))
+			.blockSpecial(new SimpleSpecial("snow_layer"))
+			.blockState(StateBuilder.create()
+				.addState(snowState(1), snowLayer(1, "snow"))
+				.addState(snowState(2), snowLayer(2, "snow"))
+				.addState(snowState(3), snowLayer(3, "snow"))
+				.addState(snowState(4), snowLayer(4, "snow"))
+				.addState(snowState(5), snowLayer(5, "snow"))
+				.addState(snowState(6), snowLayer(6, "snow"))
+				.addState(snowState(7), snowLayer(7, "snow"))
+				.addState(snowState(8), snowLayer(8, "snow"))
+			).generate();
 
 		DataBuilder.create().fullBlock("grass")
 			.blockState(StateBuilder.create().singleModel(
@@ -527,6 +631,24 @@ public class DataGenerator
 					.texture(texture)
 					.autoUv(true))
 		);
+	}
+
+	private static PropertyBuilder snowState(int height)
+	{
+		return PropertyBuilder.create().addProperty(States.SNOW_LAYERS, height);
+	}
+
+	private static BlockModelBuilder snowLayer(int height, String texture)
+	{
+		return BlockModelBuilder.create("snow_layer_" + height)
+			.modelPath("snow_layer")
+			.addCube(CubeBuilder.create()
+				.min(0, 0, 0)
+				.max(16, height * 2, 16)
+				.face(FaceBuilder.create()
+					.texture(texture)
+					.autoUv(true))
+			);
 	}
 
 }
