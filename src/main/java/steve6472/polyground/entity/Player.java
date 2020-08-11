@@ -37,7 +37,6 @@ public class Player implements IMotion3f, IPosition3f
 	public boolean canFly = true;
 	public boolean isFlying;
 	public boolean isOnGround;
-	public boolean isOnBlock;
 	public boolean noClip = false;
 	public boolean isSprinting = false;
 
@@ -68,6 +67,7 @@ public class Player implements IMotion3f, IPosition3f
 	}
 
 	private byte flyTimer = 0;
+	private float speed;
 
 	public void tick()
 	{
@@ -75,17 +75,8 @@ public class Player implements IMotion3f, IPosition3f
 
 		if (flyTimer > 0)
 			flyTimer--;
-
-//		head();
-
-		if (isFlying)
-			isOnGround = false;
-		else
-			isOnGround = getPosition().y <= 0 || isOnBlock;
-		float speed = isOnGround ? 0.02F : 0.005F;
 		if (isFlying)
 			speed = flySpeed;
-		isOnBlock = false;
 
 		float xa = 0, za = 0;
 
@@ -98,7 +89,10 @@ public class Player implements IMotion3f, IPosition3f
 		if (game.isKeyPressed(KeyList.D))
 			za += 1;
 		if (game.isKeyPressed(KeyList.SPACE) && isOnGround && !isFlying)
-			getMotion().y = 0.155f;
+		{
+			isOnGround = false;
+			getMotion().y = 0.132f;
+		}
 		if (game.isKeyPressed(KeyList.SPACE) && isFlying)
 			getMotion().y = flySpeed * 6f;
 		if (game.isKeyPressed(KeyList.L_CONTROL) && isFlying)
@@ -109,7 +103,7 @@ public class Player implements IMotion3f, IPosition3f
 		move(xa, za, speed);
 
 		/* Apply gravity */
-		if (!isOnGround && !isFlying)
+		if (!isFlying)
 			getMotion().y -= 0.005f;
 
 		getPosition().add(getMotion());
@@ -119,8 +113,18 @@ public class Player implements IMotion3f, IPosition3f
 
 		if (!noClip)
 		{
-			isOnBlock = hitbox.collideWithWorld(game.getWorld());
+			boolean stepup;
+			hitbox.expand(getMotionX(), getMotionY(), getMotionZ());
+			stepup = hitbox.stepUp(game.getWorld());
+			hitbox.expand(getMotionX(), getMotionY(), getMotionZ());
+			isOnGround = hitbox.collideWithWorld(game.getWorld()) || stepup;
 		}
+
+		if (getY() <= 0)
+			isOnGround = true;
+		if (isFlying)
+			isOnGround = false;
+		speed = isOnGround ? 0.02F : 0.005F;
 
 		getMotion().x *= 0.91f;
 		if (isFlying)
@@ -128,6 +132,13 @@ public class Player implements IMotion3f, IPosition3f
 		else
 			getMotion().y *= 0.98f;
 		getMotion().z *= 0.91f;
+
+		if (Math.abs(getMotion().x) <= 0x1.10210e863e3ccp-30)
+			getMotion().x = 0;
+		if (Math.abs(getMotion().z) <= 0.00000000099)
+			getMotion().z = 0;
+		if (Math.abs(getMotion().y) <= 9.9E-10)
+			getMotion().y = 0;
 
 		if (isOnGround)
 		{

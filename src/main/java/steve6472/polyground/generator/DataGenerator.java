@@ -110,6 +110,7 @@ public class DataGenerator
 		// Items
 		DataBuilder.create().itemModel(new ItemFromTexture("block_inspector")).itemName("block_inspector").itemSpecial(new SimpleSpecial("block_inspector")).generate();
 		DataBuilder.create().itemModel(new ItemFromTexture("rift_placer")).itemName("rift_placer").itemSpecial(new SimpleSpecial("riftplacer")).generate();
+		DataBuilder.create().itemModel(new ItemFromTexture("speedometer")).itemName("speedometer").itemSpecial(new SimpleSpecial("speedometer")).generate();
 
 		// Blocks
 		DataBuilder.create().fullBlock("null").noItem().generate();

@@ -130,7 +130,8 @@ public class InGameGui extends Gui implements IGamePause
 				activeLightCount++;
 		}
 
-		sb.append("Lights: ").append(activeLightCount);
+		sb.append("Lights: ").append(activeLightCount).append("\n");
+		sb.append("OnGround: ").append(CaveGame.getInstance().getPlayer().isOnGround);
 
 		Font.render(5, 45, sb.toString());
 

@@ -3,6 +3,7 @@ package steve6472.polyground.entity;
 import org.joml.AABBf;
 import org.joml.Intersectionf;
 import steve6472.polyground.AABBUtil;
+import steve6472.polyground.CaveGame;
 import steve6472.polyground.block.Block;
 import steve6472.polyground.block.model.Cube;
 import steve6472.polyground.block.states.BlockState;
@@ -73,14 +74,17 @@ public class EntityHitbox
 		expandedHitbox.maxZ = z > 0.0f ? hitbox.maxZ + z : hitbox.maxZ;
 	}
 
+	public boolean stepUp(World world)
+	{
+		return testStepUp(world, floor(expandedHitbox.minX) - floor(position.getX()) - 1, floor(expandedHitbox.minY) - floor(position.getY()) - 1, floor(expandedHitbox.minZ) - floor(position.getZ()) - 1, ceil(expandedHitbox.maxX) - floor(position.getX()) + 1, ceil(expandedHitbox.maxY) - floor(position.getY()) + 1, ceil(expandedHitbox.maxZ) - floor(position.getZ()) + 1);
+	}
+
 	/**
 	 * @param world World entity is in
 	 * @return isOnGround
 	 */
 	public boolean collideWithWorld(World world)
 	{
-		expand(motion.getMotionX(), motion.getMotionY(), motion.getMotionZ());
-
 		return test(world, floor(expandedHitbox.minX) - floor(position.getX()) - 1, floor(expandedHitbox.minY) - floor(position.getY()) - 1, floor(expandedHitbox.minZ) - floor(position.getZ()) - 1, ceil(expandedHitbox.maxX) - floor(position.getX()) + 1, ceil(expandedHitbox.maxY) - floor(position.getY()) + 1, ceil(expandedHitbox.maxZ) - floor(position.getZ()) + 1);
 	}
 
@@ -92,6 +96,64 @@ public class EntityHitbox
 	private static int ceil(float n)
 	{
 		return (int) Math.ceil(n);
+	}
+
+	private boolean testStepUp(World world, int sx, int sy, int sz, int ex, int ey, int ez)
+	{
+		if (!CaveGame.getInstance().getPlayer().isOnGround)
+			return false;
+
+		int ix = (int) Math.floor(position.getX());
+		int iy = (int) Math.floor(position.getY() + 0.005f) + 1;
+		int iz = (int) Math.floor(position.getZ());
+
+		float stepUp = 0;
+		boolean canStep = true;
+
+		for (int i = sx; i < ex; i++)
+		{
+			for (int j = sy; j < ey; j++)
+			{
+				for (int k = sz; k < ez; k++)
+				{
+					int x = ix + i, y = iy + j, z = iz + k;
+
+					BlockState state;
+					if ((state = world.getState(x, y, z)) != Block.air.getDefaultState())
+					{
+						for (Cube t : state.getBlockModel().getCubes())
+						{
+							if (!t.isCollisionBox())
+								continue;
+
+							if (Intersectionf.testAabAab(x + t.getAabb().minX, y + t.getAabb().minY, z + t.getAabb().minZ, x + t.getAabb().maxX, y + t.getAabb().maxY, z + t.getAabb().maxZ,
+								expandedHitbox.minX, expandedHitbox.minY, expandedHitbox.minZ, expandedHitbox.maxX, expandedHitbox.maxY, expandedHitbox.maxZ))
+							{
+								float f = Math.abs(hitbox.minY - (y + t.getAabb().maxY));
+								if (f > 0f && f <= 0.6f)
+								{
+									stepUp = f;
+								} else
+								{
+									canStep = false;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+
+		if (stepUp <= 0.0f)
+			return false;
+
+		if (!canStep)
+			return false;
+
+		moveHitbox(0, stepUp, 0);
+
+		position.setY(getHitbox().minY);
+		return true;
 	}
 
 	private boolean test(World world, int sx, int sy, int sz, int ex, int ey, int ez)
@@ -140,9 +202,7 @@ public class EntityHitbox
 			}
 		}
 
-		moveHitbox(0.0f, ya, 0.0f);
-		moveHitbox(xa, 0.0F, 0.0F);
-		moveHitbox(0.0F, 0.0F, za);
+		moveHitbox(xa, ya, za);
 
 		if (xaOrg != xa)
 		{
