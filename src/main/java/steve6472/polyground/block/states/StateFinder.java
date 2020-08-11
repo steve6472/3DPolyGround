@@ -4,6 +4,9 @@ import steve6472.polyground.block.properties.IProperty;
 
 import java.util.List;
 
+/**
+ * Sort/Order dependant State Finder
+ */
 public class StateFinder
 {
 	private int lastIndex = 0;

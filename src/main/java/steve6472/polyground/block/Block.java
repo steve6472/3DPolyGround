@@ -208,6 +208,7 @@ public class Block
 	}
 
 	/**
+	 * Runs every tick if {@code isTickable()} is true
 	 *
 	 * @param state State of this block
 	 * @param world world
@@ -263,6 +264,8 @@ public class Block
 
 	/**
 	 *
+	 * Called when neighbouring blocks change
+	 *
 	 * @param state State of this block
 	 * @param world world
 	 * @param updateFrom which direction was the block updated
@@ -271,6 +274,20 @@ public class Block
 	 * @param z z position
 	 */
 	public void update(BlockState state, World world, EnumFace updateFrom, int x, int y, int z)
+	{
+
+	}
+
+	/**
+	 *
+	 * @param state State of scheduled this block
+	 * @param world world
+	 * @param updateFrom which direction was the block updated
+	 * @param x x position
+	 * @param y y position
+	 * @param z z position
+	 */
+	public void scheduledUpdate(BlockState state, World world, EnumFace updateFrom, int x, int y, int z)
 	{
 
 	}

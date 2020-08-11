@@ -41,13 +41,19 @@ public class LeavesBlock extends Block
 	@Override
 	public void update(BlockState state, World world, EnumFace updateFrom, int x, int y, int z)
 	{
-		int distance;
-		BlockState newState = state.with(PERSISTENT, state.get(PERSISTENT)).with(DISTANCE, distance = updateDistance(state, world, x, y, z).get(DISTANCE)).get();
+		BlockState facingState = world.getState(x + updateFrom.getXOffset(), y + updateFrom.getYOffset(), z + updateFrom.getZOffset());
+		int distance = Math.min(getDistance(facingState) + 1, 7);
 
-		if (state.get(DISTANCE) != distance)
+		if (facingState.hasTag(Tags.LOG) || state.get(DISTANCE) != distance)
 		{
-			world.setState(newState, x, y, z);
+			world.scheduleUpdate(state, x, y, z, 3);
 		}
+	}
+
+	@Override
+	public void scheduledUpdate(BlockState state, World world, EnumFace updateFrom, int x, int y, int z)
+	{
+		world.setState(updateDistance(state, world, x, y, z), x, y, z);
 	}
 
 	private BlockState updateDistance(BlockState state, World world, int x, int y, int z)
@@ -56,20 +62,20 @@ public class LeavesBlock extends Block
 
 		for (EnumFace f : EnumFace.getFaces())
 		{
-			m = Math.min(m, getDistance(world.getState(x + f.getXOffset(), y + f.getYOffset(), z + f.getZOffset())));
+			m = Math.min(m, getDistance(world.getState(x + f.getXOffset(), y + f.getYOffset(), z + f.getZOffset())) + 1);
 			if (m == 1)
 				break;
 		}
 
-		return state.with(PERSISTENT, false).with(DISTANCE, m).get();
+		return state.with(PERSISTENT, state.get(PERSISTENT)).with(DISTANCE, m).get();
 	}
 
 	private static int getDistance(BlockState state)
 	{
 		if (state.hasTag(Tags.LOG))
-			return 1;
+			return 0;
 		else
-			return state.getBlock() instanceof LeavesBlock ? state.get(DISTANCE) + 1 : 8;
+			return state.getBlock() instanceof LeavesBlock ? state.get(DISTANCE): 7;
 	}
 
 	@Override

@@ -4,6 +4,7 @@ import org.joml.AABBf;
 import org.joml.Matrix4f;
 import steve6472.polyground.CaveGame;
 import steve6472.polyground.block.BlockTextureHolder;
+import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.entity.EntityManager;
 import steve6472.polyground.gfx.MainRender;
 import steve6472.polyground.gfx.ThreadedModelBuilder;
@@ -16,6 +17,7 @@ import steve6472.polyground.world.biomes.Biome;
 import steve6472.polyground.world.chunk.Chunk;
 import steve6472.polyground.world.chunk.ModelLayer;
 import steve6472.polyground.world.chunk.SubChunk;
+import steve6472.polyground.world.chunk.TickScheduler;
 import steve6472.polyground.world.generator.ChunkGenDataStorage;
 import steve6472.polyground.world.generator.EnumChunkStage;
 import steve6472.polyground.world.generator.ThreadedGenerator;
@@ -54,6 +56,7 @@ public class World implements IBlockProvider
 	public final TeleporterManager teleporters;
 
 	private final GridStorage<Chunk> chunks;
+	private final TickScheduler tickScheduler;
 	private final EntityManager entityManager;
 	private final RiftManager rifts;
 	private final CaveGame game;
@@ -71,6 +74,7 @@ public class World implements IBlockProvider
 		mat = new Matrix4f();
 		this.game = game;
 		chunks = new GridStorage<>();
+		tickScheduler = new TickScheduler(this);
 
 		random = new Random(4);
 		entityManager = new EntityManager(this);
@@ -86,8 +90,6 @@ public class World implements IBlockProvider
 		//			addChunk(new Chunk(0, 0, this).generate(), false);
 	}
 
-	//	private byte delay = 0;
-
 	public void tick(ThreadedModelBuilder builder)
 	{
 		if (game.options.generateDistance > -1)
@@ -98,6 +100,8 @@ public class World implements IBlockProvider
 		reachedMax = false;
 		currentWaterTickIndex = 0;
 		InGameGui.waterActive = 0;
+		tickScheduler.tick();
+
 		for (Chunk chunk : chunks.getMap().values())
 		{
 			chunk.tick();
@@ -109,13 +113,16 @@ public class World implements IBlockProvider
 		renderChunkOutlines();
 
 		entityManager.tick();
+	}
 
-		//		delay++;
-		//		if (delay >= 30)
-		//		{
-		//			generateChunks();
-		//			delay = 0;
-		//		}
+	public void scheduleUpdate(BlockState state, int x, int y, int z, int tickIn)
+	{
+		tickScheduler.scheduleTick(state, x, y, z, tickIn);
+	}
+
+	public void scheduleUpdate(int x, int y, int z, int tickIn)
+	{
+		tickScheduler.scheduleTick(getState(x, y, z), x, y, z, tickIn);
 	}
 
 	private void generateInRadius(int generateDistance)

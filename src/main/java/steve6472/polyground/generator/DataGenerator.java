@@ -41,7 +41,7 @@ public class DataGenerator
 	public static void main(String[] args)
 	{
 		new DataGenerator().generate();
-//		new DataGenerator().generateDebug();
+		new DataGenerator().generateDebug();
 	}
 
 	private void createFolders()
