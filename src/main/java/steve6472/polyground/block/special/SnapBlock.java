@@ -13,6 +13,7 @@ import steve6472.polyground.gfx.particle.particles.BreakParticle;
 import steve6472.polyground.registry.face.FaceRegistry;
 import steve6472.polyground.world.ModelBuilder;
 import steve6472.polyground.world.World;
+import steve6472.polyground.world.chunk.SubChunk;
 import steve6472.sge.main.util.RandomUtil;
 
 import java.io.File;
@@ -31,7 +32,7 @@ public class SnapBlock extends Block
 	}
 
 	@Override
-	public void onBreak(World world, BlockState state, Player player, EnumFace breakedFrom, int x, int y, int z)
+	public void onPlayerBreak(BlockState state, World world, Player player, EnumFace breakedFrom, int x, int y, int z)
 	{
 		activate(state, world, x, y, z);
 	}
@@ -39,6 +40,11 @@ public class SnapBlock extends Block
 	public static void activate(BlockState state, World world, int x, int y, int z)
 	{
 		if (state == Block.air.getDefaultState())
+			return;
+
+		// Don't create particles if SubChunk has chance of being on another thread
+		SubChunk sc = world.getSubChunkFromBlockCoords(x, y, z);
+		if (sc.isRebuilding())
 			return;
 
 		float size = BlockTextureHolder.getAtlas().getTileCount();

@@ -22,6 +22,7 @@ public class StateBuilder
 {
 	private BlockModelBuilder singleModel;
 	List<Pair<PropertyBuilder, BlockModelBuilder>> models;
+	private JSONArray tags;
 
 	public static StateBuilder create()
 	{
@@ -33,9 +34,15 @@ public class StateBuilder
 		models = new ArrayList<>();
 	}
 
+	public List<Pair<PropertyBuilder, BlockModelBuilder>> getModels()
+	{
+		return models;
+	}
+
 	public StateBuilder singleModel(BlockModelBuilder model)
 	{
 		singleModel = model;
+		tags = new JSONArray();
 		return this;
 	}
 
@@ -46,6 +53,23 @@ public class StateBuilder
 		return this;
 	}
 
+	public StateBuilder tag(String tag)
+	{
+		if (this.tags == null)
+			throw new NullPointerException("Tags are null. Tags can be added in StateBuilder only if there is only single model! and 'singleModel' was called first");
+		this.tags.put(tag);
+		return this;
+	}
+
+	public StateBuilder tags(String... tags)
+	{
+		if (this.tags == null)
+			throw new NullPointerException("Tags are null. Tags can be added in StateBuilder only if there is only single model! and 'singleModel' was called first");
+		for (String t : tags)
+			this.tags.put(t);
+		return this;
+	}
+
 	public void generate(String blockName)
 	{
 		JSONObject main = new JSONObject();
@@ -53,7 +77,10 @@ public class StateBuilder
 		{
 			main.put("model", "block/" + singleModel.getModelPath() + singleModel.getModelName());
 			// Save block state
-			save(new File(DataGenerator.BLOCK_STATES, blockName + ".json"), main.toString(4));
+			if (this.tags.isEmpty())
+				save(new File(DataGenerator.BLOCK_STATES, blockName + ".json"), main.toString(4));
+			else
+				save(new File(DataGenerator.BLOCK_STATES, blockName + ".json"), main.put("tags", this.tags).toString(4));
 
 			// Save block model
 			createModelFile(singleModel.getModelPath());
@@ -69,6 +96,13 @@ public class StateBuilder
 				model.put("state", s.getA().build());
 				if (s.getA().getRotation() != 0)
 					model.put("rotation", s.getA().getRotation());
+				if (!s.getA().getTags().isEmpty())
+				{
+					JSONArray tags = new JSONArray();
+					for (String tag : s.getA().getTags())
+						tags.put(tag);
+					model.put("tags", tags);
+				}
 				model.put("model", "block/" + s.getB().getModelPath() + s.getB().getModelName());
 				modelArray.put(model);
 

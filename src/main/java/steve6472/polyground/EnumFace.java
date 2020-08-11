@@ -43,6 +43,7 @@ public enum EnumFace
 	 */
 	NONE;
 
+	private static final EnumFace[] VALUES = new EnumFace[] {UP, DOWN, NORTH, EAST, SOUTH, WEST, NONE};
 	private static final EnumFace[] FACES = new EnumFace[] {UP, DOWN, NORTH, EAST, SOUTH, WEST};
 	private static final EnumFace[] FACES_REVERSED = new EnumFace[] {WEST, SOUTH, EAST, NORTH, DOWN, UP};
 
@@ -54,6 +55,11 @@ public enum EnumFace
 	public String getFancyName()
 	{
 		return this.name().charAt(0) + this.name().toLowerCase().substring(1);
+	}
+
+	public static EnumFace[] getValues()
+	{
+		return VALUES;
 	}
 
 	public static EnumFace[] getFaces()

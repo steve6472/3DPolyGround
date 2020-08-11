@@ -130,21 +130,11 @@ public class Block
 		}
 	}
 
-	public BlockState getStateForPlacement(World world, Player player, EnumFace placedOn, int x, int y, int z)
-	{
-		return getDefaultState();
-	}
-
-	public BlockState getStateForPlacement(World world, BlockState state, int x, int y, int z)
-	{
-		return getDefaultState();
-	}
-
 	/* Other Something */
 
-	public boolean rebuildChunkOnPlace()
+	public void postLoad()
 	{
-		return true;
+
 	}
 
 	public boolean isTickable()
@@ -202,29 +192,107 @@ public class Block
 		return "Block{" + "isFull=" + isFull + ", id=" + -1 + ", name='" + name + '\'' + '}';
 	}
 
-	public void tick(World world, BlockState state, int x, int y, int z)
+	/**
+	 *
+	 * @param world world
+	 * @param player player who placed the block
+	 * @param placedOn side the block was placed on
+	 * @param x x position
+	 * @param y y position
+	 * @param z z position
+	 * @return blockstate that will be placed if possible
+	 */
+	public BlockState getStateForPlacement(World world, Player player, EnumFace placedOn, int x, int y, int z)
+	{
+		return getDefaultState();
+	}
+
+	/**
+	 *
+	 * @param state State of this block
+	 * @param world world
+	 * @param x x position
+	 * @param y y position
+	 * @param z z position
+	 */
+	public void tick(BlockState state, World world, int x, int y, int z)
 	{
 	}
 
-	public void postLoad()
+	/**
+	 *
+	 * @param state State of this block
+	 * @param world world
+	 * @param x x position
+	 * @param y y position
+	 * @param z z position
+	 * @return true if block can be placed or sustain itself
+	 */
+	public boolean isValidPosition(BlockState state, World world, int x, int y, int z)
 	{
+		BlockState s = world.getState(x, y, z);
+		return s.getBlock().isReplaceable(s) || state == s;
 	}
 
-	/* Events */
-
-	public void onPlace(World world, BlockState state, Player player, EnumFace placedOn, int x, int y, int z)
+	/**
+	 *
+	 * @param state State of this block
+	 * @param world world
+	 * @param oldState State the block is replacing
+	 * @param x x position
+	 * @param y y position
+	 * @param z z position
+	 */
+	public void onBlockAdded(BlockState state, World world, BlockState oldState, int x, int y, int z)
 	{
+
 	}
 
-	public void onBreak(World world, BlockState state, Player player, EnumFace breakedFrom, int x, int y, int z)
+	/**
+	 *
+	 * @param state State of this block
+	 * @param world world
+	 * @param x x position
+	 * @param y y position
+	 * @param z z position
+	 */
+//	public void updateAfterPlacement(BlockState state, World world, int x, int y, int z)
+//	{
+//
+//	}
+
+	/**
+	 *
+	 * @param state State of this block
+	 * @param world world
+	 * @param updateFrom which direction was the block updated
+	 * @param x x position
+	 * @param y y position
+	 * @param z z position
+	 */
+	public void update(BlockState state, World world, EnumFace updateFrom, int x, int y, int z)
+	{
+
+	}
+
+	/**
+	 * @param state State of this block
+	 * @param world world
+	 * @param player player who broke the block
+	 * @param breakedFrom face the block was broken from
+	 * @param x x position
+	 * @param y y position
+	 * @param z z position
+	 */
+	public void onPlayerBreak(BlockState state, World world, Player player, EnumFace breakedFrom, int x, int y, int z)
 	{
 		SnapBlock.activate(state, world, x, y, z);
 	}
 
 	/**
 	 * Runs on block in the world
+	 * @param state State of this block
 	 * @param world  World
-	 * @param state Data of block
 	 * @param player    Player
 	 * @param clickedOn Side the player has clicked on
 	 * @param click     event
@@ -232,11 +300,7 @@ public class Block
 	 * @param y         y position of block
 	 * @param z         z position of block
 	 */
-	public void onClick(World world, BlockState state, Player player, EnumFace clickedOn, MouseEvent click, int x, int y, int z)
-	{
-	}
-
-	public void onUpdate(World world, BlockState state, EnumFace updateFrom, int x, int y, int z)
+	public void onClick(BlockState state, World world, Player player, EnumFace clickedOn, MouseEvent click, int x, int y, int z)
 	{
 	}
 }

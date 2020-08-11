@@ -27,7 +27,7 @@ public class SnapButtonBlock extends Block
 	}
 
 	@Override
-	public void onClick(World world, BlockState state, Player player, EnumFace clickedOn, MouseEvent click, int x, int y, int z)
+	public void onClick(BlockState state, World world, Player player, EnumFace clickedOn, MouseEvent click, int x, int y, int z)
 	{
 		if (click.getAction() != KeyList.PRESS)
 			return;

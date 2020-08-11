@@ -1,7 +1,7 @@
 package steve6472.polyground.world.chunk;
 
 import steve6472.polyground.block.states.BlockState;
-import steve6472.polyground.registry.BlockRegistry;
+import steve6472.polyground.registry.Blocks;
 import steve6472.polyground.world.generator.EnumChunkStage;
 import steve6472.sge.main.smartsave.SmartSave;
 import steve6472.sge.main.util.Pair;
@@ -161,15 +161,15 @@ public class ChunkSerializer
 						{
 							String[] s = pallete.get(blocks[i][j][k]).split("\\[");
 //							subChunk.setBlock(BlockRegistry.getBlockByName(pallete.get(blocks[i][j][k])), i, j, k);
-							subChunk.setState(BlockRegistry.getStateByName(s[0], "[" + s[1]), i, j, k);
+							subChunk.setState(Blocks.getStateByName(s[0], "[" + s[1]), i, j, k);
 						} else
 						{
-							subChunk.setState(BlockRegistry.getBlockByName(block).getDefaultState(), i, j, k);
+							subChunk.setState(Blocks.getBlockByName(block).getDefaultState(), i, j, k);
 						}
 					} catch (Exception ex)
 					{
 						System.err.println("Could not find " + pallete.get(blocks[i][j][k]) + "! Replacing will error");
-						subChunk.setBlock(BlockRegistry.getBlockByName("error"), i, j, k);
+						subChunk.setBlock(Blocks.getBlockByName("error"), i, j, k);
 					}
 				}
 			}

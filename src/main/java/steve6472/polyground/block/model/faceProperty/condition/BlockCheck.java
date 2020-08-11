@@ -1,7 +1,7 @@
 package steve6472.polyground.block.model.faceProperty.condition;
 
 import steve6472.polyground.block.Block;
-import steve6472.polyground.registry.BlockRegistry;
+import steve6472.polyground.registry.Blocks;
 import steve6472.polyground.world.World;
 
 class BlockCheck implements ICheck
@@ -56,7 +56,7 @@ class BlockCheck implements ICheck
 		if (block.startsWith("#"))
 			blockId = Block.error;
 		else
-			blockId = BlockRegistry.getBlockByName(block);
+			blockId = Blocks.getBlockByName(block);
 	}
 
 	public boolean test(int x, int y, int z, World world)

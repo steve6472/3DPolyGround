@@ -10,7 +10,6 @@ import steve6472.polyground.entity.interfaces.IKillable;
 import steve6472.polyground.entity.interfaces.ITickable;
 import steve6472.polyground.entity.interfaces.IWorldContainer;
 import steve6472.polyground.world.World;
-import steve6472.polyground.world.chunk.SubChunk;
 import steve6472.sge.main.game.mixable.IMotion3f;
 import steve6472.sge.main.game.mixable.IPosition3f;
 
@@ -47,9 +46,9 @@ public class Bullet implements ITickable, IKillable, ICollideable, IPosition3f, 
 	}
 
 	@Override
-	public void collide(SubChunk subChunk, int x, int y, int z)
+	public void collide(World world, int x, int y, int z)
 	{
-		subChunk.setBlock(Block.air, x, y, z);
+		world.setBlock(Block.air, x, y, z);
 		//TODO: spawn particles
 		die();
 	}

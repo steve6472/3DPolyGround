@@ -6,7 +6,6 @@ import steve6472.polyground.entity.interfaces.IKillable;
 import steve6472.polyground.entity.interfaces.ITickable;
 import steve6472.polyground.entity.interfaces.IWorldContainer;
 import steve6472.polyground.world.World;
-import steve6472.polyground.world.chunk.Chunk;
 import steve6472.sge.main.game.mixable.IPosition3f;
 
 import java.util.ArrayList;
@@ -58,19 +57,10 @@ public class EntityManager
 				int y = (int) Math.floor(p.getY());
 				int z = (int) Math.floor(p.getZ());
 
+				Block block = world.getBlock(x, y, z);
 
-				Chunk chunk = world.getChunkFromBlockPos(x, z);
-				if (chunk != null)
-				{
-					int cx, cz;
-					Block block = chunk.getState(cx = Math.floorMod(x, 16), y, cz = Math.floorMod(z, 16)).getBlock();
-
-					if (block != Block.air)
-					{
-						int cy = Math.floorMod(y, 16);
-						c.collide(chunk.getSubChunk(cy), cx, cy, cz);
-					}
-				}
+				if (block != Block.air)
+					c.collide(world, x, y, z);
 			}
 
 

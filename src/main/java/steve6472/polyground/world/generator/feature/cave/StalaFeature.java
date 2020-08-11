@@ -3,7 +3,7 @@ package steve6472.polyground.world.generator.feature.cave;
 import steve6472.polyground.block.Block;
 import steve6472.polyground.block.special.StalaBlock;
 import steve6472.polyground.block.states.BlockState;
-import steve6472.polyground.registry.BlockRegistry;
+import steve6472.polyground.registry.Blocks;
 import steve6472.polyground.world.World;
 import steve6472.polyground.world.generator.EnumPlacement;
 import steve6472.polyground.world.generator.IFeature;
@@ -96,7 +96,7 @@ public class StalaFeature implements IFeature
 		stalas = new BlockState[7];
 		for (int i = 1; i <= 7; i++)
 		{
-			stalas[i - 1] = BlockRegistry.getBlockByName(stalaName).getDefaultState().with(StalaBlock.WIDTH, i).get();
+			stalas[i - 1] = Blocks.getBlockByName(stalaName).getDefaultState().with(StalaBlock.WIDTH, i).get();
 		}
 	}
 

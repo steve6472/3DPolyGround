@@ -14,7 +14,7 @@ import steve6472.polyground.gui.MainMenu;
 import steve6472.polyground.gui.OptionsGui;
 import steve6472.polyground.item.Item;
 import steve6472.polyground.item.ItemAtlas;
-import steve6472.polyground.registry.BlockRegistry;
+import steve6472.polyground.registry.Blocks;
 import steve6472.polyground.registry.CommandRegistry;
 import steve6472.polyground.registry.ItemRegistry;
 import steve6472.polyground.registry.WaterRegistry;
@@ -82,7 +82,7 @@ public class CaveGame extends MainApp
 		getEventHandler().runEvent(new SpecialBlockRegistryEvent());
 
 		blockModelLoader = new BlockModelLoader();
-		BlockRegistry.register(this);
+		Blocks.register(this);
 		WaterRegistry.init();
 
 		inGameGui = new InGameGui(this);

@@ -4,7 +4,7 @@ import org.joml.Vector2i;
 import org.joml.Vector3f;
 import steve6472.polyground.CaveGame;
 import steve6472.polyground.block.Block;
-import steve6472.polyground.registry.BlockRegistry;
+import steve6472.polyground.registry.Blocks;
 import steve6472.polyground.world.World;
 import steve6472.sge.main.util.RandomUtil;
 
@@ -39,7 +39,7 @@ public class AIEntity extends EntityBase
 		obstacleNodes = new ArrayList<>();
 		blockData = new HashMap<>();
 
-		for (Block b : BlockRegistry.getAllBlocks())
+		for (Block b : Blocks.getAllBlocks())
 		{
 			blockData.put(b, new BlockData(b == Block.air ? 1.0f : 0.0f, b == Block.air));
 		}

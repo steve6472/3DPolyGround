@@ -2,7 +2,7 @@ package steve6472.polyground.world.generator.generators.impl.cave;
 
 import org.joml.SimplexNoise;
 import steve6472.polyground.block.Block;
-import steve6472.polyground.registry.BlockRegistry;
+import steve6472.polyground.registry.Blocks;
 import steve6472.polyground.world.biomes.Biomes;
 import steve6472.polyground.world.chunk.SubChunk;
 import steve6472.polyground.world.generator.ChunkGenDataStorage;
@@ -40,9 +40,9 @@ public class CaveGenerator implements ISurfaceGenerator
 	@Override
 	public void generate(SubChunk subChunk)
 	{
-		Block stone = BlockRegistry.getBlockByName("stone");
-		Block cobblestone = BlockRegistry.getBlockByName("cobblestone");
-		Block bedrock = BlockRegistry.getBlockByName("bedrock");
+		Block stone = Blocks.getBlockByName("stone");
+		Block cobblestone = Blocks.getBlockByName("cobblestone");
+		Block bedrock = Blocks.getBlockByName("bedrock");
 
 		for (int x = 0; x < 16; x++)
 		{

@@ -1,6 +1,7 @@
 package steve6472.polyground.generator;
 
 import steve6472.polyground.EnumFace;
+import steve6472.polyground.block.Tags;
 import steve6472.polyground.block.properties.enums.EnumAxis;
 import steve6472.polyground.block.properties.enums.EnumHalf;
 import steve6472.polyground.block.properties.enums.EnumSlabType;
@@ -88,7 +89,6 @@ public class DataGenerator
 		// Items
 		DataBuilder.create().itemModel(new ItemFromTexture("block_inspector")).itemName("block_inspector").itemSpecial(new SimpleSpecial("block_inspector")).generate();
 		DataBuilder.create().itemModel(new ItemFromTexture("rift_placer")).itemName("rift_placer").itemSpecial(new SimpleSpecial("riftplacer")).generate();
-		DataBuilder.create().itemModel(new ItemFromTexture("tele_placer")).itemName("atele_placer").itemSpecial(new SimpleSpecial("tele_placer")).generate();
 
 		// Blocks
 		DataBuilder.create().fullBlock("null").noItem().generate();
@@ -98,13 +98,13 @@ public class DataGenerator
 		DataBuilder.create().fullBlock("stone").generate();
 		DataBuilder.create().fullBlock("cobblestone").generate();
 		DataBuilder.create().fullBlock("bedrock").generate();
-		DataBuilder.create().fullBlock("sand").generate();
 		DataBuilder.create().fullBlock("gravel").generate();
-		DataBuilder.create().fullBlock("dirt").generate();
 		DataBuilder.create().fullBlock("oak_plank").generate();
 		DataBuilder.create().fullBlock("andesite").generate();
 		DataBuilder.create().fullBlock("diorite").generate();
 		DataBuilder.create().fullBlock("granite").generate();
+		DataBuilder.create().fullBlock("sand").addTag(Tags.CACTUS_TOP).generate();
+		DataBuilder.create().fullBlock("dirt").addTag(Tags.FLOWER_TOP).generate();
 
 		DataBuilder.create().fullBlock("snow_block", "snow").generate();
 
@@ -117,7 +117,7 @@ public class DataGenerator
 		DataBuilder.create().stairs("cobblestone_stairs", "cobblestone").generate();
 		DataBuilder.create().stairs("brick_stairs", "bricks").generate();
 
-		DataBuilder.create().plusBlock("small_grass", true).generate();
+		DataBuilder.create().plusBlock("small_grass", true).blockSpecial(new SimpleSpecial("flower")).generate();
 
 		DataBuilder.create().oreBlock("coal_ore", "stone", "ore_overlay", 77, 77, 77).generate();
 
@@ -131,7 +131,13 @@ public class DataGenerator
 		DataBuilder.create().leaves("oak_leaves").generate();
 		DataBuilder.create().leaves("crystal_leaves").generate();
 
-		DataBuilder.create().slab("dirt_slab", "dirt").generate();
+		DataBuilder.create().slab("dirt_slab", "dirt")
+			.addTagToState().with(SlabBlock.TYPE, EnumSlabType.TOP).with(SlabBlock.AXIS, EnumAxis.Y).finish(Tags.FLOWER_TOP)
+			.addTagToState().with(SlabBlock.TYPE, EnumSlabType.DOUBLE).with(SlabBlock.AXIS, EnumAxis.X).finish(Tags.FLOWER_TOP)
+			.addTagToState().with(SlabBlock.TYPE, EnumSlabType.DOUBLE).with(SlabBlock.AXIS, EnumAxis.Y).finish(Tags.FLOWER_TOP)
+			.addTagToState().with(SlabBlock.TYPE, EnumSlabType.DOUBLE).with(SlabBlock.AXIS, EnumAxis.Z).finish(Tags.FLOWER_TOP)
+			.generate();
+
 		DataBuilder.create().slab("stone_slab", "stone").generate();
 		DataBuilder.create().slab("oak_plank_slab", "oak_plank").generate();
 		DataBuilder.create().slab("cobblestone_slab", "cobblestone").generate();
@@ -194,7 +200,7 @@ public class DataGenerator
 			.itemName("cactus")
 			.blockToPlace("cactus")
 			.itemModel(new ItemFromBlock("cactus"))
-			.blockSpecial(new SimpleSpecial("custom"))
+			.blockSpecial(new SimpleSpecial("cactus"))
 			.blockState(StateBuilder.create().singleModel(BlockModelBuilder.create("cactus")
 				.addCube(CubeBuilder.create()
 					.min(1, 0, 1)
@@ -222,7 +228,7 @@ public class DataGenerator
 						.texture("cactus_side")
 						.autoUv(true), EnumFace.NORTH, EnumFace.SOUTH)
 				)
-			))
+			).tag(Tags.CACTUS_TOP))
 			.generate();
 
 		DataBuilder.create()
@@ -263,7 +269,7 @@ public class DataGenerator
 							.modelLayer(ModelLayer.OVERLAY_0), EnumFace.UP
 						)
 					)
-				)
+				).tag(Tags.FLOWER_TOP)
 			).generate();
 
 		DataBuilder.create().fullBlock("green_screen")

@@ -72,7 +72,7 @@ public class SubChunk implements IBiomeProvider
 			tickableBlocks.iterate((x, y, z) ->
 			{
 				BlockState blockToTick = blocks.getStates()[x][y][z];
-				blockToTick.getBlock().tick(getWorld(), blockToTick, x, y, z);
+				blockToTick.getBlock().tick(blockToTick, getWorld(), x, y, z);
 			});
 		}
 
@@ -90,7 +90,7 @@ public class SubChunk implements IBiomeProvider
 				short z = (short) (i & 0xf);
 
 				BlockState blockToUpdate = blocks.getStates()[x][y][z];
-				blockToUpdate.getBlock().onUpdate(getWorld(), blockToUpdate, EnumFace.NONE, x, y, z);
+//				blockToUpdate.getBlock().update(blockToUpdate, getWorld(), EnumFace.NONE, x, y, z);
 				iter.remove();
 			}
 		}
@@ -226,6 +226,14 @@ public class SubChunk implements IBiomeProvider
 		rebuild = false;
 	}
 
+	public boolean isRebuilding()
+	{
+		for (SubChunkModel m : model)
+			if (m.rebuildInProgress)
+				return true;
+		return false;
+	}
+
 	public void updateModel(ModelData data)
 	{
 		model[data.modelLayer.index].update(data);
@@ -254,7 +262,7 @@ public class SubChunk implements IBiomeProvider
 
 	public void setBlock(Block block, int x, int y, int z)
 	{
-		setState(block.getStateForPlacement(getWorld(), getWorld().getState(x, y, z), x, y, z), x, y, z);
+		setState(block.getDefaultState(), x, y, z);
 	}
 
 	public void setState(BlockState state, int x, int y, int z)

@@ -1,5 +1,6 @@
 package steve6472.polyground.block.states;
 
+import org.json.JSONArray;
 import steve6472.polyground.block.Block;
 import steve6472.polyground.block.model.BlockModel;
 import steve6472.polyground.block.properties.IProperty;
@@ -7,6 +8,7 @@ import steve6472.polyground.block.properties.IProperty;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
@@ -22,9 +24,10 @@ public class BlockState
 	private final HashMap<IProperty<?>, Comparable<?>> properties;
 	private final List<BlockState> possibleStates;
 	private final BlockModel blockModel;
+	private final Set<String> tags;
 	private final int id;
 
-	public BlockState(Block block, BlockModel model, HashMap<IProperty<?>, Comparable<?>> properties, List<BlockState> possibleStates)
+	public BlockState(Block block, BlockModel model, HashMap<IProperty<?>, Comparable<?>> properties, List<BlockState> possibleStates, JSONArray tags)
 	{
 		this.id = ID++;
 		this.block = block;
@@ -37,6 +40,18 @@ public class BlockState
 		} else
 		{
 			this.possibleStates = possibleStates;
+		}
+		if (tags != null)
+		{
+			String[] t = new String[tags.length()];
+			for (int i = 0; i < tags.length(); i++)
+			{
+				t[i] = tags.getString(i);
+			}
+			this.tags = Set.of(t);
+		} else
+		{
+			this.tags = Set.of();
 		}
 	}
 
@@ -107,6 +122,11 @@ public class BlockState
 		return getBlock().getDefaultState();
 	}
 
+	public boolean hasTag(String tag)
+	{
+		return tags.contains(tag);
+	}
+
 	public String getStateString()
 	{
 		if (properties == null)
@@ -124,6 +144,6 @@ public class BlockState
 	@Override
 	public String toString()
 	{
-		return "BlockState{" + "block=" + block.getName() + (properties == null ? "}" : ", properties=" + properties + '}');
+		return "BlockState{" + "block=" + block.getName() + ", tags=" + tags + (properties == null ? "}" : ", properties=" + properties + '}');
 	}
 }

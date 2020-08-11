@@ -21,7 +21,7 @@ public class WaterGeneratorBlock extends Block
 	}
 
 	@Override
-	public void tick(World world, BlockState state, int x, int y, int z)
+	public void tick(BlockState state, World world, int x, int y, int z)
 	{
 //		subChunk.setLiquidVolumeEfficiently(x, y + 1, z, subChunk.getLiquidVolumeEfficiently(x, y + 1, z) + 1000.0 / 60.0);
 		world.setLiquidVolume(x, y + 1, z, world.getLiquidVolume(x, y + 1, z) + 10000.0);

@@ -3,7 +3,7 @@ package steve6472.polyground.item;
 import org.json.JSONObject;
 import steve6472.polyground.CaveGame;
 import steve6472.polyground.block.Block;
-import steve6472.polyground.registry.BlockRegistry;
+import steve6472.polyground.registry.Blocks;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -39,7 +39,7 @@ public class ItemModelLoader
 		{
 			if (json.getString("type").equals("from_block"))
 			{
-				fromBlock(BlockRegistry.getBlockByName(json.getString("block")), item);
+				fromBlock(Blocks.getBlockByName(json.getString("block")), item);
 			}
 			if (json.getString("type").equals("texture"))
 			{

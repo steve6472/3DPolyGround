@@ -45,7 +45,7 @@ public class SnapCommand extends Command
 									if (b instanceof SnapButtonBlock)
 										continue;
 
-									b.onBreak(c.getSource().getWorld(), subChunk.getState(i, j, k), c.getSource().getPlayer(), EnumFace.NONE, i, j, k);
+									b.onPlayerBreak(subChunk.getState(i, j, k), c.getSource().getWorld(), c.getSource().getPlayer(), EnumFace.NONE, i, j, k);
 									subChunk.setBlock(Block.air, i, j, k);
 								}
 							}

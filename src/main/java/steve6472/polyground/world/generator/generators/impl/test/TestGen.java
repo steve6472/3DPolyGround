@@ -1,7 +1,7 @@
 package steve6472.polyground.world.generator.generators.impl.test;
 
 import steve6472.polyground.SSimplexNoise;
-import steve6472.polyground.registry.BlockRegistry;
+import steve6472.polyground.registry.Blocks;
 import steve6472.polyground.world.chunk.SubChunk;
 import steve6472.polyground.world.generator.ChunkGenDataStorage;
 import steve6472.polyground.world.generator.generators.IHeightMapGenerator;
@@ -50,13 +50,13 @@ public class TestGen implements ISurfaceGenerator
 				float n = noise.noise(X * scale, Z * scale);
 
 				if (n < -0.5f)
-					subChunk.setBlock(BlockRegistry.getBlockByName("stone"), x, 0, z);
+					subChunk.setBlock(Blocks.getBlockByName("stone"), x, 0, z);
 				else if (n < 0)
-					subChunk.setBlock(BlockRegistry.getBlockByName("diorite"), x, 0, z);
+					subChunk.setBlock(Blocks.getBlockByName("diorite"), x, 0, z);
 				else if (n < 0.5f)
-					subChunk.setBlock(BlockRegistry.getBlockByName("dirt"), x, 0, z);
+					subChunk.setBlock(Blocks.getBlockByName("dirt"), x, 0, z);
 				else
-					subChunk.setBlock(BlockRegistry.getBlockByName("bedrock"), x, 0, z);
+					subChunk.setBlock(Blocks.getBlockByName("bedrock"), x, 0, z);
 
 			}
 		}

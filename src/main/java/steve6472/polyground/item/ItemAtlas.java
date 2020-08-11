@@ -14,7 +14,7 @@ import steve6472.polyground.block.model.CubeFace;
 import steve6472.polyground.block.model.faceProperty.LayerFaceProperty;
 import steve6472.polyground.block.model.faceProperty.condition.ConditionFaceProperty;
 import steve6472.polyground.gfx.MainRender;
-import steve6472.polyground.registry.BlockRegistry;
+import steve6472.polyground.registry.Blocks;
 import steve6472.polyground.registry.face.FaceRegistry;
 import steve6472.polyground.tessellators.ItemTessellator;
 import steve6472.polyground.world.ModelBuilder;
@@ -72,7 +72,7 @@ public class ItemAtlas
 
 		itemTessellator = new ItemTessellator((int) Math.pow(2, 16));
 
-		s = Atlas.getNextPowerOfTwo((int) Math.ceil(Math.sqrt(BlockRegistry.getAllBlocks().length)));
+		s = Atlas.getNextPowerOfTwo((int) Math.ceil(Math.sqrt(Blocks.getAllBlocks().length)));
 		totalSize = s * itemSize;
 		itemAtlas = new FrameBuffer(totalSize, totalSize, true);
 		textureBuffer = new DepthFrameBuffer(itemSize, itemSize, true);

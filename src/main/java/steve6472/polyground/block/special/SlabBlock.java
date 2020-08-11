@@ -70,7 +70,7 @@ public class SlabBlock extends Block
 	}
 
 	@Override
-	public void onClick(World world, BlockState state, Player player, EnumFace clickedOn, MouseEvent click, int x, int y, int z)
+	public void onClick(BlockState state, World world, Player player, EnumFace clickedOn, MouseEvent click, int x, int y, int z)
 	{
 		if (click.getAction() != KeyList.PRESS)
 			return;
@@ -123,10 +123,10 @@ public class SlabBlock extends Block
 		{
 			if (hitResult.getFace() == EnumFace.UP)
 			{
-				world.setState(hitResult, tobeplaced = bottom);
+				world.setState(tobeplaced = bottom, hitResult);
 			} else if (hitResult.getFace() == EnumFace.DOWN)
 			{
-				world.setState(hitResult, tobeplaced = top);
+				world.setState(tobeplaced = top, hitResult);
 			} else if (hitResult.getFace().isSide())
 			{
 				double h = Double.parseDouble("0." + ("" + hitResult.getPy()).split("\\.")[1]);
@@ -155,7 +155,7 @@ public class SlabBlock extends Block
 			world.setBlock(hitResult, Block.air);
 		}
 
-		tobeplaced.getBlock().onBreak(world, state, player, hitResult.getFace(), hitResult.getX(), hitResult.getY(), hitResult.getZ());
+		tobeplaced.getBlock().onPlayerBreak(state, world, player, hitResult.getFace(), hitResult.getX(), hitResult.getY(), hitResult.getZ());
 
 		player.processNextBlockBreak = false;
 	}

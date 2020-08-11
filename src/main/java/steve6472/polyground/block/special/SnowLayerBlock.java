@@ -32,9 +32,9 @@ public class SnowLayerBlock extends CustomBlock
 	}
 
 	@Override
-	public void onPlace(World world, BlockState state, Player player, EnumFace placedOn, int x, int y, int z)
+	public void onBlockAdded(BlockState state, World world, BlockState oldState, int x, int y, int z)
 	{
-		super.onPlace(world, state, player, placedOn, x, y, z);
+		super.onBlockAdded(state, world, oldState, x, y, z);
 
 		if (world.getBlock(x, y - 1, z) == Block.air)
 			world.setBlock(Block.air, x, y, z);
@@ -43,15 +43,15 @@ public class SnowLayerBlock extends CustomBlock
 	@Override
 	public boolean isReplaceable(BlockState state)
 	{
-		return state.get(SNOW_LAYER) == 1;
+		return super.isReplaceable(state) && state.get(SNOW_LAYER) == 1;
 	}
 
 	@Override
-	public void onClick(World world, BlockState state, Player player, EnumFace clickedOn, MouseEvent click, int x, int y, int z)
+	public void onClick(BlockState state, World world, Player player, EnumFace clickedOn, MouseEvent click, int x, int y, int z)
 	{
 		if (clickedOn != EnumFace.UP)
 		{
-			super.onClick(world, state, player, clickedOn, click, x, y, z);
+			super.onClick(state, world, player, clickedOn, click, x, y, z);
 			return;
 		}
 

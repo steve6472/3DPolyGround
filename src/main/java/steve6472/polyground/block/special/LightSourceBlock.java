@@ -89,7 +89,7 @@ public class LightSourceBlock extends Block
 	}
 
 	@Override
-	public void onPlace(World world, BlockState state, Player player, EnumFace placedOn, int x, int y, int z)
+	public void onBlockAdded(BlockState state, World world, BlockState oldState, int x, int y, int z)
 	{
 		if (world.getBlock(x, y, z) != this)
 			return;
@@ -99,9 +99,9 @@ public class LightSourceBlock extends Block
 	}
 
 	@Override
-	public void onBreak(World world, BlockState state, Player player, EnumFace breakedFrom, int x, int y, int z)
+	public void onPlayerBreak(BlockState state, World world, Player player, EnumFace breakedFrom, int x, int y, int z)
 	{
-		super.onBreak(world, state, player, breakedFrom, x, y, z);
+		super.onPlayerBreak(state, world, player, breakedFrom, x, y, z);
 		LightManager.removeLight(EnumLightSource.BLOCK, x + 0.5f + xOffset, y + 0.5f + yOffset, z + 0.5f + zOffset);
 	}
 

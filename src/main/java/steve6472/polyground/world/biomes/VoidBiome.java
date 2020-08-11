@@ -2,7 +2,7 @@ package steve6472.polyground.world.biomes;
 
 import org.joml.Vector3f;
 import steve6472.polyground.block.states.BlockState;
-import steve6472.polyground.registry.BlockRegistry;
+import steve6472.polyground.registry.Blocks;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
@@ -33,19 +33,19 @@ public class VoidBiome extends Biome
 	@Override
 	public BlockState getTopBlock()
 	{
-		return BlockRegistry.getDefaultState("bedrock");
+		return Blocks.getDefaultState("bedrock");
 	}
 
 	@Override
 	public BlockState getUnderBlock()
 	{
-		return BlockRegistry.getDefaultState("air");
+		return Blocks.getDefaultState("air");
 	}
 
 	@Override
 	public BlockState getCaveBlock()
 	{
-		return BlockRegistry.getDefaultState("air");
+		return Blocks.getDefaultState("air");
 	}
 
 	/**

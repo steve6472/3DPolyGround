@@ -1,6 +1,7 @@
 package steve6472.polyground.world.generator.feature;
 
 import org.joml.Vector3f;
+import steve6472.polyground.block.Block;
 import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.world.World;
 import steve6472.polyground.world.generator.EnumPlacement;
@@ -19,14 +20,16 @@ public class TileReplacePatchFeature implements IFeature
 	private final double chance;
 	private final int radius;
 	private final boolean decayFromCenter;
+	private final boolean onlyTop;
 
-	public TileReplacePatchFeature(BlockState target, BlockState replace, double chance, int radius, boolean decayFromCenter)
+	public TileReplacePatchFeature(BlockState target, BlockState replace, double chance, int radius, boolean decayFromCenter, boolean onlyTop)
 	{
 		this.target = target;
 		this.replace = replace;
 		this.chance = chance;
 		this.radius = Util.clamp(0, 7, radius);
 		this.decayFromCenter = decayFromCenter;
+		this.onlyTop = onlyTop;
 	}
 
 	@Override
@@ -40,6 +43,10 @@ public class TileReplacePatchFeature implements IFeature
 				{
 					if (world.getRandom().nextDouble() <= chance)
 					{
+						if (onlyTop)
+							if (world.getBlock(x + i, y + j + 1, z + k) != Block.air)
+								continue;
+
 						if (decayFromCenter)
 						{
 							if (world.getRandom().nextFloat() < 1d / Vector3f.distanceSquared(x, y, z, x + i, y + j, z + k))

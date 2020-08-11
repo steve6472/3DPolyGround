@@ -34,7 +34,7 @@ public class PillarFeature implements IFeature
 
 		for (int i = y; i < y + height; i++)
 		{
-			world.setState(blockToPlace, x, i, z);
+			world.setState(blockToPlace, x, i, z, 5);
 		}
 	}
 

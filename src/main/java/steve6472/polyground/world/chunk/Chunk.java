@@ -1,7 +1,5 @@
 package steve6472.polyground.world.chunk;
 
-import steve6472.polyground.block.Block;
-import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.gfx.ThreadedModelBuilder;
 import steve6472.polyground.world.World;
 
@@ -94,82 +92,6 @@ public class Chunk
 		}
 	}
 
-	public void setState(BlockState state, int x, int y, int z)
-	{
-		if (isOutOfChunkBounds(x, y, z))
-			return;
-
-		SubChunk sc = subChunks[y / 16];
-
-		boolean shouldRebuild = sc.getState(x, y % 16, z) != state;
-		if (shouldRebuild)
-			sc.rebuild();
-
-		sc.setState(state, x, y % 16, z);
-
-		sc.getTickableBlocks().set(x, y % 16, z, state.getBlock().isTickable());
-		//		sc.setBlockEntity(x, y % 16, z, b instanceof IBlockData ? ((IBlockData) b).createNewBlockEntity() : null);
-
-//		if (shouldRebuild)
-//			updateNeighbours(sc, x, y, z);
-	}
-
-	/*
-	public void updateNeighbours(SubChunk sc, int x, int y, int z)
-	{
-		EnumFace faceX = x == 15 ? EnumFace.NORTH : x == 0 ? EnumFace.SOUTH : EnumFace.NONE;
-		EnumFace faceZ = z == 15 ? EnumFace.EAST : z == 0 ? EnumFace.WEST : EnumFace.NONE;
-		EnumFace faceY = y % 16 == 15 ? EnumFace.UP : y % 16 == 0 ? EnumFace.DOWN : EnumFace.NONE;
-
-		int layer = y / 16;
-
-		if (layer < 0 || layer >= getSubChunks().length)
-			return;
-
-		if (faceX == EnumFace.NONE && faceY == EnumFace.NONE && faceZ == EnumFace.NONE)
-		{
-			getSubChunk(layer).rebuild();
-			return;
-		} else
-		{
-			sc.rebuild();
-		}
-
-		Chunk chunk;
-
-		chunk = world.getChunk(sc.getX() + faceX.getXOffset(), sc.getZ());
-		if (chunk != null)
-		{
-			SubChunk subChunk = chunk.getSubChunk(layer);
-			if (subChunk != null)
-				subChunk.rebuild();
-		}
-
-		if (faceY != EnumFace.NONE)
-		{
-			int l = layer + faceY.getYOffset();
-			if (!(l < 0 || l >= getSubChunks().length))
-				sc.getParent().getSubChunk(l).rebuild();
-		}
-
-		chunk = world.getChunk(sc.getX(), sc.getZ() + faceZ.getZOffset());
-		if (chunk != null)
-		{
-			SubChunk subChunk = chunk.getSubChunk(layer);
-			if (subChunk != null)
-				subChunk.rebuild();
-		}
-	}*/
-
-	public BlockState getState(int x, int y, int z)
-	{
-		if (isOutOfChunkBounds(x, y, z))
-			return Block.air.getDefaultState();
-
-		SubChunk sc = subChunks[y / 16];
-		return sc.getState(x, y % 16, z);
-	}
-
 	public World getWorld()
 	{
 		return world;
@@ -193,11 +115,6 @@ public class Chunk
 	public SubChunk getSubChunk(int layer)
 	{
 		return getSubChunks()[layer];
-	}
-
-	private boolean isOutOfChunkBounds(int x, int y, int z)
-	{
-		return x < 0 || x >= 16 || z < 0 || z >= 16 || y < 0 || y >= 16 * subChunks.length;
 	}
 
 	@Override

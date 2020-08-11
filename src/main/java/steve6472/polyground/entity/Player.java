@@ -2,8 +2,8 @@ package steve6472.polyground.entity;
 
 import org.joml.Math;
 import org.joml.Vector3f;
-import steve6472.polyground.BasicEvents;
 import steve6472.polyground.CaveGame;
+import steve6472.polyground.EnumFace;
 import steve6472.polyground.HitResult;
 import steve6472.polyground.block.Block;
 import steve6472.polyground.block.states.BlockState;
@@ -212,7 +212,7 @@ public class Player implements IMotion3f, IPosition3f
 
 			BlockState state = world.getState(hr.getX(), hr.getY(), hr.getZ());
 
-			game.world.getBlock(hr.getX(), hr.getY(), hr.getZ()).onClick(world, state, this, hr.getFace(), event, hr.getX(), hr.getY(), hr.getZ());
+			game.world.getBlock(hr.getX(), hr.getY(), hr.getZ()).onClick(state, world, this, hr.getFace(), event, hr.getX(), hr.getY(), hr.getZ());
 
 			CaveGame.itemInHand.onClick(world, state, this, hr.getFace(), event, hr.getX(), hr.getY(), hr.getZ());
 		}
@@ -227,10 +227,17 @@ public class Player implements IMotion3f, IPosition3f
 
 				if (processNextBlockPlace)
 				{
-					BasicEvents.place(CaveGame.itemInHand.getBlockToPlace(), hr.getFace(), this);
-				} else
-				{
-					processNextBlockPlace = true;
+					Block blockToPlace = CaveGame.itemInHand.getBlockToPlace();
+					if (blockToPlace != null)
+					{
+						EnumFace face = hr.getFace();
+						int x = hr.getX() + face.getXOffset();
+						int y = hr.getY() + face.getYOffset();
+						int z = hr.getZ() + face.getZOffset();
+
+						BlockState stateToPlace = blockToPlace.getStateForPlacement(game.world, this, face, x, y, z);
+						game.world.setState(stateToPlace, x, y, z, 5);
+					}
 				}
 			}
 		}
@@ -240,8 +247,19 @@ public class Player implements IMotion3f, IPosition3f
 			if (game.hitPicker.hit)
 			{
 				if (processNextBlockBreak)
-					BasicEvents.breakBlock(this);
-				processNextBlockBreak = true;
+				{
+					HitResult hr = CaveGame.getInstance().hitPicker.getHitResult();
+					World world = CaveGame.getInstance().world;
+
+					int x = hr.getX();
+					int y = hr.getY();
+					int z = hr.getZ();
+
+					BlockState state = world.getState(x, y, z);
+
+					state.getBlock().onPlayerBreak(state, world, this, hr.getFace(), x, y, z);
+					world.setBlock(Block.air, hr.getX(), hr.getY(), hr.getZ());
+				}
 			}
 		}
 
@@ -258,6 +276,9 @@ public class Player implements IMotion3f, IPosition3f
 				}
 			}
 		}
+
+		processNextBlockPlace = true;
+		processNextBlockBreak = true;
 	}
 
 	@Override

@@ -2,7 +2,7 @@ package steve6472.polyground.world.generator;
 
 import org.joml.SimplexNoise;
 import steve6472.polyground.block.Block;
-import steve6472.polyground.registry.BlockRegistry;
+import steve6472.polyground.registry.Blocks;
 import steve6472.polyground.world.biomes.Biomes;
 import steve6472.polyground.world.chunk.SubChunk;
 import steve6472.sge.main.TriConsumer;
@@ -23,9 +23,9 @@ public class CaveGenerator
 	{
 		this.subChunk = subChunk;
 
-		Block stone = BlockRegistry.getBlockByName("stone");
-		Block cobblestone = BlockRegistry.getBlockByName("cobblestone");
-		Block bedrock = BlockRegistry.getBlockByName("bedrock");
+		Block stone = Blocks.getBlockByName("stone");
+		Block cobblestone = Blocks.getBlockByName("cobblestone");
+		Block bedrock = Blocks.getBlockByName("bedrock");
 
 //		iterate((x, y, z) -> subChunk.setBlock(x, y, z, stone));
 //		long start = System.nanoTime();

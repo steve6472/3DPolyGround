@@ -2,7 +2,7 @@ package steve6472.polyground.entity;
 
 import steve6472.polyground.CaveGame;
 import steve6472.polyground.block.Block;
-import steve6472.polyground.registry.BlockRegistry;
+import steve6472.polyground.registry.Blocks;
 import steve6472.polyground.world.World;
 
 /**********************
@@ -47,7 +47,7 @@ public class FallingBlock extends EntityBase
 		{
 			isDead = true;
 			World world = CaveGame.getInstance().world;
-			world.setBlock(BlockRegistry.getBlockByName("gravel"), (int) Math.floor(getX()), (int) (getY() - 0.4999f), (int) Math.floor(getZ()), b -> b == Block.air);
+			world.setBlock(Blocks.getBlockByName("gravel"), (int) Math.floor(getX()), (int) (getY() - 0.4999f), (int) Math.floor(getZ()), b -> b == Block.air);
 		}
 
 		if (getY() < -16)

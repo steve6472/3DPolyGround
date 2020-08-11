@@ -20,16 +20,17 @@ import java.util.Map;
  ***********************/
 public class StateLoader
 {
+	// Generates air and error blocks
 	public static void generateState(Block block, BlockModel model)
 	{
-		block.setDefaultState(new BlockState(block, model, null, null));
+		block.setDefaultState(new BlockState(block, model, null, null, null));
 	}
 
 	public static void generateStates(Block block, List<IProperty<?>> properties, JSONObject blockstates)
 	{
 		if (properties.isEmpty())
 		{
-			block.setDefaultState(new BlockState(block, new BlockModel(blockstates.getString("model"), 0), null, null));
+			block.setDefaultState(new BlockState(block, new BlockModel(blockstates.getString("model"), 0), null, null, blockstates.optJSONArray("tags")));
 			return;
 		}
 
@@ -85,6 +86,7 @@ public class StateLoader
 
 			String modelPath = "";
 			int rotation = 0;
+			JSONArray tags = null;
 
 			for (JSONObject j : models.keySet())
 			{
@@ -108,13 +110,14 @@ public class StateLoader
 				{
 					modelPath = models.get(j).getString("model");
 					rotation = models.get(j).optInt("rotation");
+					tags = models.get(j).optJSONArray("tags");
 					break;
 				}
 			}
 
 			try
 			{
-				BlockState state = new BlockState(block, new BlockModel(modelPath, rotation), map, tileStates);
+				BlockState state = new BlockState(block, new BlockModel(modelPath, rotation), map, tileStates, tags);
 				if (block.getDefaultState() == null)
 					block.setDefaultState(state);
 				tileStates.add(state);

@@ -22,7 +22,7 @@ import java.util.Objects;
  * Project: SJP
  *
  ***********************/
-public class BlockRegistry
+public class Blocks
 {
 	private static Block[] blocks;
 	private static HashMap<String, Integer> reference;

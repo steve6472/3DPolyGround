@@ -31,7 +31,7 @@ public class DropBlock extends Block
 	}
 
 	@Override
-	public void tick(World world, BlockState state, int x, int y, int z)
+	public void tick(BlockState state, World world, int x, int y, int z)
 	{
 		activate(this, world, state, x, y, z);
 	}

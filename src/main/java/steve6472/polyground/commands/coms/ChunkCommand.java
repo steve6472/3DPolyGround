@@ -99,7 +99,7 @@ public class ChunkCommand extends Command
 						{
 							for (int k = 0; k < 16; k++)
 							{
-								subChunk.getBlock(i, j, k).onBreak(subChunk.getWorld(), subChunk.getState(i, j, k), c.getSource().getPlayer(), EnumFace.NONE, i, j, k);
+								subChunk.getBlock(i, j, k).onPlayerBreak(subChunk.getState(i, j, k), subChunk.getWorld(), c.getSource().getPlayer(), EnumFace.NONE, i, j, k);
 							}
 						}
 					}

@@ -2,6 +2,7 @@ package steve6472.polyground.block.special;
 
 import steve6472.polyground.EnumFace;
 import steve6472.polyground.block.Block;
+import steve6472.polyground.block.Tags;
 import steve6472.polyground.block.properties.EnumProperty;
 import steve6472.polyground.block.properties.IProperty;
 import steve6472.polyground.block.properties.enums.EnumHalf;
@@ -30,40 +31,46 @@ public class DoubleBlock extends CustomBlock
 	}
 
 	@Override
-	public void onUpdate(World world, BlockState state, EnumFace updateFrom, int x, int y, int z)
+	public void update(BlockState state, World world, EnumFace updateFrom, int x, int y, int z)
 	{
-		super.onUpdate(world, state, updateFrom, x, y, z);
+		boolean isValid = isValidPosition(state, world, x, y, z);
+		if (!isValid)
+		{
+			SnapBlock.activate(state, world, x, y, z);
+			world.setBlock(Block.air, x, y, z);
+		}
+	}
 
-		if (state.get(HALF) == EnumHalf.TOP)
+	@Override
+	public boolean isValidPosition(BlockState state, World world, int x, int y, int z)
+	{
+		if (state.get(HALF) == EnumHalf.BOTTOM)
+		{
+			BlockState up = world.getState(x, y + 1, z);
+			BlockState down = world.getState(x, y - 1, z);
+//			return super.isValidPosition(state, world, x, y, z) && (down.getBlock() != Block.air) && (up.getBlock() == this || up.getBlock() == Block.air);
+			return super.isValidPosition(state, world, x, y, z) && (down.hasTag(Tags.FLOWER_TOP)) && (up.getBlock() == this || up.getBlock() == Block.air);
+		} else
 		{
 			BlockState stateUnder = world.getState(x, y - 1, z);
-			if (stateUnder.getBlock() != this || stateUnder.get(HALF) != EnumHalf.BOTTOM)
-			{
-				SnapBlock.activate(state, world, x, y, z);
-				world.setBlock(Block.air, x, y, z);
-			}
+			return stateUnder.getBlock() == this && stateUnder.get(HALF) == EnumHalf.BOTTOM;
 		}
 	}
 
 	@Override
-	public void onPlace(World world, BlockState state, Player player, EnumFace placedOn, int x, int y, int z)
+	public void onBlockAdded(BlockState state, World world, BlockState oldState, int x, int y, int z)
 	{
-		super.onPlace(world, state, player, placedOn, x, y, z);
+		super.onBlockAdded(state, world, oldState, x, y, z);
 
-		// Not enough space || no block to stand on
-		if (world.getBlock(x, y + 1, z) != Block.air || world.getBlock(x, y - 1, z) == Block.air)
-			world.setBlock(Block.air, x, y, z);
-		else
-		{
-			if (world.getBlock(x, y, z) == this)
-				world.setState(getDefaultState().with(HALF, EnumHalf.TOP).get(), x, y + 1, z);
-		}
+		if (state.get(HALF) == EnumHalf.BOTTOM)
+			world.setState(getDefaultState().with(HALF, EnumHalf.TOP).get(), x, y + 1, z);
 	}
 
+	//TODO: Check if block below/above is this block
 	@Override
-	public void onBreak(World world, BlockState state, Player player, EnumFace breakedFrom, int x, int y, int z)
+	public void onPlayerBreak(BlockState state, World world, Player player, EnumFace breakedFrom, int x, int y, int z)
 	{
-		super.onBreak(world, state, player, breakedFrom, x, y, z);
+		super.onPlayerBreak(state, world, player, breakedFrom, x, y, z);
 
 		int Y = (state.get(HALF) == EnumHalf.BOTTOM ? 1 : -1);
 		SnapBlock.activate(world.getState(x, y + Y, z), world, x, y + Y, z);

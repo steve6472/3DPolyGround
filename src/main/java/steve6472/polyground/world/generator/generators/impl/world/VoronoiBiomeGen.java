@@ -49,14 +49,14 @@ public class VoronoiBiomeGen implements IBiomeGenerator
 		this.searchRadius = searchRadius;
 
 		noises = new SSimplexNoise[] {
-//			new SSimplexNoise(seed >> 1),
-//			new SSimplexNoise((seed * 8) >> 2),
-//			new SSimplexNoise((seed * 16) >> 3),
-//			new SSimplexNoise((seed * 32) >> 4)
-			new SSimplexNoise(-8376544303500664650L),
-			new SSimplexNoise(3096958501783446189L),
-			new SSimplexNoise(5852975705126687327L),
-			new SSimplexNoise(-319185951298012992L)
+			new SSimplexNoise(-seed >> 1),
+			new SSimplexNoise((seed * 8) >> 2),
+			new SSimplexNoise((seed * 16) >> 3),
+			new SSimplexNoise((seed * -32) >> 4)
+//			new SSimplexNoise(-8376544303500664650L),
+//			new SSimplexNoise(3096958501783446189L),
+//			new SSimplexNoise(5852975705126687327L),
+//			new SSimplexNoise(-319185951298012992L)
 		};
 
 		jitterNoise = new SSimplexNoise(seed >> 32);

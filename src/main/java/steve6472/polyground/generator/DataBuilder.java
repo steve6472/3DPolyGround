@@ -20,9 +20,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
@@ -37,9 +34,7 @@ public class DataBuilder
 	private String blockToPlace;
 	private String blockName, itemName;
 	private String itemModelPath;
-	private StateBuilder blockState;
-
-	private final List<String> blockTags;
+	public StateBuilder blockState;
 
 	public static DataBuilder create()
 	{
@@ -49,7 +44,6 @@ public class DataBuilder
 	private DataBuilder()
 	{
 		itemModelPath = "";
-		blockTags = new ArrayList<>();
 	}
 
 	public DataBuilder blockState(StateBuilder state)
@@ -110,15 +104,25 @@ public class DataBuilder
 		return this;
 	}
 
+	/*
+	 * Post-gen additions
+	 */
+
+
+	public StateGetter addTagToState()
+	{
+		return new StateGetter(this);
+	}
+
 	public DataBuilder addTag(String tag)
 	{
-		blockTags.add(tag);
+		blockState.tag(tag);
 		return this;
 	}
 
 	public DataBuilder addTags(String... tags)
 	{
-		Collections.addAll(blockTags, tags);
+		blockState.tags(tags);
 		return this;
 	}
 
@@ -627,16 +631,6 @@ public class DataBuilder
 			System.out.println("\tWith Special \"" + blockSpecial.getName() + "\"");
 			sss.add("special", blockSpecial.getName());
 			blockSpecial.generate(sss);
-		}
-
-		if (!blockTags.isEmpty())
-		{
-			System.out.println("\tWith tags: ");
-			for (String tag : blockTags)
-			{
-				System.out.println("\t\t" + tag);
-			}
-			sss.addArray("tags", blockTags);
 		}
 
 		sss.save(block);

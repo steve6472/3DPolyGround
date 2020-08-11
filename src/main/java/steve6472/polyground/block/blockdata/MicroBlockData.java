@@ -1,7 +1,7 @@
 package steve6472.polyground.block.blockdata;
 
 import steve6472.polyground.block.Block;
-import steve6472.polyground.registry.BlockRegistry;
+import steve6472.polyground.registry.Blocks;
 import steve6472.sge.main.smartsave.SmartSave;
 import steve6472.sge.main.util.Pair;
 
@@ -221,7 +221,7 @@ public class MicroBlockData extends BlockData
 					{
 						map.put(id, lastId);
 						registratedIds.add(id);
-						pallete.put(lastId, BlockRegistry.getBlockById(id).getName());
+						pallete.put(lastId, Blocks.getBlockById(id).getName());
 						lastId++;
 					}
 				}

@@ -5,7 +5,7 @@ import steve6472.polyground.EnumFace;
 import steve6472.polyground.block.Block;
 import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.entity.Player;
-import steve6472.polyground.registry.BlockRegistry;
+import steve6472.polyground.registry.Blocks;
 import steve6472.polyground.world.World;
 import steve6472.sge.main.events.MouseEvent;
 
@@ -48,7 +48,7 @@ public class Item
 			SSS sss = new SSS(f);
 
 			if (sss.containsName("place"))
-				toPlace = BlockRegistry.getBlockByName(sss.getString("place"));
+				toPlace = Blocks.getBlockByName(sss.getString("place"));
 
 			ItemModelLoader.loadModel(sss.getString("model"), this);
 		}

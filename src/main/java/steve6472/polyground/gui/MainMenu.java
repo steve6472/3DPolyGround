@@ -54,8 +54,9 @@ public class MainMenu extends Gui implements IGamePause
 //		long seed = 4419941787569665203L;
 		System.out.println("Seed: " + seed);
 		IBiomeGenerator worldBiomeGenerator = new VoronoiBiomeGen(seed, 16, 8, 2, new ArrayList<>(Set.of(
-			Biomes.TUNDRA, Biomes.DESERT, Biomes.FOREST, Biomes.SAVANNA, Biomes.DESERT_HILLS, Biomes.MOUNTAINS, Biomes.PLAINS, Biomes.SAVANNA_PLATEAU
+			Biomes.TUNDRA, Biomes.DESERT, Biomes.FOREST, Biomes.SAVANNA, Biomes.DESERT_HILLS, Biomes.COLD_MOUNTAINS, Biomes.PLAINS, Biomes.SAVANNA_PLATEAU, Biomes.MOUNTAINS
 		)));
+//		IBiomeGenerator worldBiomeGenerator = new SingleBiomeGen(seed, Biomes.DESERT);
 		IHeightMapGenerator worldHeightMapGenerator = new HeightMapGenerator(worldBiomeGenerator, 10, 5);
 //		IHeightMapGenerator worldHeightMapGenerator = new FlatHeightMapGen(worldBiomeGenerator, 0);
 		Function<ChunkGenDataStorage, ISurfaceGenerator> worldSurfaceGenerator = (cds) -> new SurfaceGenerator(worldHeightMapGenerator, cds);

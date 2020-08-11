@@ -7,7 +7,7 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import steve6472.polyground.block.Block;
-import steve6472.polyground.registry.BlockRegistry;
+import steve6472.polyground.registry.Blocks;
 import steve6472.polyground.commands.Command;
 import steve6472.polyground.commands.CommandSource;
 
@@ -38,14 +38,14 @@ public class BlockArgument implements ArgumentType<Block>
 	public Block parse(StringReader reader) throws CommandSyntaxException
 	{
 		String name = reader.readString();
-		return BlockRegistry.getBlockByName(name);
+		return Blocks.getBlockByName(name);
 	}
 
 	@Override
 	public <S> CompletableFuture<Suggestions> listSuggestions(CommandContext<S> context, SuggestionsBuilder builder)
 	{
 		List<String> names = new ArrayList<>();
-		for (Block b : BlockRegistry.getAllBlocks())
+		for (Block b : Blocks.getAllBlocks())
 		{
 			names.add(b.getName());
 		}

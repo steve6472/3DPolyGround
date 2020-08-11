@@ -1,7 +1,7 @@
 package steve6472.polyground.world.generator.feature;
 
 import steve6472.polyground.block.Block;
-import steve6472.polyground.registry.BlockRegistry;
+import steve6472.polyground.registry.Blocks;
 import steve6472.polyground.world.World;
 import steve6472.polyground.world.generator.EnumPlacement;
 import steve6472.polyground.world.generator.IFeature;
@@ -18,10 +18,10 @@ public class LakeFeature implements IFeature
 
 	public LakeFeature()
 	{
-		b = BlockRegistry.getBlockByName("grass");
-		c = BlockRegistry.getBlockByName("sand");
-		d = BlockRegistry.getBlockByName("dirt");
-		e = BlockRegistry.getBlockByName("cobblestone");
+		b = Blocks.getBlockByName("grass");
+		c = Blocks.getBlockByName("sand");
+		d = Blocks.getBlockByName("dirt");
+		e = Blocks.getBlockByName("cobblestone");
 	}
 
 	@Override

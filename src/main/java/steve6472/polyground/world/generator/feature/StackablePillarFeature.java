@@ -30,13 +30,13 @@ public class StackablePillarFeature implements IFeature
 	@Override
 	public void generate(World world, int x, int y, int z)
 	{
-		world.setState(blockToPlace, x, y + 1, z);
+		world.setState(blockToPlace, x, y, z);
 
-		for (int i = y + 1; i < y + maxHeight; i++)
+		for (int i = y; i < y + maxHeight; i++)
 		{
 			if (world.getRandom().nextDouble() <= chanceForNextTile)
 			{
-				world.setState(blockToPlace, x, i, z);
+				world.setState(blockToPlace, x, i, z, 5);
 			} else
 			{
 				return;

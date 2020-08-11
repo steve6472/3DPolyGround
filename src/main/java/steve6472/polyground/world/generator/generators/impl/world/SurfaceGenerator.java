@@ -56,10 +56,10 @@ public class SurfaceGenerator implements ISurfaceGenerator
 
 				// TODO: Clamp to subchunk
 				for (int k = height - 1; k >= height - biome.getUnderLayerHeight(); k--)
-					subChunk.getWorld().setState(biome.getUnderBlock(), x + cx * 16, k, z + cz * 16);
+					subChunk.getWorld().setState(biome.getUnderBlock(), x + cx * 16, k, z + cz * 16, 0);
 
 				for (int k = height - 1 - biome.getUnderLayerHeight(); k >= 0; k--)
-					subChunk.getWorld().setState(biome.getCaveBlock(), x + cx * 16, k, z + cz * 16);
+					subChunk.getWorld().setState(biome.getCaveBlock(), x + cx * 16, k, z + cz * 16, 0);
 
 				for (int k = subChunk.getLayer() * 16; k < Util.clamp(subChunk.getLayer() * 16, subChunk.getLayer() * 16 + 16, height + biome.getBiomeHeight()); k++)
 					subChunk.getWorld().setBiome(biome, x + cx * 16, k, z + cz * 16);

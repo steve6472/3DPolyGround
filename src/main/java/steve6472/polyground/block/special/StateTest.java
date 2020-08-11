@@ -31,7 +31,7 @@ public class StateTest extends CustomBlock
 	}
 
 	@Override
-	public void onClick(World world, BlockState state, Player player, EnumFace clickedOn, MouseEvent click, int x, int y, int z)
+	public void onClick(BlockState state, World world, Player player, EnumFace clickedOn, MouseEvent click, int x, int y, int z)
 	{
 		if (click.getButton() == KeyList.RMB && click.getAction() == KeyList.PRESS)
 		{

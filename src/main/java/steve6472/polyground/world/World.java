@@ -425,4 +425,14 @@ public class World implements IBlockProvider
 
 		return null;
 	}
+
+	/**
+	 * Used by IBlockProvider
+	 * @return this
+	 */
+	@Override
+	public World getWorld()
+	{
+		return this;
+	}
 }
