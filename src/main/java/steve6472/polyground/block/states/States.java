@@ -18,6 +18,7 @@ import steve6472.polyground.block.properties.enums.EnumSlabType;
 public class States
 {
 	public static final BooleanProperty LIT = BooleanProperty.create("lit");
+	public static final BooleanProperty PERSISTENT = BooleanProperty.create("persistent");
 
 	public static final EnumProperty<EnumSlabType> SLAB_TYPE = EnumProperty.create("type", EnumSlabType.class, EnumSlabType.getValues());
 	public static final EnumProperty<EnumFace> FACING_BLOCK = EnumProperty.create("facing", EnumFace.class, EnumFace.NORTH, EnumFace.EAST, EnumFace.SOUTH, EnumFace.WEST);
@@ -27,4 +28,5 @@ public class States
 
 	public static final IntProperty STALA_WIDTH = IntProperty.create("width", 1, 7);
 	public static final IntProperty SNOW_LAYERS = IntProperty.create("layers", 1, 8);
+	public static final IntProperty DISTANCE = IntProperty.create("distance", 1, 7);
 }

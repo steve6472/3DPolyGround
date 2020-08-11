@@ -24,7 +24,6 @@ public class FaceRegistry
 	public static final FaceEntry<VisibleFaceProperty> isVisible = register("isVisible", VisibleFaceProperty::new);
 	public static final FaceEntry<UVFaceProperty> uv = register("uv", UVFaceProperty::new);
 	public static final FaceEntry<TintFaceProperty> tint = register("tint", TintFaceProperty::new);
-	public static final FaceEntry<RefTintFaceProperty> refTint = register("refTint", RefTintFaceProperty::new);
 	public static final FaceEntry<RotationFaceProperty> rotation = register("rotation", RotationFaceProperty::new);
 	public static final FaceEntry<LayerFaceProperty> modelLayer = register("modelLayer", LayerFaceProperty::new);
 	public static final FaceEntry<BiomeTintFaceProperty> biomeTint = register("biomeTint", BiomeTintFaceProperty::new);

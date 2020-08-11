@@ -188,7 +188,10 @@ public class CaveGame extends MainApp
 		}
 
 		if (world != null)
+		{
+			mainRender.breakParticles.tick();
 			mainRender.particles.tick();
+		}
 
 		MainRender.t.clear();
 

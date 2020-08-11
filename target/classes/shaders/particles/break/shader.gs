@@ -4,10 +4,11 @@ layout (points) in;
 layout (triangle_strip, max_vertices = 24) out;
 
 in vec4 UV[];
-in float Size[];
+in float vSize[];
+in vec3 vColor[];
 
-out vec2 vTexture;
-out vec4 vColor;
+out vec2 gTexture;
+out vec4 gColor;
 
 uniform mat4 transformation;
 uniform mat4 projection;
@@ -19,13 +20,13 @@ void addVertex(float ox, float oy, float oz, mat4 mat);
 
 void main()
 {
-	float s = Size[0];
+	float s = vSize[0];
 	float minU = UV[0].x;
 	float maxU = UV[0].y;
 	float minV = UV[0].z;
 	float maxV = UV[0].w;
 
-	vec4 color = texture(sampler, vec2(minU, minV));
+	vec4 color = texture(sampler, vec2(minU, minV)) * vec4(vColor[0], 1.0);
 
 	if (color.a == 0) return;
 
@@ -33,7 +34,7 @@ void main()
 	mat4 mat = projection * view * transformation;
 
 	/* +Y */
-	vColor = color * vec4(colorMul, colorMul, colorMul, 1.0);
+	gColor = color * vec4(colorMul, colorMul, colorMul, 1.0);
 	addVertex(-s, s, -s, mat);
 	addVertex(-s, s, s, mat);
 	addVertex(s, s, -s, mat);
@@ -42,7 +43,7 @@ void main()
 
 	/* +Z */
 	colorMul = 0.8f;
-	vColor = color * vec4(colorMul, colorMul, colorMul, 1.0);
+	gColor = color * vec4(colorMul, colorMul, colorMul, 1.0);
 	addVertex(-s, -s, s, mat);
 	addVertex(s, -s, s, mat);
 	addVertex(-s, s, s, mat);
@@ -51,7 +52,7 @@ void main()
 
 	/* +X */
 	colorMul = 0.6f;
-	vColor = color * vec4(colorMul, colorMul, colorMul, 1.0);
+	gColor = color * vec4(colorMul, colorMul, colorMul, 1.0);
 	addVertex(s, -s, s, mat);
 	addVertex(s, -s, -s, mat);
 	addVertex(s, s, s, mat);
@@ -60,7 +61,7 @@ void main()
 
     /* -Y */
 	colorMul = 0.5f;
-	vColor = color * vec4(colorMul, colorMul, colorMul, 1.0);
+	gColor = color * vec4(colorMul, colorMul, colorMul, 1.0);
 	addVertex(-s, -s, s, mat);
 	addVertex(-s, -s, -s, mat);
 	addVertex(s, -s, s, mat);
@@ -69,7 +70,7 @@ void main()
 
 	/* -Z */
 	colorMul = 0.8f;
-	vColor = color * vec4(colorMul, colorMul, colorMul, 1.0);
+	gColor = color * vec4(colorMul, colorMul, colorMul, 1.0);
 	addVertex(s, -s, -s, mat);
 	addVertex(-s, -s, -s, mat);
 	addVertex(s, s, -s, mat);
@@ -78,7 +79,7 @@ void main()
 
 	/* -X */
 	colorMul = 0.6f;
-	vColor = color * vec4(colorMul, colorMul, colorMul, 1.0);
+	gColor = color * vec4(colorMul, colorMul, colorMul, 1.0);
 	addVertex(-s, -s, -s, mat);
 	addVertex(-s, -s, s, mat);
 	addVertex(-s, s, -s, mat);

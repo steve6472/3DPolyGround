@@ -63,6 +63,14 @@ public class BlockModelLoader
 		}
 	}
 
+	private static AABBf createAABB(JSONObject json)
+	{
+		JSONArray from = json.getJSONArray("from");
+		JSONArray to = json.getJSONArray("to");
+
+		return new AABBf(from.getFloat(0) / 16f, from.getFloat(1) / 16f, from.getFloat(2) / 16f, to.getFloat(0) / 16f, to.getFloat(1) / 16f, to.getFloat(2) / 16f);
+	}
+
 	private Cube[] loadCubes(JSONObject json, int rot)
 	{
 		if (!json.has("cubes"))
@@ -75,7 +83,7 @@ public class BlockModelLoader
 		for (int i = 0; i < array.length(); i++)
 		{
 			JSONObject c = array.getJSONObject(i);
-			AABBf aabb = JsonHelper.createAABB(c);
+			AABBf aabb = createAABB(c);
 
 			// Rotate cube
 			Matrix4f rotMat = new Matrix4f();

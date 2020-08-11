@@ -1,6 +1,7 @@
 package steve6472.polyground.world.generator.feature;
 
 import steve6472.polyground.block.Block;
+import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.world.World;
 import steve6472.polyground.world.generator.EnumPlacement;
 import steve6472.polyground.world.generator.IFeature;
@@ -13,9 +14,9 @@ import steve6472.polyground.world.generator.IFeature;
  ***********************/
 public class TreeFeature implements IFeature
 {
-	private final Block blockUnderMatch, log, leaves, blockUnder;
+	private final BlockState blockUnderMatch, log, leaves, blockUnder;
 
-	public TreeFeature(Block blockUnderMatch, Block log, Block leaves, Block blockUnder)
+	public TreeFeature(BlockState blockUnderMatch, BlockState log, BlockState leaves, BlockState blockUnder)
 	{
 		this.blockUnderMatch = blockUnderMatch;
 		this.log = log;
@@ -30,9 +31,9 @@ public class TreeFeature implements IFeature
 
 		for (int i = 0; i < h; i++)
 		{
-			world.setBlock(log, x, y + i + 1, z);
+			world.setState(log, x, y + i + 1, z);
 		}
-		world.setBlock(blockUnder, x, y, z);
+		world.setState(blockUnder, x, y, z);
 		for (int i = -2; i < 3; i++)
 		{
 			for (int j = -2; j < 3; j++)
@@ -42,7 +43,7 @@ public class TreeFeature implements IFeature
 					if (Math.abs(i) % 3 != 2 || Math.abs(j) % 3 != 2)
 					{
 						if (world.getBlock(x + i, y + h - 2 + k, z + j) == Block.air)
-							world.setBlock(leaves, x + i, y + h - 2 + k, z + j);
+							world.setState(leaves, x + i, y + h - 2 + k, z + j);
 					}
 				}
 			}
@@ -56,7 +57,7 @@ public class TreeFeature implements IFeature
 					if (Math.abs(i) % 2 != 1 || Math.abs(j) % 2 != 1)
 					{
 						if (world.getBlock(x + i, y + h + k, z + j) == Block.air)
-							world.setBlock(leaves, x + i, y + h + k, z + j);
+							world.setState(leaves, x + i, y + h + k, z + j);
 					}
 				}
 			}
@@ -72,8 +73,9 @@ public class TreeFeature implements IFeature
 	@Override
 	public boolean canGenerate(World world, int x, int y, int z)
 	{
-		if (world.getBlock(x, y, z) != blockUnderMatch)
+		if (world.getState(x, y, z) != blockUnderMatch)
 			return false;
+
 		for (int i = -2; i < 3; i++)
 		{
 			for (int j = -2; j < 3; j++)

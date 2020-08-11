@@ -1,5 +1,6 @@
 package steve6472.polyground.block.model.faceProperty;
 
+import org.joml.Vector3f;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -11,83 +12,53 @@ import org.json.JSONObject;
  ***********************/
 public class TintFaceProperty extends FaceProperty
 {
-	private float red, green, blue;
+	private Vector3f color;
 
 	public TintFaceProperty()
 	{
-		red = 1;
-		green = 1;
-		blue = 1;
-	}
-
-	public TintFaceProperty(JSONArray array)
-	{
-		red = array.getFloat(0) / 255f;
-		green = array.getFloat(1) / 255f;
-		blue = array.getFloat(2) / 255f;
-	}
-
-	public TintFaceProperty(float r, float g, float b)
-	{
-		red = r;
-		green = g;
-		blue = b;
+		color = new Vector3f(1, 1, 1);
 	}
 
 	@Override
 	public void loadFromJSON(JSONObject json)
 	{
 		JSONArray array = json.getJSONArray("tint");
-		red = array.getFloat(0) / 255f;
-		green = array.getFloat(1) / 255f;
-		blue = array.getFloat(2) / 255f;
+		color = new Vector3f(array.getFloat(0) / 255f, array.getFloat(1) / 255f, array.getFloat(2) / 255f);
 	}
 
 	@Override
 	public void saveToJSON(JSONObject faceJson)
 	{
 		JSONArray array = new JSONArray();
-		array.put(red * 255f);
-		array.put(green * 255f);
-		array.put(blue * 255f);
+		array.put(color.x * 255f);
+		array.put(color.y * 255f);
+		array.put(color.z * 255f);
 		faceJson.put("tint", array);
 	}
 
 	public float getRed()
 	{
-		return red;
-	}
-
-	public void setRed(float red)
-	{
-		this.red = red;
+		return color.x;
 	}
 
 	public float getGreen()
 	{
-		return green;
-	}
-
-	public void setGreen(float green)
-	{
-		this.green = green;
+		return color.y;
 	}
 
 	public float getBlue()
 	{
-		return blue;
+		return color.z;
 	}
 
-	public void setBlue(float blue)
+	public Vector3f getColor()
 	{
-		this.blue = blue;
+		return color;
 	}
 
 	public void setTint(float red, float green, float blue)
 	{
-		setRed(red);
-		setGreen(green);
-		setBlue(blue);
+		color.set(red, green, blue);
 	}
 
 	@Override
@@ -100,9 +71,7 @@ public class TintFaceProperty extends FaceProperty
 	public TintFaceProperty createCopy()
 	{
 		TintFaceProperty o = new TintFaceProperty();
-		o.red = red;
-		o.green = green;
-		o.blue = blue;
+		o.color = new Vector3f(color);
 		return o;
 	}
 }

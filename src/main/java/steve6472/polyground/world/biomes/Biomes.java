@@ -33,7 +33,7 @@ public class Biomes
 		.create());
 
 	public static final DataBiome DESERT_HILLS = addBiome(new DataBiome("desert_hills", Blocks.getDefaultState("sand"), Blocks.getDefaultState("sandstone"), Blocks.getDefaultState("stone"),
-		8, 4, 6, new Vector3f(183 / 255f, 212 / 255f, 80 / 255f), 0.7f, 0.05f, 15, 41)
+		8, 4, 6, new Vector3f(183 / 255f, 212 / 255f, 80 / 255f), 0.5f, 0.05f, 9, 33)
 		.altitude(0.65f).temperature(0.95f).weirdness(0f).humidity(-0.99f)
 
 		.feature(EnumFeatureStage.VEGETATION, 1 / 100d, new VegetationPatchFeature(Blocks.getDefaultState("sand"), Blocks.getDefaultState("small_grass"), 0.5, 2, true))
@@ -48,7 +48,7 @@ public class Biomes
 		.feature(EnumFeatureStage.LAND_ALTER, 1 / 3000d, new LakeFeature())
 		.feature(EnumFeatureStage.VEGETATION, 1 / 100d, new VegetationPatchFeature(Blocks.getDefaultState("grass"), Blocks.getDefaultState("small_grass"), 0.3, 2, true))
 		.feature(EnumFeatureStage.TREE, 1 / 200d, new BushFeature(Blocks.getBlockByName("grass"), Blocks.getBlockByName("oak_log"), Blocks.getBlockByName("oak_leaves")))
-		.feature(EnumFeatureStage.TREE, 1 / 5d, new TreeFeature(Blocks.getBlockByName("grass"), Blocks.getBlockByName("oak_log"), Blocks.getBlockByName("oak_leaves"), Blocks.getBlockByName("dirt")))
+		.feature(EnumFeatureStage.TREE, 1 / 5d, new TreeFeature(Blocks.getDefaultState("grass"), Blocks.getDefaultState("oak_log"), Blocks.getDefaultState("oak_leaves"), Blocks.getDefaultState("dirt")))
 
 		.create());
 
@@ -68,7 +68,7 @@ public class Biomes
 
 		.feature(EnumFeatureStage.VEGETATION, 1 / 120d, new VegetationPatchFeature(Blocks.getDefaultState("grass"), Blocks.getDefaultState("small_grass"), 0.75, 4, true))
 		.feature(EnumFeatureStage.VEGETATION, 1 / 120d, new VegetationPatchFeature(Blocks.getDefaultState("grass"), Blocks.getDefaultState("tall_grass"), 0.75, 4, true))
-		.feature(EnumFeatureStage.TREE, 1 / 300d, new TreeFeature(Blocks.getBlockByName("grass"), Blocks.getBlockByName("oak_log"), Blocks.getBlockByName("oak_leaves"), Blocks.getBlockByName("dirt")))
+		.feature(EnumFeatureStage.TREE, 1 / 300d, new TreeFeature(Blocks.getDefaultState("grass"), Blocks.getDefaultState("oak_log"), Blocks.getDefaultState("oak_leaves"), Blocks.getDefaultState("dirt")))
 		.feature(EnumFeatureStage.TOP_MODIFICATION, 1, new TopSnowFeature(Blocks.getDefaultState("grass"), Blocks.getBlockByName("snow_layer"), 0, 0))
 
 		.create());
@@ -81,7 +81,7 @@ public class Biomes
 
 			.altitude(0.1f).temperature(0.65f).weirdness(0.0f).humidity(0.05f)
 
-			.feature(EnumFeatureStage.TREE, 1f / 400, new TreeFeature(Blocks.getBlockByName("grass"), Blocks.getBlockByName("oak_log"), Blocks.getBlockByName("oak_leaves"), Blocks.getBlockByName("dirt")))
+			.feature(EnumFeatureStage.TREE, 1f / 400, new TreeFeature(Blocks.getDefaultState("grass"), Blocks.getDefaultState("oak_log"), Blocks.getDefaultState("oak_leaves"), Blocks.getDefaultState("dirt")))
 			.feature(EnumFeatureStage.VEGETATION, 1 / 100d, new VegetationPatchFeature(Blocks.getDefaultState("grass"), Blocks.getDefaultState("small_grass"), 0.5, 2, true))
 			.create());
 
@@ -90,18 +90,18 @@ public class Biomes
 		new DataBiome("savanna_plateau", Blocks.getDefaultState("grass"), Blocks.getDefaultState("dirt"), Blocks.getDefaultState("stone"),
 			14, 4, 6,
 			new Vector3f(120 / 255f, 190 / 255f, 60 / 255f),
-			0.3f, 0.003f, 30, 40)
+			0.3f, 0.003f, 23, 30)
 
 			.altitude(0.8f).temperature(0.60f).weirdness(0.3f).humidity(0f)
 
-			.feature(EnumFeatureStage.TREE, 1f / 400, new TreeFeature(Blocks.getBlockByName("grass"), Blocks.getBlockByName("oak_log"), Blocks.getBlockByName("oak_leaves"), Blocks.getBlockByName("dirt")))
+			.feature(EnumFeatureStage.TREE, 1f / 400, new TreeFeature(Blocks.getDefaultState("grass"), Blocks.getDefaultState("oak_log"), Blocks.getDefaultState("oak_leaves"), Blocks.getDefaultState("dirt")))
 			.feature(EnumFeatureStage.VEGETATION, 1 / 200d, new VegetationPatchFeature(Blocks.getDefaultState("grass"), Blocks.getDefaultState("small_grass"), 0.5, 2, true)).create());
 
 	public static final DataBiome MOUNTAINS = addBiome(new DataBiome("mountains", Blocks.getDefaultState("stone"), Blocks.getDefaultState("stone"), Blocks.getDefaultState("stone"),
-		12, 0, 3, new Vector3f(92 / 255f, 160 / 255f, 64 / 255f), 0.2f, 0.025f, 15, 55)
-		.altitude(1f).temperature(-0.5f).weirdness(0.0f).humidity(0.17f)
+		12, 0, 3, new Vector3f(92 / 255f, 160 / 255f, 64 / 255f), 0.2f, 0.025f, 15, 50)
+		.altitude(1f).temperature(0.1f).weirdness(0.0f).humidity(0.17f)
 
-		.feature(EnumFeatureStage.TOP_MODIFICATION, 1.0 / 555.5, new TileReplacePatchFeature(Blocks.getDefaultState("stone"), Blocks.getDefaultState("grass"), 0.9, 5, true, true))
+		.feature(EnumFeatureStage.TOP_MODIFICATION, 1.0 / 444.4, new TileReplacePatchFeature(Blocks.getDefaultState("stone"), Blocks.getDefaultState("grass"), 0.9, 5, true, true))
 		.create());
 
 

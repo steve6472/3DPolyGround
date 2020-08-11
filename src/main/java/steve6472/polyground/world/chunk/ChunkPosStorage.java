@@ -15,20 +15,27 @@ import java.util.List;
 public class ChunkPosStorage
 {
 	private List<Short> pos;
+	private List<Short> addPos;
+	private List<Short> removePos;
 
 	public ChunkPosStorage()
 	{
 		pos = new ArrayList<>();
+		addPos = new ArrayList<>();
+		removePos = new ArrayList<>();
 	}
 
-	public void addAll(List<Short> positions)
+	public void tick()
 	{
-		pos.addAll(positions);
+		pos.addAll(addPos);
+		addPos.clear();
+		pos.removeAll(removePos);
+		removePos.clear();
 	}
 
 	public void addAll(ChunkPosStorage positions)
 	{
-		pos.addAll(positions.getAll());
+		addPos.addAll(positions.getAll());
 	}
 
 	public List<Short> getAll()
@@ -39,19 +46,21 @@ public class ChunkPosStorage
 	public void clear()
 	{
 		pos.clear();
+		addPos.clear();
+		removePos.clear();
 	}
 
 	public void add(int x, int y, int z)
 	{
 		short r = (short) (x << 8 | y << 4 | z);
-		if (!pos.contains(r))
-			pos.add(r);
+		if (!pos.contains(r) && !addPos.contains(r))
+			addPos.add(r);
 	}
 
 	public void add(short r)
 	{
-		if (!pos.contains(r))
-			pos.add(r);
+		if (!addPos.contains(r) && !addPos.contains(r))
+			addPos.add(r);
 	}
 
 	public void addNonSafe(short r)
@@ -62,8 +71,8 @@ public class ChunkPosStorage
 	public void remove(int x, int y, int z)
 	{
 		short r = (short) (x << 8 | y << 4 | z);
-		if (pos.contains(r))
-			pos.remove((Short) r);
+		if (!removePos.contains(r) && pos.contains(r))
+			removePos.remove((Short) r);
 	}
 
 	public void set(int x, int y, int z, boolean flag)

@@ -17,4 +17,9 @@ public class Tags
 	 * Allow blocks like cactus to be placed on top of this block
 	 */
 	public static final String CACTUS_TOP = "cactus_top";
+
+	/**
+	 * Leaves around block with this tag set their distance to the closest log
+	 */
+	public static final String LOG = "log";
 }

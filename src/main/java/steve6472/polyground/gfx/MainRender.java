@@ -10,6 +10,7 @@ import steve6472.polyground.CaveGame;
 import steve6472.polyground.Frustum;
 import steve6472.polyground.PolyUtil;
 import steve6472.polyground.events.WorldEvent;
+import steve6472.polyground.gfx.particle.BreakParticleStorage;
 import steve6472.polyground.gfx.particle.ParticleStorage;
 import steve6472.polyground.gfx.shaders.Shaders;
 import steve6472.polyground.teleporter.Teleporter;
@@ -63,6 +64,7 @@ public class MainRender
 	public final CGSkybox skybox;
 	public final Frustum frustum;
 	public final ParticleStorage particles;
+	public final BreakParticleStorage breakParticles;
 	public final DialogManager dialogManager;
 
 	public ModelBuilder buildHelper, lazyBuildHelper;
@@ -91,6 +93,7 @@ public class MainRender
 		frustum = new Frustum();
 
 		particles = new ParticleStorage(this);
+		breakParticles = new BreakParticleStorage(this);
 		dialogManager = new DialogManager();
 
 		basicTess = new BasicTessellator(1000000);
@@ -264,6 +267,7 @@ public class MainRender
 			skybox.render(game.getCamera().getViewMatrix());
 		}
 
+		breakParticles.render();
 		particles.render();
 	}
 

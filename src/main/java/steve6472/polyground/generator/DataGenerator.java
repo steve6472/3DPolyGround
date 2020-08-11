@@ -5,9 +5,7 @@ import steve6472.polyground.block.Tags;
 import steve6472.polyground.block.properties.enums.EnumAxis;
 import steve6472.polyground.block.properties.enums.EnumHalf;
 import steve6472.polyground.block.properties.enums.EnumSlabType;
-import steve6472.polyground.block.special.DoubleBlock;
-import steve6472.polyground.block.special.SlabBlock;
-import steve6472.polyground.block.special.StalaBlock;
+import steve6472.polyground.block.special.*;
 import steve6472.polyground.block.states.States;
 import steve6472.polyground.generator.models.*;
 import steve6472.polyground.generator.special.SimpleSpecial;
@@ -16,6 +14,7 @@ import steve6472.polyground.generator.state.StateBuilder;
 import steve6472.polyground.world.chunk.ModelLayer;
 
 import java.io.File;
+import java.util.function.BiFunction;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
@@ -77,6 +76,28 @@ public class DataGenerator
 	public void generateDebug()
 	{
 		createFolders();
+
+		BiFunction<Boolean, Integer, PropertyBuilder> leavesProperty = (b, i) -> PropertyBuilder.create().addProperty(LeavesBlock.PERSISTENT, b).addProperty(LeavesBlock.DISTANCE, i);
+		BiFunction<Boolean, Integer, BlockModelBuilder> leavesModel = (b, i) -> BlockModelBuilder.create("leaves" + (b ? "_persistent" : "") + "_" + i).addCube(CubeBuilder.create().fullBlock().face(FaceBuilder.create().texture("number/" + i).biomeTint(b)));
+
+		DataBuilder.create().fullBlock("visual_leaves")
+			.blockSpecial(new SimpleSpecial("leaves"))
+			.blockState(StateBuilder.create()
+				.addState(leavesProperty.apply(false, 1), leavesModel.apply(false, 1))
+				.addState(leavesProperty.apply(false, 2), leavesModel.apply(false, 2))
+				.addState(leavesProperty.apply(false, 3), leavesModel.apply(false, 3))
+				.addState(leavesProperty.apply(false, 4), leavesModel.apply(false, 4))
+				.addState(leavesProperty.apply(false, 5), leavesModel.apply(false, 5))
+				.addState(leavesProperty.apply(false, 6), leavesModel.apply(false, 6))
+				.addState(leavesProperty.apply(false, 7), leavesModel.apply(false, 7))
+				.addState(leavesProperty.apply(true, 1), leavesModel.apply(true, 1))
+				.addState(leavesProperty.apply(true, 2), leavesModel.apply(true, 2))
+				.addState(leavesProperty.apply(true, 3), leavesModel.apply(true, 3))
+				.addState(leavesProperty.apply(true, 4), leavesModel.apply(true, 4))
+				.addState(leavesProperty.apply(true, 5), leavesModel.apply(true, 5))
+				.addState(leavesProperty.apply(true, 6), leavesModel.apply(true, 6))
+				.addState(leavesProperty.apply(true, 7), leavesModel.apply(true, 7))
+			).generate();
 
 //		DataBuilder.create().torch("slime_torch", true).blockSpecial(new SimpleSpecial("state_test")).itemModel(new ItemFromTexture("slime_torch")).generate();
 	}
@@ -143,8 +164,16 @@ public class DataGenerator
 		DataBuilder.create().slab("cobblestone_slab", "cobblestone").generate();
 		DataBuilder.create().slab("brick_slab", "bricks").generate();
 
-		DataBuilder.create().pillarBlock("oak_log", "oak_log_side", "oak_log").generate();
-		DataBuilder.create().pillarBlock("crystal_log", "crystal_log_side", "crystal_log").generate();
+		DataBuilder.create().pillarBlock("oak_log", "oak_log_side", "oak_log")
+			.addTagToState().with(PilliarBlock.AXIS, EnumAxis.X).finish(Tags.LOG)
+			.addTagToState().with(PilliarBlock.AXIS, EnumAxis.Y).finish(Tags.LOG)
+			.addTagToState().with(PilliarBlock.AXIS, EnumAxis.Z).finish(Tags.LOG)
+			.generate();
+		DataBuilder.create().pillarBlock("crystal_log", "crystal_log_side", "crystal_log")
+			.addTagToState().with(PilliarBlock.AXIS, EnumAxis.X).finish(Tags.LOG)
+			.addTagToState().with(PilliarBlock.AXIS, EnumAxis.Y).finish(Tags.LOG)
+			.addTagToState().with(PilliarBlock.AXIS, EnumAxis.Z).finish(Tags.LOG)
+			.generate();
 
 		stala("stone_stala", "stone", "stone").generate();
 		stala("granite_stala", "granite", "granite").generate();
@@ -253,7 +282,7 @@ public class DataGenerator
 				BlockModelBuilder.create("grass")
 					.addCube(CubeBuilder.create()
 						.fullBlock()
-						.face(FaceBuilder.create().texture("dirt")))
+						.face(FaceBuilder.create().texture("dirt"), EnumFace.NORTH, EnumFace.EAST, EnumFace.SOUTH, EnumFace.WEST, EnumFace.DOWN))
 					.addCube(CubeBuilder.create()
 						.fullBlock()
 						.hitbox(false)

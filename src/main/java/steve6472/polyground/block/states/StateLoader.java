@@ -35,13 +35,17 @@ public class StateLoader
 		}
 
 
-		JSONArray array = blockstates.getJSONArray("models");
-
-		Map<JSONObject, JSONObject> models = new HashMap<>(array.length());
-		for (int i = 0; i < array.length(); i++)
+		Map<JSONObject, JSONObject> models = null;
+		if (blockstates.has("models"))
 		{
-			JSONObject m = array.getJSONObject(i);
-			models.put(m.getJSONObject("state"), m);
+			JSONArray array = blockstates.getJSONArray("models");
+
+			models = new HashMap<>(array.length());
+			for (int i = 0; i < array.length(); i++)
+			{
+				JSONObject m = array.getJSONObject(i);
+				models.put(m.getJSONObject("state"), m);
+			}
 		}
 
 		// Generate all possible state values
@@ -88,32 +92,39 @@ public class StateLoader
 			int rotation = 0;
 			JSONArray tags = null;
 
-			for (JSONObject j : models.keySet())
+			if (models == null)
 			{
-				boolean match = true;
-				for (IProperty<?> p : map.keySet())
+				modelPath = blockstates.getString("model");
+			} else
+			{
+				for (JSONObject j : models.keySet())
 				{
-					if (j.has(p.getName()))
+					boolean match = true;
+					for (IProperty<?> p : map.keySet())
 					{
-						if (p instanceof EnumProperty e)
+						if (j.has(p.getName()))
 						{
-							if (map.get(p) != j.getEnum(e.getClazz(), p.getName()))
-								match = false;
-						} else
-						{
-							if (map.get(p) != j.get(p.getName()))
-								match = false;
+							if (p instanceof EnumProperty e)
+							{
+								if (map.get(p) != j.getEnum(e.getClazz(), p.getName()))
+									match = false;
+							} else
+							{
+								if (map.get(p) != j.get(p.getName()))
+									match = false;
+							}
 						}
 					}
-				}
-				if (match)
-				{
-					modelPath = models.get(j).getString("model");
-					rotation = models.get(j).optInt("rotation");
-					tags = models.get(j).optJSONArray("tags");
-					break;
+					if (match)
+					{
+						modelPath = models.get(j).getString("model");
+						rotation = models.get(j).optInt("rotation");
+						tags = models.get(j).optJSONArray("tags");
+						break;
+					}
 				}
 			}
+
 
 			try
 			{

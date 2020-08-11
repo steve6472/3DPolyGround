@@ -130,11 +130,11 @@ public class DropBlock extends Block
 			//			0),
 			new Vector3f(x + i + pixel, y + j + pixel, z + k + pixel), pixel,
 			//			Util.getRandomFloat(1f / 16f / 1.5f, 1f / 16f / 2f),
-			new Vector4f(minU, 0, minV, 0), 8500);
+			new Vector4f(minU, 0, minV, 0), new Vector3f(1, 1, 1), 8500);
 
 		//		p.setGrowingSpeed(-1f / 16f / 8f / 60f);
 
-		world.getGame().mainRender.particles.addParticle(p);
+		world.getGame().mainRender.breakParticles.addParticle(p);
 	}
 
 	@Override

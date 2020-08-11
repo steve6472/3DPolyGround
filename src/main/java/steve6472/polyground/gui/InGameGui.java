@@ -119,7 +119,7 @@ public class InGameGui extends Gui implements IGamePause
 			sb.append("Side: ").append(main.hitPicker.getHitResult().getFace()).append("\n");
 		}
 
-		sb.append("Particles: ").append(main.mainRender.particles.count()).append("\n");
+		sb.append("Particles: ").append(main.mainRender.particles.count() + main.mainRender.breakParticles.count()).append("\n");
 		sb.append("Chunks: ").append(chunks).append("/").append(chunkLayers).append("\n");
 		sb.append("Water Active Chunks: ").append(waterActive).append("\n");
 

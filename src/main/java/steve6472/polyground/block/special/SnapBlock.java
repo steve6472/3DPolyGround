@@ -50,6 +50,8 @@ public class SnapBlock extends Block
 		float size = BlockTextureHolder.getAtlas().getTileCount();
 		float s = 1f / 16f / size;
 
+		Vector3f biomeColor = world.getBiome(x, y, z).getColor();
+
 		//s - TY / size + s * 14f
 		for (Cube c : state.getBlockModel().getCubes())
 		{
@@ -61,9 +63,9 @@ public class SnapBlock extends Block
 					{
 						float ty = s - j / size + s * 14f;
 						if (cf == c.getFace(EnumFace.WEST))
-							snap(world, cf, i, j, c.getAabb().minZ, x, y, z, s - i / size + s * 14f, ty);
+							snap(world, cf, i, j, c.getAabb().minZ, x, y, z, s - i / size + s * 14f, ty, biomeColor);
 						if (cf == c.getFace(EnumFace.EAST))
-							snap(world, cf, i, j, c.getAabb().maxZ - 1f / 16f, x, y, z, i / size, ty);
+							snap(world, cf, i, j, c.getAabb().maxZ - 1f / 16f, x, y, z, i / size, ty, biomeColor);
 					}
 				}
 			}
@@ -78,13 +80,12 @@ public class SnapBlock extends Block
 						//s - TY / size + s * 14f
 						float ty = s - j / size + s * 14f;
 						if (cf == c.getFace(EnumFace.DOWN))
-							snap(world, cf, i, c.getAabb().minY, j, x, y, z, i / size, ty);
+							snap(world, cf, i, c.getAabb().minY, j, x, y, z, i / size, ty, biomeColor);
 						if (cf == c.getFace(EnumFace.UP))
-							snap(world, cf, i, c.getAabb().maxY - 1f / 16f, j, x, y, z, i / size, ty);
+							snap(world, cf, i, c.getAabb().maxY - 1f / 16f, j, x, y, z, i / size, ty, biomeColor);
 					}
 				}
 			}
-
 
 			for (float i = c.getAabb().minZ; i < c.getAabb().maxZ; i += 1f / 16f)
 			{
@@ -94,17 +95,19 @@ public class SnapBlock extends Block
 					{
 						float ty = s - j / size + s * 14f;
 						if (cf == c.getFace(EnumFace.NORTH))
-							snap(world, cf, c.getAabb().maxX - 1f / 16f, j, i, x, y, z, s - i / size + s * 14f, ty);
+							snap(world, cf, c.getAabb().maxX - 1f / 16f, j, i, x, y, z, s - i / size + s * 14f, ty, biomeColor);
 						if (cf == c.getFace(EnumFace.SOUTH))
-							snap(world, cf, c.getAabb().minX, j, i, x, y, z, i / size, ty);
+							snap(world, cf, c.getAabb().minX, j, i, x, y, z, i / size, ty, biomeColor);
 					}
 				}
 			}
 		}
 	}
 
+	private static final Vector3f NO_COLOR = new Vector3f(1, 1, 1);
+
 	// TODO: fix rotations
-	public static void snap(World world, CubeFace cf, float i, float j, float k, int x, int y, int z, float TX, float TY)
+	public static void snap(World world, CubeFace cf, float i, float j, float k, int x, int y, int z, float TX, float TY, Vector3f biomeColor)
 	{
 		if (cf == null)
 			return;
@@ -126,17 +129,20 @@ public class SnapBlock extends Block
 
 		float pixel = 1f / 16f / 2f;
 
+		Vector3f color = NO_COLOR;
+		if (cf.hasProperty(FaceRegistry.biomeTint) && cf.getProperty(FaceRegistry.biomeTint).isFlag())
+			color = biomeColor;
+		else if (cf.hasProperty(FaceRegistry.tint))
+			color = cf.getProperty(FaceRegistry.tint).getColor();
+
 		BreakParticle p = new BreakParticle(new Vector3f(RandomUtil.randomFloat(-0.01f, 0.01f), RandomUtil.randomFloat(-0.01f, 0.01f), RandomUtil.randomFloat(-0.01f, 0.01f)),
-			//			0,
-			//			0,
-			//			0),
 			new Vector3f(x + i + pixel, y + j + pixel, z + k + pixel), pixel,
 			//			RandomUtil.randomFloat(1f / 16f / 1.5f, 1f / 16f / 2f),
-			new Vector4f(minU, 0, minV, 0), 10000);
+			new Vector4f(minU, 0, minV, 0), color, 10000);
 
 		//		p.setGrowingSpeed(-1f / 16f / 8f / 60f);
 		p.setGrowingSpeed(-1f / 16f / 8f / 5f);
 
-		world.getGame().mainRender.particles.addParticle(p);
+		world.getGame().mainRender.breakParticles.addParticle(p);
 	}
 }

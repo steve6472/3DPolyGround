@@ -67,12 +67,13 @@ public class SubChunk implements IBiomeProvider
 
 	public void tick()
 	{
+		tickableBlocks.tick();
 		if (!tickableBlocks.isEmpty())
 		{
 			tickableBlocks.iterate((x, y, z) ->
 			{
 				BlockState blockToTick = blocks.getStates()[x][y][z];
-				blockToTick.getBlock().tick(blockToTick, getWorld(), x, y, z);
+				blockToTick.getBlock().tick(blockToTick, getWorld(), x + getX() * 16, y + getLayer() * 16, z + getZ() * 16);
 			});
 		}
 

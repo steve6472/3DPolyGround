@@ -45,31 +45,34 @@ public class Blocks
 
 		int systemBlocks = 2;
 
-		for (int i = 0; i < Objects.requireNonNull(blocksFile).length; i++)
+		if (blocksFile != null)
 		{
-			if (blocksFile[i].isDirectory())
-				continue;
-
-			SSS t = new SSS(blocksFile[i]);
-			Block block;
-
-			if (t.containsName("special") && SpecialBlockRegistry.getKeys().contains(t.getString("special")))
+			for (int i = 0; i < Objects.requireNonNull(blocksFile).length; i++)
 			{
-				block = SpecialBlockRegistry.createSpecialBlock(t.getString("special"), blocksFile[i]);
-			} else
-			{
-				block = new Block(blocksFile[i]);
-			}
+				if (blocksFile[i].isDirectory())
+					continue;
 
-			game.getEventHandler().register(block);
+				SSS t = new SSS(blocksFile[i]);
+				Block block;
 
-			if (!reference.containsKey(block.getName()))
-			{
-				tempBlocks.add(block);
-				reference.put(block.getName(), i + systemBlocks);
-			} else
-			{
-				throw new IllegalArgumentException("Duplicate block name " + block.getName());
+				if (t.containsName("special") && SpecialBlockRegistry.getKeys().contains(t.getString("special")))
+				{
+					block = SpecialBlockRegistry.createSpecialBlock(t.getString("special"), blocksFile[i]);
+				} else
+				{
+					block = new Block(blocksFile[i]);
+				}
+
+				game.getEventHandler().register(block);
+
+				if (!reference.containsKey(block.getName()))
+				{
+					tempBlocks.add(block);
+					reference.put(block.getName(), i + systemBlocks);
+				} else
+				{
+					throw new IllegalArgumentException("Duplicate block name " + block.getName());
+				}
 			}
 		}
 
@@ -107,20 +110,17 @@ public class Blocks
 		game.mainRender.buildHelper.texel = 1f / (float) BlockTextureHolder.getAtlas().getTileCount();
 	}
 
-	public static int getBlockIdByName(String name)
-	{
-		return reference.get(name);
-	}
-
 	public static Block getBlockByName(String name)
 	{
-		int ref = reference.get(name);
+		Integer ref = reference.get(name);
+		if (ref == null)
+			return Block.error;
 		return blocks[ref];
 	}
 
-	public static BlockState getDefaultState(String blockName)
+	public static BlockState getDefaultState(String name)
 	{
-		return getBlockByName(blockName).getDefaultState();
+		return getBlockByName(name).getDefaultState();
 	}
 
 	public static BlockState getStateByName(String name, String states)

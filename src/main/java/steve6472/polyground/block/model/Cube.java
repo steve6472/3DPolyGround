@@ -31,22 +31,6 @@ public class Cube
 		isCollisionBox = json.optBoolean("isCollisionBox", true);
 	}
 
-	public void loadFromParent(JSONObject json, Cube parentCube)
-	{
-		if (json.has("textures"))
-		{
-			JsonHelper.loadParentTextures(json, parentCube);
-		}
-
-		if (json.has("tints"))
-		{
-			JsonHelper.loadParentTints(json, parentCube);
-		}
-
-		parentCube.isHitbox = json.optBoolean("isHitbox", true);
-		parentCube.isCollisionBox = json.optBoolean("isCollisionBox", true);
-	}
-
 	public void setAabb(AABBf aabb)
 	{
 		this.aabb = aabb;
