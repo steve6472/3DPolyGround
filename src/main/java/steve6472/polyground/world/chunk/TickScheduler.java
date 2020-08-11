@@ -1,6 +1,7 @@
 package steve6472.polyground.world.chunk;
 
 import steve6472.polyground.EnumFace;
+import steve6472.polyground.block.Block;
 import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.world.World;
 
@@ -16,7 +17,6 @@ import java.util.List;
 public class TickScheduler
 {
 	private final World world;
-	//TODO: replace with hashset
 	private final List<ScheduledTick> ticks;
 	private final List<ScheduledTick> newTicks;
 	private int ticksScheduled = 0;
@@ -48,8 +48,8 @@ public class TickScheduler
 
 	public void scheduleTick(BlockState state, int x, int y, int z, int tickIn)
 	{
-//		if (state == null || state.getBlock() == Block.air)
-//			return;
+		if (state == null || state.getBlock() == Block.air)
+			return;
 
 		ticksScheduled++;
 		if (ticksScheduled < 4096)
