@@ -34,6 +34,7 @@ public class DataBuilder
 	private String blockToPlace;
 	private String blockName, itemName;
 	private String itemModelPath;
+	private boolean debug = false;
 	public StateBuilder blockState;
 
 	public static DataBuilder create()
@@ -49,6 +50,12 @@ public class DataBuilder
 	public DataBuilder blockState(StateBuilder state)
 	{
 		this.blockState = state;
+		return this;
+	}
+
+	public DataBuilder debug()
+	{
+		this.debug = true;
 		return this;
 	}
 
@@ -533,21 +540,6 @@ public class DataBuilder
 		return this;
 	}*/
 
-	public DataBuilder slabItem(String name, String top, String bottom, String both)
-	{
-		itemSpecial = SpecialBuilder.create("slab")
-			.addValue("top", top)
-			.addValue("bottom", bottom)
-			.addValue("both", both)
-			.build();
-
-		itemModel = new ItemFromBlock(bottom);
-		itemName = name;
-		blockToPlace = bottom;
-
-		return this;
-	}
-
 	/*
 	 * Generation
 	 */
@@ -579,7 +571,10 @@ public class DataBuilder
 	{
 		System.out.println("Generating item " + itemName);
 		File item = new File(DataGenerator.ITEMS, itemName + ".txt");
-		item.createNewFile();
+		if (item.createNewFile())
+		{
+			System.out.println("Created item " + item.getPath());
+		}
 
 		SSS sss = new SSS(item);
 		sss.clear();
@@ -591,6 +586,8 @@ public class DataBuilder
 			sss.add("special", itemSpecial.getName());
 			itemSpecial.generate(sss);
 		}
+		if (debug)
+			sss.add("debug", true);
 
 		if (blockToPlace != null)
 		{
@@ -620,7 +617,10 @@ public class DataBuilder
 	{
 		System.out.println("Generating block " + blockName);
 		File block = new File(DataGenerator.BLOCKS, blockName + ".txt");
-		block.createNewFile();
+		if (block.createNewFile())
+		{
+			System.out.println("Created block " + block.getPath());
+		}
 
 		SSS sss = new SSS(block);
 		sss.clear();
@@ -632,6 +632,8 @@ public class DataBuilder
 			sss.add("special", blockSpecial.getName());
 			blockSpecial.generate(sss);
 		}
+		if (debug)
+			sss.add("debug", true);
 
 		sss.save(block);
 

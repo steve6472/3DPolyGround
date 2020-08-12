@@ -97,7 +97,7 @@ public class DataGenerator
 				.addState(leavesProperty.apply(true, 5), leavesModel.apply(true, 5))
 				.addState(leavesProperty.apply(true, 6), leavesModel.apply(true, 6))
 				.addState(leavesProperty.apply(true, 7), leavesModel.apply(true, 7))
-			).generate();
+			).debug().generate();
 
 //		DataBuilder.create().torch("slime_torch", true).blockSpecial(new SimpleSpecial("state_test")).itemModel(new ItemFromTexture("slime_torch")).generate();
 	}

@@ -16,7 +16,7 @@ import java.util.Objects;
  * Project: SJP
  *
  ***********************/
-public class ItemRegistry
+public class Items
 {
 	private static HashMap<String, Item> items;
 	private static HashMap<Integer, String> reference;
@@ -28,9 +28,9 @@ public class ItemRegistry
 		//		File[] blocks = new File("items").listFiles();
 
 		reference = new HashMap<>();
-		ItemRegistry.items = new HashMap<>();
+		Items.items = new HashMap<>();
 
-		ItemRegistry.items.put("air", Item.createAir());
+		Items.items.put("air", Item.createAir());
 		reference.put(0, "air");
 
 		for (int i = 0; i < Objects.requireNonNull(items).length; i++)
@@ -40,6 +40,9 @@ public class ItemRegistry
 
 			SSS t = new SSS(items[i]);
 			Item item;
+
+			if (t.containsName("debug") && t.getBoolean("debug") && !CaveGame.DEBUG)
+				continue;
 
 			if (t.containsName("special") && SpecialItemRegistry.getKeys().contains(t.getString("special")))
 			{
@@ -51,9 +54,9 @@ public class ItemRegistry
 
 			pg.getEventHandler().register(item);
 
-			if (!ItemRegistry.items.containsKey(item.getName()) && !reference.containsKey(i + 1))
+			if (!Items.items.containsKey(item.getName()) && !reference.containsKey(i + 1))
 			{
-				ItemRegistry.items.put(item.getName(), item);
+				Items.items.put(item.getName(), item);
 				reference.put(i + 1, item.getName());
 			} else
 			{

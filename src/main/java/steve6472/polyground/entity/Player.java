@@ -7,7 +7,7 @@ import steve6472.polyground.EnumFace;
 import steve6472.polyground.HitResult;
 import steve6472.polyground.block.Block;
 import steve6472.polyground.block.states.BlockState;
-import steve6472.polyground.registry.ItemRegistry;
+import steve6472.polyground.registry.Items;
 import steve6472.polyground.world.World;
 import steve6472.sge.main.KeyList;
 import steve6472.sge.main.events.Event;
@@ -281,9 +281,9 @@ public class Player implements IMotion3f, IPosition3f
 				HitResult hr = game.hitPicker.getHitResult();
 				Block block = game.world.getBlock(hr.getX(), hr.getY(), hr.getZ());
 
-				if (ItemRegistry.getItemByName(block.getName()) != null)
+				if (Items.getItemByName(block.getName()) != null)
 				{
-					CaveGame.itemInHand = ItemRegistry.getItemByName(block.getName());
+					CaveGame.itemInHand = Items.getItemByName(block.getName());
 				}
 			}
 		}

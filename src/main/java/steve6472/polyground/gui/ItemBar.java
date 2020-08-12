@@ -5,7 +5,7 @@ import steve6472.polyground.gfx.MainRender;
 import steve6472.polyground.gfx.shaders.ItemTextureShader;
 import steve6472.polyground.item.Item;
 import steve6472.polyground.item.ItemAtlas;
-import steve6472.polyground.registry.ItemRegistry;
+import steve6472.polyground.registry.Items;
 import steve6472.polyground.tessellators.ItemTextureTessellator;
 import steve6472.sge.gfx.Sprite;
 import steve6472.sge.gfx.SpriteRender;
@@ -54,10 +54,10 @@ public class ItemBar extends Component
 
 		for (int i = 0; ; i++)
 		{
-			if (i < 0 || i > ItemRegistry.getAllItems().size())
+			if (i < 0 || i > Items.getAllItems().size())
 				break;
 
-			Item item = ItemRegistry.getItemById(i + 1); // Ignore air
+			Item item = Items.getItemById(i + 1); // Ignore air
 
 			if (item == null)
 				continue;
@@ -78,7 +78,7 @@ public class ItemBar extends Component
 		itemTextureTessellator.draw(Tessellator.TRIANGLES);
 		itemTextureTessellator.disable(0, 1, 2);
 
-		CaveGame.itemInHand = ItemRegistry.getItemById(scroll + 1);
+		CaveGame.itemInHand = Items.getItemById(scroll + 1);
 
 		Font.renderCustom(getMain().getWidth() - Font.getTextWidth(CaveGame.itemInHand.getName(), 1) - 5, 5, 1f, CaveGame.itemInHand.getName());
 	}
@@ -93,8 +93,8 @@ public class ItemBar extends Component
 
 		if (scroll < 0)
 			scroll = 0;
-		if (scroll >= ItemRegistry.getAllItems().size() - 1)
-			scroll = ItemRegistry.getAllItems().size() - 2;
+		if (scroll >= Items.getAllItems().size() - 1)
+			scroll = Items.getAllItems().size() - 2;
 	}
 
 	private void renderItem(int x, int y, int w, int h, int index)

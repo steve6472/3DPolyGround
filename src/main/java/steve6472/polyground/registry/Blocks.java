@@ -55,6 +55,9 @@ public class Blocks
 				SSS t = new SSS(blocksFile[i]);
 				Block block;
 
+				if (t.containsName("debug") && t.getBoolean("debug") && !CaveGame.DEBUG)
+					continue;
+
 				if (t.containsName("special") && SpecialBlockRegistry.getKeys().contains(t.getString("special")))
 				{
 					block = SpecialBlockRegistry.createSpecialBlock(t.getString("special"), blocksFile[i]);

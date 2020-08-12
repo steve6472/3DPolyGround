@@ -16,7 +16,7 @@ import steve6472.polyground.item.Item;
 import steve6472.polyground.item.ItemAtlas;
 import steve6472.polyground.registry.Blocks;
 import steve6472.polyground.registry.CommandRegistry;
-import steve6472.polyground.registry.ItemRegistry;
+import steve6472.polyground.registry.Items;
 import steve6472.polyground.registry.WaterRegistry;
 import steve6472.polyground.rift.RiftManager;
 import steve6472.polyground.world.World;
@@ -47,6 +47,7 @@ public class CaveGame extends MainApp
 {
 	private static CaveGame instance;
 	public static long MAIN_THREAD;
+	public static boolean DEBUG = false;
 
 	/* Game objects */
 	public static Item itemInHand;
@@ -95,9 +96,9 @@ public class CaveGame extends MainApp
 		commandRegistry = new CommandRegistry();
 
 		itemAtlas = new ItemAtlas(this);
-		ItemRegistry.register(this);
+		Items.register(this);
 
-		itemInHand = ItemRegistry.getItemByName("stone");
+		itemInHand = Items.getItemByName("stone");
 
 		getEventHandler().runEvent(new WindowSizeEvent(getWindowWidth(), getWindowHeight()));
 
@@ -421,9 +422,18 @@ public class CaveGame extends MainApp
 
 		//		System.setProperty("debug_conditions", "true");
 
-		if (args.length == 1)
-			if (args[0].equals("-generators"))
+		boolean generators = false;
+
+		for (String arg : args)
+		{
+			if (generators = arg.equals("-generators"))
 				new DataGenerator().generate();
+			if (arg.equals("-debug"))
+				DEBUG = true;
+		}
+
+		if (DEBUG && generators)
+			new DataGenerator().generateDebug();
 
 		new CaveGame();
 	}
