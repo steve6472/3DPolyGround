@@ -38,7 +38,10 @@ public class BreakParticleStorage
 		particles.removeIf(p -> {
 			boolean isDead = isDead(p);
 			if (!isDead)
+			{
 				p.tick();
+				count++;
+			}
 
 			return isDead;
 		});

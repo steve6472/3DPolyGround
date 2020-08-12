@@ -3,6 +3,7 @@ package steve6472.polyground.world;
 import org.joml.AABBf;
 import org.joml.Matrix4f;
 import steve6472.polyground.CaveGame;
+import steve6472.polyground.EnumFace;
 import steve6472.polyground.block.BlockTextureHolder;
 import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.entity.EntityManager;
@@ -32,6 +33,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.Random;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.function.Function;
 
 import static org.lwjgl.opengl.GL11.glDrawArrays;
@@ -88,6 +91,7 @@ public class World implements IBlockProvider
 		//
 		//		if (worldName == null)
 		//			addChunk(new Chunk(0, 0, this).generate(), false);
+		offThreadTicks = new LinkedBlockingQueue<>();
 	}
 
 	public void tick(ThreadedModelBuilder builder)
@@ -100,6 +104,17 @@ public class World implements IBlockProvider
 		reachedMax = false;
 		currentWaterTickIndex = 0;
 		InGameGui.waterActive = 0;
+
+		while(!offThreadTicks.isEmpty())
+		{
+			try
+			{
+				tickScheduler.scheduleTick(offThreadTicks.take());
+			} catch (InterruptedException e)
+			{
+				e.printStackTrace();
+			}
+		}
 		tickScheduler.tick();
 
 		for (Chunk chunk : chunks.getMap().values())
@@ -115,15 +130,32 @@ public class World implements IBlockProvider
 		entityManager.tick();
 	}
 
-	public void scheduleUpdate(BlockState state, int x, int y, int z, int tickIn)
+	private BlockingQueue<TickScheduler.ScheduledTick> offThreadTicks;
+
+	public void scheduleUpdate(BlockState state, EnumFace from, int x, int y, int z, int tickIn)
 	{
-		tickScheduler.scheduleTick(state, x, y, z, tickIn);
+		if (Thread.currentThread().getName().equals("Generator"))
+		{
+			offThreadTicks.add(new TickScheduler.ScheduledTick(x, y, z, state, from, tickIn));
+		} else
+			tickScheduler.scheduleTick(state, from, x, y, z, tickIn);
 	}
 
-	public void scheduleUpdate(int x, int y, int z, int tickIn)
+	public int scheduledTicks()
 	{
-		tickScheduler.scheduleTick(getState(x, y, z), x, y, z, tickIn);
+		return tickScheduler.scheduledTicks();
 	}
+
+	public int scheduledTicks_()
+	{
+		return tickScheduler.scheduledTicks_();
+	}
+
+
+//	public void scheduleUpdate(int x, int y, int z, int tickIn)
+//	{
+//		tickScheduler.scheduleTick(getState(x, y, z), from, x, y, z, tickIn);
+//	}
 
 	private void generateInRadius(int generateDistance)
 	{

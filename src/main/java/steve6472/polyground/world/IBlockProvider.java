@@ -74,7 +74,10 @@ public interface IBlockProvider extends IChunkProvider
 			SubChunk sc = c.getSubChunk(y / 16);
 
 			BlockState oldState = sc.getState(cx, cy, cz);
-			boolean shouldRebuild = (flags & 2) == 0 && oldState != state;
+			if (oldState == state)
+				return;
+
+			boolean shouldRebuild = (flags & 2) == 0;
 			if (shouldRebuild)
 			{
 //				sc.rebuild();
@@ -106,7 +109,7 @@ public interface IBlockProvider extends IChunkProvider
 					for (EnumFace face : EnumFace.getFaces())
 					{
 						BlockState stateToUpdate = getWorld().getState(x + face.getXOffset(), y + face.getYOffset(), z + face.getZOffset());
-						stateToUpdate.getBlock().update(stateToUpdate, getWorld(), face.getOpposite(), x + face.getXOffset(), y + face.getYOffset(), z + face.getZOffset());
+						stateToUpdate.getBlock().neighbourChange(stateToUpdate, getWorld(), face.getOpposite(), x + face.getXOffset(), y + face.getYOffset(), z + face.getZOffset());
 					}
 				}
 			}

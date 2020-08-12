@@ -72,7 +72,7 @@ public class SnowLayerBlock extends CustomBlock
 			int width = state.get(SNOW_LAYER);
 			if (width > 1)
 			{
-				SnapBlock.activate(state, world, x, y, z);
+				SnapBlock.activate(state, world, x, y, z, 1);
 				world.setState(state.with(SNOW_LAYER, width - 1).get(), x, y, z);
 				player.processNextBlockBreak = false;
 			}

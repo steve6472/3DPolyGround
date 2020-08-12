@@ -31,12 +31,12 @@ public class DoubleBlock extends CustomBlock
 	}
 
 	@Override
-	public void update(BlockState state, World world, EnumFace updateFrom, int x, int y, int z)
+	public void neighbourChange(BlockState state, World world, EnumFace updateFrom, int x, int y, int z)
 	{
 		boolean isValid = isValidPosition(state, world, x, y, z);
 		if (!isValid)
 		{
-			SnapBlock.activate(state, world, x, y, z);
+			SnapBlock.activate(state, world, x, y, z, 1);
 			world.setBlock(Block.air, x, y, z);
 		}
 	}
@@ -73,7 +73,7 @@ public class DoubleBlock extends CustomBlock
 		super.onPlayerBreak(state, world, player, breakedFrom, x, y, z);
 
 		int Y = (state.get(HALF) == EnumHalf.BOTTOM ? 1 : -1);
-		SnapBlock.activate(world.getState(x, y + Y, z), world, x, y + Y, z);
+		SnapBlock.activate(world.getState(x, y + Y, z), world, x, y + Y, z, 1);
 		world.setBlock(Block.air, x, y + Y, z);
 	}
 

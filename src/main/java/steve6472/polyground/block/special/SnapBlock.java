@@ -14,7 +14,6 @@ import steve6472.polyground.registry.face.FaceRegistry;
 import steve6472.polyground.world.ModelBuilder;
 import steve6472.polyground.world.World;
 import steve6472.polyground.world.chunk.SubChunk;
-import steve6472.sge.main.util.RandomUtil;
 
 import java.io.File;
 
@@ -34,10 +33,10 @@ public class SnapBlock extends Block
 	@Override
 	public void onPlayerBreak(BlockState state, World world, Player player, EnumFace breakedFrom, int x, int y, int z)
 	{
-		activate(state, world, x, y, z);
+		activate(state, world, x, y, z, 1f);
 	}
 
-	public static void activate(BlockState state, World world, int x, int y, int z)
+	public static void activate(BlockState state, World world, int x, int y, int z, float speedMul)
 	{
 		if (state == Block.air.getDefaultState())
 			return;
@@ -63,9 +62,9 @@ public class SnapBlock extends Block
 					{
 						float ty = s - j / size + s * 14f;
 						if (cf == c.getFace(EnumFace.WEST))
-							snap(world, cf, i, j, c.getAabb().minZ, x, y, z, s - i / size + s * 14f, ty, biomeColor);
+							snap(world, cf, i, j, c.getAabb().minZ, x, y, z, s - i / size + s * 14f, ty, biomeColor, speedMul);
 						if (cf == c.getFace(EnumFace.EAST))
-							snap(world, cf, i, j, c.getAabb().maxZ - 1f / 16f, x, y, z, i / size, ty, biomeColor);
+							snap(world, cf, i, j, c.getAabb().maxZ - 1f / 16f, x, y, z, i / size, ty, biomeColor, speedMul);
 					}
 				}
 			}
@@ -80,9 +79,9 @@ public class SnapBlock extends Block
 						//s - TY / size + s * 14f
 						float ty = s - j / size + s * 14f;
 						if (cf == c.getFace(EnumFace.DOWN))
-							snap(world, cf, i, c.getAabb().minY, j, x, y, z, i / size, ty, biomeColor);
+							snap(world, cf, i, c.getAabb().minY, j, x, y, z, i / size, ty, biomeColor, speedMul);
 						if (cf == c.getFace(EnumFace.UP))
-							snap(world, cf, i, c.getAabb().maxY - 1f / 16f, j, x, y, z, i / size, ty, biomeColor);
+							snap(world, cf, i, c.getAabb().maxY - 1f / 16f, j, x, y, z, i / size, ty, biomeColor, speedMul);
 					}
 				}
 			}
@@ -95,9 +94,9 @@ public class SnapBlock extends Block
 					{
 						float ty = s - j / size + s * 14f;
 						if (cf == c.getFace(EnumFace.NORTH))
-							snap(world, cf, c.getAabb().maxX - 1f / 16f, j, i, x, y, z, s - i / size + s * 14f, ty, biomeColor);
+							snap(world, cf, c.getAabb().maxX - 1f / 16f, j, i, x, y, z, s - i / size + s * 14f, ty, biomeColor, speedMul);
 						if (cf == c.getFace(EnumFace.SOUTH))
-							snap(world, cf, c.getAabb().minX, j, i, x, y, z, i / size, ty, biomeColor);
+							snap(world, cf, c.getAabb().minX, j, i, x, y, z, i / size, ty, biomeColor, speedMul);
 					}
 				}
 			}
@@ -105,9 +104,10 @@ public class SnapBlock extends Block
 	}
 
 	private static final Vector3f NO_COLOR = new Vector3f(1, 1, 1);
+	private static final Vector3f NO_MOTION = new Vector3f(0, 0, 0);
 
 	// TODO: fix rotations
-	public static void snap(World world, CubeFace cf, float i, float j, float k, int x, int y, int z, float TX, float TY, Vector3f biomeColor)
+	public static void snap(World world, CubeFace cf, float i, float j, float k, int x, int y, int z, float TX, float TY, Vector3f biomeColor, float speedMul)
 	{
 		if (cf == null)
 			return;
@@ -135,13 +135,14 @@ public class SnapBlock extends Block
 		else if (cf.hasProperty(FaceRegistry.tint))
 			color = cf.getProperty(FaceRegistry.tint).getColor();
 
-		BreakParticle p = new BreakParticle(new Vector3f(RandomUtil.randomFloat(-0.01f, 0.01f), RandomUtil.randomFloat(-0.01f, 0.01f), RandomUtil.randomFloat(-0.01f, 0.01f)),
+		//new Vector3f(RandomUtil.randomFloat(-0.01f, 0.01f), RandomUtil.randomFloat(-0.01f, 0.01f), RandomUtil.randomFloat(-0.01f, 0.01f)),
+		BreakParticle p = new BreakParticle(NO_MOTION,
 			new Vector3f(x + i + pixel, y + j + pixel, z + k + pixel), pixel,
 			//			RandomUtil.randomFloat(1f / 16f / 1.5f, 1f / 16f / 2f),
 			new Vector4f(minU, 0, minV, 0), color, 10000);
 
 		//		p.setGrowingSpeed(-1f / 16f / 8f / 60f);
-		p.setGrowingSpeed(-1f / 16f / 8f / 5f);
+		p.setGrowingSpeed(-1f / 16f / 8f / 5f * speedMul);
 
 		world.getGame().mainRender.breakParticles.addParticle(p);
 	}

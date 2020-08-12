@@ -96,11 +96,14 @@ public class ChunkPosStorage
 
 	public void iterate(TriConsumer<Short, Short, Short> position)
 	{
-		for (short i : pos)
+		for (Short s : pos)
 		{
-			short x = (short) (i >> 8);
-			short y = (short) ((i >> 4) & 0xf);
-			short z = (short) (i & 0xf);
+			if (s == null)
+				continue;
+
+			short x = (short) (s >> 8);
+			short y = (short) ((s >> 4) & 0xf);
+			short z = (short) (s & 0xf);
 
 			position.apply(x, y, z);
 		}

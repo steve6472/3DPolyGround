@@ -263,8 +263,19 @@ public class Block
 //	}
 
 	/**
-	 *
-	 * Called when neighbouring blocks change
+	 * @param state State of this block
+	 * @param world world
+	 * @param updateFrom which direction was the block updated
+	 * @param x x position
+	 * @param y y position
+	 * @param z z position
+	 */
+	/*public void updatePostPlacement(BlockState state, World world, EnumFace updateFrom, int x, int y, int z)
+	{
+
+	}*/
+
+	/**
 	 *
 	 * @param state State of this block
 	 * @param world world
@@ -273,7 +284,7 @@ public class Block
 	 * @param y y position
 	 * @param z z position
 	 */
-	public void update(BlockState state, World world, EnumFace updateFrom, int x, int y, int z)
+	public void neighbourChange(BlockState state, World world, EnumFace updateFrom, int x, int y, int z)
 	{
 
 	}
@@ -303,7 +314,7 @@ public class Block
 	 */
 	public void onPlayerBreak(BlockState state, World world, Player player, EnumFace breakedFrom, int x, int y, int z)
 	{
-		SnapBlock.activate(state, world, x, y, z);
+		SnapBlock.activate(state, world, x, y, z, 1);
 	}
 
 	/**

@@ -56,7 +56,7 @@ public class MainMenu extends Gui implements IGamePause
 		IBiomeGenerator worldBiomeGenerator = new VoronoiBiomeGen(seed, 16, 8, 2, new ArrayList<>(Set.of(
 			Biomes.TUNDRA, Biomes.DESERT, Biomes.FOREST, Biomes.SAVANNA, Biomes.DESERT_HILLS, Biomes.COLD_MOUNTAINS, Biomes.PLAINS, Biomes.SAVANNA_PLATEAU, Biomes.MOUNTAINS
 		)));
-//		IBiomeGenerator worldBiomeGenerator = new SingleBiomeGen(seed, Biomes.DESERT);
+//		IBiomeGenerator worldBiomeGenerator = new SingleBiomeGen(seed, Biomes.FOREST);
 		IHeightMapGenerator worldHeightMapGenerator = new HeightMapGenerator(worldBiomeGenerator, 10, 5);
 //		IHeightMapGenerator worldHeightMapGenerator = new FlatHeightMapGen(worldBiomeGenerator, 0);
 		Function<ChunkGenDataStorage, ISurfaceGenerator> worldSurfaceGenerator = (cds) -> new SurfaceGenerator(worldHeightMapGenerator, cds);

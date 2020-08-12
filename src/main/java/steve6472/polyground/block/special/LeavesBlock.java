@@ -39,14 +39,13 @@ public class LeavesBlock extends Block
 	}
 
 	@Override
-	public void update(BlockState state, World world, EnumFace updateFrom, int x, int y, int z)
+	public void neighbourChange(BlockState state, World world, EnumFace updateFrom, int x, int y, int z)
 	{
 		BlockState facingState = world.getState(x + updateFrom.getXOffset(), y + updateFrom.getYOffset(), z + updateFrom.getZOffset());
 		int distance = Math.min(getDistance(facingState) + 1, 7);
-
-		if (facingState.hasTag(Tags.LOG) || state.get(DISTANCE) != distance)
+		if (distance != 1 || state.get(DISTANCE) != distance)
 		{
-			world.scheduleUpdate(state, x, y, z, 3);
+			world.scheduleUpdate(state, updateFrom, x, y, z, 3);
 		}
 	}
 
@@ -83,7 +82,7 @@ public class LeavesBlock extends Block
 	{
 		if (!state.get(PERSISTENT) && state.get(DISTANCE) == 7 && world.getRandom().nextDouble() <= 0.1 / 120d)
 		{
-			SnapBlock.activate(state, world, x, y, z);
+			SnapBlock.activate(state, world, x, y, z, 0.3f);
 			world.setBlock(Block.air, x, y, z);
 		}
 	}

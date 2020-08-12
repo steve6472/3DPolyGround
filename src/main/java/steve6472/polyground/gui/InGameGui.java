@@ -131,6 +131,7 @@ public class InGameGui extends Gui implements IGamePause
 		}
 
 		sb.append("Lights: ").append(activeLightCount).append("\n");
+		sb.append("Scheduled Ticks: ").append(CaveGame.getInstance().world.scheduledTicks()).append("/").append(CaveGame.getInstance().world.scheduledTicks_()).append("\n");
 		sb.append("OnGround: ").append(CaveGame.getInstance().getPlayer().isOnGround);
 
 		Font.render(5, 45, sb.toString());

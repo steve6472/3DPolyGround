@@ -24,11 +24,11 @@ public class FlowerBlock extends CustomBlock
 	}
 
 	@Override
-	public void update(BlockState state, World world, EnumFace updateFrom, int x, int y, int z)
+	public void neighbourChange(BlockState state, World world, EnumFace updateFrom, int x, int y, int z)
 	{
 		if (!isValidPosition(state, world, x, y, z))
 		{
-			SnapBlock.activate(state, world, x, y, z);
+			SnapBlock.activate(state, world, x, y, z, 1);
 			world.setBlock(Block.air, x, y, z);
 		}
 	}

@@ -79,47 +79,47 @@ public enum EnumFace
 
 	public EnumFace getOpposite()
 	{
-		if (this == UP)
-			return DOWN;
-		if (this == DOWN)
-			return UP;
-		if (this == NORTH)
-			return SOUTH;
-		if (this == SOUTH)
-			return NORTH;
-		if (this == EAST)
-			return WEST;
-		if (this == WEST)
-			return EAST;
+		return switch (this)
+			{
+				case UP -> DOWN;
+				case DOWN -> UP;
+				case NORTH -> SOUTH;
+				case SOUTH -> NORTH;
+				case EAST -> WEST;
+				case WEST -> EAST;
+				default -> NONE;
+			};
 
-		return NONE;
 	}
 
 	public int getXOffset()
 	{
-		if (this == NORTH)
-			return 1;
-		if (this == SOUTH)
-			return -1;
-		return 0;
+		return switch (this)
+			{
+				case NORTH -> 1;
+				case SOUTH -> -1;
+				default -> 0;
+			};
 	}
 
 	public int getYOffset()
 	{
-		if (this == UP)
-			return 1;
-		if (this == DOWN)
-			return -1;
-		return 0;
+		return switch (this)
+			{
+				case UP -> 1;
+				case DOWN -> -1;
+				default -> 0;
+			};
 	}
 
 	public int getZOffset()
 	{
-		if (this == EAST)
-			return 1;
-		if (this == WEST)
-			return -1;
-		return 0;
+		return switch (this)
+			{
+				case EAST -> 1;
+				case WEST -> -1;
+				default -> 0;
+			};
 	}
 
 	public static EnumFace get(byte b)
