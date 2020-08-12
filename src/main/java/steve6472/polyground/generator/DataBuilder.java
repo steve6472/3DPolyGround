@@ -3,11 +3,13 @@ package steve6472.polyground.generator;
 import org.json.JSONObject;
 import steve6472.SSS;
 import steve6472.polyground.EnumFace;
+import steve6472.polyground.block.Tags;
 import steve6472.polyground.block.properties.enums.EnumAxis;
 import steve6472.polyground.block.properties.enums.EnumSlabType;
 import steve6472.polyground.block.special.PilliarBlock;
 import steve6472.polyground.block.special.SlabBlock;
 import steve6472.polyground.block.special.StairBlock;
+import steve6472.polyground.block.special.StalaBlock;
 import steve6472.polyground.generator.models.*;
 import steve6472.polyground.generator.special.ISpecial;
 import steve6472.polyground.generator.special.SimpleSpecial;
@@ -20,6 +22,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.function.Function;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
@@ -479,66 +482,39 @@ public class DataBuilder
 		itemName = name;
 		blockToPlace = name;
 		blockSpecial = new SimpleSpecial("transparent");
-		addTag("transparent");
-		return this;
-	}
-/*
-	public DataBuilder doubleSlabBlock(String name, String top, String bottom)
-	{
-		blockModel = new FullBlock(name);
-		itemModel = new ItemFromBlock(name);
-		blockName = name;
-		itemName = name;
-		blockToPlace = name;
-		blockSpecial = SpecialBuilder.create("double_slab").addValue("top", top).addValue("bottom", bottom);
+		addTag(Tags.TRANSPARENT);
 		return this;
 	}
 
-	public DataBuilder doubleSlabBlock(String name, String topTexture, String sideTexture, String top, String bottom)
+	public DataBuilder stala(String name, String texture, String path)
 	{
-		blockModel = BlockModelBuilder.create()
-			.addCube(CubeBuilder.create()
-				.fullBlock()
-				.face(FaceBuilder.create().texture(sideTexture), CubeBuilder.SIDE)
-				.face(FaceBuilder.create().texture(topTexture), CubeBuilder.TOP_BOTTOM)).build();
-		itemModel = new ItemFromBlock(name);
-		blockName = name;
-		itemName = name;
-		blockToPlace = name;
-		blockSpecial = SpecialBuilder.create("double_slab").addValue("top", top).addValue("bottom", bottom);
-		return this;
-	}
+		Function<Integer, PropertyBuilder> state = width -> PropertyBuilder.create().addProperty(StalaBlock.WIDTH, width);
+		Function<Integer, BlockModelBuilder> model = width -> BlockModelBuilder.create("stala_" + width)
+		.modelPath("stala/" + path)
+		.addCube(CubeBuilder.create()
+			.min(8 - width, 0, 8 - width)
+			.max(8 + width, 16, 8 + width)
+			.face(FaceBuilder.create()
+				.texture(texture)
+				.autoUv(true))
+		);
 
-	public DataBuilder slabBlock(String name, String texture, boolean isBottom)
-	{
-		blockModel = BlockModelBuilder.create()
-			.addCube(
-				CubeBuilder.create()
-					.slab(isBottom)
-					.face(FaceBuilder.create()
-						.texture(texture)
-						.autoUv(true)))
-			.build();
-		blockName = name;
-		blockSpecial = SpecialBuilder.create("slab").addValue("type", isBottom ? "bottom" : "top");
-		addTags("slab", isBottom ? "slab_bottom" : "slab_top");
-		return this;
+		return DataBuilder.create()
+			.blockName(name)
+			.itemName(name)
+			.blockToPlace(name)
+			.blockSpecial(new SimpleSpecial("stala"))
+			.itemModel(new ItemFromBlock(name))
+			.blockState(StateBuilder.create()
+				.addState(state.apply(1), model.apply(1))
+				.addState(state.apply(2), model.apply(2))
+				.addState(state.apply(3), model.apply(3))
+				.addState(state.apply(4), model.apply(4))
+				.addState(state.apply(5), model.apply(5))
+				.addState(state.apply(6), model.apply(6))
+				.addState(state.apply(7), model.apply(7))
+			);
 	}
-
-	public DataBuilder slabBlock(String name, String topTexture, String sideTexture, boolean isBottom)
-	{
-		blockModel = BlockModelBuilder.create()
-			.addCube(
-				CubeBuilder.create()
-					.slab(isBottom)
-					.face(FaceBuilder.create().texture(topTexture), CubeBuilder.TOP_BOTTOM)
-					.face(FaceBuilder.create().texture(sideTexture), CubeBuilder.SIDE))
-			.build();
-		blockName = name;
-		blockSpecial = SpecialBuilder.create("slab").addValue("type", isBottom ? "bottom" : "top");
-		addTags("slab", isBottom ? "slab_bottom" : "slab_top");
-		return this;
-	}*/
 
 	/*
 	 * Generation

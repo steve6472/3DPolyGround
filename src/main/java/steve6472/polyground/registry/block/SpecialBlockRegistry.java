@@ -39,6 +39,7 @@ public class SpecialBlockRegistry
 	public static final SpecialBlockEntry<DoubleBlock> doubleBlock = register("double_block", DoubleBlock::new);
 	public static final SpecialBlockEntry<FlowerBlock> flowerBlock = register("flower", (f) -> new FlowerBlock(f, Tags.FLOWER_TOP));
 	public static final SpecialBlockEntry<FlowerBlock> cactusBlock = register("cactus", (f) -> new FlowerBlock(f, Tags.CACTUS_TOP));
+	public static final SpecialBlockEntry<SpreadBlock> spreadBlock = register("spreadable", SpreadBlock::new);
 
 	public static <T extends Block> SpecialBlockEntry<T> register(String id, ISpecialBlockFactory<T> factory)
 	{

@@ -33,8 +33,6 @@ public class OptionsGui extends Gui implements IGamePause
 		super(mainApp);
 	}
 
-	private OptNamedCheckBox fastChunkBuildFix;
-
 	@Override
 	public void createGui()
 	{
@@ -88,7 +86,9 @@ public class OptionsGui extends Gui implements IGamePause
 
 		Options options = CaveGame.getInstance().options;
 
-		int x = 0;
+		int x = 20 * (ModelLayer.values().length + 1);
+		x /= 30;
+		x += 1;
 
 		checkBox("chunkModelDebug", 10, 10 + x++ * 30, () -> options.chunkModelDebug, b -> options.chunkModelDebug = b);
 		checkBox("renderAtlases", 10, 10 + x++ * 30, () -> options.renderAtlases, b -> options.renderAtlases = b);
@@ -103,7 +103,6 @@ public class OptionsGui extends Gui implements IGamePause
 		x = 0;
 		checkBox("enablePostProcessing", 300, 10 + x++ * 30, () -> options.enablePostProcessing, b -> options.enablePostProcessing = b);
 		checkBox("renderCrosshair", 300, 10 + x++ * 30, () -> options.renderCrosshair, b -> options.renderCrosshair = b);
-		fastChunkBuildFix = checkBox("fastChunkBuild", 300, 10 + x * 30, () -> options.fastChunkBuild, b -> options.fastChunkBuild = b);
 
 		x = 0;
 		/* Minimap */
@@ -117,6 +116,14 @@ public class OptionsGui extends Gui implements IGamePause
 		checkBox("Rotate", 512, 27 + x++ * 30, minimap::isRotate, minimap::setRotate);
 		checkBox("Static Height", 512, 27 + x * 30, minimap::isStaticPosition, minimap::setStaticPosition);
 
+		/* Gameplay */
+
+		x = 0;
+//		number("maxChunkRebuild", 720, 10 + x++ * 30, -1, 16, () -> options.maxChunkRebuild, b -> options.maxChunkRebuild = b);
+		number("generateDistance", 720, 10 + x++ * 30, -1, 8, () -> options.generateDistance, b -> options.generateDistance = b);
+//		number("maxScheduledTicks", 720, 10 + x++ * 30, 0, 4096 * 64, () -> options.maxScheduledTicks, b -> options.maxScheduledTicks = b);
+		number("randomTicks", 720, 10 + x++ * 30, 0, 4096, () -> options.randomTicks, b -> options.randomTicks = b);
+
 		/* Time Slider */
 		Slider time = new Slider();
 		time.setLocation(500, 140);
@@ -127,7 +134,7 @@ public class OptionsGui extends Gui implements IGamePause
 
 		/* Model Layer */
 		ItemList modelLayer = new ItemList(ModelLayer.values().length + 1);
-		modelLayer.setLocation(720, 15);
+		modelLayer.setLocation(10, 10);
 		modelLayer.setSize(200, 20 * (ModelLayer.values().length + 1));
 		modelLayer.setMultiselect(false);
 		addComponent(modelLayer);
@@ -164,6 +171,21 @@ public class OptionsGui extends Gui implements IGamePause
 		box.addChangeEvent(c -> toggle.accept(c.isToggled()));
 		addComponent(box);
 		return box;
+	}
+
+	private OptNumberSelector number(String text, int x, int y, int min, int max, Supplier<Integer> get, Consumer<Integer> set)
+	{
+		OptNumberSelector sel = new OptNumberSelector();
+		sel.sup = get;
+		sel.text = text;
+		sel.setLocation(x, y);
+		sel.setMin(min);
+		sel.setMax(max);
+		sel.setSize(Font.getTextWidth(text, 1) + 30, 14);
+		sel.setButtonWidth(14);
+		sel.addChangeEvent(c -> set.accept(c.getValue()));
+		addComponent(sel);
+		return sel;
 	}
 
 	@Override

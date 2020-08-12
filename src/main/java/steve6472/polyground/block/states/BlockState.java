@@ -94,6 +94,10 @@ public class BlockState
 	{
 		if (stateString.isBlank())
 			return this;
+
+		if (stateString.charAt(0) != '[' || stateString.charAt(stateString.length() - 1) != ']' || !stateString.substring(1, stateString.length() - 1).contains(","))
+			return this;
+
 		String[] states = stateString.substring(1, stateString.length() - 1).split(",");
 		HashMap<String, String> map = new HashMap<>();
 		for (String s : states)

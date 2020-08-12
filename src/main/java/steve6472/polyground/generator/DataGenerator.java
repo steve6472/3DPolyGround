@@ -9,6 +9,7 @@ import steve6472.polyground.block.special.*;
 import steve6472.polyground.block.states.States;
 import steve6472.polyground.generator.models.*;
 import steve6472.polyground.generator.special.SimpleSpecial;
+import steve6472.polyground.generator.special.SpecialBuilder;
 import steve6472.polyground.generator.state.PropertyBuilder;
 import steve6472.polyground.generator.state.StateBuilder;
 import steve6472.polyground.world.chunk.ModelLayer;
@@ -23,13 +24,7 @@ import java.util.function.BiFunction;
  *
  ***********************/
 public class DataGenerator
-{/*
-	static File blocks = new File("src/main/resources/blocks");
-	static File items = new File("src/main/resources/items");
-
-	static File blockModels = new File("src/main/resources/models/block");
-	static File itemModels = new File("src/main/resources/models/item");*/
-
+{
 	public static File BLOCKS = new File("game/objects/blocks");
 	public static File ITEMS = new File("game/objects/items");
 
@@ -176,10 +171,10 @@ public class DataGenerator
 			.addTagToState().with(PilliarBlock.AXIS, EnumAxis.Z).finish(Tags.LOG)
 			.generate();
 
-		stala("stone_stala", "stone", "stone").generate();
-		stala("granite_stala", "granite", "granite").generate();
-		stala("andesite_stala", "andesite", "andesite").generate();
-		stala("diorite_stala", "diorite", "diorite").generate();
+		DataBuilder.create().stala("stone_stala", "stone", "stone").generate();
+		DataBuilder.create().stala("granite_stala", "granite", "granite").generate();
+		DataBuilder.create().stala("andesite_stala", "andesite", "andesite").generate();
+		DataBuilder.create().stala("diorite_stala", "diorite", "diorite").generate();
 
 		DataBuilder.create()
 			.blockName("tall_grass")
@@ -299,8 +294,11 @@ public class DataGenerator
 							.modelLayer(ModelLayer.OVERLAY_0), EnumFace.UP
 						)
 					)
-				).tag(Tags.FLOWER_TOP)
-			).generate();
+				)
+				.tag(Tags.FLOWER_TOP)
+			)
+			.blockSpecial(SpecialBuilder.create("spreadable").addValue("target", "dirt").addValue("target_set", "grass"))
+			.generate();
 
 		DataBuilder.create().fullBlock("green_screen")
 			.blockState(
@@ -372,11 +370,6 @@ public class DataGenerator
 						)
 				)
 			).generate();
-
-		//		DataBuilder.create().doubleSlabBlock("double_smooth_slab", "smooth_stone", "smooth_stone_slab", "smooth_slab_top", "smooth_slab_bottom").generate();
-		//		DataBuilder.create().slabBlock("smooth_slab_bottom", "smooth_stone", "smooth_stone_slab", true).generate();
-		//		DataBuilder.create().slabBlock("smooth_slab_top", "smooth_stone", "smooth_stone_slab", false).generate();
-		//		DataBuilder.create().slabItem("smooth_slab", "smooth_slab_top", "smooth_slab_bottom", "double_smooth_slab").generate();
 
 		DataBuilder.create()
 			.blockName("smooth_slab")
@@ -630,43 +623,6 @@ public class DataGenerator
 					)).build()
 			).generate();*/
 
-	}
-
-	private static DataBuilder stala(String name, String texture, String path)
-	{
-		return DataBuilder.create()
-			.blockName(name)
-			.itemName(name)
-			.blockToPlace(name)
-			.blockSpecial(new SimpleSpecial("stala"))
-			.itemModel(new ItemFromBlock(name))
-			.blockState(StateBuilder.create()
-				.addState(stalaState(1), stalaModel(1, texture, path))
-				.addState(stalaState(2), stalaModel(2, texture, path))
-				.addState(stalaState(3), stalaModel(3, texture, path))
-				.addState(stalaState(4), stalaModel(4, texture, path))
-				.addState(stalaState(5), stalaModel(5, texture, path))
-				.addState(stalaState(6), stalaModel(6, texture, path))
-				.addState(stalaState(7), stalaModel(7, texture, path))
-			);
-	}
-
-	private static PropertyBuilder stalaState(int width)
-	{
-		return PropertyBuilder.create().addProperty(StalaBlock.WIDTH, width);
-	}
-
-	private static BlockModelBuilder stalaModel(int width, String texture, String path)
-	{
-		return BlockModelBuilder.create("stala_" + width)
-			.modelPath("stala/" + path)
-			.addCube(CubeBuilder.create()
-				.min(8 - width, 0, 8 - width)
-				.max(8 + width, 16, 8 + width)
-				.face(FaceBuilder.create()
-					.texture(texture)
-					.autoUv(true))
-		);
 	}
 
 	private static PropertyBuilder snowState(int height)

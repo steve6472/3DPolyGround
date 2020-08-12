@@ -14,7 +14,6 @@ import steve6472.polyground.world.biomes.IBiomeProvider;
 import steve6472.polyground.world.generator.EnumChunkStage;
 
 import java.io.IOException;
-import java.util.Iterator;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
@@ -39,7 +38,7 @@ public class SubChunk implements IBiomeProvider
 	private final SubChunkBlockData blockData;
 	private final SubChunkWater water;
 
-	private final ChunkPosStorage tickableBlocks, scheduledUpdates, newScheduledUpdates;
+	private final ChunkPosStorage tickableBlocks, randomTicks;
 
 	public SubChunk(Chunk parent, int layer)
 	{
@@ -57,8 +56,7 @@ public class SubChunk implements IBiomeProvider
 		biomes = new int[16][16][16];
 
 		tickableBlocks = new ChunkPosStorage();
-		scheduledUpdates = new ChunkPosStorage();
-		newScheduledUpdates = new ChunkPosStorage();
+		randomTicks = new ChunkPosStorage();
 
 		blockData = new SubChunkBlockData(this);
 		blocks = new SubChunkBlocks();
@@ -77,23 +75,17 @@ public class SubChunk implements IBiomeProvider
 			});
 		}
 
-		scheduledUpdates.addAll(newScheduledUpdates);
-		newScheduledUpdates.clear();
-
-		if (!scheduledUpdates.isEmpty())
+//		randomTicks.tick();
+		for (int i = 0; i < getWorld().getGame().options.randomTicks; i++)
 		{
-			for (Iterator<Short> iter = scheduledUpdates.iterator(); iter.hasNext(); )
-			{
-				short i = iter.next();
+			int x = getWorld().getRandom().nextInt(16);
+			int y = getWorld().getRandom().nextInt(16);
+			int z = getWorld().getRandom().nextInt(16);
 
-				short x = (short) (i >> 8);
-				short y = (short) ((i >> 4) & 0xf);
-				short z = (short) (i & 0xf);
+			BlockState blockToTick = blocks.getStates()[x][y][z];
 
-				BlockState blockToUpdate = blocks.getStates()[x][y][z];
-//				blockToUpdate.getBlock().update(blockToUpdate, getWorld(), EnumFace.NONE, x, y, z);
-				iter.remove();
-			}
+			if (blockToTick.getBlock().randomTickable())
+				blockToTick.getBlock().randomTick(blockToTick, getWorld(), x, y, z);
 		}
 
 		water.tick();
@@ -106,13 +98,6 @@ public class SubChunk implements IBiomeProvider
 	{
 		if (stage == EnumChunkStage.FINISHED)
 			ChunkSerializer.serialize(this);
-	}
-
-	public void addScheduledUpdate(int x, int y, int z)
-	{
-		short r = (short) (x << 8 | y << 4 | z);
-		if (!scheduledUpdates.has(r) && !newScheduledUpdates.has(r))
-			newScheduledUpdates.addNonSafe(r);
 	}
 
 	public void unload()
@@ -210,6 +195,11 @@ public class SubChunk implements IBiomeProvider
 	{
 		return tickableBlocks;
 	}
+
+//	public ChunkPosStorage getRandomTicks()
+//	{
+//		return randomTicks;
+//	}
 
 	public void rebuild()
 	{

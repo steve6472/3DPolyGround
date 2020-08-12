@@ -142,6 +142,11 @@ public class Block
 		return false;
 	}
 
+	public boolean randomTickable()
+	{
+		return false;
+	}
+
 	public boolean isReplaceable(BlockState state)
 	{
 		return this == air;
@@ -217,6 +222,19 @@ public class Block
 	 * @param z z position
 	 */
 	public void tick(BlockState state, World world, int x, int y, int z)
+	{
+	}
+
+	/**
+	 * Runs randomly if {@code isRandomTickable()} is true
+	 *
+	 * @param state State of this block
+	 * @param world world
+	 * @param x x position
+	 * @param y y position
+	 * @param z z position
+	 */
+	public void randomTick(BlockState state, World world, int x, int y, int z)
 	{
 	}
 

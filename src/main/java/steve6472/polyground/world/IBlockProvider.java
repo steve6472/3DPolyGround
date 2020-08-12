@@ -103,6 +103,7 @@ public interface IBlockProvider extends IChunkProvider
 				sc.setState(state, cx, cy, cz);
 				state.getBlock().onBlockAdded(state, getWorld(), oldState, x, y, z);
 				sc.getTickableBlocks().set(cx, cy, cz, state.getBlock().isTickable());
+//				sc.getRandomTicks().set(cx, cy, cz, state.getBlock().randomTickable());
 
 				if ((flags & 1) != 0)
 				{

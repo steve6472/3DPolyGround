@@ -37,11 +37,9 @@ public class Options
 	public int maxScheduledTicks = 4096 * 16;
 
 	/**
-	 * true - uses other thread to build chunks and main thread to upload the data to graphics card
-	 *        Placing blocks can be slow due to long queue for the thread
-	 *        Can be toggled only if no chunks are being built!
+	 *
 	 */
-	public boolean fastChunkBuild = true;
+	public int randomTicks = 3;
 
 	public boolean isGamePaused = true;
 	public boolean isInMenu = true;
@@ -52,7 +50,6 @@ public class Options
 	 */
 	public boolean chunkModelDebug = false;
 	public boolean renderAtlases = false;
-	public boolean lightDebug = false;
 	public boolean subChunkBuildTime = false;
 	public boolean showGCLog = false;
 	public boolean renderTeleporters = false;

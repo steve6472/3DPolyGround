@@ -22,4 +22,9 @@ public class Tags
 	 * Leaves around block with this tag set their distance to the closest log
 	 */
 	public static final String LOG = "log";
+
+	/**
+	 * Blocks with this tag will not prevent SpreadBlocks from dying when on top of them
+	 */
+	public static final String TRANSPARENT = "transparent";
 }
