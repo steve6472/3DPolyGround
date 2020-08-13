@@ -28,5 +28,6 @@ public class States
 
 	public static final IntProperty STALA_WIDTH = IntProperty.create("width", 1, 7);
 	public static final IntProperty SNOW_LAYERS = IntProperty.create("layers", 1, 8);
-	public static final IntProperty DISTANCE = IntProperty.create("distance", 1, 7);
+	public static final IntProperty DISTANCE_1_7 = IntProperty.create("distance", 1, 7);
+	public static final IntProperty DISTANCE_1_6 = IntProperty.create("distance", 1, 6);
 }

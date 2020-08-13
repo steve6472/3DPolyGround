@@ -5,7 +5,10 @@ import steve6472.polyground.block.Tags;
 import steve6472.polyground.block.properties.enums.EnumAxis;
 import steve6472.polyground.block.properties.enums.EnumHalf;
 import steve6472.polyground.block.properties.enums.EnumSlabType;
-import steve6472.polyground.block.special.*;
+import steve6472.polyground.block.special.DoubleBlock;
+import steve6472.polyground.block.special.LeavesBlock;
+import steve6472.polyground.block.special.PilliarBlock;
+import steve6472.polyground.block.special.SlabBlock;
 import steve6472.polyground.block.states.States;
 import steve6472.polyground.generator.models.*;
 import steve6472.polyground.generator.special.SimpleSpecial;
@@ -175,6 +178,12 @@ public class DataGenerator
 		DataBuilder.create().stala("granite_stala", "granite", "granite").generate();
 		DataBuilder.create().stala("andesite_stala", "andesite", "andesite").generate();
 		DataBuilder.create().stala("diorite_stala", "diorite", "diorite").generate();
+
+		DataBuilder.create()
+			.fullBlock("corrupted_stone")
+			.blockSpecial(new SimpleSpecial("corrupted_stone"))
+			.addTag(Tags.CORRUPTED)
+			.generate();
 
 		DataBuilder.create()
 			.fullBlock("pebble")

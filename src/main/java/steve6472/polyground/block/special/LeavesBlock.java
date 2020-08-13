@@ -23,7 +23,7 @@ import java.util.List;
 public class LeavesBlock extends Block
 {
 	public static BooleanProperty PERSISTENT = States.PERSISTENT;
-	public static IntProperty DISTANCE = States.DISTANCE;
+	public static IntProperty DISTANCE = States.DISTANCE_1_7;
 
 	public LeavesBlock(File f)
 	{

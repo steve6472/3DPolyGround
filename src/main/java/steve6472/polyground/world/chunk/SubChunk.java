@@ -38,7 +38,7 @@ public class SubChunk implements IBiomeProvider
 	private final SubChunkBlockData blockData;
 	private final SubChunkWater water;
 
-	private final ChunkPosStorage tickableBlocks, randomTicks;
+	private final ChunkPosStorage tickableBlocks;
 
 	public SubChunk(Chunk parent, int layer)
 	{
@@ -56,7 +56,6 @@ public class SubChunk implements IBiomeProvider
 		biomes = new int[16][16][16];
 
 		tickableBlocks = new ChunkPosStorage();
-		randomTicks = new ChunkPosStorage();
 
 		blockData = new SubChunkBlockData(this);
 		blocks = new SubChunkBlocks();
@@ -199,11 +198,6 @@ public class SubChunk implements IBiomeProvider
 	{
 		return tickableBlocks;
 	}
-
-//	public ChunkPosStorage getRandomTicks()
-//	{
-//		return randomTicks;
-//	}
 
 	public void rebuild()
 	{

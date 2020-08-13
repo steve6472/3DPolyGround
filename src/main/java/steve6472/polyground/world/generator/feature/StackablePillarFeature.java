@@ -16,14 +16,14 @@ public class StackablePillarFeature implements IFeature
 {
 	private final BlockState blockUnder;
 	private final BlockState blockToPlace;
-	private final double chanceForNextTile;
+	private final double chanceForNextBlock;
 	private final int maxHeight;
 
-	public StackablePillarFeature(BlockState blockUnder, BlockState blockToPlace, double chanceForNextTile, int maxHeight)
+	public StackablePillarFeature(BlockState blockUnder, BlockState blockToPlace, double chanceForNextBlock, int maxHeight)
 	{
 		this.blockUnder = blockUnder;
 		this.blockToPlace = blockToPlace;
-		this.chanceForNextTile = chanceForNextTile;
+		this.chanceForNextBlock = chanceForNextBlock;
 		this.maxHeight = maxHeight;
 	}
 
@@ -34,7 +34,7 @@ public class StackablePillarFeature implements IFeature
 
 		for (int i = y; i < y + maxHeight; i++)
 		{
-			if (world.getRandom().nextDouble() <= chanceForNextTile)
+			if (world.getRandom().nextDouble() <= chanceForNextBlock)
 			{
 				world.setState(blockToPlace, x, i, z, 5);
 			} else

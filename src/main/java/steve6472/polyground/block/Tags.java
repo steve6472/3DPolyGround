@@ -27,4 +27,9 @@ public class Tags
 	 * Blocks with this tag will not prevent SpreadBlocks from dying when on top of them
 	 */
 	public static final String TRANSPARENT = "transparent";
+
+	/**
+	 * Blocks with this tag can cause corruption.
+	 */
+	public static final String CORRUPTED = "corrupted";
 }

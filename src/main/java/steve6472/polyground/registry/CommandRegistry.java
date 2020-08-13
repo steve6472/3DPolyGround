@@ -44,5 +44,6 @@ public class CommandRegistry
 		new RiftCommand(dispatcher);
 		new TestSpeedCommand(dispatcher);
 		new TeleCommand(dispatcher);
+		new RandomTicksCommand(dispatcher);
 	}
 }
