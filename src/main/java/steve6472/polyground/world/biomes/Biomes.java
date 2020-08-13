@@ -29,7 +29,7 @@ public class Biomes
 
 		.feature(EnumFeatureStage.VEGETATION, 1 / 100d, new VegetationPatchFeature(Blocks.getDefaultState("sand"), Blocks.getDefaultState("small_grass"), 0.5, 2, true))
 		.feature(EnumFeatureStage.VEGETATION, 1d / 256d, new PillarFeature(Blocks.getDefaultState("sand"), Blocks.getDefaultState("cactus"), 1, 4))
-		.feature(EnumFeatureStage.VEGETATION, 1d / 256d / 4d, new StackablePillarFeature(Blocks.getDefaultState("sand"), Blocks.getDefaultState("cactus"), 0.5, 22))
+		.feature(EnumFeatureStage.VEGETATION, 1d / 256d / 4d, new StackablePillarFeature(Blocks.getDefaultState("sand"), Blocks.getDefaultState("cactus"), 0.33, 22))
 		.create());
 
 	public static final DataBiome DESERT_HILLS = addBiome(new DataBiome("desert_hills", Blocks.getDefaultState("sand"), Blocks.getDefaultState("sandstone"), Blocks.getDefaultState("stone"),

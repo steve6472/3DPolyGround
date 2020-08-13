@@ -82,10 +82,14 @@ public class SubChunk implements IBiomeProvider
 			int y = getWorld().getRandom().nextInt(16);
 			int z = getWorld().getRandom().nextInt(16);
 
-			BlockState blockToTick = blocks.getStates()[x][y][z];
+			BlockState stateToTick = blocks.getStates()[x][y][z];
+			Block blockToTick = stateToTick.getBlock();
 
-			if (blockToTick.getBlock().randomTickable())
-				blockToTick.getBlock().randomTick(blockToTick, getWorld(), x, y, z);
+			if (blockToTick == Block.air)
+				continue;
+
+			if (blockToTick.randomTickable())
+				blockToTick.randomTick(stateToTick, getWorld(), x + getX() * 16, y + getLayer() * 16, z + getZ() * 16);
 		}
 
 		water.tick();

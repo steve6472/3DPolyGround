@@ -32,6 +32,17 @@ public class CubeBuilder
 		isCollisionBox = true;
 	}
 
+	public CubeBuilder size(float x, float y, float z, float w, float h, float d)
+	{
+		this.minX = x;
+		this.minY = y;
+		this.minZ = z;
+		this.maxX = x + w;
+		this.maxY = y + h;
+		this.maxZ = z + d;
+		return this;
+	}
+
 	public CubeBuilder min(float minX, float minY, float minZ)
 	{
 		this.minX = minX;

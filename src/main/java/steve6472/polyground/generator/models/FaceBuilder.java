@@ -77,6 +77,12 @@ public class FaceBuilder
 		return this;
 	}
 
+	public FaceBuilder autoUv()
+	{
+		this.autoUv = true;
+		return this;
+	}
+
 	public FaceBuilder visible(boolean visible)
 	{
 		this.isVisible = visible;

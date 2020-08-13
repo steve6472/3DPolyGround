@@ -119,6 +119,7 @@ public class MainMenu extends Gui implements IGamePause
 			setVisible(false);
 			CaveGame.getInstance().inGameGui.setVisible(true);
 			CaveGame.getInstance().options.isGamePaused = false;
+			CaveGame.getInstance().options.generateDistance = 5;
 
 //			IBiomeGenerator biomeGen = new SingleBiomeGen(seed, Biomes.FLAT);
 //			IHeightMapGenerator heightMapGen = new FlatHeightMapGen(biomeGen, 0);

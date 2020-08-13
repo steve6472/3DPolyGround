@@ -134,7 +134,7 @@ public class DataGenerator
 		DataBuilder.create().stairs("cobblestone_stairs", "cobblestone").generate();
 		DataBuilder.create().stairs("brick_stairs", "bricks").generate();
 
-		DataBuilder.create().plusBlock("small_grass", true).blockSpecial(new SimpleSpecial("flower")).generate();
+		DataBuilder.create().plusBlock("small_grass", true).blockSpecial(new SimpleSpecial("flower")).addTag(Tags.TRANSPARENT).generate();
 
 		DataBuilder.create().oreBlock("coal_ore", "stone", "ore_overlay", 77, 77, 77).generate();
 
@@ -177,13 +177,34 @@ public class DataGenerator
 		DataBuilder.create().stala("diorite_stala", "diorite", "diorite").generate();
 
 		DataBuilder.create()
+			.fullBlock("pebble")
+			.blockSpecial(new SimpleSpecial("custom"))
+			.blockState(StateBuilder.create()
+				.singleModel(BlockModelBuilder.create("pebble")
+					.addCube(CubeBuilder.create()
+						.size(1, 0, 2, 7, 1, 4)
+						.collisionBox(false)
+						.face(FaceBuilder.create().texture("stone").autoUv())
+					).addCube(CubeBuilder.create()
+						.size(10, 0, 4, 5, 1, 7)
+						.collisionBox(false)
+						.face(FaceBuilder.create().texture("stone").autoUv())
+					).addCube(CubeBuilder.create()
+						.size(2, 0, 9, 5, 1, 5)
+						.collisionBox(false)
+						.face(FaceBuilder.create().texture("stone").autoUv())
+					)
+				)
+			).generate();
+
+		DataBuilder.create()
 			.blockName("tall_grass")
 			.itemName("tall_grass")
 			.blockToPlace("tall_grass")
 			.itemModel(new ItemFromTexture("tall_grass_top"))
 			.blockSpecial(new SimpleSpecial("double_block"))
 			.blockState(StateBuilder.create()
-				.addState(PropertyBuilder.create().addProperty(DoubleBlock.HALF, EnumHalf.BOTTOM), BlockModelBuilder.create("tall_grass_bottom")
+				.addState(PropertyBuilder.create().addProperty(DoubleBlock.HALF, EnumHalf.BOTTOM).tag(Tags.TRANSPARENT), BlockModelBuilder.create("tall_grass_bottom")
 					.addCube(CubeBuilder.create()
 						.fullBlock()
 						.collisionBox(false)
@@ -200,7 +221,8 @@ public class DataGenerator
 						.max(16, 16, 8)
 						.face(FaceBuilder.create().texture("tall_grass_bottom").biomeTint(true), EnumFace.EAST, EnumFace.WEST)
 					)
-				).addState(PropertyBuilder.create().addProperty(DoubleBlock.HALF, EnumHalf.TOP), BlockModelBuilder.create("tall_grass_top")
+				)
+				.addState(PropertyBuilder.create().addProperty(DoubleBlock.HALF, EnumHalf.TOP).tag(Tags.TRANSPARENT), BlockModelBuilder.create("tall_grass_top")
 					.addCube(CubeBuilder.create()
 						.fullBlock()
 						.collisionBox(false)

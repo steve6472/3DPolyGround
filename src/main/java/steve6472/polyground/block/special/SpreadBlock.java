@@ -67,7 +67,8 @@ public class SpreadBlock extends Block
 	{
 		// Die
 		BlockState up = world.getState(x, y + 1, z);
-		if (!up.getBlock().isFull && up.hasTag(Tags.TRANSPARENT))
+
+		if (up.getBlock().isFull && !up.hasTag(Tags.TRANSPARENT))
 		{
 			world.setState(target, x, y, z);
 			return;
@@ -80,7 +81,11 @@ public class SpreadBlock extends Block
 		BlockState stateAtPos = world.getState(x + i, y + j, z + k);
 		if (stateAtPos == target)
 		{
-			world.setState(targetSet, x + i, y + j, z + k);
+			up = world.getState(x + i, y + j + 1, z + k);
+			if (!up.getBlock().isFull || up.hasTag(Tags.TRANSPARENT))
+			{
+				world.setState(targetSet, x + i, y + j, z + k);
+			}
 		}
 	}
 }

@@ -45,7 +45,9 @@ public class Block
 
 	public static Block createAir()
 	{
-		return air = new Block("air", new BlockModel());
+		air = new Block("air", new BlockModel());
+		air.getDefaultState().getBlockModel().addTag(Tags.TRANSPARENT);
+		return air;
 	}
 
 	public static Block createError()

@@ -29,6 +29,7 @@ public class SnowLayerBlock extends CustomBlock
 	{
 		super(f);
 		setDefaultState(getDefaultState().with(SNOW_LAYER, 1).get());
+		isFull = false;
 	}
 
 	@Override

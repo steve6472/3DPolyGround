@@ -78,9 +78,9 @@ public class LeavesBlock extends Block
 	}
 
 	@Override
-	public void tick(BlockState state, World world, int x, int y, int z)
+	public void randomTick(BlockState state, World world, int x, int y, int z)
 	{
-		if (!state.get(PERSISTENT) && state.get(DISTANCE) == 7 && world.getRandom().nextDouble() <= 0.1 / 120d)
+		if (!state.get(PERSISTENT) && state.get(DISTANCE) == 7)
 		{
 			SnapBlock.activate(state, world, x, y, z, 0.3f);
 			world.setBlock(Block.air, x, y, z);
@@ -88,7 +88,7 @@ public class LeavesBlock extends Block
 	}
 
 	@Override
-	public boolean isTickable()
+	public boolean randomTickable()
 	{
 		return true;
 	}
