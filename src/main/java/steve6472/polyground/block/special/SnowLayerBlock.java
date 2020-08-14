@@ -33,12 +33,19 @@ public class SnowLayerBlock extends CustomBlock
 	}
 
 	@Override
-	public void onBlockAdded(BlockState state, World world, BlockState oldState, int x, int y, int z)
+	public void neighbourChange(BlockState state, World world, EnumFace updateFrom, int x, int y, int z)
 	{
-		super.onBlockAdded(state, world, oldState, x, y, z);
-
-		if (world.getBlock(x, y - 1, z) == Block.air)
+		if (!isValidPosition(state, world, x, y, z))
+		{
+			SnapBlock.activate(state, world, x, y, z, 1);
 			world.setBlock(Block.air, x, y, z);
+		}
+	}
+
+	@Override
+	public boolean isValidPosition(BlockState state, World world, int x, int y, int z)
+	{
+		return world.getState(x, y - 1, z).getBlock().isFull && super.isValidPosition(state, world, x, y, z);
 	}
 
 	@Override

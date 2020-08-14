@@ -182,7 +182,7 @@ public class Block
 						{
 							tris += buildHelper.face(face);
 						}
-					} else if (Cull.renderFace(x, y, z, c, face, this, world))
+					} else if (Cull.renderFace(x, y, z, face, this, world))
 					{
 						tris += buildHelper.face(face);
 					}

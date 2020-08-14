@@ -37,10 +37,10 @@ public class TopSnowFeature implements IFeature
 			if (y >= heightStart && y < heightMax)
 			{
 				if (world.getRandom().nextDouble() <= smoothstep(heightStart, heightMax, y))
-					world.setState(snow.getDefaultState().with(SnowLayerBlock.SNOW_LAYER, world.getRandom().nextInt(4) + 1).get(), x, y, z);
+					world.setState(snow.getDefaultState().with(SnowLayerBlock.SNOW_LAYER, world.getRandom().nextInt(4) + 1).get(), x, y, z, 5);
 			} else if (y >= heightMax)
 			{
-				world.setState(snow.getDefaultState().with(SnowLayerBlock.SNOW_LAYER, world.getRandom().nextInt(4) + 1).get(), x, y, z);
+				world.setState(snow.getDefaultState().with(SnowLayerBlock.SNOW_LAYER, world.getRandom().nextInt(4) + 1).get(), x, y, z, 5);
 			}
 		}
 	}

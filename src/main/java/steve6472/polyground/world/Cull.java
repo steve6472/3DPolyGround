@@ -2,7 +2,6 @@ package steve6472.polyground.world;
 
 import steve6472.polyground.EnumFace;
 import steve6472.polyground.block.Block;
-import steve6472.polyground.block.model.Cube;
 import steve6472.polyground.block.special.*;
 import steve6472.polyground.world.chunk.SubChunkBuilder;
 
@@ -14,7 +13,7 @@ import steve6472.polyground.world.chunk.SubChunkBuilder;
  ***********************/
 public class Cull
 {
-	public static boolean renderFace(int x, int y, int z, Cube cube, EnumFace face, Block middleBlock, World world)
+	public static boolean renderFace(int x, int y, int z, EnumFace face, Block middleBlock, World world)
 	{
 		Block testedBlock = world.getBlock(x + face.getXOffset(), y + face.getYOffset(), z + face.getZOffset());
 

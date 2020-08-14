@@ -21,14 +21,12 @@ public class SpecialBlockRegistry
 
 	public static final SpecialBlockEntry<PilliarBlock> pilliar = register("pilliar", PilliarBlock::new);
 	public static final SpecialBlockEntry<TransparentBlock> transparentBlock = register("transparent", TransparentBlock::new);
-	public static final SpecialBlockEntry<DropBlock> drop = register("drop", DropBlock::new);
 	public static final SpecialBlockEntry<SlabBlock> slab = register("slab", SlabBlock::new);
 	public static final SpecialBlockEntry<StalaBlock> stalaBlock = register("stala", StalaBlock::new);
 	public static final SpecialBlockEntry<SnapButtonBlock> snapButton = register("snap_button", SnapButtonBlock::new);
 	public static final SpecialBlockEntry<StairBlock> stairs = register("stairs", StairBlock::new);
 	public static final SpecialBlockEntry<LeavesBlock> leaves = register("leaves", LeavesBlock::new);
 	public static final SpecialBlockEntry<GravelBlock> gravel = register("gravel", GravelBlock::new);
-	public static final SpecialBlockEntry<TimeSliderBlock> timeSlider = register("time_slider", TimeSliderBlock::new);
 	public static final SpecialBlockEntry<CustomBlock> custom = register("custom", CustomBlock::new);
 	public static final SpecialBlockEntry<LightSourceBlock> light = register("light", LightSourceBlock::new);
 	public static final SpecialBlockEntry<TorchBlock> torch = register("torch", TorchBlock::new);
