@@ -16,6 +16,7 @@ public class Cube
 	CubeFace[] faces;
 	private boolean isHitbox;
 	private boolean isCollisionBox;
+	private String name;
 
 	public Cube(AABBf aabb)
 	{
@@ -23,12 +24,14 @@ public class Cube
 		faces = new CubeFace[6];
 		isHitbox = true;
 		isCollisionBox = true;
+		name = "";
 	}
 
 	public void loadFromJson(JSONObject json)
 	{
 		isHitbox = json.optBoolean("isHitbox", true);
 		isCollisionBox = json.optBoolean("isCollisionBox", true);
+		name = json.optString("name", "");
 	}
 
 	public void setAabb(AABBf aabb)
@@ -93,6 +96,7 @@ public class Cube
 		Cube cube = new Cube(new AABBf(aabb));
 		cube.setHitbox(isHitbox());
 		cube.setCollisionBox(isCollisionBox());
+		cube.setName(getName());
 
 		for (EnumFace face : EnumFace.getFaces())
 		{
@@ -150,5 +154,15 @@ public class Cube
 				return b.append(']').toString();
 			b.append(", ");
 		}
+	}
+
+	public String getName()
+	{
+		return name;
+	}
+
+	public void setName(String name)
+	{
+		this.name = name;
 	}
 }

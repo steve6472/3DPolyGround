@@ -2,8 +2,12 @@ package steve6472.polyground.world;
 
 import steve6472.polyground.EnumFace;
 import steve6472.polyground.block.Block;
+import steve6472.polyground.block.Tags;
+import steve6472.polyground.block.model.Cube;
+import steve6472.polyground.block.model.CubeTags;
+import steve6472.polyground.block.properties.enums.EnumSlabType;
 import steve6472.polyground.block.special.*;
-import steve6472.polyground.world.chunk.SubChunkBuilder;
+import steve6472.polyground.block.states.BlockState;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
@@ -13,13 +17,30 @@ import steve6472.polyground.world.chunk.SubChunkBuilder;
  ***********************/
 public class Cull
 {
-	public static boolean renderFace(int x, int y, int z, EnumFace face, Block middleBlock, World world)
+	public static boolean renderFace(int x, int y, int z, EnumFace face, Cube cube, BlockState middleState, World world)
 	{
-		Block testedBlock = world.getBlock(x + face.getXOffset(), y + face.getYOffset(), z + face.getZOffset());
+		BlockState testedState = world.getState(x + face.getXOffset(), y + face.getYOffset(), z + face.getZOffset());
+		Block testedBlock = testedState.getBlock();
+
+		Block middleBlock = middleState.getBlock();
 
 		if (middleBlock instanceof StairBlock)
 		{
-			return true;
+			if (cube.getName().equals(CubeTags.STAIR_TOP))
+			{
+				if (!basicBlock(testedBlock, testedState))
+				{
+					return middleState.get(StairBlock.FACING) == face;
+				} else
+				{
+					return true;
+				}
+			} else if (cube.getName().equals(CubeTags.STAIR_BOTTOM))
+			{
+				if (face == EnumFace.UP)
+					return true;
+			}
+			return basicBlock(testedBlock, testedState);
 		}
 
 		if (middleBlock instanceof TorchBlock || testedBlock instanceof TorchBlock)
@@ -40,72 +61,72 @@ public class Cull
 				return testedBlock != middleBlock;
 			} else
 			{
-				return testedBlock == Block.air;
+				return basicBlock(testedBlock, testedState);
 			}
-		}
-
-		if (!(middleBlock instanceof SlabBlock))
-		{
-//			if (testedBlock instanceof SlabBlock)
-//			{
-//				if (!face.isSide())
-//				{
-//					SlabBlock slabBLock = (SlabBlock) testedBlock;
-//					if (slabBLock.slabType == (face == EnumFace.UP ? SlabBlock.EnumSlabType.BOTTOM : SlabBlock.EnumSlabType.TOP))
-//						return false;
-//				}
-//			}
-			/*
-
-			Tested in Block instead!
-
-			CubeFace cubeFace = cube.getFace(face);
-
-			if (cubeFace != null && cubeFace.hasProperty(FaceRegistry.conditionedTexture))
-			{
-				return ConditionFaceProperty.editProperties(cubeFace.getProperty(FaceRegistry.conditionedTexture), cubeFace, x, y, z, subChunk);
-			}
-			*/
-
-			return SubChunkBuilder.cull(world, x + face.getXOffset(), y + face.getYOffset(), z + face.getZOffset());
 		}
 
 		/* Slab */
 
-
-		if (testedBlock instanceof SlabBlock)
-			return true;
-/*
-		SlabBlock thisSlabBlock = (SlabBlock) middleBlock;
-		if (testedBlock instanceof SlabBlock)
+		if (middleBlock instanceof SlabBlock)
 		{
-			SlabBlock testedSlabBlock = (SlabBlock) testedBlock;
+			if (middleState.get(SlabBlock.TYPE) == EnumSlabType.DOUBLE)
+				return basicBlock(testedBlock, testedState);
 
-			if (face.isSide())
+			if (middleState.get(SlabBlock.AXIS) == face.getAxis())
 			{
-				return testedSlabBlock.slabType != thisSlabBlock.slabType;
-			} else
-			{
-				return true;
-			}
-		} else
-		{
-			if (face == EnumFace.DOWN)
-			{
-				if (thisSlabBlock.slabType == SlabBlock.EnumSlabType.TOP)
+				EnumFace cull = switch (face.getAxis())
+					{
+						case X -> EnumFace.NORTH;
+						case Y -> EnumFace.UP;
+						case Z -> EnumFace.WEST;
+					};
+
+				if (middleState.get(SlabBlock.TYPE) == EnumSlabType.TOP)
+					cull = cull.getOpposite();
+
+				if (face == cull)
 				{
 					return true;
-				}
-			} else if (face == EnumFace.UP)
-			{
-				if (thisSlabBlock.slabType == SlabBlock.EnumSlabType.BOTTOM)
+				} else
 				{
-					return true;
+					return basicBlock(testedBlock, testedState);
 				}
 			}
-		}*/
+		}
 
-		return testedBlock == Block.air || !testedBlock.isFull;
+		if (testedBlock instanceof SlabBlock)
+		{
+			if (testedState.get(SlabBlock.TYPE) == EnumSlabType.DOUBLE)
+				return !middleBlock.isFull || middleState.hasTag(Tags.TRANSPARENT);
+
+			if (testedState.get(SlabBlock.AXIS) == face.getAxis())
+			{
+				EnumFace cull = switch (face.getAxis())
+					{
+						case X -> EnumFace.NORTH;
+						case Y -> EnumFace.UP;
+						case Z -> EnumFace.WEST;
+					};
+
+				if (testedState.get(SlabBlock.TYPE) == EnumSlabType.TOP)
+					cull = cull.getOpposite();
+
+				if (face == cull)
+				{
+					return false;
+				} else
+				{
+					return !basicBlock(testedBlock, testedState);
+				}
+			}
+		}
+
+		return basicBlock(testedBlock, testedState);
+	}
+
+	private static boolean basicBlock(Block block, BlockState state)
+	{
+		return !block.isFull || state.hasTag(Tags.TRANSPARENT);
 	}
 }
 

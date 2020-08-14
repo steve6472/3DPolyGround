@@ -4,6 +4,7 @@ import org.json.JSONObject;
 import steve6472.SSS;
 import steve6472.polyground.EnumFace;
 import steve6472.polyground.block.Tags;
+import steve6472.polyground.block.model.CubeTags;
 import steve6472.polyground.block.properties.enums.EnumAxis;
 import steve6472.polyground.block.properties.enums.EnumSlabType;
 import steve6472.polyground.block.special.PilliarBlock;
@@ -454,6 +455,7 @@ public class DataBuilder
 				.addState(PropertyBuilder.create().addProperty(StairBlock.FACING, EnumFace.NORTH), BlockModelBuilder.create(name)
 					.addCube(CubeBuilder.create()
 						.bottomSlab()
+						.name(CubeTags.STAIR_BOTTOM)
 						.face(FaceBuilder.create()
 							.texture(texture)
 							.uvlock(true)

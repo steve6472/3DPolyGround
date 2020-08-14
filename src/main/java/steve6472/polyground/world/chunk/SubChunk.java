@@ -50,7 +50,6 @@ public class SubChunk implements IBiomeProvider
 		for (int i = 0; i < MODEL_COUNT; i++)
 		{
 			model[i] = new SubChunkModel(ModelLayer.values()[i], this);
-			SubChunkBuilder.init(model[i]);
 		}
 
 		biomes = new int[16][16][16];

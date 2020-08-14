@@ -2,11 +2,11 @@ package steve6472.polyground.world.chunk;
 
 import org.lwjgl.opengl.GL30;
 import steve6472.polyground.gfx.ModelData;
+import steve6472.sge.gfx.VertexObjectCreator;
 
 import java.nio.FloatBuffer;
 
-import static steve6472.sge.gfx.VertexObjectCreator.bindVAO;
-import static steve6472.sge.gfx.VertexObjectCreator.delete;
+import static steve6472.sge.gfx.VertexObjectCreator.*;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
@@ -28,6 +28,12 @@ public class SubChunkModel
 	{
 		this.modelLayer = modelLayer;
 		this.subChunk = subChunk;
+
+		vao = createVAO();
+		positionVbo = VertexObjectCreator.storeFloatDataInAttributeList(0, 3, new float[]{-1, 0, 1, -1, 0, -1, 1, 0, -1});
+		colorVbo = VertexObjectCreator.storeFloatDataInAttributeList(1, 4, new float[]{1, 1, 1, 1});
+		textureVbo = VertexObjectCreator.storeFloatDataInAttributeList(2, 2, new float[]{0, 0, 0, 1, 1, 1});
+		vboNorm = VertexObjectCreator.storeFloatDataInAttributeList(3, 3, new float[]{0, 0, 0, 1, 1, 1, 0, 0, 0});
 	}
 
 	public void unload()

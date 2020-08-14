@@ -3,6 +3,7 @@ package steve6472.polyground.generator.models;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import steve6472.polyground.EnumFace;
+import steve6472.polyground.block.model.CubeTags;
 
 public class CubeBuilder
 {
@@ -18,6 +19,7 @@ public class CubeBuilder
 	private float maxY;
 	private float maxZ;
 	private boolean isHitbox, isCollisionBox;
+	private String name;
 	private FaceBuilder[] faces;
 
 	public static CubeBuilder create()
@@ -30,6 +32,7 @@ public class CubeBuilder
 		faces = new FaceBuilder[6];
 		isHitbox = true;
 		isCollisionBox = true;
+		name = "";
 	}
 
 	public CubeBuilder size(float x, float y, float z, float w, float h, float d)
@@ -62,6 +65,12 @@ public class CubeBuilder
 	public CubeBuilder hitbox(boolean isHitbox)
 	{
 		this.isHitbox = isHitbox;
+		return this;
+	}
+
+	public CubeBuilder name(String name)
+	{
+		this.name = name;
 		return this;
 	}
 
@@ -131,6 +140,7 @@ public class CubeBuilder
 	{
 		min(0, 8, 0);
 		max(8, 16, 16);
+		name(CubeTags.STAIR_TOP);
 		return this;
 	}
 
@@ -145,8 +155,9 @@ public class CubeBuilder
 		JSONObject main = new JSONObject();
 		main.put("from", new JSONArray().put(minX).put(minY).put(minZ));
 		main.put("to", new JSONArray().put(maxX).put(maxY).put(maxZ));
-		main.put("isHitbox", isHitbox);
-		main.put("isCollisionBox", isCollisionBox);
+		if (!isHitbox)       main.put("isHitbox", false);
+		if (!isCollisionBox) main.put("isCollisionBox", false);
+		if (!name.isBlank()) main.put("name", name);
 
 		JSONObject faces = new JSONObject();
 		if (this.faces[0] != null) faces.put("up", this.faces[0].build());

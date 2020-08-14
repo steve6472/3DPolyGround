@@ -1,5 +1,7 @@
 package steve6472.polyground;
 
+import steve6472.polyground.block.properties.enums.EnumAxis;
+
 /**********************
  * Created by steve6472 (Mirek Jozefek)
  * On date: 21.08.2019
@@ -11,50 +13,65 @@ public enum EnumFace
 	/**
 	 * Y+
 	 */
-	UP,
+	UP(EnumAxis.Y),
 
 	/**
 	 * Y-
 	 */
-	DOWN,
+	DOWN(EnumAxis.Y),
 
 	/**
 	 * X+
 	 */
-	NORTH,
+	NORTH(EnumAxis.X),
 
 	/**
 	 * X-
 	 */
-	SOUTH,
+	SOUTH(EnumAxis.X),
 
 	/**
 	 * Z+
 	 */
-	EAST,
+	EAST(EnumAxis.Z),
 
 	/**
 	 * Z-
 	 */
-	WEST,
+	WEST(EnumAxis.Z),
 
 	/**
 	 * NaN
 	 */
-	NONE;
+	NONE(null);
+
+	private final String name, fancyName;
+	private final EnumAxis axis;
+
+	EnumFace(EnumAxis axis)
+	{
+		this.name = name().toLowerCase();
+		this.fancyName = name().charAt(0) + name.substring(1);
+		this.axis = axis;
+	}
 
 	private static final EnumFace[] VALUES = new EnumFace[] {UP, DOWN, NORTH, EAST, SOUTH, WEST, NONE};
 	private static final EnumFace[] FACES = new EnumFace[] {UP, DOWN, NORTH, EAST, SOUTH, WEST};
 	private static final EnumFace[] FACES_REVERSED = new EnumFace[] {WEST, SOUTH, EAST, NORTH, DOWN, UP};
 
+	public EnumAxis getAxis()
+	{
+		return axis;
+	}
+
 	public String getName()
 	{
-		return this.name().toLowerCase();
+		return name;
 	}
 
 	public String getFancyName()
 	{
-		return this.name().charAt(0) + this.name().toLowerCase().substring(1);
+		return fancyName;
 	}
 
 	public static EnumFace[] getValues()
