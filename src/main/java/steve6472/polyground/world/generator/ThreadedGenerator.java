@@ -91,6 +91,18 @@ public class ThreadedGenerator extends Thread
 
 		subChunk.stage = EnumChunkStage.SHAPE;
 
+		// For chunks with biomes with no features
+		ChunkGenData data = chunkDataStorage.getData(subChunk.getX(), subChunk.getLayer(), subChunk.getZ());
+
+		if (data != ChunkGenDataStorage.NOT_GENERATED && data != ChunkGenDataStorage.GENERATED)
+		{
+			data.nextStage();
+			if (data.stage == EnumFeatureStage.FINISHED)
+			{
+				subChunk.stage = EnumChunkStage.FINISHED;
+			}
+		}
+
 		subChunk.rebuild();
 		subChunk.updateNeighbours();
 	}
@@ -109,6 +121,11 @@ public class ThreadedGenerator extends Thread
 			return;
 
 		data.nextStage();
+		if (data.stage == EnumFeatureStage.FINISHED)
+		{
+			subChunk.stage = EnumChunkStage.FINISHED;
+			return;
+		}
 
 		EnumFeatureStage stage = data.stage;
 

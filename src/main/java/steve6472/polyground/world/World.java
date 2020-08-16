@@ -151,12 +151,6 @@ public class World implements IBlockProvider
 		return tickScheduler.scheduledTicks_();
 	}
 
-
-//	public void scheduleUpdate(int x, int y, int z, int tickIn)
-//	{
-//		tickScheduler.scheduleTick(getState(x, y, z), from, x, y, z, tickIn);
-//	}
-
 	private void generateInRadius(int generateDistance)
 	{
 		int x = (int) Math.floor(game.getPlayer().getPosition().x) >> 4;

@@ -56,6 +56,14 @@ public class WorldSerializer
 		{
 			if (!chunkFile.isDirectory())
 				continue;
+			if (chunkFile.listFiles() == null || chunkFile.listFiles().length == 0)
+			{
+				if (chunkFile.delete())
+				{
+					System.out.println("Removed empty chunk file " + chunkFile.getName());
+				}
+				continue;
+			}
 
 			String[] name = chunkFile.getName().split("_");
 			Chunk c = new Chunk(Integer.parseInt(name[1]), Integer.parseInt(name[2]), world);

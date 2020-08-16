@@ -25,7 +25,7 @@
   <component name="MavenImportPreferences">
     <option name="generalSettings">
       <MavenGeneralSettings>
-        <option name="mavenHome" value="D:\Toolbox\apps\IDEA-C\ch-0\202.6397.59\plugins\maven\lib\maven3" />
+        <option name="mavenHome" value="D:\Toolbox\apps\IDEA-C\ch-0\202.6948.5\plugins\maven\lib\maven3" />
       </MavenGeneralSettings>
     </option>
   </component>
@@ -42,8 +42,11 @@
     <property name="com.intellij.ide.scratch.LRUPopupBuilder$1/New Scratch File" value="JShellLanguage" />
     <property name="ignore.preview.features.used" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/src/main/java/steve6472/polyground/gfx" />
+    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.proportion" value="0.0" />
+    <property name="project.structure.side.proportion" value="0.0" />
     <property name="restartRequiresConfirmation" value="false" />
-    <property name="settings.editor.selected.configurable" value="reference.settings.ide.settings.notifications" />
+    <property name="settings.editor.selected.configurable" value="power.mode.ii" />
   </component>
   <component name="RecentsManager">
     <key name="MoveMembersDialog.RECENTS_KEY">
@@ -159,14 +162,18 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="450" y="187" key="#Notifications/0.0.1366.728@0.0.1366.728" timestamp="1597250181051" />
+    <state x="163" y="0" key="#Project_Structure" timestamp="1597436545476">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="163" y="0" key="#Project_Structure/0.0.1366.728@0.0.1366.728" timestamp="1597436545476" />
     <state x="140" y="0" width="1092" height="728" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1597247857083">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="140" y="0" width="1092" height="728" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1366.728@0.0.1366.728" timestamp="1597247857083" />
-    <state x="270" y="26" width="476" height="598" key="#com.intellij.ide.util.MemberChooser" timestamp="1597332417406">
+    <state x="270" y="26" width="476" height="598" key="#com.intellij.ide.util.MemberChooser" timestamp="1597436563678">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="270" y="26" width="476" height="598" key="#com.intellij.ide.util.MemberChooser/0.0.1366.728@0.0.1366.728" timestamp="1597332417406" />
+    <state x="270" y="26" width="476" height="598" key="#com.intellij.ide.util.MemberChooser/0.0.1366.728@0.0.1366.728" timestamp="1597436563678" />
     <state x="415" y="111" key="#com.intellij.ide.util.TreeClassChooserDialog" timestamp="1593696801649">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
@@ -199,42 +206,42 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="463" y="105" key="FileChooserDialogImpl/0.0.1366.728@0.0.1366.728" timestamp="1595339345169" />
-    <state width="1047" height="621" key="GridCell.Tab.0.bottom" timestamp="1597416612255">
+    <state width="1122" height="621" key="GridCell.Tab.0.bottom" timestamp="1597506488757">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1047" height="621" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1597416612255" />
-    <state width="1047" height="621" key="GridCell.Tab.0.center" timestamp="1597416612255">
+    <state width="1122" height="621" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1597506488757" />
+    <state width="1122" height="621" key="GridCell.Tab.0.center" timestamp="1597506488757">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1047" height="621" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1597416612255" />
-    <state width="1047" height="621" key="GridCell.Tab.0.left" timestamp="1597416612255">
+    <state width="1122" height="621" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1597506488757" />
+    <state width="1122" height="621" key="GridCell.Tab.0.left" timestamp="1597506488757">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1047" height="621" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1597416612255" />
-    <state width="1047" height="621" key="GridCell.Tab.0.right" timestamp="1597416612255">
+    <state width="1122" height="621" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1597506488757" />
+    <state width="1122" height="621" key="GridCell.Tab.0.right" timestamp="1597506488757">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1047" height="621" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1597416612255" />
-    <state width="1047" height="621" key="GridCell.Tab.1.bottom" timestamp="1597416612255">
+    <state width="1122" height="621" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1597506488757" />
+    <state width="1047" height="621" key="GridCell.Tab.1.bottom" timestamp="1597417808725">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1047" height="621" key="GridCell.Tab.1.bottom/0.0.1366.728@0.0.1366.728" timestamp="1597416612255" />
-    <state width="1047" height="621" key="GridCell.Tab.1.center" timestamp="1597416612255">
+    <state width="1047" height="621" key="GridCell.Tab.1.bottom/0.0.1366.728@0.0.1366.728" timestamp="1597417808725" />
+    <state width="1047" height="621" key="GridCell.Tab.1.center" timestamp="1597417808725">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1047" height="621" key="GridCell.Tab.1.center/0.0.1366.728@0.0.1366.728" timestamp="1597416612255" />
-    <state width="1047" height="621" key="GridCell.Tab.1.left" timestamp="1597416612255">
+    <state width="1047" height="621" key="GridCell.Tab.1.center/0.0.1366.728@0.0.1366.728" timestamp="1597417808725" />
+    <state width="1047" height="621" key="GridCell.Tab.1.left" timestamp="1597417808725">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1047" height="621" key="GridCell.Tab.1.left/0.0.1366.728@0.0.1366.728" timestamp="1597416612255" />
-    <state width="1047" height="621" key="GridCell.Tab.1.right" timestamp="1597416612255">
+    <state width="1047" height="621" key="GridCell.Tab.1.left/0.0.1366.728@0.0.1366.728" timestamp="1597417808725" />
+    <state width="1047" height="621" key="GridCell.Tab.1.right" timestamp="1597417808725">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1047" height="621" key="GridCell.Tab.1.right/0.0.1366.728@0.0.1366.728" timestamp="1597416612255" />
-    <state x="126" y="9" width="1058" height="711" key="SettingsEditor" timestamp="1597249869562">
+    <state width="1047" height="621" key="GridCell.Tab.1.right/0.0.1366.728@0.0.1366.728" timestamp="1597417808725" />
+    <state x="126" y="9" width="1058" height="711" key="SettingsEditor" timestamp="1597436500319">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="126" y="9" width="1058" height="711" key="SettingsEditor/0.0.1366.728@0.0.1366.728" timestamp="1597249869562" />
+    <state x="126" y="9" width="1058" height="711" key="SettingsEditor/0.0.1366.728@0.0.1366.728" timestamp="1597436500319" />
     <state x="404" y="105" width="540" height="524" key="StructurePopup" timestamp="1593623290788">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
@@ -271,10 +278,10 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="341" y="163" width="672" height="677" key="run.anything.popup/0.0.1366.728@0.0.1366.728" timestamp="1593786947043" />
-    <state x="346" y="49" width="672" height="160" key="search.everywhere.popup" timestamp="1597414631687">
+    <state x="346" y="49" width="672" height="160" key="search.everywhere.popup" timestamp="1597437492519">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="346" y="49" width="672" height="160" key="search.everywhere.popup/0.0.1366.728@0.0.1366.728" timestamp="1597414631687" />
+    <state x="346" y="49" width="672" height="160" key="search.everywhere.popup/0.0.1366.728@0.0.1366.728" timestamp="1597437492519" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

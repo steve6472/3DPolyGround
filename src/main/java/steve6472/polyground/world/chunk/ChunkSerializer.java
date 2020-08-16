@@ -1,5 +1,6 @@
 package steve6472.polyground.world.chunk;
 
+import steve6472.polyground.block.Block;
 import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.registry.Blocks;
 import steve6472.polyground.world.generator.EnumChunkStage;
@@ -148,6 +149,8 @@ public class ChunkSerializer
 
 		short[][][] blocks = (short[][][]) SmartSave.get("blocks");
 
+		final Block error = Blocks.getBlockByName("error");
+
 		for (int i = 0; i < 16; i++)
 		{
 			for (int j = 0; j < 16; j++)
@@ -169,7 +172,7 @@ public class ChunkSerializer
 					} catch (Exception ex)
 					{
 						System.err.println("Could not find " + pallete.get(blocks[i][j][k]) + "! Replacing will error");
-						subChunk.setBlock(Blocks.getBlockByName("error"), i, j, k);
+						subChunk.setBlock(error, i, j, k);
 					}
 				}
 			}
