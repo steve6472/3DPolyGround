@@ -25,11 +25,11 @@ public class BlockState
 	private final Block block;
 	private final HashMap<IProperty<?>, Comparable<?>> properties;
 	private final List<BlockState> possibleStates;
-	private final BlockModel blockModel;
+	private final BlockModel[] blockModel;
 	private final Set<String> tags;
 	private final int id;
 
-	public BlockState(Block block, BlockModel model, HashMap<IProperty<?>, Comparable<?>> properties, List<BlockState> possibleStates, JSONArray tags)
+	public BlockState(Block block, BlockModel[] model, HashMap<IProperty<?>, Comparable<?>> properties, List<BlockState> possibleStates, JSONArray tags)
 	{
 		this.id = ID++;
 		this.block = block;
@@ -69,28 +69,27 @@ public class BlockState
 
 	public BlockModel[] getBlockModels()
 	{
-		return new BlockModel[] {blockModel};
+		return blockModel;
 	}
 
 	public BlockModel getBlockModel(World world, int x, int y, int z)
-	{/*
+	{
 		if (blockModel.length > 1)
 		{
-			return blockModel[(int) (hash(world.getSeed(), x, y, z) & (blockModel.length - 1))];
+			return blockModel[(int) (hash(world.getSeed(), x, y, z) % blockModel.length)];
 		}
 		else
 		{
 			return blockModel[0];
-		}*/
-		return blockModel;
+		}
 	}
-/*
+
 	private long hash(long seed, int x, int y, int z)
 	{
 		long h = seed + x * 668265263L + y * 2147483647L + z * 374761393L;
 		h = (h ^ (h >> 14)) * 1274126177L;
-		return h ^ (h >> 17);
-	}*/
+		return h ^ (h >> 16);
+	}
 
 	public Block getBlock()
 	{

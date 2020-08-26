@@ -26,14 +26,29 @@ public class StateLoader
 		JSONArray t = new JSONArray();
 		for (String s : tags)
 			t.put(s);
-		block.setDefaultState(new BlockState(block, model, null, null, t));
+		block.setDefaultState(new BlockState(block, new BlockModel[] {model}, null, null, t));
+	}
+
+	private static BlockModel[] loadModels(JSONArray modelsArray, int rot)
+	{
+		BlockModel[] models = new BlockModel[modelsArray.length()];
+
+		for (int i = 0; i < modelsArray.length(); i++)
+		{
+			models[i] = new BlockModel(modelsArray.getString(i), rot);
+		}
+
+		return models;
 	}
 
 	public static void generateStates(Block block, List<IProperty<?>> properties, JSONObject blockstates)
 	{
 		if (properties.isEmpty())
 		{
-			block.setDefaultState(new BlockState(block, new BlockModel(blockstates.getString("model"), 0), null, null, blockstates.optJSONArray("tags")));
+			if (blockstates.has("models"))
+				block.setDefaultState(new BlockState(block, loadModels(blockstates.getJSONArray("models"), 0), null, null, blockstates.optJSONArray("tags")));
+			else
+				block.setDefaultState(new BlockState(block, new BlockModel[]{new BlockModel(blockstates.getString("model"), 0)}, null, null, blockstates.optJSONArray("tags")));
 			return;
 		}
 
@@ -91,7 +106,8 @@ public class StateLoader
 				map.put(properties.get(i), list.get(i));
 			}
 
-			String modelPath = "";
+			JSONArray modelsArray = null;
+			String modelPath = null;
 			int rotation = 0;
 			JSONArray tags = null;
 
@@ -120,9 +136,16 @@ public class StateLoader
 					}
 					if (match)
 					{
-						modelPath = models.get(j).getString("model");
-						rotation = models.get(j).optInt("rotation");
-						tags = models.get(j).optJSONArray("tags");
+						JSONObject object = models.get(j);
+						if (object.has("model"))
+						{
+							modelPath = object.getString("model");
+						} else
+						{
+							modelsArray = object.getJSONArray("models");
+						}
+						rotation = object.optInt("rotation", 0);
+						tags = object.optJSONArray("tags");
 						break;
 					}
 				}
@@ -131,7 +154,13 @@ public class StateLoader
 
 			try
 			{
-				BlockState state = new BlockState(block, new BlockModel(modelPath, rotation), map, tileStates, tags);
+				BlockState state;
+				if (modelPath != null)
+					state = new BlockState(block, new BlockModel[]{new BlockModel(modelPath, rotation)}, map, tileStates, tags);
+				else if (modelsArray != null)
+					state = new BlockState(block, loadModels(modelsArray, rotation), map, tileStates, tags);
+				else
+					throw new IllegalStateException("wut, no model found");
 				if (block.getDefaultState() == null)
 					block.setDefaultState(state);
 				tileStates.add(state);
@@ -143,6 +172,16 @@ public class StateLoader
 		}
 	}
 
+	/**
+	 * I no longer know what this does
+	 * help
+	 * please
+	 * somebody tell me
+	 *
+	 * @param list list
+	 * @param max max
+	 * @param index index
+	 */
 	private static void sub(List<Integer> list, List<Integer> max, int index)
 	{
 		if (index == -1)

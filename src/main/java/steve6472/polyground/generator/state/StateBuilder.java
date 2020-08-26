@@ -20,7 +20,7 @@ import java.util.List;
  ***********************/
 public class StateBuilder
 {
-	private BlockModelBuilder singleModel;
+	private BlockModelBuilder[] singleModel;
 	List<Pair<PropertyBuilder, BlockModelBuilder>> models;
 	private JSONArray tags;
 
@@ -39,7 +39,7 @@ public class StateBuilder
 		return models;
 	}
 
-	public StateBuilder singleModel(BlockModelBuilder model)
+	public StateBuilder singleModel(BlockModelBuilder... model)
 	{
 		singleModel = model;
 		tags = new JSONArray();
@@ -75,16 +75,38 @@ public class StateBuilder
 		JSONObject main = new JSONObject();
 		if (singleModel != null)
 		{
-			main.put("model", "block/" + singleModel.getModelPath() + singleModel.getModelName());
-			// Save block state
-			if (this.tags.isEmpty())
-				save(new File(DataGenerator.BLOCK_STATES, blockName + ".json"), main.toString(4));
-			else
-				save(new File(DataGenerator.BLOCK_STATES, blockName + ".json"), main.put("tags", this.tags).toString(4));
+			if (singleModel.length == 1)
+			{
+				main.put("model", "block/" + singleModel[0].getModelPath() + singleModel[0].getModelName());
+				// Save block state
+				if (this.tags.isEmpty())
+					save(new File(DataGenerator.BLOCK_STATES, blockName + ".json"), main.toString(4));
+				else
+					save(new File(DataGenerator.BLOCK_STATES, blockName + ".json"), main.put("tags", this.tags).toString(4));
 
-			// Save block model
-			createModelFile(singleModel.getModelPath());
-			save(new File(DataGenerator.BLOCK_MODELS, singleModel.getModelPath() + singleModel.getModelName() + ".json"), new JSONObject(singleModel.build().build()).toString(4));
+				// Save block model
+				createModelFile(singleModel[0].getModelPath());
+				save(new File(DataGenerator.BLOCK_MODELS, singleModel[0].getModelPath() + singleModel[0].getModelName() + ".json"), new JSONObject(singleModel[0].build().build()).toString(4));
+			} else
+			{
+				JSONArray models = new JSONArray();
+
+				for (BlockModelBuilder blockModelBuilder : singleModel)
+				{
+					models.put("block/" + blockModelBuilder.getModelPath() + blockModelBuilder.getModelName());
+
+					// Save block model
+					createModelFile(blockModelBuilder.getModelPath());
+					save(new File(DataGenerator.BLOCK_MODELS, blockModelBuilder.getModelPath() + blockModelBuilder.getModelName() + ".json"), new JSONObject(blockModelBuilder.build().build()).toString(4));
+				}
+
+				main.put("models", models);
+				// Save block state
+				if (this.tags.isEmpty())
+					save(new File(DataGenerator.BLOCK_STATES, blockName + ".json"), main.toString(4));
+				else
+					save(new File(DataGenerator.BLOCK_STATES, blockName + ".json"), main.put("tags", this.tags).toString(4));
+			}
 		} else
 		{
 			JSONArray modelArray = new JSONArray();
