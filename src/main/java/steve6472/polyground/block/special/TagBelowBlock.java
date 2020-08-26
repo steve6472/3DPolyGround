@@ -1,5 +1,6 @@
 package steve6472.polyground.block.special;
 
+import steve6472.SSS;
 import steve6472.polyground.EnumFace;
 import steve6472.polyground.block.Block;
 import steve6472.polyground.block.states.BlockState;
@@ -13,14 +14,25 @@ import java.io.File;
  * Project: CaveGame
  *
  ***********************/
-public class FlowerBlock extends CustomBlock
+public class TagBelowBlock extends CustomBlock
 {
-	private final String tag;
+	private String[] tags;
+	private File f;
+	private boolean and = false;
 
-	public FlowerBlock(File f, String tag)
+	public TagBelowBlock(File f)
 	{
 		super(f);
-		this.tag = tag;
+		this.f = f;
+	}
+
+	@Override
+	public void postLoad()
+	{
+		SSS sss = new SSS(f);
+		tags = sss.getStringArray("tags");
+		and = sss.getString("operation").equals("and");
+		f = null;
 	}
 
 	@Override
@@ -36,6 +48,23 @@ public class FlowerBlock extends CustomBlock
 	@Override
 	public boolean isValidPosition(BlockState state, World world, int x, int y, int z)
 	{
-		return super.isValidPosition(state, world, x, y, z) && world.getState(x, y - 1, z).hasTag(tag);
+		BlockState st = world.getState(x, y - 1, z);
+		if (and)
+		{
+			for (String s : tags)
+			{
+				if (!st.hasTag(s))
+					return false;
+			}
+			return super.isValidPosition(state, world, x, y, z);
+		} else
+		{
+			for (String s : tags)
+			{
+				if (st.hasTag(s))
+					return super.isValidPosition(state, world, x, y, z);
+			}
+			return false;
+		}
 	}
 }

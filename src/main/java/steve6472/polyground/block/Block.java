@@ -75,7 +75,7 @@ public class Block
 
 		BlockModel model = new BlockModel(cube);
 
-		error = new Block("error", model, "error", "solid");
+		error = new Block("error", model, Tags.ERROR, Tags.SOLID);
 
 		return error;
 	}

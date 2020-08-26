@@ -316,6 +316,11 @@ public class DataGenerator
 			.generate();
 	}
 
+	private SpecialBuilder tagSpecial(boolean and, String... tags)
+	{
+		return SpecialBuilder.create("tag_below").addValue("operation", and ? "and" : "or").addValue("tags", tags);
+	}
+
 	public void generateBlocksItems()
 	{
 		createFolders();
@@ -327,24 +332,24 @@ public class DataGenerator
 		DataBuilder.create().itemModel(new ItemFromTexture("speedometer")).itemName("speedometer").itemSpecial(new SimpleSpecial("speedometer")).generate();
 
 		// Blocks
-		DataBuilder.create().fullBlock("null").noItem().generate();
-		DataBuilder.create().fullBlock("smooth_stone").generate();
-		DataBuilder.create().fullBlock("bricks").generate();
-		DataBuilder.create().fullBlock("iron_block").generate();
-		DataBuilder.create().fullBlock("stone").generate();
-		DataBuilder.create().fullBlock("cobblestone").generate();
-		DataBuilder.create().fullBlock("bedrock").generate();
-		DataBuilder.create().fullBlock("gravel").generate();
-		DataBuilder.create().fullBlock("oak_plank").generate();
-		DataBuilder.create().fullBlock("andesite").generate();
-		DataBuilder.create().fullBlock("diorite").generate();
-		DataBuilder.create().fullBlock("granite").generate();
-		DataBuilder.create().fullBlock("sand").addTags(Tags.CACTUS_TOP, Tags.SHRUBS_TOP).generate();
-		DataBuilder.create().fullBlock("dirt").addTag(Tags.FLOWER_TOP).generate();
+		DataBuilder.create().fullBlock("null").addTags(Tags.SOLID, Tags.ERROR).noItem().generate();
+		DataBuilder.create().fullBlock("smooth_stone").addTags(Tags.SOLID).generate();
+		DataBuilder.create().fullBlock("bricks").addTags(Tags.SOLID).generate();
+		DataBuilder.create().fullBlock("iron_block").addTags(Tags.SOLID).generate();
+		DataBuilder.create().fullBlock("stone").addTags(Tags.SOLID).generate();
+		DataBuilder.create().fullBlock("cobblestone").addTags(Tags.SOLID).generate();
+		DataBuilder.create().fullBlock("bedrock").addTags(Tags.SOLID).generate();
+		DataBuilder.create().fullBlock("gravel").addTags(Tags.SOLID).generate();
+		DataBuilder.create().fullBlock("oak_plank").addTags(Tags.SOLID).generate();
+		DataBuilder.create().fullBlock("andesite").addTags(Tags.SOLID).generate();
+		DataBuilder.create().fullBlock("diorite").addTags(Tags.SOLID).generate();
+		DataBuilder.create().fullBlock("granite").addTags(Tags.SOLID).generate();
+		DataBuilder.create().fullBlock("sand").addTags(Tags.CACTUS_TOP, Tags.SHRUBS_TOP, Tags.SOLID).generate();
+		DataBuilder.create().fullBlock("dirt").addTags(Tags.FLOWER_TOP, Tags.SOLID).generate();
 
-		DataBuilder.create().fullBlock("snow_block", "snow").generate();
+		DataBuilder.create().fullBlock("snow_block", "snow").addTags(Tags.SOLID).generate();
 
-		DataBuilder.create().fullBlock("sandstone", "sandstone_top", "sandstone", "sandstone_bottom").generate();
+		DataBuilder.create().fullBlock("sandstone", "sandstone_top", "sandstone", "sandstone_bottom").addTags(Tags.SOLID).generate();
 
 //		DataBuilder.create().fullBlock("cond_test").blockState(StateBuilder.create().singleModel(new CondTest())).blockModel().generate();
 
@@ -353,14 +358,14 @@ public class DataGenerator
 		DataBuilder.create().stairs("cobblestone_stairs", "cobblestone").generate();
 		DataBuilder.create().stairs("brick_stairs", "bricks").generate();
 
-		DataBuilder.create().plusBlock("small_grass", true).blockSpecial(new SimpleSpecial("flower")).addTag(Tags.TRANSPARENT).generate();
-		DataBuilder.create().plusBlock("shrub", true).blockSpecial(new SimpleSpecial("shrub")).addTag(Tags.TRANSPARENT).generate();
+		DataBuilder.create().plusBlock("small_grass", true).blockSpecial(tagSpecial(true, Tags.FLOWER_TOP)).addTag(Tags.TRANSPARENT).generate();
+		DataBuilder.create().plusBlock("shrub", true).blockSpecial(tagSpecial(true, Tags.SHRUBS_TOP)).addTag(Tags.TRANSPARENT).generate();
 
-		DataBuilder.create().oreBlock("coal_ore", "stone", "ore_overlay", 77, 77, 77).generate();
+		DataBuilder.create().oreBlock("coal_ore", "stone", "ore_overlay", 77, 77, 77).addTags(Tags.SOLID).generate();
 
-		DataBuilder.create().lightOreBlock("magical_coal_ore", "stone", "ore_overlay", 26, 204, 204, "6c7f7a", 1.0f, 0.7f, 1.8f).generate();
+		DataBuilder.create().lightOreBlock("magical_coal_ore", "stone", "ore_overlay", 26, 204, 204, "6c7f7a", 1.0f, 0.7f, 1.8f).addTags(Tags.SOLID).generate();
 
-		DataBuilder.create().fullLightBlock("blaze_block", "FDEA49", 1.0f, 0.14f, 0.07f).generate();
+		DataBuilder.create().fullLightBlock("blaze_block", "FDEA49", 1.0f, 0.14f, 0.07f).addTags(Tags.SOLID).generate();
 
 		DataBuilder.create().transparentFullBlock("glass").generate();
 		DataBuilder.create().transparentFullBlock("framed_glass").generate();
@@ -370,26 +375,20 @@ public class DataGenerator
 
 		DataBuilder.create().slab("dirt_slab", "dirt")
 			.addTagToState().with(SlabBlock.TYPE, EnumSlabType.TOP).with(SlabBlock.AXIS, EnumAxis.Y).finish(Tags.FLOWER_TOP)
-			.addTagToState().with(SlabBlock.TYPE, EnumSlabType.DOUBLE).with(SlabBlock.AXIS, EnumAxis.X).finish(Tags.FLOWER_TOP)
-			.addTagToState().with(SlabBlock.TYPE, EnumSlabType.DOUBLE).with(SlabBlock.AXIS, EnumAxis.Y).finish(Tags.FLOWER_TOP)
-			.addTagToState().with(SlabBlock.TYPE, EnumSlabType.DOUBLE).with(SlabBlock.AXIS, EnumAxis.Z).finish(Tags.FLOWER_TOP)
-			.generate();
-
-		DataBuilder.create().slab("stone_slab", "stone").generate();
-		DataBuilder.create().slab("oak_plank_slab", "oak_plank").generate();
-		DataBuilder.create().slab("cobblestone_slab", "cobblestone").generate();
-		DataBuilder.create().slab("brick_slab", "bricks").generate();
+			.addTagToState().with(SlabBlock.TYPE, EnumSlabType.DOUBLE).finish(Tags.FLOWER_TOP, Tags.SOLID).generate();
+		DataBuilder.create().slab("stone_slab", "stone")
+			.addTagToState().with(SlabBlock.TYPE, EnumSlabType.DOUBLE).finish(Tags.SOLID).generate();
+		DataBuilder.create().slab("oak_plank_slab", "oak_plank")
+			.addTagToState().with(SlabBlock.TYPE, EnumSlabType.DOUBLE).finish(Tags.SOLID).generate();
+		DataBuilder.create().slab("cobblestone_slab", "cobblestone")
+			.addTagToState().with(SlabBlock.TYPE, EnumSlabType.DOUBLE).finish(Tags.SOLID).generate();
+		DataBuilder.create().slab("brick_slab", "bricks")
+			.addTagToState().with(SlabBlock.TYPE, EnumSlabType.DOUBLE).finish(Tags.SOLID).generate();
 
 		DataBuilder.create().pillarBlock("oak_log", "oak_log_side", "oak_log")
-			.addTagToState().with(PilliarBlock.AXIS, EnumAxis.X).finish(Tags.LOG)
-			.addTagToState().with(PilliarBlock.AXIS, EnumAxis.Y).finish(Tags.LOG)
-			.addTagToState().with(PilliarBlock.AXIS, EnumAxis.Z).finish(Tags.LOG)
-			.generate();
+			.addTagToState().finish(Tags.LOG, Tags.SOLID).generate();
 		DataBuilder.create().pillarBlock("crystal_log", "crystal_log_side", "crystal_log")
-			.addTagToState().with(PilliarBlock.AXIS, EnumAxis.X).finish(Tags.LOG)
-			.addTagToState().with(PilliarBlock.AXIS, EnumAxis.Y).finish(Tags.LOG)
-			.addTagToState().with(PilliarBlock.AXIS, EnumAxis.Z).finish(Tags.LOG)
-			.generate();
+			.addTagToState().finish(Tags.LOG, Tags.SOLID).generate();
 
 		DataBuilder.create().stala("stone_stala", "stone", "stone").generate();
 		DataBuilder.create().stala("granite_stala", "granite", "granite").generate();
@@ -399,12 +398,12 @@ public class DataGenerator
 		DataBuilder.create()
 			.fullBlock("corrupted_stone")
 			.blockSpecial(new SimpleSpecial("corrupted_stone"))
-			.addTag(Tags.CORRUPTED)
+			.addTags(Tags.CORRUPTED, Tags.SOLID)
 			.generate();
 
 		DataBuilder.create()
 			.fullBlock("pebble")
-			.blockSpecial(new SimpleSpecial("custom"))
+			.blockSpecial(tagSpecial(true, Tags.SOLID))
 			.blockState(StateBuilder.create()
 				.singleModel(BlockModelBuilder.create("pebble")
 					.addCube(CubeBuilder.create()
@@ -470,7 +469,7 @@ public class DataGenerator
 			.itemName("cactus")
 			.blockToPlace("cactus")
 			.itemModel(new ItemFromBlock("cactus"))
-			.blockSpecial(new SimpleSpecial("cactus"))
+			.blockSpecial(tagSpecial(true, Tags.CACTUS_TOP))
 			.blockState(StateBuilder.create().singleModel(BlockModelBuilder.create("cactus")
 				.addCube(CubeBuilder.create()
 					.min(1, 0, 1)
@@ -515,7 +514,7 @@ public class DataGenerator
 				.addState(snowState(5), snowLayer(5, "snow"))
 				.addState(snowState(6), snowLayer(6, "snow"))
 				.addState(snowState(7), snowLayer(7, "snow"))
-				.addState(snowState(8), snowLayer(8, "snow"))
+				.addState(snowState(8).tag(Tags.SOLID), snowLayer(8, "snow"))
 			).generate();
 
 		DataBuilder.create().fullBlock("grass")
@@ -540,7 +539,7 @@ public class DataGenerator
 						)
 					)
 				)
-				.tag(Tags.FLOWER_TOP)
+				.tags(Tags.FLOWER_TOP, Tags.SOLID)
 			)
 			.blockSpecial(SpecialBuilder.create("spreadable").addValue("target", "dirt").addValue("target_set", "grass"))
 			.generate();
@@ -556,7 +555,7 @@ public class DataGenerator
 							.modelLayer(ModelLayer.LIGHT)
 						)
 					)
-				)
+				).tag(Tags.SOLID)
 			).generate();
 
 		DataBuilder.create()
@@ -654,7 +653,7 @@ public class DataGenerator
 						)
 				).addState(PropertyBuilder.create()
 						.addProperty(SlabBlock.TYPE, EnumSlabType.DOUBLE)
-						.addProperty(SlabBlock.AXIS, EnumAxis.Y),
+						.addProperty(SlabBlock.AXIS, EnumAxis.Y).tag(Tags.SOLID),
 					BlockModelBuilder.create("smooth_slab" + "_double")
 						.modelPath("slab")
 						.addCube(CubeBuilder.create()
@@ -718,12 +717,12 @@ public class DataGenerator
 					BlockModelBuilder.noGen("smooth_slab" + "_side_z").modelPath("slab")
 				).addState(PropertyBuilder.create()
 						.addProperty(SlabBlock.TYPE, EnumSlabType.DOUBLE)
-						.addProperty(SlabBlock.AXIS, EnumAxis.Z)
+						.addProperty(SlabBlock.AXIS, EnumAxis.Z).tag(Tags.SOLID)
 						.rotation(90),
 					BlockModelBuilder.noGen("smooth_slab" + "_double_x").modelPath("slab")
 				).addState(PropertyBuilder.create()
 						.addProperty(SlabBlock.TYPE, EnumSlabType.DOUBLE)
-						.addProperty(SlabBlock.AXIS, EnumAxis.X),
+						.addProperty(SlabBlock.AXIS, EnumAxis.X).tag(Tags.SOLID),
 					BlockModelBuilder.create("smooth_slab" + "_double_x")
 						.modelPath("slab")
 						.addCube(CubeBuilder.create()

@@ -34,13 +34,13 @@ class StateGetter
 
 	public StateGetter addTag(String tag)
 	{
-		propertyBuilders.get(0).tag(tag);
+		propertyBuilders.forEach(c -> c.tag(tag));
 		return this;
 	}
 
 	public StateGetter addTags(String... tags)
 	{
-		propertyBuilders.get(0).tags(tags);
+		propertyBuilders.forEach(c -> c.tags(tags));
 		return this;
 	}
 

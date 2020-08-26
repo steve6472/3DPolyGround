@@ -42,4 +42,14 @@ public class Tags
 	 * Allow blocks like shrubs to be placed on top of this block
 	 */
 	public static final String SHRUBS_TOP = "shrubs_top";
+
+	/**
+	 * Only error block has this tag
+	 */
+	public static final String ERROR = "error";
+
+	/**
+	 * Any block that has all faces solid and is 16x16x16 should have this tag
+	 */
+	public static final String SOLID = "solid";
 }

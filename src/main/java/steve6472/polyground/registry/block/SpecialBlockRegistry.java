@@ -1,7 +1,6 @@
 package steve6472.polyground.registry.block;
 
 import steve6472.polyground.block.Block;
-import steve6472.polyground.block.Tags;
 import steve6472.polyground.block.special.*;
 
 import java.io.File;
@@ -35,9 +34,7 @@ public class SpecialBlockRegistry
 	public static final SpecialBlockEntry<StateTest> stateTest = register("state_test", StateTest::new);
 	public static final SpecialBlockEntry<SnowLayerBlock> snowLayer = register("snow_layer", SnowLayerBlock::new);
 	public static final SpecialBlockEntry<DoubleBlock> doubleBlock = register("double_block", DoubleBlock::new);
-	public static final SpecialBlockEntry<FlowerBlock> flowerBlock = register("flower", (f) -> new FlowerBlock(f, Tags.FLOWER_TOP));
-	public static final SpecialBlockEntry<FlowerBlock> cactusBlock = register("cactus", (f) -> new FlowerBlock(f, Tags.CACTUS_TOP));
-	public static final SpecialBlockEntry<FlowerBlock> shrubBlock = register("shrub", (f) -> new FlowerBlock(f, Tags.SHRUBS_TOP));
+	public static final SpecialBlockEntry<TagBelowBlock> tagBelowBlock = register("tag_below", TagBelowBlock::new);
 	public static final SpecialBlockEntry<SpreadBlock> spreadBlock = register("spreadable", SpreadBlock::new);
 	public static final SpecialBlockEntry<CorruptedStoneBlock> corruptedStone = register("corrupted_stone", CorruptedStoneBlock::new);
 
