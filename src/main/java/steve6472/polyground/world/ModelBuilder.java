@@ -5,6 +5,7 @@ import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 import steve6472.polyground.EnumFace;
+import steve6472.polyground.block.BlockTextureHolder;
 import steve6472.polyground.block.model.Cube;
 import steve6472.polyground.block.model.CubeFace;
 import steve6472.polyground.block.model.faceProperty.TintFaceProperty;
@@ -13,6 +14,7 @@ import steve6472.polyground.registry.face.FaceRegistry;
 import steve6472.polyground.world.biomes.Biome;
 import steve6472.polyground.world.chunk.SubChunk;
 
+import java.awt.*;
 import java.util.List;
 
 /**********************
@@ -79,34 +81,58 @@ public final class ModelBuilder
 
 	private void texture00(EnumFace face, float minX, float minY, float maxX, float maxY)
 	{
-		float x = getTextureId(cube, face) % atlasSize;
+		Rectangle r = BlockTextureHolder.getTexture(getTextureId(cube, face));
+		float x = r.x;
+		float y = r.y;
+		float w = r.width;
+		float h = r.height;
+//		float x = getTextureId(cube, face) % atlasSize;
 		//noinspection IntegerDivisionInFloatingPointContext
-		float y = getTextureId(cube, face) / atlasSize;
-		text.add(new Vector2f(texel * x + minX * texel, texel * y + minY * texel));
+//		float y = getTextureId(cube, face) / atlasSize;
+		text.add(new Vector2f((x + w * minX) * texel, (y + h * minY) * texel));
+//		text.add(new Vector2f(texel * x + minX * texel, texel * y + minY * texel));
 	}
 
 	private void texture01(EnumFace face, float minX, float minY, float maxX, float maxY)
 	{
-		float x = getTextureId(cube, face) % atlasSize;
+//		float x = getTextureId(cube, face) % atlasSize;
 		//noinspection IntegerDivisionInFloatingPointContext
-		float y = getTextureId(cube, face) / atlasSize;
-		text.add(new Vector2f(texel * x + minX * texel, texel * y + maxY * texel));
+//		float y = getTextureId(cube, face) / atlasSize;
+
+		Rectangle r = BlockTextureHolder.getTexture(getTextureId(cube, face));
+		float x = r.x;
+		float y = r.y;
+		float w = r.width;
+		float h = r.height;
+		text.add(new Vector2f((x + w * minX) * texel, (y + h * maxY) * texel));
 	}
 
 	private void texture10(EnumFace face, float minX, float minY, float maxX, float maxY)
 	{
-		float x = getTextureId(cube, face) % atlasSize;
+//		float x = getTextureId(cube, face) % atlasSize;
 		//noinspection IntegerDivisionInFloatingPointContext
-		float y = getTextureId(cube, face) / atlasSize;
-		text.add(new Vector2f(texel * x + maxX * texel, texel * y + minY * texel));
+//		float y = getTextureId(cube, face) / atlasSize;
+
+		Rectangle r = BlockTextureHolder.getTexture(getTextureId(cube, face));
+		float x = r.x;
+		float y = r.y;
+		float w = r.width;
+		float h = r.height;
+		text.add(new Vector2f((x + w * maxX) * texel, (y + h * minY) * texel));
 	}
 
 	private void texture11(EnumFace face, float minX, float minY, float maxX, float maxY)
 	{
-		float x = getTextureId(cube, face) % atlasSize;
+//		float x = getTextureId(cube, face) % atlasSize;
 		//noinspection IntegerDivisionInFloatingPointContext
-		float y = getTextureId(cube, face) / atlasSize;
-		text.add(new Vector2f(texel * x + maxX * texel, texel * y + maxY * texel));
+//		float y = getTextureId(cube, face) / atlasSize;
+
+		Rectangle r = BlockTextureHolder.getTexture(getTextureId(cube, face));
+		float x = r.x;
+		float y = r.y;
+		float w = r.width;
+		float h = r.height;
+		text.add(new Vector2f((x + w * maxX) * texel, (y + h * maxY) * texel));
 	}
 
 	private void sideTexture(EnumFace face)

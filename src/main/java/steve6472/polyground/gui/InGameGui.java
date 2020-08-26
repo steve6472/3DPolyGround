@@ -109,7 +109,7 @@ public class InGameGui extends Gui implements IGamePause
 		Font.renderCustom(5, 15, 1, String.format("XYZ: %.4f %.4f %.4f", main.getPlayer().getX(), main.getPlayer().getY(), main.getPlayer().getZ()));
 		Font.render("XYZ: " + (int) Math.floor(main.getPlayer().getX()) + " " + (int) Math.floor(main.getPlayer().getY()) + " " + (int) Math.floor(main.getPlayer().getZ()), 5, 25);
 
-		final int as = BlockTextureHolder.getAtlas().getTotalSize();
+		final int as = BlockTextureHolder.getAtlas().getTileCount();
 
 		StringBuilder sb = new StringBuilder();
 
@@ -137,7 +137,7 @@ public class InGameGui extends Gui implements IGamePause
 		Font.render(5, 45, sb.toString());
 
 		if (CaveGame.getInstance().options.renderAtlases)
-			SpriteRender.renderSprite(0, 60 + getLineCount(sb) * 8, as, as, 0, BlockTextureHolder.getAtlas().getSpriteId());
+			SpriteRender.renderSprite(0, 60 + getLineCount(sb) * 8, as, as, 0, BlockTextureHolder.getAtlas().getSprite().getId());
 
 		int ts = CaveGame.getInstance().itemAtlas.totalSize;
 

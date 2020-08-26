@@ -106,7 +106,7 @@ public class Blocks
 			}
 		}*/
 
-		BlockTextureHolder.compileTextures();
+		BlockTextureHolder.compileTextures(0);
 
 		game.mainRender.buildHelper.atlasSize = BlockTextureHolder.getAtlas().getTileCount();
 		game.mainRender.buildHelper.texel = 1f / (float) BlockTextureHolder.getAtlas().getTileCount();

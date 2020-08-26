@@ -304,7 +304,6 @@ public class World implements IWorldBlockProvider
 			MainRender.shaders.worldShader.setUniform(WorldShader.SHADE, shade);
 		}
 
-		//noinspection removal
 		BlockTextureHolder.getAtlas().getSprite().bind(0);
 
 		for (Chunk chunk : chunks.getMap().values())

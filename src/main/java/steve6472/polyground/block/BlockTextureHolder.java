@@ -1,10 +1,9 @@
 package steve6472.polyground.block;
 
-import steve6472.sge.gfx.Atlas;
-import steve6472.sge.main.MainApp;
+import steve6472.polyground.gfx.atlas.Atlas;
 
+import java.awt.*;
 import java.io.File;
-import java.net.URL;
 import java.util.HashMap;
 
 /**********************
@@ -15,21 +14,28 @@ import java.util.HashMap;
  ***********************/
 public class BlockTextureHolder
 {
-	private static HashMap<Integer, String> usedTextures = new HashMap<>();
-	private static HashMap<String, Integer> usedTexturesReference = new HashMap<>();
+	private static final HashMap<Integer, String> usedTextures = new HashMap<>();
+	private static final HashMap<String, Integer> usedTexturesReference = new HashMap<>();
+	private static Rectangle[] textures;
 	private static Atlas atlas;
 
-	public static void compileTextures()
+	public static void compileTextures(int overrideSize)
 	{
-		atlas = new Atlas(usedTextures.size(), 16);
+		// Correctly works only if all textures are 16x16 or less
+		int size;
+		if (overrideSize == 0)
+			size = getNextPowerOfTwo((int) Math.ceil(Math.sqrt(usedTextures.size()))) * 16;
+		else
+			size = overrideSize;
+
+		//TODO: when Image does not fit run this recursively till it DOES
+
+		atlas = new Atlas(size);
 		for (int i = 0; i < usedTextures.size(); i++)
 		{
-			URL url = MainApp.class.getResource("/textures/block/" + usedTextures.get(i) + ".png");
 			try
 			{
-				File f = new File(url.getFile());
-				//				File f = new File("textures/block/" + usedTextures.get(i) + ".png");
-				atlas.add(f);
+				atlas.add(usedTextures.get(i), new File("game/textures/block/" + usedTextures.get(i) + ".png"));
 			} catch (NullPointerException ex)
 			{
 				System.err.println(usedTextures.get(i));
@@ -37,6 +43,21 @@ public class BlockTextureHolder
 			}
 		}
 		atlas.finish();
+
+		textures = new Rectangle[atlas.getRects().size()];
+
+		atlas.getRects().forEach((key, rectangle) -> textures[usedTexturesReference.get(key)] = rectangle);
+	}
+
+	public static int getNextPowerOfTwo(int value)
+	{
+		--value;
+		value |= value >> 16;
+		value |= value >> 8;
+		value |= value >> 4;
+		value |= value >> 2;
+		value |= value >> 1;
+		return value + 1;
 	}
 
 	public static void putTexture(String name)
@@ -51,6 +72,11 @@ public class BlockTextureHolder
 	public static int getTextureId(String name)
 	{
 		return usedTexturesReference.get(name);
+	}
+
+	public static Rectangle getTexture(int texture)
+	{
+		return textures[texture];
 	}
 
 	public static Atlas getAtlas()
