@@ -6,13 +6,14 @@ import steve6472.polyground.events.InGameGuiEvent;
 import steve6472.polyground.world.light.Light;
 import steve6472.polyground.world.light.LightManager;
 import steve6472.sge.gfx.SpriteRender;
-import steve6472.sge.gfx.font.CustomChar;
 import steve6472.sge.gfx.font.Font;
 import steve6472.sge.gui.Gui;
 import steve6472.sge.gui.components.GCLog;
 import steve6472.sge.main.MainApp;
 import steve6472.sge.main.events.Event;
 import steve6472.sge.main.events.WindowSizeEvent;
+
+import static org.lwjgl.opengl.GL11.*;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
@@ -91,12 +92,19 @@ public class InGameGui extends Gui implements IGamePause
 
 	private void renderCrosshair()
 	{
+		glBlendFunc(GL_ONE_MINUS_DST_COLOR, GL_ZERO);
+
 		if (CaveGame.runGameEvent(new InGameGuiEvent.PreRenderCrosshair(this)))
 			return;
 
-		Font.renderCustom(getMainApp().getWidth() / 2 - 9, getMainApp().getHeight() / 2 - 9, 2, "[s0]", CustomChar.UNSELECTED_BOX);
+		SpriteRender.fillRect(getMainApp().getWidth() / 2f - 7, getMainApp().getHeight() / 2f - 8, 14, 2, 1, 1, 1, 1);
+		SpriteRender.fillRect(getMainApp().getWidth() / 2f + 5, getMainApp().getHeight() / 2f - 6, 2, 10, 1, 1, 1, 1);
+		SpriteRender.fillRect(getMainApp().getWidth() / 2f - 7, getMainApp().getHeight() / 2f + 4, 14, 2, 1, 1, 1, 1);
+		SpriteRender.fillRect(getMainApp().getWidth() / 2f - 7, getMainApp().getHeight() / 2f - 6, 2, 10, 1, 1, 1, 1);
 
 		CaveGame.runGameEvent(new InGameGuiEvent.PostRenderCrosshair(this));
+
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	}
 
 	public static int chunks, chunkLayers, waterActive;

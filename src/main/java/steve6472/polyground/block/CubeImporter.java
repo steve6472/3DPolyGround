@@ -33,16 +33,16 @@ public class CubeImporter
 			JSONArray to = element.getJSONArray("to");
 			if (!useUv)
 			{
-			builder
-				.append(".addCube(CubeBuilder.create().size(")
-				.append(num(from.getFloat(0))).append(", ")
-				.append(num(from.getFloat(1))).append(", ")
-				.append(num(from.getFloat(2))).append(", ")
-				.append(num(to.getFloat(0) - from.getFloat(0))).append(", ")
-				.append(num(to.getFloat(1) - from.getFloat(1))).append(", ")
-				.append(num(to.getFloat(2) - from.getFloat(2)))
-				.append(").face(FaceBuilder.create().texture(\"")
-				.append(texture).append("\").autoUv()))\n");
+				builder
+					.append(".addCube(CubeBuilder.create().size(")
+					.append(num(from.getFloat(0))).append(", ")
+					.append(num(from.getFloat(1))).append(", ")
+					.append(num(from.getFloat(2))).append(", ")
+					.append(num(to.getFloat(0) - from.getFloat(0))).append(", ")
+					.append(num(to.getFloat(1) - from.getFloat(1))).append(", ")
+					.append(num(to.getFloat(2) - from.getFloat(2)))
+					.append(").face(FaceBuilder.create().texture(\"")
+					.append(texture).append("\").autoUv()))\n");
 			} else
 			{
 				AABBf box = new AABBf(from.getFloat(0), from.getFloat(1), from.getFloat(2), to.getFloat(0), to.getFloat(1), to.getFloat(2));
