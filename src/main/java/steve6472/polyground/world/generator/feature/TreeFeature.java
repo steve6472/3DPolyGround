@@ -1,10 +1,14 @@
 package steve6472.polyground.world.generator.feature;
 
+import org.json.JSONObject;
 import steve6472.polyground.block.Block;
 import steve6472.polyground.block.states.BlockState;
+import steve6472.polyground.registry.Blocks;
 import steve6472.polyground.world.World;
 import steve6472.polyground.world.generator.EnumPlacement;
-import steve6472.polyground.world.generator.IFeature;
+import steve6472.polyground.world.generator.Feature;
+import steve6472.polyground.world.generator.feature.components.match.IBlockMatch;
+import steve6472.polyground.world.generator.feature.components.match.Match;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
@@ -12,22 +16,40 @@ import steve6472.polyground.world.generator.IFeature;
  * Project: CaveGame
  *
  ***********************/
-public class TreeFeature implements IFeature
+public class TreeFeature extends Feature
 {
-	private final BlockState blockUnderMatch, log, leaves, blockUnder;
+	private IBlockMatch blockUnderMatch;
+	private BlockState log, leaves, blockUnder;
+	private int heightMin, heightMax;
 
+	public TreeFeature()
+	{
+	}
+/*
 	public TreeFeature(BlockState blockUnderMatch, BlockState log, BlockState leaves, BlockState blockUnder)
 	{
 		this.blockUnderMatch = blockUnderMatch;
 		this.log = log;
 		this.leaves = leaves;
 		this.blockUnder = blockUnder;
+	}*/
+
+	@Override
+	public void load(JSONObject json)
+	{
+//		blockUnderMatch = Blocks.loadStateFromJSON(json.getJSONObject("match_under"));
+		blockUnderMatch = Match.match(json.getJSONObject("match_under"));
+		log = Blocks.loadStateFromJSON(json.getJSONObject("log"));
+		leaves = Blocks.loadStateFromJSON(json.getJSONObject("leaves"));
+		blockUnder = Blocks.loadStateFromJSON(json.getJSONObject("set_under"));
+		heightMin = json.getInt("height_min");
+		heightMax = json.getInt("height_max");
 	}
 
 	@Override
 	public void generate(World world, int x, int y, int z)
 	{
-		int h = world.getRandom().nextInt(2) + 5;
+		int h = world.getRandom().nextInt(heightMax - heightMin) + heightMin;
 
 		for (int i = 0; i < h; i++)
 		{
@@ -73,7 +95,7 @@ public class TreeFeature implements IFeature
 	@Override
 	public boolean canGenerate(World world, int x, int y, int z)
 	{
-		if (world.getState(x, y, z) != blockUnderMatch)
+		if (!blockUnderMatch.matches(world.getState(x, y, z)))
 			return false;
 
 		for (int i = -2; i < 3; i++)

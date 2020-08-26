@@ -1,5 +1,6 @@
 package steve6472.polyground.world.generator;
 
+import org.json.JSONObject;
 import steve6472.polyground.world.World;
 
 /**********************
@@ -8,9 +9,15 @@ import steve6472.polyground.world.World;
  * Project: ThreadedGenerator
  *
  ***********************/
-public interface IFeature
+public abstract class Feature
 {
-	void generate(World world, int x, int y, int z);
+	public Feature()
+	{
+	}
+
+	public abstract void load(JSONObject json);
+
+	public abstract void generate(World world, int x, int y, int z);
 
 	/**
 	 * Specifies how many chunks in square radius have to be present for this feature to generate
@@ -19,9 +26,9 @@ public interface IFeature
 	 *
 	 * @return size
 	 */
-	int size();
+	public abstract int size();
 
-	boolean canGenerate(World world, int x, int y, int z);
+	public abstract boolean canGenerate(World world, int x, int y, int z);
 
-	EnumPlacement getPlacement();
+	public abstract EnumPlacement getPlacement();
 }

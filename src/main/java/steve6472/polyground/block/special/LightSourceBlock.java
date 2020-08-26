@@ -3,6 +3,7 @@ package steve6472.polyground.block.special;
 import steve6472.SSS;
 import steve6472.polyground.EnumFace;
 import steve6472.polyground.block.Block;
+import steve6472.polyground.block.model.BlockModel;
 import steve6472.polyground.block.model.Cube;
 import steve6472.polyground.block.model.CubeFace;
 import steve6472.polyground.block.model.faceProperty.LightFaceProperty;
@@ -69,20 +70,23 @@ public class LightSourceBlock extends Block
 	{
 		for (BlockState s : block.getDefaultState().getPossibleStates())
 		{
-			for (Cube cube : s.getBlockModel().getCubes())
+			for (BlockModel bm : s.getBlockModels())
 			{
-				for (CubeFace face : cube.getFaces())
+				for (Cube cube : bm.getCubes())
 				{
-					if (face == null)
-						continue;
-					if (face.hasProperty(FaceRegistry.light))
+					for (CubeFace face : cube.getFaces())
 					{
-						System.err.println("Replacing existing light property!");
-					}
-					face.removeProperty(FaceRegistry.light);
+						if (face == null)
+							continue;
+						if (face.hasProperty(FaceRegistry.light))
+						{
+							System.err.println("Replacing existing light property!");
+						}
+						face.removeProperty(FaceRegistry.light);
 
-					float[] col = ColorUtil.getColors(color);
-					face.addProperty(new LightFaceProperty(col[0], col[1], col[2]));
+						float[] col = ColorUtil.getColors(color);
+						face.addProperty(new LightFaceProperty(col[0], col[1], col[2]));
+					}
 				}
 			}
 		}

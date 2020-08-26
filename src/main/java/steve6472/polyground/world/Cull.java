@@ -24,6 +24,9 @@ public class Cull
 
 		Block middleBlock = middleState.getBlock();
 
+		if (middleBlock instanceof CustomBlock || testedBlock instanceof CustomBlock)
+			return true;
+
 		if (middleBlock instanceof StairBlock)
 		{
 			if (cube.getName().equals(CubeTags.STAIR_TOP))
@@ -111,9 +114,9 @@ public class Cull
 				if (testedState.get(SlabBlock.TYPE) == EnumSlabType.TOP)
 					cull = cull.getOpposite();
 
-				if (face == cull)
+				if (face != cull)
 				{
-					return false;
+					return true;
 				} else
 				{
 					return !basicBlock(testedBlock, testedState);

@@ -3,8 +3,7 @@ package steve6472.polyground.block.model;
 import steve6472.polyground.CaveGame;
 import steve6472.polyground.registry.WaterRegistry;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
@@ -15,24 +14,18 @@ import java.util.List;
 public class BlockModel
 {
 	private Cube[] cubes;
-	private List<String> tags;
 
 	/**
 	 * Air Model Constructor
 	 */
 	public BlockModel()
 	{
-		tags = new ArrayList<>();
-		tags.add("transparent");
-		tags.add("air");
 	}
 
 	public BlockModel(String path, int rot)
 	{
 		if (path.isBlank())
 			throw new IllegalArgumentException("Model path is blank! '" + path + "'");
-
-		tags = new ArrayList<>();
 
 		cubes = CaveGame.getInstance().blockModelLoader.loadModel(path, rot);
 
@@ -55,7 +48,6 @@ public class BlockModel
 	public BlockModel(Cube... cubes)
 	{
 		this.cubes = cubes;
-		tags = new ArrayList<>();
 	}
 
 	public Cube getCube(int index)
@@ -68,18 +60,8 @@ public class BlockModel
 		return cubes;
 	}
 
-	public boolean hasTag(String tag)
-	{
-		return tags.contains(tag);
-	}
-
-	public void addTag(String tag)
-	{
-		tags.add(tag);
-	}
-
 	public void printFaceData()
 	{
-		System.out.println(cubes);
+		System.out.println(Arrays.toString(cubes));
 	}
 }

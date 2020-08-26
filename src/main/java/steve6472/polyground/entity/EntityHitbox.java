@@ -121,7 +121,7 @@ public class EntityHitbox
 					BlockState state;
 					if ((state = world.getState(x, y, z)) != Block.air.getDefaultState())
 					{
-						for (Cube t : state.getBlockModel().getCubes())
+						for (Cube t : state.getBlockModel(world, x, y, z).getCubes())
 						{
 							if (!t.isCollisionBox())
 								continue;
@@ -179,7 +179,7 @@ public class EntityHitbox
 					BlockState state;
 					if ((state = world.getState(x, y, z)) != Block.air.getDefaultState())
 					{
-						for (Cube t : state.getBlockModel().getCubes())
+						for (Cube t : state.getBlockModel(world, x, y, z).getCubes())
 						{
 							if (!t.isCollisionBox())
 								continue;

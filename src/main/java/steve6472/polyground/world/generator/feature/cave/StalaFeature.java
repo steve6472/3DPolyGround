@@ -1,12 +1,13 @@
 package steve6472.polyground.world.generator.feature.cave;
 
+import org.json.JSONObject;
 import steve6472.polyground.block.Block;
 import steve6472.polyground.block.special.StalaBlock;
 import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.registry.Blocks;
 import steve6472.polyground.world.World;
 import steve6472.polyground.world.generator.EnumPlacement;
-import steve6472.polyground.world.generator.IFeature;
+import steve6472.polyground.world.generator.Feature;
 import steve6472.sge.main.util.RandomUtil;
 
 /**********************
@@ -15,7 +16,7 @@ import steve6472.sge.main.util.RandomUtil;
  * Project: CaveGame
  *
  ***********************/
-public class StalaFeature implements IFeature
+public class StalaFeature extends Feature
 {
 	private static final int[][] SIZES_ALTS =
 		{
@@ -85,19 +86,31 @@ public class StalaFeature implements IFeature
 			{3, 2, 1, 0, 2, 4, 6}
 		};
 
-	private final Block baseBlock;
-	private final BlockState[] stalas;
-	private final float doubleChance;
+	private BlockState baseState;
+	private BlockState[] stalas;
+	private float doubleChance;
 
-	public StalaFeature(Block baseBlock, String stalaName, float doubleChance)
+	public StalaFeature(BlockState baseState, String stalaName, float doubleChance)
 	{
-		this.baseBlock = baseBlock;
+		this.baseState = baseState;
 		this.doubleChance = doubleChance;
 		stalas = new BlockState[7];
 		for (int i = 1; i <= 7; i++)
 		{
 			stalas[i - 1] = Blocks.getBlockByName(stalaName).getDefaultState().with(StalaBlock.WIDTH, i).get();
 		}
+	}
+
+	@Override
+	public void load(JSONObject json)
+	{
+		baseState = Blocks.loadStateFromJSON(json.getJSONObject("base"));
+		stalas = new BlockState[7];
+		for (int i = 1; i <= 7; i++)
+		{
+			stalas[i - 1] = Blocks.getBlockByName(json.getString("stala_name")).getDefaultState().with(StalaBlock.WIDTH, i).get();
+		}
+		doubleChance = json.getFloat("double_chance");
 	}
 
 	@Override
@@ -112,7 +125,7 @@ public class StalaFeature implements IFeature
 		int max = -1;
 		for (int i = 0; i <= 6; i++)
 		{
-			if (world.getBlock(x, y(y, i, stalagmite), z) == baseBlock)
+			if (world.getState(x, y(y, i, stalagmite), z) == baseState)
 			{
 				max = i;
 				if (world.getRandom().nextFloat() <= doubleChance)
@@ -174,7 +187,7 @@ public class StalaFeature implements IFeature
 	@Override
 	public boolean canGenerate(World world, int x, int y, int z)
 	{
-		return world.getBlock(x, y, z) == baseBlock && (world.getBlock(x, y - 1, z) == Block.air || world.getBlock(x, y + 1, z) == Block.air);
+		return world.getState(x, y, z) == baseState && (world.getBlock(x, y - 1, z) == Block.air || world.getBlock(x, y + 1, z) == Block.air);
 	}
 
 	@Override
@@ -186,6 +199,6 @@ public class StalaFeature implements IFeature
 	@Override
 	public String toString()
 	{
-		return "StalaFeature{" + "baseBlock=" + baseBlock + ", doubleChance=" + doubleChance + '}';
+		return "StalaFeature{" + "baseBlock=" + baseState + ", doubleChance=" + doubleChance + '}';
 	}
 }

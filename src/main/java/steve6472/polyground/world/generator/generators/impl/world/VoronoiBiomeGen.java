@@ -4,11 +4,11 @@ import org.joml.Vector2d;
 import org.joml.Vector3i;
 import steve6472.polyground.SSimplexNoise;
 import steve6472.polyground.world.biomes.Biome;
-import steve6472.polyground.world.biomes.Biomes;
 import steve6472.polyground.world.generator.generators.IBiomeGenerator;
 import steve6472.sge.main.game.GridStorage;
 import steve6472.sge.main.util.RandomUtil;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**********************
@@ -33,7 +33,7 @@ public class VoronoiBiomeGen implements IBiomeGenerator
 
 	private final GridStorage<Vector3i> seedCache;
 
-	private final List<Biome> biomeSet;
+	private List<Biome> biomes;
 
 	/**
 	 *
@@ -41,7 +41,7 @@ public class VoronoiBiomeGen implements IBiomeGenerator
 	 * @param seedJitter (tiles)
 	 * @param searchRadius (grids)
 	 */
-	public VoronoiBiomeGen(long seed, int spread, int seedJitter, int searchRadius, List<Biome> biomes)
+	public VoronoiBiomeGen(long seed, int spread, int seedJitter, int searchRadius)
 	{
 		this.seed = seed;
 		this.spread = spread;
@@ -61,13 +61,26 @@ public class VoronoiBiomeGen implements IBiomeGenerator
 
 		jitterNoise = new SSimplexNoise(seed >> 32);
 
-		this.biomeSet = biomes;
+		biomes = new ArrayList<>();
 
 		// TODO: remove undusable after some time
 		seedCache = new GridStorage<>();
 	}
 
-	public int getBiomeId(int x, int y, int z)
+	public void setBiomes(List<Biome> biomes)
+	{
+		for (Biome b : biomes)
+			if (b.generatesNaturally())
+				this.biomes.add(b);
+	}
+
+	@Override
+	public List<Biome> biomes()
+	{
+		return biomes;
+	}
+
+	public Biome getBiome(int x, int y, int z)
 	{
 		int gx = x / spread;
 		int gz = z / spread;
@@ -102,12 +115,7 @@ public class VoronoiBiomeGen implements IBiomeGenerator
 			}
 		}
 
-		return biome;
-	}
-
-	public Biome getBiome(int x, int y, int z)
-	{
-		return Biomes.getBiome(getBiomeId(x, y, z));
+		return biomes.get(biome);
 	}
 
 	private Vector3i getSeedForGrid(int gx, int gz)
@@ -123,10 +131,16 @@ public class VoronoiBiomeGen implements IBiomeGenerator
 		int z = gz * spread + spread / 2 + RandomUtil.randomInt(-seedJitter, seedJitter, seed1);
 
 		//RandomUtil.randomInt(0, maxBiomes, getBiomeSeed(gx, gz))
-		return new Vector3i(x, z, findBiome(x, z).getId());
+		return new Vector3i(x, z, findBiome(x, z));
 	}
 
-	private Biome findBiome(int x, int z)
+	/**
+	 *
+	 * @param x x coordinate
+	 * @param z z coordinate
+	 * @return index of biome from biomeSet
+	 */
+	private int findBiome(int x, int z)
 	{
 		float scale = 0.0025f;
 
@@ -134,11 +148,11 @@ public class VoronoiBiomeGen implements IBiomeGenerator
 		for (int i = 0; i < n.length; i++)
 			n[i] = this.noises[i].noise(x * scale, z * scale);
 
-		float[] fitness = new float[biomeSet.size()];
+		float[] fitness = new float[biomes.size()];
 
-		for (int i = 0; i < biomeSet.size(); i++)
+		for (int i = 0; i < biomes.size(); i++)
 		{
-			Biome b = biomeSet.get(i);
+			Biome b = biomes.get(i);
 			float[] p = b.getParameters();
 			// Don't ask, I aint changing it for a while, and yes, I know I don't need to match indices of noises with biome parameters
 			fitness[i] = fitness(p[1], p[3], p[0], p[2], n[1], n[3], n[0], n[2]);
@@ -156,7 +170,7 @@ public class VoronoiBiomeGen implements IBiomeGenerator
 			}
 		}
 
-		return biomeSet.get(index);
+		return index;
 	}
 
 	private static float fitness(float biomeTemperature, float biomeHumidity, float biomeAltitude, float biomeWeirdness,

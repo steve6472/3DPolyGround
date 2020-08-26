@@ -1,10 +1,14 @@
 package steve6472.polyground.world.generator.feature;
 
 
+import org.json.JSONObject;
 import steve6472.polyground.block.states.BlockState;
+import steve6472.polyground.registry.Blocks;
 import steve6472.polyground.world.World;
 import steve6472.polyground.world.generator.EnumPlacement;
-import steve6472.polyground.world.generator.IFeature;
+import steve6472.polyground.world.generator.Feature;
+import steve6472.polyground.world.generator.feature.components.match.IBlockMatch;
+import steve6472.polyground.world.generator.feature.components.match.Match;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
@@ -12,19 +16,34 @@ import steve6472.polyground.world.generator.IFeature;
  * Project: ThreadedGenerator
  *
  ***********************/
-public class StackablePillarFeature implements IFeature
+public class StackablePillarFeature extends Feature
 {
-	private final BlockState blockUnder;
-	private final BlockState blockToPlace;
-	private final double chanceForNextBlock;
-	private final int maxHeight;
+	private IBlockMatch blockUnder;
+	private BlockState blockToPlace;
+	private double chanceForNextBlock;
+	private int maxHeight;
 
-	public StackablePillarFeature(BlockState blockUnder, BlockState blockToPlace, double chanceForNextBlock, int maxHeight)
+	public StackablePillarFeature()
+	{
+
+	}
+
+	/*public StackablePillarFeature(BlockState blockUnder, BlockState blockToPlace, double chanceForNextBlock, int maxHeight)
 	{
 		this.blockUnder = blockUnder;
 		this.blockToPlace = blockToPlace;
 		this.chanceForNextBlock = chanceForNextBlock;
 		this.maxHeight = maxHeight;
+	}*/
+
+	@Override
+	public void load(JSONObject json)
+	{
+//		blockUnder = Blocks.loadStateFromJSON(json.getJSONObject("block_under"));
+		blockUnder = Match.match(json.getJSONObject("block_under"));
+		blockToPlace = Blocks.loadStateFromJSON(json.getJSONObject("block"));
+		chanceForNextBlock = json.getDouble("next_chance");
+		maxHeight = json.getInt("max_height");
 	}
 
 	@Override
@@ -60,7 +79,8 @@ public class StackablePillarFeature implements IFeature
 	@Override
 	public boolean canGenerate(World world, int x, int y, int z)
 	{
-		return world.getState(x, y - 1, z) == blockUnder;
+		return blockUnder.matches(world.getState(x, y - 1, z));
+//		return world.getState(x, y - 1, z) == blockUnder;
 	}
 
 	@Override

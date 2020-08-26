@@ -39,7 +39,7 @@ public class Items
 				continue;
 
 			SSS t = new SSS(items[i]);
-			Item item;
+			Item item = null;
 
 			if (t.containsName("debug") && t.getBoolean("debug") && !CaveGame.DEBUG)
 				continue;
@@ -49,7 +49,15 @@ public class Items
 				item = SpecialItemRegistry.createSpecialItem(t.getString("special"), items[i], i + 1);
 			} else
 			{
-				item = new Item(items[i], i + 1);
+				try
+				{
+					item = new Item(items[i], i + 1);
+				} catch (Exception ex)
+				{
+					System.err.println("Error while creating item " + items[i].getName());
+					ex.printStackTrace();
+					pg.exit();
+				}
 			}
 
 			pg.getEventHandler().register(item);

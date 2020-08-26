@@ -116,7 +116,7 @@ public class InGameGui extends Gui implements IGamePause
 		if (main.hitPicker.hit)
 		{
 			sb.append("Distance: ").append(main.hitPicker.getHitResult().getDistance()).append("\n");
-			sb.append("Side: ").append(main.hitPicker.getHitResult().getFace()).append("\n");
+			sb.append("Side: ").append(main.hitPicker.getHitResult().getFace()).append("/").append(main.hitPicker.getHitResult().getFace().getAxis()).append("\n");
 		}
 
 		sb.append("Particles: ").append(main.mainRender.particles.count() + main.mainRender.breakParticles.count()).append("\n");

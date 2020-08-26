@@ -2,8 +2,6 @@ package steve6472.polyground.world.generator;
 
 import org.joml.SimplexNoise;
 import steve6472.polyground.block.Block;
-import steve6472.polyground.registry.Blocks;
-import steve6472.polyground.world.biomes.Biomes;
 import steve6472.polyground.world.chunk.SubChunk;
 import steve6472.sge.main.TriConsumer;
 
@@ -15,62 +13,6 @@ import steve6472.sge.main.TriConsumer;
  ***********************/
 public class CaveGenerator
 {
-	private SubChunk subChunk;
-
-	private long worldSeed = 4;
-
-	public void generate(SubChunk subChunk)
-	{
-		this.subChunk = subChunk;
-
-		Block stone = Blocks.getBlockByName("stone");
-		Block cobblestone = Blocks.getBlockByName("cobblestone");
-		Block bedrock = Blocks.getBlockByName("bedrock");
-
-//		iterate((x, y, z) -> subChunk.setBlock(x, y, z, stone));
-//		long start = System.nanoTime();
-		iterate((x, y, z) -> {
-
-			float scale = 3f;
-
-			float s0 = noise(x + subChunk.getX() * 16, y + subChunk.getLayer() * 16, z + subChunk.getZ() * 16, scale * 0.01f);
-			float s1 = noise(x + subChunk.getX() * 16, y + subChunk.getLayer() * 16, z + subChunk.getZ() * 16, scale * 0.03f);
-			float s2 = noise(x + subChunk.getX() * 16, y + subChunk.getLayer() * 16, z + subChunk.getZ() * 16, scale * 0.03f);
-
-			float mix = s0 * (s1 + 1) * 2f + s2;
-
-			if (subChunk.getLayer() == 0)
-			{
-				mix *= y / 16f;
-				mix -= (-y + 16) / 16f;
-			}
-
-			subChunk.getParent().heightMap[x][z] = subChunk.getWorld().getHeight() * 16;
-			
-			if (subChunk.getLayer() == 0 && y == 0)
-				subChunk.setBlock(bedrock, x, y, z);
-			else if (mix < -0.4f)
-				subChunk.setBlock(cobblestone, x, y, z);
-//				subChunk.setBlock(x, y, z, cobblestone);
-			else if (mix < 0.3f)
-//				subChunk.setBlock(x, y, z, stone);
-				subChunk.setBlock(stone, x, y, z);
-
-			subChunk.setBiomeId(x, y, z, Biomes.CRYSTAL_CAVE.getId());
-
-//			points[i][j][k] = (s0 * (s1 + 1) * 2f + s2 < 0.3f);
-		});
-//		System.out.println((System.nanoTime() - start) / 1000000f);
-
-		//		new SphereCaveFeature(8, 8, 8, 6).generate(subChunk, stone.getId());
-		//		new SphereCaveFeature(8, 15, 8, 4).generate(subChunk, 0);
-		//		new SphereCaveFeature(10, 13, 9, 4).generate(subChunk, 0);
-
-		//		new EllipsoidCaveFeature(8, 8, 8, 7, 4, 7).generate(subChunk, 0);
-
-//		new SphereCaveFeature(8, 24, 8, 20).generate(subChunk, 0);
-	}
-
 	private static float noise(float x, float y, float z, float scale)
 	{
 		return SimplexNoise.noise(x * scale, y * scale, z * scale);

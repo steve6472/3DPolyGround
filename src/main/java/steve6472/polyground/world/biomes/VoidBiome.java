@@ -100,4 +100,10 @@ public class VoidBiome extends Biome
 	{
 		return new Vector3f(145 / 255f, 189 / 255f, 89 / 255f);
 	}
+
+	@Override
+	public boolean generatesNaturally()
+	{
+		return false;
+	}
 }

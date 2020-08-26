@@ -3,7 +3,7 @@ package steve6472.polyground.world.generator.generators.impl.cave;
 import org.joml.SimplexNoise;
 import steve6472.polyground.block.Block;
 import steve6472.polyground.registry.Blocks;
-import steve6472.polyground.world.biomes.Biomes;
+import steve6472.polyground.world.biomes.Biome;
 import steve6472.polyground.world.chunk.SubChunk;
 import steve6472.polyground.world.generator.ChunkGenDataStorage;
 import steve6472.polyground.world.generator.generators.IHeightMapGenerator;
@@ -73,8 +73,9 @@ public class CaveGenerator implements ISurfaceGenerator
 					else if (mix < 0.3f)
 						subChunk.setBlock(stone, x, y, z);
 
-					subChunk.setBiomeId(x, y, z, getHeightMapGenerator().getBiomeGenerator().getBiomeId(x + cx * 16, y + subChunk.getLayer() * 16, z + cz * 16));
-					setChunkData(Biomes.CRYSTAL_CAVE, cx, subChunk.getLayer(), cz);
+					Biome biome = getHeightMapGenerator().getBiomeGenerator().getBiome(x + cx * 16, y + subChunk.getLayer() * 16, z + cz * 16);
+					subChunk.setBiome(biome, x, y, z);
+					setChunkData(biome, cx, subChunk.getLayer(), cz);
 				}
 			}
 		}

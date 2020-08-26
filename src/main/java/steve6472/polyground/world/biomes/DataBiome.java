@@ -1,9 +1,12 @@
 package steve6472.polyground.world.biomes;
 
 import org.joml.Vector3f;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import steve6472.polyground.block.states.BlockState;
+import steve6472.polyground.registry.Blocks;
 import steve6472.polyground.world.generator.EnumFeatureStage;
-import steve6472.polyground.world.generator.IFeature;
+import steve6472.polyground.world.generator.Feature;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
@@ -14,14 +17,59 @@ import steve6472.polyground.world.generator.IFeature;
 public class DataBiome extends Biome
 {
 	private final String name;
-	private final BlockState topTile, underTile, caveTile;
+	private BlockState topTile, underTile, caveTile;
 	private final int biomeHeight, underLayerHeight, iterationCount;
 	private final Vector3f foliageColor;
 	private final float persistance, scale, low, high;
 	private float[] parameters;
 	private float altitude, temperature, weirdness, humidity;
+	private boolean natural;
 
-	public DataBiome(String name, BlockState topTile, BlockState underTile, BlockState caveTile, int biomeHeight, int underLayerHeight, int iterationCount, Vector3f foliageColor, float persistance, float scale, float low, float high)
+	public DataBiome(JSONObject json, Features features)
+	{
+		super();
+		name = json.getString("name");
+		JSONArray foliageArray = json.getJSONArray("foliage_color");
+		foliageColor = new Vector3f(foliageArray.getFloat(0), foliageArray.getFloat(1), foliageArray.getFloat(2));
+		natural = json.getBoolean("natural");
+
+		JSONObject surface = json.getJSONObject("surface");
+		topTile = Blocks.getDefaultState(surface.getString("top_block"));
+		underTile = Blocks.getDefaultState(surface.getString("under_block"));
+		caveTile = Blocks.getDefaultState(surface.getString("cave_block"));
+		underLayerHeight = surface.getInt("under_layer_leight");
+		biomeHeight = surface.getInt("biome_height");
+
+		JSONObject climateParameters = json.getJSONObject("climate_parameters");
+		altitude = climateParameters.getFloat("altitude");
+		temperature = climateParameters.getFloat("temperature");
+		weirdness = climateParameters.getFloat("weirdness");
+		humidity = climateParameters.getFloat("humidity");
+
+		JSONObject heightMapParameters = json.getJSONObject("height_map_parameters");
+		iterationCount = heightMapParameters.getInt("iterations");
+		persistance = heightMapParameters.getFloat("persistance");
+		scale = heightMapParameters.getFloat("scale");
+		low = heightMapParameters.getFloat("low");
+		high = heightMapParameters.getFloat("high");
+
+		if (json.has("features"))
+		{
+			JSONArray fs = json.getJSONArray("features");
+			for (int i = 0; i < fs.length(); i++)
+			{
+				JSONObject feature = fs.getJSONObject(i);
+				EnumFeatureStage stage = feature.getEnum(EnumFeatureStage.class, "stage");
+				double chance = feature.getDouble("chance");
+				String name = feature.getString("name");
+				addFeature(stage, chance, features.getFeature(name));
+			}
+		}
+
+		parameters = new float[] {altitude, temperature, weirdness, humidity};
+	}
+
+	public DataBiome(String name, BlockState topTile, BlockState underTile, BlockState caveTile, int underLayerHeight, int biomeHeight, int iterationCount, float persistance, float scale, float low, float high, Vector3f foliageColor)
 	{
 		super();
 		this.name = name;
@@ -36,6 +84,24 @@ public class DataBiome extends Biome
 		this.scale = scale;
 		this.low = low;
 		this.high = high;
+	}
+
+	public DataBiome caveTile(BlockState caveTile)
+	{
+		this.caveTile = caveTile;
+		return this;
+	}
+
+	public DataBiome underTile(BlockState underTile)
+	{
+		this.underTile = underTile;
+		return this;
+	}
+
+	public DataBiome topTile(BlockState topTile)
+	{
+		this.topTile = topTile;
+		return this;
 	}
 
 	public DataBiome altitude(float altitude)
@@ -68,7 +134,7 @@ public class DataBiome extends Biome
 		return this;
 	}
 
-	public DataBiome feature(EnumFeatureStage stage, double chance, IFeature feature)
+	public DataBiome feature(EnumFeatureStage stage, double chance, Feature feature)
 	{
 		super.addFeature(stage, chance, feature);
 		return this;
@@ -131,6 +197,12 @@ public class DataBiome extends Biome
 	public Vector3f getColor()
 	{
 		return foliageColor;
+	}
+
+	@Override
+	public boolean generatesNaturally()
+	{
+		return natural;
 	}
 
 	@Override

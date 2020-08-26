@@ -32,4 +32,14 @@ public class Tags
 	 * Blocks with this tag can cause corruption.
 	 */
 	public static final String CORRUPTED = "corrupted";
+
+	/**
+	 * Blocks with this tag will force to kill spread block below them
+	 */
+	public static final String KILL_SPREAD_BOTTOM = "kill_spread_bottom";
+
+	/**
+	 * Allow blocks like shrubs to be placed on top of this block
+	 */
+	public static final String SHRUBS_TOP = "shrubs_top";
 }

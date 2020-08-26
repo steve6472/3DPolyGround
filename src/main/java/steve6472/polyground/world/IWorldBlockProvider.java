@@ -15,7 +15,7 @@ import java.util.function.Function;
  * Project: SJP
  *
  ***********************/
-public interface IBlockProvider extends IChunkProvider
+public interface IWorldBlockProvider extends IChunkProvider
 {
 	default BlockState getState(int x, int y, int z)
 	{

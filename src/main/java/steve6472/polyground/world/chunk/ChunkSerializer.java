@@ -163,7 +163,6 @@ public class ChunkSerializer
 						if (block.contains("[") && block.contains("]"))
 						{
 							String[] s = pallete.get(blocks[i][j][k]).split("\\[");
-//							subChunk.setBlock(BlockRegistry.getBlockByName(pallete.get(blocks[i][j][k])), i, j, k);
 							subChunk.setState(Blocks.getStateByName(s[0], "[" + s[1]), i, j, k);
 						} else
 						{

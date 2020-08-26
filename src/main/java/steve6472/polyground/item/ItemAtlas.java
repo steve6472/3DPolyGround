@@ -18,8 +18,15 @@ import steve6472.polyground.registry.Blocks;
 import steve6472.polyground.registry.face.FaceRegistry;
 import steve6472.polyground.tessellators.ItemTessellator;
 import steve6472.polyground.world.ModelBuilder;
+import steve6472.polyground.world.World;
+import steve6472.polyground.world.biomes.Biomes;
 import steve6472.polyground.world.chunk.ModelLayer;
 import steve6472.polyground.world.chunk.SubChunk;
+import steve6472.polyground.world.generator.generators.IBiomeGenerator;
+import steve6472.polyground.world.generator.generators.IHeightMapGenerator;
+import steve6472.polyground.world.generator.generators.impl.flat.FlatHeightMapGen;
+import steve6472.polyground.world.generator.generators.impl.flat.SingleBiomeGen;
+import steve6472.polyground.world.generator.generators.impl.world.SurfaceGenerator;
 import steve6472.sge.gfx.*;
 import steve6472.sge.gfx.shaders.Shader;
 import steve6472.sge.main.events.WindowSizeEvent;
@@ -49,6 +56,7 @@ public class ItemAtlas
 	private Camera camera;
 	private ItemTessellator itemTessellator;
 	private Sprite itemTexture;
+	private final World dummyWorld;
 
 	private List<Vector3f> vertices, normal;
 	private List<Vector4f> colors;
@@ -62,6 +70,10 @@ public class ItemAtlas
 	public ItemAtlas(CaveGame caveGame)
 	{
 		this.caveGame = caveGame;
+
+		IBiomeGenerator biom = new SingleBiomeGen(0, Biomes.AIR_BIOME);
+		IHeightMapGenerator heig = new FlatHeightMapGen(biom, 0);
+		dummyWorld = new World(caveGame, 0, biom, heig, (c) -> new SurfaceGenerator(heig, c));
 
 		vertices = new ArrayList<>();
 		textures = new ArrayList<>();
@@ -186,12 +198,12 @@ public class ItemAtlas
 
 	private int model(Block block, ModelLayer modelLayer)
 	{
-		if (block == null || block.getDefaultState().getBlockModel().getCubes() == null)
+		if (block == null || block.getDefaultState().getBlockModel(dummyWorld, 0, 0, 0).getCubes() == null)
 			return 0;
 
 		int tris = 0;
 
-		for (Cube c : block.getDefaultState().getBlockModel().getCubes())
+		for (Cube c : block.getDefaultState().getBlockModel(dummyWorld, 0, 0, 0).getCubes())
 		{
 			buildHelper.setCube(c);
 

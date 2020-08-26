@@ -1,12 +1,17 @@
 package steve6472.polyground.world.biomes;
 
 import org.joml.Vector3f;
+import org.json.JSONArray;
 import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.registry.Blocks;
 import steve6472.polyground.world.generator.EnumFeatureStage;
 import steve6472.polyground.world.generator.feature.BushFeature;
 import steve6472.polyground.world.generator.feature.cave.OreVein;
 import steve6472.polyground.world.generator.feature.cave.StalaFeature;
+import steve6472.polyground.world.generator.feature.components.match.BlockMatch;
+import steve6472.polyground.world.generator.feature.components.match.IBlockMatch;
+import steve6472.polyground.world.generator.feature.components.provider.IBlockProvider;
+import steve6472.polyground.world.generator.feature.components.provider.SimpleStateProvider;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
@@ -19,15 +24,27 @@ public class CrystalCaveBiome extends Biome
 	@Override
 	public void addFeatures()
 	{
-		addFeature(EnumFeatureStage.CAVE_ALTER, 1d / 1024d / 16d, new BushFeature(Blocks.getBlockByName("stone"), Blocks.getBlockByName("crystal_log"), Blocks.getBlockByName("crystal_leaves"), true));
-		addFeature(EnumFeatureStage.CAVE_ALTER, 1d / 25000d, new OreVein(Blocks.getDefaultState("stone"), Blocks.getDefaultState("andesite"), 8, 24, 0.9d));
-		addFeature(EnumFeatureStage.CAVE_ALTER, 1d / 40000d, new OreVein(Blocks.getDefaultState("stone"), Blocks.getDefaultState("diorite"), 2, 10, 0.4d));
-		addFeature(EnumFeatureStage.CAVE_ALTER, 1d / 20000d, new OreVein(Blocks.getDefaultState("stone"), Blocks.getDefaultState("granite"), 4, 16, 0.8d));
+		final IBlockMatch stoneMatch = new BlockMatch();
+		stoneMatch.load(new JSONArray().put("stone"));
 
-		addFeature(EnumFeatureStage.CAVE_ALTER, 1 / 256d, new StalaFeature(Blocks.getBlockByName("stone"), "stone_stala", 0.6f));
-		addFeature(EnumFeatureStage.CAVE_ALTER, 1 / 256d, new StalaFeature(Blocks.getBlockByName("andesite"), "andesite_stala", 0.55f));
-		addFeature(EnumFeatureStage.CAVE_ALTER, 1 / 256d, new StalaFeature(Blocks.getBlockByName("diorite"), "diorite_stala", 0.2f));
-		addFeature(EnumFeatureStage.CAVE_ALTER, 1 / 256d, new StalaFeature(Blocks.getBlockByName("granite"), "granite_stala", 0.45f));
+		final IBlockProvider andesiteProvider = new SimpleStateProvider();
+		andesiteProvider.load(new JSONArray().put("andesite"));
+
+		final IBlockProvider dioriteProvider = new SimpleStateProvider();
+		dioriteProvider.load(new JSONArray().put("diorite"));
+
+		final IBlockProvider graniteProvider = new SimpleStateProvider();
+		graniteProvider.load(new JSONArray().put("granite"));
+
+		addFeature(EnumFeatureStage.CAVE_ALTER, 1d / 1024d / 16d, new BushFeature(Blocks.getDefaultState("stone"), Blocks.getDefaultState("crystal_log"), Blocks.getDefaultState("crystal_leaves"), true));
+		addFeature(EnumFeatureStage.CAVE_ALTER, 1d / 25000d, new OreVein(stoneMatch, andesiteProvider, 8, 24, 0.9d));
+		addFeature(EnumFeatureStage.CAVE_ALTER, 1d / 40000d, new OreVein(stoneMatch, dioriteProvider, 2, 10, 0.4d));
+		addFeature(EnumFeatureStage.CAVE_ALTER, 1d / 20000d, new OreVein(stoneMatch, graniteProvider, 4, 16, 0.8d));
+
+		addFeature(EnumFeatureStage.CAVE_ALTER, 1 / 256d, new StalaFeature(Blocks.getDefaultState("stone"), "stone_stala", 0.6f));
+		addFeature(EnumFeatureStage.CAVE_ALTER, 1 / 256d, new StalaFeature(Blocks.getDefaultState("andesite"), "andesite_stala", 0.55f));
+		addFeature(EnumFeatureStage.CAVE_ALTER, 1 / 256d, new StalaFeature(Blocks.getDefaultState("diorite"), "diorite_stala", 0.2f));
+		addFeature(EnumFeatureStage.CAVE_ALTER, 1 / 256d, new StalaFeature(Blocks.getDefaultState("granite"), "granite_stala", 0.45f));
 	}
 
 	@Override
@@ -111,6 +128,12 @@ public class CrystalCaveBiome extends Biome
 	public Vector3f getColor()
 	{
 		return new Vector3f(113 / 255f, 212 / 255f, 255 / 255f);
+	}
+
+	@Override
+	public boolean generatesNaturally()
+	{
+		return false;
 	}
 
 	@Override

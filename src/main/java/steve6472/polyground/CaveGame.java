@@ -427,7 +427,18 @@ public class CaveGame extends MainApp
 		for (String arg : args)
 		{
 			if (generators = arg.equals("-generators"))
-				new DataGenerator().generate();
+			{
+				DataGenerator gen = new DataGenerator();
+				long start = System.nanoTime();
+				gen.generateBlocksItems();
+				System.out.println("Generated blocks and items in " + (System.nanoTime() - start) / 1000000.0);
+				start = System.nanoTime();
+				gen.generateFeatures();
+				System.out.println("Generated features in " + (System.nanoTime() - start) / 1000000.0);
+				start = System.nanoTime();
+				gen.generateBiomes();
+				System.out.println("Generated biomes in " + (System.nanoTime() - start) / 1000000.0);
+			}
 			if (arg.equals("-debug"))
 				DEBUG = true;
 		}

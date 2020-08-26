@@ -9,7 +9,6 @@ import steve6472.polyground.gfx.ThreadedModelBuilder;
 import steve6472.polyground.gui.InGameGui;
 import steve6472.polyground.world.World;
 import steve6472.polyground.world.biomes.Biome;
-import steve6472.polyground.world.biomes.Biomes;
 import steve6472.polyground.world.biomes.IBiomeProvider;
 import steve6472.polyground.world.generator.EnumChunkStage;
 
@@ -283,7 +282,7 @@ public class SubChunk implements IBiomeProvider
 
 	public Biome getBiome(int x, int y, int z)
 	{
-		return Biomes.getBiome(getBiomeId(x, y, z));
+		return getWorld().biomes.getBiome(getBiomeId(x, y, z));
 	}
 
 	public void setBiome(int biomeId, int x, int y, int z)

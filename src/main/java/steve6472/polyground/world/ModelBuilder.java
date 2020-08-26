@@ -11,7 +11,6 @@ import steve6472.polyground.block.model.faceProperty.TintFaceProperty;
 import steve6472.polyground.block.model.faceProperty.UVFaceProperty;
 import steve6472.polyground.registry.face.FaceRegistry;
 import steve6472.polyground.world.biomes.Biome;
-import steve6472.polyground.world.biomes.Biomes;
 import steve6472.polyground.world.chunk.SubChunk;
 
 import java.util.List;
@@ -201,13 +200,20 @@ public final class ModelBuilder
 	{
 		removeFaceColors();
 
-		int biomeId = sc == null ? 0 : sc.getBiomeId(x, y, z);
-
-		Biome b = Biomes.getBiome(biomeId);
-
-		for (int j = 0; j < 6; j++)
+		if (sc == null)
 		{
-			shade(b.getColor().x, b.getColor().y, b.getColor().z, face);
+			for (int j = 0; j < 6; j++)
+			{
+				shade(0.5f, 0.5f, 0.5f, face);
+			}
+		} else
+		{
+			Biome b = sc.getWorld().biomes.getBiome(sc.getBiomeId(x, y, z));
+
+			for (int j = 0; j < 6; j++)
+			{
+				shade(b.getColor().x, b.getColor().y, b.getColor().z, face);
+			}
 		}
 	}
 

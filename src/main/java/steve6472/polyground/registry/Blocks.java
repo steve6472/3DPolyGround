@@ -1,14 +1,12 @@
 package steve6472.polyground.registry;
 
+import org.json.JSONObject;
 import steve6472.SSS;
 import steve6472.polyground.CaveGame;
 import steve6472.polyground.block.Block;
 import steve6472.polyground.block.BlockTextureHolder;
-import steve6472.polyground.block.model.Cube;
-import steve6472.polyground.block.model.CubeFace;
 import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.registry.block.SpecialBlockRegistry;
-import steve6472.polyground.registry.face.FaceRegistry;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -88,13 +86,14 @@ public class Blocks
 
 		tempBlocks.forEach(Block::postLoad);
 
+		/*
 		for (int i = 0; i < tempBlocks.size(); i++)
 		{
 			for (BlockState bs : blocks[i].getDefaultState().getPossibleStates())
 			{
-				if (bs.getBlockModel() != null && bs.getBlockModel().getCubes() != null)
+				if (bs.getBlockModel(world, x, y, z) != null && bs.getBlockModel(world, x, y, z).getCubes() != null)
 				{
-					for (Cube c : bs.getBlockModel().getCubes())
+					for (Cube c : bs.getBlockModel(world, x, y, z).getCubes())
 					{
 						for (CubeFace f : c.getFaces())
 						{
@@ -105,7 +104,7 @@ public class Blocks
 					}
 				}
 			}
-		}
+		}*/
 
 		BlockTextureHolder.compileTextures();
 
@@ -131,6 +130,29 @@ public class Blocks
 		int ref = reference.get(name);
 		Block block = blocks[ref];
 		return block.getDefaultState().fromStateString(states);
+	}
+
+	public static BlockState loadStateFromJSON(JSONObject state)
+	{
+		if (state.has("properties"))
+		{
+			StringBuilder sb = new StringBuilder("[");
+			JSONObject properties = state.getJSONObject("properties");
+			if (properties.isEmpty())
+				return getDefaultState(state.getString("block"));
+
+			for (String key : properties.keySet())
+			{
+				sb.append(key).append("=").append(properties.getString(key)).append(",");
+			}
+			sb.setLength(sb.length() - 1);
+			sb.append("]");
+
+			return getStateByName(state.getString("block"), sb.toString());
+		} else
+		{
+			return getDefaultState(state.getString("block"));
+		}
 	}
 
 	public static Block getBlockById(int id)

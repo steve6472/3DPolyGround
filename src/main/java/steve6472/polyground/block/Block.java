@@ -45,8 +45,7 @@ public class Block
 
 	public static Block createAir()
 	{
-		air = new Block("air", new BlockModel());
-		air.getDefaultState().getBlockModel().addTag(Tags.TRANSPARENT);
+		air = new Block("air", new BlockModel(), Tags.TRANSPARENT);
 		return air;
 	}
 
@@ -76,18 +75,16 @@ public class Block
 
 		BlockModel model = new BlockModel(cube);
 
-		error = new Block("error", model);
-		error.getDefaultState().getBlockModel().addTag("error");
-		error.getDefaultState().getBlockModel().addTag("solid");
+		error = new Block("error", model, "error", "solid");
 
 		return error;
 	}
 
-	private Block(String name, BlockModel blockModel)
+	private Block(String name, BlockModel blockModel, String... tags)
 	{
 		this.name = name;
 		isFull = false;
-		StateLoader.generateState(this, blockModel);
+		StateLoader.generateState(this, blockModel, tags);
 	}
 
 	public Block(File f)
@@ -159,7 +156,7 @@ public class Block
 		int tris = 0;
 
 		buildHelper.setSubChunk(world.getSubChunkFromBlockCoords(x, y, z));
-		for (Cube c : state.getBlockModel().getCubes())
+		for (Cube c : state.getBlockModel(world, x, y, z).getCubes())
 		{
 			buildHelper.setCube(c);
 			for (EnumFace face : EnumFace.getFaces())

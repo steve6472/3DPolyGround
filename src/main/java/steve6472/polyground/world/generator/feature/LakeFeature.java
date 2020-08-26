@@ -1,10 +1,11 @@
 package steve6472.polyground.world.generator.feature;
 
+import org.json.JSONObject;
 import steve6472.polyground.block.Block;
 import steve6472.polyground.registry.Blocks;
 import steve6472.polyground.world.World;
 import steve6472.polyground.world.generator.EnumPlacement;
-import steve6472.polyground.world.generator.IFeature;
+import steve6472.polyground.world.generator.Feature;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
@@ -12,7 +13,7 @@ import steve6472.polyground.world.generator.IFeature;
  * Project: CaveGame
  *
  ***********************/
-public class LakeFeature implements IFeature
+public class LakeFeature extends Feature
 {
 	private final Block b, c, d, e;
 
@@ -22,6 +23,12 @@ public class LakeFeature implements IFeature
 		c = Blocks.getBlockByName("sand");
 		d = Blocks.getBlockByName("dirt");
 		e = Blocks.getBlockByName("cobblestone");
+	}
+
+	@Override
+	public void load(JSONObject json)
+	{
+
 	}
 
 	@Override

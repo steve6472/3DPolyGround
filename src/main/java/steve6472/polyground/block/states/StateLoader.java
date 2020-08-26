@@ -21,9 +21,12 @@ import java.util.Map;
 public class StateLoader
 {
 	// Generates air and error blocks
-	public static void generateState(Block block, BlockModel model)
+	public static void generateState(Block block, BlockModel model, String... tags)
 	{
-		block.setDefaultState(new BlockState(block, model, null, null, null));
+		JSONArray t = new JSONArray();
+		for (String s : tags)
+			t.put(s);
+		block.setDefaultState(new BlockState(block, model, null, null, t));
 	}
 
 	public static void generateStates(Block block, List<IProperty<?>> properties, JSONObject blockstates)

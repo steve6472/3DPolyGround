@@ -1,12 +1,15 @@
 package steve6472.polyground.world.generator.feature;
 
 import org.joml.Vector3f;
+import org.json.JSONObject;
 import steve6472.polyground.block.Block;
-import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.world.World;
 import steve6472.polyground.world.generator.EnumPlacement;
-import steve6472.polyground.world.generator.IFeature;
-import steve6472.sge.main.Util;
+import steve6472.polyground.world.generator.Feature;
+import steve6472.polyground.world.generator.feature.components.match.IBlockMatch;
+import steve6472.polyground.world.generator.feature.components.match.Match;
+import steve6472.polyground.world.generator.feature.components.provider.IBlockProvider;
+import steve6472.polyground.world.generator.feature.components.provider.Provider;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
@@ -14,14 +17,21 @@ import steve6472.sge.main.Util;
  * Project: ThreadedGenerator
  *
  ***********************/
-public class TileReplacePatchFeature implements IFeature
+public class TileReplacePatchFeature extends Feature
 {
-	private final BlockState target, replace;
-	private final double chance;
-	private final int radius;
-	private final boolean decayFromCenter;
-	private final boolean onlyTop;
+	private IBlockMatch target;
+	private IBlockProvider replace;
+//	private BlockState target, replace;
+	private double chance;
+	private int radius;
+	private boolean decayFromCenter;
+	private boolean onlyTop;
 
+	public TileReplacePatchFeature()
+	{
+	}
+
+	/*
 	public TileReplacePatchFeature(BlockState target, BlockState replace, double chance, int radius, boolean decayFromCenter, boolean onlyTop)
 	{
 		this.target = target;
@@ -30,6 +40,19 @@ public class TileReplacePatchFeature implements IFeature
 		this.radius = Util.clamp(0, 7, radius);
 		this.decayFromCenter = decayFromCenter;
 		this.onlyTop = onlyTop;
+	}*/
+
+	@Override
+	public void load(JSONObject json)
+	{
+		target = Match.match(json.getJSONObject("target"));
+		replace = Provider.provide(json.getJSONObject("block"));
+//		target = Blocks.loadStateFromJSON(json.getJSONObject("target"));
+//		replace = Blocks.loadStateFromJSON(json.getJSONObject("block"));
+		chance = json.getDouble("chance");
+		radius = json.getInt("radius");
+		decayFromCenter = json.getBoolean("decay_from_center");
+		onlyTop = json.getBoolean("only_top");
 	}
 
 	@Override
@@ -50,12 +73,12 @@ public class TileReplacePatchFeature implements IFeature
 						if (decayFromCenter)
 						{
 							if (world.getRandom().nextFloat() < 1d / Vector3f.distanceSquared(x, y, z, x + i, y + j, z + k))
-								if (world.getState(x + i, y + j, z + k) == target)
-									world.setState(replace, x + i, y + j, z + k);
+								if (target.matches(world.getState(x + i, y + j, z + k)))
+									world.setState(replace.getState(world, x + i, y + j, z + k), x + i, y + j, z + k);
 						} else
 						{
-							if (world.getState(x + i, y + j, z + k) == target)
-								world.setState(replace, x + i, y + j, z + k);
+							if (target.matches(world.getState(x + i, y + j, z + k)))
+								world.setState(replace.getState(world, x + i, y + j, z + k), x + i, y + j, z + k);
 						}
 					}
 				}
@@ -72,7 +95,7 @@ public class TileReplacePatchFeature implements IFeature
 	@Override
 	public boolean canGenerate(World world, int x, int y, int z)
 	{
-		return world.getState(x, y, z) == target;
+		return target.matches(world.getState(x, y, z));
 	}
 
 	@Override

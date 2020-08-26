@@ -64,7 +64,7 @@ class BlockCheck implements ICheck
 		boolean f;
 		if (blockId == Block.error)
 		{
-			f = world.getState(relX + x, relY + y, relZ + z).getBlockModel().hasTag(block.substring(1));
+			f = world.getState(relX + x, relY + y, relZ + z).hasTag(block.substring(1));
 			print("Checked for block tag \"%s\" with result %b", block.substring(1), f);
 		} else
 		{

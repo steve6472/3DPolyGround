@@ -21,6 +21,7 @@ public class CustomBlock extends TransparentBlock
 	public CustomBlock(File f)
 	{
 		super(f);
+		isFull = false;
 	}
 
 	@Override
@@ -29,7 +30,7 @@ public class CustomBlock extends TransparentBlock
 		int tris = 0;
 
 		buildHelper.setSubChunk(world.getSubChunkFromBlockCoords(x, y, z));
-		for (Cube c : state.getBlockModel().getCubes())
+		for (Cube c : state.getBlockModel(world, x, y, z).getCubes())
 		{
 			buildHelper.setCube(c);
 

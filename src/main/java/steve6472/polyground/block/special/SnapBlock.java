@@ -52,7 +52,7 @@ public class SnapBlock extends Block
 		Vector3f biomeColor = world.getBiome(x, y, z).getColor();
 
 		//s - TY / size + s * 14f
-		for (Cube c : state.getBlockModel().getCubes())
+		for (Cube c : state.getBlockModel(world, x, y, z).getCubes())
 		{
 			for (float i = c.getAabb().minX; i < c.getAabb().maxX; i += 1f / 16f)
 			{

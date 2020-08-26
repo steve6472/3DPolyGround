@@ -4,7 +4,7 @@ import org.joml.Vector3f;
 import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.world.generator.EnumFeatureStage;
 import steve6472.polyground.world.generator.FeatureEntry;
-import steve6472.polyground.world.generator.IFeature;
+import steve6472.polyground.world.generator.Feature;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -64,6 +64,8 @@ public abstract class Biome
 
 	public abstract Vector3f getColor();
 
+	public abstract boolean generatesNaturally();
+
 	public Map<EnumFeatureStage, List<FeatureEntry>> getFeatures()
 	{
 		return features;
@@ -74,13 +76,15 @@ public abstract class Biome
 		return features.get(stage);
 	}
 
-	protected void addFeature(EnumFeatureStage stage, double chance, IFeature feature)
+	protected void addFeature(EnumFeatureStage stage, double chance, Feature feature)
 	{
 		addFeature(stage, new FeatureEntry(feature, chance));
 	}
 
 	protected void addFeature(EnumFeatureStage stage, FeatureEntry feature)
 	{
+		if (feature == null)
+			throw new NullPointerException();
 		List<FeatureEntry> entries = features.get(stage);
 		if (entries == null)
 		{

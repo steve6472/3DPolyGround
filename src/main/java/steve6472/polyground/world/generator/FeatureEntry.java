@@ -8,16 +8,16 @@ package steve6472.polyground.world.generator;
  ***********************/
 public class FeatureEntry
 {
-	private final IFeature feature;
+	private final Feature feature;
 	private final double chance;
 
-	public FeatureEntry(IFeature feature, double chance)
+	public FeatureEntry(Feature feature, double chance)
 	{
 		this.feature = feature;
 		this.chance = chance;
 	}
 
-	public IFeature getFeature()
+	public Feature getFeature()
 	{
 		return feature;
 	}

@@ -1,12 +1,15 @@
 package steve6472.polyground.world.generator.feature;
 
 
+import org.json.JSONObject;
 import steve6472.polyground.block.Block;
-import steve6472.polyground.block.special.SnowLayerBlock;
-import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.world.World;
 import steve6472.polyground.world.generator.EnumPlacement;
-import steve6472.polyground.world.generator.IFeature;
+import steve6472.polyground.world.generator.Feature;
+import steve6472.polyground.world.generator.feature.components.match.IBlockMatch;
+import steve6472.polyground.world.generator.feature.components.match.Match;
+import steve6472.polyground.world.generator.feature.components.provider.IBlockProvider;
+import steve6472.polyground.world.generator.feature.components.provider.Provider;
 import steve6472.sge.main.Util;
 
 /**********************
@@ -15,18 +18,31 @@ import steve6472.sge.main.Util;
  * Project: ThreadedGenerator
  *
  ***********************/
-public class TopSnowFeature implements IFeature
+public class TopSnowFeature extends Feature
 {
-	private final Block snow;
-	private final BlockState target;
-	private final int heightStart, heightMax;
+	private IBlockMatch target;
+	private IBlockProvider block;
+//	private BlockState snow;
+//	private BlockState target;
+	private int heightStart, heightMax;
 
-	public TopSnowFeature(BlockState target, Block snow, int heightStart, int heightMax)
+//	public TopSnowFeature(BlockState target, BlockState snow, int heightStart, int heightMax)
+//	{
+//		this.target = target;
+//		this.snow = snow;
+//		this.heightStart = heightStart;
+//		this.heightMax = heightMax;
+//	}
+
+	@Override
+	public void load(JSONObject json)
 	{
-		this.target = target;
-		this.snow = snow;
-		this.heightStart = heightStart;
-		this.heightMax = heightMax;
+		block = Provider.provide(json.getJSONObject("snow"));
+		target = Match.match(json.getJSONObject("target"));
+//		snow = Blocks.loadStateFromJSON(json.getJSONObject("snow"));
+//		target = Blocks.loadStateFromJSON(json.getJSONObject("target"));
+		heightStart = json.getInt("height_start");
+		heightMax = json.getInt("height_max");
 	}
 
 	@Override
@@ -37,10 +53,10 @@ public class TopSnowFeature implements IFeature
 			if (y >= heightStart && y < heightMax)
 			{
 				if (world.getRandom().nextDouble() <= smoothstep(heightStart, heightMax, y))
-					world.setState(snow.getDefaultState().with(SnowLayerBlock.SNOW_LAYER, world.getRandom().nextInt(4) + 1).get(), x, y, z, 5);
+					world.setState(block.getState(world, x, y, z), x, y, z, 5);
 			} else if (y >= heightMax)
 			{
-				world.setState(snow.getDefaultState().with(SnowLayerBlock.SNOW_LAYER, world.getRandom().nextInt(4) + 1).get(), x, y, z, 5);
+				world.setState(block.getState(world, x, y, z), x, y, z, 5);
 			}
 		}
 	}
@@ -67,7 +83,7 @@ public class TopSnowFeature implements IFeature
 	@Override
 	public boolean canGenerate(World world, int x, int y, int z)
 	{
-		return world.getState(x, y - 1, z) == target;
+		return target.matches(world.getState(x, y - 1, z));
 	}
 
 	@Override

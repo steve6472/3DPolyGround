@@ -1,9 +1,12 @@
 package steve6472.polyground.world.generator.feature;
 
+import org.json.JSONObject;
 import steve6472.polyground.block.Block;
+import steve6472.polyground.block.states.BlockState;
+import steve6472.polyground.registry.Blocks;
 import steve6472.polyground.world.World;
 import steve6472.polyground.world.generator.EnumPlacement;
-import steve6472.polyground.world.generator.IFeature;
+import steve6472.polyground.world.generator.Feature;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
@@ -11,20 +14,12 @@ import steve6472.polyground.world.generator.IFeature;
  * Project: CaveGame
  *
  ***********************/
-public class BushFeature implements IFeature
+public class BushFeature extends Feature
 {
-	private final Block blockUnder, log, leaves;
-	private final boolean undergroundBush;
+	private BlockState blockUnder, log, leaves;
+	private boolean undergroundBush;
 
-	public BushFeature(Block blockUnder, Block log, Block leaves)
-	{
-		this.blockUnder = blockUnder;
-		this.log = log;
-		this.leaves = leaves;
-		this.undergroundBush = false;
-	}
-
-	public BushFeature(Block blockUnder, Block log, Block leaves, boolean undergroundBush)
+	public BushFeature(BlockState blockUnder, BlockState log, BlockState leaves, boolean undergroundBush)
 	{
 		this.blockUnder = blockUnder;
 		this.log = log;
@@ -33,15 +28,24 @@ public class BushFeature implements IFeature
 	}
 
 	@Override
+	public void load(JSONObject json)
+	{
+		blockUnder = Blocks.loadStateFromJSON(json.getJSONObject("block_under"));
+		log = Blocks.loadStateFromJSON(json.getJSONObject("log"));
+		leaves = Blocks.loadStateFromJSON(json.getJSONObject("leaves"));
+		undergroundBush = json.optBoolean("underground", false);
+	}
+
+	@Override
 	public void generate(World world, int x, int y, int z)
 	{
-		world.setBlock(log, x, y + 1, z);
-		world.setBlock(log, x, y + 2, z);
-		world.setBlock(leaves, x, y + 3, z);
-		world.setBlock(leaves, x + 1, y + 2, z, (b) -> b == Block.air);
-		world.setBlock(leaves, x - 1, y + 2, z, (b) -> b == Block.air);
-		world.setBlock(leaves, x, y + 2, z + 1, (b) -> b == Block.air);
-		world.setBlock(leaves, x, y + 2, z - 1, (b) -> b == Block.air);
+		world.setState(log, x, y + 1, z);
+		world.setState(log, x, y + 2, z);
+		world.setState(leaves, x, y + 3, z);
+		world.setState(leaves, x + 1, y + 2, z, (b) -> b.getBlock() == Block.air);
+		world.setState(leaves, x - 1, y + 2, z, (b) -> b.getBlock() == Block.air);
+		world.setState(leaves, x, y + 2, z + 1, (b) -> b.getBlock() == Block.air);
+		world.setState(leaves, x, y + 2, z - 1, (b) -> b.getBlock() == Block.air);
 	}
 
 	@Override
@@ -58,10 +62,10 @@ public class BushFeature implements IFeature
 			// Don't generate on border!
 			if (Math.abs(x) % 16 == 0 || Math.abs(x) % 16 == 15 || Math.abs(z) % 16 == 0 || Math.abs(z) % 16 == 15)
 				return false;
-			return world.getBlock(x, y, z) == blockUnder && world.getBlock(x, y + 1, z) == Block.air && world.getBlock(x, y + 2, z) == Block.air && world.getBlock(x, y + 3, z) == Block.air;
+			return world.getState(x, y, z) == blockUnder && world.getBlock(x, y + 1, z) == Block.air && world.getBlock(x, y + 2, z) == Block.air && world.getBlock(x, y + 3, z) == Block.air;
 		} else
 		{
-			return world.getBlock(x, y, z) == blockUnder;
+			return world.getState(x, y, z) == blockUnder;
 		}
 	}
 

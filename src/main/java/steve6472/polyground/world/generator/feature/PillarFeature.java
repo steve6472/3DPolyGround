@@ -1,10 +1,14 @@
 package steve6472.polyground.world.generator.feature;
 
 
-import steve6472.polyground.block.states.BlockState;
+import org.json.JSONObject;
 import steve6472.polyground.world.World;
 import steve6472.polyground.world.generator.EnumPlacement;
-import steve6472.polyground.world.generator.IFeature;
+import steve6472.polyground.world.generator.Feature;
+import steve6472.polyground.world.generator.feature.components.match.IBlockMatch;
+import steve6472.polyground.world.generator.feature.components.match.Match;
+import steve6472.polyground.world.generator.feature.components.provider.IBlockProvider;
+import steve6472.polyground.world.generator.feature.components.provider.Provider;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
@@ -12,19 +16,22 @@ import steve6472.polyground.world.generator.IFeature;
  * Project: ThreadedGenerator
  *
  ***********************/
-public class PillarFeature implements IFeature
+public class PillarFeature extends Feature
 {
-	private final BlockState blockUnder;
-	private final BlockState blockToPlace;
-	private final int minHeight;
-	private final int maxHeight;
+	private IBlockMatch blockUnder;
+	private IBlockProvider blockToPlace;
+	private int minHeight;
+	private int maxHeight;
 
-	public PillarFeature(BlockState blockUnder, BlockState blockToPlace, int minHeight, int maxHeight)
+	public PillarFeature() {}
+
+	@Override
+	public void load(JSONObject json)
 	{
-		this.blockUnder = blockUnder;
-		this.blockToPlace = blockToPlace;
-		this.minHeight = minHeight;
-		this.maxHeight = maxHeight;
+		blockUnder = Match.match(json.getJSONObject("block_under"));
+		blockToPlace = Provider.provide(json.getJSONObject("block"));
+		minHeight = json.getInt("min_height");
+		maxHeight = json.getInt("max_height");
 	}
 
 	@Override
@@ -34,7 +41,7 @@ public class PillarFeature implements IFeature
 
 		for (int i = y; i < y + height; i++)
 		{
-			world.setState(blockToPlace, x, i, z, 5);
+			world.setState(blockToPlace.getState(world, x, i, z), x, i, z, 5);
 		}
 	}
 
@@ -54,7 +61,7 @@ public class PillarFeature implements IFeature
 	@Override
 	public boolean canGenerate(World world, int x, int y, int z)
 	{
-		return world.getState(x, y - 1, z) == blockUnder;
+		return blockUnder.matches(world.getState(x, y - 1, z));
 	}
 
 	@Override

@@ -153,7 +153,7 @@ public class ThreadedGenerator extends Thread
 						for (ChunkGenData.FeatureGenEntry featureGenEntry : data.getFeatures(biome, stage))
 						{
 							FeatureEntry featureEntry = featureGenEntry.getFeature();
-							IFeature feature = featureEntry.getFeature();
+							Feature feature = featureEntry.getFeature();
 
 							if (feature.size() <= maxRange)
 							{
@@ -194,7 +194,7 @@ public class ThreadedGenerator extends Thread
 					for (ChunkGenData.FeatureGenEntry featureGenEntry : data.getFeatures(biome, stage))
 					{
 						FeatureEntry featureEntry = featureGenEntry.getFeature();
-						IFeature feature = featureEntry.getFeature();
+						Feature feature = featureEntry.getFeature();
 
 						if (feature.size() <= maxRange)
 						{

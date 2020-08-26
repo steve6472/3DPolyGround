@@ -21,7 +21,7 @@ public class AirBiome extends Biome
 	@Override
 	public float[] getParameters()
 	{
-		return new float[] {0f};
+		return new float[] {0f, 0, 0, 0};
 	}
 
 	@Override
@@ -70,6 +70,12 @@ public class AirBiome extends Biome
 	public Vector3f getColor()
 	{
 		return FOLIAGE_COLOR;
+	}
+
+	@Override
+	public boolean generatesNaturally()
+	{
+		return false;
 	}
 
 	@Override

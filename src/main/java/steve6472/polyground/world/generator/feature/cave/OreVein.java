@@ -1,9 +1,13 @@
 package steve6472.polyground.world.generator.feature.cave;
 
-import steve6472.polyground.block.states.BlockState;
+import org.json.JSONObject;
 import steve6472.polyground.world.World;
 import steve6472.polyground.world.generator.EnumPlacement;
-import steve6472.polyground.world.generator.IFeature;
+import steve6472.polyground.world.generator.Feature;
+import steve6472.polyground.world.generator.feature.components.match.IBlockMatch;
+import steve6472.polyground.world.generator.feature.components.match.Match;
+import steve6472.polyground.world.generator.feature.components.provider.IBlockProvider;
+import steve6472.polyground.world.generator.feature.components.provider.Provider;
 import steve6472.sge.main.Util;
 import steve6472.sge.main.util.RandomUtil;
 
@@ -13,19 +17,37 @@ import steve6472.sge.main.util.RandomUtil;
  * Project: CaveGame
  *
  ***********************/
-public class OreVein implements IFeature
+public class OreVein extends Feature
 {
-	private final BlockState target, ore;
-	private final int minSize, maxSize;
-	private final double chance;
+	private IBlockMatch target;
+	private IBlockProvider ore;
+//	private BlockState target, ore;
+	private int minSize, maxSize;
+	private double chance;
 
-	public OreVein(BlockState target, BlockState ore, int minSize, int maxSize, double chance)
+	public OreVein()
+	{
+	}
+
+	public OreVein(IBlockMatch target, IBlockProvider ore, int minSize, int maxSize, double chance)
 	{
 		this.target = target;
 		this.ore = ore;
 		this.minSize = Util.clamp(0, 30, minSize);
 		this.maxSize = Util.clamp(1, 31, maxSize);
 		this.chance = chance;
+	}
+
+	@Override
+	public void load(JSONObject json)
+	{
+		target = Match.match(json.getJSONObject("target"));
+		ore = Provider.provide(json.getJSONObject("ore"));
+//		target = Blocks.loadStateFromJSON(json.getJSONObject("target"));
+//		ore = Blocks.loadStateFromJSON(json.getJSONObject("ore"));
+		minSize = Util.clamp(0, 30, json.getInt("min_size"));
+		maxSize = Util.clamp(1, 31, json.getInt("max_size"));
+		chance = json.getDouble("chance");
 	}
 
 	@Override
@@ -45,9 +67,9 @@ public class OreVein implements IFeature
 					double Y = Math.pow(((j + 0.5) / (float) yRadius), 2);
 					double Z = Math.pow(((k + 0.5) / (float) zRadius), 2);
 
-					if (X + Y + Z < 1 && world.getRandom().nextDouble() <= chance && world.getState(x + i, y + j, z + k) == target)
+					if (X + Y + Z < 1 && world.getRandom().nextDouble() <= chance && target.matches(world.getState(x + i, y + j, z + k)))
 					{
-						world.setState(ore, i + x, j + y, k + z);
+						world.setState(ore.getState(world, i + x, j + y, k + z), i + x, j + y, k + z);
 					}
 				}
 			}
@@ -70,7 +92,7 @@ public class OreVein implements IFeature
 	@Override
 	public boolean canGenerate(World world, int x, int y, int z)
 	{
-		return world.getState(x, y, z) == target;
+		return target.matches(world.getState(x, y, z));
 	}
 
 	@Override

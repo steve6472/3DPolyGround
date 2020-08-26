@@ -50,18 +50,29 @@ public class BlockInspectorItem extends Item
 			BlockState state = CaveGame.getInstance().hitPicker.getHitResult().getState();
 			text.append("Block: ").append(state.getBlock().getName()).append("\n");
 
+			int yAdd = 0;
+
 			if (state.getProperties() != null)
 			{
+				text.append("\nStates:\n");
 				for (IProperty<?> property : state.getProperties().keySet())
 				{
 					text.append(property.getName()).append(" = ").append(state.getProperties().get(property)).append("\n");
 				}
-
-				Font.render(text.toString(), 5, CaveGame.getInstance().getHeight() - 10 - 10 * (state.getProperties() == null ? 0 : state.getProperties().size()));
-			} else
-			{
-				Font.render(text.toString(), 5, CaveGame.getInstance().getHeight() - 15);
+				yAdd += state.getProperties().size() + 2;
 			}
+
+			if (!state.getTags().isEmpty())
+			{
+				text.append("\nTags:\n");
+				for (String tag : state.getTags())
+				{
+					text.append(tag).append("\n");
+				}
+				yAdd += state.getTags().size() + 2;
+			}
+
+			Font.render(text.toString(), 5, CaveGame.getInstance().getHeight() - 10 - 10 * yAdd);
 		}
 	}
 }

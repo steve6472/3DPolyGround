@@ -12,9 +12,11 @@ import steve6472.polyground.gfx.ThreadedModelBuilder;
 import steve6472.polyground.gfx.shaders.CGGShader;
 import steve6472.polyground.gfx.shaders.world.WorldShader;
 import steve6472.polyground.gui.InGameGui;
+import steve6472.polyground.world.biomes.Features;
 import steve6472.polyground.rift.RiftManager;
 import steve6472.polyground.teleporter.TeleporterManager;
 import steve6472.polyground.world.biomes.Biome;
+import steve6472.polyground.world.biomes.Biomes;
 import steve6472.polyground.world.chunk.Chunk;
 import steve6472.polyground.world.chunk.ModelLayer;
 import steve6472.polyground.world.chunk.SubChunk;
@@ -24,6 +26,7 @@ import steve6472.polyground.world.generator.EnumChunkStage;
 import steve6472.polyground.world.generator.ThreadedGenerator;
 import steve6472.polyground.world.generator.generators.IBiomeGenerator;
 import steve6472.polyground.world.generator.generators.IHeightMapGenerator;
+import steve6472.polyground.world.generator.generators.ISetBiomeGenerator;
 import steve6472.polyground.world.generator.generators.ISurfaceGenerator;
 import steve6472.sge.gfx.GBuffer;
 import steve6472.sge.gfx.Tessellator3D;
@@ -48,15 +51,18 @@ import static org.lwjgl.opengl.GL30.glBindVertexArray;
  * Project: SJP
  *
  ***********************/
-public class World implements IBlockProvider
+public class World implements IWorldBlockProvider
 {
 	private final int height;
+	private final long seed;
 
 	public int lastWaterTickIndex = 0;
 	public int currentWaterTickIndex = 0;
 	public boolean reachedMax = false;
 
 	public final TeleporterManager teleporters;
+	public final Features features;
+	public final Biomes biomes;
 
 	private final GridStorage<Chunk> chunks;
 	private final TickScheduler tickScheduler;
@@ -73,13 +79,30 @@ public class World implements IBlockProvider
 
 	public World(CaveGame game, int height, IBiomeGenerator biomeGenerator, IHeightMapGenerator heightMapGenerator, Function<ChunkGenDataStorage, ISurfaceGenerator> surfaceGenerator)
 	{
+		seed = biomeGenerator.getSeed();
 		this.height = height;
 		mat = new Matrix4f();
 		this.game = game;
 		chunks = new GridStorage<>();
 		tickScheduler = new TickScheduler(this);
 
-		random = new Random(4);
+		features = new Features();
+		features.load();
+
+		biomes = new Biomes(game);
+		if (biomeGenerator instanceof ISetBiomeGenerator setBiomeGenerator)
+		{
+			for (Biome b : setBiomeGenerator.biomes())
+			{
+				biomes.addBiome(b);
+			}
+		} else
+		{
+			biomes.load(features);
+			biomeGenerator.setBiomes(biomes.getBiomes());
+		}
+
+		random = new Random(biomeGenerator.getSeed());
 		entityManager = new EntityManager(this);
 
 		teleporters = new TeleporterManager(this);
@@ -88,9 +111,6 @@ public class World implements IBlockProvider
 		this.generator = new ThreadedGenerator(this, biomeGenerator, heightMapGenerator, surfaceGenerator);
 		generator.start();
 
-		//
-		//		if (worldName == null)
-		//			addChunk(new Chunk(0, 0, this).generate(), false);
 		offThreadTicks = new LinkedBlockingQueue<>();
 	}
 
@@ -425,6 +445,11 @@ public class World implements IBlockProvider
 	public int getHeight()
 	{
 		return height;
+	}
+
+	public long getSeed()
+	{
+		return seed;
 	}
 
 	public EntityManager getEntityManager()

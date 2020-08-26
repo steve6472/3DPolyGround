@@ -4,6 +4,7 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import steve6472.polyground.CaveGame;
 import steve6472.polyground.registry.CommandRegistry;
 import steve6472.polyground.world.World;
+import steve6472.polyground.world.biomes.Biome;
 import steve6472.polyground.world.biomes.Biomes;
 import steve6472.polyground.world.chunk.Chunk;
 import steve6472.polyground.world.generator.ChunkGenDataStorage;
@@ -22,10 +23,8 @@ import steve6472.sge.gui.Gui;
 import steve6472.sge.gui.components.Background;
 import steve6472.sge.gui.components.Button;
 import steve6472.sge.main.MainApp;
+import steve6472.sge.main.util.Pair;
 
-import java.util.ArrayList;
-import java.util.Random;
-import java.util.Set;
 import java.util.function.Function;
 
 /**********************
@@ -43,6 +42,17 @@ public class MainMenu extends Gui implements IGamePause
 
 	private StaticTexture main;
 
+	/**
+	 * pettan means flat-peko
+	 */
+	private Pair<IBiomeGenerator, Pair<IHeightMapGenerator, Function<ChunkGenDataStorage, ISurfaceGenerator>>> pettan(long seed)
+	{
+		IBiomeGenerator flatBiomeGenerator = new SingleBiomeGen(seed, Biomes.createFlat());
+		IHeightMapGenerator flatHeightMapGenerator = new FlatHeightMapGen(flatBiomeGenerator, 0);
+		Function<ChunkGenDataStorage, ISurfaceGenerator> flatSurfaceGenerator = (cds) -> new SurfaceGenerator(flatHeightMapGenerator, cds);
+		return new Pair<>(flatBiomeGenerator, new Pair<>(flatHeightMapGenerator, flatSurfaceGenerator));
+	}
+
 	@Override
 	public void createGui()
 	{
@@ -50,21 +60,9 @@ public class MainMenu extends Gui implements IGamePause
 
 		main = StaticTexture.fromTexture("main_title.png");
 
-		long seed = new Random().nextLong();
-//		long seed = 4419941787569665203L;
+//		long seed = new Random().nextLong();
+		long seed = -4993185418078325334L;
 		System.out.println("Seed: " + seed);
-		IBiomeGenerator worldBiomeGenerator = new VoronoiBiomeGen(seed, 16, 8, 2, new ArrayList<>(Set.of(
-			Biomes.TUNDRA, Biomes.DESERT, Biomes.FOREST, Biomes.SAVANNA, Biomes.DESERT_HILLS, Biomes.COLD_MOUNTAINS, Biomes.PLAINS, Biomes.SAVANNA_PLATEAU, Biomes.MOUNTAINS
-		)));
-//		IBiomeGenerator worldBiomeGenerator = new SingleBiomeGen(seed, Biomes.FOREST);
-		IHeightMapGenerator worldHeightMapGenerator = new HeightMapGenerator(worldBiomeGenerator, 10, 5);
-//		IHeightMapGenerator worldHeightMapGenerator = new FlatHeightMapGen(worldBiomeGenerator, 0);
-		Function<ChunkGenDataStorage, ISurfaceGenerator> worldSurfaceGenerator = (cds) -> new SurfaceGenerator(worldHeightMapGenerator, cds);
-
-
-		IBiomeGenerator flatBiomeGenerator = new SingleBiomeGen(seed, Biomes.FLAT);
-		IHeightMapGenerator flatHeightMapGenerator = new FlatHeightMapGen(flatBiomeGenerator, 0);
-		Function<ChunkGenDataStorage, ISurfaceGenerator> flatSurfaceGenerator = (cds) -> new SurfaceGenerator(flatHeightMapGenerator, cds);
 
 		Button sandbox = new Button("Sandbox");
 		sandbox.setLocation(30, 30);
@@ -77,7 +75,8 @@ public class MainMenu extends Gui implements IGamePause
 			CaveGame.getInstance().options.enablePostProcessing = false;
 			CaveGame.getInstance().options.generateDistance = -1;
 
-			CaveGame.getInstance().setWorld(new World(CaveGame.getInstance(), 4, flatBiomeGenerator, flatHeightMapGenerator, flatSurfaceGenerator));
+			var v = pettan(seed);
+			CaveGame.getInstance().setWorld(new World(CaveGame.getInstance(), 4, v.getA(), v.getB().getA(), v.getB().getB()));
 			CaveGame.getInstance().world.addChunk(new Chunk(0, 0, CaveGame.getInstance().getWorld()));
 
 
@@ -95,7 +94,8 @@ public class MainMenu extends Gui implements IGamePause
 			CaveGame.getInstance().options.isGamePaused = false;
 			CaveGame.getInstance().options.generateDistance = -1;
 
-			CaveGame.getInstance().setWorld(new World(CaveGame.getInstance(), 4, flatBiomeGenerator, flatHeightMapGenerator, flatSurfaceGenerator));
+			var v = pettan(seed);
+			CaveGame.getInstance().setWorld(new World(CaveGame.getInstance(), 4, v.getA(), v.getB().getA(), v.getB().getB()));
 			CaveGame.getInstance().world.worldName = "house";
 
 			try
@@ -121,12 +121,11 @@ public class MainMenu extends Gui implements IGamePause
 			CaveGame.getInstance().options.isGamePaused = false;
 			CaveGame.getInstance().options.generateDistance = 5;
 
-//			IBiomeGenerator biomeGen = new SingleBiomeGen(seed, Biomes.FLAT);
-//			IHeightMapGenerator heightMapGen = new FlatHeightMapGen(biomeGen, 0);
-//			Function<ChunkGenDataStorage, ISurfaceGenerator> caveGen = (cds) -> new TestGen(heightMapGen, cds);
+			IBiomeGenerator worldBiomeGenerator = new VoronoiBiomeGen(seed, 16, 8, 2);
+			IHeightMapGenerator worldHeightMapGenerator = new HeightMapGenerator(worldBiomeGenerator, 10, 5);
+			Function<ChunkGenDataStorage, ISurfaceGenerator> worldSurfaceGenerator = (cds) -> new SurfaceGenerator(worldHeightMapGenerator, cds);
 
 			CaveGame.getInstance().setWorld(new World(CaveGame.getInstance(), 4, worldBiomeGenerator, worldHeightMapGenerator, worldSurfaceGenerator));
-//			CaveGame.getInstance().setWorld(new World(CaveGame.getInstance(), 1, biomeGen, heightMapGen, caveGen));
 
 			try
 			{
@@ -151,7 +150,8 @@ public class MainMenu extends Gui implements IGamePause
 			CaveGame.getInstance().inGameGui.setVisible(true);
 			CaveGame.getInstance().options.isGamePaused = false;
 
-			IBiomeGenerator biomeGen = new SingleBiomeGen(seed, Biomes.CRYSTAL_CAVE);
+			Biome b = Biomes.createCrystalCave();
+			IBiomeGenerator biomeGen = new SingleBiomeGen(seed, b);
 			IHeightMapGenerator heightMapGen = new FlatHeightMapGen(biomeGen, 256);
 			Function<ChunkGenDataStorage, ISurfaceGenerator> caveGen = (cds) -> new CaveGenerator(heightMapGen, cds);
 
@@ -182,7 +182,8 @@ public class MainMenu extends Gui implements IGamePause
 			CaveGame.getInstance().options.isGamePaused = false;
 			CaveGame.getInstance().options.generateDistance = -1;
 
-			CaveGame.getInstance().setWorld(new World(CaveGame.getInstance(), 0, flatBiomeGenerator, flatHeightMapGenerator, flatSurfaceGenerator));
+			var v = pettan(seed);
+			CaveGame.getInstance().setWorld(new World(CaveGame.getInstance(), 0, v.getA(), v.getB().getA(), v.getB().getB()));
 			try
 			{
 				CommandRegistry registry = CaveGame.getInstance().commandRegistry;
