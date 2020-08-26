@@ -14,16 +14,23 @@ import java.util.Arrays;
 public class BlockModel
 {
 	private Cube[] cubes;
+	private final String path;
+	private final int rot;
 
 	/**
 	 * Air Model Constructor
 	 */
 	public BlockModel()
 	{
+		rot = 0;
+		path = null;
 	}
 
 	public BlockModel(String path, int rot)
 	{
+		this.path = path;
+		this.rot = rot;
+
 		if (path.isBlank())
 			throw new IllegalArgumentException("Model path is blank! '" + path + "'");
 
@@ -45,8 +52,18 @@ public class BlockModel
 		*/
 	}
 
+	public void reload()
+	{
+		if (path == null)
+			return;
+
+		cubes = CaveGame.getInstance().blockModelLoader.loadModel(path, rot);
+	}
+
 	public BlockModel(Cube... cubes)
 	{
+		this.path = null;
+		rot = 0;
 		this.cubes = cubes;
 	}
 

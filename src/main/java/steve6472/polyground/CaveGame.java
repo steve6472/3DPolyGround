@@ -1,8 +1,11 @@
 package steve6472.polyground;
 
 import org.lwjgl.glfw.GLFW;
+import steve6472.polyground.block.Block;
 import steve6472.polyground.block.BlockTextureHolder;
+import steve6472.polyground.block.model.BlockModel;
 import steve6472.polyground.block.model.BlockModelLoader;
+import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.commands.CommandSource;
 import steve6472.polyground.entity.Player;
 import steve6472.polyground.events.CancellableEvent;
@@ -348,7 +351,20 @@ public class CaveGame extends MainApp
 					options.renderAtlases = !options.renderAtlases;
 
 				if (e.getKey() == KeyList.F5)
+				{
 					BlockTextureHolder.compileTextures(0);
+
+					for (Block b : Blocks.getAllBlocks())
+					{
+						for (BlockState possibleState : b.getDefaultState().getPossibleStates())
+						{
+							for (BlockModel blockModel : possibleState.getBlockModels())
+							{
+								blockModel.reload();
+							}
+						}
+					}
+				}
 
 				if (e.getKey() == KeyList.ESCAPE)
 				{
