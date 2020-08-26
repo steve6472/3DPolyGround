@@ -79,11 +79,7 @@ public class CubeImporter
 								.append(num(uv.getFloat(2))).append(", ")
 								.append(num(uv.getFloat(3))).append(")");
 						}
-						builder.append(", EnumFace.").append(
-							switch (s)
-								{
-									default -> s.toUpperCase();
-								}
+						builder.append(", EnumFace.").append(s.toUpperCase()
 						);
 						builder.append(")");
 					}

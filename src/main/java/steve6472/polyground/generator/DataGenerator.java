@@ -181,6 +181,16 @@ public class DataGenerator
 			.bool("decay", true)
 			.generate();
 
+		FeatureBuilder.create(FeatureRegistry.VEGETATION_PATCH.name())
+			.path("common")
+			.name("sticks")
+			.matchBlocks("block_under", "sand", "grass", "dirt", "stone")
+			.blockState("block", BlockStateBuilder.create().block("stick"))
+			.integer("radius", 3)
+			.doubleArg("chance", 0.3)
+			.bool("decay", true)
+			.generate();
+
 		FeatureBuilder.create(FeatureRegistry.TREE.name())
 			.path("trees")
 			.name("oak_tree")
@@ -250,7 +260,8 @@ public class DataGenerator
 			.climate(0.1f, 0.25f, 0f, -0.6f)
 			.foliageColor(92 / 255f, 184 / 255f, 64 / 255f)
 			.feature(EnumFeatureStage.VEGETATION, 1d / 100d, "grass_patch")
-			.feature(EnumFeatureStage.VEGETATION, 1d / 256d, "pebbles")
+			.feature(EnumFeatureStage.VEGETATION, 1d / 512d, "pebbles")
+			.feature(EnumFeatureStage.VEGETATION, 1d / 256d, "sticks")
 			.feature(EnumFeatureStage.TREE, 1d / 5d, "oak_tree")
 			.generate();
 
@@ -494,6 +505,16 @@ public class DataGenerator
 						.addCube(CubeBuilder.create().min(8, 0, 6).max(10, 1, 7).face(FaceBuilder.create().texture("stick_2").uv(3, 5.5f, 4, 6), EnumFace.EAST).face(FaceBuilder.create().texture("stick_2").uv(5.5f, 5.5f, 6, 6), EnumFace.SOUTH).face(FaceBuilder.create().texture("stick_2").uv(4, 5.5f, 4.5f, 6), EnumFace.NORTH).face(FaceBuilder.create().texture("stick_2").uv(4.5f, 5.5f, 5.5f, 6), EnumFace.WEST).face(FaceBuilder.create().texture("stick_2").uv(4.5f, 5.5f, 4, 4.5f), EnumFace.UP).face(FaceBuilder.create().texture("stick_2").uv(5, 4.5f, 4.5f, 5.5f), EnumFace.DOWN))
 						.addCube(CubeBuilder.create().min(9, 0, 5).max(11, 1, 6).face(FaceBuilder.create().texture("stick_2").uv(0, 7, 1, 7.5f), EnumFace.EAST).face(FaceBuilder.create().texture("stick_2").uv(2.5f, 7, 3, 7.5f), EnumFace.SOUTH).face(FaceBuilder.create().texture("stick_2").uv(1, 7, 1.5f, 7.5f), EnumFace.NORTH).face(FaceBuilder.create().texture("stick_2").uv(1.5f, 7, 2.5f, 7.5f), EnumFace.WEST).face(FaceBuilder.create().texture("stick_2").uv(1.5f, 7, 1, 6), EnumFace.UP).face(FaceBuilder.create().texture("stick_2").uv(2, 6, 1.5f, 7), EnumFace.DOWN))
 						.addCube(CubeBuilder.create().min(10, 0, 4).max(12, 1, 5).face(FaceBuilder.create().texture("stick_2").uv(0, 5.5f, 1, 6), EnumFace.EAST).face(FaceBuilder.create().texture("stick_2").uv(2.5f, 5.5f, 3, 6), EnumFace.SOUTH).face(FaceBuilder.create().texture("stick_2").uv(1, 5.5f, 1.5f, 6), EnumFace.NORTH).face(FaceBuilder.create().texture("stick_2").uv(1.5f, 5.5f, 2.5f, 6), EnumFace.WEST).face(FaceBuilder.create().texture("stick_2").uv(1.5f, 5.5f, 1, 4.5f), EnumFace.UP).face(FaceBuilder.create().texture("stick_2").uv(2, 4.5f, 1.5f, 5.5f), EnumFace.DOWN))
+					),
+					(BlockModelBuilder.create("stick_3").modelPath("stick")
+						.addCube(CubeBuilder.create().min(2, 0, 5).max(12, 1, 6).face(FaceBuilder.create().texture("stick_3").uv(0, 5, 5, 5.5f), EnumFace.EAST).face(FaceBuilder.create().texture("stick_3").uv(10.5f, 5, 11, 5.5f), EnumFace.SOUTH).face(FaceBuilder.create().texture("stick_3").uv(5, 5, 5.5f, 5.5f), EnumFace.NORTH).face(FaceBuilder.create().texture("stick_3").uv(5.5f, 5, 10.5f, 5.5f), EnumFace.WEST).face(FaceBuilder.create().texture("stick_3").uv(5.5f, 5, 5, 0), EnumFace.UP).face(FaceBuilder.create().texture("stick_3").uv(6, 0, 5.5f, 5), EnumFace.DOWN))
+						.addCube(CubeBuilder.create().min(10, 0, 6).max(11, 1, 9).face(FaceBuilder.create().texture("stick_3").uv(0, 0.5f, 0.5f, 1), EnumFace.EAST).face(FaceBuilder.create().texture("stick_3").uv(2.5f, 0.5f, 4, 1), EnumFace.SOUTH).face(FaceBuilder.create().texture("stick_3").uv(0.5f, 0.5f, 2, 1), EnumFace.NORTH).face(FaceBuilder.create().texture("stick_3").uv(2, 0.5f, 2.5f, 1), EnumFace.WEST).face(FaceBuilder.create().texture("stick_3").uv(2, 0.5f, 0.5f, 0), EnumFace.UP).face(FaceBuilder.create().texture("stick_3").uv(3.5f, 0, 2, 0.5f), EnumFace.DOWN))
+						.addCube(CubeBuilder.create().min(7, 0, 2).max(8, 1, 4).face(FaceBuilder.create().texture("stick_3").uv(0, 3, 0.5f, 3.5f), EnumFace.EAST).face(FaceBuilder.create().texture("stick_3").uv(2, 3, 3, 3.5f), EnumFace.SOUTH).face(FaceBuilder.create().texture("stick_3").uv(0.5f, 3, 1.5f, 3.5f), EnumFace.NORTH).face(FaceBuilder.create().texture("stick_3").uv(1.5f, 3, 2, 3.5f), EnumFace.WEST).face(FaceBuilder.create().texture("stick_3").uv(1.5f, 3, 0.5f, 2.5f), EnumFace.UP).face(FaceBuilder.create().texture("stick_3").uv(2.5f, 2.5f, 1.5f, 3), EnumFace.DOWN))
+						.addCube(CubeBuilder.create().min(7, 1, 4).max(8, 2, 6).face(FaceBuilder.create().texture("stick_3").uv(2, 1.5f, 2.5f, 2), EnumFace.EAST).face(FaceBuilder.create().texture("stick_3").uv(4, 1.5f, 5, 2), EnumFace.SOUTH).face(FaceBuilder.create().texture("stick_3").uv(2.5f, 1.5f, 3.5f, 2), EnumFace.NORTH).face(FaceBuilder.create().texture("stick_3").uv(3.5f, 1.5f, 4, 2), EnumFace.WEST).face(FaceBuilder.create().texture("stick_3").uv(3.5f, 1.5f, 2.5f, 1), EnumFace.UP).face(FaceBuilder.create().texture("stick_3").uv(4.5f, 1, 3.5f, 1.5f), EnumFace.DOWN))
+						.addCube(CubeBuilder.create().min(11, 0, 13).max(13, 1, 14).face(FaceBuilder.create().texture("stick_3").uv(0, 2, 1, 2.5f), EnumFace.EAST).face(FaceBuilder.create().texture("stick_3").uv(2.5f, 2, 3, 2.5f), EnumFace.SOUTH).face(FaceBuilder.create().texture("stick_3").uv(1, 2, 1.5f, 2.5f), EnumFace.NORTH).face(FaceBuilder.create().texture("stick_3").uv(1.5f, 2, 2.5f, 2.5f), EnumFace.WEST).face(FaceBuilder.create().texture("stick_3").uv(1.5f, 2, 1, 1), EnumFace.UP).face(FaceBuilder.create().texture("stick_3").uv(2, 1, 1.5f, 2), EnumFace.DOWN))
+						.addCube(CubeBuilder.create().min(10, 1, 7).max(11, 2, 8).face(FaceBuilder.create().texture("stick_3").uv(0, 4, 0.5f, 4.5f), EnumFace.EAST).face(FaceBuilder.create().texture("stick_3").uv(1.5f, 4, 2, 4.5f), EnumFace.SOUTH).face(FaceBuilder.create().texture("stick_3").uv(0.5f, 4, 1, 4.5f), EnumFace.NORTH).face(FaceBuilder.create().texture("stick_3").uv(1, 4, 1.5f, 4.5f), EnumFace.WEST).face(FaceBuilder.create().texture("stick_3").uv(1, 4, 0.5f, 3.5f), EnumFace.UP).face(FaceBuilder.create().texture("stick_3").uv(1.5f, 3.5f, 1, 4), EnumFace.DOWN))
+						.addCube(CubeBuilder.create().min(9, 0, 7).max(10, 1, 8).face(FaceBuilder.create().texture("stick_3").uv(2.5f, 3.5f, 3, 4), EnumFace.EAST).face(FaceBuilder.create().texture("stick_3").uv(4, 3.5f, 4.5f, 4), EnumFace.SOUTH).face(FaceBuilder.create().texture("stick_3").uv(3, 3.5f, 3.5f, 4), EnumFace.NORTH).face(FaceBuilder.create().texture("stick_3").uv(3.5f, 3.5f, 4, 4), EnumFace.WEST).face(FaceBuilder.create().texture("stick_3").uv(3.5f, 3.5f, 3, 3), EnumFace.UP).face(FaceBuilder.create().texture("stick_3").uv(4, 3, 3.5f, 3.5f), EnumFace.DOWN))
+						.addCube(CubeBuilder.create().min(11, 0, 7).max(12, 1, 8).face(FaceBuilder.create().texture("stick_3").uv(2.5f, 2.5f, 3, 3), EnumFace.EAST).face(FaceBuilder.create().texture("stick_3").uv(4, 2.5f, 4.5f, 3), EnumFace.SOUTH).face(FaceBuilder.create().texture("stick_3").uv(3, 2.5f, 3.5f, 3), EnumFace.NORTH).face(FaceBuilder.create().texture("stick_3").uv(3.5f, 2.5f, 4, 3), EnumFace.WEST).face(FaceBuilder.create().texture("stick_3").uv(3.5f, 2.5f, 3, 2), EnumFace.UP).face(FaceBuilder.create().texture("stick_3").uv(4, 2, 3.5f, 2.5f), EnumFace.DOWN))
 					)
 				)
 			).generate();

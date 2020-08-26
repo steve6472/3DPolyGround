@@ -33,6 +33,7 @@ public class Atlas
 			packer.insertImage(name, ImageIO.read(f));
 		} catch (IOException e)
 		{
+			System.err.println(name);
 			e.printStackTrace();
 		}
 	}
@@ -40,6 +41,12 @@ public class Atlas
 	public void finish()
 	{
 		texture = StaticTexture.fromBufferedImage(packer.getImage());
+	}
+
+	public void clean()
+	{
+		if (texture != null)
+			texture.delete();
 	}
 
 	/**

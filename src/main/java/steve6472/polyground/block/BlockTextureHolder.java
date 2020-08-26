@@ -30,6 +30,9 @@ public class BlockTextureHolder
 
 		//TODO: when Image does not fit run this recursively till it DOES
 
+		if (atlas != null)
+			atlas.clean();
+
 		atlas = new Atlas(size);
 		for (int i = 0; i < usedTextures.size(); i++)
 		{
@@ -40,6 +43,12 @@ public class BlockTextureHolder
 			{
 				System.err.println(usedTextures.get(i));
 				ex.printStackTrace();
+			} catch (RuntimeException ex)
+			{
+				int newSize = size << 1;
+				System.out.println("Image did not fit, incresing size to " + newSize);
+				compileTextures(newSize);
+				return;
 			}
 		}
 		atlas.finish();
