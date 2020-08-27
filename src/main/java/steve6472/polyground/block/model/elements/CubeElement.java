@@ -25,8 +25,6 @@ public class CubeElement implements IElement
 		Vector3f from = ElUtil.loadVertex3("from", element).div(16);
 		Vector3f to = ElUtil.loadVertex3("to", element).div(16);
 
-
-
 		if (element.has("north")) p0 = face(EnumFace.NORTH, element,
 			new Vector3f(to.x, to.y, to.z),
 			new Vector3f(to.x, from.y, to.z),
@@ -92,10 +90,10 @@ public class CubeElement implements IElement
 		}
 
 		Vector3f tint = ElUtil.tint(face);
-		ModelLayer modelLayer = ElUtil.layer(face);
 		boolean biomeTint = face.optBoolean("biometint", false);
-		
-		el.createTriangles(v0, v1, v2, v3, uv, tint, modelLayer, biomeTint);
+
+		el.modelLayer = ElUtil.layer(face);
+		el.createTriangles(v0, v1, v2, v3, uv, tint, biomeTint);
 
 		float rad = (float) Math.toRadians(face.optFloat("texture_rot", 0));
 		el.t0.rotateUv(rad);
@@ -124,14 +122,14 @@ public class CubeElement implements IElement
 	 * @return amount of triangles
 	 */
 	@Override
-	public int build(ModelBuilder builder)
+	public int build(ModelBuilder builder, ModelLayer layer)
 	{
 		return
-			(p0 != null ? p0.build(builder) : 0) +
-			(p1 != null ? p1.build(builder) : 0) +
-			(p2 != null ? p2.build(builder) : 0) +
-			(p3 != null ? p3.build(builder) : 0) +
-			(p4 != null ? p4.build(builder) : 0) +
-			(p5 != null ? p5.build(builder) : 0);
+			(p0 != null ? p0.build(builder, layer) : 0) +
+			(p1 != null ? p1.build(builder, layer) : 0) +
+			(p2 != null ? p2.build(builder, layer) : 0) +
+			(p3 != null ? p3.build(builder, layer) : 0) +
+			(p4 != null ? p4.build(builder, layer) : 0) +
+			(p5 != null ? p5.build(builder, layer) : 0);
 	}
 }

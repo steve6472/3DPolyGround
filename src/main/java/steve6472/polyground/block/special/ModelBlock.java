@@ -43,14 +43,11 @@ public class ModelBlock extends TransparentBlock
 			}
 		}
 
-		if (modelLayer == ModelLayer.NORMAL)
+		if (state.getBlockModel(world, x, y, z).getElements() != null)
 		{
-			if (state.getBlockModel(world, x, y, z).getElements() != null)
+			for (IElement c : state.getBlockModel(world, x, y, z).getElements())
 			{
-				for (IElement c : state.getBlockModel(world, x, y, z).getElements())
-				{
-					tris += c.build(buildHelper);
-				}
+				tris += c.build(buildHelper, modelLayer);
 			}
 		}
 

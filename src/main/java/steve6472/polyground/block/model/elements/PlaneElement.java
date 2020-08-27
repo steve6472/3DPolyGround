@@ -17,6 +17,7 @@ import steve6472.polyground.world.chunk.ModelLayer;
 public class PlaneElement implements IElement
 {
 	TriangleElement t0, t1;
+	ModelLayer modelLayer;
 
 	@Override
 	public void load(JSONObject element)
@@ -28,18 +29,18 @@ public class PlaneElement implements IElement
 		Vector4f uv = ElUtil.loadVertex4("uv", element).div(16);
 
 		Vector3f tint = ElUtil.tint(element);
-		ModelLayer modelLayer = ElUtil.layer(element);
 		boolean biomeTint = element.optBoolean("biometint", false);
+		modelLayer = ElUtil.layer(element);
 
 		ElUtil.rot(element, v0, v1, v2, v3);
 
-		createTriangles(v0, v1, v2, v3, uv, tint, modelLayer, biomeTint);
+		createTriangles(v0, v1, v2, v3, uv, tint, biomeTint);
 		float rad = (float) Math.toRadians(element.optFloat("texture_rot", 0));
 		t0.rotateUv(rad);
 		t1.rotateUv(rad);
 	}
 
-	public void createTriangles(Vector3f v0, Vector3f v1, Vector3f v2, Vector3f v3, Vector4f uv, Vector3f tint, ModelLayer modelLayer, boolean biomeTint)
+	public void createTriangles(Vector3f v0, Vector3f v1, Vector3f v2, Vector3f v3, Vector4f uv, Vector3f tint, boolean biomeTint)
 	{
 		t0 = new TriangleElement();
 		t0.v0 = v0;
@@ -49,6 +50,8 @@ public class PlaneElement implements IElement
 		t0.uv1 = new Vector2f(uv.x, uv.w);
 		t0.uv2 = new Vector2f(uv.z, uv.w);
 		t0.tint = tint;
+		t0.biomeTint = biomeTint;
+		t0.modelLayer = modelLayer;
 		t0.calculateNormal();
 
 		t1 = new TriangleElement();
@@ -59,6 +62,8 @@ public class PlaneElement implements IElement
 		t1.uv1 = new Vector2f(uv.z, uv.y);
 		t1.uv2 = new Vector2f(uv.x, uv.y);
 		t1.tint = tint;
+		t1.biomeTint = biomeTint;
+		t1.modelLayer = modelLayer;
 		t1.calculateNormal();
 	}
 
@@ -80,10 +85,11 @@ public class PlaneElement implements IElement
 	 * @return amount of triangles
 	 */
 	@Override
-	public int build(ModelBuilder builder)
+	public int build(ModelBuilder builder, ModelLayer modelLayer)
 	{
-		t0.build(builder);
-		t1.build(builder);
-		return 2;
+		if (modelLayer != this.modelLayer)
+			return 0;
+
+		return t0.build(builder, modelLayer) + t1.build(builder, modelLayer);
 	}
 }

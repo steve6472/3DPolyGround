@@ -107,8 +107,11 @@ public class TriangleElement implements IElement
 	 * @return amount of triangles
 	 */
 	@Override
-	public int build(ModelBuilder builder)
+	public int build(ModelBuilder builder, ModelLayer modelLayer)
 	{
+		if (modelLayer != this.modelLayer)
+			return 0;
+
 		builder.tri(v0, v1, v2);
 		builder.uv(uv0);
 		builder.uv(uv1);
