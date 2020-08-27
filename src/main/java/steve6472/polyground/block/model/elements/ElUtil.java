@@ -16,6 +16,7 @@ import java.lang.Math;
 public class ElUtil
 {
 	private static final Matrix4f EMPTY_MATRIX = new Matrix4f();
+	private static final Quaternionf EMPTY_QUATERNION = new Quaternionf();
 
 	public static Matrix4f rotMat(JSONObject obj, Vector3f... vectors)
 	{
@@ -62,6 +63,17 @@ public class ElUtil
 	{
 		Matrix4f mat = rotMat(obj, vectors);
 
+		if (mat == EMPTY_MATRIX)
+			return;
+
+		for (Vector3f vector : vectors)
+		{
+			mat.transformPosition(vector);
+		}
+	}
+
+	public static void rot(Matrix4f mat, Vector3f... vectors)
+	{
 		if (mat == EMPTY_MATRIX)
 			return;
 

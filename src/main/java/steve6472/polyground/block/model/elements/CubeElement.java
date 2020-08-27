@@ -1,5 +1,6 @@
 package steve6472.polyground.block.model.elements;
 
+import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 import org.json.JSONObject;
@@ -87,8 +88,9 @@ public class CubeElement implements IElement
 	{
 		JSONObject face = faces.getJSONObject(enumFace.getName());
 		PlaneElement el = new PlaneElement();
-		ElUtil.rot(element, v0, v1, v2, v3);
-		ElUtil.rot(face, v0, v1, v2, v3);
+		Matrix4f mat = ElUtil.rotMat(element, v0, v1, v2, v3);
+		mat.mul(ElUtil.rotMat(face, v0, v1, v2, v3));
+		ElUtil.rot(mat, v0, v1, v2, v3);
 		Vector4f uv;
 
 		if (!face.has("uv"))

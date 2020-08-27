@@ -217,22 +217,22 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="463" y="105" key="FileChooserDialogImpl/0.0.1366.728@0.0.1366.728" timestamp="1595339345169" />
-    <state width="1291" height="621" key="GridCell.Tab.0.bottom" timestamp="1598570482166">
+    <state width="1291" height="621" key="GridCell.Tab.0.bottom" timestamp="1598571597462">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1291" height="621" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1598570482166" />
-    <state width="1291" height="621" key="GridCell.Tab.0.center" timestamp="1598570482166">
+    <state width="1291" height="621" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1598571597462" />
+    <state width="1291" height="621" key="GridCell.Tab.0.center" timestamp="1598571597462">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1291" height="621" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1598570482166" />
-    <state width="1291" height="621" key="GridCell.Tab.0.left" timestamp="1598570482165">
+    <state width="1291" height="621" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1598571597462" />
+    <state width="1291" height="621" key="GridCell.Tab.0.left" timestamp="1598571597462">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1291" height="621" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1598570482165" />
-    <state width="1291" height="621" key="GridCell.Tab.0.right" timestamp="1598570482166">
+    <state width="1291" height="621" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1598571597462" />
+    <state width="1291" height="621" key="GridCell.Tab.0.right" timestamp="1598571597462">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1291" height="621" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1598570482166" />
+    <state width="1291" height="621" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1598571597462" />
     <state width="508" height="621" key="GridCell.Tab.1.bottom" timestamp="1598569923735">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
@@ -289,18 +289,18 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="345" y="25" key="new project wizard/0.0.1366.728@0.0.1366.728" timestamp="1595146937671" />
-    <state x="495" y="28" width="599" height="670" key="refactoring.ChangeSignatureDialog" timestamp="1598570288162">
+    <state x="495" y="28" width="599" height="670" key="refactoring.ChangeSignatureDialog" timestamp="1598570784479">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="495" y="28" width="599" height="670" key="refactoring.ChangeSignatureDialog/0.0.1366.728@0.0.1366.728" timestamp="1598570288162" />
+    <state x="495" y="28" width="599" height="670" key="refactoring.ChangeSignatureDialog/0.0.1366.728@0.0.1366.728" timestamp="1598570784479" />
     <state x="341" y="163" width="672" height="677" key="run.anything.popup" timestamp="1598569009839">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="341" y="163" width="672" height="677" key="run.anything.popup/0.0.1366.728@0.0.1366.728" timestamp="1598569009839" />
-    <state x="346" y="49" width="672" height="160" key="search.everywhere.popup" timestamp="1598567746126">
+    <state x="346" y="49" width="672" height="160" key="search.everywhere.popup" timestamp="1598571151939">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="346" y="49" width="672" height="160" key="search.everywhere.popup/0.0.1366.728@0.0.1366.728" timestamp="1598567746126" />
+    <state x="346" y="49" width="672" height="160" key="search.everywhere.popup/0.0.1366.728@0.0.1366.728" timestamp="1598571151939" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
