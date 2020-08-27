@@ -31,8 +31,11 @@ public class FaceRegistry
 	public static final FaceEntry<LightFaceProperty> light = register("light", LightFaceProperty::new); // Runtime added property!
 
 	/* Conditioned Properties */
+	@Deprecated(forRemoval = true)
 	public static final FaceEntry<ConditionFaceProperty> conditionedTexture = register("conditionedTexture", ConditionFaceProperty::new);
+	@Deprecated(forRemoval = true)
 	public static final FaceEntry<CondProperty> condition = register("condition", CondProperty::new);
+	@Deprecated(forRemoval = true)
 	public static final FaceEntry<AndChainCondProperty> andChain = register("andChain", AndChainCondProperty::new);
 
 	public static <T extends FaceProperty> FaceEntry<T> register(String id, IFaceFactory<T> factory)

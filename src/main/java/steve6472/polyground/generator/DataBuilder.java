@@ -3,6 +3,7 @@ package steve6472.polyground.generator;
 import org.json.JSONObject;
 import steve6472.SSS;
 import steve6472.polyground.EnumFace;
+import steve6472.polyground.PrettyJson;
 import steve6472.polyground.block.Tags;
 import steve6472.polyground.block.model.CubeTags;
 import steve6472.polyground.block.properties.enums.EnumAxis;
@@ -592,7 +593,7 @@ public class DataBuilder
 
 		sss.save(item);
 
-		save(new File(DataGenerator.ITEM_MODELS, itemModelPath + itemName + ".json"), new JSONObject(itemModel.build()).toString(4));
+		save(new File(DataGenerator.ITEM_MODELS, itemModelPath + itemName + ".json"), new JSONObject(itemModel.build()));
 	}
 
 	private void block() throws IOException
@@ -622,11 +623,11 @@ public class DataBuilder
 		blockState.generate(blockName);
 	}
 
-	private void save(File file, String s)
+	public static void save(File file, JSONObject json)
 	{
 		try (PrintWriter out = new PrintWriter(file))
 		{
-			out.println(s);
+			out.println(PrettyJson.prettify(json));
 
 		} catch (FileNotFoundException e)
 		{

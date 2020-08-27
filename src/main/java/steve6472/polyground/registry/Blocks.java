@@ -5,6 +5,8 @@ import steve6472.SSS;
 import steve6472.polyground.CaveGame;
 import steve6472.polyground.block.Block;
 import steve6472.polyground.block.BlockTextureHolder;
+import steve6472.polyground.block.model.BlockModel;
+import steve6472.polyground.block.model.IElement;
 import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.registry.block.SpecialBlockRegistry;
 
@@ -110,6 +112,21 @@ public class Blocks
 
 		game.mainRender.buildHelper.atlasSize = BlockTextureHolder.getAtlas().getTileCount();
 		game.mainRender.buildHelper.texel = 1f / (float) BlockTextureHolder.getAtlas().getTileCount();
+
+		tempBlocks.forEach(b -> {
+			b.getDefaultState().getPossibleStates().forEach(ps -> {
+				for (BlockModel model : ps.getBlockModels())
+				{
+					if (model.getElements() != null)
+					{
+						for (IElement triangle : model.getElements())
+						{
+							triangle.fixUv(game.mainRender.buildHelper.texel);
+						}
+					}
+				}
+			});
+		});
 	}
 
 	public static Block getBlockByName(String name)

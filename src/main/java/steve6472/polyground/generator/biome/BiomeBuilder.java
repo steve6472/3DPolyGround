@@ -3,14 +3,13 @@ package steve6472.polyground.generator.biome;
 import org.joml.Vector3f;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import steve6472.polyground.generator.DataBuilder;
 import steve6472.polyground.generator.DataGenerator;
 import steve6472.polyground.world.generator.EnumFeatureStage;
 import steve6472.sge.main.util.Triple;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -260,18 +259,6 @@ public class BiomeBuilder
 			e.printStackTrace();
 		}
 
-		save(biome, build().toString(4));
-	}
-
-	private void save(File file, String s)
-	{
-		try (PrintWriter out = new PrintWriter(file))
-		{
-			out.println(s);
-
-		} catch (FileNotFoundException e)
-		{
-			e.printStackTrace();
-		}
+		DataBuilder.save(biome, build());
 	}
 }

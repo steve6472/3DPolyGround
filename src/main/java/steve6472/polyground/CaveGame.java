@@ -5,6 +5,7 @@ import steve6472.polyground.block.Block;
 import steve6472.polyground.block.BlockTextureHolder;
 import steve6472.polyground.block.model.BlockModel;
 import steve6472.polyground.block.model.BlockModelLoader;
+import steve6472.polyground.block.model.IElement;
 import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.commands.CommandSource;
 import steve6472.polyground.entity.Player;
@@ -24,6 +25,7 @@ import steve6472.polyground.registry.Items;
 import steve6472.polyground.registry.WaterRegistry;
 import steve6472.polyground.rift.RiftManager;
 import steve6472.polyground.world.World;
+import steve6472.polyground.world.chunk.Chunk;
 import steve6472.polyground.world.interaction.HitPicker;
 import steve6472.sge.gfx.DepthFrameBuffer;
 import steve6472.sge.gfx.FrameBuffer;
@@ -354,15 +356,28 @@ public class CaveGame extends MainApp
 				{
 					BlockTextureHolder.compileTextures(0);
 
-					for (Block b : Blocks.getAllBlocks())
+//					if (e.getMods() == KeyList.M_CONTROL)
 					{
-						for (BlockState possibleState : b.getDefaultState().getPossibleStates())
+						for (Block b : Blocks.getAllBlocks())
 						{
-							for (BlockModel blockModel : possibleState.getBlockModels())
+							for (BlockState possibleState : b.getDefaultState().getPossibleStates())
 							{
-								blockModel.reload();
+								for (BlockModel blockModel : possibleState.getBlockModels())
+								{
+									blockModel.reload();
+
+									if (blockModel.getElements() != null)
+									{
+										for (IElement triangle : blockModel.getElements())
+										{
+											triangle.fixUv(mainRender.buildHelper.texel);
+										}
+									}
+								}
 							}
 						}
+
+						world.getChunks().forEach(Chunk::rebuild);
 					}
 				}
 

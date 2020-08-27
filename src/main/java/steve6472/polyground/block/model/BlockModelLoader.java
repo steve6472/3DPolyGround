@@ -7,6 +7,9 @@ import org.json.JSONObject;
 import steve6472.polyground.CaveGame;
 import steve6472.polyground.EnumFace;
 import steve6472.polyground.block.BlockTextureHolder;
+import steve6472.polyground.block.model.elements.CubeElement;
+import steve6472.polyground.block.model.elements.PlaneElement;
+import steve6472.polyground.block.model.elements.TriangleElement;
 import steve6472.polyground.block.model.faceProperty.AutoUVFaceProperty;
 import steve6472.polyground.block.model.faceProperty.RotationFaceProperty;
 import steve6472.polyground.block.model.faceProperty.TextureFaceProperty;
@@ -18,6 +21,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**********************
@@ -144,6 +148,76 @@ public class BlockModelLoader
 		return cubes;
 	}
 
+	public IElement[] loadTriangles(String path, int rot)
+	{
+		JSONObject json = null;
+
+		try
+		{
+			json = new JSONObject(read(new File("game/objects/models/" + path + ".json")));
+		} catch (Exception e)
+		{
+			System.err.println("Could not load block model (triangles) " + path);
+			e.printStackTrace();
+			CaveGame.getInstance().exit();
+			System.exit(0);
+		}
+
+		List<IElement> elements = new ArrayList<>();
+
+		if (json.has("triangles"))
+		{
+			JSONArray tris = json.getJSONArray("triangles");
+			for (int i = 0; i < tris.length(); i++)
+			{
+				JSONObject triObj = tris.getJSONObject(i);
+				TriangleElement el = new TriangleElement();
+				el.load(triObj);
+				elements.add(el);
+
+				if (triObj.has("texture"))
+				{
+					String texture = triObj.getString("texture");
+					BlockTextureHolder.putTexture(texture);
+					el.setTexture(BlockTextureHolder.getTextureId(texture));
+				}
+			}
+		}
+
+		if (json.has("planes"))
+		{
+			JSONArray planes = json.getJSONArray("planes");
+			for (int i = 0; i < planes.length(); i++)
+			{
+				JSONObject planeObj = planes.getJSONObject(i);
+				PlaneElement el = new PlaneElement();
+				el.load(planeObj);
+				elements.add(el);
+
+				if (planeObj.has("texture"))
+				{
+					String texture = planeObj.getString("texture");
+					BlockTextureHolder.putTexture(texture);
+					el.setTexture(BlockTextureHolder.getTextureId(texture));
+				}
+			}
+		}
+
+		if (json.has("cubes_v2"))
+		{
+			JSONArray cubes = json.getJSONArray("cubes_v2");
+			for (int i = 0; i < cubes.length(); i++)
+			{
+				JSONObject cubeObj = cubes.getJSONObject(i);
+				CubeElement el = new CubeElement();
+				el.load(cubeObj);
+				elements.add(el);
+			}
+		}
+
+		return elements.isEmpty() ? null : elements.toArray(IElement[]::new);
+	}
+
 	private static void fillMissingProperties(CubeFace face)
 	{
 		for (String key : FaceRegistry.getKeys())
@@ -205,19 +279,6 @@ public class BlockModelLoader
 		}
 
 		cube.setFace(face, cf);
-	}
-
-	private List<Cube> createFromParent(JSONObject json)
-	{
-//		List<Cube> parents = loadModel(json.getString("parent"), 0);
-//
-//		for (Cube cube : parents)
-//		{
-//			cube.loadFromParent(json, cube);
-//		}
-//
-//		return parents;
-		return null;
 	}
 
 	public static String read(File f)

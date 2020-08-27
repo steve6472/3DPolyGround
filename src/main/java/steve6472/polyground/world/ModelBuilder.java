@@ -1,9 +1,6 @@
 package steve6472.polyground.world;
 
-import org.joml.AABBf;
-import org.joml.Vector2f;
-import org.joml.Vector3f;
-import org.joml.Vector4f;
+import org.joml.*;
 import steve6472.polyground.EnumFace;
 import steve6472.polyground.block.BlockTextureHolder;
 import steve6472.polyground.block.model.Cube;
@@ -64,12 +61,12 @@ public final class ModelBuilder
 		this.sc = sc;
 	}
 
-	private int getTextureId(Cube cube, EnumFace face)
+	public int getTextureId(Cube cube, EnumFace face)
 	{
 		return cube.getFace(face).getProperty(FaceRegistry.texture).getTextureId();
 	}
 
-	private void quad(Vector3f v0, Vector3f v1, Vector3f v2, Vector3f v3, Vector3f v4, Vector3f v5)
+	public void quad(Vector3f v0, Vector3f v1, Vector3f v2, Vector3f v3, Vector3f v4, Vector3f v5)
 	{
 		vert.add(v0.add(x, y, z));
 		vert.add(v1.add(x, y, z));
@@ -79,26 +76,35 @@ public final class ModelBuilder
 		vert.add(v5);
 	}
 
-	private void texture00(EnumFace face, float minX, float minY, float maxX, float maxY)
+	public void tri(Vector3f v0, Vector3f v1, Vector3f v2)
+	{
+		vert.add(new Vector3f(v0).add(x, y, z));
+		vert.add(new Vector3f(v1).add(x, y, z));
+		vert.add(new Vector3f(v2).add(x, y, z));
+	}
+
+	public void uv(Vector2f uv)
+	{
+		text.add(uv);
+	}
+
+	public void uv(float u, float v)
+	{
+		text.add(new Vector2f(u, v));
+	}
+
+	public void texture00(EnumFace face, float minX, float minY, float maxX, float maxY)
 	{
 		Rectangle r = BlockTextureHolder.getTexture(getTextureId(cube, face));
 		float x = r.x;
 		float y = r.y;
 		float w = r.width;
 		float h = r.height;
-//		float x = getTextureId(cube, face) % atlasSize;
-		//noinspection IntegerDivisionInFloatingPointContext
-//		float y = getTextureId(cube, face) / atlasSize;
 		text.add(new Vector2f((x + w * minX) * texel, (y + h * minY) * texel));
-//		text.add(new Vector2f(texel * x + minX * texel, texel * y + minY * texel));
 	}
 
-	private void texture01(EnumFace face, float minX, float minY, float maxX, float maxY)
+	public void texture01(EnumFace face, float minX, float minY, float maxX, float maxY)
 	{
-//		float x = getTextureId(cube, face) % atlasSize;
-		//noinspection IntegerDivisionInFloatingPointContext
-//		float y = getTextureId(cube, face) / atlasSize;
-
 		Rectangle r = BlockTextureHolder.getTexture(getTextureId(cube, face));
 		float x = r.x;
 		float y = r.y;
@@ -107,12 +113,8 @@ public final class ModelBuilder
 		text.add(new Vector2f((x + w * minX) * texel, (y + h * maxY) * texel));
 	}
 
-	private void texture10(EnumFace face, float minX, float minY, float maxX, float maxY)
+	public void texture10(EnumFace face, float minX, float minY, float maxX, float maxY)
 	{
-//		float x = getTextureId(cube, face) % atlasSize;
-		//noinspection IntegerDivisionInFloatingPointContext
-//		float y = getTextureId(cube, face) / atlasSize;
-
 		Rectangle r = BlockTextureHolder.getTexture(getTextureId(cube, face));
 		float x = r.x;
 		float y = r.y;
@@ -121,12 +123,8 @@ public final class ModelBuilder
 		text.add(new Vector2f((x + w * maxX) * texel, (y + h * minY) * texel));
 	}
 
-	private void texture11(EnumFace face, float minX, float minY, float maxX, float maxY)
+	public void texture11(EnumFace face, float minX, float minY, float maxX, float maxY)
 	{
-//		float x = getTextureId(cube, face) % atlasSize;
-		//noinspection IntegerDivisionInFloatingPointContext
-//		float y = getTextureId(cube, face) / atlasSize;
-
 		Rectangle r = BlockTextureHolder.getTexture(getTextureId(cube, face));
 		float x = r.x;
 		float y = r.y;
@@ -135,7 +133,7 @@ public final class ModelBuilder
 		text.add(new Vector2f((x + w * maxX) * texel, (y + h * maxY) * texel));
 	}
 
-	private void sideTexture(EnumFace face)
+	public void sideTexture(EnumFace face)
 	{
 		CubeFace f = cube.getFace(face);
 
@@ -150,7 +148,7 @@ public final class ModelBuilder
 		texture00(face, uv.getMinU(), uv.getMinV(), uv.getMaxU(), uv.getMaxV());
 	}
 
-	private void topFaceTextures()
+	public void topFaceTextures()
 	{
 		CubeFace f = cube.getFace(EnumFace.UP);
 
@@ -165,7 +163,7 @@ public final class ModelBuilder
 		texture00(EnumFace.UP, uv.getMinU(), uv.getMinV(), uv.getMaxU(), uv.getMaxV());
 	}
 
-	private void bottomFaceTextures()
+	public void bottomFaceTextures()
 	{
 		CubeFace f = cube.getFace(EnumFace.DOWN);
 
@@ -180,7 +178,7 @@ public final class ModelBuilder
 		texture00(EnumFace.DOWN, uv.getMinU(), uv.getMinV(), uv.getMaxU(), uv.getMaxV());
 	}
 
-	private void texture(EnumFace face)
+	public void texture(EnumFace face)
 	{
 		switch (face)
 		{
@@ -214,7 +212,7 @@ public final class ModelBuilder
 		return verts;
 	}
 
-	private void removeFaceColors()
+	public void removeFaceColors()
 	{
 		for (int j = 0; j < 6; j++)
 		{
@@ -222,7 +220,7 @@ public final class ModelBuilder
 		}
 	}
 
-	private void biomeTint(CubeFace face)
+	public void biomeTint(CubeFace face)
 	{
 		removeFaceColors();
 
@@ -243,7 +241,17 @@ public final class ModelBuilder
 		}
 	}
 
-	private void tint(CubeFace face)
+	private final Vector3f ONE = new Vector3f(1);
+
+	public Vector3f getBiomeTint()
+	{
+		if (sc == null)
+			return ONE;
+		else
+			return sc.getWorld().biomes.getBiome(sc.getBiomeId(x, y, z)).getColor();
+	}
+
+	public void tint(CubeFace face)
 	{
 		TintFaceProperty tint = face.getProperty(FaceRegistry.tint);
 
@@ -255,7 +263,7 @@ public final class ModelBuilder
 		}
 	}
 
-	private void setShade(List<Vector4f> color, CubeFace face)
+	public void setShade(List<Vector4f> color, CubeFace face)
 	{
 		for (int i = 0; i < 6; i++)
 		{
@@ -265,18 +273,34 @@ public final class ModelBuilder
 
 	}
 
-	private void shade(float r, float g, float b, CubeFace face)
+	public void shade(float r, float g, float b, CubeFace face)
 	{
 		float f = face.getShade();
 		getCol().add(new Vector4f(r * f, g * f, b * f, 1.0f));
 	}
 
-	private void normal(float x, float y, float z)
+	public void colorTri(float r, float g, float b)
+	{
+		for (int i = 0; i < 3; i++)
+		{
+			getCol().add(new Vector4f(r, g, b, 1.0f));
+		}
+	}
+
+	public void normal(float x, float y, float z)
 	{
 		Vector3f v = new Vector3f(x, y, z);
 		for (int i = 0; i < 6; i++)
 		{
 			norm.add(v);
+		}
+	}
+
+	public void normalTri(Vector3f normal)
+	{
+		for (int i = 0; i < 3; i++)
+		{
+			norm.add(normal);
 		}
 	}
 
@@ -500,29 +524,6 @@ public final class ModelBuilder
 		}
 
 		return 6;
-	}
-
-	public void replaceLastFaceWithErrorTexture(float r0, float g0, float b0, float r1, float g1, float b1)
-	{
-		for (int i = 0; i < 6; i++)
-		{
-			col.remove(col.size() - 1);
-		}
-
-		for (int i = 0; i < 3; i++)
-		{
-			col.add(new Vector4f(r0, g0, b0, 1.0f));
-		}
-
-		for (int i = 0; i < 3; i++)
-		{
-			col.add(new Vector4f(r1, g1, b1, 1.0f));
-		}
-	}
-
-	public void replaceLastFaceWithErrorTexture()
-	{
-		replaceLastFaceWithErrorTexture(0, 256, 256, 0, 0, 0);
 	}
 
 	public List<Vector3f> getVert()

@@ -2,13 +2,12 @@ package steve6472.polyground.generator.state;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import steve6472.polyground.generator.DataBuilder;
 import steve6472.polyground.generator.DataGenerator;
 import steve6472.polyground.generator.models.BlockModelBuilder;
 import steve6472.sge.main.util.Pair;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -80,13 +79,13 @@ public class StateBuilder
 				main.put("model", "block/" + singleModel[0].getModelPath() + singleModel[0].getModelName());
 				// Save block state
 				if (this.tags.isEmpty())
-					save(new File(DataGenerator.BLOCK_STATES, blockName + ".json"), main.toString(4));
+					DataBuilder.save(new File(DataGenerator.BLOCK_STATES, blockName + ".json"), main);
 				else
-					save(new File(DataGenerator.BLOCK_STATES, blockName + ".json"), main.put("tags", this.tags).toString(4));
+					DataBuilder.save(new File(DataGenerator.BLOCK_STATES, blockName + ".json"), main.put("tags", this.tags));
 
 				// Save block model
 				createModelFile(singleModel[0].getModelPath());
-				save(new File(DataGenerator.BLOCK_MODELS, singleModel[0].getModelPath() + singleModel[0].getModelName() + ".json"), new JSONObject(singleModel[0].build().build()).toString(4));
+				DataBuilder.save(new File(DataGenerator.BLOCK_MODELS, singleModel[0].getModelPath() + singleModel[0].getModelName() + ".json"), new JSONObject(singleModel[0].build().build()));
 			} else
 			{
 				JSONArray models = new JSONArray();
@@ -97,15 +96,15 @@ public class StateBuilder
 
 					// Save block model
 					createModelFile(blockModelBuilder.getModelPath());
-					save(new File(DataGenerator.BLOCK_MODELS, blockModelBuilder.getModelPath() + blockModelBuilder.getModelName() + ".json"), new JSONObject(blockModelBuilder.build().build()).toString(4));
+					DataBuilder.save(new File(DataGenerator.BLOCK_MODELS, blockModelBuilder.getModelPath() + blockModelBuilder.getModelName() + ".json"), new JSONObject(blockModelBuilder.build().build()));
 				}
 
 				main.put("models", models);
 				// Save block state
 				if (this.tags.isEmpty())
-					save(new File(DataGenerator.BLOCK_STATES, blockName + ".json"), main.toString(4));
+					DataBuilder.save(new File(DataGenerator.BLOCK_STATES, blockName + ".json"), main);
 				else
-					save(new File(DataGenerator.BLOCK_STATES, blockName + ".json"), main.put("tags", this.tags).toString(4));
+					DataBuilder.save(new File(DataGenerator.BLOCK_STATES, blockName + ".json"), main.put("tags", this.tags));
 			}
 		} else
 		{
@@ -131,13 +130,13 @@ public class StateBuilder
 				if (s.getB().generateModel())
 				{
 					createModelFile(s.getB().getModelPath());
-					save(new File(DataGenerator.BLOCK_MODELS, s.getB().getModelPath() + s.getB().getModelName() + ".json"), new JSONObject(s.getB().build().build()).toString(4));
+					DataBuilder.save(new File(DataGenerator.BLOCK_MODELS, s.getB().getModelPath() + s.getB().getModelName() + ".json"), new JSONObject(s.getB().build().build()));
 				}
 			}
 
 			// Save block state
 			main.put("models", modelArray);
-			save(new File(DataGenerator.BLOCK_STATES, blockName + ".json"), main.toString(4));
+			DataBuilder.save(new File(DataGenerator.BLOCK_STATES, blockName + ".json"), main);
 		}
 	}
 
@@ -154,18 +153,6 @@ public class StateBuilder
 					System.out.println("\tCreated new directory");
 				}
 			}
-		}
-	}
-
-	private void save(File file, String s)
-	{
-		try (PrintWriter out = new PrintWriter(file))
-		{
-			out.println(s);
-
-		} catch (FileNotFoundException e)
-		{
-			e.printStackTrace();
 		}
 	}
 }

@@ -14,6 +14,7 @@ import java.util.Arrays;
 public class BlockModel
 {
 	private Cube[] cubes;
+	private IElement[] triangles;
 	private final String path;
 	private final int rot;
 
@@ -35,6 +36,7 @@ public class BlockModel
 			throw new IllegalArgumentException("Model path is blank! '" + path + "'");
 
 		cubes = CaveGame.getInstance().blockModelLoader.loadModel(path, rot);
+		triangles = CaveGame.getInstance().blockModelLoader.loadTriangles(path, rot);
 
 		double volume = 0;
 
@@ -58,6 +60,7 @@ public class BlockModel
 			return;
 
 		cubes = CaveGame.getInstance().blockModelLoader.loadModel(path, rot);
+		triangles = CaveGame.getInstance().blockModelLoader.loadTriangles(path, rot);
 	}
 
 	public BlockModel(Cube... cubes)
@@ -75,6 +78,11 @@ public class BlockModel
 	public Cube[] getCubes()
 	{
 		return cubes;
+	}
+
+	public IElement[] getElements()
+	{
+		return triangles;
 	}
 
 	public void printFaceData()

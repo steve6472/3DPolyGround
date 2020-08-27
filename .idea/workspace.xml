@@ -46,18 +46,18 @@
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.0" />
     <property name="restartRequiresConfirmation" value="false" />
-    <property name="settings.editor.selected.configurable" value="project.propCompiler" />
+    <property name="settings.editor.selected.configurable" value="editor.preferences.import" />
   </component>
   <component name="RecentsManager">
     <key name="MoveMembersDialog.RECENTS_KEY">
       <recent name="steve6472.polyground.gfx.MainRender" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="steve6472.polyground.block.special" />
       <recent name="steve6472.polyground.world.generator.feature.components.match" />
       <recent name="steve6472.polyground.world.generator.feature.components.provider" />
       <recent name="steve6472.polyground.gfx.particle.particles" />
       <recent name="steve6472.polyground.gfx.particle.particles.torch.motion" />
-      <recent name="steve6472.polyground.gui" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="D:\CaveGame\src\main\java\steve6472\polyground\registry\feature" />
@@ -90,6 +90,13 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="Creator" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="steve6472.polyground.generator.creator.Creator" />
+      <module name="CaveGame" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="CubeImporter" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="steve6472.polyground.block.CubeImporter" />
       <module name="CaveGame" />
@@ -104,17 +111,17 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="Frame" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="steve6472.polyground.Frame" />
-      <module name="CaveGame" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="Gen-CaveGame" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="steve6472.polyground.CaveGame" />
       <module name="CaveGame" />
       <option name="PROGRAM_PARAMETERS" value="-generators" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="PrettyJson" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="steve6472.polyground.PrettyJson" />
+      <module name="CaveGame" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -138,17 +145,19 @@
       <item itemvalue="Application.CaveGame" />
       <item itemvalue="Application.DataGenerator" />
       <item itemvalue="Application.Gen-CaveGame" />
-      <item itemvalue="Application.Frame" />
       <item itemvalue="Application.Test" />
       <item itemvalue="Application.null" />
       <item itemvalue="Application.CubeImporter" />
+      <item itemvalue="Application.PrettyJson" />
+      <item itemvalue="Application.Creator" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.Creator" />
+        <item itemvalue="Application.PrettyJson" />
         <item itemvalue="Application.CubeImporter" />
         <item itemvalue="Application.null" />
         <item itemvalue="Application.Test" />
-        <item itemvalue="Application.Frame" />
       </list>
     </recent_temporary>
   </component>
@@ -180,10 +189,10 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="140" y="0" width="1092" height="728" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1366.728@0.0.1366.728" timestamp="1597247857083" />
-    <state x="270" y="26" width="476" height="598" key="#com.intellij.ide.util.MemberChooser" timestamp="1598464268300">
+    <state x="270" y="26" width="476" height="598" key="#com.intellij.ide.util.MemberChooser" timestamp="1598548664476">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="270" y="26" width="476" height="598" key="#com.intellij.ide.util.MemberChooser/0.0.1366.728@0.0.1366.728" timestamp="1598464268300" />
+    <state x="270" y="26" width="476" height="598" key="#com.intellij.ide.util.MemberChooser/0.0.1366.728@0.0.1366.728" timestamp="1598548664476" />
     <state x="415" y="111" key="#com.intellij.ide.util.TreeClassChooserDialog" timestamp="1593696801649">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
@@ -208,46 +217,50 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="463" y="105" key="FileChooserDialogImpl/0.0.1366.728@0.0.1366.728" timestamp="1595339345169" />
-    <state width="1116" height="621" key="GridCell.Tab.0.bottom" timestamp="1598472408211">
+    <state width="1116" height="621" key="GridCell.Tab.0.bottom" timestamp="1598562867738">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1116" height="621" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1598472408211" />
-    <state width="1116" height="621" key="GridCell.Tab.0.center" timestamp="1598472408211">
+    <state width="1116" height="621" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1598562867738" />
+    <state width="1116" height="621" key="GridCell.Tab.0.center" timestamp="1598562867738">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1116" height="621" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1598472408211" />
-    <state width="1116" height="621" key="GridCell.Tab.0.left" timestamp="1598472408211">
+    <state width="1116" height="621" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1598562867738" />
+    <state width="1116" height="621" key="GridCell.Tab.0.left" timestamp="1598562867738">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1116" height="621" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1598472408211" />
-    <state width="1116" height="621" key="GridCell.Tab.0.right" timestamp="1598472408211">
+    <state width="1116" height="621" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1598562867738" />
+    <state width="1116" height="621" key="GridCell.Tab.0.right" timestamp="1598562867738">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1116" height="621" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1598472408211" />
-    <state width="1323" height="222" key="GridCell.Tab.1.bottom" timestamp="1598469697638">
+    <state width="1116" height="621" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1598562867738" />
+    <state width="508" height="621" key="GridCell.Tab.1.bottom" timestamp="1598561851471">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1323" height="222" key="GridCell.Tab.1.bottom/0.0.1366.728@0.0.1366.728" timestamp="1598469697638" />
-    <state width="1323" height="222" key="GridCell.Tab.1.center" timestamp="1598469697638">
+    <state width="508" height="621" key="GridCell.Tab.1.bottom/0.0.1366.728@0.0.1366.728" timestamp="1598561851471" />
+    <state width="508" height="621" key="GridCell.Tab.1.center" timestamp="1598561851471">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1323" height="222" key="GridCell.Tab.1.center/0.0.1366.728@0.0.1366.728" timestamp="1598469697638" />
-    <state width="1323" height="222" key="GridCell.Tab.1.left" timestamp="1598469697638">
+    <state width="508" height="621" key="GridCell.Tab.1.center/0.0.1366.728@0.0.1366.728" timestamp="1598561851471" />
+    <state width="508" height="621" key="GridCell.Tab.1.left" timestamp="1598561851471">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1323" height="222" key="GridCell.Tab.1.left/0.0.1366.728@0.0.1366.728" timestamp="1598469697638" />
-    <state width="1323" height="222" key="GridCell.Tab.1.right" timestamp="1598469697638">
+    <state width="508" height="621" key="GridCell.Tab.1.left/0.0.1366.728@0.0.1366.728" timestamp="1598561851471" />
+    <state width="508" height="621" key="GridCell.Tab.1.right" timestamp="1598561851471">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1323" height="222" key="GridCell.Tab.1.right/0.0.1366.728@0.0.1366.728" timestamp="1598469697638" />
-    <state x="126" y="9" width="1058" height="711" key="SettingsEditor" timestamp="1597595748422">
+    <state width="508" height="621" key="GridCell.Tab.1.right/0.0.1366.728@0.0.1366.728" timestamp="1598561851471" />
+    <state x="193" y="17" width="1058" height="711" key="SettingsEditor" timestamp="1598536671627">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="126" y="9" width="1058" height="711" key="SettingsEditor/0.0.1366.728@0.0.1366.728" timestamp="1597595748422" />
+    <state x="193" y="17" width="1058" height="711" key="SettingsEditor/0.0.1366.728@0.0.1366.728" timestamp="1598536671627" />
     <state x="404" y="105" width="540" height="524" key="StructurePopup" timestamp="1593623290788">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="404" y="105" width="540" height="524" key="StructurePopup/0.0.1366.728@0.0.1366.728" timestamp="1593623290788" />
+    <state x="107" y="111" key="caller.chooser.dialog" timestamp="1598533984354">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="107" y="111" key="caller.chooser.dialog/0.0.1366.728@0.0.1366.728" timestamp="1598533984354" />
     <state x="68" y="96" width="1178" height="540" maximized="true" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1597182234109">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
@@ -268,22 +281,26 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="228" y="98" width="909" height="630" key="com.intellij.xdebugger.impl.breakpoints.ui.BreakpointsDialogFactory$2/0.0.1366.728@0.0.1366.728" timestamp="1597190821379" />
+    <state width="1234" height="646" key="javadoc.popup.new" timestamp="1598532464025">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state width="1234" height="646" key="javadoc.popup.new/0.0.1366.728@0.0.1366.728" timestamp="1598532464025" />
     <state x="345" y="25" key="new project wizard" timestamp="1595146937671">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="345" y="25" key="new project wizard/0.0.1366.728@0.0.1366.728" timestamp="1595146937671" />
-    <state x="495" y="28" width="599" height="670" key="refactoring.ChangeSignatureDialog" timestamp="1598188073240">
+    <state x="495" y="28" width="599" height="670" key="refactoring.ChangeSignatureDialog" timestamp="1598562091427">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="495" y="28" width="599" height="670" key="refactoring.ChangeSignatureDialog/0.0.1366.728@0.0.1366.728" timestamp="1598188073240" />
+    <state x="495" y="28" width="599" height="670" key="refactoring.ChangeSignatureDialog/0.0.1366.728@0.0.1366.728" timestamp="1598562091427" />
     <state x="341" y="163" width="672" height="677" key="run.anything.popup" timestamp="1598025243730">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="341" y="163" width="672" height="677" key="run.anything.popup/0.0.1366.728@0.0.1366.728" timestamp="1598025243730" />
-    <state x="346" y="49" width="672" height="160" key="search.everywhere.popup" timestamp="1598472354658">
+    <state x="346" y="49" width="672" height="160" key="search.everywhere.popup" timestamp="1598562267486">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="346" y="49" width="672" height="160" key="search.everywhere.popup/0.0.1366.728@0.0.1366.728" timestamp="1598472354658" />
+    <state x="346" y="49" width="672" height="160" key="search.everywhere.popup/0.0.1366.728@0.0.1366.728" timestamp="1598562267486" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
