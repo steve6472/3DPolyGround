@@ -9,8 +9,10 @@ import steve6472.polyground.EnumFace;
 import steve6472.polyground.PolyUtil;
 import steve6472.polyground.block.Block;
 import steve6472.polyground.block.BlockTextureHolder;
+import steve6472.polyground.block.model.BlockModel;
 import steve6472.polyground.block.model.Cube;
 import steve6472.polyground.block.model.CubeFace;
+import steve6472.polyground.block.model.IElement;
 import steve6472.polyground.block.model.faceProperty.LayerFaceProperty;
 import steve6472.polyground.block.model.faceProperty.condition.ConditionFaceProperty;
 import steve6472.polyground.gfx.MainRender;
@@ -178,7 +180,7 @@ public class ItemAtlas
 
 		itemTessellator.begin(tris * 3);
 
-		for (int i = 0; i < tris; i++)
+		for (int i = 0; i < vertices.size(); i++)
 		{
 			Vector3f vert = vertices.get(i);
 			Vector4f col = colors.get(i);
@@ -219,7 +221,6 @@ public class ItemAtlas
 					hasCondTexture = true;
 				}
 
-				/* Check if face is in correct (Chunk) Model Layer */
 				if (LayerFaceProperty.getModelLayer(c.getFace(face)) == modelLayer)
 				{
 					if (hasCondTexture)
@@ -233,6 +234,16 @@ public class ItemAtlas
 						tris += buildHelper.face(face);
 					}
 				}
+			}
+		}
+
+		BlockModel model = block.getDefaultState().getBlockModel(dummyWorld, 0, 0, 0);
+
+		if (model.getElements() != null)
+		{
+			for (IElement c : model.getElements())
+			{
+				tris += c.build(buildHelper, modelLayer, dummyWorld, block.getDefaultState(), 0, 0, 0);
 			}
 		}
 

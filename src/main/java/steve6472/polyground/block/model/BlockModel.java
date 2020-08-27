@@ -17,6 +17,7 @@ public class BlockModel
 	private IElement[] triangles;
 	private final String path;
 	private final int rot;
+	private final boolean uvLock;
 
 	/**
 	 * Air Model Constructor
@@ -25,18 +26,20 @@ public class BlockModel
 	{
 		rot = 0;
 		path = null;
+		uvLock = true;
 	}
 
-	public BlockModel(String path, int rot)
+	public BlockModel(String path, int rot, boolean uvLock)
 	{
 		this.path = path;
 		this.rot = rot;
+		this.uvLock = uvLock;
 
 		if (path.isBlank())
 			throw new IllegalArgumentException("Model path is blank! '" + path + "'");
 
 		cubes = CaveGame.getInstance().blockModelLoader.loadModel(path, rot);
-		triangles = CaveGame.getInstance().blockModelLoader.loadTriangles(path, rot);
+		triangles = CaveGame.getInstance().blockModelLoader.loadElements(path, rot, uvLock);
 
 		double volume = 0;
 
@@ -60,13 +63,14 @@ public class BlockModel
 			return;
 
 		cubes = CaveGame.getInstance().blockModelLoader.loadModel(path, rot);
-		triangles = CaveGame.getInstance().blockModelLoader.loadTriangles(path, rot);
+		triangles = CaveGame.getInstance().blockModelLoader.loadElements(path, rot, uvLock);
 	}
 
 	public BlockModel(Cube... cubes)
 	{
 		this.path = null;
 		rot = 0;
+		uvLock = true;
 		this.cubes = cubes;
 	}
 

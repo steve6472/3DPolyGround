@@ -4,10 +4,7 @@ import org.joml.AABBf;
 import org.json.JSONObject;
 import steve6472.SSS;
 import steve6472.polyground.EnumFace;
-import steve6472.polyground.block.model.BlockModel;
-import steve6472.polyground.block.model.BlockModelLoader;
-import steve6472.polyground.block.model.Cube;
-import steve6472.polyground.block.model.CubeFace;
+import steve6472.polyground.block.model.*;
 import steve6472.polyground.block.model.faceProperty.LayerFaceProperty;
 import steve6472.polyground.block.model.faceProperty.TextureFaceProperty;
 import steve6472.polyground.block.model.faceProperty.UVFaceProperty;
@@ -18,8 +15,8 @@ import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.block.states.StateLoader;
 import steve6472.polyground.entity.Player;
 import steve6472.polyground.registry.face.FaceRegistry;
-import steve6472.polyground.world.ModelBuilder;
 import steve6472.polyground.world.Cull;
+import steve6472.polyground.world.ModelBuilder;
 import steve6472.polyground.world.World;
 import steve6472.polyground.world.chunk.ModelLayer;
 import steve6472.sge.main.events.MouseEvent;
@@ -155,8 +152,10 @@ public class Block
 	{
 		int tris = 0;
 
+		BlockModel model = state.getBlockModel(world, x, y, z);
+
 		buildHelper.setSubChunk(world.getSubChunkFromBlockCoords(x, y, z));
-		for (Cube c : state.getBlockModel(world, x, y, z).getCubes())
+		for (Cube c : model.getCubes())
 		{
 			buildHelper.setCube(c);
 			for (EnumFace face : EnumFace.getFaces())
@@ -179,11 +178,19 @@ public class Block
 						{
 							tris += buildHelper.face(face);
 						}
-					} else if (Cull.renderFace(x, y, z, face, c, state, world))
+					} else if (Cull.renderFace(x, y, z, face, c.getName(), state, world))
 					{
 						tris += buildHelper.face(face);
 					}
 				}
+			}
+		}
+
+		if (model.getElements() != null)
+		{
+			for (IElement c : model.getElements())
+			{
+				tris += c.build(buildHelper, modelLayer, world, state, x, y, z);
 			}
 		}
 

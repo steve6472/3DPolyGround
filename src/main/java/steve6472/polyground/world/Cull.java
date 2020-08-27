@@ -3,7 +3,6 @@ package steve6472.polyground.world;
 import steve6472.polyground.EnumFace;
 import steve6472.polyground.block.Block;
 import steve6472.polyground.block.Tags;
-import steve6472.polyground.block.model.Cube;
 import steve6472.polyground.block.model.CubeTags;
 import steve6472.polyground.block.properties.enums.EnumSlabType;
 import steve6472.polyground.block.special.*;
@@ -17,7 +16,7 @@ import steve6472.polyground.block.states.BlockState;
  ***********************/
 public class Cull
 {
-	public static boolean renderFace(int x, int y, int z, EnumFace face, Cube cube, BlockState middleState, World world)
+	public static boolean renderFace(int x, int y, int z, EnumFace face, String cubeName, BlockState middleState, World world)
 	{
 		BlockState testedState = world.getState(x + face.getXOffset(), y + face.getYOffset(), z + face.getZOffset());
 		Block testedBlock = testedState.getBlock();
@@ -29,7 +28,7 @@ public class Cull
 
 		if (middleBlock instanceof StairBlock)
 		{
-			if (cube.getName().equals(CubeTags.STAIR_TOP))
+			if (cubeName.equals(CubeTags.STAIR_TOP))
 			{
 				if (!basicBlock(testedBlock, testedState))
 				{
@@ -38,7 +37,7 @@ public class Cull
 				{
 					return true;
 				}
-			} else if (cube.getName().equals(CubeTags.STAIR_BOTTOM))
+			} else if (cubeName.equals(CubeTags.STAIR_BOTTOM))
 			{
 				if (face == EnumFace.UP)
 					return true;

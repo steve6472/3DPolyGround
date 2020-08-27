@@ -13,7 +13,7 @@ import steve6472.polyground.world.chunk.ModelLayer;
 public class FaceBuilder
 {
 	private String texture;
-	private boolean autoUv, isVisible, biomeTint, uvlock;
+	private boolean autoUv, biomeTint, uvlock;
 	private float minU, minV, maxU, maxV;
 	private float red, green, blue;
 	private int rotation;
@@ -29,7 +29,6 @@ public class FaceBuilder
 		red = green = blue = 255f;
 		layer = ModelLayer.NORMAL;
 		rotation = 0;
-		isVisible = true;
 		autoUv = true;
 		uvlock = false;
 	}
@@ -40,13 +39,12 @@ public class FaceBuilder
 		main.put("texture", texture);
 
 		if (autoUv) main.put("autoUV", true);
-		if (!isVisible) main.put("isVisible", false);
 		if (uvlock) main.put("uvlock", true);
-		if (biomeTint) main.put("biomeTint", true);
+		if (biomeTint) main.put("biometint", true);
 		if (!autoUv) main.put("uv", new JSONArray().put(minU).put(minV).put(maxU).put(maxV));
 		if (red + green + blue != 765) main.put("tint", new JSONArray().put(red).put(green).put(blue));
 		if (rotation != 0) main.put("rotation", rotation);
-		if (layer != ModelLayer.NORMAL) main.put("modelLayer", layer);
+		if (layer != ModelLayer.NORMAL) main.put("layer", layer);
 
 		return main;
 	}
@@ -80,12 +78,6 @@ public class FaceBuilder
 	public FaceBuilder autoUv()
 	{
 		this.autoUv = true;
-		return this;
-	}
-
-	public FaceBuilder visible(boolean visible)
-	{
-		this.isVisible = visible;
 		return this;
 	}
 

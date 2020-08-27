@@ -228,7 +228,7 @@ public final class ModelBuilder
 		{
 			for (int j = 0; j < 6; j++)
 			{
-				shade(0.5f, 0.5f, 0.5f, face);
+				shade(92 / 255f, 184 / 255f, 64 / 255f, face);
 			}
 		} else
 		{
@@ -241,7 +241,7 @@ public final class ModelBuilder
 		}
 	}
 
-	private final Vector3f ONE = new Vector3f(1);
+	private final Vector3f ONE = new Vector3f(92 / 255f, 184 / 255f, 64 / 255f);
 
 	public Vector3f getBiomeTint()
 	{

@@ -7,7 +7,9 @@ import org.joml.Vector3f;
 import org.json.JSONObject;
 import steve6472.polyground.block.BlockTextureHolder;
 import steve6472.polyground.block.model.IElement;
+import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.world.ModelBuilder;
+import steve6472.polyground.world.World;
 import steve6472.polyground.world.chunk.ModelLayer;
 
 import java.awt.*;
@@ -58,7 +60,7 @@ public class TriangleElement implements IElement
 		modelLayer = ElUtil.layer(element);
 		biomeTint = element.optBoolean("biometint", false);
 
-		rotateUv((float) Math.toRadians(element.optFloat("texture_rot", 0)));
+		rotateUv((float) Math.toRadians(element.optFloat("rotation", 0)));
 
 		calculateNormal();
 	}
@@ -104,10 +106,15 @@ public class TriangleElement implements IElement
 
 	/**
 	 * @param builder builder
+	 * @param world world
+	 * @param state state
+	 * @param x x
+	 * @param y y
+	 * @param z z
 	 * @return amount of triangles
 	 */
 	@Override
-	public int build(ModelBuilder builder, ModelLayer modelLayer)
+	public int build(ModelBuilder builder, ModelLayer modelLayer, World world, BlockState state, int x, int y, int z)
 	{
 		if (modelLayer != this.modelLayer)
 			return 0;

@@ -27,7 +27,6 @@ public class SpecialBlockRegistry
 	public static final SpecialBlockEntry<LeavesBlock> leaves = register("leaves", LeavesBlock::new);
 	public static final SpecialBlockEntry<GravelBlock> gravel = register("gravel", GravelBlock::new);
 	public static final SpecialBlockEntry<CustomBlock> custom = register("custom", CustomBlock::new);
-	public static final SpecialBlockEntry<ModelBlock> model = register("model", ModelBlock::new);
 	public static final SpecialBlockEntry<LightSourceBlock> light = register("light", LightSourceBlock::new);
 	public static final SpecialBlockEntry<TorchBlock> torch = register("torch", TorchBlock::new);
 	public static final SpecialBlockEntry<MicroBlock> microBlock = register("micro_block", MicroBlock::new);

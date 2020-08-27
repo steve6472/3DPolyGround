@@ -6,7 +6,10 @@ import org.json.JSONObject;
 import steve6472.polyground.EnumFace;
 import steve6472.polyground.block.BlockTextureHolder;
 import steve6472.polyground.block.model.IElement;
+import steve6472.polyground.block.states.BlockState;
+import steve6472.polyground.world.Cull;
 import steve6472.polyground.world.ModelBuilder;
+import steve6472.polyground.world.World;
 import steve6472.polyground.world.chunk.ModelLayer;
 
 /**********************
@@ -17,7 +20,9 @@ import steve6472.polyground.world.chunk.ModelLayer;
  ***********************/
 public class CubeElement implements IElement
 {
-	PlaneElement p0, p1, p2, p3, p4, p5;
+	PlaneElement[] ps;
+	PlaneElement up, down;
+	String name;
 
 	@Override
 	public void load(JSONObject element)
@@ -25,36 +30,51 @@ public class CubeElement implements IElement
 		Vector3f from = ElUtil.loadVertex3("from", element).div(16);
 		Vector3f to = ElUtil.loadVertex3("to", element).div(16);
 
-		if (element.has("north")) p0 = face(EnumFace.NORTH, element,
-			new Vector3f(to.x, to.y, to.z),
-			new Vector3f(to.x, from.y, to.z),
-			new Vector3f(to.x, from.y, from.z),
-			new Vector3f(to.x, to.y, from.z), from, to);
-		if (element.has("east"))  p1 = face(EnumFace.EAST, element,
-			new Vector3f(from.x, to.y, to.z),
-			new Vector3f(from.x, from.y, to.z),
-			new Vector3f(to.x, from.y, to.z),
-			new Vector3f(to.x, to.y, to.z), from, to);
-		if (element.has("south")) p2 = face(EnumFace.SOUTH, element,
-			new Vector3f(from.x, to.y, from.z),
-			new Vector3f(from.x, from.y, from.z),
-			new Vector3f(from.x, from.y, to.z),
-			new Vector3f(from.x, to.y, to.z), from, to);
-		if (element.has("west"))  p3 = face(EnumFace.WEST, element,
-			new Vector3f(to.x, to.y, from.z),
-			new Vector3f(to.x, from.y, from.z),
-			new Vector3f(from.x, from.y, from.z),
-			new Vector3f(from.x, to.y, from.z), from, to);
-		if (element.has("up"))    p4 = face(EnumFace.UP, element,
-			new Vector3f(to.x, to.y, from.z),
-			new Vector3f(from.x, to.y, from.z),
-			new Vector3f(from.x, to.y, to.z),
-			new Vector3f(to.x, to.y, to.z), from, to);
-		if (element.has("down"))  p5 = face(EnumFace.DOWN, element,
-			new Vector3f(from.x, from.y, from.z),
-			new Vector3f(to.x, from.y, from.z),
-			new Vector3f(to.x, from.y, to.z),
-			new Vector3f(from.x, from.y, to.z), from, to);
+//		Matrix4f mat = ElUtil.rotMat(element, from, to);
+//		AABBf aabb = new AABBf(from, to);
+//		aabb.transform(mat);
+//		from.set(aabb.minX, aabb.minY, aabb.minZ);
+//		to.set(aabb.maxX, aabb.maxY, aabb.maxZ);
+
+		ps = new PlaneElement[4];
+
+		name = element.optString("name", "");
+
+		if (element.has("faces"))
+		{
+			JSONObject faces = element.getJSONObject("faces");
+
+			if (faces.has("north")) ps[0] = face(EnumFace.NORTH, element, faces,
+				new Vector3f(to.x, to.y, to.z),
+				new Vector3f(to.x, from.y, to.z),
+				new Vector3f(to.x, from.y, from.z),
+				new Vector3f(to.x, to.y, from.z), from, to);
+			if (faces.has("east"))  ps[1] = face(EnumFace.EAST, element, faces,
+				new Vector3f(from.x, to.y, to.z),
+				new Vector3f(from.x, from.y, to.z),
+				new Vector3f(to.x, from.y, to.z),
+				new Vector3f(to.x, to.y, to.z), from, to);
+			if (faces.has("south")) ps[2] = face(EnumFace.SOUTH, element, faces,
+				new Vector3f(from.x, to.y, from.z),
+				new Vector3f(from.x, from.y, from.z),
+				new Vector3f(from.x, from.y, to.z),
+				new Vector3f(from.x, to.y, to.z), from, to);
+			if (faces.has("west"))  ps[3] = face(EnumFace.WEST, element, faces,
+				new Vector3f(to.x, to.y, from.z),
+				new Vector3f(to.x, from.y, from.z),
+				new Vector3f(from.x, from.y, from.z),
+				new Vector3f(from.x, to.y, from.z), from, to);
+			if (faces.has("up"))    up = face(EnumFace.UP, element, faces,
+				new Vector3f(to.x, to.y, from.z),
+				new Vector3f(from.x, to.y, from.z),
+				new Vector3f(from.x, to.y, to.z),
+				new Vector3f(to.x, to.y, to.z), from, to);
+			if (faces.has("down"))  down = face(EnumFace.DOWN, element, faces,
+				new Vector3f(from.x, from.y, from.z),
+				new Vector3f(to.x, from.y, from.z),
+				new Vector3f(to.x, from.y, to.z),
+				new Vector3f(from.x, from.y, to.z), from, to);
+		}
 	}
 
 	@Override
@@ -63,14 +83,15 @@ public class CubeElement implements IElement
 
 	}
 
-	private PlaneElement face(EnumFace enumFace, JSONObject json, Vector3f v0, Vector3f v1, Vector3f v2, Vector3f v3, Vector3f from, Vector3f to)
+	private PlaneElement face(EnumFace enumFace, JSONObject element, JSONObject faces, Vector3f v0, Vector3f v1, Vector3f v2, Vector3f v3, Vector3f from, Vector3f to)
 	{
-		JSONObject face = json.getJSONObject(enumFace.getName());
+		JSONObject face = faces.getJSONObject(enumFace.getName());
 		PlaneElement el = new PlaneElement();
-		ElUtil.rot(json, v0, v1, v2, v3);
+		ElUtil.rot(element, v0, v1, v2, v3);
+		ElUtil.rot(face, v0, v1, v2, v3);
 		Vector4f uv;
 
-		if (!json.has("uv"))
+		if (!face.has("uv"))
 		{
 			float minX = from.x, minY = from.y, minZ = from.z, maxX = to.x, maxY = to.y, maxZ = to.z;
 			switch (enumFace)
@@ -95,7 +116,7 @@ public class CubeElement implements IElement
 		el.modelLayer = ElUtil.layer(face);
 		el.createTriangles(v0, v1, v2, v3, uv, tint, biomeTint);
 
-		float rad = (float) Math.toRadians(face.optFloat("texture_rot", 0));
+		float rad = (float) Math.toRadians(face.optFloat("rotation", 0));
 		el.t0.rotateUv(rad);
 		el.t1.rotateUv(rad);
 
@@ -106,30 +127,44 @@ public class CubeElement implements IElement
 		return el;
 	}
 
+	public void cycleFaces()
+	{
+		PlaneElement temp = ps[0];
+		ps[0] = ps[1];
+		ps[1] = ps[2];
+		ps[2] = ps[3];
+		ps[3] = temp;
+	}
+
 	@Override
 	public void fixUv(float texel)
 	{
-		if (p0 != null) p0.fixUv(texel);
-		if (p1 != null) p1.fixUv(texel);
-		if (p2 != null) p2.fixUv(texel);
-		if (p3 != null) p3.fixUv(texel);
-		if (p4 != null) p4.fixUv(texel);
-		if (p5 != null) p5.fixUv(texel);
+		if (ps[0] != null) ps[0].fixUv(texel);
+		if (ps[1] != null) ps[1].fixUv(texel);
+		if (ps[2] != null) ps[2].fixUv(texel);
+		if (ps[3] != null) ps[3].fixUv(texel);
+		if (up != null) up.fixUv(texel);
+		if (down != null) down.fixUv(texel);
 	}
 
 	/**
 	 * @param builder builder
+	 * @param world world
+	 * @param state state
+	 * @param x x
+	 * @param y y
+	 * @param z z
 	 * @return amount of triangles
 	 */
 	@Override
-	public int build(ModelBuilder builder, ModelLayer layer)
+	public int build(ModelBuilder builder, ModelLayer layer, World world, BlockState state, int x, int y, int z)
 	{
 		return
-			(p0 != null ? p0.build(builder, layer) : 0) +
-			(p1 != null ? p1.build(builder, layer) : 0) +
-			(p2 != null ? p2.build(builder, layer) : 0) +
-			(p3 != null ? p3.build(builder, layer) : 0) +
-			(p4 != null ? p4.build(builder, layer) : 0) +
-			(p5 != null ? p5.build(builder, layer) : 0);
+			(ps[0] != null && Cull.renderFace(x, y, z, EnumFace.NORTH, name, state, world) ? ps[0].build(builder, layer, world, state, x, y, z) : 0) +
+			(ps[1] != null && Cull.renderFace(x, y, z, EnumFace.EAST , name, state, world) ? ps[1].build(builder, layer, world, state, x, y, z) : 0) +
+			(ps[2] != null && Cull.renderFace(x, y, z, EnumFace.SOUTH, name, state, world) ? ps[2].build(builder, layer, world, state, x, y, z) : 0) +
+			(ps[3] != null && Cull.renderFace(x, y, z, EnumFace.WEST , name, state, world) ? ps[3].build(builder, layer, world, state, x, y, z) : 0) +
+			(up != null && Cull.renderFace(x, y, z, EnumFace.UP   , name, state, world) ? up.build(builder, layer, world, state, x, y, z) : 0) +
+			(down != null && Cull.renderFace(x, y, z, EnumFace.DOWN , name, state, world) ? down.build(builder, layer, world, state, x, y, z) : 0);
 	}
 }

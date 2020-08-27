@@ -5,7 +5,9 @@ import org.joml.Vector3f;
 import org.joml.Vector4f;
 import org.json.JSONObject;
 import steve6472.polyground.block.model.IElement;
+import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.world.ModelBuilder;
+import steve6472.polyground.world.World;
 import steve6472.polyground.world.chunk.ModelLayer;
 
 /**********************
@@ -35,7 +37,7 @@ public class PlaneElement implements IElement
 		ElUtil.rot(element, v0, v1, v2, v3);
 
 		createTriangles(v0, v1, v2, v3, uv, tint, biomeTint);
-		float rad = (float) Math.toRadians(element.optFloat("texture_rot", 0));
+		float rad = (float) Math.toRadians(element.optFloat("rotation", 0));
 		t0.rotateUv(rad);
 		t1.rotateUv(rad);
 	}
@@ -67,6 +69,7 @@ public class PlaneElement implements IElement
 		t1.calculateNormal();
 	}
 
+	@Override
 	public void setTexture(int texture)
 	{
 		t0.setTexture(texture);
@@ -82,14 +85,19 @@ public class PlaneElement implements IElement
 
 	/**
 	 * @param builder builder
+	 * @param world world
+	 * @param state state
+	 * @param x x
+	 * @param y y
+	 * @param z z
 	 * @return amount of triangles
 	 */
 	@Override
-	public int build(ModelBuilder builder, ModelLayer modelLayer)
+	public int build(ModelBuilder builder, ModelLayer modelLayer, World world, BlockState state, int x, int y, int z)
 	{
 		if (modelLayer != this.modelLayer)
 			return 0;
 
-		return t0.build(builder, modelLayer) + t1.build(builder, modelLayer);
+		return t0.build(builder, modelLayer, world, state, x, y, z) + t1.build(builder, modelLayer, world, state, x, y, z);
 	}
 }

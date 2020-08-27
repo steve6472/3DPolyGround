@@ -98,7 +98,7 @@ public class BlockModelLoader
 			aabb.transform(rotMat);
 
 			Cube cube = new Cube(aabb);
-
+/*
 			if (c.has("faces"))
 			{
 				JSONObject faces = c.getJSONObject("faces");
@@ -140,7 +140,7 @@ public class BlockModelLoader
 					}
 				}
 			}
-
+*/
 			cube.loadFromJson(c);
 			cubes[i] = cube;
 		}
@@ -148,7 +148,7 @@ public class BlockModelLoader
 		return cubes;
 	}
 
-	public IElement[] loadTriangles(String path, int rot)
+	public IElement[] loadElements(String path, int rot, boolean uvLock)
 	{
 		JSONObject json = null;
 
@@ -171,6 +171,7 @@ public class BlockModelLoader
 			for (int i = 0; i < tris.length(); i++)
 			{
 				JSONObject triObj = tris.getJSONObject(i);
+				addRot(triObj, rot);
 				TriangleElement el = new TriangleElement();
 				el.load(triObj);
 				elements.add(el);
@@ -190,6 +191,7 @@ public class BlockModelLoader
 			for (int i = 0; i < planes.length(); i++)
 			{
 				JSONObject planeObj = planes.getJSONObject(i);
+				addRot(planeObj, rot);
 				PlaneElement el = new PlaneElement();
 				el.load(planeObj);
 				elements.add(el);
@@ -203,19 +205,53 @@ public class BlockModelLoader
 			}
 		}
 
-		if (json.has("cubes_v2"))
+		if (json.has("cubes"))
 		{
-			JSONArray cubes = json.getJSONArray("cubes_v2");
+			JSONArray cubes = json.getJSONArray("cubes");
 			for (int i = 0; i < cubes.length(); i++)
 			{
 				JSONObject cubeObj = cubes.getJSONObject(i);
+				if (rot != 0)
+				{
+					addRot(cubeObj, rot);
+					//TODO: add uvLock
+//					if (rot % 90 == 0)
+//					{
+//						if (cubeObj.has("faces"))
+//						{
+//							for (EnumFace f : EnumFace.getFaces())
+//							{
+//								if (cubeObj.getJSONObject("faces").has(f.getName()))
+//								{
+//									addRot(cubeObj.getJSONObject("faces").getJSONObject(f.getName()), rot);
+//								}
+//							}
+//						}
+//					}
+				}
 				CubeElement el = new CubeElement();
 				el.load(cubeObj);
+				if (rot != 0 && rot % 90 == 0)
+				{
+					for (int j = 0; j < (rot % 360) / 90; j++)
+					{
+						el.cycleFaces();
+					}
+				}
 				elements.add(el);
 			}
 		}
 
 		return elements.isEmpty() ? null : elements.toArray(IElement[]::new);
+	}
+
+	private void addRot(JSONObject json, int rot)
+	{
+		if (!json.has("rot_y"))
+		{
+			json.put("point_type", "origin");
+			json.put("rot_y", rot % 360.0f);
+		}
 	}
 
 	private static void fillMissingProperties(CubeFace face)
