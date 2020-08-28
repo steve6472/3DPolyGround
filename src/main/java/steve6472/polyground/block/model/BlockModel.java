@@ -16,7 +16,7 @@ public class BlockModel
 	private Cube[] cubes;
 	private IElement[] triangles;
 	private final String path;
-	private final int rot;
+	private final int rot_y;
 	private final boolean uvLock;
 
 	/**
@@ -24,22 +24,22 @@ public class BlockModel
 	 */
 	public BlockModel()
 	{
-		rot = 0;
+		rot_y = 0;
 		path = null;
 		uvLock = true;
 	}
 
-	public BlockModel(String path, int rot, boolean uvLock)
+	public BlockModel(String path, int rot_y, boolean uvLock)
 	{
 		this.path = path;
-		this.rot = rot;
+		this.rot_y = rot_y;
 		this.uvLock = uvLock;
 
 		if (path.isBlank())
 			throw new IllegalArgumentException("Model path is blank! '" + path + "'");
 
-		cubes = CaveGame.getInstance().blockModelLoader.loadModel(path, rot);
-		triangles = CaveGame.getInstance().blockModelLoader.loadElements(path, rot, uvLock);
+		cubes = CaveGame.getInstance().blockModelLoader.loadModel(path, rot_y);
+		triangles = CaveGame.getInstance().blockModelLoader.loadElements(path, rot_y, uvLock);
 
 		double volume = 0;
 
@@ -62,14 +62,14 @@ public class BlockModel
 		if (path == null)
 			return;
 
-		cubes = CaveGame.getInstance().blockModelLoader.loadModel(path, rot);
-		triangles = CaveGame.getInstance().blockModelLoader.loadElements(path, rot, uvLock);
+		cubes = CaveGame.getInstance().blockModelLoader.loadModel(path, rot_y);
+		triangles = CaveGame.getInstance().blockModelLoader.loadElements(path, rot_y, uvLock);
 	}
 
 	public BlockModel(Cube... cubes)
 	{
 		this.path = null;
-		rot = 0;
+		rot_y = 0;
 		uvLock = true;
 		this.cubes = cubes;
 	}
@@ -87,6 +87,12 @@ public class BlockModel
 	public IElement[] getElements()
 	{
 		return triangles;
+	}
+
+	@Override
+	public String toString()
+	{
+		return "BlockModel{" + "triangles=" + Arrays.toString(triangles) + ", path='" + path + '\'' + ", rot_y=" + rot_y + ", uvLock=" + uvLock + '}';
 	}
 
 	public void printFaceData()

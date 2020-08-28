@@ -29,13 +29,13 @@ public class StateLoader
 		block.setDefaultState(new BlockState(block, new BlockModel[] {model}, null, null, t));
 	}
 
-	private static BlockModel[] loadModels(JSONArray modelsArray, int rot, boolean uvLock)
+	private static BlockModel[] loadModels(JSONArray modelsArray, int rot_y, boolean uvLock)
 	{
 		BlockModel[] models = new BlockModel[modelsArray.length()];
 
 		for (int i = 0; i < modelsArray.length(); i++)
 		{
-			models[i] = new BlockModel(modelsArray.getString(i), rot, uvLock);
+			models[i] = new BlockModel(modelsArray.getString(i), rot_y, uvLock);
 		}
 
 		return models;
@@ -145,9 +145,9 @@ public class StateLoader
 						{
 							modelsArray = object.getJSONArray("models");
 						}
-						rotation = object.optInt("rotation", 0);
+						rotation = object.optInt("rot_y", 0);
 						tags = object.optJSONArray("tags");
-						uvLock = object.optBoolean("uvlock", true);
+						uvLock = object.optBoolean("uvlock", false);
 						break;
 					}
 				}

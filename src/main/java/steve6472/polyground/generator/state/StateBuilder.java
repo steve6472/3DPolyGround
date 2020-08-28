@@ -115,8 +115,10 @@ public class StateBuilder
 			{
 				JSONObject model = new JSONObject();
 				model.put("state", s.getA().build());
-				if (s.getA().getRotation() != 0)
-					model.put("rotation", s.getA().getRotation());
+				if (s.getA().getRotY() != 0)
+					model.put("rot_y", s.getA().getRotY());
+				if (s.getA().isUvLock())
+					model.put("uvlock", true);
 				if (!s.getA().getTags().isEmpty())
 				{
 					JSONArray tags = new JSONArray();

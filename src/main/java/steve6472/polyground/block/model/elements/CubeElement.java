@@ -13,6 +13,8 @@ import steve6472.polyground.world.ModelBuilder;
 import steve6472.polyground.world.World;
 import steve6472.polyground.world.chunk.ModelLayer;
 
+import java.util.Arrays;
+
 /**********************
  * Created by steve6472 (Mirek Jozefek)
  * On date: 27.08.2020
@@ -91,25 +93,28 @@ public class CubeElement implements IElement
 		Matrix4f mat = ElUtil.rotMat(element, v0, v1, v2, v3);
 		mat.mul(ElUtil.rotMat(face, v0, v1, v2, v3));
 		ElUtil.rot(mat, v0, v1, v2, v3);
-		Vector4f uv;
+		PlaneUV uv;
 
-		if (!face.has("uv"))
+		if (!face.has("uv") && !face.has("uv0"))
 		{
 			float minX = from.x, minY = from.y, minZ = from.z, maxX = to.x, maxY = to.y, maxZ = to.z;
 			switch (enumFace)
 			{
-				case UP -> uv = new Vector4f(minZ, 1.0f - maxX, maxZ, 1.0f - minX);
+				case UP -> uv = new PlaneUV(new Vector4f(minZ, 1.0f - maxX, maxZ, 1.0f - minX));
 				case DOWN -> //noinspection SuspiciousNameCombination
-					uv = new Vector4f(minZ, minX, maxZ, maxX);
-				case EAST -> uv = new Vector4f(minX, 1.0f - maxY, maxX, 1.0f - minY);
-				case WEST -> uv = new Vector4f(1.0f - maxX, 1.0f - maxY, 1.0f - minX, 1.0f - minY);
-				case NORTH -> uv = new Vector4f(1.0f - maxZ, 1.0f - maxY, 1.0f - minZ, 1.0f - minY);
-				case SOUTH -> uv = new Vector4f(minZ, 1.0f - maxY, maxZ, 1.0f - minY);
+					uv = new PlaneUV(new Vector4f(minZ, minX, maxZ, maxX));
+				case EAST -> uv = new PlaneUV(new Vector4f(minX, 1.0f - maxY, maxX, 1.0f - minY));
+				case WEST -> uv = new PlaneUV(new Vector4f(1.0f - maxX, 1.0f - maxY, 1.0f - minX, 1.0f - minY));
+				case NORTH -> uv = new PlaneUV(new Vector4f(1.0f - maxZ, 1.0f - maxY, 1.0f - minZ, 1.0f - minY));
+				case SOUTH -> uv = new PlaneUV(new Vector4f(minZ, 1.0f - maxY, maxZ, 1.0f - minY));
 				default -> throw new IllegalStateException("Unexpected value: " + enumFace);
 			}
+		} else if (!face.has("uv0"))
+		{
+			uv = new PlaneUV(ElUtil.loadVertex4("uv", face).div(16));
 		} else
 		{
-			uv = ElUtil.loadVertex4("uv", face).div(16);
+			uv = new PlaneUV().load(face);
 		}
 
 		Vector3f tint = ElUtil.tint(face);
@@ -168,5 +173,11 @@ public class CubeElement implements IElement
 			(ps[3] != null && Cull.renderFace(x, y, z, EnumFace.WEST , name, state, world) ? ps[3].build(builder, layer, world, state, x, y, z) : 0) +
 			(up != null && Cull.renderFace(x, y, z, EnumFace.UP   , name, state, world) ? up.build(builder, layer, world, state, x, y, z) : 0) +
 			(down != null && Cull.renderFace(x, y, z, EnumFace.DOWN , name, state, world) ? down.build(builder, layer, world, state, x, y, z) : 0);
+	}
+
+	@Override
+	public String toString()
+	{
+		return "CubeElement{" + "ps=" + Arrays.toString(ps) + ", up=" + up + ", down=" + down + ", name='" + name + '\'' + '}';
 	}
 }

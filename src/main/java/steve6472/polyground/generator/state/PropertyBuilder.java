@@ -14,7 +14,8 @@ import java.util.*;
 public class PropertyBuilder
 {
 	Map<IProperty<?>, Comparable<?>> map;
-	private int rotation;
+	private int rotY;
+	private boolean uvLock;
 	private final List<String> tags;
 
 	public static PropertyBuilder create()
@@ -39,9 +40,15 @@ public class PropertyBuilder
 		return this;
 	}
 
-	public PropertyBuilder rotation(int rotation)
+	public PropertyBuilder rotY(int rotY)
 	{
-		this.rotation = rotation;
+		this.rotY = rotY;
+		return this;
+	}
+
+	public PropertyBuilder uvLock(boolean uvLock)
+	{
+		this.uvLock = uvLock;
 		return this;
 	}
 
@@ -62,9 +69,14 @@ public class PropertyBuilder
 		return tags;
 	}
 
-	public int getRotation()
+	public int getRotY()
 	{
-		return rotation;
+		return rotY;
+	}
+
+	public boolean isUvLock()
+	{
+		return uvLock;
 	}
 
 	public JSONObject build()
@@ -80,6 +92,6 @@ public class PropertyBuilder
 	@Override
 	public String toString()
 	{
-		return "PropertyBuilder{" + "map=" + map + ", rotation=" + rotation + ", tags=" + tags + '}';
+		return "PropertyBuilder{" + "map=" + map + ", rotation=" + rotY + ", tags=" + tags + '}';
 	}
 }

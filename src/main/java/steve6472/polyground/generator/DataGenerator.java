@@ -94,7 +94,7 @@ public class DataGenerator
 				.addState(leavesProperty.apply(true, 7), leavesModel.apply(true, 7))
 			).debug().generate();
 
-		DataBuilder.create().fullBlock("model_test").generate();
+//		DataBuilder.create().fullBlock("model_test").generate();
 
 //		DataBuilder.create().torch("slime_torch", true).blockSpecial(new SimpleSpecial("state_test")).itemModel(new ItemFromTexture("slime_torch")).generate();
 	}
@@ -789,7 +789,7 @@ public class DataGenerator
 						)
 				).addState(PropertyBuilder.create()
 						.addProperty(SlabBlock.TYPE, EnumSlabType.TOP)
-						.addProperty(SlabBlock.AXIS, EnumAxis.X).rotation(180),
+						.addProperty(SlabBlock.AXIS, EnumAxis.X).rotY(180),
 					BlockModelBuilder.noGen("smooth_slab" + "_side_x").modelPath("slab")
 				).addState(PropertyBuilder.create()
 						.addProperty(SlabBlock.TYPE, EnumSlabType.BOTTOM)
@@ -815,12 +815,12 @@ public class DataGenerator
 						)
 				).addState(PropertyBuilder.create()
 						.addProperty(SlabBlock.TYPE, EnumSlabType.TOP)
-						.addProperty(SlabBlock.AXIS, EnumAxis.Z).rotation(180),
+						.addProperty(SlabBlock.AXIS, EnumAxis.Z).rotY(180),
 					BlockModelBuilder.noGen("smooth_slab" + "_side_z").modelPath("slab")
 				).addState(PropertyBuilder.create()
 						.addProperty(SlabBlock.TYPE, EnumSlabType.DOUBLE)
 						.addProperty(SlabBlock.AXIS, EnumAxis.Z).tag(Tags.SOLID)
-						.rotation(90),
+						.rotY(90),
 					BlockModelBuilder.noGen("smooth_slab" + "_double_x").modelPath("slab")
 				).addState(PropertyBuilder.create()
 						.addProperty(SlabBlock.TYPE, EnumSlabType.DOUBLE)

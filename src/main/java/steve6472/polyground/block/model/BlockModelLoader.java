@@ -15,6 +15,7 @@ import steve6472.polyground.block.model.faceProperty.RotationFaceProperty;
 import steve6472.polyground.block.model.faceProperty.TextureFaceProperty;
 import steve6472.polyground.block.model.faceProperty.UVFaceProperty;
 import steve6472.polyground.block.model.faceProperty.condition.ConditionFaceProperty;
+import steve6472.polyground.block.properties.enums.EnumAxis;
 import steve6472.polyground.registry.face.FaceRegistry;
 
 import java.io.BufferedReader;
@@ -32,7 +33,7 @@ import java.util.List;
  ***********************/
 public class BlockModelLoader
 {
-	public Cube[] loadModel(String name, int rot)
+	public Cube[] loadModel(String name, int rot_y)
 	{
 		JSONObject json = null;
 
@@ -56,7 +57,7 @@ public class BlockModelLoader
 
 		try
 		{
-			return loadCubes(json, rot);
+			return loadCubes(json, rot_y);
 		} catch (Exception e)
 		{
 			System.err.println("Loading cubes failed while loading  " + name);
@@ -75,7 +76,7 @@ public class BlockModelLoader
 		return new AABBf(from.getFloat(0) / 16f, from.getFloat(1) / 16f, from.getFloat(2) / 16f, to.getFloat(0) / 16f, to.getFloat(1) / 16f, to.getFloat(2) / 16f);
 	}
 
-	private Cube[] loadCubes(JSONObject json, int rot)
+	private Cube[] loadCubes(JSONObject json, int rot_y)
 	{
 		if (!json.has("cubes"))
 			return new Cube[0];
@@ -93,7 +94,7 @@ public class BlockModelLoader
 			Matrix4f rotMat = new Matrix4f();
 			rotMat.translate(0.5f, 0, 0.5f);
 			//noinspection IntegerDivisionInFloatingPointContext
-			rotMat.rotate((float) Math.toRadians((rot / 90) * 90), 0, 1, 0);
+			rotMat.rotate((float) Math.toRadians((rot_y / 90) * 90), 0, 1, 0);
 			rotMat.translate(-0.5f, 0, -0.5f);
 			aabb.transform(rotMat);
 
@@ -103,38 +104,38 @@ public class BlockModelLoader
 			{
 				JSONObject faces = c.getJSONObject("faces");
 
-				switch ((rot / 90) * 90)
+				switch ((rot_y / 90) * 90)
 				{
 					case 90 -> {
-						if (faces.has(EnumFace.UP.getName())) face(faces.getJSONObject(EnumFace.UP.getName()), EnumFace.UP, cube, rot);
-						if (faces.has(EnumFace.DOWN.getName())) face(faces.getJSONObject(EnumFace.DOWN.getName()), EnumFace.DOWN, cube, rot);
-						if (faces.has(EnumFace.NORTH.getName())) face(faces.getJSONObject(EnumFace.NORTH.getName()), EnumFace.WEST, cube, rot);
-						if (faces.has(EnumFace.EAST.getName())) face(faces.getJSONObject(EnumFace.EAST.getName()), EnumFace.NORTH, cube, rot);
-						if (faces.has(EnumFace.SOUTH.getName())) face(faces.getJSONObject(EnumFace.SOUTH.getName()), EnumFace.EAST, cube, rot);
-						if (faces.has(EnumFace.WEST.getName())) face(faces.getJSONObject(EnumFace.WEST.getName()), EnumFace.SOUTH, cube, rot);
+						if (faces.has(EnumFace.UP.getName())) face(faces.getJSONObject(EnumFace.UP.getName()), EnumFace.UP, cube, rot_y);
+						if (faces.has(EnumFace.DOWN.getName())) face(faces.getJSONObject(EnumFace.DOWN.getName()), EnumFace.DOWN, cube, rot_y);
+						if (faces.has(EnumFace.NORTH.getName())) face(faces.getJSONObject(EnumFace.NORTH.getName()), EnumFace.WEST, cube, rot_y);
+						if (faces.has(EnumFace.EAST.getName())) face(faces.getJSONObject(EnumFace.EAST.getName()), EnumFace.NORTH, cube, rot_y);
+						if (faces.has(EnumFace.SOUTH.getName())) face(faces.getJSONObject(EnumFace.SOUTH.getName()), EnumFace.EAST, cube, rot_y);
+						if (faces.has(EnumFace.WEST.getName())) face(faces.getJSONObject(EnumFace.WEST.getName()), EnumFace.SOUTH, cube, rot_y);
 					}
 					case 180 -> {
-						if (faces.has(EnumFace.UP.getName())) face(faces.getJSONObject(EnumFace.UP.getName()), EnumFace.UP, cube, rot);
-						if (faces.has(EnumFace.DOWN.getName())) face(faces.getJSONObject(EnumFace.DOWN.getName()), EnumFace.DOWN, cube, rot);
-						if (faces.has(EnumFace.NORTH.getName())) face(faces.getJSONObject(EnumFace.NORTH.getName()), EnumFace.SOUTH, cube, rot);
-						if (faces.has(EnumFace.EAST.getName())) face(faces.getJSONObject(EnumFace.EAST.getName()), EnumFace.WEST, cube, rot);
-						if (faces.has(EnumFace.SOUTH.getName())) face(faces.getJSONObject(EnumFace.SOUTH.getName()), EnumFace.NORTH, cube, rot);
-						if (faces.has(EnumFace.WEST.getName())) face(faces.getJSONObject(EnumFace.WEST.getName()), EnumFace.EAST, cube, rot);
+						if (faces.has(EnumFace.UP.getName())) face(faces.getJSONObject(EnumFace.UP.getName()), EnumFace.UP, cube, rot_y);
+						if (faces.has(EnumFace.DOWN.getName())) face(faces.getJSONObject(EnumFace.DOWN.getName()), EnumFace.DOWN, cube, rot_y);
+						if (faces.has(EnumFace.NORTH.getName())) face(faces.getJSONObject(EnumFace.NORTH.getName()), EnumFace.SOUTH, cube, rot_y);
+						if (faces.has(EnumFace.EAST.getName())) face(faces.getJSONObject(EnumFace.EAST.getName()), EnumFace.WEST, cube, rot_y);
+						if (faces.has(EnumFace.SOUTH.getName())) face(faces.getJSONObject(EnumFace.SOUTH.getName()), EnumFace.NORTH, cube, rot_y);
+						if (faces.has(EnumFace.WEST.getName())) face(faces.getJSONObject(EnumFace.WEST.getName()), EnumFace.EAST, cube, rot_y);
 					}
 					case 270 -> {
-						if (faces.has(EnumFace.UP.getName())) face(faces.getJSONObject(EnumFace.UP.getName()), EnumFace.UP, cube, rot);
-						if (faces.has(EnumFace.DOWN.getName())) face(faces.getJSONObject(EnumFace.DOWN.getName()), EnumFace.DOWN, cube, rot);
-						if (faces.has(EnumFace.NORTH.getName())) face(faces.getJSONObject(EnumFace.NORTH.getName()), EnumFace.EAST, cube, rot);
-						if (faces.has(EnumFace.EAST.getName())) face(faces.getJSONObject(EnumFace.EAST.getName()), EnumFace.SOUTH, cube, rot);
-						if (faces.has(EnumFace.SOUTH.getName())) face(faces.getJSONObject(EnumFace.SOUTH.getName()), EnumFace.WEST, cube, rot);
-						if (faces.has(EnumFace.WEST.getName())) face(faces.getJSONObject(EnumFace.WEST.getName()), EnumFace.NORTH, cube, rot);
+						if (faces.has(EnumFace.UP.getName())) face(faces.getJSONObject(EnumFace.UP.getName()), EnumFace.UP, cube, rot_y);
+						if (faces.has(EnumFace.DOWN.getName())) face(faces.getJSONObject(EnumFace.DOWN.getName()), EnumFace.DOWN, cube, rot_y);
+						if (faces.has(EnumFace.NORTH.getName())) face(faces.getJSONObject(EnumFace.NORTH.getName()), EnumFace.EAST, cube, rot_y);
+						if (faces.has(EnumFace.EAST.getName())) face(faces.getJSONObject(EnumFace.EAST.getName()), EnumFace.SOUTH, cube, rot_y);
+						if (faces.has(EnumFace.SOUTH.getName())) face(faces.getJSONObject(EnumFace.SOUTH.getName()), EnumFace.WEST, cube, rot_y);
+						if (faces.has(EnumFace.WEST.getName())) face(faces.getJSONObject(EnumFace.WEST.getName()), EnumFace.NORTH, cube, rot_y);
 					}
 					default -> {
 						for (EnumFace ef : EnumFace.getFaces())
 						{
 							if (faces.has(ef.getName()))
 							{
-								face(faces.getJSONObject(ef.getName()), ef, cube, rot);
+								face(faces.getJSONObject(ef.getName()), ef, cube, rot_y);
 							}
 						}
 					}
@@ -148,7 +149,7 @@ public class BlockModelLoader
 		return cubes;
 	}
 
-	public IElement[] loadElements(String path, int rot, boolean uvLock)
+	public IElement[] loadElements(String path, int rot_y, boolean uvLock)
 	{
 		JSONObject json = null;
 
@@ -171,7 +172,7 @@ public class BlockModelLoader
 			for (int i = 0; i < tris.length(); i++)
 			{
 				JSONObject triObj = tris.getJSONObject(i);
-				addRot(triObj, rot);
+				addRot(triObj, rot_y);
 				TriangleElement el = new TriangleElement();
 				el.load(triObj);
 				elements.add(el);
@@ -191,7 +192,7 @@ public class BlockModelLoader
 			for (int i = 0; i < planes.length(); i++)
 			{
 				JSONObject planeObj = planes.getJSONObject(i);
-				addRot(planeObj, rot);
+				addRot(planeObj, rot_y);
 				PlaneElement el = new PlaneElement();
 				el.load(planeObj);
 				elements.add(el);
@@ -211,29 +212,33 @@ public class BlockModelLoader
 			for (int i = 0; i < cubes.length(); i++)
 			{
 				JSONObject cubeObj = cubes.getJSONObject(i);
-				if (rot != 0)
+				if (rot_y != 0)
 				{
-					addRot(cubeObj, rot);
-					//TODO: add uvLock
-//					if (rot % 90 == 0)
-//					{
-//						if (cubeObj.has("faces"))
-//						{
-//							for (EnumFace f : EnumFace.getFaces())
-//							{
-//								if (cubeObj.getJSONObject("faces").has(f.getName()))
-//								{
-//									addRot(cubeObj.getJSONObject("faces").getJSONObject(f.getName()), rot);
-//								}
-//							}
-//						}
-//					}
+					addRot(cubeObj, rot_y);
+					if (uvLock && rot_y % 90 == 0)
+					{
+						if (cubeObj.has("faces"))
+						{
+							for (EnumFace f : EnumFace.getFaces())
+							{
+								if (f.getAxis() == EnumAxis.Y)
+								{
+									if (cubeObj.getJSONObject("faces").has(f.getName()))
+									{
+										JSONObject face = cubeObj.getJSONObject("faces").getJSONObject(f.getName());
+										float r = face.optFloat("rotation", 0);
+										face.put("rotation", r - rot_y);
+									}
+								}
+							}
+						}
+					}
 				}
 				CubeElement el = new CubeElement();
 				el.load(cubeObj);
-				if (rot != 0 && rot % 90 == 0)
+				if (rot_y != 0 && rot_y % 90 == 0)
 				{
-					for (int j = 0; j < (rot % 360) / 90; j++)
+					for (int j = 0; j < (rot_y % 360) / 90; j++)
 					{
 						el.cycleFaces();
 					}
