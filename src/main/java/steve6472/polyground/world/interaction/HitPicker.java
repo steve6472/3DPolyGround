@@ -9,7 +9,7 @@ import steve6472.polyground.CaveGame;
 import steve6472.polyground.EnumFace;
 import steve6472.polyground.HitResult;
 import steve6472.polyground.block.Block;
-import steve6472.polyground.block.model.Cube;
+import steve6472.polyground.block.model.CubeHitbox;
 import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.entity.Player;
 import steve6472.polyground.gfx.MainRender;
@@ -73,7 +73,7 @@ public class HitPicker
 						BlockState state = c.getWorld().getState(i, j, k);
 						if (state.getBlock() != Block.air)
 						{
-							for (Cube t : state.getBlockModel(world, i, j, k).getCubes())
+							for (CubeHitbox t : state.getBlockModel(world, i, j, k).getCubes())
 							{
 								if (!t.isHitbox())
 									continue;
@@ -119,7 +119,7 @@ public class HitPicker
 
 			hitResult.setState(world.getState(hitResult.getX(), hitResult.getY(), hitResult.getZ()));
 
-			for (Cube t : hitResult.getState().getBlockModel(world, hitResult.getX(), hitResult.getY(), hitResult.getZ()).getCubes())
+			for (CubeHitbox t : hitResult.getState().getBlockModel(world, hitResult.getX(), hitResult.getY(), hitResult.getZ()).getCubes())
 			{
 				if (!t.isHitbox())
 					continue;

@@ -3,7 +3,7 @@ package steve6472.polyground.world.interaction;
 import org.joml.AABBf;
 import org.joml.Intersectionf;
 import steve6472.polyground.block.Block;
-import steve6472.polyground.block.model.Cube;
+import steve6472.polyground.block.model.CubeHitbox;
 import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.world.World;
 
@@ -22,7 +22,7 @@ public class PlayerCollider
 		BlockState state;
 		if ((state = world.getState(x, y, z)) != Block.air.getDefaultState())
 		{
-			for (Cube t : state.getBlockModel(world, x, y, z).getCubes())
+			for (CubeHitbox t : state.getBlockModel(world, x, y, z).getCubes())
 			{
 				if (!t.isCollisionBox())
 					continue;

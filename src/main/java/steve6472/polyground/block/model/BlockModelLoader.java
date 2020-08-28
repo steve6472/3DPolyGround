@@ -10,13 +10,7 @@ import steve6472.polyground.block.BlockTextureHolder;
 import steve6472.polyground.block.model.elements.CubeElement;
 import steve6472.polyground.block.model.elements.PlaneElement;
 import steve6472.polyground.block.model.elements.TriangleElement;
-import steve6472.polyground.block.model.faceProperty.AutoUVFaceProperty;
-import steve6472.polyground.block.model.faceProperty.RotationFaceProperty;
-import steve6472.polyground.block.model.faceProperty.TextureFaceProperty;
-import steve6472.polyground.block.model.faceProperty.UVFaceProperty;
-import steve6472.polyground.block.model.faceProperty.condition.ConditionFaceProperty;
 import steve6472.polyground.block.properties.enums.EnumAxis;
-import steve6472.polyground.registry.face.FaceRegistry;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -33,7 +27,7 @@ import java.util.List;
  ***********************/
 public class BlockModelLoader
 {
-	public Cube[] loadModel(String name, int rot_y)
+	public CubeHitbox[] loadModel(String name, int rot_y)
 	{
 		JSONObject json = null;
 
@@ -76,14 +70,14 @@ public class BlockModelLoader
 		return new AABBf(from.getFloat(0) / 16f, from.getFloat(1) / 16f, from.getFloat(2) / 16f, to.getFloat(0) / 16f, to.getFloat(1) / 16f, to.getFloat(2) / 16f);
 	}
 
-	private Cube[] loadCubes(JSONObject json, int rot_y)
+	private CubeHitbox[] loadCubes(JSONObject json, int rot_y)
 	{
 		if (!json.has("cubes"))
-			return new Cube[0];
+			return new CubeHitbox[0];
 
 		JSONArray array = json.getJSONArray("cubes");
 
-		Cube[] cubes = new Cube[array.length()];
+		CubeHitbox[] cubes = new CubeHitbox[array.length()];
 
 		for (int i = 0; i < array.length(); i++)
 		{
@@ -98,50 +92,8 @@ public class BlockModelLoader
 			rotMat.translate(-0.5f, 0, -0.5f);
 			aabb.transform(rotMat);
 
-			Cube cube = new Cube(aabb);
-/*
-			if (c.has("faces"))
-			{
-				JSONObject faces = c.getJSONObject("faces");
+			CubeHitbox cube = new CubeHitbox(aabb);
 
-				switch ((rot_y / 90) * 90)
-				{
-					case 90 -> {
-						if (faces.has(EnumFace.UP.getName())) face(faces.getJSONObject(EnumFace.UP.getName()), EnumFace.UP, cube, rot_y);
-						if (faces.has(EnumFace.DOWN.getName())) face(faces.getJSONObject(EnumFace.DOWN.getName()), EnumFace.DOWN, cube, rot_y);
-						if (faces.has(EnumFace.NORTH.getName())) face(faces.getJSONObject(EnumFace.NORTH.getName()), EnumFace.WEST, cube, rot_y);
-						if (faces.has(EnumFace.EAST.getName())) face(faces.getJSONObject(EnumFace.EAST.getName()), EnumFace.NORTH, cube, rot_y);
-						if (faces.has(EnumFace.SOUTH.getName())) face(faces.getJSONObject(EnumFace.SOUTH.getName()), EnumFace.EAST, cube, rot_y);
-						if (faces.has(EnumFace.WEST.getName())) face(faces.getJSONObject(EnumFace.WEST.getName()), EnumFace.SOUTH, cube, rot_y);
-					}
-					case 180 -> {
-						if (faces.has(EnumFace.UP.getName())) face(faces.getJSONObject(EnumFace.UP.getName()), EnumFace.UP, cube, rot_y);
-						if (faces.has(EnumFace.DOWN.getName())) face(faces.getJSONObject(EnumFace.DOWN.getName()), EnumFace.DOWN, cube, rot_y);
-						if (faces.has(EnumFace.NORTH.getName())) face(faces.getJSONObject(EnumFace.NORTH.getName()), EnumFace.SOUTH, cube, rot_y);
-						if (faces.has(EnumFace.EAST.getName())) face(faces.getJSONObject(EnumFace.EAST.getName()), EnumFace.WEST, cube, rot_y);
-						if (faces.has(EnumFace.SOUTH.getName())) face(faces.getJSONObject(EnumFace.SOUTH.getName()), EnumFace.NORTH, cube, rot_y);
-						if (faces.has(EnumFace.WEST.getName())) face(faces.getJSONObject(EnumFace.WEST.getName()), EnumFace.EAST, cube, rot_y);
-					}
-					case 270 -> {
-						if (faces.has(EnumFace.UP.getName())) face(faces.getJSONObject(EnumFace.UP.getName()), EnumFace.UP, cube, rot_y);
-						if (faces.has(EnumFace.DOWN.getName())) face(faces.getJSONObject(EnumFace.DOWN.getName()), EnumFace.DOWN, cube, rot_y);
-						if (faces.has(EnumFace.NORTH.getName())) face(faces.getJSONObject(EnumFace.NORTH.getName()), EnumFace.EAST, cube, rot_y);
-						if (faces.has(EnumFace.EAST.getName())) face(faces.getJSONObject(EnumFace.EAST.getName()), EnumFace.SOUTH, cube, rot_y);
-						if (faces.has(EnumFace.SOUTH.getName())) face(faces.getJSONObject(EnumFace.SOUTH.getName()), EnumFace.WEST, cube, rot_y);
-						if (faces.has(EnumFace.WEST.getName())) face(faces.getJSONObject(EnumFace.WEST.getName()), EnumFace.NORTH, cube, rot_y);
-					}
-					default -> {
-						for (EnumFace ef : EnumFace.getFaces())
-						{
-							if (faces.has(ef.getName()))
-							{
-								face(faces.getJSONObject(ef.getName()), ef, cube, rot_y);
-							}
-						}
-					}
-				}
-			}
-*/
 			cube.loadFromJson(c);
 			cubes[i] = cube;
 		}
@@ -257,69 +209,6 @@ public class BlockModelLoader
 			json.put("point_type", "origin");
 			json.put("rot_y", rot % 360.0f);
 		}
-	}
-
-	private static void fillMissingProperties(CubeFace face)
-	{
-		for (String key : FaceRegistry.getKeys())
-		{
-			if (!face.hasProperty(key))
-			{
-				face.addProperty(FaceRegistry.createProperty(key));
-			}
-		}
-	}
-
-	private static void face(JSONObject faceJson, EnumFace face, Cube cube, int baseRotation)
-	{
-		CubeFace cf = new CubeFace(cube, face);
-		cf.loadFromJSON(faceJson);
-
-		if (!cf.hasProperty(FaceRegistry.uv))
-			cf.addProperty(new UVFaceProperty());
-
-		if (AutoUVFaceProperty.check(cf))
-		{
-			cf.getProperty(FaceRegistry.uv).autoUV(cube, face);
-		}
-
-		if (!face.isSide() && !FaceRegistry.uvlock.getInstance().check(cf))
-		{
-			if (cf.hasProperty(FaceRegistry.rotation))
-			{
-				RotationFaceProperty rot = cf.getProperty(FaceRegistry.rotation);
-				rot.setRotation(rot.getRotation() + baseRotation);
-			} else
-			{
-				RotationFaceProperty rot = FaceRegistry.rotation.createNew();
-				rot.setRotation(baseRotation);
-				cf.addProperty(rot);
-			}
-		}
-
-		if (cf.hasProperty(FaceRegistry.texture))
-		{
-			TextureFaceProperty texture = cf.getProperty(FaceRegistry.texture);
-			if (!texture.isReference())
-			{
-				BlockTextureHolder.putTexture(texture.getTexture());
-				texture.setTextureId(BlockTextureHolder.getTextureId(texture.getTexture()));
-			}
-		} else
-		{
-			if (cf.hasProperty(FaceRegistry.conditionedTexture))
-			{
-				ConditionFaceProperty cfp = cf.getProperty(FaceRegistry.conditionedTexture);
-				cfp.loadTextures();
-			}
-			TextureFaceProperty texture = new TextureFaceProperty();
-			texture.setTexture("null");
-			BlockTextureHolder.putTexture("null");
-			texture.setTextureId(BlockTextureHolder.getTextureId(texture.getTexture()));
-			cf.addProperty(texture);
-		}
-
-		cube.setFace(face, cf);
 	}
 
 	public static String read(File f)

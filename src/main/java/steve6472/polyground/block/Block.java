@@ -4,18 +4,15 @@ import org.joml.AABBf;
 import org.json.JSONObject;
 import steve6472.SSS;
 import steve6472.polyground.EnumFace;
-import steve6472.polyground.block.model.*;
-import steve6472.polyground.block.model.faceProperty.LayerFaceProperty;
-import steve6472.polyground.block.model.faceProperty.TextureFaceProperty;
-import steve6472.polyground.block.model.faceProperty.UVFaceProperty;
-import steve6472.polyground.block.model.faceProperty.condition.ConditionFaceProperty;
+import steve6472.polyground.block.model.BlockModel;
+import steve6472.polyground.block.model.BlockModelLoader;
+import steve6472.polyground.block.model.CubeHitbox;
+import steve6472.polyground.block.model.IElement;
 import steve6472.polyground.block.properties.IProperty;
 import steve6472.polyground.block.special.SnapBlock;
 import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.block.states.StateLoader;
 import steve6472.polyground.entity.Player;
-import steve6472.polyground.registry.face.FaceRegistry;
-import steve6472.polyground.world.Cull;
 import steve6472.polyground.world.ModelBuilder;
 import steve6472.polyground.world.World;
 import steve6472.polyground.world.chunk.ModelLayer;
@@ -48,27 +45,9 @@ public class Block
 
 	public static Block createError()
 	{
-		Cube cube = new Cube(new AABBf(0, 0, 0, 1, 1, 1));
+		CubeHitbox cube = new CubeHitbox(new AABBf(0, 0, 0, 1, 1, 1));
 		cube.setCollisionBox(true);
 		cube.setHitbox(true);
-
-		for (EnumFace face : EnumFace.getFaces())
-		{
-			CubeFace cubeFace = new CubeFace(cube, face);
-
-			TextureFaceProperty texture = new TextureFaceProperty();
-			texture.setTexture("null");
-			BlockTextureHolder.putTexture("null");
-			texture.setTextureId(BlockTextureHolder.getTextureId(texture.getTexture()));
-			cubeFace.addProperty(texture);
-
-			UVFaceProperty uv = new UVFaceProperty();
-			uv.autoUV(cube, face);
-
-			cubeFace.addProperty(uv);
-
-			cube.setFace(face, cubeFace);
-		}
 
 		BlockModel model = new BlockModel(cube);
 
@@ -155,36 +134,6 @@ public class Block
 		BlockModel model = state.getBlockModel(world, x, y, z);
 
 		buildHelper.setSubChunk(world.getSubChunkFromBlockCoords(x, y, z));
-		for (Cube c : model.getCubes())
-		{
-			buildHelper.setCube(c);
-			for (EnumFace face : EnumFace.getFaces())
-			{
-				/* Check if face is in correct (Chunk) Model Layer */
-				if (LayerFaceProperty.getModelLayer(c.getFace(face)) == modelLayer)
-				{
-					CubeFace cubeFace = c.getFace(face);
-					boolean flag = false;
-					boolean hasCondTexture = false;
-					if (cubeFace != null && cubeFace.hasProperty(FaceRegistry.conditionedTexture))
-					{
-						flag = ConditionFaceProperty.editProperties(cubeFace.getProperty(FaceRegistry.conditionedTexture), cubeFace, x, y, z, world);
-						hasCondTexture = true;
-					}
-
-					if (hasCondTexture)
-					{
-						if (flag)
-						{
-							tris += buildHelper.face(face);
-						}
-					} else if (Cull.renderFace(x, y, z, face, c.getName(), state, world))
-					{
-						tris += buildHelper.face(face);
-					}
-				}
-			}
-		}
 
 		if (model.getElements() != null)
 		{

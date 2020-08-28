@@ -13,7 +13,7 @@ import java.util.Arrays;
  ***********************/
 public class BlockModel
 {
-	private Cube[] cubes;
+	private CubeHitbox[] cubes;
 	private IElement[] triangles;
 	private final String path;
 	private final int rot_y;
@@ -43,7 +43,7 @@ public class BlockModel
 
 		double volume = 0;
 
-		for (Cube c : cubes)
+		for (CubeHitbox c : cubes)
 		{
 			if (c.isCollisionBox() && c.isHitbox())
 				volume += (c.getAabb().maxX - c.getAabb().minX) * (c.getAabb().maxY - c.getAabb().minY) * (c.getAabb().maxZ - c.getAabb().minZ);
@@ -66,7 +66,7 @@ public class BlockModel
 		triangles = CaveGame.getInstance().blockModelLoader.loadElements(path, rot_y, uvLock);
 	}
 
-	public BlockModel(Cube... cubes)
+	public BlockModel(CubeHitbox... cubes)
 	{
 		this.path = null;
 		rot_y = 0;
@@ -74,12 +74,12 @@ public class BlockModel
 		this.cubes = cubes;
 	}
 
-	public Cube getCube(int index)
+	public CubeHitbox getCube(int index)
 	{
 		return cubes[index];
 	}
 
-	public Cube[] getCubes()
+	public CubeHitbox[] getCubes()
 	{
 		return cubes;
 	}
@@ -93,10 +93,5 @@ public class BlockModel
 	public String toString()
 	{
 		return "BlockModel{" + "triangles=" + Arrays.toString(triangles) + ", path='" + path + '\'' + ", rot_y=" + rot_y + ", uvLock=" + uvLock + '}';
-	}
-
-	public void printFaceData()
-	{
-		System.out.println(Arrays.toString(cubes));
 	}
 }

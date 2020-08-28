@@ -1,17 +1,11 @@
 package steve6472.polyground.block.special;
 
 import org.joml.Vector3f;
-import org.joml.Vector4f;
 import steve6472.polyground.EnumFace;
 import steve6472.polyground.block.Block;
 import steve6472.polyground.block.BlockTextureHolder;
-import steve6472.polyground.block.model.Cube;
-import steve6472.polyground.block.model.CubeFace;
 import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.entity.Player;
-import steve6472.polyground.gfx.particle.particles.BreakParticle;
-import steve6472.polyground.registry.face.FaceRegistry;
-import steve6472.polyground.world.ModelBuilder;
 import steve6472.polyground.world.World;
 import steve6472.polyground.world.chunk.SubChunk;
 
@@ -52,6 +46,7 @@ public class SnapBlock extends Block
 		Vector3f biomeColor = world.getBiome(x, y, z).getColor();
 
 		//s - TY / size + s * 14f
+		/*
 		for (Cube c : state.getBlockModel(world, x, y, z).getCubes())
 		{
 			for (float i = c.getAabb().minX; i < c.getAabb().maxX; i += 1f / 16f)
@@ -100,15 +95,16 @@ public class SnapBlock extends Block
 					}
 				}
 			}
-		}
+		}*/
 	}
 
 	private static final Vector3f NO_COLOR = new Vector3f(1, 1, 1);
 	private static final Vector3f NO_MOTION = new Vector3f(0, 0, 0);
 
 	// TODO: fix rotations
-	public static void snap(World world, CubeFace cf, float i, float j, float k, int x, int y, int z, float TX, float TY, Vector3f biomeColor, float speedMul)
+	public static void snap(World world, float i, float j, float k, int x, int y, int z, float TX, float TY, Vector3f biomeColor, float speedMul)
 	{
+		/*
 		if (cf == null)
 			return;
 
@@ -144,6 +140,6 @@ public class SnapBlock extends Block
 		//		p.setGrowingSpeed(-1f / 16f / 8f / 60f);
 		p.setGrowingSpeed(-1f / 16f / 8f / 5f * speedMul);
 
-		world.getGame().mainRender.breakParticles.addParticle(p);
+		world.getGame().mainRender.breakParticles.addParticle(p);*/
 	}
 }

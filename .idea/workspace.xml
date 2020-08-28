@@ -205,10 +205,10 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="0" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.0.1366.728@0.0.1366.728" timestamp="1598612072319" />
-    <state x="415" y="111" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1598462682717">
+    <state x="415" y="111" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1598614919357">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="415" y="111" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1366.728@0.0.1366.728" timestamp="1598462682717" />
+    <state x="415" y="111" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1366.728@0.0.1366.728" timestamp="1598614919357" />
     <state x="94" y="94" width="1178" height="540" maximized="true" key="DiffContextDialog" timestamp="1598565952350">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
@@ -217,38 +217,38 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="463" y="105" key="FileChooserDialogImpl/0.0.1366.728@0.0.1366.728" timestamp="1595339345169" />
-    <state width="1291" height="621" key="GridCell.Tab.0.bottom" timestamp="1598613480495">
+    <state width="1291" height="621" key="GridCell.Tab.0.bottom" timestamp="1598615131079">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1291" height="621" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1598613480495" />
-    <state width="1291" height="621" key="GridCell.Tab.0.center" timestamp="1598613480495">
+    <state width="1291" height="621" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1598615131079" />
+    <state width="1291" height="621" key="GridCell.Tab.0.center" timestamp="1598615131079">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1291" height="621" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1598613480495" />
-    <state width="1291" height="621" key="GridCell.Tab.0.left" timestamp="1598613480495">
+    <state width="1291" height="621" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1598615131079" />
+    <state width="1291" height="621" key="GridCell.Tab.0.left" timestamp="1598615131079">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1291" height="621" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1598613480495" />
-    <state width="1291" height="621" key="GridCell.Tab.0.right" timestamp="1598613480495">
+    <state width="1291" height="621" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1598615131079" />
+    <state width="1291" height="621" key="GridCell.Tab.0.right" timestamp="1598615131079">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1291" height="621" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1598613480495" />
-    <state width="508" height="621" key="GridCell.Tab.1.bottom" timestamp="1598610745438">
+    <state width="1291" height="621" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1598615131079" />
+    <state width="508" height="621" key="GridCell.Tab.1.bottom" timestamp="1598614634769">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="508" height="621" key="GridCell.Tab.1.bottom/0.0.1366.728@0.0.1366.728" timestamp="1598610745438" />
-    <state width="508" height="621" key="GridCell.Tab.1.center" timestamp="1598610745438">
+    <state width="508" height="621" key="GridCell.Tab.1.bottom/0.0.1366.728@0.0.1366.728" timestamp="1598614634769" />
+    <state width="508" height="621" key="GridCell.Tab.1.center" timestamp="1598614634769">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="508" height="621" key="GridCell.Tab.1.center/0.0.1366.728@0.0.1366.728" timestamp="1598610745438" />
-    <state width="508" height="621" key="GridCell.Tab.1.left" timestamp="1598610745438">
+    <state width="508" height="621" key="GridCell.Tab.1.center/0.0.1366.728@0.0.1366.728" timestamp="1598614634769" />
+    <state width="508" height="621" key="GridCell.Tab.1.left" timestamp="1598614634769">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="508" height="621" key="GridCell.Tab.1.left/0.0.1366.728@0.0.1366.728" timestamp="1598610745438" />
-    <state width="508" height="621" key="GridCell.Tab.1.right" timestamp="1598610745438">
+    <state width="508" height="621" key="GridCell.Tab.1.left/0.0.1366.728@0.0.1366.728" timestamp="1598614634769" />
+    <state width="508" height="621" key="GridCell.Tab.1.right" timestamp="1598614634769">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="508" height="621" key="GridCell.Tab.1.right/0.0.1366.728@0.0.1366.728" timestamp="1598610745438" />
+    <state width="508" height="621" key="GridCell.Tab.1.right/0.0.1366.728@0.0.1366.728" timestamp="1598614634769" />
     <state x="193" y="17" width="1058" height="711" key="SettingsEditor" timestamp="1598536671627">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
@@ -297,10 +297,10 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="341" y="163" width="672" height="677" key="run.anything.popup/0.0.1366.728@0.0.1366.728" timestamp="1598569009839" />
-    <state x="346" y="49" width="672" height="160" key="search.everywhere.popup" timestamp="1598613128736">
+    <state x="346" y="49" width="672" height="160" key="search.everywhere.popup" timestamp="1598614509933">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="346" y="49" width="672" height="160" key="search.everywhere.popup/0.0.1366.728@0.0.1366.728" timestamp="1598613128736" />
+    <state x="346" y="49" width="672" height="160" key="search.everywhere.popup/0.0.1366.728@0.0.1366.728" timestamp="1598614509933" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

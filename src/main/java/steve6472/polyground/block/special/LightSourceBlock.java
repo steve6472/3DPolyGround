@@ -4,12 +4,9 @@ import steve6472.SSS;
 import steve6472.polyground.EnumFace;
 import steve6472.polyground.block.Block;
 import steve6472.polyground.block.model.BlockModel;
-import steve6472.polyground.block.model.Cube;
-import steve6472.polyground.block.model.CubeFace;
-import steve6472.polyground.block.model.faceProperty.LightFaceProperty;
+import steve6472.polyground.block.model.CubeHitbox;
 import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.entity.Player;
-import steve6472.polyground.registry.face.FaceRegistry;
 import steve6472.polyground.world.World;
 import steve6472.polyground.world.light.EnumLightSource;
 import steve6472.polyground.world.light.LightManager;
@@ -72,21 +69,21 @@ public class LightSourceBlock extends Block
 		{
 			for (BlockModel bm : s.getBlockModels())
 			{
-				for (Cube cube : bm.getCubes())
+				for (CubeHitbox cube : bm.getCubes())
 				{
-					for (CubeFace face : cube.getFaces())
-					{
-						if (face == null)
-							continue;
-						if (face.hasProperty(FaceRegistry.light))
-						{
-							System.err.println("Replacing existing light property!");
-						}
-						face.removeProperty(FaceRegistry.light);
-
-						float[] col = ColorUtil.getColors(color);
-						face.addProperty(new LightFaceProperty(col[0], col[1], col[2]));
-					}
+//					for (CubeFace face : cube.getFaces())
+//					{
+//						if (face == null)
+//							continue;
+//						if (face.hasProperty(FaceRegistry.light))
+//						{
+//							System.err.println("Replacing existing light property!");
+//						}
+//						face.removeProperty(FaceRegistry.light);
+//
+//						float[] col = ColorUtil.getColors(color);
+//						face.addProperty(new LightFaceProperty(col[0], col[1], col[2]));
+//					}
 				}
 			}
 		}

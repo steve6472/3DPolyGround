@@ -5,19 +5,13 @@ import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 import steve6472.polyground.CaveGame;
-import steve6472.polyground.EnumFace;
 import steve6472.polyground.PolyUtil;
 import steve6472.polyground.block.Block;
 import steve6472.polyground.block.BlockTextureHolder;
 import steve6472.polyground.block.model.BlockModel;
-import steve6472.polyground.block.model.Cube;
-import steve6472.polyground.block.model.CubeFace;
 import steve6472.polyground.block.model.IElement;
-import steve6472.polyground.block.model.faceProperty.LayerFaceProperty;
-import steve6472.polyground.block.model.faceProperty.condition.ConditionFaceProperty;
 import steve6472.polyground.gfx.MainRender;
 import steve6472.polyground.registry.Blocks;
-import steve6472.polyground.registry.face.FaceRegistry;
 import steve6472.polyground.tessellators.ItemTessellator;
 import steve6472.polyground.world.ModelBuilder;
 import steve6472.polyground.world.World;
@@ -204,38 +198,6 @@ public class ItemAtlas
 			return 0;
 
 		int tris = 0;
-
-		for (Cube c : block.getDefaultState().getBlockModel(dummyWorld, 0, 0, 0).getCubes())
-		{
-			buildHelper.setCube(c);
-
-			for (EnumFace face : EnumFace.getFaces())
-			{
-				CubeFace cubeFace = c.getFace(face);
-				boolean flag = false;
-				boolean hasCondTexture = false;
-				if (cubeFace != null && cubeFace.hasProperty(FaceRegistry.conditionedTexture))
-				{
-					ConditionFaceProperty faceProperty = cubeFace.getProperty(FaceRegistry.conditionedTexture);
-					flag = faceProperty.updateToLastResult(cubeFace);
-					hasCondTexture = true;
-				}
-
-				if (LayerFaceProperty.getModelLayer(c.getFace(face)) == modelLayer)
-				{
-					if (hasCondTexture)
-					{
-						if (flag)
-						{
-							tris += buildHelper.face(face);
-						}
-					} else
-					{
-						tris += buildHelper.face(face);
-					}
-				}
-			}
-		}
 
 		BlockModel model = block.getDefaultState().getBlockModel(dummyWorld, 0, 0, 0);
 
