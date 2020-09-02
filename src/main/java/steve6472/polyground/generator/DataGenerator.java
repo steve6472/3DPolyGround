@@ -460,7 +460,8 @@ public class DataGenerator
 						.addCube(CubeBuilder.create().size(3, 0, 3, 5, 1, 3).face(FaceBuilder.create().texture("stone").autoUv()))
 						.addCube(CubeBuilder.create().size(4, 1, 3, 3, 1, 3).face(FaceBuilder.create().texture("stone").autoUv()))
 					),
-					(BlockModelBuilder.create("pebble_4").modelPath("pebble")
+					(BlockModelBuilder.create("pebble_4").modelPath("pebble").externalPath("custom_models/pebble_4.json")
+						/*
 						.addCube(CubeBuilder.create().size(10, 0, 7, 3, 1, 5).face(FaceBuilder.create().texture("stone").autoUv()))
 						.addCube(CubeBuilder.create().size(10, 0, 12, 2, 1, 2).face(FaceBuilder.create().texture("stone").autoUv()))
 						.addCube(CubeBuilder.create().size(3, 0, 10, 2, 1, 2).face(FaceBuilder.create().texture("stone").autoUv()))
@@ -472,7 +473,7 @@ public class DataGenerator
 						.addCube(CubeBuilder.create().size(1, 0, 3, 1, 1, 2).face(FaceBuilder.create().texture("stone").autoUv()))
 						.addCube(CubeBuilder.create().size(3, 0, 1, 4, 1, 1).face(FaceBuilder.create().texture("stone").autoUv()))
 						.addCube(CubeBuilder.create().size(2, 0, 2, 5, 1, 3).face(FaceBuilder.create().texture("stone").autoUv()))
-						.addCube(CubeBuilder.create().size(3, 1, 2, 3, 1, 3).face(FaceBuilder.create().texture("stone").autoUv()))
+						.addCube(CubeBuilder.create().size(3, 1, 2, 3, 1, 3).face(FaceBuilder.create().texture("stone").autoUv()))*/
 					)
 				)
 			).generate();
@@ -517,7 +518,9 @@ public class DataGenerator
 						.addCube(CubeBuilder.create().min(10, 1, 7).max(11, 2, 8).face(FaceBuilder.create().texture("stick_3").uv(0, 4, 0.5f, 4.5f), EnumFace.EAST).face(FaceBuilder.create().texture("stick_3").uv(1.5f, 4, 2, 4.5f), EnumFace.SOUTH).face(FaceBuilder.create().texture("stick_3").uv(0.5f, 4, 1, 4.5f), EnumFace.NORTH).face(FaceBuilder.create().texture("stick_3").uv(1, 4, 1.5f, 4.5f), EnumFace.WEST).face(FaceBuilder.create().texture("stick_3").uv(1, 4, 0.5f, 3.5f), EnumFace.UP).face(FaceBuilder.create().texture("stick_3").uv(1.5f, 3.5f, 1, 4), EnumFace.DOWN))
 						.addCube(CubeBuilder.create().min(9, 0, 7).max(10, 1, 8).face(FaceBuilder.create().texture("stick_3").uv(2.5f, 3.5f, 3, 4), EnumFace.EAST).face(FaceBuilder.create().texture("stick_3").uv(4, 3.5f, 4.5f, 4), EnumFace.SOUTH).face(FaceBuilder.create().texture("stick_3").uv(3, 3.5f, 3.5f, 4), EnumFace.NORTH).face(FaceBuilder.create().texture("stick_3").uv(3.5f, 3.5f, 4, 4), EnumFace.WEST).face(FaceBuilder.create().texture("stick_3").uv(3.5f, 3.5f, 3, 3), EnumFace.UP).face(FaceBuilder.create().texture("stick_3").uv(4, 3, 3.5f, 3.5f), EnumFace.DOWN))
 						.addCube(CubeBuilder.create().min(11, 0, 7).max(12, 1, 8).face(FaceBuilder.create().texture("stick_3").uv(2.5f, 2.5f, 3, 3), EnumFace.EAST).face(FaceBuilder.create().texture("stick_3").uv(4, 2.5f, 4.5f, 3), EnumFace.SOUTH).face(FaceBuilder.create().texture("stick_3").uv(3, 2.5f, 3.5f, 3), EnumFace.NORTH).face(FaceBuilder.create().texture("stick_3").uv(3.5f, 2.5f, 4, 3), EnumFace.WEST).face(FaceBuilder.create().texture("stick_3").uv(3.5f, 2.5f, 3, 2), EnumFace.UP).face(FaceBuilder.create().texture("stick_3").uv(4, 2, 3.5f, 2.5f), EnumFace.DOWN))
-					)
+					),
+					(BlockModelBuilder.create("stick_4").modelPath("stick").externalPath("custom_models/stick_4.json")),
+					(BlockModelBuilder.create("stick_5").modelPath("stick").externalPath("custom_models/stick_5.bbmodel"))
 				)
 			).generate();
 

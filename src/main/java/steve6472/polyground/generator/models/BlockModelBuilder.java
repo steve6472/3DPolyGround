@@ -18,6 +18,7 @@ public class BlockModelBuilder
 	private final String modelName;
 	private String modelPath;
 	private boolean generate;
+	private String externalPath;
 
 	public static BlockModelBuilder noGen(String modelName)
 	{
@@ -41,6 +42,25 @@ public class BlockModelBuilder
 	{
 		this.generate = generateModel;
 		return this;
+	}
+
+	/**
+	 * Copies model from external file.
+	 * Automatically disables generation.
+	 *
+	 * @param externalPath path
+	 * @return this
+	 */
+	public BlockModelBuilder externalPath(String externalPath)
+	{
+		generate(false);
+		this.externalPath = externalPath;
+		return this;
+	}
+
+	public String getExternalPath()
+	{
+		return externalPath;
 	}
 
 	public boolean generateModel()

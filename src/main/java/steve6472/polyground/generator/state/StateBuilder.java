@@ -8,6 +8,9 @@ import steve6472.polyground.generator.models.BlockModelBuilder;
 import steve6472.sge.main.util.Pair;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -84,8 +87,7 @@ public class StateBuilder
 					DataBuilder.save(new File(DataGenerator.BLOCK_STATES, blockName + ".json"), main.put("tags", this.tags));
 
 				// Save block model
-				createModelFile(singleModel[0].getModelPath());
-				DataBuilder.save(new File(DataGenerator.BLOCK_MODELS, singleModel[0].getModelPath() + singleModel[0].getModelName() + ".json"), new JSONObject(singleModel[0].build().build()));
+				save(singleModel[0]);
 			} else
 			{
 				JSONArray models = new JSONArray();
@@ -95,8 +97,7 @@ public class StateBuilder
 					models.put("block/" + blockModelBuilder.getModelPath() + blockModelBuilder.getModelName());
 
 					// Save block model
-					createModelFile(blockModelBuilder.getModelPath());
-					DataBuilder.save(new File(DataGenerator.BLOCK_MODELS, blockModelBuilder.getModelPath() + blockModelBuilder.getModelName() + ".json"), new JSONObject(blockModelBuilder.build().build()));
+					save(blockModelBuilder);
 				}
 
 				main.put("models", models);
@@ -129,16 +130,31 @@ public class StateBuilder
 				model.put("model", "block/" + s.getB().getModelPath() + s.getB().getModelName());
 				modelArray.put(model);
 
-				if (s.getB().generateModel())
-				{
-					createModelFile(s.getB().getModelPath());
-					DataBuilder.save(new File(DataGenerator.BLOCK_MODELS, s.getB().getModelPath() + s.getB().getModelName() + ".json"), new JSONObject(s.getB().build().build()));
-				}
+				save(s.getB());
 			}
 
 			// Save block state
 			main.put("models", modelArray);
 			DataBuilder.save(new File(DataGenerator.BLOCK_STATES, blockName + ".json"), main);
+		}
+	}
+
+	private void save(BlockModelBuilder builder)
+	{
+		if (builder.getExternalPath() != null)
+		{
+			try
+			{
+				System.out.println("Copying model from " + builder.getExternalPath());
+				Files.copy(new File(builder.getExternalPath()).toPath(), new File(DataGenerator.BLOCK_MODELS, builder.getModelPath() + builder.getModelName() + ".json").toPath(), StandardCopyOption.REPLACE_EXISTING);
+			} catch (IOException e)
+			{
+				e.printStackTrace();
+			}
+		} else if (builder.generateModel())
+		{
+			createModelFile(builder.getModelPath());
+			DataBuilder.save(new File(DataGenerator.BLOCK_MODELS, builder.getModelPath() + builder.getModelName() + ".json"), new JSONObject(builder.build().build()));
 		}
 	}
 

@@ -68,6 +68,13 @@
     </key>
   </component>
   <component name="RunManager" selected="Application.CaveGame">
+    <configuration name="BlockBenchTranslator" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="steve6472.polyground.BlockBenchTranslator" />
+      <module name="CaveGame" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="CaveGame-Debug" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="steve6472.polyground.CaveGame" />
       <module name="CaveGame" />
@@ -119,13 +126,6 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="PrettyJson" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="steve6472.polyground.PrettyJson" />
-      <module name="CaveGame" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="Test" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="steve6472.polyground.Test" />
       <module name="CaveGame" />
@@ -146,18 +146,18 @@
       <item itemvalue="Application.DataGenerator" />
       <item itemvalue="Application.Gen-CaveGame" />
       <item itemvalue="Application.Creator" />
-      <item itemvalue="Application.PrettyJson" />
       <item itemvalue="Application.Test" />
       <item itemvalue="Application.null" />
       <item itemvalue="Application.ModelMaker" />
+      <item itemvalue="Application.BlockBenchTranslator" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.BlockBenchTranslator" />
         <item itemvalue="Application.Creator" />
         <item itemvalue="Application.ModelMaker" />
         <item itemvalue="Application.null" />
         <item itemvalue="Application.Test" />
-        <item itemvalue="Application.PrettyJson" />
       </list>
     </recent_temporary>
   </component>
@@ -201,10 +201,10 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="275" y="60" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog/0.0.1366.728@0.0.1366.728" timestamp="1599051759737" />
-    <state x="0" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog" timestamp="1598612072319">
+    <state x="0" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog" timestamp="1599067595448">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="0" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.0.1366.728@0.0.1366.728" timestamp="1598612072319" />
+    <state x="0" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.0.1366.728@0.0.1366.728" timestamp="1599067595448" />
     <state x="415" y="111" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1598710054802">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
@@ -217,22 +217,22 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="463" y="105" key="FileChooserDialogImpl/0.0.1366.728@0.0.1366.728" timestamp="1595339345169" />
-    <state width="1291" height="621" key="GridCell.Tab.0.bottom" timestamp="1599059735132">
+    <state width="1291" height="621" key="GridCell.Tab.0.bottom" timestamp="1599067710705">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1291" height="621" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1599059735132" />
-    <state width="1291" height="621" key="GridCell.Tab.0.center" timestamp="1599059735132">
+    <state width="1291" height="621" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1599067710705" />
+    <state width="1291" height="621" key="GridCell.Tab.0.center" timestamp="1599067710705">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1291" height="621" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1599059735132" />
-    <state width="1291" height="621" key="GridCell.Tab.0.left" timestamp="1599059735132">
+    <state width="1291" height="621" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1599067710705" />
+    <state width="1291" height="621" key="GridCell.Tab.0.left" timestamp="1599067710705">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1291" height="621" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1599059735132" />
-    <state width="1291" height="621" key="GridCell.Tab.0.right" timestamp="1599059735132">
+    <state width="1291" height="621" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1599067710705" />
+    <state width="1291" height="621" key="GridCell.Tab.0.right" timestamp="1599067710705">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1291" height="621" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1599059735132" />
+    <state width="1291" height="621" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1599067710705" />
     <state width="508" height="621" key="GridCell.Tab.1.bottom" timestamp="1598649169334">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
@@ -265,10 +265,10 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="68" y="96" width="1178" height="540" maximized="true" key="com.intellij.history.integration.ui.views.FileHistoryDialog/0.0.1366.728@0.0.1366.728" timestamp="1599059395094" />
-    <state x="135" y="0" width="1182" height="728" maximized="true" key="com.intellij.history.integration.ui.views.SelectionHistoryDialog" timestamp="1599059395094">
+    <state x="135" y="0" width="1182" height="728" maximized="true" key="com.intellij.history.integration.ui.views.SelectionHistoryDialog" timestamp="1599064057914">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="135" y="0" width="1182" height="728" maximized="true" key="com.intellij.history.integration.ui.views.SelectionHistoryDialog/0.0.1366.728@0.0.1366.728" timestamp="1599059395094" />
+    <state x="135" y="0" width="1182" height="728" maximized="true" key="com.intellij.history.integration.ui.views.SelectionHistoryDialog/0.0.1366.728@0.0.1366.728" timestamp="1599064057914" />
     <state x="359" y="0" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1590590171953">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
@@ -297,14 +297,14 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="495" y="28" width="599" height="670" key="refactoring.ChangeSignatureDialog/0.0.1366.728@0.0.1366.728" timestamp="1598570784479" />
-    <state x="341" y="163" width="672" height="677" key="run.anything.popup" timestamp="1598569009839">
+    <state x="341" y="163" width="672" height="677" key="run.anything.popup" timestamp="1599066441543">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="341" y="163" width="672" height="677" key="run.anything.popup/0.0.1366.728@0.0.1366.728" timestamp="1598569009839" />
-    <state x="346" y="49" width="672" height="160" key="search.everywhere.popup" timestamp="1598967273190">
+    <state x="341" y="163" width="672" height="677" key="run.anything.popup/0.0.1366.728@0.0.1366.728" timestamp="1599066441543" />
+    <state x="346" y="49" width="672" height="160" key="search.everywhere.popup" timestamp="1599064957657">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="346" y="49" width="672" height="160" key="search.everywhere.popup/0.0.1366.728@0.0.1366.728" timestamp="1598967273190" />
+    <state x="346" y="49" width="672" height="160" key="search.everywhere.popup/0.0.1366.728@0.0.1366.728" timestamp="1599064957657" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

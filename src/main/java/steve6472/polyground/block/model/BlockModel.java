@@ -1,8 +1,12 @@
 package steve6472.polyground.block.model;
 
+import org.json.JSONObject;
+import steve6472.polyground.BlockBenchTranslator;
 import steve6472.polyground.CaveGame;
+import steve6472.polyground.PrettyJson;
 import steve6472.polyground.registry.WaterRegistry;
 
+import java.io.File;
 import java.util.Arrays;
 
 /**********************
@@ -38,8 +42,10 @@ public class BlockModel
 		if (path.isBlank())
 			throw new IllegalArgumentException("Model path is blank! '" + path + "'");
 
-		cubes = CaveGame.getInstance().blockModelLoader.loadModel(path, rot_y);
-		elements = CaveGame.getInstance().blockModelLoader.loadElements(path, rot_y, uvLock);
+		JSONObject json = loadJSON(path);
+
+		cubes = CaveGame.getInstance().blockModelLoader.loadCubes(json, rot_y);
+		elements = CaveGame.getInstance().blockModelLoader.loadElements(json, rot_y, uvLock);
 
 		double volume = 0;
 
@@ -57,13 +63,39 @@ public class BlockModel
 		*/
 	}
 
+	private JSONObject loadJSON(String path)
+	{
+		JSONObject json = null;
+
+		try
+		{
+			json = new JSONObject(BlockModelLoader.read(new File("game/objects/models/" + path + ".json")));
+
+			if (json.has("meta"))
+			{
+				json = BlockBenchTranslator.convert(json);
+				System.out.println(PrettyJson.prettify(json));
+			}
+		} catch (Exception e)
+		{
+			System.err.println("Could not load block model " + path);
+			e.printStackTrace();
+			CaveGame.getInstance().exit();
+			System.exit(0);
+		}
+
+		return json;
+	}
+
 	public void reload()
 	{
 		if (path == null)
 			return;
 
-		cubes = CaveGame.getInstance().blockModelLoader.loadModel(path, rot_y);
-		elements = CaveGame.getInstance().blockModelLoader.loadElements(path, rot_y, uvLock);
+		JSONObject json = loadJSON(path);
+
+		cubes = CaveGame.getInstance().blockModelLoader.loadCubes(json, rot_y);
+		elements = CaveGame.getInstance().blockModelLoader.loadElements(json, rot_y, uvLock);
 	}
 
 	public BlockModel(CubeHitbox... cubes)

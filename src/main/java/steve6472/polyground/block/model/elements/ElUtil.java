@@ -41,9 +41,13 @@ public class ElUtil
 
 	public static Matrix4f rotMat(JSONObject obj, Vector3f... vectors)
 	{
-		float rotx = obj.optFloat("rot_x", 0) % 360.0f;
-		float roty = obj.optFloat("rot_y", 0) % 360.0f;
-		float rotz = obj.optFloat("rot_z", 0) % 360.0f;
+		if (!obj.has("rot"))
+			return EMPTY_MATRIX;
+
+		JSONArray rot = obj.getJSONArray("rot");
+		float rotx = rot.getFloat(0) % 360.0f;
+		float roty = rot.getFloat(1) % 360.0f;
+		float rotz = rot.getFloat(2) % 360.0f;
 
 		if (rotx == 0 && roty == 0 && rotz == 0)
 			return EMPTY_MATRIX;

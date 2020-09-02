@@ -4,8 +4,8 @@ import org.joml.AABBf;
 import org.joml.Matrix4f;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import steve6472.polyground.CaveGame;
 import steve6472.polyground.EnumFace;
+import steve6472.polyground.PrettyJson;
 import steve6472.polyground.block.BlockTextureHolder;
 import steve6472.polyground.block.model.elements.CubeElement;
 import steve6472.polyground.block.model.elements.PlaneElement;
@@ -27,41 +27,6 @@ import java.util.List;
  ***********************/
 public class BlockModelLoader
 {
-	public CubeHitbox[] loadModel(String name, int rot_y)
-	{
-		JSONObject json = null;
-
-		try
-		{
-//			json = new JSONObject(read(new File(MainApp.class.getResource("/models/" + name + ".json").getFile())));
-			json = new JSONObject(read(new File("game/objects/models/" + name + ".json")));
-		} catch (Exception e)
-		{
-			System.err.println("Could not load block model " + name);
-			e.printStackTrace();
-			CaveGame.getInstance().exit();
-			System.exit(0);
-		}
-
-		if (json.has("parent"))
-		{
-			throw new IllegalArgumentException("Parent is currently not supported!");
-//			return createFromParent(json);
-		}
-
-		try
-		{
-			return loadCubes(json, rot_y);
-		} catch (Exception e)
-		{
-			System.err.println("Loading cubes failed while loading  " + name);
-			e.printStackTrace();
-			CaveGame.getInstance().exit();
-			System.exit(0);
-			return null;
-		}
-	}
-
 	private static AABBf createAABB(JSONObject json)
 	{
 		JSONArray from = json.getJSONArray("from");
@@ -70,52 +35,42 @@ public class BlockModelLoader
 		return new AABBf(from.getFloat(0) / 16f, from.getFloat(1) / 16f, from.getFloat(2) / 16f, to.getFloat(0) / 16f, to.getFloat(1) / 16f, to.getFloat(2) / 16f);
 	}
 
-	private CubeHitbox[] loadCubes(JSONObject json, int rot_y)
+	public CubeHitbox[] loadCubes(JSONObject json, int rot_y)
 	{
 		if (!json.has("cubes"))
 			return new CubeHitbox[0];
 
 		JSONArray array = json.getJSONArray("cubes");
 
-		CubeHitbox[] cubes = new CubeHitbox[array.length()];
+		List<CubeHitbox> cubes = new ArrayList<>(array.length());
 
 		for (int i = 0; i < array.length(); i++)
 		{
 			JSONObject c = array.getJSONObject(i);
-			AABBf aabb = createAABB(c);
+			if (c.optBoolean("isHitbox", true) || c.optBoolean("isCollisionBox", true))
+			{
+				AABBf aabb = createAABB(c);
 
-			// Rotate cube
-			Matrix4f rotMat = new Matrix4f();
-			rotMat.translate(0.5f, 0, 0.5f);
-			//noinspection IntegerDivisionInFloatingPointContext
-			rotMat.rotate((float) Math.toRadians((rot_y / 90) * 90), 0, 1, 0);
-			rotMat.translate(-0.5f, 0, -0.5f);
-			aabb.transform(rotMat);
+				// Rotate cube
+				Matrix4f rotMat = new Matrix4f();
+				rotMat.translate(0.5f, 0, 0.5f);
+				//noinspection IntegerDivisionInFloatingPointContext
+				rotMat.rotate((float) Math.toRadians((rot_y / 90) * 90), 0, 1, 0);
+				rotMat.translate(-0.5f, 0, -0.5f);
+				aabb.transform(rotMat);
 
-			CubeHitbox cube = new CubeHitbox(aabb);
+				CubeHitbox cube = new CubeHitbox(aabb);
 
-			cube.loadFromJson(c);
-			cubes[i] = cube;
+				cube.loadFromJson(c);
+				cubes.add(cube);
+			}
 		}
 
-		return cubes;
+		return cubes.toArray(new CubeHitbox[0]);
 	}
 
-	public IElement[] loadElements(String path, int rot_y, boolean uvLock)
+	public IElement[] loadElements(JSONObject json, int rot_y, boolean uvLock)
 	{
-		JSONObject json = null;
-
-		try
-		{
-			json = new JSONObject(read(new File("game/objects/models/" + path + ".json")));
-		} catch (Exception e)
-		{
-			System.err.println("Could not load block model (triangles) " + path);
-			e.printStackTrace();
-			CaveGame.getInstance().exit();
-			System.exit(0);
-		}
-
 		List<IElement> elements = new ArrayList<>();
 
 		if (json.has("triangles"))
@@ -187,7 +142,14 @@ public class BlockModelLoader
 					}
 				}
 				CubeElement el = new CubeElement();
-				el.load(cubeObj);
+				try
+				{
+					el.load(cubeObj);
+				} catch (Exception ex)
+				{
+					ex.printStackTrace();
+					System.err.println(PrettyJson.prettify(cubeObj));
+				}
 				if (rot_y != 0 && rot_y % 90 == 0)
 				{
 					for (int j = 0; j < (rot_y % 360) / 90; j++)

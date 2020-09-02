@@ -41,3 +41,5 @@ hs_err_pid*
 .idea/workspace.xml
 minecraft - Shortcut.lnk
 model.json
+model.bbmodel
+custom_models/
