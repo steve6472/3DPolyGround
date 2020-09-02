@@ -1,6 +1,6 @@
 package steve6472.polyground.generator.creator;
 
-import steve6472.polyground.block.model.Cube;
+import steve6472.polyground.block.model.CubeHitbox;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
@@ -18,5 +18,5 @@ public interface ICreatorCube
 
 	void setIndex(int index);
 
-	Cube getCube();
+	CubeHitbox getCube();
 }

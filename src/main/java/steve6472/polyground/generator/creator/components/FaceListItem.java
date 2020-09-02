@@ -1,9 +1,6 @@
 package steve6472.polyground.generator.creator.components;
 
 import steve6472.polyground.EnumFace;
-import steve6472.polyground.block.model.CubeFace;
-import steve6472.polyground.block.model.Cube;
-import steve6472.polyground.registry.face.FaceRegistry;
 import steve6472.polyground.generator.creator.BlockCreatorGui;
 import steve6472.sge.gfx.font.CustomChar;
 import steve6472.sge.gui.Component;
@@ -42,15 +39,15 @@ public class FaceListItem extends Component
 		visible.setToggled(true);
 		visible.addChangeEvent(c ->
 		{
-			Cube cube = creatorGui.getSelectedCube();
-			if (cube == null)
-				return;
-
-			CubeFace cubeFace = cube.getFace(face);
-			if (cubeFace == null)
-				return;
-
-			cubeFace.getProperty(FaceRegistry.isVisible).setVisible(c.isToggled());
+//			Cube cube = creatorGui.getSelectedCube();
+//			if (cube == null)
+//				return;
+//
+//			CubeFace cubeFace = cube.getFace(face);
+//			if (cubeFace == null)
+//				return;
+//
+//			cubeFace.getProperty(FaceRegistry.isVisible).setVisible(c.isToggled());
 		});
 		addComponent(visible);
 	}

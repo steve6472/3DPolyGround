@@ -8,6 +8,7 @@ import org.json.JSONObject;
 import steve6472.polyground.block.BlockTextureHolder;
 import steve6472.polyground.block.model.IElement;
 import steve6472.polyground.block.states.BlockState;
+import steve6472.polyground.generator.creator.CreatorData;
 import steve6472.polyground.world.ModelBuilder;
 import steve6472.polyground.world.World;
 import steve6472.polyground.world.chunk.ModelLayer;
@@ -33,39 +34,81 @@ public class TriangleElement implements IElement
 			{ new Vector3f(0, -1, 0), new Vector3f(0.5f), }
 		};
 
+	public CreatorData creatorData;
+	public String name;
 
-	Vector3f v0, v1, v2;
-	Vector2f uv0, uv1, uv2;
-	Vector3f normal;
-	Vector3f tint;
-	float shade;
-	boolean biomeTint;
-	int texture;
-	ModelLayer modelLayer;
+	public Vector3f v0, v1, v2;
+	public Vector2f uv0, uv1, uv2;
+	public Vector3f normal;
+	public Vector3f tint;
+	public float shade;
+	public boolean biomeTint;
+	public int texture;
+	public ModelLayer modelLayer;
+
+	public TriangleElement()
+	{
+
+	}
+
+	public TriangleElement(String name)
+	{
+		this.name = name;
+		v0 = new Vector3f();
+		v1 = new Vector3f();
+		v2 = new Vector3f();
+		uv0 = new Vector2f();
+		uv1 = new Vector2f();
+		uv2 = new Vector2f();
+		normal = new Vector3f();
+		tint = new Vector3f();
+		shade = 1f;
+		biomeTint = false;
+		texture = 0;
+		modelLayer = ModelLayer.NORMAL;
+	}
+
+	public IElement creator()
+	{
+		creatorData = new CreatorData();
+		if (getChildren() != null)
+			for (IElement e : getChildren())
+				e.creator();
+		return this;
+	}
 
 	@Override
 	public void load(JSONObject element)
 	{
-		v0 = ElUtil.loadVertex3("v0", element).div(16);
-		v1 = ElUtil.loadVertex3("v1", element).div(16);
-		v2 = ElUtil.loadVertex3("v2", element).div(16);
+		Vector3f v0 = ElUtil.loadVertex3("v0", element).div(16);
+		Vector3f v1 = ElUtil.loadVertex3("v1", element).div(16);
+		Vector3f v2 = ElUtil.loadVertex3("v2", element).div(16);
 
-		ElUtil.rot(element, v0, v1, v2);
+		loadVertices(v0, v1, v2, ElUtil.rotMat(element, v0, v1, v2));
 
-		uv0 = ElUtil.loadVertex2("uv0", element).div(16);
-		uv1 = ElUtil.loadVertex2("uv1", element).div(16);
-		uv2 = ElUtil.loadVertex2("uv2", element).div(16);
+		Vector2f uv0 = ElUtil.loadVertex2("uv0", element).div(16);
+		Vector2f uv1 = ElUtil.loadVertex2("uv1", element).div(16);
+		Vector2f uv2 = ElUtil.loadVertex2("uv2", element).div(16);
 
+		name = element.optString("name", "");
 		tint = ElUtil.tint(element);
 		modelLayer = ElUtil.layer(element);
 		biomeTint = element.optBoolean("biometint", false);
 
-		rotateUv((float) Math.toRadians(element.optFloat("rotation", 0)));
+		loadUv(uv0, uv1, uv2, (float) Math.toRadians(element.optFloat("rotation", 0)));
 
 		calculateNormal();
 	}
 
-	public void rotateUv(float rad)
+	public void loadVertices(Vector3f v0, Vector3f v1, Vector3f v2, Matrix4f rotMat)
+	{
+		ElUtil.rot(rotMat, v0, v1, v2);
+		this.v0 = v0;
+		this.v1 = v1;
+		this.v2 = v2;
+	}
+
+	public void loadUv(Vector2f uv0, Vector2f uv1, Vector2f uv2, float rad)
 	{
 		Matrix4f mat = new Matrix4f();
 		mat.translate(0.5f, 0.5f, 0.5f);
@@ -74,9 +117,9 @@ public class TriangleElement implements IElement
 		Vector3f uv0rot = mat.transformPosition(new Vector3f(uv0, 1));
 		Vector3f uv1rot = mat.transformPosition(new Vector3f(uv1, 1));
 		Vector3f uv2rot = mat.transformPosition(new Vector3f(uv2, 1));
-		uv0.set(uv0rot.x, uv0rot.y);
-		uv1.set(uv1rot.x, uv1rot.y);
-		uv2.set(uv2rot.x, uv2rot.y);
+		this.uv0 = new Vector2f(uv0rot.x, uv0rot.y);
+		this.uv1 = new Vector2f(uv1rot.x, uv1rot.y);
+		this.uv2 = new Vector2f(uv2rot.x, uv2rot.y);
 	}
 
 	public void calculateNormal()
@@ -133,6 +176,27 @@ public class TriangleElement implements IElement
 			builder.colorTri(shade * tint.x, shade * tint.y, shade * tint.z);
 		}
 		return 1;
+	}
+
+	/**
+	 * @return null if no children exist
+	 */
+	@Override
+	public IElement[] getChildren()
+	{
+		return null;
+	}
+
+	@Override
+	public String getName()
+	{
+		return name;
+	}
+
+	@Override
+	public CreatorData getCreatorData()
+	{
+		return creatorData;
 	}
 
 	private float calculateShade()

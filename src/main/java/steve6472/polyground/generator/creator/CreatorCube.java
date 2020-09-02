@@ -1,7 +1,7 @@
 package steve6472.polyground.generator.creator;
 
-import steve6472.polyground.block.model.Cube;
 import org.joml.AABBf;
+import steve6472.polyground.block.model.CubeHitbox;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
@@ -9,7 +9,7 @@ import org.joml.AABBf;
  * Project: SJP
  *
  ***********************/
-public class CreatorCube extends Cube implements ICreatorCube
+public class CreatorCube extends CubeHitbox implements ICreatorCube
 {
 	private String name;
 	private int index;
@@ -44,7 +44,7 @@ public class CreatorCube extends Cube implements ICreatorCube
 	}
 
 	@Override
-	public Cube getCube()
+	public CubeHitbox getCube()
 	{
 		return this;
 	}

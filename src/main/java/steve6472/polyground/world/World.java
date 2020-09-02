@@ -77,6 +77,27 @@ public class World implements IWorldBlockProvider
 
 	private final ThreadedGenerator generator;
 
+	/**
+	 * Create dummy world
+	 */
+	public World()
+	{
+		seed = 0;
+		height = 0;
+		mat = new Matrix4f();
+		game = null;
+		chunks = new GridStorage<>();
+		tickScheduler = null;
+		features = null;
+		biomes = null;
+		random = new Random(0);
+		entityManager = null;
+		teleporters = null;
+		rifts = null;
+		generator = null;
+		offThreadTicks = null;
+	}
+
 	public World(CaveGame game, int height, IBiomeGenerator biomeGenerator, IHeightMapGenerator heightMapGenerator, Function<ChunkGenDataStorage, ISurfaceGenerator> surfaceGenerator)
 	{
 		seed = biomeGenerator.getSeed();

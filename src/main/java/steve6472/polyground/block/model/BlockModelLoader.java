@@ -167,7 +167,7 @@ public class BlockModelLoader
 				if (rot_y != 0)
 				{
 					addRot(cubeObj, rot_y);
-					if (uvLock && rot_y % 90 == 0)
+					if (uvLock && rot_y % 90 != 0)
 					{
 						if (cubeObj.has("faces"))
 						{

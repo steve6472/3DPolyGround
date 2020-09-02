@@ -1,9 +1,5 @@
 package steve6472.polyground.generator.creator.dialogs;
 
-import steve6472.polyground.block.model.CubeFace;
-import steve6472.polyground.block.model.faceProperty.AutoUVFaceProperty;
-import steve6472.polyground.block.model.Cube;
-import steve6472.polyground.registry.face.FaceRegistry;
 import steve6472.polyground.generator.creator.BlockCreatorGui;
 import steve6472.polyground.generator.creator.ICreatorCube;
 import steve6472.polyground.generator.creator.components.SomeSlider;
@@ -33,20 +29,12 @@ public class EditCubeDialog extends OkDialog
 	private ICreatorCube cube;
 	private BlockCreatorGui creatorGui;
 
-	public EditCubeDialog(Cube cube, BlockCreatorGui creatorGui)
+	public EditCubeDialog(BlockCreatorGui creatorGui)
 	{
 		super(" ", "Edit Cube");
 		this.creatorGui = creatorGui;
 		height = 202;
 		width = 274;
-
-		if (!(cube instanceof ICreatorCube))
-		{
-			throw new IllegalArgumentException(cube.getClass().getName() + " is not instace of ICreatorCube\n" + cube);
-		} else
-		{
-			this.cube = ((ICreatorCube) cube);
-		}
 
 	}
 
@@ -55,13 +43,13 @@ public class EditCubeDialog extends OkDialog
 	{
 		super.init(main);
 
-		(fromX = addSlider(0, 0, c -> cube.getCube().getAabb().minX = c.getIValue() / 16f)).setValue((int) (cube.getCube().getAabb().minX * 16f));
-		(fromY = addSlider(0, 25, c -> cube.getCube().getAabb().minY = c.getIValue() / 16f)).setValue((int) (cube.getCube().getAabb().minY * 16f));
-		(fromZ = addSlider(0, 50, c -> cube.getCube().getAabb().minZ = c.getIValue() / 16f)).setValue((int) (cube.getCube().getAabb().minZ * 16f));
-
-		(toX = addSlider(130, 0, c -> cube.getCube().getAabb().maxX = c.getIValue() / 16f)).setValue((int) (cube.getCube().getAabb().maxX * 16f));
-		(toY = addSlider(130, 25, c -> cube.getCube().getAabb().maxY = c.getIValue() / 16f)).setValue((int) (cube.getCube().getAabb().maxY * 16f));
-		(toZ = addSlider(130, 50, c -> cube.getCube().getAabb().maxZ = c.getIValue() / 16f)).setValue((int) (cube.getCube().getAabb().maxZ * 16f));
+//		(fromX = addSlider(0, 0, c -> cube.getCube().getAabb().minX = c.getIValue() / 16f)).setValue((int) (cube.getCube().getAabb().minX * 16f));
+//		(fromY = addSlider(0, 25, c -> cube.getCube().getAabb().minY = c.getIValue() / 16f)).setValue((int) (cube.getCube().getAabb().minY * 16f));
+//		(fromZ = addSlider(0, 50, c -> cube.getCube().getAabb().minZ = c.getIValue() / 16f)).setValue((int) (cube.getCube().getAabb().minZ * 16f));
+//
+//		(toX = addSlider(130, 0, c -> cube.getCube().getAabb().maxX = c.getIValue() / 16f)).setValue((int) (cube.getCube().getAabb().maxX * 16f));
+//		(toY = addSlider(130, 25, c -> cube.getCube().getAabb().maxY = c.getIValue() / 16f)).setValue((int) (cube.getCube().getAabb().maxY * 16f));
+//		(toZ = addSlider(130, 50, c -> cube.getCube().getAabb().maxZ = c.getIValue() / 16f)).setValue((int) (cube.getCube().getAabb().maxZ * 16f));
 
 		name = new TextField();
 		name.setText(cube.getName());
@@ -90,15 +78,14 @@ public class EditCubeDialog extends OkDialog
 		ni.addChangeEvent(accept);
 		ni.addChangeEvent(c ->
 		{
-
-			for (CubeFace f : cube.getCube().getFaces())
-			{
-				if (f != null)
-				{
-					if (AutoUVFaceProperty.check(f))
-						f.getProperty(FaceRegistry.uv).autoUV(f.getParent(), f.getFace());
-				}
-			}
+//			for (CubeFace f : cube.getCube().getFaces())
+//			{
+//				if (f != null)
+//				{
+//					if (AutoUVFaceProperty.check(f))
+//						f.getProperty(FaceRegistry.uv).autoUV(f.getParent(), f.getFace());
+//				}
+//			}
 
 		});
 		ni.snap = true;

@@ -15,48 +15,61 @@ import java.lang.Math;
  ***********************/
 public class ElUtil
 {
-	private static final Matrix4f EMPTY_MATRIX = new Matrix4f();
+	public static final Matrix4f EMPTY_MATRIX = new Matrix4f();
 	private static final Quaternionf EMPTY_QUATERNION = new Quaternionf();
 
-	public static Matrix4f rotMat(JSONObject obj, Vector3f... vectors)
-	{
-		float rotx = (float) Math.toRadians(obj.optFloat("rot_x", 0) % 360.0f);
-		float roty = (float) Math.toRadians(obj.optFloat("rot_y", 0) % 360.0f);
-		float rotz = (float) Math.toRadians(obj.optFloat("rot_z", 0) % 360.0f);
+	private static final Vector3f tempVec = new Vector3f();
 
-		if (rotx == 0 && roty == 0 && rotz == 0)
+	public static Matrix4f rotMat(float cx, float cy, float cz, float ax, float ay, float az)
+	{
+		if (ax == 0 && ay == 0 && az == 0)
 			return EMPTY_MATRIX;
 
-		Vector3f point;
-		if (obj.has("point_type"))
-		{
-			String pointType = obj.getString("point_type");
-			if (pointType.equals("origin"))
-			{
-				point = new Vector3f(0.5f, 0.5f, 0.5f);
-			} else if (pointType.equals("point"))
-			{
-				point = loadVertex3("point", obj).div(16);
-			} else //if (pointType.equals("center))
-			{
-				point = center(vectors);
-			}
-		} else
-		{
-			if (obj.has("point"))
-				point = loadVertex3("point", obj).div(16);
-			else
-				point = center(vectors);
-		}
+		float rotx = (float) Math.toRadians(ax);
+		float roty = (float) Math.toRadians(ay);
+		float rotz = (float) Math.toRadians(az);
 
 		Quaternionf rot = new Quaternionf();
 		rot.rotateXYZ(rotx, roty, rotz);
 
 		Matrix4f mat = new Matrix4f();
-		mat.translate(point);
+		mat.translate(cx, cy, cz);
 		mat.rotate(rot);
-		mat.translate(new Vector3f(point).mul(-1));
+		mat.translate(-cx, -cy, -cz);
 		return mat;
+	}
+
+	public static Matrix4f rotMat(JSONObject obj, Vector3f... vectors)
+	{
+		float rotx = obj.optFloat("rot_x", 0) % 360.0f;
+		float roty = obj.optFloat("rot_y", 0) % 360.0f;
+		float rotz = obj.optFloat("rot_z", 0) % 360.0f;
+
+		if (rotx == 0 && roty == 0 && rotz == 0)
+			return EMPTY_MATRIX;
+
+		if (obj.has("point_type"))
+		{
+			String pointType = obj.getString("point_type");
+			if (pointType.equals("origin"))
+			{
+				tempVec.set(0.5f, 0.5f, 0.5f);
+			} else if (pointType.equals("point"))
+			{
+				tempVec.set(loadVertex3("point", obj).div(16));
+			} else //if (pointType.equals("center))
+			{
+				tempVec.set(center(vectors));
+			}
+		} else
+		{
+			if (obj.has("point"))
+				tempVec.set(loadVertex3("point", obj).div(16));
+			else
+				tempVec.set(center(vectors));
+		}
+
+		return rotMat(tempVec.x, tempVec.y, tempVec.z, rotx, roty, rotz);
 	}
 
 	public static void rot(JSONObject obj, Vector3f... vectors)
@@ -101,7 +114,7 @@ public class ElUtil
 	public static Vector3f tint(JSONObject obj)
 	{
 		if (obj.has("tint"))
-			return ElUtil.loadVertex3("tint", obj).div(255);
+			return ElUtil.loadVertex3("tint", obj);
 		else
 			return new Vector3f(1);
 	}

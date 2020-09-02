@@ -1,8 +1,5 @@
 package steve6472.polyground.generator.creator.dialogs;
 
-import steve6472.polyground.block.model.CubeFace;
-import steve6472.polyground.block.model.faceProperty.AutoUVFaceProperty;
-import steve6472.polyground.registry.face.FaceRegistry;
 import steve6472.polyground.gfx.shaders.ItemTextureShader;
 import steve6472.polyground.tessellators.ItemTextureTessellator;
 import steve6472.sge.gfx.Atlas;
@@ -29,27 +26,26 @@ public class UVDialog extends OkDialog
 	private Atlas atlas;
 	private ItemTextureShader shader;
 	private ItemTextureTessellator tessellator;
-	private CubeFace face;
 
 	private int minU, minV, maxU, maxV;
 
 	private EnumSelected selected = EnumSelected.NONE;
 
-	public UVDialog(Atlas atlas, ItemTextureShader shader, ItemTextureTessellator tessellator, CubeFace face)
+	public UVDialog(Atlas atlas, ItemTextureShader shader, ItemTextureTessellator tessellator)
 	{
 		super(" ", "Set UV");
 		this.atlas = atlas;
 		this.shader = shader;
 		this.tessellator = tessellator;
-		this.face = face;
+//		this.face = face;
 
 		width = 200;
 		height = 249;
 
-		minU = (int) (face.getProperty(FaceRegistry.uv).getMinU() * 16f);
-		minV = (int) (face.getProperty(FaceRegistry.uv).getMinV() * 16f);
-		maxU = (int) (face.getProperty(FaceRegistry.uv).getMaxU() * 16f);
-		maxV = (int) (face.getProperty(FaceRegistry.uv).getMaxV() * 16f);
+//		minU = (int) (face.getProperty(FaceRegistry.uv).getMinU() * 16f);
+//		minV = (int) (face.getProperty(FaceRegistry.uv).getMinV() * 16f);
+//		maxU = (int) (face.getProperty(FaceRegistry.uv).getMaxU() * 16f);
+//		maxV = (int) (face.getProperty(FaceRegistry.uv).getMaxV() * 16f);
 	}
 
 	@Override
@@ -59,7 +55,7 @@ public class UVDialog extends OkDialog
 
 		autoUv = new NamedCheckBox();
 		autoUv.setText("Auto UV");
-		autoUv.setToggled(AutoUVFaceProperty.check(face));
+//		autoUv.setToggled(AutoUVFaceProperty.check(face));
 		autoUv.setRelativeLocation(18, 172);
 		autoUv.setSize(getWidth() - 36, 25);
 		autoUv.setBoxSize(14, 14);
@@ -67,14 +63,14 @@ public class UVDialog extends OkDialog
 		autoUv.setBoxPadding(5, 5);
 		autoUv.addChangeEvent(c ->
 		{
-			face.getProperty(FaceRegistry.autoUv).setAuto(autoUv.isToggled());
-			if (autoUv.isToggled())
-			{
-				face.getProperty(FaceRegistry.uv).autoUV(face.getParent(), face.getFace());
-			} else
-			{
-				face.getProperty(FaceRegistry.uv).setUV(minU / 16f, minV / 16f, maxU / 16f, maxV / 16f);
-			}
+//			face.getProperty(FaceRegistry.autoUv).setAuto(autoUv.isToggled());
+//			if (autoUv.isToggled())
+//			{
+//				face.getProperty(FaceRegistry.uv).autoUV(face.getParent(), face.getFace());
+//			} else
+//			{
+//				face.getProperty(FaceRegistry.uv).setUV(minU / 16f, minV / 16f, maxU / 16f, maxV / 16f);
+//			}
 		});
 		addComponent(autoUv);
 	}
@@ -87,7 +83,7 @@ public class UVDialog extends OkDialog
 
 		super.tick();
 
-		if (getMouseHandler().getButton() == KeyList.LMB && !AutoUVFaceProperty.check(face))
+		if (getMouseHandler().getButton() == KeyList.LMB/* && !AutoUVFaceProperty.check(face)*/)
 		{
 			int sx = getX() + getWidth() / 2 - 64;
 			int sy = getY() + 34;
@@ -122,7 +118,7 @@ public class UVDialog extends OkDialog
 
 				if (selected == EnumSelected.MIN || selected == EnumSelected.MAX)
 				{
-					face.getProperty(FaceRegistry.uv).setUV(minU / 16f, minV / 16f, maxU / 16f, maxV / 16f);
+//					face.getProperty(FaceRegistry.uv).setUV(minU / 16f, minV / 16f, maxU / 16f, maxV / 16f);
 				}
 			}
 		} else
@@ -151,7 +147,7 @@ public class UVDialog extends OkDialog
 		shader.bind();
 		shader.setUniform(ItemTextureShader.ATLAS, 0);
 
-		renderItem(sx, sy, face.getProperty(FaceRegistry.texture).getTextureId());
+//		renderItem(sx, sy, face.getProperty(FaceRegistry.texture).getTextureId());
 
 		if (!autoUv.isToggled())
 		{

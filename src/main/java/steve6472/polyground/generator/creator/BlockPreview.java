@@ -4,21 +4,18 @@ import org.joml.Matrix4f;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
-import steve6472.polyground.AABBUtil;
-import steve6472.polyground.EnumFace;
 import steve6472.polyground.PolyUtil;
-import steve6472.polyground.block.model.BlockModel;
-import steve6472.polyground.block.model.Cube;
-import steve6472.polyground.block.model.CubeFace;
-import steve6472.polyground.block.model.faceProperty.VisibleFaceProperty;
-import steve6472.polyground.block.model.faceProperty.condition.ConditionFaceProperty;
+import steve6472.polyground.block.Block;
+import steve6472.polyground.block.model.IElement;
+import steve6472.polyground.gfx.atlas.Atlas;
 import steve6472.polyground.gfx.shaders.MainShader;
 import steve6472.polyground.gfx.shaders.world.FlatTexturedShader;
-import steve6472.polyground.registry.face.FaceRegistry;
 import steve6472.polyground.tessellators.BasicTessellator;
 import steve6472.polyground.tessellators.ItemTessellator;
 import steve6472.polyground.world.ModelBuilder;
-import steve6472.sge.gfx.Atlas;
+import steve6472.polyground.world.World;
+import steve6472.polyground.world.chunk.ModelLayer;
+import steve6472.polyground.world.chunk.SubChunk;
 import steve6472.sge.gfx.DepthFrameBuffer;
 import steve6472.sge.gfx.Tessellator;
 import steve6472.sge.gfx.shaders.Shader;
@@ -48,6 +45,7 @@ public class BlockPreview
 	private ItemTessellator itemTessellator;
 	private BasicTessellator basicTessellator;
 	private Camera camera;
+	private final World dummyWorld;
 
 	private int w, h;
 
@@ -61,6 +59,9 @@ public class BlockPreview
 	public BlockPreview(steve6472.polyground.generator.creator.BlockCreatorGui creatorGui)
 	{
 		this.creatorGui = creatorGui;
+
+		Block.createAir();
+		dummyWorld = new World();
 
 		preview = new DepthFrameBuffer(16 * 70, 9 * 70);
 
@@ -77,9 +78,9 @@ public class BlockPreview
 		Matrix4f projectionMatrix = PolyUtil.createProjectionMatrix(16 * 70, 9 * 70, 3f, 80f);
 
 		Matrix4f transformationMatrix = new Matrix4f();
-		transformationMatrix.translate(0.5f, 0.5f, 0.5f);
-		transformationMatrix.scale(1f);
-		transformationMatrix.translate(-0.5f, -0.5f, -0.5f);
+//		transformationMatrix.translate(0.5f, 0.5f, 0.5f);
+//		transformationMatrix.scale(1f);
+//		transformationMatrix.translate(-0.5f, -0.5f, -0.5f);
 
 		flatTexturedShader.getShader().bind();
 		flatTexturedShader.setProjection(projectionMatrix);
@@ -117,7 +118,7 @@ public class BlockPreview
 		this.h = e.getHeight();
 		preview.resize(w, h);
 
-		Matrix4f projectionMatrix = PolyUtil.createProjectionMatrix(w, h, 3f, 80f);
+		Matrix4f projectionMatrix = PolyUtil.createProjectionMatrix(w, h, 16f, 80f);
 
 		flatTexturedShader.getShader().bind();
 		flatTexturedShader.setProjection(projectionMatrix);
@@ -150,7 +151,7 @@ public class BlockPreview
 		}
 	}
 
-	public void renderBlock(BlockModel block)
+	public void renderBlock(List<IElement> elements)
 	{
 		setupBlockItemRender();
 
@@ -166,17 +167,21 @@ public class BlockPreview
 		DepthFrameBuffer.clearCurrentBuffer();
 
 		buildHelper.load(vertices, colors, textures, normal);
-		int tris = model(block);
+		int tris = 0;
+		for (int i = SubChunk.getModelCount() - 1; i >= 0; i--)
+		{
+			tris += model(elements, ModelLayer.values()[i]);
+		}
 
 		itemTessellator.begin(tris * 3);
 
-		for (int i = 0; i < tris; i++)
+		for (int i = 0; i < tris * 3; i++)
 		{
 			Vector3f vert = vertices.get(i);
 			Vector4f col = colors.get(i);
 			Vector2f text = textures.get(i);
 
-			itemTessellator.pos(vert.x, vert.y, vert.z).color(col.x, col.y, col.z, col.w).texture(text.x, text.y).endVertex();
+			itemTessellator.pos(vert.x / 16f, vert.y / 16f, vert.z / 16f).color(col.x, col.y, col.z, col.w).texture(text.x, text.y).endVertex();
 		}
 
 		itemTessellator.loadPos(0);
@@ -190,8 +195,8 @@ public class BlockPreview
 		renderAxis();
 
 		//Render selected cube outline
-		if (creatorGui.getSelectedCube() != null)
-			AABBUtil.renderAABBf(creatorGui.getSelectedCube().getAabb(), basicTessellator, 1f, mainShader);
+//		if (creatorGui.getSelectedCube() != null)
+//			AABBUtil.renderAABBf(creatorGui.getSelectedCube().getAabb(), basicTessellator, 1f, mainShader);
 
 		preview.unbindCurrentFrameBuffer(w, h);
 
@@ -226,59 +231,21 @@ public class BlockPreview
 		flatTexturedShader.setView(camera.getViewMatrix());
 
 		if (atlas != null)
-			//noinspection removal
+		{
 			atlas.getSprite().bind();
+		} else
+		{
+			System.err.println("Atlas is null!");
+		}
 	}
 
-	private int model(BlockModel model)
+	private int model(List<IElement> elements, ModelLayer layer)
 	{
-		if (model.getCubes() == null)
-			return 0;
-
 		int tris = 0;
 
-		for (Cube c : model.getCubes())
+		for (IElement c : elements)
 		{
-			buildHelper.setCube(c);
-
-			for (EnumFace face : EnumFace.getFaces())
-			{
-				CubeFace cubeFace = c.getFace(face);
-
-				if (cubeFace != null)
-				{
-					boolean flag = false;
-					boolean hasCondTexture = false;
-					if (cubeFace.hasProperty(FaceRegistry.conditionedTexture))
-					{
-						ConditionFaceProperty faceProperty = cubeFace.getProperty(FaceRegistry.conditionedTexture);
-						flag = faceProperty.updateToLastResult(cubeFace);
-						hasCondTexture = true;
-					}
-
-					if (!VisibleFaceProperty.check(cubeFace))
-						continue;
-
-					System.out.println(cubeFace.getProperty(FaceRegistry.texture).isReference());
-					System.out.println(cubeFace.getProperty(FaceRegistry.texture).getTextureId());
-
-					if (hasCondTexture && flag)
-					{
-						tris += buildHelper.face(face);
-					}
-
-					if (!hasCondTexture)
-						tris += buildHelper.face(face);
-
-					if (cubeFace.getProperty(FaceRegistry.texture).isReference())
-					{
-						buildHelper.replaceLastFaceWithErrorTexture(256, 0, 256, 0, 256, 0);
-					} else if (cubeFace.getProperty(FaceRegistry.texture).getTextureId() == -1)
-					{
-						buildHelper.replaceLastFaceWithErrorTexture();
-					}
-				}
-			}
+			tris += c.build(buildHelper, layer, dummyWorld, null, 0, 0, 0);
 		}
 
 		return tris;

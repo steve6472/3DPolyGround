@@ -1,10 +1,11 @@
 package steve6472.polyground.block.model.elements;
 
-import org.joml.Vector2f;
+import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import org.json.JSONObject;
 import steve6472.polyground.block.model.IElement;
 import steve6472.polyground.block.states.BlockState;
+import steve6472.polyground.generator.creator.CreatorData;
 import steve6472.polyground.world.ModelBuilder;
 import steve6472.polyground.world.World;
 import steve6472.polyground.world.chunk.ModelLayer;
@@ -17,8 +18,34 @@ import steve6472.polyground.world.chunk.ModelLayer;
  ***********************/
 public class PlaneElement implements IElement
 {
-	TriangleElement t0, t1;
-	ModelLayer modelLayer;
+	public CreatorData creatorData;
+	public String name;
+
+	public TriangleElement t0, t1;
+	public ModelLayer modelLayer;
+	public boolean cull = false;
+
+	public PlaneElement()
+	{
+
+	}
+
+	public PlaneElement(String name)
+	{
+		this.name = name;
+		t0 = new TriangleElement(name + "_0");
+		t1 = new TriangleElement(name + "_1");
+		modelLayer = ModelLayer.NORMAL;
+	}
+
+	public IElement creator()
+	{
+		creatorData = new CreatorData();
+		if (getChildren() != null)
+			for (IElement e : getChildren())
+				e.creator();
+		return this;
+	}
 
 	@Override
 	public void load(JSONObject element)
@@ -28,43 +55,45 @@ public class PlaneElement implements IElement
 		Vector3f v2 = ElUtil.loadVertex3("v2", element).div(16);
 		Vector3f v3 = ElUtil.loadVertex3("v3", element).div(16);
 
+		name = element.optString("name", "");
+
 		Vector3f tint = ElUtil.tint(element);
 		boolean biomeTint = element.optBoolean("biometint", false);
 		modelLayer = ElUtil.layer(element);
 
-		ElUtil.rot(element, v0, v1, v2, v3);
-
-		createTriangles(v0, v1, v2, v3, new PlaneUV().load(element), tint, biomeTint);
-		float rad = (float) Math.toRadians(element.optFloat("rotation", 0));
-		t0.rotateUv(rad);
-		t1.rotateUv(rad);
+		createTriangles(v0, v1, v2, v3, ElUtil.rotMat(element, v0, v1, v2, v3), new PlaneUV().load(element), (float) Math.toRadians(element.optFloat("rotation", 0)), tint, biomeTint);
 	}
 
-	public void createTriangles(Vector3f v0, Vector3f v1, Vector3f v2, Vector3f v3, PlaneUV uv, Vector3f tint, boolean biomeTint)
+	public void loadVertices(Vector3f v0, Vector3f v1, Vector3f v2, Vector3f v3, Matrix4f rotMat)
 	{
-		t0 = new TriangleElement();
+		ElUtil.rot(rotMat, v0, v1, v2, v3);
+
 		t0.v0 = v0;
 		t0.v1 = v1;
 		t0.v2 = v2;
-		t0.uv0 = new Vector2f(uv.v0);
-		t0.uv1 = new Vector2f(uv.v1);
-		t0.uv2 = new Vector2f(uv.v2);
-		t0.tint = tint;
-		t0.biomeTint = biomeTint;
-		t0.modelLayer = modelLayer;
 		t0.calculateNormal();
 
-		t1 = new TriangleElement();
 		t1.v0 = v2;
 		t1.v1 = v3;
 		t1.v2 = v0;
-		t1.uv0 = new Vector2f(uv.v2);
-		t1.uv1 = new Vector2f(uv.v3);
-		t1.uv2 = new Vector2f(uv.v0);
+		t1.calculateNormal();
+	}
+
+	public void createTriangles(Vector3f v0, Vector3f v1, Vector3f v2, Vector3f v3, Matrix4f rotMat, PlaneUV uv, float uvRot, Vector3f tint, boolean biomeTint)
+	{
+		t0 = new TriangleElement(name + "_0");
+		t0.loadUv(uv.v0, uv.v1, uv.v2, uvRot);
+		t0.tint = tint;
+		t0.biomeTint = biomeTint;
+		t0.modelLayer = modelLayer;
+
+		t1 = new TriangleElement(name + "_1");
+		t1.loadUv(uv.v2, uv.v3, uv.v0, uvRot);
 		t1.tint = tint;
 		t1.biomeTint = biomeTint;
 		t1.modelLayer = modelLayer;
-		t1.calculateNormal();
+
+		loadVertices(v0, v1, v2, v3, rotMat);
 	}
 
 	@Override
@@ -97,6 +126,27 @@ public class PlaneElement implements IElement
 			return 0;
 
 		return t0.build(builder, modelLayer, world, state, x, y, z) + t1.build(builder, modelLayer, world, state, x, y, z);
+	}
+
+	/**
+	 * @return null if no children exist
+	 */
+	@Override
+	public IElement[] getChildren()
+	{
+		return new IElement[] {t0, t1};
+	}
+
+	@Override
+	public String getName()
+	{
+		return name;
+	}
+
+	@Override
+	public CreatorData getCreatorData()
+	{
+		return creatorData;
 	}
 
 	@Override

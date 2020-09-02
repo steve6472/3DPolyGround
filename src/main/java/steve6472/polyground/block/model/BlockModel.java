@@ -14,7 +14,7 @@ import java.util.Arrays;
 public class BlockModel
 {
 	private CubeHitbox[] cubes;
-	private IElement[] triangles;
+	private IElement[] elements;
 	private final String path;
 	private final int rot_y;
 	private final boolean uvLock;
@@ -39,7 +39,7 @@ public class BlockModel
 			throw new IllegalArgumentException("Model path is blank! '" + path + "'");
 
 		cubes = CaveGame.getInstance().blockModelLoader.loadModel(path, rot_y);
-		triangles = CaveGame.getInstance().blockModelLoader.loadElements(path, rot_y, uvLock);
+		elements = CaveGame.getInstance().blockModelLoader.loadElements(path, rot_y, uvLock);
 
 		double volume = 0;
 
@@ -63,7 +63,7 @@ public class BlockModel
 			return;
 
 		cubes = CaveGame.getInstance().blockModelLoader.loadModel(path, rot_y);
-		triangles = CaveGame.getInstance().blockModelLoader.loadElements(path, rot_y, uvLock);
+		elements = CaveGame.getInstance().blockModelLoader.loadElements(path, rot_y, uvLock);
 	}
 
 	public BlockModel(CubeHitbox... cubes)
@@ -86,12 +86,12 @@ public class BlockModel
 
 	public IElement[] getElements()
 	{
-		return triangles;
+		return elements;
 	}
 
 	@Override
 	public String toString()
 	{
-		return "BlockModel{" + "triangles=" + Arrays.toString(triangles) + ", path='" + path + '\'' + ", rot_y=" + rot_y + ", uvLock=" + uvLock + '}';
+		return "BlockModel{" + "triangles=" + Arrays.toString(elements) + ", path='" + path + '\'' + ", rot_y=" + rot_y + ", uvLock=" + uvLock + '}';
 	}
 }

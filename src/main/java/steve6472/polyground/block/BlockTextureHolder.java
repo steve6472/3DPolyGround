@@ -28,8 +28,6 @@ public class BlockTextureHolder
 		else
 			size = overrideSize;
 
-		//TODO: when Image does not fit run this recursively till it DOES
-
 		if (atlas != null)
 			atlas.clean();
 

@@ -1,13 +1,6 @@
 package steve6472.polyground.generator.creator.components;
 
-import org.joml.AABBf;
-import steve6472.polyground.EnumFace;
-import steve6472.polyground.block.model.Cube;
-import steve6472.polyground.block.model.CubeFace;
 import steve6472.polyground.generator.creator.BlockCreatorGui;
-import steve6472.polyground.generator.creator.BlockEntry;
-import steve6472.polyground.generator.creator.CreatorCube;
-import steve6472.polyground.generator.creator.ICreatorCube;
 import steve6472.polyground.generator.creator.dialogs.EditCubeDialog;
 import steve6472.sge.gfx.SpriteRender;
 import steve6472.sge.gfx.font.Font;
@@ -58,7 +51,7 @@ public class CubeList extends Component
 
 		copyCube = new ImageButton(EnumSizeType.BIG, 1, 0, 1, 1);
 		copyCube.setRelativeLocation(0, getHeight() + 55);
-		copyCube.addClickEvent(this::copyCubeClick);
+//		copyCube.addClickEvent(this::copyCubeClick);
 		addComponent(copyCube);
 
 		hasHitbox = new ImageToggleButton(EnumSizeType.BIG, 1, 2, 1, 3);
@@ -169,15 +162,10 @@ public class CubeList extends Component
 		return selected;
 	}
 
-	public Cube getSelectedCube()
-	{
-		return creatorGui.getSelectedBlock().getModel().getCube(selected);
-	}
-
 	public void updateButtons()
 	{
 		boolean isCubeSelected = selected != -1;
-		boolean isBlockSelected = creatorGui.getSelectedBlock() != null;
+		boolean isBlockSelected = false;
 
 		addCube.setEnabled(isBlockSelected);
 
@@ -187,75 +175,53 @@ public class CubeList extends Component
 		deleteCube.setEnabled(isCubeSelected);
 		hasCollisionBox.setEnabled(isCubeSelected);
 
-		if (isCubeSelected)
-		{
-			Cube selectedCube = getSelectedCube();
-
-			hasHitbox.setToggled(selectedCube.isHitbox());
-			hasCollisionBox.setToggled(selectedCube.isCollisionBox());
-		}
+//		if (isCubeSelected)
+//		{
+//			Cube selectedCube = getSelectedCube();
+//
+//			hasHitbox.setToggled(selectedCube.isHitbox());
+//			hasCollisionBox.setToggled(selectedCube.isCollisionBox());
+//		}
 	}
 
 	public void refreshList()
 	{
-		BlockEntry entry = creatorGui.blocks.get(creatorGui.getSelectedBlock().getName());
-
-		clear();
-
-		for (int i = 0; i < entry.getModel().getCubes().size(); i++)
-		{
-			addItem(((ICreatorCube) entry.getModel().getCube(i)).getName());
-		}
+//		BlockEntry entry = creatorGui.blocks.get(creatorGui.getSelectedBlock().getName());
+//
+//		clear();
+//
+//		for (int i = 0; i < entry.getModel().getCubes().length; i++)
+//		{
+//			addItem(((ICreatorCube) entry.getModel().getCube(i)).getName());
+//		}
 	}
 
 	/* Button Click Event */
 
-	private void copyCubeClick(Button button)
-	{
-		Cube c = getSelectedCube();
-		CreatorCube cc = (CreatorCube) c;
-
-		CreatorCube newCube = new CreatorCube(new AABBf(c.getAabb()));
-		newCube.setCollisionBox(c.isCollisionBox());
-		newCube.setHitbox(c.isHitbox());
-		newCube.setName(cc.getName());
-
-		/* Copy Faces */
-		for (EnumFace f : EnumFace.getFaces())
-		{
-			newCube.setFace(f, new CubeFace(newCube, f, cc.getFace(f).copyProperties()));
-		}
-
-		creatorGui.getSelectedBlock().getModel().addCube(newCube);
-
-		refreshList();
-		selected = items.size() - 1;
-	}
-
 	private void hasHitboxChange(ToggleButton b)
 	{
-		getSelectedCube().setHitbox(b.isToggled());
+//		getSelectedCube().setHitbox(b.isToggled());
 	}
 
 	private void hasCollisionBoxChange(ToggleButton b)
 	{
-		getSelectedCube().setCollisionBox(b.isToggled());
+//		getSelectedCube().setCollisionBox(b.isToggled());
 	}
 
 	private void settingsClick(Button b)
 	{
 		EditCubeDialog editCube;
-		getMain().showDialog(editCube = new EditCubeDialog(creatorGui.getSelectedCube(), creatorGui));
+		getMain().showDialog(editCube = new EditCubeDialog(creatorGui));
 
-		editCube.addOkClickEvent(a -> creatorGui.autoUV());
+//		editCube.addOkClickEvent(a -> creatorGui.autoUV());
 
 		editCube.center();
 	}
 
 	private void addCubeClick(Button b)
 	{
-		BlockEntry entry = creatorGui.getSelectedBlock();
-		entry.getModel().addCube(BlockEntry.createEmptyCube());
+//		BlockEntry entry = creatorGui.getSelectedBlock();
+//		entry.getModel().addCube(BlockEntry.createEmptyCube());
 
 		refreshList();
 		selected = items.size() - 1;
@@ -269,7 +235,7 @@ public class CubeList extends Component
 		yn.addYesClickEvent(y ->
 		{
 			items.remove(selected);
-			creatorGui.getSelectedBlock().getModel().removeCube(getSelectedCube());
+//			creatorGui.getSelectedBlock().getModel().removeCube(getSelectedCube());
 			selected = -1;
 			updateButtons();
 		});

@@ -15,7 +15,6 @@ import static org.lwjgl.opengl.GL11.*;
 public class Creator extends MainApp
 {
 	private BlockCreatorGui blockCreatorGui;
-	private ItemCreatorGui itemCreatorGui;
 
 	public static Sprite UI;
 	public static Sprite BUTTONS;
@@ -30,8 +29,6 @@ public class Creator extends MainApp
 
 		blockCreatorGui = new BlockCreatorGui(this);
 		blockCreatorGui.setVisible(true);
-
-		itemCreatorGui = new ItemCreatorGui(this);
 	}
 
 	@Override

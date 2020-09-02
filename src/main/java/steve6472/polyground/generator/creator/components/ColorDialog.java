@@ -1,7 +1,5 @@
 package steve6472.polyground.generator.creator.components;
 
-import steve6472.polyground.block.model.CubeFace;
-import steve6472.polyground.registry.face.FaceRegistry;
 import steve6472.sge.gfx.font.CustomChar;
 import steve6472.sge.gui.components.Button;
 import steve6472.sge.gui.components.NamedCheckBox;
@@ -19,13 +17,18 @@ import java.util.function.BiConsumer;
 public class ColorDialog extends SliderColorSelectDialog
 {
 	private NamedCheckBox isEmissive;
-	private CubeFace face;
 
-	public ColorDialog(CubeFace face)
+	public ColorDialog()
 	{
 		super(null);
-		this.face = face;
 	}
+	//	private CubeFace face;
+
+//	public ColorDialog(CubeFace face)
+//	{
+//		super(null);
+//		this.face = face;
+//	}
 
 	public void setOkEvent(BiConsumer<Button, SliderColorSelectDialog> okEvent)
 	{
@@ -38,9 +41,9 @@ public class ColorDialog extends SliderColorSelectDialog
 		super.init(main);
 		setSize(276 + 60, 138 + 41);
 
-		redSlider.setValue(face.getProperty(FaceRegistry.tint).getRed() * 255f);
-		greenSlider.setValue(face.getProperty(FaceRegistry.tint).getGreen() * 255f);
-		blueSlider.setValue(face.getProperty(FaceRegistry.tint).getBlue() * 255f);
+//		redSlider.setValue(face.getProperty(FaceRegistry.tint).getRed() * 255f);
+//		greenSlider.setValue(face.getProperty(FaceRegistry.tint).getGreen() * 255f);
+//		blueSlider.setValue(face.getProperty(FaceRegistry.tint).getBlue() * 255f);
 
 		isEmissive = new NamedCheckBox();
 		isEmissive.setRelativeLocation(10, 145);
