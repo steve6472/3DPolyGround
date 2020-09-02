@@ -5,7 +5,6 @@ import org.joml.Vector3f;
 import org.json.JSONObject;
 import steve6472.polyground.block.model.IElement;
 import steve6472.polyground.block.states.BlockState;
-import steve6472.polyground.generator.creator.CreatorData;
 import steve6472.polyground.world.ModelBuilder;
 import steve6472.polyground.world.World;
 import steve6472.polyground.world.chunk.ModelLayer;
@@ -18,7 +17,6 @@ import steve6472.polyground.world.chunk.ModelLayer;
  ***********************/
 public class PlaneElement implements IElement
 {
-	public CreatorData creatorData;
 	public String name;
 
 	public TriangleElement t0, t1;
@@ -36,15 +34,6 @@ public class PlaneElement implements IElement
 		t0 = new TriangleElement(name + "_0");
 		t1 = new TriangleElement(name + "_1");
 		modelLayer = ModelLayer.NORMAL;
-	}
-
-	public IElement creator()
-	{
-		creatorData = new CreatorData();
-		if (getChildren() != null)
-			for (IElement e : getChildren())
-				e.creator();
-		return this;
 	}
 
 	@Override
@@ -128,25 +117,10 @@ public class PlaneElement implements IElement
 		return t0.build(builder, modelLayer, world, state, x, y, z) + t1.build(builder, modelLayer, world, state, x, y, z);
 	}
 
-	/**
-	 * @return null if no children exist
-	 */
-	@Override
-	public IElement[] getChildren()
-	{
-		return new IElement[] {t0, t1};
-	}
-
 	@Override
 	public String getName()
 	{
 		return name;
-	}
-
-	@Override
-	public CreatorData getCreatorData()
-	{
-		return creatorData;
 	}
 
 	@Override

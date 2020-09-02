@@ -8,7 +8,6 @@ import org.json.JSONObject;
 import steve6472.polyground.block.BlockTextureHolder;
 import steve6472.polyground.block.model.IElement;
 import steve6472.polyground.block.states.BlockState;
-import steve6472.polyground.generator.creator.CreatorData;
 import steve6472.polyground.world.ModelBuilder;
 import steve6472.polyground.world.World;
 import steve6472.polyground.world.chunk.ModelLayer;
@@ -34,7 +33,6 @@ public class TriangleElement implements IElement
 			{ new Vector3f(0, -1, 0), new Vector3f(0.5f), }
 		};
 
-	public CreatorData creatorData;
 	public String name;
 
 	public Vector3f v0, v1, v2;
@@ -66,15 +64,6 @@ public class TriangleElement implements IElement
 		biomeTint = false;
 		texture = 0;
 		modelLayer = ModelLayer.NORMAL;
-	}
-
-	public IElement creator()
-	{
-		creatorData = new CreatorData();
-		if (getChildren() != null)
-			for (IElement e : getChildren())
-				e.creator();
-		return this;
 	}
 
 	@Override
@@ -178,25 +167,10 @@ public class TriangleElement implements IElement
 		return 1;
 	}
 
-	/**
-	 * @return null if no children exist
-	 */
-	@Override
-	public IElement[] getChildren()
-	{
-		return null;
-	}
-
 	@Override
 	public String getName()
 	{
 		return name;
-	}
-
-	@Override
-	public CreatorData getCreatorData()
-	{
-		return creatorData;
 	}
 
 	private float calculateShade()

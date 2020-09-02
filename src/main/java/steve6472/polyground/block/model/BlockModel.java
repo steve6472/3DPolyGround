@@ -3,7 +3,6 @@ package steve6472.polyground.block.model;
 import org.json.JSONObject;
 import steve6472.polyground.BlockBenchTranslator;
 import steve6472.polyground.CaveGame;
-import steve6472.polyground.PrettyJson;
 import steve6472.polyground.registry.WaterRegistry;
 
 import java.io.File;
@@ -74,7 +73,6 @@ public class BlockModel
 			if (json.has("meta"))
 			{
 				json = BlockBenchTranslator.convert(json);
-				System.out.println(PrettyJson.prettify(json));
 			}
 		} catch (Exception e)
 		{

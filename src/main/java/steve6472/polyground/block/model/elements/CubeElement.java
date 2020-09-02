@@ -8,7 +8,6 @@ import steve6472.polyground.EnumFace;
 import steve6472.polyground.block.BlockTextureHolder;
 import steve6472.polyground.block.model.IElement;
 import steve6472.polyground.block.states.BlockState;
-import steve6472.polyground.generator.creator.CreatorData;
 import steve6472.polyground.world.Cull;
 import steve6472.polyground.world.ModelBuilder;
 import steve6472.polyground.world.World;
@@ -22,7 +21,6 @@ import steve6472.polyground.world.chunk.ModelLayer;
  ***********************/
 public class CubeElement implements IElement
 {
-	public CreatorData creatorData;
 	public PlaneElement north, east, south, west, up, down;
 	public String name;
 
@@ -73,20 +71,6 @@ public class CubeElement implements IElement
 			new Vector3f(to.x, from.y, from.z),
 			new Vector3f(to.x, from.y, to.z),
 			new Vector3f(from.x, from.y, to.z), rotMat, new PlaneUV(new Vector4f(0, 0, 0, 0)), 0, new Vector3f(1, 1, 1), false);
-	}
-
-	public IElement creator()
-	{
-		creatorData = new CreatorData();
-		if (getChildren() != null)
-		{
-			for (IElement e : getChildren())
-			{
-				e.creator();
-				e.getCreatorData().canOpen = false;
-			}
-		}
-		return this;
 	}
 
 	@Override
@@ -235,24 +219,9 @@ public class CubeElement implements IElement
 			(state == null || down  != null && down.cull  && Cull.renderFace(x, y, z, EnumFace.DOWN , name, state, world) ? down.build(builder, layer, world, state, x, y, z) : 0);
 	}
 
-	/**
-	 * @return null if no children exist
-	 */
-	@Override
-	public IElement[] getChildren()
-	{
-		return new IElement[] {north, east, south, west, up, down};
-	}
-
 	@Override
 	public String getName()
 	{
 		return name;
-	}
-
-	@Override
-	public CreatorData getCreatorData()
-	{
-		return creatorData;
 	}
 }

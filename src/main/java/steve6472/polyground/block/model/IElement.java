@@ -2,7 +2,6 @@ package steve6472.polyground.block.model;
 
 import org.json.JSONObject;
 import steve6472.polyground.block.states.BlockState;
-import steve6472.polyground.generator.creator.CreatorData;
 import steve6472.polyground.world.ModelBuilder;
 import steve6472.polyground.world.World;
 import steve6472.polyground.world.chunk.ModelLayer;
@@ -34,21 +33,5 @@ public interface IElement
 	 */
 	int build(ModelBuilder builder, ModelLayer layer, World world, BlockState state, int x, int y, int z);
 
-	/* Creator functions */
-
-	/**
-	 *
-	 * @return null if no children exist
-	 */
-	IElement[] getChildren();
-
-	/**
-	 * Creates new instance of CreatorData
- 	 * @return itself
-	 */
-	IElement creator();
-
 	String getName();
-
-	CreatorData getCreatorData();
 }
