@@ -52,7 +52,7 @@ public class BlockBenchTranslator
 				Vector3f rot = ElUtil.loadVertex3("rotation", el);
 				// Swap X and Z cause I rotate the WHOLE model by 270° so the axes swap
 				// TODO: Check if any of these axes should be negative
-				c.put("rotation", new JSONArray().put(rot.z).put(rot.y).put(rot.x));
+				c.put("rotation", new JSONArray().put(-rot.z).put(rot.y).put(rot.x));
 			}
 
 			c.put("from", new JSONArray().put(box.minX).put(box.minY).put(box.minZ));
@@ -84,8 +84,9 @@ public class BlockBenchTranslator
 			c.put("name", el.get("name"));
 			if (!c.getString("name").contains("hitbox") || !c.getString("name").contains("collision"))
 			{
-				c.put("isHitbox", c.getString("name").contains("hitbox"));
-				c.put("isCollisionBox", c.getString("name").contains("collision"));
+				c.put("isHitbox", c.getString("name").contains("hit"));
+				c.put("isCollisionBox", c.getString("name").contains("coll"));
+				c.put("hitboxvisible", !c.getString("name").contains("invis"));
 			}
 			cubes.put(c);
 		}

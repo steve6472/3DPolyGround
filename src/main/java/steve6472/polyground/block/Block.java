@@ -8,6 +8,7 @@ import steve6472.polyground.block.model.BlockModel;
 import steve6472.polyground.block.model.BlockModelLoader;
 import steve6472.polyground.block.model.CubeHitbox;
 import steve6472.polyground.block.model.IElement;
+import steve6472.polyground.block.model.elements.CubeElement;
 import steve6472.polyground.block.properties.IProperty;
 import steve6472.polyground.block.special.SnapBlock;
 import steve6472.polyground.block.states.BlockState;
@@ -48,10 +49,29 @@ public class Block
 		CubeHitbox cube = new CubeHitbox(new AABBf(0, 0, 0, 1, 1, 1));
 		cube.setCollisionBox(true);
 		cube.setHitbox(true);
+		cube.setVisible(true);
 
-		BlockModel model = new BlockModel(cube);
+		CubeElement c = new CubeElement();
+		JSONObject j = new JSONObject("""
+			{
+			    "from": [0, 0, 0],
+			    "to": [16, 16, 16],
+			    "faces": {
+			        "east":  {"texture": "null"},
+			        "south": {"texture": "null"},
+			        "north": {"texture": "null"},
+			        "west":  {"texture": "null"},
+			        "up":    {"texture": "null"},
+			        "down":  {"texture": "null"}
+			    }
+			}
+			""");
+		c.load(j);
+
+		BlockModel model = new BlockModel(new IElement[]{c}, cube);
 
 		error = new Block("error", model, Tags.ERROR, Tags.SOLID);
+		error.isFull = true;
 
 		return error;
 	}

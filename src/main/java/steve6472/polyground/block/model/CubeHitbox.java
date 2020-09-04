@@ -14,6 +14,7 @@ public class CubeHitbox
 	AABBf aabb;
 	private boolean isHitbox;
 	private boolean isCollisionBox;
+	private boolean isVisible;
 	private String name;
 
 	public CubeHitbox(AABBf aabb)
@@ -28,6 +29,7 @@ public class CubeHitbox
 	{
 		isHitbox = json.optBoolean("isHitbox", true);
 		isCollisionBox = json.optBoolean("isCollisionBox", true);
+		isVisible = json.optBoolean("hitboxvisible", true);
 		name = json.optString("name", "");
 	}
 
@@ -41,14 +43,9 @@ public class CubeHitbox
 		return aabb;
 	}
 
-	public CubeHitbox copy()
+	public boolean isVisible()
 	{
-		CubeHitbox cube = new CubeHitbox(new AABBf(aabb));
-		cube.setHitbox(isHitbox());
-		cube.setCollisionBox(isCollisionBox());
-		cube.setName(getName());
-
-		return cube;
+		return isVisible;
 	}
 
 	public boolean isHitbox()
@@ -59,6 +56,11 @@ public class CubeHitbox
 	public void setHitbox(boolean hitbox)
 	{
 		isHitbox = hitbox;
+	}
+
+	public void setVisible(boolean visible)
+	{
+		isVisible = visible;
 	}
 
 	public boolean isCollisionBox()

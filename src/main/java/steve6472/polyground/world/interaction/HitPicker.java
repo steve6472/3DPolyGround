@@ -121,7 +121,7 @@ public class HitPicker
 
 			for (CubeHitbox t : hitResult.getState().getBlockModel(world, hitResult.getX(), hitResult.getY(), hitResult.getZ()).getCubes())
 			{
-				if (!t.isHitbox())
+				if (!t.isHitbox() || !t.isVisible())
 					continue;
 
 				AABBf aabb = t.getAabb();

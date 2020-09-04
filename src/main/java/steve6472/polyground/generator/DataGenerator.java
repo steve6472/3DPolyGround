@@ -436,6 +436,12 @@ public class DataGenerator
 			.generate();
 
 		DataBuilder.create()
+			.fullBlock("icicle")
+			.blockState(StateBuilder.create().singleModel(BlockModelBuilder.create("icicle").externalPath("custom_models/icicle.bbmodel")))
+			.blockSpecial(new SimpleSpecial("custom"))
+			.generate();
+
+		DataBuilder.create()
 			.fullBlock("log_stack")
 			.blockSpecial(new SimpleSpecial("log_stack"))
 			.blockState(StateBuilder.create()

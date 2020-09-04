@@ -95,9 +95,10 @@ public class BlockModel
 		elements = CaveGame.getInstance().blockModelLoader.loadElements(json, rotX, rotY, rotZ);
 	}
 
-	public BlockModel(CubeHitbox... cubes)
+	public BlockModel(IElement[] elements, CubeHitbox... cubes)
 	{
 		this.path = null;
+		this.elements = elements;
 		rotX = rotY = rotZ = 0;
 		this.cubes = cubes;
 	}
