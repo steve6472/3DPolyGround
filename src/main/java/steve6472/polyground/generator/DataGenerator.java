@@ -353,7 +353,7 @@ public class DataGenerator
 		DataBuilder.create().fullBlock("cobblestone").addTags(Tags.SOLID).generate();
 		DataBuilder.create().fullBlock("bedrock").addTags(Tags.SOLID).generate();
 		DataBuilder.create().fullBlock("gravel").addTags(Tags.SOLID).generate();
-		DataBuilder.create().fullBlock("oak_plank").addTags(Tags.SOLID).generate();
+		DataBuilder.create().fullBlock("oak_planks").addTags(Tags.SOLID).generate();
 		DataBuilder.create().fullBlock("andesite").addTags(Tags.SOLID).generate();
 		DataBuilder.create().fullBlock("diorite").addTags(Tags.SOLID).generate();
 		DataBuilder.create().fullBlock("granite").addTags(Tags.SOLID).generate();
@@ -367,7 +367,7 @@ public class DataGenerator
 //		DataBuilder.create().fullBlock("cond_test").blockState(StateBuilder.create().singleModel(new CondTest())).blockModel().generate();
 
 		DataBuilder.create().stairs("stone_stairs", "stone").generate();
-		DataBuilder.create().stairs("oak_plank_stairs", "oak_plank").generate();
+		DataBuilder.create().stairs("oak_plank_stairs", "oak_planks").generate();
 		DataBuilder.create().stairs("cobblestone_stairs", "cobblestone").generate();
 		DataBuilder.create().stairs("brick_stairs", "bricks").generate();
 
@@ -391,7 +391,7 @@ public class DataGenerator
 			.addTagToState().with(SlabBlock.TYPE, EnumSlabType.DOUBLE).finish(Tags.FLOWER_TOP, Tags.SOLID).generate();
 		DataBuilder.create().slab("stone_slab", "stone")
 			.addTagToState().with(SlabBlock.TYPE, EnumSlabType.DOUBLE).finish(Tags.SOLID).generate();
-		DataBuilder.create().slab("oak_plank_slab", "oak_plank")
+		DataBuilder.create().slab("oak_plank_slab", "oak_planks")
 			.addTagToState().with(SlabBlock.TYPE, EnumSlabType.DOUBLE).finish(Tags.SOLID).generate();
 		DataBuilder.create().slab("cobblestone_slab", "cobblestone")
 			.addTagToState().with(SlabBlock.TYPE, EnumSlabType.DOUBLE).finish(Tags.SOLID).generate();
@@ -419,6 +419,20 @@ public class DataGenerator
 			.fullBlock("corrupted_stone")
 			.blockSpecial(new SimpleSpecial("corrupted_stone"))
 			.addTags(Tags.CORRUPTED, Tags.SOLID)
+			.generate();
+
+		DataBuilder.create()
+			.fullBlock("companion_cube")
+			.blockState(StateBuilder.create().singleModel(BlockModelBuilder.create("companion_cube").externalPath("custom_models/companion_cube.bbmodel")))
+			.blockSpecial(new SimpleSpecial("custom"))
+			.addTags(Tags.SOLID)
+			.generate();
+
+		DataBuilder.create()
+			.fullBlock("wooden_box")
+			.blockState(StateBuilder.create().singleModel(BlockModelBuilder.create("wooden_box").externalPath("custom_models/wooden_box.bbmodel")))
+			.blockSpecial(new SimpleSpecial("custom"))
+			.addTags(Tags.SOLID)
 			.generate();
 
 		DataBuilder.create()

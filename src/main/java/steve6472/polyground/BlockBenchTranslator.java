@@ -47,10 +47,16 @@ public class BlockBenchTranslator
 			box.transform(rotMat);
 			Vector3f point = ElUtil.loadVertex3("origin", el);
 			ElUtil.rot(rotMat, point);
+			if (el.has("rotation"))
+			{
+				Vector3f rot = ElUtil.loadVertex3("rotation", el);
+				// Swap X and Z cause I rotate the WHOLE model by 270° so the axes swap
+				// TODO: Check if any of these axes should be negative
+				c.put("rotation", new JSONArray().put(rot.z).put(rot.y).put(rot.x));
+			}
 
 			c.put("from", new JSONArray().put(box.minX).put(box.minY).put(box.minZ));
 			c.put("to", new JSONArray().put(box.maxX).put(box.maxY).put(box.maxZ));
-			if (el.has("rotation")) c.put("rotation", el.get("rotation"));
 			c.put("point", new JSONArray().put(point.x).put(point.y).put(point.z));
 			if (el.has("faces"))
 			{
