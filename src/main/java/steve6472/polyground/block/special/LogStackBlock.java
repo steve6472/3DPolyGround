@@ -30,7 +30,7 @@ public class LogStackBlock extends CustomBlock
 	@Override
 	public BlockState getStateForPlacement(World world, Player player, EnumFace placedOn, int x, int y, int z)
 	{
-		return super.getStateForPlacement(world, player, placedOn, x, y, z).with(LOGS, world.getRandom().nextInt(5) + 1).get();
+		return super.getStateForPlacement(world, player, placedOn, x, y, z).with(LOGS, world.getRandom().nextInt(6) + 1).get();
 	}
 
 	@Override

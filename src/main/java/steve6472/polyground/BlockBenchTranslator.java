@@ -93,7 +93,12 @@ public class BlockBenchTranslator
 		{
 			JSONObject texture = textures.getJSONObject(i);
 			if (texture.getInt("id") == id)
-				return texture.getString("name");
+			{
+				String name = texture.getString("name");
+				if (name.endsWith(".png"))
+					name = name.substring(0, name.length() - 4);
+				return name;
+			}
 		}
 		return "null";
 	}
