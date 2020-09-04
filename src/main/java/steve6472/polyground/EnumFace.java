@@ -146,9 +146,23 @@ public enum EnumFace
 				case 0 -> UP;
 				case 1 -> DOWN;
 				case 2 -> NORTH;
-				case 3 -> SOUTH;
 				case 4 -> EAST;
+				case 3 -> SOUTH;
 				case 5 -> WEST;
+				default -> NONE;
+			};
+	}
+
+	public static EnumFace get(String face)
+	{
+		return switch (face.toLowerCase())
+			{
+				case "up" -> UP;
+				case "down" -> DOWN;
+				case "north" -> NORTH;
+				case "east" -> EAST;
+				case "south" -> SOUTH;
+				case "west" -> WEST;
 				default -> NONE;
 			};
 	}

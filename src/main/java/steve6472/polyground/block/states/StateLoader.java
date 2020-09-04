@@ -29,13 +29,13 @@ public class StateLoader
 		block.setDefaultState(new BlockState(block, new BlockModel[] {model}, null, null, t));
 	}
 
-	private static BlockModel[] loadModels(JSONArray modelsArray, int rot_y, boolean uvLock)
+	private static BlockModel[] loadModels(JSONArray modelsArray, JSONArray rotation, boolean uvLock)
 	{
 		BlockModel[] models = new BlockModel[modelsArray.length()];
 
 		for (int i = 0; i < modelsArray.length(); i++)
 		{
-			models[i] = new BlockModel(modelsArray.getString(i), rot_y, uvLock);
+			models[i] = new BlockModel(modelsArray.getString(i), rotation);
 		}
 
 		return models;
@@ -46,9 +46,9 @@ public class StateLoader
 		if (properties.isEmpty())
 		{
 			if (blockstates.has("models"))
-				block.setDefaultState(new BlockState(block, loadModels(blockstates.getJSONArray("models"), 0, true), null, null, blockstates.optJSONArray("tags")));
+				block.setDefaultState(new BlockState(block, loadModels(blockstates.getJSONArray("models"), new JSONArray().put(0).put(0).put(0), true), null, null, blockstates.optJSONArray("tags")));
 			else
-				block.setDefaultState(new BlockState(block, new BlockModel[]{new BlockModel(blockstates.getString("model"), 0, true)}, null, null, blockstates.optJSONArray("tags")));
+				block.setDefaultState(new BlockState(block, new BlockModel[]{new BlockModel(blockstates.getString("model"), new JSONArray().put(0).put(0).put(0))}, null, null, blockstates.optJSONArray("tags")));
 			return;
 		}
 
@@ -108,7 +108,7 @@ public class StateLoader
 
 			JSONArray modelsArray = null;
 			String modelPath = null;
-			int rotation = 0;
+			JSONArray rotation = new JSONArray().put(0).put(0).put(0);
 			boolean uvLock = true;
 			JSONArray tags = null;
 
@@ -145,7 +145,10 @@ public class StateLoader
 						{
 							modelsArray = object.getJSONArray("models");
 						}
-						rotation = object.optInt("rot_y", 0);
+						if (object.has("rotation"))
+						{
+							rotation = object.getJSONArray("rotation");
+						}
 						tags = object.optJSONArray("tags");
 						uvLock = object.optBoolean("uvlock", false);
 						break;
@@ -153,12 +156,11 @@ public class StateLoader
 				}
 			}
 
-
 			try
 			{
 				BlockState state;
 				if (modelPath != null)
-					state = new BlockState(block, new BlockModel[]{new BlockModel(modelPath, rotation, uvLock)}, map, tileStates, tags);
+					state = new BlockState(block, new BlockModel[]{new BlockModel(modelPath, rotation)}, map, tileStates, tags);
 				else if (modelsArray != null)
 					state = new BlockState(block, loadModels(modelsArray, rotation, uvLock), map, tileStates, tags);
 				else

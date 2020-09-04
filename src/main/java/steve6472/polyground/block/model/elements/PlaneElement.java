@@ -44,45 +44,85 @@ public class PlaneElement implements IElement
 		Vector3f v2 = ElUtil.loadVertex3("v2", element).div(16);
 		Vector3f v3 = ElUtil.loadVertex3("v3", element).div(16);
 
-		name = element.optString("name", "");
+		name = element.optString("name", "plane");
 
 		Vector3f tint = ElUtil.tint(element);
 		boolean biomeTint = element.optBoolean("biometint", false);
 		modelLayer = ElUtil.layer(element);
 
-		createTriangles(v0, v1, v2, v3, ElUtil.rotMat(element, v0, v1, v2, v3), new PlaneUV().load(element), (float) Math.toRadians(element.optFloat("rotation", 0)), tint, biomeTint);
+		createTriangles(v0, v1, v2, v3, ElUtil.rotMat(element, v0, v1, v2, v3), new PlaneUV().load(element), element.optFloat("rotation", 0), tint, biomeTint);
 	}
 
-	public void loadVertices(Vector3f v0, Vector3f v1, Vector3f v2, Vector3f v3, Matrix4f rotMat)
+	public void loadVertices(Vector3f v0, Vector3f v1, Vector3f v2, Vector3f v3, Matrix4f rotMat, float uvRot)
 	{
 		ElUtil.rot(rotMat, v0, v1, v2, v3);
 
-		t0.v0 = v0;
-		t0.v1 = v1;
-		t0.v2 = v2;
-		t0.calculateNormal();
+		uvRot %= 360.0f;
+		if (uvRot < 0)
+			uvRot += 360f;
 
-		t1.v0 = v2;
-		t1.v1 = v3;
-		t1.v2 = v0;
+		if (uvRot == 0)
+		{
+			t0.v0 = v0;
+			t0.v1 = v1;
+			t0.v2 = v2;
+
+			t1.v0 = v2;
+			t1.v1 = v3;
+			t1.v2 = v0;
+		} else if (uvRot == 90)
+		{
+			t0.v0 = v3;
+			t0.v1 = v0;
+			t0.v2 = v1;
+
+			t1.v0 = v1;
+			t1.v1 = v2;
+			t1.v2 = v3;
+		} else if (uvRot == 180)
+		{
+			t0.v0 = v2;
+			t0.v1 = v3;
+			t0.v2 = v0;
+
+			t1.v0 = v0;
+			t1.v1 = v1;
+			t1.v2 = v2;
+		} else if (uvRot == 270)
+		{
+			t0.v0 = v1;
+			t0.v1 = v2;
+			t0.v2 = v3;
+
+			t1.v0 = v3;
+			t1.v1 = v0;
+			t1.v2 = v1;
+		}
+		t0.calculateNormal();
 		t1.calculateNormal();
 	}
 
 	public void createTriangles(Vector3f v0, Vector3f v1, Vector3f v2, Vector3f v3, Matrix4f rotMat, PlaneUV uv, float uvRot, Vector3f tint, boolean biomeTint)
 	{
+		if (uv.uvLock)
+		{
+			uv.rotate((float) Math.toRadians(uvRot), true);
+			uvRot = 0;
+		}
+
 		t0 = new TriangleElement(name + "_0");
-		t0.loadUv(uv.v0, uv.v1, uv.v2, uvRot);
+		t0.loadUv(uv.v0, uv.v1, uv.v2);
 		t0.tint = tint;
 		t0.biomeTint = biomeTint;
 		t0.modelLayer = modelLayer;
 
 		t1 = new TriangleElement(name + "_1");
-		t1.loadUv(uv.v2, uv.v3, uv.v0, uvRot);
+		t1.loadUv(uv.v2, uv.v3, uv.v0);
 		t1.tint = tint;
 		t1.biomeTint = biomeTint;
 		t1.modelLayer = modelLayer;
 
-		loadVertices(v0, v1, v2, v3, rotMat);
+		loadVertices(v0, v1, v2, v3, rotMat, uvRot);
 	}
 
 	@Override

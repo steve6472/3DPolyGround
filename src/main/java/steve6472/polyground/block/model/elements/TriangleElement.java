@@ -44,26 +44,9 @@ public class TriangleElement implements IElement
 	public int texture;
 	public ModelLayer modelLayer;
 
-	public TriangleElement()
-	{
-
-	}
-
 	public TriangleElement(String name)
 	{
 		this.name = name;
-		v0 = new Vector3f();
-		v1 = new Vector3f();
-		v2 = new Vector3f();
-		uv0 = new Vector2f();
-		uv1 = new Vector2f();
-		uv2 = new Vector2f();
-		normal = new Vector3f();
-		tint = new Vector3f();
-		shade = 1f;
-		biomeTint = false;
-		texture = 0;
-		modelLayer = ModelLayer.NORMAL;
 	}
 
 	@Override
@@ -84,7 +67,7 @@ public class TriangleElement implements IElement
 		modelLayer = ElUtil.layer(element);
 		biomeTint = element.optBoolean("biometint", false);
 
-		loadUv(uv0, uv1, uv2, (float) Math.toRadians(element.optFloat("rotation", 0)));
+		loadUv(uv0, uv1, uv2);
 
 		calculateNormal();
 	}
@@ -97,18 +80,11 @@ public class TriangleElement implements IElement
 		this.v2 = v2;
 	}
 
-	public void loadUv(Vector2f uv0, Vector2f uv1, Vector2f uv2, float rad)
+	public void loadUv(Vector2f uv0, Vector2f uv1, Vector2f uv2)
 	{
-		Matrix4f mat = new Matrix4f();
-		mat.translate(0.5f, 0.5f, 0.5f);
-		mat.rotate(rad, 0, 0, 1);
-		mat.translate(-0.5f, -0.5f, -0.5f);
-		Vector3f uv0rot = mat.transformPosition(new Vector3f(uv0, 1));
-		Vector3f uv1rot = mat.transformPosition(new Vector3f(uv1, 1));
-		Vector3f uv2rot = mat.transformPosition(new Vector3f(uv2, 1));
-		this.uv0 = new Vector2f(uv0rot.x, uv0rot.y);
-		this.uv1 = new Vector2f(uv1rot.x, uv1rot.y);
-		this.uv2 = new Vector2f(uv2rot.x, uv2rot.y);
+		this.uv0 = new Vector2f(uv0);
+		this.uv1 = new Vector2f(uv1);
+		this.uv2 = new Vector2f(uv2);
 	}
 
 	public void calculateNormal()

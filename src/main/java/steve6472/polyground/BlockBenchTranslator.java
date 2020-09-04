@@ -50,17 +50,26 @@ public class BlockBenchTranslator
 
 			c.put("from", new JSONArray().put(box.minX).put(box.minY).put(box.minZ));
 			c.put("to", new JSONArray().put(box.maxX).put(box.maxY).put(box.maxZ));
-			if (el.has("rotation")) c.put("rot", el.get("rotation"));
+			if (el.has("rotation")) c.put("rotation", el.get("rotation"));
 			c.put("point", new JSONArray().put(point.x).put(point.y).put(point.z));
-			if (el.has("faces") && !el.getString("name").equals("hitbox"))
+			if (el.has("faces"))
 			{
 				JSONObject faces = new JSONObject();
 				for (String s : el.getJSONObject("faces").keySet())
 				{
 					JSONObject face = el.getJSONObject("faces").getJSONObject(s);
-					if (face.has("texture"))
+					if (face.has("texture") && !face.isNull("texture"))
 					{
 						face.put("texture", findTexture(textures, face.getInt("texture")));
+						if (face.has("rotation") && EnumFace.get(s).isSide())
+							face.put("rotation", face.getInt("rotation"));
+						if (face.has("tint"))
+						{
+							int data = face.getInt("tint");
+							face.remove("tint");
+
+							face.put("biometint", (data & 1) == 1);
+						}
 						faces.put(s, face);
 					}
 				}
@@ -84,7 +93,7 @@ public class BlockBenchTranslator
 		{
 			JSONObject texture = textures.getJSONObject(i);
 			if (texture.getInt("id") == id)
-				return texture.getString("name").substring(0, texture.getString("name").length() - 4);
+				return texture.getString("name");
 		}
 		return "null";
 	}

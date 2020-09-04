@@ -14,7 +14,7 @@ import java.util.*;
 public class PropertyBuilder
 {
 	Map<IProperty<?>, Comparable<?>> map;
-	private int rotY;
+	private int rotX, rotY, rotZ;
 	private boolean uvLock;
 	private final List<String> tags;
 
@@ -40,9 +40,11 @@ public class PropertyBuilder
 		return this;
 	}
 
-	public PropertyBuilder rotY(int rotY)
+	public PropertyBuilder rot(int rotX, int rotY, int rotZ)
 	{
+		this.rotX = rotX;
 		this.rotY = rotY;
+		this.rotZ = rotZ;
 		return this;
 	}
 
@@ -69,9 +71,24 @@ public class PropertyBuilder
 		return tags;
 	}
 
+	public boolean hasRotation()
+	{
+		return !(rotX == 0 && rotY == 0 && rotZ == 0);
+	}
+
+	public int getRotX()
+	{
+		return rotX;
+	}
+
 	public int getRotY()
 	{
 		return rotY;
+	}
+
+	public int getRotZ()
+	{
+		return rotZ;
 	}
 
 	public boolean isUvLock()
@@ -92,6 +109,6 @@ public class PropertyBuilder
 	@Override
 	public String toString()
 	{
-		return "PropertyBuilder{" + "map=" + map + ", rotation=" + rotY + ", tags=" + tags + '}';
+		return "PropertyBuilder{" + "map=" + map + ", rotX=" + rotX + ", rotY=" + rotY + ", rotZ=" + rotZ + ", uvLock=" + uvLock + ", tags=" + tags + '}';
 	}
 }

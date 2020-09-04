@@ -116,8 +116,8 @@ public class StateBuilder
 			{
 				JSONObject model = new JSONObject();
 				model.put("state", s.getA().build());
-				if (s.getA().getRotY() != 0)
-					model.put("rot_y", s.getA().getRotY());
+				if (s.getA().hasRotation())
+					model.put("rotation", new JSONArray().put(s.getA().getRotX()).put(s.getA().getRotY()).put(s.getA().getRotZ()));
 				if (s.getA().isUvLock())
 					model.put("uvlock", true);
 				if (!s.getA().getTags().isEmpty())
@@ -146,6 +146,9 @@ public class StateBuilder
 			try
 			{
 				System.out.println("Copying model from " + builder.getExternalPath());
+				File f = new File(DataGenerator.BLOCK_MODELS, builder.getModelPath());
+				if (f.mkdirs())
+					System.out.println("Created file " + f.getPath());
 				Files.copy(new File(builder.getExternalPath()).toPath(), new File(DataGenerator.BLOCK_MODELS, builder.getModelPath() + builder.getModelName() + ".json").toPath(), StandardCopyOption.REPLACE_EXISTING);
 			} catch (IOException e)
 			{

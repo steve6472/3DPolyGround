@@ -37,6 +37,7 @@ public class SpecialBlockRegistry
 	public static final SpecialBlockEntry<TagBelowBlock> tagBelowBlock = register("tag_below", TagBelowBlock::new);
 	public static final SpecialBlockEntry<SpreadBlock> spreadBlock = register("spreadable", SpreadBlock::new);
 	public static final SpecialBlockEntry<CorruptedStoneBlock> corruptedStone = register("corrupted_stone", CorruptedStoneBlock::new);
+	public static final SpecialBlockEntry<LogStackBlock> logStack = register("log_stack", LogStackBlock::new);
 
 	public static <T extends Block> SpecialBlockEntry<T> register(String id, ISpecialBlockFactory<T> factory)
 	{

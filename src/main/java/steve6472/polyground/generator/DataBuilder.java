@@ -294,7 +294,7 @@ public class DataBuilder
 							.face(FaceBuilder.create().texture(sideTexture).rotation(90), EnumFace.EAST, EnumFace.WEST)
 							.face(FaceBuilder.create().texture(topTexture), EnumFace.NORTH, EnumFace.SOUTH)
 						)
-				).addState(PropertyBuilder.create().addProperty(PilliarBlock.AXIS, EnumAxis.Z).rotY(90), BlockModelBuilder.noGen(name + "_side"))
+				).addState(PropertyBuilder.create().addProperty(PilliarBlock.AXIS, EnumAxis.Z).rot(0, 90, 0), BlockModelBuilder.noGen(name + "_side"))
 			);
 	}
 
@@ -423,15 +423,15 @@ public class DataBuilder
 						)
 				).addState(PropertyBuilder.create()
 						.addProperty(SlabBlock.TYPE, EnumSlabType.TOP)
-						.addProperty(SlabBlock.AXIS, EnumAxis.X).rotY(180),
+						.addProperty(SlabBlock.AXIS, EnumAxis.X).rot(0, 180, 0),
 					BlockModelBuilder.noGen(name + "_side").modelPath("slab")
 				).addState(PropertyBuilder.create()
 						.addProperty(SlabBlock.TYPE, EnumSlabType.BOTTOM)
-						.addProperty(SlabBlock.AXIS, EnumAxis.Z).rotY(90),
+						.addProperty(SlabBlock.AXIS, EnumAxis.Z).rot(0, 90, 0),
 					BlockModelBuilder.noGen(name + "_side").modelPath("slab")
 				).addState(PropertyBuilder.create()
 						.addProperty(SlabBlock.TYPE, EnumSlabType.TOP)
-						.addProperty(SlabBlock.AXIS, EnumAxis.Z).rotY(270),
+						.addProperty(SlabBlock.AXIS, EnumAxis.Z).rot(0, 270, 0),
 					BlockModelBuilder.noGen(name + "_side").modelPath("slab")
 				).addState(PropertyBuilder.create()
 						.addProperty(SlabBlock.TYPE, EnumSlabType.DOUBLE)
@@ -476,9 +476,9 @@ public class DataBuilder
 						)
 					)
 				)
-				.addState(PropertyBuilder.create().addProperty(StairBlock.FACING, EnumFace.EAST).tag(Tags.KILL_SPREAD_BOTTOM).uvLock(true).rotY(270), BlockModelBuilder.noGen(name))
-				.addState(PropertyBuilder.create().addProperty(StairBlock.FACING, EnumFace.SOUTH).tag(Tags.KILL_SPREAD_BOTTOM).uvLock(true).rotY(180), BlockModelBuilder.noGen(name))
-				.addState(PropertyBuilder.create().addProperty(StairBlock.FACING, EnumFace.WEST).tag(Tags.KILL_SPREAD_BOTTOM).uvLock(true).rotY(90), BlockModelBuilder.noGen(name))
+				.addState(PropertyBuilder.create().addProperty(StairBlock.FACING, EnumFace.EAST).tag(Tags.KILL_SPREAD_BOTTOM).uvLock(true).rot(0, 270, 0), BlockModelBuilder.noGen(name))
+				.addState(PropertyBuilder.create().addProperty(StairBlock.FACING, EnumFace.SOUTH).tag(Tags.KILL_SPREAD_BOTTOM).uvLock(true).rot(0, 180, 0), BlockModelBuilder.noGen(name))
+				.addState(PropertyBuilder.create().addProperty(StairBlock.FACING, EnumFace.WEST).tag(Tags.KILL_SPREAD_BOTTOM).uvLock(true).rot(0, 90, 0), BlockModelBuilder.noGen(name))
 			);
 	}
 

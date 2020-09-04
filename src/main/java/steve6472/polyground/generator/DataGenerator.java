@@ -371,7 +371,7 @@ public class DataGenerator
 		DataBuilder.create().stairs("cobblestone_stairs", "cobblestone").generate();
 		DataBuilder.create().stairs("brick_stairs", "bricks").generate();
 
-		DataBuilder.create().plusBlock("small_grass", true).blockSpecial(tagSpecial(true, Tags.FLOWER_TOP)).addTag(Tags.TRANSPARENT).generate();
+//		DataBuilder.create().plusBlock("small_grass", true).blockSpecial(tagSpecial(true, Tags.FLOWER_TOP)).addTag(Tags.TRANSPARENT).generate();
 		DataBuilder.create().plusBlock("shrub", true).blockSpecial(tagSpecial(true, Tags.SHRUBS_TOP)).addTag(Tags.TRANSPARENT).generate();
 
 		DataBuilder.create().oreBlock("coal_ore", "stone", "ore_overlay", 77, 77, 77).addTags(Tags.SOLID).generate();
@@ -409,73 +409,28 @@ public class DataGenerator
 		DataBuilder.create().stala("diorite_stala", "diorite", "diorite").generate();
 
 		DataBuilder.create()
+			.fullBlock("small_grass")
+			.blockSpecial(tagSpecial(true, Tags.FLOWER_TOP))
+			.addTag(Tags.TRANSPARENT)
+			.blockState(StateBuilder.create().singleModel(BlockModelBuilder.create("small_grass").externalPath("custom_models/small_grass.bbmodel")))
+			.generate();
+
+		DataBuilder.create()
 			.fullBlock("corrupted_stone")
 			.blockSpecial(new SimpleSpecial("corrupted_stone"))
 			.addTags(Tags.CORRUPTED, Tags.SOLID)
 			.generate();
 
 		DataBuilder.create()
-			.fullBlock("pebble")
-			.blockSpecial(tagSpecial(true, Tags.SOLID))
+			.fullBlock("log_stack")
+			.blockSpecial(new SimpleSpecial("log_stack"))
 			.blockState(StateBuilder.create()
-				.singleModel(
-					(BlockModelBuilder.create("pebble_1").modelPath("pebble")
-						.addCube(CubeBuilder.create().size(3, 0, 9, 2, 1, 3).face(FaceBuilder.create().texture("stone").autoUv()))
-						.addCube(CubeBuilder.create().size(11, 0, 7, 2, 1, 3).face(FaceBuilder.create().texture("stone").autoUv()))
-						.addCube(CubeBuilder.create().size(4, 0, 7, 1, 1, 2).face(FaceBuilder.create().texture("stone").autoUv()))
-						.addCube(CubeBuilder.create().size(10, 0, 6, 3, 1, 1).face(FaceBuilder.create().texture("stone").autoUv()))
-						.addCube(CubeBuilder.create().size(4, 1, 9, 2, 1, 2).face(FaceBuilder.create().texture("stone").autoUv()))
-						.addCube(CubeBuilder.create().size(6, 0, 3, 2, 1, 2).face(FaceBuilder.create().texture("stone").autoUv()))
-						.addCube(CubeBuilder.create().size(3, 0, 3, 1, 1, 1).face(FaceBuilder.create().texture("stone").autoUv()))
-						.addCube(CubeBuilder.create().size(13, 0, 3, 1, 1, 1).face(FaceBuilder.create().texture("stone").autoUv()))
-						.addCube(CubeBuilder.create().size(8, 0, 12, 3, 1, 2).face(FaceBuilder.create().texture("stone").autoUv()))
-						.addCube(CubeBuilder.create().size(12, 1, 8, 1, 1, 2).face(FaceBuilder.create().texture("stone").autoUv()))
-						.addCube(CubeBuilder.create().size(4, 0, 12, 2, 1, 2).face(FaceBuilder.create().texture("stone").autoUv()))
-						.addCube(CubeBuilder.create().size(12, 0, 10, 2, 1, 1).face(FaceBuilder.create().texture("stone").autoUv()))
-						.addCube(CubeBuilder.create().size(5, 0, 8, 2, 1, 4).face(FaceBuilder.create().texture("stone").autoUv()))
-						.addCube(CubeBuilder.create().size(13, 0, 7, 1, 1, 3).face(FaceBuilder.create().texture("stone").autoUv()))
-					),
-					(BlockModelBuilder.create("pebble_2").modelPath("pebble")
-						.addCube(CubeBuilder.create().size(3, 0, 9, 2, 1, 3).face(FaceBuilder.create().texture("stone").autoUv()))
-						.addCube(CubeBuilder.create().size(10, 0, 4, 2, 1, 3).face(FaceBuilder.create().texture("stone").autoUv()))
-						.addCube(CubeBuilder.create().size(4, 0, 7, 1, 1, 2).face(FaceBuilder.create().texture("stone").autoUv()))
-						.addCube(CubeBuilder.create().size(9, 0, 3, 3, 1, 1).face(FaceBuilder.create().texture("stone").autoUv()))
-						.addCube(CubeBuilder.create().size(4, 1, 9, 2, 1, 2).face(FaceBuilder.create().texture("stone").autoUv()))
-						.addCube(CubeBuilder.create().size(11, 1, 5, 2, 1, 2).face(FaceBuilder.create().texture("stone").autoUv()))
-						.addCube(CubeBuilder.create().size(4, 0, 12, 2, 1, 1).face(FaceBuilder.create().texture("stone").autoUv()))
-						.addCube(CubeBuilder.create().size(11, 0, 7, 2, 1, 1).face(FaceBuilder.create().texture("stone").autoUv()))
-						.addCube(CubeBuilder.create().size(5, 0, 8, 2, 1, 4).face(FaceBuilder.create().texture("stone").autoUv()))
-						.addCube(CubeBuilder.create().size(12, 0, 4, 1, 1, 3).face(FaceBuilder.create().texture("stone").autoUv()))
-					),
-					(BlockModelBuilder.create("pebble_3").modelPath("pebble")
-						.addCube(CubeBuilder.create().size(9, 0, 7, 3, 1, 5).face(FaceBuilder.create().texture("stone").autoUv()))
-						.addCube(CubeBuilder.create().size(9, 0, 12, 2, 1, 2).face(FaceBuilder.create().texture("stone").autoUv()))
-						.addCube(CubeBuilder.create().size(9, 1, 8, 2, 1, 4).face(FaceBuilder.create().texture("stone").autoUv()))
-						.addCube(CubeBuilder.create().size(12, 0, 9, 1, 1, 3).face(FaceBuilder.create().texture("stone").autoUv()))
-						.addCube(CubeBuilder.create().size(8, 0, 8, 1, 1, 3).face(FaceBuilder.create().texture("stone").autoUv()))
-						.addCube(CubeBuilder.create().size(3, 0, 6, 4, 1, 1).face(FaceBuilder.create().texture("stone").autoUv()))
-						.addCube(CubeBuilder.create().size(8, 0, 3, 1, 1, 2).face(FaceBuilder.create().texture("stone").autoUv()))
-						.addCube(CubeBuilder.create().size(2, 0, 4, 1, 1, 2).face(FaceBuilder.create().texture("stone").autoUv()))
-						.addCube(CubeBuilder.create().size(4, 0, 2, 4, 1, 1).face(FaceBuilder.create().texture("stone").autoUv()))
-						.addCube(CubeBuilder.create().size(3, 0, 3, 5, 1, 3).face(FaceBuilder.create().texture("stone").autoUv()))
-						.addCube(CubeBuilder.create().size(4, 1, 3, 3, 1, 3).face(FaceBuilder.create().texture("stone").autoUv()))
-					),
-					(BlockModelBuilder.create("pebble_4").modelPath("pebble").externalPath("custom_models/pebble_4.json")
-						/*
-						.addCube(CubeBuilder.create().size(10, 0, 7, 3, 1, 5).face(FaceBuilder.create().texture("stone").autoUv()))
-						.addCube(CubeBuilder.create().size(10, 0, 12, 2, 1, 2).face(FaceBuilder.create().texture("stone").autoUv()))
-						.addCube(CubeBuilder.create().size(3, 0, 10, 2, 1, 2).face(FaceBuilder.create().texture("stone").autoUv()))
-						.addCube(CubeBuilder.create().size(10, 1, 8, 2, 1, 4).face(FaceBuilder.create().texture("stone").autoUv()))
-						.addCube(CubeBuilder.create().size(13, 0, 9, 1, 1, 3).face(FaceBuilder.create().texture("stone").autoUv()))
-						.addCube(CubeBuilder.create().size(9, 0, 8, 1, 1, 3).face(FaceBuilder.create().texture("stone").autoUv()))
-						.addCube(CubeBuilder.create().size(2, 0, 5, 4, 1, 1).face(FaceBuilder.create().texture("stone").autoUv()))
-						.addCube(CubeBuilder.create().size(7, 0, 2, 1, 1, 2).face(FaceBuilder.create().texture("stone").autoUv()))
-						.addCube(CubeBuilder.create().size(1, 0, 3, 1, 1, 2).face(FaceBuilder.create().texture("stone").autoUv()))
-						.addCube(CubeBuilder.create().size(3, 0, 1, 4, 1, 1).face(FaceBuilder.create().texture("stone").autoUv()))
-						.addCube(CubeBuilder.create().size(2, 0, 2, 5, 1, 3).face(FaceBuilder.create().texture("stone").autoUv()))
-						.addCube(CubeBuilder.create().size(3, 1, 2, 3, 1, 3).face(FaceBuilder.create().texture("stone").autoUv()))*/
-					)
-				)
+				.addState(PropertyBuilder.create().addProperty(LogStackBlock.LOGS, 1), BlockModelBuilder.create("log_stack_1").modelPath("log_stack").externalPath("custom_models/log_stack_1.bbmodel"))
+				.addState(PropertyBuilder.create().addProperty(LogStackBlock.LOGS, 2), BlockModelBuilder.create("log_stack_2").modelPath("log_stack").externalPath("custom_models/log_stack_2.bbmodel"))
+				.addState(PropertyBuilder.create().addProperty(LogStackBlock.LOGS, 3), BlockModelBuilder.create("log_stack_3").modelPath("log_stack").externalPath("custom_models/log_stack_3.bbmodel"))
+				.addState(PropertyBuilder.create().addProperty(LogStackBlock.LOGS, 4), BlockModelBuilder.create("log_stack_4").modelPath("log_stack").externalPath("custom_models/log_stack_4.bbmodel"))
+				.addState(PropertyBuilder.create().addProperty(LogStackBlock.LOGS, 5), BlockModelBuilder.create("log_stack_5").modelPath("log_stack").externalPath("custom_models/log_stack_5.bbmodel"))
+				.addState(PropertyBuilder.create().addProperty(LogStackBlock.LOGS, 6), BlockModelBuilder.create("log_stack_6").modelPath("log_stack").externalPath("custom_models/log_stack_6.bbmodel"))
 			).generate();
 
 
@@ -792,7 +747,7 @@ public class DataGenerator
 						)
 				).addState(PropertyBuilder.create()
 						.addProperty(SlabBlock.TYPE, EnumSlabType.TOP)
-						.addProperty(SlabBlock.AXIS, EnumAxis.X).rotY(180),
+						.addProperty(SlabBlock.AXIS, EnumAxis.X).rot(0, 180, 0),
 					BlockModelBuilder.noGen("smooth_slab" + "_side_x").modelPath("slab")
 				).addState(PropertyBuilder.create()
 						.addProperty(SlabBlock.TYPE, EnumSlabType.BOTTOM)
@@ -818,12 +773,12 @@ public class DataGenerator
 						)
 				).addState(PropertyBuilder.create()
 						.addProperty(SlabBlock.TYPE, EnumSlabType.TOP)
-						.addProperty(SlabBlock.AXIS, EnumAxis.Z).rotY(180),
+						.addProperty(SlabBlock.AXIS, EnumAxis.Z).rot(0, 180, 0),
 					BlockModelBuilder.noGen("smooth_slab" + "_side_z").modelPath("slab")
 				).addState(PropertyBuilder.create()
 						.addProperty(SlabBlock.TYPE, EnumSlabType.DOUBLE)
 						.addProperty(SlabBlock.AXIS, EnumAxis.Z).tag(Tags.SOLID)
-						.rotY(90),
+						.rot(0, 90, 0),
 					BlockModelBuilder.noGen("smooth_slab" + "_double_x").modelPath("slab")
 				).addState(PropertyBuilder.create()
 						.addProperty(SlabBlock.TYPE, EnumSlabType.DOUBLE)

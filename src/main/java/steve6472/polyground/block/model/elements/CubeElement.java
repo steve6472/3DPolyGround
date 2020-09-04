@@ -1,6 +1,5 @@
 package steve6472.polyground.block.model.elements;
 
-import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 import org.json.JSONObject;
@@ -27,50 +26,6 @@ public class CubeElement implements IElement
 	public CubeElement()
 	{
 
-	}
-
-	public CubeElement(String name)
-	{
-		this.name = name;
-		north = new PlaneElement(name + "_" + EnumFace.NORTH.getName());
-		east = new PlaneElement(name + "_" + EnumFace.EAST.getName());
-		south = new PlaneElement(name + "_" + EnumFace.SOUTH.getName());
-		west = new PlaneElement(name + "_" + EnumFace.WEST.getName());
-		up = new PlaneElement(name + "_" + EnumFace.UP.getName());
-		down = new PlaneElement(name + "_" + EnumFace.DOWN.getName());
-
-		Vector3f from = new Vector3f(0, 0, 0);
-		Vector3f to = new Vector3f(1, 1, 1);
-
-		loadVertices(from, to, new Matrix4f());
-	}
-
-	public void loadVertices(Vector3f from, Vector3f to, Matrix4f rotMat)
-	{
-		north.createTriangles(new Vector3f(to.x, to.y, to.z),
-			new Vector3f(to.x, from.y, to.z),
-			new Vector3f(to.x, from.y, from.z),
-			new Vector3f(to.x, to.y, from.z), rotMat, new PlaneUV(new Vector4f(0, 0, 0, 0)), 0, new Vector3f(1, 1, 1), false);
-		east.createTriangles(new Vector3f(from.x, to.y, to.z),
-			new Vector3f(from.x, from.y, to.z),
-			new Vector3f(to.x, from.y, to.z),
-			new Vector3f(to.x, to.y, to.z), rotMat, new PlaneUV(new Vector4f(0, 0, 0, 0)), 0, new Vector3f(1, 1, 1), false);
-		south.createTriangles(new Vector3f(from.x, to.y, from.z),
-			new Vector3f(from.x, from.y, from.z),
-			new Vector3f(from.x, from.y, to.z),
-			new Vector3f(from.x, to.y, to.z), rotMat, new PlaneUV(new Vector4f(0, 0, 0, 0)), 0, new Vector3f(1, 1, 1), false);
-		west.createTriangles(new Vector3f(to.x, to.y, from.z),
-			new Vector3f(to.x, from.y, from.z),
-			new Vector3f(from.x, from.y, from.z),
-			new Vector3f(from.x, to.y, from.z), rotMat, new PlaneUV(new Vector4f(0, 0, 0, 0)), 0, new Vector3f(1, 1, 1), false);
-		up.createTriangles(new Vector3f(to.x, to.y, from.z),
-			new Vector3f(from.x, to.y, from.z),
-			new Vector3f(from.x, to.y, to.z),
-			new Vector3f(to.x, to.y, to.z), rotMat, new PlaneUV(new Vector4f(0, 0, 0, 0)), 0, new Vector3f(1, 1, 1), false);
-		down.createTriangles(new Vector3f(from.x, from.y, from.z),
-			new Vector3f(to.x, from.y, from.z),
-			new Vector3f(to.x, from.y, to.z),
-			new Vector3f(from.x, from.y, to.z), rotMat, new PlaneUV(new Vector4f(0, 0, 0, 0)), 0, new Vector3f(1, 1, 1), false);
 	}
 
 	@Override
@@ -131,18 +86,18 @@ public class CubeElement implements IElement
 			float minX = from.x, minY = from.y, minZ = from.z, maxX = to.x, maxY = to.y, maxZ = to.z;
 			return switch (enumFace)
 			{
-				case UP -> new PlaneUV(new Vector4f(minZ, 1.0f - maxX, maxZ, 1.0f - minX));
+				case UP -> new PlaneUV(new Vector4f(minZ, 1.0f - maxX, maxZ, 1.0f - minX), face.optBoolean("uvlock", false));
 				case DOWN -> //noinspection SuspiciousNameCombination
-					new PlaneUV(new Vector4f(minZ, minX, maxZ, maxX));
-				case EAST -> new PlaneUV(new Vector4f(minX, 1.0f - maxY, maxX, 1.0f - minY));
-				case WEST -> new PlaneUV(new Vector4f(1.0f - maxX, 1.0f - maxY, 1.0f - minX, 1.0f - minY));
-				case NORTH -> new PlaneUV(new Vector4f(1.0f - maxZ, 1.0f - maxY, 1.0f - minZ, 1.0f - minY));
-				case SOUTH -> new PlaneUV(new Vector4f(minZ, 1.0f - maxY, maxZ, 1.0f - minY));
+					new PlaneUV(new Vector4f(minZ, minX, maxZ, maxX), face.optBoolean("uvlock", false));
+				case EAST -> new PlaneUV(new Vector4f(minX, 1.0f - maxY, maxX, 1.0f - minY), face.optBoolean("uvlock", false));
+				case WEST -> new PlaneUV(new Vector4f(1.0f - maxX, 1.0f - maxY, 1.0f - minX, 1.0f - minY), face.optBoolean("uvlock", false));
+				case NORTH -> new PlaneUV(new Vector4f(1.0f - maxZ, 1.0f - maxY, 1.0f - minZ, 1.0f - minY), face.optBoolean("uvlock", false));
+				case SOUTH -> new PlaneUV(new Vector4f(minZ, 1.0f - maxY, maxZ, 1.0f - minY), face.optBoolean("uvlock", false));
 				default -> throw new IllegalStateException("Unexpected value: " + enumFace);
 			};
 		} else if (!face.has("uv0"))
 		{
-			return new PlaneUV(ElUtil.loadVertex4("uv", face).div(16));
+			return new PlaneUV(ElUtil.loadVertex4("uv", face).div(16), face.optBoolean("uvlock", false));
 		} else
 		{
 			return new PlaneUV().load(face);
@@ -165,10 +120,13 @@ public class CubeElement implements IElement
 		el.modelLayer = ElUtil.layer(face);
 		if (face.optBoolean("uvlock", false) && !enumFace.isSide())
 		{
-			el.createTriangles(v0, v1, v2, v3, ElUtil.EMPTY_MATRIX, uv, (float) Math.toRadians(face.optFloat("rotation", 0) - element.optFloat("rot_y", 0)), tint, biomeTint);
+			float sub = 0;
+			if (element.has("rotation"))
+				sub = element.getJSONArray("rotation").getFloat(1);
+			el.createTriangles(v0, v1, v2, v3, ElUtil.EMPTY_MATRIX, uv, face.optFloat("rotation", 0) - sub, tint, biomeTint);
 		} else
 		{
-			el.createTriangles(v0, v1, v2, v3, ElUtil.EMPTY_MATRIX, uv, (float) Math.toRadians(face.optFloat("rotation", 0)), tint, biomeTint);
+			el.createTriangles(v0, v1, v2, v3, ElUtil.EMPTY_MATRIX, uv, face.optFloat("rotation", 0), tint, biomeTint);
 		}
 
 		String texture = face.getString("texture");
@@ -178,7 +136,7 @@ public class CubeElement implements IElement
 		return el;
 	}
 
-	public void cycleFaces()
+	public void cycleFacesY()
 	{
 		PlaneElement temp = north;
 		north = east;

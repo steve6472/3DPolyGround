@@ -1,12 +1,12 @@
 package steve6472.polyground.block.model;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 import steve6472.polyground.BlockBenchTranslator;
 import steve6472.polyground.CaveGame;
 import steve6472.polyground.registry.WaterRegistry;
 
 import java.io.File;
-import java.util.Arrays;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
@@ -19,32 +19,31 @@ public class BlockModel
 	private CubeHitbox[] cubes;
 	private IElement[] elements;
 	private final String path;
-	private final int rot_y;
-	private final boolean uvLock;
+	private final int rotX, rotY, rotZ;
 
 	/**
 	 * Air Model Constructor
 	 */
 	public BlockModel()
 	{
-		rot_y = 0;
+		rotX = rotY = rotZ = 0;
 		path = null;
-		uvLock = true;
 	}
 
-	public BlockModel(String path, int rot_y, boolean uvLock)
+	public BlockModel(String path, JSONArray rot)
 	{
 		this.path = path;
-		this.rot_y = rot_y;
-		this.uvLock = uvLock;
+		this.rotX = rot.getInt(0) % 360;
+		this.rotY = rot.getInt(1) % 360;
+		this.rotZ = rot.getInt(2) % 360;
 
 		if (path.isBlank())
 			throw new IllegalArgumentException("Model path is blank! '" + path + "'");
 
 		JSONObject json = loadJSON(path);
 
-		cubes = CaveGame.getInstance().blockModelLoader.loadCubes(json, rot_y);
-		elements = CaveGame.getInstance().blockModelLoader.loadElements(json, rot_y, uvLock);
+		cubes = CaveGame.getInstance().blockModelLoader.loadCubes(json, rotX, rotY, rotZ);
+		elements = CaveGame.getInstance().blockModelLoader.loadElements(json, rotX, rotY, rotZ);
 
 		double volume = 0;
 
@@ -92,15 +91,14 @@ public class BlockModel
 
 		JSONObject json = loadJSON(path);
 
-		cubes = CaveGame.getInstance().blockModelLoader.loadCubes(json, rot_y);
-		elements = CaveGame.getInstance().blockModelLoader.loadElements(json, rot_y, uvLock);
+		cubes = CaveGame.getInstance().blockModelLoader.loadCubes(json, rotX, rotY, rotZ);
+		elements = CaveGame.getInstance().blockModelLoader.loadElements(json, rotX, rotY, rotZ);
 	}
 
 	public BlockModel(CubeHitbox... cubes)
 	{
 		this.path = null;
-		rot_y = 0;
-		uvLock = true;
+		rotX = rotY = rotZ = 0;
 		this.cubes = cubes;
 	}
 
@@ -117,11 +115,5 @@ public class BlockModel
 	public IElement[] getElements()
 	{
 		return elements;
-	}
-
-	@Override
-	public String toString()
-	{
-		return "BlockModel{" + "triangles=" + Arrays.toString(elements) + ", path='" + path + '\'' + ", rot_y=" + rot_y + ", uvLock=" + uvLock + '}';
 	}
 }
