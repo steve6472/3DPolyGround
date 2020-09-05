@@ -1,6 +1,7 @@
-package steve6472.polyground.world.light;
+package steve6472.polyground.gfx.light;
 
 import org.joml.Vector3f;
+import org.joml.Vector4f;
 import steve6472.sge.main.game.mixable.IPosition3f;
 
 /**********************
@@ -11,13 +12,21 @@ import steve6472.sge.main.game.mixable.IPosition3f;
  ***********************/
 public class Light implements IPosition3f
 {
-	private Vector3f position;
-	private Vector3f color;
-	private Vector3f attenuation;
+	private final Vector3f position;
+	private final Vector3f color;
+	private final Vector3f attenuation;
+	/**
+	 * x - X direction
+	 * y - Y direction
+	 * z - Z direction
+	 * w - cutOff
+	 */
+	private final Vector4f spotlight;
 
 	private boolean updatePosition;
 	private boolean updateColor;
 	private boolean updateAttenuation;
+	private boolean updateSpotlight;
 
 	private EnumLightSource source;
 
@@ -39,6 +48,7 @@ public class Light implements IPosition3f
 		position = new Vector3f(0, 0, 0);
 		color = new Vector3f(0, 0, 0);
 		attenuation = new Vector3f(1, 0, 0);
+		spotlight = new Vector4f(0, 0, 0, 12.5f);
 		updateAttenuation();
 	}
 
@@ -136,6 +146,35 @@ public class Light implements IPosition3f
 	public Vector3f getColor()
 	{
 		return color;
+	}
+
+	/* Spotlight */
+
+	public void setSpotlight(boolean updateSpotlight)
+	{
+		this.updateSpotlight = updateSpotlight;
+	}
+
+	public boolean shouldUpdateSpotlight()
+	{
+		return updateSpotlight;
+	}
+
+	public void updateSpotlight()
+	{
+		this.updateSpotlight = true;
+		lastUpdate = System.currentTimeMillis();
+	}
+
+	public void setSpotlight(float dirX, float dirY, float dirZ, float cutOff)
+	{
+		spotlight.set(dirX, dirY, dirZ, (float) Math.toRadians(cutOff));
+		updateSpotlight();
+	}
+
+	public Vector4f getSpotlight()
+	{
+		return spotlight;
 	}
 
 	/* Position */

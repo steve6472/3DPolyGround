@@ -17,7 +17,7 @@ import steve6472.polyground.teleporter.Teleporter;
 import steve6472.polyground.tessellators.BasicTessellator;
 import steve6472.polyground.world.ModelBuilder;
 import steve6472.polyground.world.chunk.SubChunk;
-import steve6472.polyground.world.light.LightManager;
+import steve6472.polyground.gfx.light.LightManager;
 import steve6472.sge.gfx.DepthFrameBuffer;
 import steve6472.sge.gfx.*;
 import steve6472.sge.gfx.post.PostProcessing;
@@ -273,6 +273,9 @@ public class MainRender
 
 	private void renderTeleporterPair(Teleporter tel)
 	{
+		if (tel.getOther() == null)
+			return;
+
 		BasicTessellator tess = basicTess;
 		tess.begin(2);
 

@@ -8,7 +8,7 @@ import steve6472.polyground.block.Tags;
 import steve6472.polyground.block.model.CubeTags;
 import steve6472.polyground.block.properties.enums.EnumAxis;
 import steve6472.polyground.block.properties.enums.EnumSlabType;
-import steve6472.polyground.block.special.PilliarBlock;
+import steve6472.polyground.block.special.PillarBlock;
 import steve6472.polyground.block.special.SlabBlock;
 import steve6472.polyground.block.special.StairBlock;
 import steve6472.polyground.block.special.StalaBlock;
@@ -203,6 +203,11 @@ public class DataBuilder
 
 	public DataBuilder fullLightBlock(String name, String color, float constant, float linear, float quadratic)
 	{
+		return fullLightBlock(name, color, constant, linear, quadratic, 0, -1, 0, -60);
+	}
+
+	public DataBuilder fullLightBlock(String name, String color, float constant, float linear, float quadratic, float dirX, float dirY, float dirZ, float cutOff)
+	{
 		blockState = StateBuilder.create()
 			.singleModel(BlockModelBuilder.create(name)
 					.addCube(CubeBuilder.create()
@@ -214,7 +219,11 @@ public class DataBuilder
 			.addValue("color", color)
 			.addValue("constant", constant)
 			.addValue("linear", linear)
-			.addValue("quadratic", quadratic));
+			.addValue("quadratic", quadratic)
+			.addValue("dirX", dirX)
+			.addValue("dirY", dirY)
+			.addValue("dirZ", dirZ)
+			.addValue("cutOff", cutOff));
 		itemModel = new ItemFromBlock(name);
 		blockName = name;
 		itemName = name;
@@ -277,7 +286,7 @@ public class DataBuilder
 			.blockSpecial(new SimpleSpecial("pilliar"))
 			.blockState(StateBuilder.create()
 				.addState(PropertyBuilder.create()
-						.addProperty(PilliarBlock.AXIS, EnumAxis.Y),
+						.addProperty(PillarBlock.AXIS, EnumAxis.Y),
 					BlockModelBuilder.create(name)
 						.addCube(CubeBuilder.create()
 							.fullBlock()
@@ -286,7 +295,7 @@ public class DataBuilder
 						)
 				)
 				.addState(PropertyBuilder.create()
-					.addProperty(PilliarBlock.AXIS, EnumAxis.X),
+					.addProperty(PillarBlock.AXIS, EnumAxis.X),
 					BlockModelBuilder.create(name + "_side")
 						.addCube(CubeBuilder.create()
 							.fullBlock()
@@ -294,7 +303,7 @@ public class DataBuilder
 							.face(FaceBuilder.create().texture(sideTexture).rotation(90), EnumFace.EAST, EnumFace.WEST)
 							.face(FaceBuilder.create().texture(topTexture), EnumFace.NORTH, EnumFace.SOUTH)
 						)
-				).addState(PropertyBuilder.create().addProperty(PilliarBlock.AXIS, EnumAxis.Z).rot(0, 90, 0), BlockModelBuilder.noGen(name + "_side"))
+				).addState(PropertyBuilder.create().addProperty(PillarBlock.AXIS, EnumAxis.Z).rot(0, 90, 0), BlockModelBuilder.noGen(name + "_side"))
 			);
 	}
 

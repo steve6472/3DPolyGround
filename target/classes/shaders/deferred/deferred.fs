@@ -17,6 +17,7 @@ struct Light
 	vec3 position;
 	vec3 color;
 	vec3 attenuation;
+	vec4 spotlight;
 };
 
 /* LIGHT_COUNT gets replaced on load by light count in LightManager class */
@@ -43,15 +44,20 @@ void main()
 
 	for (int i = 0; i < LIGHT_COUNT; ++i)
 	{
-		vec3 p = lights[i].position - fragPos;
+		Light light = lights[i];
+		vec3 p = light.position - fragPos;
 
-		float distance = length(p);
-		float attenuation = 1.0 / (lights[i].attenuation.x + lights[i].attenuation.y * distance + lights[i].attenuation.z * (distance * distance));
-
-		// diffuse
 		vec3 lightDir = normalize(p);
-		vec3 diffuse = max(dot(normal, lightDir), 0.0) * texture * lights[i].color;
-		lighting += diffuse * attenuation;
+		float theta = dot(lightDir, normalize(-light.spotlight.xyz));
+		if (theta > light.spotlight.w)
+		{
+			float distance = length(p);
+			float attenuation = 1.0 / (light.attenuation.x + light.attenuation.y * distance + light.attenuation.z * (distance * distance));
+
+			// diffuse
+			vec3 diffuse = max(dot(normal, lightDir), 0.0) * texture * light.color;
+			lighting += diffuse * attenuation;
+		}
 	}
 
 	float emiDistance = length(cameraPos - emissionPos);

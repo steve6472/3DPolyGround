@@ -1,4 +1,4 @@
-package steve6472.polyground.world.light;
+package steve6472.polyground.gfx.light;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)

@@ -12,9 +12,9 @@ import steve6472.polyground.gfx.particle.particles.torch.spawner.BoxSpawner;
 import steve6472.polyground.gfx.particle.particles.torch.spawner.Spawner;
 import steve6472.polyground.gfx.particle.particles.torch.spawner.SphereSpawner;
 import steve6472.polyground.world.World;
-import steve6472.polyground.world.light.EnumLightSource;
-import steve6472.polyground.world.light.Light;
-import steve6472.polyground.world.light.LightManager;
+import steve6472.polyground.gfx.light.EnumLightSource;
+import steve6472.polyground.gfx.light.Light;
+import steve6472.polyground.gfx.light.LightManager;
 import steve6472.sge.main.util.ColorUtil;
 import steve6472.sge.main.util.RandomUtil;
 
@@ -114,8 +114,6 @@ public class TorchBlock extends Block
 			}
 			if (enumSpawner != null)
 				spawner = getSpawner(enumSpawner, spawnerData);
-
-			LightSourceBlock.setLightProperty(this, color);
 		}
 
 		f = null;
@@ -130,7 +128,7 @@ public class TorchBlock extends Block
 		if (!RandomUtil.decide(6))
 			return;
 
-		Light l = LightManager.replaceIdeal(EnumLightSource.PARTICLE, 0, 0, 0, 0, 0, 0, constant, linear, quadratic);
+		Light l = LightManager.replaceIdeal(EnumLightSource.PARTICLE, 0, 0, 0, 0, 0, 0, constant, linear, quadratic, 0, 0, 0, 0);
 
 		if (l == null)
 			return;

@@ -5,9 +5,9 @@ import steve6472.SSS;
 import steve6472.polyground.block.Block;
 import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.world.World;
-import steve6472.polyground.world.light.EnumLightSource;
-import steve6472.polyground.world.light.Light;
-import steve6472.polyground.world.light.LightManager;
+import steve6472.polyground.gfx.light.EnumLightSource;
+import steve6472.polyground.gfx.light.Light;
+import steve6472.polyground.gfx.light.LightManager;
 import steve6472.sge.main.util.ColorUtil;
 import steve6472.sge.main.util.RandomUtil;
 
@@ -69,8 +69,6 @@ public class OldTorchBlock extends Block
 			if (sss.containsName("spawnRadius")) spawnRadius = sss.getFloat("spawnRadius") / 16f;
 
 			if (sss.containsName("sphereRadius")) sphereRadius = sss.getBoolean("sphereRadius");
-
-			LightSourceBlock.setLightProperty(this, color);
 		}
 
 		f = null;
@@ -82,7 +80,7 @@ public class OldTorchBlock extends Block
 		if (!RandomUtil.decide(6))
 			return;
 
-		Light l = LightManager.replaceIdeal(EnumLightSource.PARTICLE, 0, 0, 0, 0, 0, 0, constant, linear, quadratic);
+		Light l = LightManager.replaceIdeal(EnumLightSource.PARTICLE, 0, 0, 0, 0, 0, 0, constant, linear, quadratic, 0, 0, 0, 0);
 
 		if (l == null)
 			return;

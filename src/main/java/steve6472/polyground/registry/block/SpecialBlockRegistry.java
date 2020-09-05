@@ -18,7 +18,7 @@ public class SpecialBlockRegistry
 {
 	private static final HashMap<String, SpecialBlockEntry<? extends Block>> specialBlockRegistry = new HashMap<>();
 
-	public static final SpecialBlockEntry<PilliarBlock> pilliar = register("pilliar", PilliarBlock::new);
+	public static final SpecialBlockEntry<PillarBlock> pilliar = register("pilliar", PillarBlock::new);
 	public static final SpecialBlockEntry<TransparentBlock> transparentBlock = register("transparent", TransparentBlock::new);
 	public static final SpecialBlockEntry<SlabBlock> slab = register("slab", SlabBlock::new);
 	public static final SpecialBlockEntry<StalaBlock> stalaBlock = register("stala", StalaBlock::new);
@@ -38,6 +38,7 @@ public class SpecialBlockRegistry
 	public static final SpecialBlockEntry<SpreadBlock> spreadBlock = register("spreadable", SpreadBlock::new);
 	public static final SpecialBlockEntry<CorruptedStoneBlock> corruptedStone = register("corrupted_stone", CorruptedStoneBlock::new);
 	public static final SpecialBlockEntry<LogStackBlock> logStack = register("log_stack", LogStackBlock::new);
+	public static final SpecialBlockEntry<DirectionalLightSourceBlock> dirLight = register("dir_light", DirectionalLightSourceBlock::new);
 
 	public static <T extends Block> SpecialBlockEntry<T> register(String id, ISpecialBlockFactory<T> factory)
 	{

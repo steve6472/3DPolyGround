@@ -19,11 +19,11 @@ import java.util.List;
  * Project: CaveGame
  *
  ***********************/
-public class PilliarBlock extends Block
+public class PillarBlock extends Block
 {
 	public static final EnumProperty<EnumAxis> AXIS = States.AXIS;
 
-	public PilliarBlock(File f)
+	public PillarBlock(File f)
 	{
 		super(f);
 		setDefaultState(getDefaultState().with(AXIS, EnumAxis.Y).get());

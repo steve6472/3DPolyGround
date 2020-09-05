@@ -14,6 +14,7 @@ public class LightUniform extends ILightUniform
 	public final Uniform position = new Uniform("position", StaticShaderBase.EnumUniformType.FLOAT_3);
 	public final Uniform color = new Uniform("color", StaticShaderBase.EnumUniformType.FLOAT_3);
 	public final Uniform attenuation = new Uniform("attenuation", StaticShaderBase.EnumUniformType.FLOAT_3);
+	public final Uniform spotlight = new Uniform("spotlight", StaticShaderBase.EnumUniformType.FLOAT_4);
 
 	@Override
 	public String getArrayName()
@@ -26,7 +27,7 @@ public class LightUniform extends ILightUniform
 	{
 		return new ILightUniform.Uniform[]
 			{
-				position, color, attenuation
+				position, color, attenuation, spotlight
 			};
 	}
 }

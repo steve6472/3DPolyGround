@@ -7,7 +7,7 @@ import steve6472.polyground.gfx.shaders.particles.BreakParticleShader;
 import steve6472.polyground.gfx.shaders.particles.FlatParticleShader;
 import steve6472.polyground.gfx.shaders.world.FlatTexturedShader;
 import steve6472.polyground.gfx.shaders.world.WorldShader;
-import steve6472.polyground.world.light.LightManager;
+import steve6472.polyground.gfx.light.LightManager;
 import steve6472.sge.gfx.shaders.DialogShader;
 import steve6472.sge.gfx.shaders.GenericDeferredShader;
 import steve6472.sge.gfx.shaders.Shader;

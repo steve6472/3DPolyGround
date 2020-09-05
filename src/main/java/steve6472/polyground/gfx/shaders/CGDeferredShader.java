@@ -1,6 +1,6 @@
 package steve6472.polyground.gfx.shaders;
 
-import steve6472.polyground.world.light.LightManager;
+import steve6472.polyground.gfx.light.LightManager;
 import steve6472.sge.gfx.shaders.GenericDeferredShader;
 import steve6472.sge.gfx.shaders.Shader;
 import steve6472.sge.main.MainApp;

@@ -22,6 +22,7 @@ public class States
 
 	public static final EnumProperty<EnumSlabType> SLAB_TYPE = EnumProperty.create("type", EnumSlabType.class, EnumSlabType.getValues());
 	public static final EnumProperty<EnumFace> FACING_BLOCK = EnumProperty.create("facing", EnumFace.class, EnumFace.NORTH, EnumFace.EAST, EnumFace.SOUTH, EnumFace.WEST);
+	public static final EnumProperty<EnumFace> FACING = EnumProperty.create("facing", EnumFace.class, EnumFace.NORTH, EnumFace.EAST, EnumFace.SOUTH, EnumFace.WEST, EnumFace.UP, EnumFace.DOWN);
 	public static final EnumProperty<EnumAxis> AXIS = EnumProperty.create("axis", EnumAxis.class, EnumAxis.getValues());
 	public static final EnumProperty<EnumHalf> HALF = EnumProperty.create("half", EnumHalf.class, EnumHalf.getValues());
 	public static final EnumProperty<EnumHalfSnowy> HALF_SNOWY = EnumProperty.create("half_snowy", EnumHalfSnowy.class, EnumHalfSnowy.getValues());

@@ -342,6 +342,7 @@ public class DataGenerator
 		// Items
 		DataBuilder.create().itemModel(new ItemFromTexture("block_inspector")).itemName("block_inspector").itemSpecial(new SimpleSpecial("block_inspector")).generate();
 		DataBuilder.create().itemModel(new ItemFromTexture("rift_placer")).itemName("rift_placer").itemSpecial(new SimpleSpecial("riftplacer")).generate();
+		DataBuilder.create().itemModel(new ItemFromTexture("tele_placer")).itemName("tele_placer").itemSpecial(new SimpleSpecial("tele_placer")).generate();
 		DataBuilder.create().itemModel(new ItemFromTexture("speedometer")).itemName("speedometer").itemSpecial(new SimpleSpecial("speedometer")).generate();
 
 		// Blocks
@@ -376,7 +377,7 @@ public class DataGenerator
 
 		DataBuilder.create().oreBlock("coal_ore", "stone", "ore_overlay", 77, 77, 77).addTags(Tags.SOLID).generate();
 
-		DataBuilder.create().lightOreBlock("magical_coal_ore", "stone", "ore_overlay", 26, 204, 204, "6c7f7a", 1.0f, 0.7f, 1.8f).addTags(Tags.SOLID).generate();
+		DataBuilder.create().lightOreBlock("magical_coal_ore", "stone", "ore_overlay", 26, 204, 204, "6c7f7a", 1.0f, 0.35f, 0.44f).addTags(Tags.SOLID).generate();
 
 		DataBuilder.create().fullLightBlock("blaze_block", "FDEA49", 1.0f, 0.14f, 0.07f).addTags(Tags.SOLID).generate();
 
@@ -407,6 +408,15 @@ public class DataGenerator
 		DataBuilder.create().stala("granite_stala", "granite", "granite").generate();
 		DataBuilder.create().stala("andesite_stala", "andesite", "andesite").generate();
 		DataBuilder.create().stala("diorite_stala", "diorite", "diorite").generate();
+
+		DataBuilder.create().fullBlock("dir_light", "blaze_block")
+			.blockSpecial(SpecialBuilder.create("dir_light")
+				.addValue("color", "e6e6e6")
+				.addValue("constant", 1)
+				.addValue("linear", 0.14f)
+				.addValue("quadratic", 0.07f)
+				.addValue("cutOff", 30))
+			.addTags(Tags.SOLID).generate();
 
 		DataBuilder.create()
 			.fullBlock("small_grass")

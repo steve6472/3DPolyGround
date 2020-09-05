@@ -1,4 +1,4 @@
-package steve6472.polyground.world.light;
+package steve6472.polyground.gfx.light;
 
 import steve6472.polyground.CaveGame;
 import steve6472.polyground.gfx.MainRender;
@@ -37,12 +37,12 @@ public class LightManager
 
 		float intensity = 0.9f;
 
-		addLight(EnumLightSource.SKY, -m, 0, 0, intensity, intensity, intensity, 1, 0, 0);
-		addLight(EnumLightSource.SKY, m, 0, 0, intensity, intensity, intensity, 1, 0, 0);
-		addLight(EnumLightSource.SKY, 0, -m, 0, intensity, intensity, intensity, 1, 0, 0);
-		addLight(EnumLightSource.SKY, 0, m, 0, intensity, intensity, intensity, 1, 0, 0);
-		addLight(EnumLightSource.SKY, 0, 0, -m, intensity, intensity, intensity, 1, 0, 0);
-		addLight(EnumLightSource.SKY, 0, 0, m, intensity, intensity, intensity, 1, 0, 0);
+		addLight(EnumLightSource.SKY, -m, 0, 0, intensity, intensity, intensity, 1, 0, 0, -1, 0, 0, -60);
+		addLight(EnumLightSource.SKY, m, 0, 0, intensity, intensity, intensity, 1, 0, 0, 1, 0, 0, -60);
+		addLight(EnumLightSource.SKY, 0, -m, 0, intensity, intensity, intensity, 1, 0, 0, 0, -1, 0, -60);
+		addLight(EnumLightSource.SKY, 0, m, 0, intensity, intensity, intensity, 1, 0, 0, 0, 1, 0, -60);
+		addLight(EnumLightSource.SKY, 0, 0, -m, intensity, intensity, intensity, 1, 0, 0, 0, 0, -1, -60);
+		addLight(EnumLightSource.SKY, 0, 0, m, intensity, intensity, intensity, 1, 0, 0, 0, 0, 1, -60);
 	}
 
 	public static boolean removeLight(EnumLightSource source, float x, float y, float z)
@@ -65,13 +65,13 @@ public class LightManager
 	/**
 	 * @return new Light
 	 */
-	public static Light addLight(EnumLightSource source, float x, float y, float z, float r, float g, float b, float constant, float linear, float quadratic)
+	public static Light addLight(EnumLightSource source, float x, float y, float z, float r, float g, float b, float constant, float linear, float quadratic, float dirX, float dirY, float dirZ, float cutOff)
 	{
 		for (Light l : lights)
 		{
 			if (l.isInactive())
 			{
-				setLight(l, source, x, y, z, r, g, b, constant, linear, quadratic);
+				setLight(l, source, x, y, z, r, g, b, constant, linear, quadratic, dirX, dirY, dirZ, cutOff);
 				return l;
 			}
 		}
@@ -79,7 +79,7 @@ public class LightManager
 		return null;
 	}
 
-	public static Light replaceIdeal(EnumLightSource replaceType, float x, float y, float z, float r, float g, float b, float constant, float linear, float quadratic)
+	public static Light replaceIdeal(EnumLightSource replaceType, float x, float y, float z, float r, float g, float b, float constant, float linear, float quadratic, float dirX, float dirY, float dirZ, float cutOff)
 	{
 		long last = System.currentTimeMillis();
 		long lastInactive = System.currentTimeMillis();
@@ -115,21 +115,22 @@ public class LightManager
 
 		if (foundInactive)
 		{
-			setLight(lights.get(minInactive), replaceType, x, y, z, r, g, b, constant, linear, quadratic);
+			setLight(lights.get(minInactive), replaceType, x, y, z, r, g, b, constant, linear, quadratic, dirX, dirY, dirZ, cutOff);
 			return lights.get(minInactive);
 		} else
 		{
-			setLight(lights.get(min), replaceType, x, y, z, r, g, b, constant, linear, quadratic);
+			setLight(lights.get(min), replaceType, x, y, z, r, g, b, constant, linear, quadratic, dirX, dirY, dirZ, cutOff);
 			return lights.get(min);
 		}
 	}
 
-	private static void setLight(Light light, EnumLightSource source, float x, float y, float z, float r, float g, float b, float constant, float linear, float quadratic)
+	private static void setLight(Light light, EnumLightSource source, float x, float y, float z, float r, float g, float b, float constant, float linear, float quadratic, float dirX, float dirY, float dirZ, float cutOff)
 	{
 		light.setSource(source);
 		light.setPosition(x, y, z);
 		light.setColor(r, g, b);
 		light.setAttenuation(constant, linear, quadratic);
+		light.setSpotlight(dirX, dirY, dirZ, cutOff);
 		light.setInactive(false);
 	}
 
@@ -161,6 +162,11 @@ public class LightManager
 			{
 				shader.setUniform(shader.lights[light.getIndex()].attenuation, light.getAttenuation().x(), light.getAttenuation().y(), light.getAttenuation().z());
 				light.setUpdateAttenuation(false);
+			}
+			if (light.shouldUpdateSpotlight())
+			{
+				shader.setUniform(shader.lights[light.getIndex()].spotlight, light.getSpotlight().x, light.getSpotlight().y, light.getSpotlight().z, light.getSpotlight().w);
+				light.setSpotlight(false);
 			}
 
 			if (updateSky && light.getSource() == EnumLightSource.SKY)

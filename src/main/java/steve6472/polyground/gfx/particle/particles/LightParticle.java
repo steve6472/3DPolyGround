@@ -6,7 +6,7 @@ import steve6472.polyground.CaveGame;
 import steve6472.polyground.Particle;
 import steve6472.polyground.gfx.MainRender;
 import steve6472.polyground.gfx.particle.particles.torch.motion.Formula;
-import steve6472.polyground.world.light.Light;
+import steve6472.polyground.gfx.light.Light;
 import steve6472.sge.main.game.Tag;
 
 import java.util.ArrayList;

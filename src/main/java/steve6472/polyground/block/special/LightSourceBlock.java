@@ -3,13 +3,11 @@ package steve6472.polyground.block.special;
 import steve6472.SSS;
 import steve6472.polyground.EnumFace;
 import steve6472.polyground.block.Block;
-import steve6472.polyground.block.model.BlockModel;
-import steve6472.polyground.block.model.CubeHitbox;
 import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.entity.Player;
+import steve6472.polyground.gfx.light.EnumLightSource;
+import steve6472.polyground.gfx.light.LightManager;
 import steve6472.polyground.world.World;
-import steve6472.polyground.world.light.EnumLightSource;
-import steve6472.polyground.world.light.LightManager;
 import steve6472.sge.main.util.ColorUtil;
 
 import java.io.File;
@@ -26,6 +24,7 @@ public class LightSourceBlock extends Block
 	private int color;
 	private float constant, linear, quadratic;
 	private float xOffset, yOffset, zOffset;
+	private float dirX, dirY, dirZ, cutOff;
 
 	public LightSourceBlock(File f)
 	{
@@ -56,37 +55,22 @@ public class LightSourceBlock extends Block
 				yOffset = sss.getFloat("lightYOffset") / 16f;
 			if (sss.containsName("lightZOffset"))
 				zOffset = sss.getFloat("lightZOffset") / 16f;
-		}
 
-		setLightProperty(this, color);
+			if (sss.containsName("dirX"))
+				dirX = sss.getFloat("dirX");
+			if (sss.containsName("dirY"))
+				dirY = sss.getFloat("dirY");
+			else
+				dirY = -1;
+			if (sss.containsName("dirZ"))
+				dirZ = sss.getFloat("dirZ");
+			if (sss.containsName("cutOff"))
+				cutOff = sss.getFloat("cutOff");
+			else
+				cutOff = -60;
+		}
 
 		f = null;
-	}
-
-	public static void setLightProperty(Block block, int color)
-	{
-		for (BlockState s : block.getDefaultState().getPossibleStates())
-		{
-			for (BlockModel bm : s.getBlockModels())
-			{
-				for (CubeHitbox cube : bm.getCubes())
-				{
-//					for (CubeFace face : cube.getFaces())
-//					{
-//						if (face == null)
-//							continue;
-//						if (face.hasProperty(FaceRegistry.light))
-//						{
-//							System.err.println("Replacing existing light property!");
-//						}
-//						face.removeProperty(FaceRegistry.light);
-//
-//						float[] col = ColorUtil.getColors(color);
-//						face.addProperty(new LightFaceProperty(col[0], col[1], col[2]));
-//					}
-				}
-			}
-		}
 	}
 
 	@Override
@@ -96,7 +80,7 @@ public class LightSourceBlock extends Block
 			return;
 
 		float[] col = ColorUtil.getColors(color);
-		LightManager.replaceIdeal(EnumLightSource.BLOCK, x + 0.5f + xOffset, y + 0.5f + yOffset, z + 0.5f + zOffset, col[0], col[1], col[2], constant, linear, quadratic);
+		LightManager.replaceIdeal(EnumLightSource.BLOCK, x + 0.5f + xOffset, y + 0.5f + yOffset, z + 0.5f + zOffset, col[0], col[1], col[2], constant, linear, quadratic, dirX, dirY, dirZ, cutOff);
 	}
 
 	@Override

@@ -45,5 +45,6 @@ public class CommandRegistry
 		new TestSpeedCommand(dispatcher);
 		new TeleCommand(dispatcher);
 		new RandomTicksCommand(dispatcher);
+		new LightCommand(dispatcher);
 	}
 }
