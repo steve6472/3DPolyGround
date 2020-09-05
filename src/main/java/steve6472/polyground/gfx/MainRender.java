@@ -50,7 +50,7 @@ public class MainRender
 
 	/* Deferred */
 	public CGGBuffer gBuffer;
-	private final int finalRenderQuad;
+	public final int finalRenderQuad;
 
 	/* Frame Buffers */
 	private final DepthFrameBuffer mainFrameBuffer;
@@ -251,12 +251,9 @@ public class MainRender
 
 		shaders.mainShader.bind(game.getCamera().getViewMatrix());
 
-		if (!deferred)
-		{
-			if (!CaveGame.runGameEvent(new WorldEvent.PreRender(game.world)))
-				game.world.render(false, false);
-			CaveGame.runGameEvent(new WorldEvent.PostRender(game.world));
-		}
+		if (!CaveGame.runGameEvent(new WorldEvent.PreRender(game.world)))
+			game.world.render(deferred, false);
+		CaveGame.runGameEvent(new WorldEvent.PostRender(game.world));
 
 		//		CaveGame.shaders.mainShader.bind(getCamera().getViewMatrix());
 		//		AABBUtil.renderAABBf(player.getHitbox().getHitbox(), basicTess, 1, shaders.mainShader);

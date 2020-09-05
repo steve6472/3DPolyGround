@@ -22,7 +22,7 @@ import java.util.List;
  * Project: SJP
  *
  ***********************/
-public class DirectionalLightSourceBlock extends Block
+public class DirectionalLightSourceBlock extends Block implements ILightBlock
 {
 	public static final EnumProperty<EnumFace> FACING = States.FACING;
 	private File f;
@@ -86,9 +86,7 @@ public class DirectionalLightSourceBlock extends Block
 		if (world.getBlock(x, y, z) != this)
 			return;
 
-		float[] col = ColorUtil.getColors(color);
-		EnumFace f = state.get(FACING);
-		LightManager.replaceIdeal(EnumLightSource.BLOCK, x + 0.5f + xOffset, y + 0.5f + yOffset, z + 0.5f + zOffset, col[0], col[1], col[2], constant, linear, quadratic, f.getXOffset(), f.getYOffset(), f.getZOffset(), cutOff);
+		spawnLight(state, world, x, y, z);
 	}
 
 	@Override
@@ -102,5 +100,13 @@ public class DirectionalLightSourceBlock extends Block
 	public void fillStates(List<IProperty<?>> properties)
 	{
 		properties.add(FACING);
+	}
+
+	@Override
+	public void spawnLight(BlockState state, World world, int x, int y, int z)
+	{
+		float[] col = ColorUtil.getColors(color);
+		EnumFace f = state.get(FACING);
+		LightManager.replaceIdeal(EnumLightSource.BLOCK, x + 0.5f + xOffset, y + 0.5f + yOffset, z + 0.5f + zOffset, col[0], col[1], col[2], constant, linear, quadratic, f.getXOffset(), f.getYOffset(), f.getZOffset(), cutOff);
 	}
 }

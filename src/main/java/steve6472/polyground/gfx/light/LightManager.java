@@ -45,6 +45,11 @@ public class LightManager
 		addLight(EnumLightSource.SKY, 0, 0, m, intensity, intensity, intensity, 1, 0, 0, 0, 0, 1, -60);
 	}
 
+	public static void init()
+	{
+
+	}
+
 	public static boolean removeLight(EnumLightSource source, float x, float y, float z)
 	{
 		for (Light l : lights)

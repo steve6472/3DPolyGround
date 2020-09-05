@@ -1,6 +1,7 @@
 package steve6472.polyground.world.chunk;
 
 import steve6472.polyground.block.Block;
+import steve6472.polyground.block.special.ILightBlock;
 import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.registry.Blocks;
 import steve6472.polyground.world.generator.EnumChunkStage;
@@ -160,14 +161,20 @@ public class ChunkSerializer
 					try
 					{
 						String block = pallete.get(blocks[i][j][k]);
+						BlockState state;
 						if (block.contains("[") && block.contains("]"))
 						{
 							String[] s = pallete.get(blocks[i][j][k]).split("\\[");
-							subChunk.setState(Blocks.getStateByName(s[0], "[" + s[1]), i, j, k);
+							state = Blocks.getStateByName(s[0], "[" + s[1]);
 						} else
 						{
-							subChunk.setState(Blocks.getBlockByName(block).getDefaultState(), i, j, k);
+							state = Blocks.getBlockByName(block).getDefaultState();
 						}
+
+						subChunk.setState(state, i, j, k);
+						if (state.getBlock() instanceof ILightBlock lb)
+							lb.spawnLight(state, subChunk.getWorld(), i + subChunk.getX() * 16, j + subChunk.getLayer() * 16, k + subChunk.getZ() * 16);
+
 					} catch (Exception ex)
 					{
 						System.err.println("Could not find " + pallete.get(blocks[i][j][k]) + "! Replacing will error");

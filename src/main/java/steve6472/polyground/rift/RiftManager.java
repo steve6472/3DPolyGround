@@ -25,7 +25,7 @@ import static org.lwjgl.opengl.GL11.glDrawArrays;
 import static org.lwjgl.opengl.GL11.glLineWidth;
 import static org.lwjgl.opengl.GL20.glDisableVertexAttribArray;
 import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
-import static org.lwjgl.opengl.GL30.glBindVertexArray;
+import static org.lwjgl.opengl.GL30.*;
 import static steve6472.sge.gfx.VertexObjectCreator.unbindVAO;
 
 /**********************
@@ -217,6 +217,7 @@ public class RiftManager
 
 		rift.getBuffer().bindFrameBuffer(main);
 		DepthFrameBuffer.clearCurrentBuffer();
+
 		main.mainRender.renderTheWorld(false);
 
 		main.getPlayer().setCamera(temp);

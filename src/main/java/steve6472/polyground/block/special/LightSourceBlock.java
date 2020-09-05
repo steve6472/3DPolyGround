@@ -6,6 +6,7 @@ import steve6472.polyground.block.Block;
 import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.entity.Player;
 import steve6472.polyground.gfx.light.EnumLightSource;
+import steve6472.polyground.gfx.light.Light;
 import steve6472.polyground.gfx.light.LightManager;
 import steve6472.polyground.world.World;
 import steve6472.sge.main.util.ColorUtil;
@@ -18,7 +19,7 @@ import java.io.File;
  * Project: SJP
  *
  ***********************/
-public class LightSourceBlock extends Block
+public class LightSourceBlock extends Block implements ILightBlock
 {
 	private File f;
 	private int color;
@@ -79,8 +80,7 @@ public class LightSourceBlock extends Block
 		if (world.getBlock(x, y, z) != this)
 			return;
 
-		float[] col = ColorUtil.getColors(color);
-		LightManager.replaceIdeal(EnumLightSource.BLOCK, x + 0.5f + xOffset, y + 0.5f + yOffset, z + 0.5f + zOffset, col[0], col[1], col[2], constant, linear, quadratic, dirX, dirY, dirZ, cutOff);
+		spawnLight(state, world, x, y, z);
 	}
 
 	@Override
@@ -90,7 +90,14 @@ public class LightSourceBlock extends Block
 		LightManager.removeLight(EnumLightSource.BLOCK, x + 0.5f + xOffset, y + 0.5f + yOffset, z + 0.5f + zOffset);
 	}
 
-		/*
+	@Override
+	public void spawnLight(BlockState state, World world, int x, int y, int z)
+	{
+		float[] col = ColorUtil.getColors(color);
+		Light l = LightManager.replaceIdeal(EnumLightSource.BLOCK, x + 0.5f + xOffset, y + 0.5f + yOffset, z + 0.5f + zOffset, col[0], col[1], col[2], constant, linear, quadratic, dirX, dirY, dirZ, cutOff);
+	}
+
+	/*
 		 * Must be in interval <0;15>
 		 * Can update chunks only in 3x3x3 cube
 		 */

@@ -9,6 +9,7 @@ import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.entity.EntityManager;
 import steve6472.polyground.gfx.MainRender;
 import steve6472.polyground.gfx.ThreadedModelBuilder;
+import steve6472.polyground.gfx.light.LightManager;
 import steve6472.polyground.gfx.shaders.CGGShader;
 import steve6472.polyground.gfx.shaders.world.WorldShader;
 import steve6472.polyground.gui.InGameGui;
@@ -133,6 +134,7 @@ public class World implements IWorldBlockProvider
 		generator.start();
 
 		offThreadTicks = new LinkedBlockingQueue<>();
+		LightManager.init();
 	}
 
 	public void tick(ThreadedModelBuilder builder)
