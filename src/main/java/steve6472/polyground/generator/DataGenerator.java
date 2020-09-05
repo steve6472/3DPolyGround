@@ -453,6 +453,15 @@ public class DataGenerator
 				.addState(PropertyBuilder.create().addProperty(LogStackBlock.LOGS, 6), BlockModelBuilder.create("log_stack_6").modelPath("log_stack").externalPath("custom_models/log_stack_6.bbmodel"))
 			).generate();
 
+		DataBuilder.create()
+			.fullBlock("pebbles")
+			.blockState(StateBuilder.create().singleModel(
+				BlockModelBuilder.create("pebbles_1").modelPath("pebbles").externalPath("custom_models/pebbles_1.bbmodel"),
+				BlockModelBuilder.create("pebbles_2").modelPath("pebbles").externalPath("custom_models/pebbles_2.bbmodel"),
+				BlockModelBuilder.create("pebbles_3").modelPath("pebbles").externalPath("custom_models/pebbles_3.bbmodel"),
+				BlockModelBuilder.create("pebbles_4").modelPath("pebbles").externalPath("custom_models/pebbles_4.bbmodel")))
+			.blockSpecial(new SimpleSpecial("custom"))
+			.generate();
 
 		DataBuilder.create()
 			.fullBlock("stick")
