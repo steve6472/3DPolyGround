@@ -6,7 +6,6 @@ import steve6472.polyground.block.Block;
 import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.entity.Player;
 import steve6472.polyground.gfx.light.EnumLightSource;
-import steve6472.polyground.gfx.light.Light;
 import steve6472.polyground.gfx.light.LightManager;
 import steve6472.polyground.world.World;
 import steve6472.sge.main.util.ColorUtil;
@@ -94,7 +93,7 @@ public class LightSourceBlock extends Block implements ILightBlock
 	public void spawnLight(BlockState state, World world, int x, int y, int z)
 	{
 		float[] col = ColorUtil.getColors(color);
-		Light l = LightManager.replaceIdeal(EnumLightSource.BLOCK, x + 0.5f + xOffset, y + 0.5f + yOffset, z + 0.5f + zOffset, col[0], col[1], col[2], constant, linear, quadratic, dirX, dirY, dirZ, cutOff);
+		LightManager.replaceIdeal(EnumLightSource.BLOCK, x + 0.5f + xOffset, y + 0.5f + yOffset, z + 0.5f + zOffset, col[0], col[1], col[2], constant, linear, quadratic, dirX, dirY, dirZ, cutOff);
 	}
 
 	/*

@@ -82,7 +82,6 @@ public class LeavesBlock extends Block
 	{
 		if (!state.get(PERSISTENT) && state.get(DISTANCE) == 7)
 		{
-			SnapBlock.activate(state, world, x, y, z, 0.3f);
 			world.setBlock(Block.air, x, y, z);
 		}
 	}

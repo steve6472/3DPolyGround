@@ -2,11 +2,8 @@ package steve6472.polyground.block.model;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import steve6472.polyground.BlockBenchTranslator;
 import steve6472.polyground.CaveGame;
 import steve6472.polyground.registry.WaterRegistry;
-
-import java.io.File;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
@@ -20,6 +17,7 @@ public class BlockModel
 	private IElement[] elements;
 	private final String path;
 	private final int rotX, rotY, rotZ;
+	private boolean isBlockbenchModel;
 
 	/**
 	 * Air Model Constructor
@@ -40,10 +38,11 @@ public class BlockModel
 		if (path.isBlank())
 			throw new IllegalArgumentException("Model path is blank! '" + path + "'");
 
-		JSONObject json = loadJSON(path);
+		JSONObject json = ModelLoader.loadJSONModel(path);
+		isBlockbenchModel = json.optBoolean("blockbench", false);
 
-		cubes = CaveGame.getInstance().blockModelLoader.loadCubes(json, rotX, rotY, rotZ);
-		elements = CaveGame.getInstance().blockModelLoader.loadElements(json, rotX, rotY, rotZ);
+		cubes = CaveGame.getInstance().modelLoader.loadCubes(json, rotX, rotY, rotZ);
+		elements = CaveGame.getInstance().modelLoader.loadElements(json, rotX, rotY, rotZ);
 
 		double volume = 0;
 
@@ -61,38 +60,15 @@ public class BlockModel
 		*/
 	}
 
-	private JSONObject loadJSON(String path)
-	{
-		JSONObject json = null;
-
-		try
-		{
-			json = new JSONObject(BlockModelLoader.read(new File("game/objects/models/" + path + ".json")));
-
-			if (json.has("meta"))
-			{
-				json = BlockBenchTranslator.convert(json);
-			}
-		} catch (Exception e)
-		{
-			System.err.println("Could not load block model " + path);
-			e.printStackTrace();
-			CaveGame.getInstance().exit();
-			System.exit(0);
-		}
-
-		return json;
-	}
-
 	public void reload()
 	{
 		if (path == null)
 			return;
 
-		JSONObject json = loadJSON(path);
+		JSONObject json = ModelLoader.loadJSONModel(path);
 
-		cubes = CaveGame.getInstance().blockModelLoader.loadCubes(json, rotX, rotY, rotZ);
-		elements = CaveGame.getInstance().blockModelLoader.loadElements(json, rotX, rotY, rotZ);
+		cubes = CaveGame.getInstance().modelLoader.loadCubes(json, rotX, rotY, rotZ);
+		elements = CaveGame.getInstance().modelLoader.loadElements(json, rotX, rotY, rotZ);
 	}
 
 	public BlockModel(IElement[] elements, CubeHitbox... cubes)
@@ -116,5 +92,10 @@ public class BlockModel
 	public IElement[] getElements()
 	{
 		return elements;
+	}
+
+	public boolean isBlockbenchModel()
+	{
+		return isBlockbenchModel;
 	}
 }

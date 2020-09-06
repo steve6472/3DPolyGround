@@ -14,7 +14,7 @@ public class RiftShader extends StaticShader3D
 
 	public RiftShader()
 	{
-		super("rift\\shader");
+		super("rift/shader");
 	}
 
 	@Override

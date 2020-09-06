@@ -161,7 +161,7 @@ public class TriangleElement implements IElement
 
 			shade += lightColor.x * dot;
 		}
-		return shade;
+		return Math.min(shade, 1);
 	}
 
 	@Override

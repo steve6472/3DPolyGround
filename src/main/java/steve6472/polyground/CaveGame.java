@@ -4,8 +4,8 @@ import org.lwjgl.glfw.GLFW;
 import steve6472.polyground.block.Block;
 import steve6472.polyground.block.BlockTextureHolder;
 import steve6472.polyground.block.model.BlockModel;
-import steve6472.polyground.block.model.BlockModelLoader;
 import steve6472.polyground.block.model.IElement;
+import steve6472.polyground.block.model.ModelLoader;
 import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.commands.CommandSource;
 import steve6472.polyground.entity.Player;
@@ -60,7 +60,7 @@ public class CaveGame extends MainApp
 	private Player player;
 	public World world;
 	public CommandRegistry commandRegistry;
-	public BlockModelLoader blockModelLoader;
+	public ModelLoader modelLoader;
 	public ItemAtlas itemAtlas;
 	public HitPicker hitPicker;
 
@@ -81,14 +81,14 @@ public class CaveGame extends MainApp
 		instance = this;
 		MAIN_THREAD = Thread.currentThread().getId();
 
-		mainRender = new MainRender(this);
-
 		player = new Player(this);
 		getEventHandler().register(player);
 
+		modelLoader = new ModelLoader();
+		mainRender = new MainRender(this);
+
 		getEventHandler().runEvent(new SpecialBlockRegistryEvent());
 
-		blockModelLoader = new BlockModelLoader();
 		Blocks.register(this);
 		WaterRegistry.init();
 
@@ -105,6 +105,9 @@ public class CaveGame extends MainApp
 		Items.register(this);
 
 		itemInHand = Items.getItemByName("stone");
+
+		mainRender.miningTool.loadModel(mainRender.buildHelper, modelLoader);
+		Palette.initModel(mainRender.buildHelper, modelLoader);
 
 		getEventHandler().runEvent(new WindowSizeEvent(getWindowWidth(), getWindowHeight()));
 
@@ -124,11 +127,6 @@ public class CaveGame extends MainApp
 	public Player getPlayer()
 	{
 		return player;
-	}
-
-	public void setPlayer(Player player)
-	{
-		this.player = player;
 	}
 
 	public RiftManager getRifts()
@@ -212,6 +210,7 @@ public class CaveGame extends MainApp
 
 
 		PolyUtil.updateDirectionRay(player.viewDir, getCamera());
+		mainRender.miningTool.tick();
 
 		//		particles.testParticle(player.viewDir.x * 4.2f + player.getX(), player.viewDir.y * 4.2f + player.getY() + player.getEyeHeight(), player.viewDir.z * 4.2f + player.getZ());
 
@@ -489,5 +488,11 @@ public class CaveGame extends MainApp
 			new DataGenerator().generateDebug();
 
 		new CaveGame();
+	}
+
+	@Override
+	protected boolean enableGLDebug()
+	{
+		return DEBUG;
 	}
 }

@@ -118,7 +118,7 @@ public class ElUtil
 	public static Vector3f tint(JSONObject obj)
 	{
 		if (obj.has("tint"))
-			return ElUtil.loadVertex3("tint", obj);
+			return ElUtil.loadVertex3("tint", obj).div(255f);
 		else
 			return new Vector3f(1);
 	}

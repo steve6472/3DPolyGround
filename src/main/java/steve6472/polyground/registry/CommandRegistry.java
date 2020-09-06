@@ -31,7 +31,6 @@ public class CommandRegistry
 		new ChunkCommand(dispatcher);
 		new FillCommand(dispatcher);
 		new SpeedCommand(dispatcher);
-		new SnapCommand(dispatcher);
 		new SaveWorldCommand(dispatcher);
 		new LoadWorldCommand(dispatcher);
 		new SetWorldName(dispatcher);
@@ -46,5 +45,6 @@ public class CommandRegistry
 		new TeleCommand(dispatcher);
 		new RandomTicksCommand(dispatcher);
 		new LightCommand(dispatcher);
+		new SpawnPaletteCommand(dispatcher);
 	}
 }

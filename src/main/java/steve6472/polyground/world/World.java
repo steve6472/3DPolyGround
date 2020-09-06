@@ -406,6 +406,8 @@ public class World implements IWorldBlockProvider
 		{
 			game.mainRender.gBuffer.unbindCurrentFrameBuffer();
 		}
+
+		entityManager.render();
 	}
 
 	private void renderChunkOutlines()

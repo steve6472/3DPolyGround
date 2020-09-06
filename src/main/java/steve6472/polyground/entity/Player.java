@@ -1,13 +1,14 @@
 package steve6472.polyground.entity;
 
+import org.joml.Intersectionf;
 import org.joml.Math;
 import org.joml.Vector3f;
 import steve6472.polyground.CaveGame;
 import steve6472.polyground.EnumFace;
 import steve6472.polyground.HitResult;
+import steve6472.polyground.Palette;
 import steve6472.polyground.block.Block;
 import steve6472.polyground.block.states.BlockState;
-import steve6472.polyground.registry.Items;
 import steve6472.polyground.world.World;
 import steve6472.sge.main.KeyList;
 import steve6472.sge.main.events.Event;
@@ -45,10 +46,12 @@ public class Player implements IMotion3f, IPosition3f
 	public float flySpeed = 0.007f;
 	public boolean processNextBlockPlace = true;
 	public boolean processNextBlockBreak = true;
+	public Palette palette;
 
 	public Player(CaveGame game)
 	{
 		camera = new Camera();
+		palette = new Palette(this);
 
 		position = new Vector3f(-2, 0.05f, 0);
 		motion = new Vector3f();
@@ -149,6 +152,9 @@ public class Player implements IMotion3f, IPosition3f
 			getPosition().y = 0;
 
 		updateHitbox();
+
+		if (palette != null)
+			palette.tick();
 	}
 
 	public void updateHitbox()
@@ -279,17 +285,63 @@ public class Player implements IMotion3f, IPosition3f
 			if (game.hitPicker.hit)
 			{
 				HitResult hr = game.hitPicker.getHitResult();
-				Block block = game.world.getBlock(hr.getX(), hr.getY(), hr.getZ());
 
-				if (Items.getItemByName(block.getName()) != null)
+				if (palette != null)
 				{
-					CaveGame.itemInHand = Items.getItemByName(block.getName());
+					if (hr.getFace() == EnumFace.UP)
+					{
+						Palette temp = getFirstTargetedPalette();
+						placePalette(hr.getPx(), hr.getPy(), hr.getPz());
+						// Swap
+						if (temp != null)
+						{
+							palette = temp;
+							palette.setPlayer(this);
+							game.world.getEntityManager().removeEntity(palette);
+						}
+					}
+				} else
+				{
+					palette = getFirstTargetedPalette();
+					if (palette != null)
+					{
+						palette.setPlayer(this);
+						game.world.getEntityManager().removeEntity(palette);
+					}
 				}
 			}
 		}
 
 		processNextBlockPlace = true;
 		processNextBlockBreak = true;
+	}
+
+	private void placePalette(float x, float y, float z)
+	{
+		palette.setPosition(x, y, z);
+		palette.setPivotPoint(0, 0, 0);
+		palette.setPlayer(null);
+		game.world.getEntityManager().addEntity(palette);
+		palette = null;
+	}
+
+	private Palette getFirstTargetedPalette()
+	{
+		for (Object o : game.world.getEntityManager().getEntities())
+		{
+			if (o instanceof Palette p)
+			{
+				if (Intersectionf.testRayAab(
+					camera.getX(), camera.getY(), camera.getZ(),
+					viewDir.x, viewDir.y, viewDir.z,
+					Palette.AABB.minX + p.getX(), Palette.AABB.minY + p.getY(), Palette.AABB.minZ + p.getZ(),
+					Palette.AABB.maxX + p.getX(), Palette.AABB.maxY + p.getY(), Palette.AABB.maxZ + p.getZ()))
+				{
+					return p;
+				}
+			}
+		}
+		return null;
 	}
 
 	@Override

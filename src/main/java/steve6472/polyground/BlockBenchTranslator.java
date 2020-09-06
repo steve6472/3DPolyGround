@@ -5,7 +5,7 @@ import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import steve6472.polyground.block.model.BlockModelLoader;
+import steve6472.polyground.block.model.ModelLoader;
 import steve6472.polyground.block.model.elements.ElUtil;
 
 import java.io.File;
@@ -20,12 +20,12 @@ public class BlockBenchTranslator
 {
 	public static void main(String[] args)
 	{
-		JSONObject json = new JSONObject(BlockModelLoader.read(new File("model.bbmodel")));
-		json = convert(json);
+		JSONObject json = new JSONObject(ModelLoader.read(new File("model.bbmodel")));
+		json = convert(json, true);
 		System.out.println(PrettyJson.prettify(json));
 	}
 
-	public static JSONObject convert(JSONObject json)
+	public static JSONObject convert(JSONObject json, boolean move)
 	{
 		JSONObject out = new JSONObject();
 		JSONArray cubes = new JSONArray();
@@ -43,7 +43,7 @@ public class BlockBenchTranslator
 
 			Matrix4f rotMat = new Matrix4f();
 			rotMat.rotate((float) Math.toRadians(270), 0, 1, 0);
-			rotMat.translate(8f, 0, -8f);
+			if (move) rotMat.translate(8f, 0, -8f);
 			box.transform(rotMat);
 			Vector3f point = ElUtil.loadVertex3("origin", el);
 			ElUtil.rot(rotMat, point);
@@ -51,7 +51,6 @@ public class BlockBenchTranslator
 			{
 				Vector3f rot = ElUtil.loadVertex3("rotation", el);
 				// Swap X and Z cause I rotate the WHOLE model by 270° so the axes swap
-				// TODO: Check if any of these axes should be negative
 				c.put("rotation", new JSONArray().put(-rot.z).put(rot.y).put(rot.x));
 			}
 
@@ -91,6 +90,7 @@ public class BlockBenchTranslator
 			cubes.put(c);
 		}
 		out.put("cubes", cubes);
+		out.put("blockbench", true);
 		return out;
 	}
 

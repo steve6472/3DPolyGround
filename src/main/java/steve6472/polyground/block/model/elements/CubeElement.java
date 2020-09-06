@@ -168,13 +168,22 @@ public class CubeElement implements IElement
 	@Override
 	public int build(ModelBuilder builder, ModelLayer layer, World world, BlockState state, int x, int y, int z)
 	{
+		if (state == null || world == null)
+		{
+			return (north != null ? north.build(builder, layer, world, state, x, y, z) : 0) +
+				   (east  != null ? east .build(builder, layer, world, state, x, y, z) : 0) +
+				   (south != null ? south.build(builder, layer, world, state, x, y, z) : 0) +
+				   (west  != null ? west .build(builder, layer, world, state, x, y, z) : 0) +
+				   (up    != null ? up   .build(builder, layer, world, state, x, y, z) : 0) +
+				   (down  != null ? down .build(builder, layer, world, state, x, y, z) : 0);
+		}
 		return
-			(state == null || north != null && north.cull && Cull.renderFace(x, y, z, EnumFace.NORTH, name, state, world) ? north.build(builder, layer, world, state, x, y, z) : 0) +
-			(state == null || east  != null && east.cull  && Cull.renderFace(x, y, z, EnumFace.EAST , name, state, world) ? east .build(builder, layer, world, state, x, y, z) : 0) +
-			(state == null || south != null && south.cull && Cull.renderFace(x, y, z, EnumFace.SOUTH, name, state, world) ? south.build(builder, layer, world, state, x, y, z) : 0) +
-			(state == null || west  != null && west.cull  && Cull.renderFace(x, y, z, EnumFace.WEST , name, state, world) ? west .build(builder, layer, world, state, x, y, z) : 0) +
-			(state == null || up    != null && up.cull    && Cull.renderFace(x, y, z, EnumFace.UP   , name, state, world) ? up.build(builder, layer, world, state, x, y, z) : 0) +
-			(state == null || down  != null && down.cull  && Cull.renderFace(x, y, z, EnumFace.DOWN , name, state, world) ? down.build(builder, layer, world, state, x, y, z) : 0);
+			((north != null && north.cull && Cull.renderFace(x, y, z, EnumFace.NORTH, name, state, world)) ? north.build(builder, layer, world, state, x, y, z) : 0) +
+			((east  != null && east.cull  && Cull.renderFace(x, y, z, EnumFace.EAST , name, state, world)) ? east .build(builder, layer, world, state, x, y, z) : 0) +
+			((south != null && south.cull && Cull.renderFace(x, y, z, EnumFace.SOUTH, name, state, world)) ? south.build(builder, layer, world, state, x, y, z) : 0) +
+			((west  != null && west.cull  && Cull.renderFace(x, y, z, EnumFace.WEST , name, state, world)) ? west .build(builder, layer, world, state, x, y, z) : 0) +
+			((up    != null && up.cull    && Cull.renderFace(x, y, z, EnumFace.UP   , name, state, world)) ? up   .build(builder, layer, world, state, x, y, z) : 0) +
+			((down  != null && down.cull  && Cull.renderFace(x, y, z, EnumFace.DOWN , name, state, world)) ? down .build(builder, layer, world, state, x, y, z) : 0);
 	}
 
 	@Override

@@ -40,7 +40,7 @@ public class TagBelowBlock extends CustomBlock
 	{
 		if (!isValidPosition(state, world, x, y, z))
 		{
-			SnapBlock.activate(state, world, x, y, z, 1);
+			spawnLoot(state, world, x, y, z);
 			world.setBlock(Block.air, x, y, z);
 		}
 	}

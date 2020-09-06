@@ -2,14 +2,14 @@ package steve6472.polyground.gfx.shaders;
 
 import org.joml.Matrix4f;
 import steve6472.polyground.PolyUtil;
+import steve6472.polyground.gfx.light.LightManager;
 import steve6472.polyground.gfx.shaders.particles.BasicParticleShader;
 import steve6472.polyground.gfx.shaders.particles.BreakParticleShader;
 import steve6472.polyground.gfx.shaders.particles.FlatParticleShader;
 import steve6472.polyground.gfx.shaders.world.FlatTexturedShader;
 import steve6472.polyground.gfx.shaders.world.WorldShader;
-import steve6472.polyground.gfx.light.LightManager;
+import steve6472.sge.gfx.shaders.AbstractDeferredShader;
 import steve6472.sge.gfx.shaders.DialogShader;
-import steve6472.sge.gfx.shaders.GenericDeferredShader;
 import steve6472.sge.gfx.shaders.Shader;
 import steve6472.sge.main.events.Event;
 import steve6472.sge.main.events.WindowSizeEvent;
@@ -35,9 +35,10 @@ public class Shaders
 	public RiftShader riftShader;
 	public WaterShader waterShader;
 	public DialogShader dialogShader;
+	public EntityShader entityShader;
 
 	public CGGShader gShader;
-	public GenericDeferredShader<LightUniform> deferredShader;
+	public AbstractDeferredShader<LightUniform> deferredShader;
 
 	public MainShader mainShader;
 
@@ -66,6 +67,9 @@ public class Shaders
 
 		deferredShader = new CGDeferredShader();
 		deferredShader.createLights(() -> new LightUniform[LightManager.LIGHT_COUNT], LightUniform::new);
+
+		entityShader = new EntityShader();
+		entityShader.createLights(() -> new LightUniform[LightManager.LIGHT_COUNT], LightUniform::new);
 
 		mainShader = new MainShader();
 	}
@@ -121,12 +125,17 @@ public class Shaders
 		deferredShader.setUniform(CGDeferredShader.normal, 2);
 		deferredShader.setUniform(CGDeferredShader.emission, 3);
 		deferredShader.setUniform(CGDeferredShader.emissionPos, 4);
-		Shader.releaseShader();
+
+		entityShader.bind();
+		entityShader.setProjection(projectionMatrix);
+		entityShader.setUniform(EntityShader.ATLAS, 0);
 
 		waterShader.getShader().bind();
 		waterShader.setProjection(ortho);
 		waterShader.setTransformation(new Matrix4f());
 		waterShader.setUniform(WaterShader.TEXTURE, 0);
+
+		Shader.releaseShader();
 	}
 
 	public Matrix4f getProjectionMatrix()

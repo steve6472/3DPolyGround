@@ -3,7 +3,7 @@ package steve6472.polyground.world.biomes;
 import org.joml.Vector3f;
 import org.json.JSONObject;
 import steve6472.polyground.CaveGame;
-import steve6472.polyground.block.model.BlockModelLoader;
+import steve6472.polyground.block.model.ModelLoader;
 import steve6472.polyground.registry.Blocks;
 
 import java.io.File;
@@ -43,7 +43,7 @@ public class Biomes
 			if (biomesFiles[i].isDirectory())
 				continue;
 
-			JSONObject json = new JSONObject(BlockModelLoader.read(biomesFiles[i]));
+			JSONObject json = new JSONObject(ModelLoader.read(biomesFiles[i]));
 			addBiome(new DataBiome(json, features));
 		}
 	}

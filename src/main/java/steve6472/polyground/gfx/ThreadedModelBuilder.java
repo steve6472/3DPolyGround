@@ -157,7 +157,7 @@ public class ThreadedModelBuilder extends Thread
 			CaveGame.getInstance().inGameGui.chat.addText("SubChunk " + model.getSubChunk().getX() + "/" + model.getSubChunk().getLayer() + "/" + model.getSubChunk().getZ() + " Took " + (System.nanoTime() - start) / 1000000.0 + "ms to build");
 	}
 
-	private static FloatBuffer toFloatBuffer3(List<Vector3f> arr)
+	public static FloatBuffer toFloatBuffer3(List<Vector3f> arr)
 	{
 		FloatBuffer buff = BufferUtils.createFloatBuffer(arr.size() * 3);
 
@@ -172,7 +172,7 @@ public class ThreadedModelBuilder extends Thread
 		return buff;
 	}
 
-	private static FloatBuffer toFloatBuffer4(List<Vector4f> arr)
+	public static FloatBuffer toFloatBuffer4(List<Vector4f> arr)
 	{
 		FloatBuffer buff = BufferUtils.createFloatBuffer(arr.size() * 4);
 
@@ -188,7 +188,7 @@ public class ThreadedModelBuilder extends Thread
 		return buff;
 	}
 
-	private static FloatBuffer toFloatBuffer2(List<Vector2f> arr)
+	public static FloatBuffer toFloatBuffer2(List<Vector2f> arr)
 	{
 		FloatBuffer buff = BufferUtils.createFloatBuffer(arr.size() * 2);
 

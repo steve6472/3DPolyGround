@@ -5,14 +5,14 @@ import org.json.JSONObject;
 import steve6472.SSS;
 import steve6472.polyground.EnumFace;
 import steve6472.polyground.block.model.BlockModel;
-import steve6472.polyground.block.model.BlockModelLoader;
 import steve6472.polyground.block.model.CubeHitbox;
 import steve6472.polyground.block.model.IElement;
+import steve6472.polyground.block.model.ModelLoader;
 import steve6472.polyground.block.model.elements.CubeElement;
 import steve6472.polyground.block.properties.IProperty;
-import steve6472.polyground.block.special.SnapBlock;
 import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.block.states.StateLoader;
+import steve6472.polyground.entity.BlockItemEntity;
 import steve6472.polyground.entity.Player;
 import steve6472.polyground.world.ModelBuilder;
 import steve6472.polyground.world.World;
@@ -117,7 +117,7 @@ public class Block
 		fillStates(properties);
 		try
 		{
-			StateLoader.generateStates(this, properties, new JSONObject(BlockModelLoader.read(new File("game/objects/blockstates/" + blockState + ".json"))));
+			StateLoader.generateStates(this, properties, new JSONObject(ModelLoader.read(new File("game/objects/blockstates/" + blockState + ".json"))));
 		} catch (Exception ex)
 		{
 			System.err.println("Error while loading blockstate " + blockState);
@@ -297,6 +297,8 @@ public class Block
 	}
 
 	/**
+	 * Default spawns loot, see {@link #spawnLoot(BlockState, World, int, int, int)}
+	 *
 	 * @param state State of this block
 	 * @param world world
 	 * @param player player who broke the block
@@ -307,7 +309,20 @@ public class Block
 	 */
 	public void onPlayerBreak(BlockState state, World world, Player player, EnumFace breakedFrom, int x, int y, int z)
 	{
-		SnapBlock.activate(state, world, x, y, z, 1);
+		spawnLoot(state, world, x, y, z);
+	}
+
+	/**
+	 * Spawns loot at the center of the block
+	 * @param state state of block
+	 * @param world world
+	 * @param x x position
+	 * @param y y position
+	 * @param z z position
+	 */
+	public void spawnLoot(BlockState state, World world, int x, int y, int z)
+	{
+		world.getEntityManager().addEntity(new BlockItemEntity(state.getBlock(), state.getBlockModel(world, x, y, z), x, y, z));
 	}
 
 	/**

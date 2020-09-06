@@ -89,6 +89,7 @@ public class Minimap extends Component
 
 		MainRender.shaders.worldShader.bind();
 		MainRender.shaders.worldShader.setProjection(projectionMatrix);
+		MainRender.shaders.entityShader.setProjection(projectionMatrix);
 
 		buffer.bindFrameBuffer(getWidth(), getHeight());
 		DepthFrameBuffer.clearCurrentBuffer();
@@ -103,6 +104,7 @@ public class Minimap extends Component
 
 		MainRender.shaders.worldShader.bind();
 		MainRender.shaders.worldShader.setProjection(MainRender.shaders.getProjectionMatrix());
+		MainRender.shaders.entityShader.setProjection(MainRender.shaders.getProjectionMatrix());
 
 		game.getPlayer().setCamera(temp);
 		buffer.unbindCurrentFrameBuffer(game);

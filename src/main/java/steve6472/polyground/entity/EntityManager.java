@@ -1,10 +1,7 @@
 package steve6472.polyground.entity;
 
 import steve6472.polyground.block.Block;
-import steve6472.polyground.entity.interfaces.ICollideable;
-import steve6472.polyground.entity.interfaces.IKillable;
-import steve6472.polyground.entity.interfaces.ITickable;
-import steve6472.polyground.entity.interfaces.IWorldContainer;
+import steve6472.polyground.entity.interfaces.*;
 import steve6472.polyground.world.World;
 import steve6472.sge.main.game.mixable.IPosition3f;
 
@@ -38,6 +35,11 @@ public class EntityManager
 			throw new IllegalStateException("Entity is Collideable but has no Position!");
 
 		entities.add(entity);
+	}
+
+	public void removeEntity(Object entity)
+	{
+		entities.remove(entity);
 	}
 
 	public void tick()
@@ -74,5 +76,21 @@ public class EntityManager
 				}
 			}
 		}
+	}
+
+	public void render()
+	{
+		for (Iterator<Object> iterator = entities.iterator(); iterator.hasNext(); )
+		{
+			Object o = iterator.next();
+
+			if (o instanceof IRenderable r)
+				r.render();
+		}
+	}
+
+	public List<Object> getEntities()
+	{
+		return entities;
 	}
 }

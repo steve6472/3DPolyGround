@@ -1,7 +1,7 @@
 package steve6472.polyground.world.biomes;
 
 import org.json.JSONObject;
-import steve6472.polyground.block.model.BlockModelLoader;
+import steve6472.polyground.block.model.ModelLoader;
 import steve6472.polyground.generator.DataGenerator;
 import steve6472.polyground.registry.feature.FeatureRegistry;
 import steve6472.polyground.world.generator.Feature;
@@ -44,7 +44,7 @@ public class Features
 				continue;
 			}
 
-			JSONObject json = new JSONObject(BlockModelLoader.read(featureFile));
+			JSONObject json = new JSONObject(ModelLoader.read(featureFile));
 			features.put(featureFile.getName().substring(0, featureFile.getName().length() - 5), FeatureRegistry.createFeature(json.getString("feature"), json));
 		}
 	}

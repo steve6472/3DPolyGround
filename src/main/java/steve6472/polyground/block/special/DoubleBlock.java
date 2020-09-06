@@ -36,7 +36,8 @@ public class DoubleBlock extends CustomBlock
 		boolean isValid = isValidPosition(state, world, x, y, z);
 		if (!isValid)
 		{
-			SnapBlock.activate(state, world, x, y, z, 1);
+			if (state.get(HALF) == EnumHalf.BOTTOM)
+				spawnLoot(state, world, x, y, z);
 			world.setBlock(Block.air, x, y, z);
 		}
 	}
@@ -73,7 +74,6 @@ public class DoubleBlock extends CustomBlock
 		super.onPlayerBreak(state, world, player, breakedFrom, x, y, z);
 
 		int Y = (state.get(HALF) == EnumHalf.BOTTOM ? 1 : -1);
-		SnapBlock.activate(world.getState(x, y + Y, z), world, x, y + Y, z, 1);
 		world.setBlock(Block.air, x, y + Y, z);
 	}
 

@@ -1,7 +1,7 @@
 package steve6472.polyground.gfx.shaders;
 
 import steve6472.polyground.gfx.light.LightManager;
-import steve6472.sge.gfx.shaders.AbstractDeferredShader;
+import steve6472.sge.gfx.shaders.AbstractLightShader3D;
 import steve6472.sge.gfx.shaders.Shader;
 import steve6472.sge.main.MainApp;
 
@@ -12,25 +12,24 @@ import java.io.InputStreamReader;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
- * On date: 15.03.2020
- * Project: SJP
+ * On date: 05.09.2020
+ * Project: CaveGame
  *
  ***********************/
-public class CGDeferredShader extends AbstractDeferredShader<LightUniform>
+public class EntityShader extends AbstractLightShader3D<LightUniform>
 {
-	public static Type emission, emissionPos;
+	public static Type ATLAS, NORMAL_MATRIX;
 
-	public CGDeferredShader()
+	public EntityShader()
 	{
-		super(Shader.fromSource(readResource(stream("/shaders/deferred/deferred.vs")), readResource(stream("/shaders/deferred/deferred.fs"))));
+		super(Shader.fromSource(readResource(stream("/shaders/entity/entity.vs")), readResource(stream("/shaders/entity/entity.fs"))));
 	}
 
 	@Override
 	protected void createUniforms()
 	{
-		super.createUniforms();
-		this.addUniform("gEmission", emission = new Type(EnumUniformType.INT_1));
-		this.addUniform("gEmissionPos", emissionPos = new Type(EnumUniformType.INT_1));
+		addUniform("atlas", ATLAS = new Type(EnumUniformType.INT_1));
+		addUniform("normalMatrix", NORMAL_MATRIX = new Type(EnumUniformType.MAT_3));
 	}
 
 	private static InputStream stream(String name)

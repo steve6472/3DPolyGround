@@ -177,7 +177,7 @@ public class DataGenerator
 			.path("common")
 			.name("pebbles")
 			.matchBlocks("block_under", "sand", "grass", "dirt", "stone")
-			.blockState("block", BlockStateBuilder.create().block("pebble"))
+			.blockState("block", BlockStateBuilder.create().block("pebbles"))
 			.integer("radius", 3)
 			.doubleArg("chance", 0.3)
 			.bool("decay", true)
@@ -436,6 +436,18 @@ public class DataGenerator
 			.blockState(StateBuilder.create().singleModel(BlockModelBuilder.create("companion_cube").externalPath("custom_models/companion_cube.bbmodel")))
 			.blockSpecial(new SimpleSpecial("custom"))
 			.addTags(Tags.SOLID)
+			.generate();
+
+		DataBuilder.create()
+			.fullBlock("mining_tool")
+			.blockState(StateBuilder.create().singleModel(BlockModelBuilder.create("mining_tool").externalPath("custom_models/mining_tool.bbmodel")))
+			.blockSpecial(new SimpleSpecial("custom"))
+			.generate();
+
+		DataBuilder.create()
+			.fullBlock("small_palette")
+			.blockState(StateBuilder.create().singleModel(BlockModelBuilder.create("small_palette").externalPath("custom_models/small_palette.bbmodel")))
+			.blockSpecial(new SimpleSpecial("custom"))
 			.generate();
 
 		DataBuilder.create()

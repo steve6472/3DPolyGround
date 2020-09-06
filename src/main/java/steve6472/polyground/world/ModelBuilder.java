@@ -3,7 +3,6 @@ package steve6472.polyground.world;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
-import steve6472.polyground.block.model.CubeHitbox;
 import steve6472.polyground.world.chunk.SubChunk;
 
 import java.util.List;
@@ -27,7 +26,6 @@ public final class ModelBuilder
 	private List<Vector4f> col;
 	private List<Vector2f> text;
 	private List<Vector3f> norm;
-	private CubeHitbox cube;
 	private SubChunk sc;
 
 	public void load(List<Vector3f> vert, List<Vector4f> col, List<Vector2f> text, List<Vector3f> norm)
@@ -45,24 +43,9 @@ public final class ModelBuilder
 		this.z = z;
 	}
 
-	public void setCube(CubeHitbox cube)
-	{
-		this.cube = cube;
-	}
-
 	public void setSubChunk(SubChunk sc)
 	{
 		this.sc = sc;
-	}
-
-	public void quad(Vector3f v0, Vector3f v1, Vector3f v2, Vector3f v3, Vector3f v4, Vector3f v5)
-	{
-		vert.add(v0.add(x, y, z));
-		vert.add(v1.add(x, y, z));
-		vert.add(v2.add(x, y, z));
-		vert.add(v3);
-		vert.add(v4.add(x, y, z));
-		vert.add(v5);
 	}
 
 	public void tri(Vector3f v0, Vector3f v1, Vector3f v2)
@@ -77,17 +60,12 @@ public final class ModelBuilder
 		text.add(uv);
 	}
 
-	public void uv(float u, float v)
-	{
-		text.add(new Vector2f(u, v));
-	}
-
-	private final Vector3f ONE = new Vector3f(92 / 255f, 184 / 255f, 64 / 255f);
+	private final Vector3f DEFAULT_BIOME_COLOR = new Vector3f(92 / 255f, 184 / 255f, 64 / 255f);
 
 	public Vector3f getBiomeTint()
 	{
 		if (sc == null)
-			return ONE;
+			return DEFAULT_BIOME_COLOR;
 		else
 			return sc.getWorld().biomes.getBiome(sc.getBiomeId(x, y, z)).getColor();
 	}
@@ -100,15 +78,6 @@ public final class ModelBuilder
 		}
 	}
 
-	public void normal(float x, float y, float z)
-	{
-		Vector3f v = new Vector3f(x, y, z);
-		for (int i = 0; i < 6; i++)
-		{
-			norm.add(v);
-		}
-	}
-
 	public void normalTri(Vector3f normal)
 	{
 		for (int i = 0; i < 3; i++)
@@ -116,7 +85,6 @@ public final class ModelBuilder
 			norm.add(normal);
 		}
 	}
-
 
 	public List<Vector3f> getVert()
 	{
@@ -132,6 +100,4 @@ public final class ModelBuilder
 	{
 		return text;
 	}
-
-
 }

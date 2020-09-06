@@ -5,11 +5,10 @@ import org.joml.Vector3f;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
-import steve6472.polyground.AABBUtil;
-import steve6472.polyground.CaveGame;
-import steve6472.polyground.Frustum;
-import steve6472.polyground.PolyUtil;
+import steve6472.polyground.*;
+import steve6472.polyground.entity.MiningTool;
 import steve6472.polyground.events.WorldEvent;
+import steve6472.polyground.gfx.light.LightManager;
 import steve6472.polyground.gfx.particle.BreakParticleStorage;
 import steve6472.polyground.gfx.particle.ParticleStorage;
 import steve6472.polyground.gfx.shaders.Shaders;
@@ -17,11 +16,10 @@ import steve6472.polyground.teleporter.Teleporter;
 import steve6472.polyground.tessellators.BasicTessellator;
 import steve6472.polyground.world.ModelBuilder;
 import steve6472.polyground.world.chunk.SubChunk;
-import steve6472.polyground.gfx.light.LightManager;
 import steve6472.sge.gfx.DepthFrameBuffer;
 import steve6472.sge.gfx.*;
 import steve6472.sge.gfx.post.PostProcessing;
-import steve6472.sge.gfx.shaders.GenericDeferredShader;
+import steve6472.sge.gfx.shaders.AbstractDeferredShader;
 import steve6472.sge.gfx.shaders.Shader;
 import steve6472.sge.gui.floatingdialog.DialogManager;
 import steve6472.sge.main.events.Event;
@@ -66,8 +64,9 @@ public class MainRender
 	public final ParticleStorage particles;
 	public final BreakParticleStorage breakParticles;
 	public final DialogManager dialogManager;
+	public final MiningTool miningTool;
 
-	public ModelBuilder buildHelper, lazyBuildHelper;
+	public ModelBuilder buildHelper;
 	public BasicTessellator basicTess;
 	public BasicTessellator waterTess;
 
@@ -83,7 +82,6 @@ public class MainRender
 		unbindVAO();
 
 		buildHelper = new ModelBuilder();
-		lazyBuildHelper = new ModelBuilder();
 
 		mainFrameBuffer = new DepthFrameBuffer(game.getWidth(), game.getHeight(), true);
 		waterFrameBuffer = new DepthFrameBuffer(game.getWidth(), game.getHeight());
@@ -107,6 +105,8 @@ public class MainRender
 
 		modelBuilder = new ThreadedModelBuilder();
 		modelBuilder.start();
+
+		miningTool = new MiningTool(game.getPlayer());
 
 		skybox = new CGSkybox(StaticCubeMap.fromTextureFaces("skybox", new String[]{"side", "side", "top", "bottom", "side", "side"}, "png"), shaders.getProjectionMatrix());
 	}
@@ -154,14 +154,17 @@ public class MainRender
 		steve6472.sge.gfx.DepthFrameBuffer.clearCurrentBuffer();
 
 		shaders.deferredShader.bind();
-		shaders.deferredShader.setUniform(GenericDeferredShader.cameraPos, game.getCamera().getX(), game.getCamera().getY(), game.getCamera().getZ());
+		shaders.deferredShader.setUniform(AbstractDeferredShader.cameraPos, game.getCamera().getX(), game.getCamera().getY(), game.getCamera().getZ());
 		StaticTexture.bind(0, gBuffer.texture);
 		StaticTexture.bind(1, gBuffer.position);
 		StaticTexture.bind(2, gBuffer.normal);
 		StaticTexture.bind(3, gBuffer.emission);
 		StaticTexture.bind(4, gBuffer.emissionPos);
-		LightManager.updateLights(shaders.deferredShader);
+		LightManager.updateLights(shaders.deferredShader, true);
 		VertexObjectCreator.basicRender(finalRenderQuad, 2, 6, Tessellator.TRIANGLES);
+
+		shaders.entityShader.bind();
+		LightManager.updateLights(shaders.entityShader, false);
 
 		mainFrameBuffer.unbindCurrentFrameBuffer(game);
 
@@ -251,9 +254,21 @@ public class MainRender
 
 		shaders.mainShader.bind(game.getCamera().getViewMatrix());
 
-		if (!CaveGame.runGameEvent(new WorldEvent.PreRender(game.world)))
-			game.world.render(deferred, false);
-		CaveGame.runGameEvent(new WorldEvent.PostRender(game.world));
+		// render only non-deferred!
+		// world would be rendered twice from players perseptive
+		if (!deferred)
+		{
+			if (!CaveGame.runGameEvent(new WorldEvent.PreRender(game.world)))
+				game.world.render(false, false);
+			CaveGame.runGameEvent(new WorldEvent.PostRender(game.world));
+		}
+
+//		miningTool.render(game.getPlayer().getX(), game.getPlayer().getY(), game.getPlayer().getZ()
+//			, 0, (float) (game.getPlayer().getCamera().getYaw() + Math.PI / 2f), (game.getPlayer().getCamera().getPitch()), 1f);
+		miningTool.render();
+
+		if (game.getPlayer() != null && game.getPlayer().palette != null)
+			game.getPlayer().palette.render();
 
 		//		CaveGame.shaders.mainShader.bind(getCamera().getViewMatrix());
 		//		AABBUtil.renderAABBf(player.getHitbox().getHitbox(), basicTess, 1, shaders.mainShader);

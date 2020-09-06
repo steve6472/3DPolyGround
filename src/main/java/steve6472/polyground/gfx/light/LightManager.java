@@ -5,7 +5,7 @@ import steve6472.polyground.gfx.MainRender;
 import steve6472.polyground.gfx.shaders.LightUniform;
 import steve6472.polyground.tessellators.BasicTessellator;
 import steve6472.sge.gfx.Tessellator;
-import steve6472.sge.gfx.shaders.GenericDeferredShader;
+import steve6472.sge.gfx.shaders.ILightShader;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -141,42 +141,44 @@ public class LightManager
 
 	private static float lastShade = 0;
 
-	public static void updateLights(GenericDeferredShader<LightUniform> shader)
+	public static void updateLights(ILightShader<LightUniform> shader, boolean update)
 	{
 		boolean updateSky = CaveGame.getInstance().getWorld().shade != lastShade;
-		lastShade = CaveGame.getInstance().getWorld().shade;
+		if (!update)
+			lastShade = CaveGame.getInstance().getWorld().shade;
+		float currShade = CaveGame.getInstance().getWorld().shade;
 
-		for (Light light : lights)
+		for (Light light : LightManager.lights)
 		{
 			if (light.shouldUpdateColor())
 			{
-				shader.setUniform(shader.lights[light.getIndex()].color, light.getColor().x, light.getColor().y, light.getColor().z);
-				light.setUpdateColor(false);
+				shader.setUniform(shader.getLights()[light.getIndex()].color, light.getColor().x, light.getColor().y, light.getColor().z);
+				light.setUpdateColor(update);
 
 				if (light.getSource() == EnumLightSource.SKY)
-					shader.setUniform(shader.lights[light.getIndex()].color,
-						light.getColor().x * lastShade, light.getColor().y * lastShade, light.getColor().z * lastShade);
+					shader.setUniform(shader.getLights()[light.getIndex()].color,
+						light.getColor().x * currShade, light.getColor().y * currShade, light.getColor().z * currShade);
 
 			}
 			if (light.shouldUpdatePosition())
 			{
-				shader.setUniform(shader.lights[light.getIndex()].position, light.getX(), light.getY(), light.getZ());
-				light.setUpdatePosition(false);
+				shader.setUniform(shader.getLights()[light.getIndex()].position, light.getX(), light.getY(), light.getZ());
+				light.setUpdatePosition(update);
 			}
 			if (light.shouldUpdateAttenuation())
 			{
-				shader.setUniform(shader.lights[light.getIndex()].attenuation, light.getAttenuation().x(), light.getAttenuation().y(), light.getAttenuation().z());
-				light.setUpdateAttenuation(false);
+				shader.setUniform(shader.getLights()[light.getIndex()].attenuation, light.getAttenuation().x(), light.getAttenuation().y(), light.getAttenuation().z());
+				light.setUpdateAttenuation(update);
 			}
 			if (light.shouldUpdateSpotlight())
 			{
-				shader.setUniform(shader.lights[light.getIndex()].spotlight, light.getSpotlight().x, light.getSpotlight().y, light.getSpotlight().z, light.getSpotlight().w);
-				light.setSpotlight(false);
+				shader.setUniform(shader.getLights()[light.getIndex()].spotlight, light.getSpotlight().x, light.getSpotlight().y, light.getSpotlight().z, light.getSpotlight().w);
+				light.setSpotlight(update);
 			}
 
 			if (updateSky && light.getSource() == EnumLightSource.SKY)
-				shader.setUniform(shader.lights[light.getIndex()].color,
-					light.getColor().x * lastShade, light.getColor().y * lastShade, light.getColor().z * lastShade);
+				shader.setUniform(shader.getLights()[light.getIndex()].color,
+					light.getColor().x * currShade, light.getColor().y * currShade, light.getColor().z * currShade);
 		}
 	}
 

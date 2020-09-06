@@ -14,7 +14,7 @@ public class ItemTextureShader extends StaticShader2D
 
 	public ItemTextureShader()
 	{
-		super("game\\sprite_shader");
+		super("game/sprite_shader");
 	}
 
 	@Override

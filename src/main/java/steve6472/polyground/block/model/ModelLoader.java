@@ -4,6 +4,8 @@ import org.joml.AABBf;
 import org.joml.Matrix4f;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import steve6472.polyground.BlockBenchTranslator;
+import steve6472.polyground.CaveGame;
 import steve6472.polyground.PrettyJson;
 import steve6472.polyground.block.BlockTextureHolder;
 import steve6472.polyground.block.model.elements.CubeElement;
@@ -24,8 +26,36 @@ import java.util.List;
  * Project: SJP
  *
  ***********************/
-public class BlockModelLoader
+public class ModelLoader
 {
+	public static JSONObject loadJSONModel(String path)
+	{
+		return load("game/objects/models/" + path + ".json", true);
+	}
+
+	public static JSONObject load(String path, boolean move)
+	{
+		JSONObject json = null;
+
+		try
+		{
+			json = new JSONObject(ModelLoader.read(new File(path)));
+
+			if (json.has("meta"))
+			{
+				json = BlockBenchTranslator.convert(json, move);
+			}
+		} catch (Exception e)
+		{
+			System.err.println("Could not load model " + path);
+			e.printStackTrace();
+			CaveGame.getInstance().exit();
+			System.exit(0);
+		}
+
+		return json;
+	}
+
 	private static AABBf createAABB(JSONObject json)
 	{
 		JSONArray from = json.getJSONArray("from");
