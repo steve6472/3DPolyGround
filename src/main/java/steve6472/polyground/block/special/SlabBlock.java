@@ -72,7 +72,7 @@ public class SlabBlock extends Block
 	@Override
 	public void onClick(BlockState state, World world, Player player, EnumFace clickedOn, MouseEvent click, int x, int y, int z)
 	{
-		if (click.getAction() != KeyList.PRESS)
+		if (click.getAction() != KeyList.PRESS || click.getButton() == KeyList.MMB)
 			return;
 
 		if (click.getButton() == KeyList.RMB)

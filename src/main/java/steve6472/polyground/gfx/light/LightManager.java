@@ -35,14 +35,12 @@ public class LightManager
 
 		int m = Integer.MAX_VALUE;
 
-		float intensity = 0.9f;
-
-		addLight(EnumLightSource.SKY, -m, 0, 0, intensity, intensity, intensity, 1, 0, 0, -1, 0, 0, -60);
-		addLight(EnumLightSource.SKY, m, 0, 0, intensity, intensity, intensity, 1, 0, 0, 1, 0, 0, -60);
-		addLight(EnumLightSource.SKY, 0, -m, 0, intensity, intensity, intensity, 1, 0, 0, 0, -1, 0, -60);
-		addLight(EnumLightSource.SKY, 0, m, 0, intensity, intensity, intensity, 1, 0, 0, 0, 1, 0, -60);
-		addLight(EnumLightSource.SKY, 0, 0, -m, intensity, intensity, intensity, 1, 0, 0, 0, 0, -1, -60);
-		addLight(EnumLightSource.SKY, 0, 0, m, intensity, intensity, intensity, 1, 0, 0, 0, 0, 1, -60);
+		addLight(EnumLightSource.SKY, -m, 0, 0, 0.6f, 0.6f, 0.6f, 1, 0, 0, -1, 0, 0, -60);
+		addLight(EnumLightSource.SKY, m, 0, 0, 0.6f, 0.6f, 0.6f, 1, 0, 0, 1, 0, 0, -60);
+		addLight(EnumLightSource.SKY, 0, -m, 0, 0.5f, 0.5f, 0.5f, 1, 0, 0, 0, -1, 0, -60);
+		addLight(EnumLightSource.SKY, 0, m, 0, 1f, 1f, 1f, 1, 0, 0, 0, 1, 0, -60);
+		addLight(EnumLightSource.SKY, 0, 0, -m, 0.8f, 0.8f, 0.8f, 1, 0, 0, 0, 0, 1, -60);
+		addLight(EnumLightSource.SKY, 0, 0, m, 0.8f, 0.8f, 0.8f, 1, 0, 0, 0, 0, -1, -60);
 	}
 
 	public static void init()

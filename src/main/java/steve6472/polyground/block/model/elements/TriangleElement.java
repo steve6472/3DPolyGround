@@ -22,24 +22,12 @@ import java.awt.*;
  ***********************/
 public class TriangleElement implements IElement
 {
-	private static final
-	Vector3f[][] lights = new Vector3f[][]
-		{
-			{ new Vector3f(0, 1, 0),  new Vector3f(1.0f), },
-			{ new Vector3f(0, 0, 1),  new Vector3f(0.8f), },
-			{ new Vector3f(0, 0, -1), new Vector3f(0.8f), },
-			{ new Vector3f(1, 0, 0),  new Vector3f(0.6f), },
-			{ new Vector3f(-1, 0, 0), new Vector3f(0.6f), },
-			{ new Vector3f(0, -1, 0), new Vector3f(0.5f), }
-		};
-
 	public String name;
 
 	public Vector3f v0, v1, v2;
 	public Vector2f uv0, uv1, uv2;
 	public Vector3f normal;
 	public Vector3f tint;
-	public float shade;
 	public boolean biomeTint;
 	public int texture;
 	public ModelLayer modelLayer;
@@ -92,7 +80,6 @@ public class TriangleElement implements IElement
 		if (normal == null)
 			normal = new Vector3f();
 		GeometryUtils.normal(v0, v1, v2, normal);
-		shade = calculateShade();
 	}
 
 	public void setTexture(int texture)
@@ -135,10 +122,12 @@ public class TriangleElement implements IElement
 		if (biomeTint)
 		{
 			Vector3f biomeTint = builder.getBiomeTint();
-			builder.colorTri(shade * biomeTint.x, shade * biomeTint.y, shade * biomeTint.z);
+//			builder.colorTri(shade * biomeTint.x, shade * biomeTint.y, shade * biomeTint.z);
+			builder.colorTri(biomeTint.x, biomeTint.y, biomeTint.z);
 		} else
 		{
-			builder.colorTri(shade * tint.x, shade * tint.y, shade * tint.z);
+//			builder.colorTri(shade * tint.x, shade * tint.y, shade * tint.z);
+			builder.colorTri(tint.x, tint.y, tint.z);
 		}
 		return 1;
 	}
@@ -147,21 +136,6 @@ public class TriangleElement implements IElement
 	public String getName()
 	{
 		return name;
-	}
-
-	private float calculateShade()
-	{
-		float shade = 0;
-		for (Vector3f[] light : lights)
-		{
-			Vector3f lightDir = light[0];
-			Vector3f lightColor = light[1];
-			Vector3f diff = new Vector3f(normal);
-			float dot = Math.max(diff.dot(lightDir), 0);
-
-			shade += lightColor.x * dot;
-		}
-		return Math.min(shade, 1);
 	}
 
 	@Override
