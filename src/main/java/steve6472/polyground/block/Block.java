@@ -13,7 +13,7 @@ import steve6472.polyground.block.properties.IProperty;
 import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.block.states.StateLoader;
 import steve6472.polyground.entity.BlockItemEntity;
-import steve6472.polyground.entity.Player;
+import steve6472.polyground.entity.player.Player;
 import steve6472.polyground.world.ModelBuilder;
 import steve6472.polyground.world.World;
 import steve6472.polyground.world.chunk.ModelLayer;

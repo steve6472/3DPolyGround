@@ -4,7 +4,7 @@ import steve6472.polyground.CaveGame;
 import steve6472.polyground.EnumFace;
 import steve6472.polyground.block.properties.IProperty;
 import steve6472.polyground.block.states.BlockState;
-import steve6472.polyground.entity.Player;
+import steve6472.polyground.entity.player.Player;
 import steve6472.polyground.events.InGameGuiEvent;
 import steve6472.polyground.gui.floatingdialogs.BlockStateDialog;
 import steve6472.polyground.item.Item;

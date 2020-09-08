@@ -141,6 +141,6 @@ public class TriangleElement implements IElement
 	@Override
 	public String toString()
 	{
-		return "TriangleElement{" + "v0=" + v0 + ", v1=" + v1 + ", v2=" + v2 + ", uv0=" + uv0 + ", uv1=" + uv1 + ", uv2=" + uv2 + ", normal=" + normal + ", tint=" + tint + ", shade=" + shade + ", biomeTint=" + biomeTint + ", texture=" + texture + ", modelLayer=" + modelLayer + '}';
+		return "TriangleElement{" + "v0=" + v0 + ", v1=" + v1 + ", v2=" + v2 + ", uv0=" + uv0 + ", uv1=" + uv1 + ", uv2=" + uv2 + ", normal=" + normal + ", tint=" + tint + ", biomeTint=" + biomeTint + ", texture=" + texture + ", modelLayer=" + modelLayer + '}';
 	}
 }

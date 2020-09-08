@@ -1,6 +1,6 @@
 package steve6472.polyground.teleporter;
 
-import steve6472.polyground.entity.Player;
+import steve6472.polyground.entity.player.Player;
 import org.joml.AABBf;
 
 import java.util.UUID;

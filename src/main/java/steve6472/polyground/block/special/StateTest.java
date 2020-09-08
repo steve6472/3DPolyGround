@@ -5,7 +5,7 @@ import steve6472.polyground.block.properties.BooleanProperty;
 import steve6472.polyground.block.properties.IProperty;
 import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.block.states.States;
-import steve6472.polyground.entity.Player;
+import steve6472.polyground.entity.player.Player;
 import steve6472.polyground.world.World;
 import steve6472.sge.main.KeyList;
 import steve6472.sge.main.events.MouseEvent;

@@ -3,7 +3,7 @@ package steve6472.polyground.teleporter;
 import org.joml.AABBf;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import steve6472.polyground.entity.Player;
+import steve6472.polyground.entity.player.Player;
 import steve6472.polyground.world.World;
 
 import java.io.*;

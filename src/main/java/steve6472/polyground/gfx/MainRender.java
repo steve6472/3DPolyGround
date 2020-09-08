@@ -5,8 +5,10 @@ import org.joml.Vector3f;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
-import steve6472.polyground.*;
-import steve6472.polyground.entity.MiningTool;
+import steve6472.polyground.AABBUtil;
+import steve6472.polyground.CaveGame;
+import steve6472.polyground.Frustum;
+import steve6472.polyground.PolyUtil;
 import steve6472.polyground.events.WorldEvent;
 import steve6472.polyground.gfx.light.LightManager;
 import steve6472.polyground.gfx.particle.BreakParticleStorage;
@@ -64,7 +66,6 @@ public class MainRender
 	public final ParticleStorage particles;
 	public final BreakParticleStorage breakParticles;
 	public final DialogManager dialogManager;
-	public final MiningTool miningTool;
 
 	public ModelBuilder buildHelper;
 	public BasicTessellator basicTess;
@@ -105,8 +106,6 @@ public class MainRender
 
 		modelBuilder = new ThreadedModelBuilder();
 		modelBuilder.start();
-
-		miningTool = new MiningTool(game.getPlayer());
 
 		skybox = new CGSkybox(StaticCubeMap.fromTextureFaces("skybox", new String[]{"side", "side", "top", "bottom", "side", "side"}, "png"), shaders.getProjectionMatrix());
 	}
@@ -265,10 +264,9 @@ public class MainRender
 
 //		miningTool.render(game.getPlayer().getX(), game.getPlayer().getY(), game.getPlayer().getZ()
 //			, 0, (float) (game.getPlayer().getCamera().getYaw() + Math.PI / 2f), (game.getPlayer().getCamera().getPitch()), 1f);
-		miningTool.render();
 
-		if (game.getPlayer() != null && game.getPlayer().palette != null)
-			game.getPlayer().palette.render();
+		if (game.getPlayer() != null)
+			game.getPlayer().render();
 
 		//		CaveGame.shaders.mainShader.bind(getCamera().getViewMatrix());
 		//		AABBUtil.renderAABBf(player.getHitbox().getHitbox(), basicTess, 1, shaders.mainShader);

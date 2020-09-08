@@ -11,7 +11,7 @@ import steve6472.polyground.HitResult;
 import steve6472.polyground.block.Block;
 import steve6472.polyground.block.model.CubeHitbox;
 import steve6472.polyground.block.states.BlockState;
-import steve6472.polyground.entity.Player;
+import steve6472.polyground.entity.player.Player;
 import steve6472.polyground.gfx.MainRender;
 import steve6472.polyground.world.World;
 import steve6472.polyground.world.chunk.Chunk;

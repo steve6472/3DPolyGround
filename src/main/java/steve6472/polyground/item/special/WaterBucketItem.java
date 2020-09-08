@@ -2,7 +2,7 @@ package steve6472.polyground.item.special;
 
 import steve6472.polyground.EnumFace;
 import steve6472.polyground.block.states.BlockState;
-import steve6472.polyground.entity.Player;
+import steve6472.polyground.entity.player.Player;
 import steve6472.polyground.item.Item;
 import steve6472.polyground.registry.WaterRegistry;
 import steve6472.polyground.world.World;

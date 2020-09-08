@@ -1,6 +1,6 @@
 package steve6472.polyground.commands;
 
-import steve6472.polyground.entity.Player;
+import steve6472.polyground.entity.player.Player;
 import steve6472.polyground.gui.GameChat;
 import steve6472.polyground.world.World;
 

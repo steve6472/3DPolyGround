@@ -46,5 +46,6 @@ public class CommandRegistry
 		new RandomTicksCommand(dispatcher);
 		new LightCommand(dispatcher);
 		new SpawnPaletteCommand(dispatcher);
+		new SpawnMiningToolCommand(dispatcher);
 	}
 }

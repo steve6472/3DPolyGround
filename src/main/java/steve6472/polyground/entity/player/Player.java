@@ -1,14 +1,16 @@
-package steve6472.polyground.entity;
+package steve6472.polyground.entity.player;
 
 import org.joml.Intersectionf;
 import org.joml.Math;
+import org.joml.Vector2f;
 import org.joml.Vector3f;
 import steve6472.polyground.CaveGame;
 import steve6472.polyground.EnumFace;
 import steve6472.polyground.HitResult;
-import steve6472.polyground.Palette;
 import steve6472.polyground.block.Block;
 import steve6472.polyground.block.states.BlockState;
+import steve6472.polyground.entity.EntityHitbox;
+import steve6472.polyground.entity.MiningTool;
 import steve6472.polyground.world.World;
 import steve6472.sge.main.KeyList;
 import steve6472.sge.main.events.Event;
@@ -17,6 +19,8 @@ import steve6472.sge.main.events.MouseEvent;
 import steve6472.sge.main.game.Camera;
 import steve6472.sge.main.game.mixable.IMotion3f;
 import steve6472.sge.main.game.mixable.IPosition3f;
+
+import java.util.HashMap;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
@@ -27,6 +31,8 @@ import steve6472.sge.main.game.mixable.IPosition3f;
 public class Player implements IMotion3f, IPosition3f
 {
 	private static final float RAD_90 = Math.toRadians(90f);
+
+	public static final IHoldable EMPTY_HAND = new EmptyHand();
 
 	private final Vector3f motion, position;
 	private final CaveGame game;
@@ -40,28 +46,43 @@ public class Player implements IMotion3f, IPosition3f
 	public boolean isOnGround;
 	public boolean noClip = false;
 	public boolean isSprinting = false;
+	public World world;
 
 	public float eyeHeight = 1.62f;
 
 	public float flySpeed = 0.007f;
 	public boolean processNextBlockPlace = true;
 	public boolean processNextBlockBreak = true;
-	public Palette palette;
+	public HashMap<EnumHoldPosition, IHoldable> holdedItems;
 
 	public Player(CaveGame game)
 	{
 		camera = new Camera();
-		palette = new Palette(this);
 
 		position = new Vector3f(-2, 0.05f, 0);
 		motion = new Vector3f();
 		viewDir = new Vector3f();
+
+		holdedItems = new HashMap<>();
+
+		holdedItems.put(EnumHoldPosition.HAND_LEFT, EMPTY_HAND);
+		holdedItems.put(EnumHoldPosition.HAND_RIGHT, EMPTY_HAND);
 
 		hitbox = new EntityHitbox(0.3f, 0.9f, 0.3f, this, this);
 
 		//65 m/s terminal vel
 
 		this.game = game;
+	}
+
+	public World getWorld()
+	{
+		return world;
+	}
+
+	public void setWorld(World world)
+	{
+		this.world = world;
 	}
 
 	public EntityHitbox getHitbox()
@@ -153,8 +174,10 @@ public class Player implements IMotion3f, IPosition3f
 
 		updateHitbox();
 
-		if (palette != null)
-			palette.tick();
+		for (EnumHoldPosition holdPosition : holdedItems.keySet())
+		{
+			holdedItems.get(holdPosition).tick(holdPosition);
+		}
 	}
 
 	public void updateHitbox()
@@ -179,6 +202,14 @@ public class Player implements IMotion3f, IPosition3f
 
 		getMotion().x += xa * cos + za * sin;
 		getMotion().z += za * cos - xa * sin;
+	}
+
+	public void render()
+	{
+		for (EnumHoldPosition holdPosition : holdedItems.keySet())
+		{
+			holdedItems.get(holdPosition).render(holdPosition);
+		}
 	}
 
 	@Event
@@ -210,6 +241,19 @@ public class Player implements IMotion3f, IPosition3f
 		{
 			noClip = !noClip;
 		}
+
+		// Swap hands
+		if (e.getAction() == KeyList.PRESS && e.getKey() == KeyList.F)
+		{
+			swapHands();
+		}
+	}
+
+	public void swapHands()
+	{
+		IHoldable temp = holdedItems.get(EnumHoldPosition.HAND_LEFT);
+		holdedItems.put(EnumHoldPosition.HAND_LEFT, holdedItems.get(EnumHoldPosition.HAND_RIGHT));
+		holdedItems.put(EnumHoldPosition.HAND_RIGHT, temp);
 	}
 
 	@Event
@@ -259,7 +303,7 @@ public class Player implements IMotion3f, IPosition3f
 			}
 		}
 
-		if (event.getButton() == KeyList.LMB && event.getAction() == KeyList.PRESS)
+		if (event.getButton() == KeyList.LMB && event.getAction() == KeyList.PRESS && holdedItems.get(EnumHoldPosition.HAND_RIGHT) instanceof MiningTool)
 		{
 			if (game.hitPicker.hit)
 			{
@@ -282,31 +326,40 @@ public class Player implements IMotion3f, IPosition3f
 
 		if (event.getButton() == KeyList.MMB && event.getAction() == KeyList.PRESS)
 		{
+			HitResult hr = game.hitPicker.getHitResult();
+			IHoldable targetHoldable = getFirstTargetedHoldable();
 			if (game.hitPicker.hit)
 			{
-				HitResult hr = game.hitPicker.getHitResult();
-
-				if (palette != null)
+				if (targetHoldable != null)
 				{
-					if (hr.getFace() == EnumFace.UP)
+					if (targetHoldableDistance <= 3f)
 					{
-						Palette temp = getFirstTargetedPalette();
-						placePalette(hr.getPx(), hr.getPy(), hr.getPz());
-						// Swap
-						if (temp != null)
+						if (holdedItems.get(EnumHoldPosition.HAND_RIGHT) == EMPTY_HAND)
 						{
-							palette = temp;
-							palette.setPlayer(this);
-							game.world.getEntityManager().removeEntity(palette);
+							holdedItems.put(EnumHoldPosition.HAND_RIGHT, targetHoldable.pickUp(world, this));
+						} else if (holdedItems.get(EnumHoldPosition.HAND_LEFT) == EMPTY_HAND)
+						{
+							holdedItems.put(EnumHoldPosition.HAND_LEFT, targetHoldable.pickUp(world, this));
+						} else
+						{
+							// Swap items
+							holdedItems.get(EnumHoldPosition.HAND_LEFT).place(world, hr.getPx(), hr.getPy(), hr.getPz());
+							holdedItems.put(EnumHoldPosition.HAND_LEFT, targetHoldable.pickUp(world, this));
 						}
 					}
 				} else
 				{
-					palette = getFirstTargetedPalette();
-					if (palette != null)
+					if (hr.getFace() == EnumFace.UP)
 					{
-						palette.setPlayer(this);
-						game.world.getEntityManager().removeEntity(palette);
+						if (holdedItems.get(EnumHoldPosition.HAND_RIGHT) != EMPTY_HAND)
+						{
+							holdedItems.get(EnumHoldPosition.HAND_RIGHT).place(world, hr.getPx(), hr.getPy(), hr.getPz());
+							holdedItems.put(EnumHoldPosition.HAND_RIGHT, EMPTY_HAND);
+						} else if (holdedItems.get(EnumHoldPosition.HAND_LEFT) != EMPTY_HAND)
+						{
+							holdedItems.get(EnumHoldPosition.HAND_LEFT).place(world, hr.getPx(), hr.getPy(), hr.getPz());
+							holdedItems.put(EnumHoldPosition.HAND_LEFT, EMPTY_HAND);
+						}
 					}
 				}
 			}
@@ -316,27 +369,23 @@ public class Player implements IMotion3f, IPosition3f
 		processNextBlockBreak = true;
 	}
 
-	private void placePalette(float x, float y, float z)
-	{
-		palette.setPosition(x, y, z);
-		palette.setPivotPoint(0, 0, 0);
-		palette.setPlayer(null);
-		game.world.getEntityManager().addEntity(palette);
-		palette = null;
-	}
+	private static final Vector2f target = new Vector2f();
+	private static final Vector3f distanceTest = new Vector3f();
+	private static float targetHoldableDistance;
 
-	private Palette getFirstTargetedPalette()
+	private IHoldable getFirstTargetedHoldable()
 	{
 		for (Object o : game.world.getEntityManager().getEntities())
 		{
-			if (o instanceof Palette p)
+			if (o instanceof IHoldable p)
 			{
-				if (Intersectionf.testRayAab(
+				if (Intersectionf.intersectRayAab(
 					camera.getX(), camera.getY(), camera.getZ(),
 					viewDir.x, viewDir.y, viewDir.z,
-					Palette.AABB.minX + p.getX(), Palette.AABB.minY + p.getY(), Palette.AABB.minZ + p.getZ(),
-					Palette.AABB.maxX + p.getX(), Palette.AABB.maxY + p.getY(), Palette.AABB.maxZ + p.getZ()))
+					p.getHitbox().minX + p.getX(), p.getHitbox().minY + p.getY(), p.getHitbox().minZ + p.getZ(),
+					p.getHitbox().maxX + p.getX(), p.getHitbox().maxY + p.getY(), p.getHitbox().maxZ + p.getZ(), target))
 				{
+					targetHoldableDistance = distanceTest.set(viewDir.x, viewDir.y, viewDir.z).mul(target.x).add(camera.getX(), camera.getY(), camera.getZ()).distance(camera.getX(), camera.getY(), camera.getZ());
 					return p;
 				}
 			}

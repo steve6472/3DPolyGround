@@ -8,7 +8,7 @@ import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import steve6472.polyground.commands.Command;
 import steve6472.polyground.commands.CommandSource;
-import steve6472.polyground.entity.Player;
+import steve6472.polyground.entity.player.Player;
 import org.joml.Vector3i;
 
 import java.util.Collection;

@@ -4,7 +4,7 @@ import steve6472.polyground.EnumFace;
 import steve6472.polyground.block.properties.enums.EnumSlabType;
 import steve6472.polyground.block.special.SlabBlock;
 import steve6472.polyground.block.states.BlockState;
-import steve6472.polyground.entity.Player;
+import steve6472.polyground.entity.player.Player;
 import steve6472.polyground.item.Item;
 import steve6472.polyground.world.World;
 import steve6472.sge.main.KeyList;

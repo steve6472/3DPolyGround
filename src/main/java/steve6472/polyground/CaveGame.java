@@ -8,7 +8,8 @@ import steve6472.polyground.block.model.IElement;
 import steve6472.polyground.block.model.ModelLoader;
 import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.commands.CommandSource;
-import steve6472.polyground.entity.Player;
+import steve6472.polyground.entity.MiningTool;
+import steve6472.polyground.entity.player.Player;
 import steve6472.polyground.events.CancellableEvent;
 import steve6472.polyground.events.SpecialBlockRegistryEvent;
 import steve6472.polyground.generator.DataGenerator;
@@ -106,7 +107,7 @@ public class CaveGame extends MainApp
 
 		itemInHand = Items.getItemByName("stone");
 
-		mainRender.miningTool.loadModel(mainRender.buildHelper, modelLoader);
+		MiningTool.initModel(mainRender.buildHelper, modelLoader);
 		Palette.initModel(mainRender.buildHelper, modelLoader);
 
 		getEventHandler().runEvent(new WindowSizeEvent(getWindowWidth(), getWindowHeight()));
@@ -142,6 +143,7 @@ public class CaveGame extends MainApp
 	public void setWorld(World world)
 	{
 		this.world = world;
+		player.setWorld(world);
 		this.commandRegistry.commandSource = new CommandSource(player, world, inGameGui.chat);
 		hitPicker = new HitPicker(world);
 	}
@@ -210,7 +212,6 @@ public class CaveGame extends MainApp
 
 
 		PolyUtil.updateDirectionRay(player.viewDir, getCamera());
-		mainRender.miningTool.tick();
 
 		//		particles.testParticle(player.viewDir.x * 4.2f + player.getX(), player.viewDir.y * 4.2f + player.getY() + player.getEyeHeight(), player.viewDir.z * 4.2f + player.getZ());
 

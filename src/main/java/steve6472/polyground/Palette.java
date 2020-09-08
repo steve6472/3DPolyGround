@@ -5,12 +5,13 @@ import org.joml.Vector3f;
 import steve6472.polyground.block.Block;
 import steve6472.polyground.block.model.ModelLoader;
 import steve6472.polyground.entity.DynamicEntityModel;
-import steve6472.polyground.entity.Player;
 import steve6472.polyground.entity.StaticEntityModel;
-import steve6472.polyground.entity.interfaces.IRenderable;
 import steve6472.polyground.entity.interfaces.IRotation;
-import steve6472.polyground.entity.interfaces.ITickable;
+import steve6472.polyground.entity.player.EnumHoldPosition;
+import steve6472.polyground.entity.player.IHoldable;
+import steve6472.polyground.entity.player.Player;
 import steve6472.polyground.world.ModelBuilder;
+import steve6472.polyground.world.World;
 import steve6472.sge.main.game.mixable.IPosition3f;
 
 import java.util.ArrayList;
@@ -22,9 +23,9 @@ import java.util.List;
  * Project: CaveGame
  *
  ***********************/
-public class Palette implements IPosition3f, IRotation, IRenderable, ITickable
+public class Palette implements IHoldable, IRotation
 {
-	private static final StaticEntityModel PALLETE_MODE = new StaticEntityModel();
+	private static final StaticEntityModel PALLETE_MODEL = new StaticEntityModel();
 	private static final Dummy DUMMY = new Dummy();
 	public static final AABBf AABB = new AABBf(-0.375f, 0, -0.375f, 0.375f, 0.1875f, 0.375f);
 
@@ -40,6 +41,23 @@ public class Palette implements IPosition3f, IRotation, IRenderable, ITickable
 		this.rotations = new Vector3f();
 		this.pivotPoint = new Vector3f();
 		items = new ArrayList<>();
+	}
+
+	@Override
+	public IHoldable pickUp(World world, Player player)
+	{
+		this.player = player;
+		world.getEntityManager().removeEntity(this);
+		return this;
+	}
+
+	@Override
+	public void place(World world, float x, float y, float z)
+	{
+		setPosition(x, y, z);
+		setPivotPoint(0, 0, 0);
+		world.getEntityManager().addEntity(this);
+		this.player = null;
 	}
 
 	public boolean canBeAdded(Block blocktype)
@@ -67,34 +85,38 @@ public class Palette implements IPosition3f, IRotation, IRenderable, ITickable
 	}
 
 	@Override
-	public void tick()
+	public void tick(EnumHoldPosition position)
 	{
-		if (CaveGame.getInstance().world.getState((int) getX(), (int) getY(), (int) getZ()).getBlock() != Block.air)
+		if (position == EnumHoldPosition.GROUND)
 		{
-			addPosition(0, 1f / 60f, 0);
-		}
-		if (CaveGame.getInstance().world.getState((int) getX(), (int) (getY() - 0.1f), (int) getZ()).getBlock() == Block.air)
+			if (CaveGame.getInstance().world.getState((int) getX(), (int) getY(), (int) getZ()).getBlock() != Block.air)
+			{
+				addPosition(0, 1f / 60f, 0);
+			}
+			if (CaveGame.getInstance().world.getState((int) getX(), (int) (getY() - 0.1f), (int) getZ()).getBlock() == Block.air)
+			{
+				addPosition(0, -1f / 60f, 0);
+			}
+
+			if (getY() < 0)
+				setY(0);
+		} else
 		{
-			addPosition(0, -1f / 60f, 0);
+			float z = position == EnumHoldPosition.HAND_LEFT ? 1f : -1f;
+
+			setPosition(player.getPosition());
+			setPivotPoint(-0.6f, -0.8f, z);
+			setRotations(0, player.getCamera().getYaw() + 1.5707963267948966f, 0);
+			setPosition(player.getX() + 0.6f, player.getY() + 0.8f, player.getZ() - z);
+
+			DUMMY.setRotations(0, player.getCamera().getYaw() + 1.5707963267948966f, 0);
 		}
-
-		if (getY() < 0)
-			setY(0);
-
-		if (player == null)
-			return;
-
-		setPosition(player.getPosition());
-		setPivotPoint(-0.6f, -0.8f, +1f);
-		setRotations(0, player.getCamera().getYaw() + 1.5707963267948966f, 0);
-		setPosition(player.getX() + 0.6f, player.getY() + 0.8f, player.getZ() - 1f);
-
-		DUMMY.setRotations(0, player.getCamera().getYaw() + 1.5707963267948966f, 0);
 	}
 
-	public void render()
+	@Override
+	public void render(EnumHoldPosition position)
 	{
-		PALLETE_MODE.render(CaveGame.getInstance().getCamera().getViewMatrix(), this, this, 1f);
+		PALLETE_MODEL.render(CaveGame.getInstance().getCamera().getViewMatrix(), this, this, 1f);
 
 		int index = 0;
 
@@ -114,7 +136,7 @@ public class Palette implements IPosition3f, IRotation, IRenderable, ITickable
 						DynamicEntityModel.createMatrix(this, this, 1f)
 							.translate(j / 16f - 0.25f, i / 16f + 1 / 16f, k / 16f - 0.25f)
 							.scale(1 / 16f))
-						;
+					;
 					index++;
 				}
 			}
@@ -136,7 +158,7 @@ public class Palette implements IPosition3f, IRotation, IRenderable, ITickable
 
 	public static void initModel(ModelBuilder modelBuilder, ModelLoader modelLoader)
 	{
-		PALLETE_MODE.load(modelBuilder, modelLoader, "custom_models/small_palette.bbmodel");
+		PALLETE_MODEL.load(modelBuilder, modelLoader, "custom_models/small_palette.bbmodel");
 	}
 
 	@Override
@@ -160,6 +182,18 @@ public class Palette implements IPosition3f, IRotation, IRenderable, ITickable
 	public void setPlayer(Player player)
 	{
 		this.player = player;
+	}
+
+	@Override
+	public AABBf getHitbox()
+	{
+		return AABB;
+	}
+
+	@Override
+	public String getName()
+	{
+		return "palette";
 	}
 
 	private static class Dummy implements IPosition3f, IRotation

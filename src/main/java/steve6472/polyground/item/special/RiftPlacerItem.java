@@ -2,7 +2,7 @@ package steve6472.polyground.item.special;
 
 import steve6472.polyground.CaveGame;
 import steve6472.polyground.commands.coms.RiftCommand;
-import steve6472.polyground.entity.Player;
+import steve6472.polyground.entity.player.Player;
 import steve6472.polyground.events.WorldEvent;
 import steve6472.polyground.item.Item;
 import steve6472.sge.main.KeyList;

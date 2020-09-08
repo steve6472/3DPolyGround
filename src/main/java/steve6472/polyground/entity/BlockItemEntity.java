@@ -2,12 +2,15 @@ package steve6472.polyground.entity;
 
 import org.joml.Vector3f;
 import steve6472.polyground.CaveGame;
+import steve6472.polyground.Palette;
 import steve6472.polyground.block.Block;
 import steve6472.polyground.block.model.BlockModel;
 import steve6472.polyground.entity.interfaces.IKillable;
 import steve6472.polyground.entity.interfaces.IRenderable;
 import steve6472.polyground.entity.interfaces.ITickable;
 import steve6472.polyground.entity.interfaces.IWorldContainer;
+import steve6472.polyground.entity.player.EnumHoldPosition;
+import steve6472.polyground.entity.player.Player;
 import steve6472.polyground.world.World;
 import steve6472.sge.main.Util;
 
@@ -75,17 +78,25 @@ public class BlockItemEntity extends EntityBase implements IRenderable, ITickabl
 
 			Player player = CaveGame.getInstance().getPlayer();
 
-			if (player.palette == null)
-				return;
-
-			if (new Vector3f(getPosition()).add(0.5f, 1f / 32f, 0.5f).distance(player.getPosition()) <= 5 && player.palette.canBeAdded(blockType))
+			if (player.holdedItems.get(EnumHoldPosition.HAND_LEFT) instanceof Palette p)
 			{
-				Vector3f dir = new Vector3f(player.getPosition()).sub(getPosition()).sub(0.5f, 1f / 32f, 0.5f).normalize().mul(Math.min((float) ((timeAlive - 1.2) * (timeAlive - 1.2)) / 20f, 0.1f));
-				addPosition(dir);
-				if (new Vector3f(getPosition()).add(0.5f, 1f / 32f, 0.5f).distance(player.getPosition()) <= 0.1f)
-				{
-					setDead(player.palette.addItem(blockType, model));
-				}
+				tryToAdd(player, p);
+			} else if (player.holdedItems.get(EnumHoldPosition.HAND_RIGHT) instanceof Palette p && !forceDead)
+			{
+				tryToAdd(player, p);
+			}
+		}
+	}
+
+	private void tryToAdd(Player player, Palette p)
+	{
+		if (new Vector3f(getPosition()).add(0.5f, 1f / 32f, 0.5f).distance(player.getPosition()) <= 5 && p.canBeAdded(blockType))
+		{
+			Vector3f dir = new Vector3f(player.getPosition()).sub(getPosition()).sub(0.5f, 1f / 32f, 0.5f).normalize().mul(Math.min((float) ((timeAlive - 1.2) * (timeAlive - 1.2)) / 20f, 0.1f));
+			addPosition(dir);
+			if (new Vector3f(getPosition()).add(0.5f, 1f / 32f, 0.5f).distance(player.getPosition()) <= 0.1f)
+			{
+				setDead(p.addItem(blockType, model));
 			}
 		}
 	}

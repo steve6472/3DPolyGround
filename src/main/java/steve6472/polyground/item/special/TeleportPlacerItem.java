@@ -3,7 +3,7 @@ package steve6472.polyground.item.special;
 import org.joml.Vector3f;
 import steve6472.polyground.CaveGame;
 import steve6472.polyground.commands.coms.TeleCommand;
-import steve6472.polyground.entity.Player;
+import steve6472.polyground.entity.player.Player;
 import steve6472.polyground.events.WorldEvent;
 import steve6472.polyground.item.Item;
 import steve6472.sge.main.KeyList;

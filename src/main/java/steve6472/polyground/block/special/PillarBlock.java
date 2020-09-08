@@ -7,7 +7,7 @@ import steve6472.polyground.block.properties.IProperty;
 import steve6472.polyground.block.properties.enums.EnumAxis;
 import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.block.states.States;
-import steve6472.polyground.entity.Player;
+import steve6472.polyground.entity.player.Player;
 import steve6472.polyground.world.World;
 
 import java.io.File;
