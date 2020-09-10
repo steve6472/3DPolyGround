@@ -1,14 +1,15 @@
 package steve6472.polyground.item.special;
 
+import org.joml.Vector3f;
 import steve6472.polyground.CaveGame;
 import steve6472.polyground.commands.coms.RiftCommand;
+import steve6472.polyground.entity.player.EnumSlot;
 import steve6472.polyground.entity.player.Player;
 import steve6472.polyground.events.WorldEvent;
 import steve6472.polyground.item.Item;
 import steve6472.sge.main.KeyList;
 import steve6472.sge.main.events.Event;
 import steve6472.sge.main.events.MouseEvent;
-import org.joml.Vector3f;
 
 import java.io.File;
 import java.util.Collections;
@@ -69,7 +70,7 @@ public class RiftPlacerItem extends Item
 	}
 
 	@Override
-	public void onClick(Player player, MouseEvent click)
+	public void onClick(Player player, EnumSlot slot, MouseEvent click)
 	{
 		if (click.getAction() == KeyList.PRESS)
 		{

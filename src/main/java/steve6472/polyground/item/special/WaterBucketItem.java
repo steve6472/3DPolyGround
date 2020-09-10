@@ -2,6 +2,7 @@ package steve6472.polyground.item.special;
 
 import steve6472.polyground.EnumFace;
 import steve6472.polyground.block.states.BlockState;
+import steve6472.polyground.entity.player.EnumSlot;
 import steve6472.polyground.entity.player.Player;
 import steve6472.polyground.item.Item;
 import steve6472.polyground.registry.WaterRegistry;
@@ -25,7 +26,7 @@ public class WaterBucketItem extends Item
 	}
 
 	@Override
-	public void onClick(World world, BlockState state, Player player, EnumFace clickedOn, MouseEvent click, int x, int y, int z)
+	public void onClick(World world, BlockState state, Player player, EnumSlot slot, EnumFace clickedOn, MouseEvent click, int x, int y, int z)
 	{
 		if (click.getAction() == KeyList.PRESS)
 		{

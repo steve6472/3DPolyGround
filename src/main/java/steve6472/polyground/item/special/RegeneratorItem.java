@@ -1,6 +1,7 @@
 package steve6472.polyground.item.special;
 
 import steve6472.polyground.CaveGame;
+import steve6472.polyground.entity.player.EnumSlot;
 import steve6472.polyground.entity.player.Player;
 import steve6472.polyground.item.Item;
 import steve6472.sge.main.KeyList;
@@ -22,7 +23,7 @@ public class RegeneratorItem extends Item
 	}
 
 	@Override
-	public void onClick(Player player, MouseEvent click)
+	public void onClick(Player player, EnumSlot slot, MouseEvent click)
 	{
 		if (click.getAction() == KeyList.PRESS)
 		{

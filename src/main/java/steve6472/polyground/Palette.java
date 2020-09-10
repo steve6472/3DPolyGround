@@ -156,7 +156,8 @@ public class Palette implements IHoldable, IRotation
 		} else
 		{
 			items.remove(items.size() - 1);
-			blockType = null;
+			if (items.isEmpty())
+				blockType = null;
 			return true;
 		}
 	}

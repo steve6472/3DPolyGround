@@ -4,6 +4,7 @@ import steve6472.polyground.CaveGame;
 import steve6472.polyground.EnumFace;
 import steve6472.polyground.block.properties.IProperty;
 import steve6472.polyground.block.states.BlockState;
+import steve6472.polyground.entity.player.EnumSlot;
 import steve6472.polyground.entity.player.Player;
 import steve6472.polyground.events.InGameGuiEvent;
 import steve6472.polyground.gui.floatingdialogs.BlockStateDialog;
@@ -31,7 +32,7 @@ public class BlockInspectorItem extends Item
 	}
 
 	@Override
-	public void onClick(World world, BlockState state, Player player, EnumFace clickedOn, MouseEvent click, int x, int y, int z)
+	public void onClick(World world, BlockState state, Player player, EnumSlot slot, EnumFace clickedOn, MouseEvent click, int x, int y, int z)
 	{
 		if (click.getButton() == KeyList.RMB && click.getAction() == KeyList.PRESS)
 		{

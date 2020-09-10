@@ -4,6 +4,7 @@ import steve6472.polyground.EnumFace;
 import steve6472.polyground.block.properties.enums.EnumSlabType;
 import steve6472.polyground.block.special.SlabBlock;
 import steve6472.polyground.block.states.BlockState;
+import steve6472.polyground.entity.player.EnumSlot;
 import steve6472.polyground.entity.player.Player;
 import steve6472.polyground.item.Item;
 import steve6472.polyground.world.World;
@@ -26,7 +27,7 @@ public class SlabItem extends Item
 	}
 
 	@Override
-	public void onClick(World world, BlockState state, Player player, EnumFace clickedOn, MouseEvent click, int x, int y, int z)
+	public void onClick(World world, BlockState state, Player player, EnumSlot slot, EnumFace clickedOn, MouseEvent click, int x, int y, int z)
 	{
 		if (click.getAction() == KeyList.PRESS && click.getButton() == KeyList.RMB)
 		{
