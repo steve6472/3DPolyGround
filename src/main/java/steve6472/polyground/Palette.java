@@ -7,7 +7,7 @@ import steve6472.polyground.block.model.ModelLoader;
 import steve6472.polyground.entity.DynamicEntityModel;
 import steve6472.polyground.entity.StaticEntityModel;
 import steve6472.polyground.entity.interfaces.IRotation;
-import steve6472.polyground.entity.player.EnumHoldPosition;
+import steve6472.polyground.entity.player.EnumSlot;
 import steve6472.polyground.entity.player.IHoldable;
 import steve6472.polyground.entity.player.Player;
 import steve6472.polyground.world.ModelBuilder;
@@ -27,7 +27,7 @@ public class Palette implements IHoldable, IRotation
 {
 	private static final StaticEntityModel PALLETE_MODEL = new StaticEntityModel();
 	private static final Dummy DUMMY = new Dummy();
-	public static final AABBf AABB = new AABBf(-0.375f, 0, -0.375f, 0.375f, 0.1875f, 0.375f);
+	private static final AABBf AABB = new AABBf(-0.375f, 0, -0.375f, 0.375f, 0.1875f, 0.375f);
 
 	private Block blockType;
 	private Player player;
@@ -60,6 +60,11 @@ public class Palette implements IHoldable, IRotation
 		this.player = null;
 	}
 
+	public Block getBlockType()
+	{
+		return blockType;
+	}
+
 	public boolean canBeAdded(Block blocktype)
 	{
 		return blockType == null || blocktype == this.blockType && items.size() < 8 * 8 * 8;
@@ -85,9 +90,9 @@ public class Palette implements IHoldable, IRotation
 	}
 
 	@Override
-	public void tick(EnumHoldPosition position)
+	public void tick(EnumSlot position)
 	{
-		if (position == EnumHoldPosition.GROUND)
+		if (position == EnumSlot.GROUND)
 		{
 			if (CaveGame.getInstance().world.getState((int) getX(), (int) getY(), (int) getZ()).getBlock() != Block.air)
 			{
@@ -102,7 +107,7 @@ public class Palette implements IHoldable, IRotation
 				setY(0);
 		} else
 		{
-			float z = position == EnumHoldPosition.HAND_LEFT ? 1f : -1f;
+			float z = position == EnumSlot.HAND_LEFT ? 1f : -1f;
 
 			setPosition(player.getPosition());
 			setPivotPoint(-0.6f, -0.8f, z);
@@ -114,7 +119,7 @@ public class Palette implements IHoldable, IRotation
 	}
 
 	@Override
-	public void render(EnumHoldPosition position)
+	public void render(EnumSlot position)
 	{
 		PALLETE_MODEL.render(CaveGame.getInstance().getCamera().getViewMatrix(), this, this, 1f);
 

@@ -189,10 +189,10 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="140" y="0" width="1092" height="728" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1366.728@0.0.1366.728" timestamp="1597247857083" />
-    <state x="270" y="26" width="476" height="598" key="#com.intellij.ide.util.MemberChooser" timestamp="1599573022977">
+    <state x="270" y="26" width="476" height="598" key="#com.intellij.ide.util.MemberChooser" timestamp="1599752730368">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="270" y="26" width="476" height="598" key="#com.intellij.ide.util.MemberChooser/0.0.1366.728@0.0.1366.728" timestamp="1599573022977" />
+    <state x="270" y="26" width="476" height="598" key="#com.intellij.ide.util.MemberChooser/0.0.1366.728@0.0.1366.728" timestamp="1599752730368" />
     <state x="415" y="111" key="#com.intellij.ide.util.TreeClassChooserDialog" timestamp="1593696801649">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
@@ -217,22 +217,22 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="463" y="105" key="FileChooserDialogImpl/0.0.1366.728@0.0.1366.728" timestamp="1599343011985" />
-    <state width="327" height="621" key="GridCell.Tab.0.bottom" timestamp="1599573675733">
+    <state width="1291" height="621" key="GridCell.Tab.0.bottom" timestamp="1599753894756">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="327" height="621" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1599573675733" />
-    <state width="327" height="621" key="GridCell.Tab.0.center" timestamp="1599573675733">
+    <state width="1291" height="621" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1599753894756" />
+    <state width="1291" height="621" key="GridCell.Tab.0.center" timestamp="1599753894756">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="327" height="621" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1599573675733" />
-    <state width="327" height="621" key="GridCell.Tab.0.left" timestamp="1599573675733">
+    <state width="1291" height="621" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1599753894756" />
+    <state width="1291" height="621" key="GridCell.Tab.0.left" timestamp="1599753894756">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="327" height="621" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1599573675733" />
-    <state width="327" height="621" key="GridCell.Tab.0.right" timestamp="1599573675733">
+    <state width="1291" height="621" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1599753894756" />
+    <state width="1291" height="621" key="GridCell.Tab.0.right" timestamp="1599753894756">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="327" height="621" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1599573675733" />
+    <state width="1291" height="621" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1599753894756" />
     <state width="327" height="621" key="GridCell.Tab.1.bottom" timestamp="1599573675734">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
@@ -297,10 +297,10 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="341" y="163" width="672" height="677" key="run.anything.popup/0.0.1366.728@0.0.1366.728" timestamp="1599066441543" />
-    <state x="346" y="49" width="672" height="160" key="search.everywhere.popup" timestamp="1599573635490">
+    <state x="346" y="49" width="672" height="160" key="search.everywhere.popup" timestamp="1599754357018">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="346" y="49" width="672" height="160" key="search.everywhere.popup/0.0.1366.728@0.0.1366.728" timestamp="1599573635490" />
+    <state x="346" y="49" width="672" height="160" key="search.everywhere.popup/0.0.1366.728@0.0.1366.728" timestamp="1599754357018" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

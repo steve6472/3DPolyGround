@@ -16,9 +16,9 @@ public interface IHoldable extends IPosition3f
 
 	void place(World world, float x, float y, float z);
 
-	void render(EnumHoldPosition position);
+	void render(EnumSlot position);
 
-	void tick(EnumHoldPosition position);
+	void tick(EnumSlot position);
 
 	AABBf getHitbox();
 

@@ -309,7 +309,8 @@ public class Block
 	 */
 	public void onPlayerBreak(BlockState state, World world, Player player, EnumFace breakedFrom, int x, int y, int z)
 	{
-		spawnLoot(state, world, x, y, z);
+		if (player.getGamemode().spawBlockLoot)
+			spawnLoot(state, world, x, y, z);
 	}
 
 	/**

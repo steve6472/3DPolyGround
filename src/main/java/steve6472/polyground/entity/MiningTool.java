@@ -3,7 +3,7 @@ package steve6472.polyground.entity;
 import org.joml.AABBf;
 import steve6472.polyground.CaveGame;
 import steve6472.polyground.block.model.ModelLoader;
-import steve6472.polyground.entity.player.EnumHoldPosition;
+import steve6472.polyground.entity.player.EnumSlot;
 import steve6472.polyground.entity.player.IHoldable;
 import steve6472.polyground.entity.player.Player;
 import steve6472.polyground.world.ModelBuilder;
@@ -48,17 +48,17 @@ public class MiningTool extends EntityBase implements IHoldable
 	}
 
 	@Override
-	public void render(EnumHoldPosition position)
+	public void render(EnumSlot position)
 	{
 		MINING_TOOL_MODEL.render(CaveGame.getInstance().getCamera().getViewMatrix(), this, this, 1);
 	}
 
 	@Override
-	public void tick(EnumHoldPosition position)
+	public void tick(EnumSlot position)
 	{
-		if (position != EnumHoldPosition.GROUND)
+		if (position != EnumSlot.GROUND)
 		{
-			float z = position == EnumHoldPosition.HAND_LEFT ? -1f : 1f;
+			float z = position == EnumSlot.HAND_LEFT ? -1f : 1f;
 
 			setRotations(0, player.getCamera().getYaw() + 1.5707963267948966f, player.getCamera().getPitch());
 			setPosition(player.getX() + 0.6f, player.getY() + 0.8f, player.getZ() + z);

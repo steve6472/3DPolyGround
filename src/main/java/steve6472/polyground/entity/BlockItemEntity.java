@@ -9,7 +9,7 @@ import steve6472.polyground.entity.interfaces.IKillable;
 import steve6472.polyground.entity.interfaces.IRenderable;
 import steve6472.polyground.entity.interfaces.ITickable;
 import steve6472.polyground.entity.interfaces.IWorldContainer;
-import steve6472.polyground.entity.player.EnumHoldPosition;
+import steve6472.polyground.entity.player.EnumSlot;
 import steve6472.polyground.entity.player.Player;
 import steve6472.polyground.world.World;
 import steve6472.sge.main.Util;
@@ -78,17 +78,18 @@ public class BlockItemEntity extends EntityBase implements IRenderable, ITickabl
 
 			Player player = CaveGame.getInstance().getPlayer();
 
-			if (player.holdedItems.get(EnumHoldPosition.HAND_LEFT) instanceof Palette p)
+			for (EnumSlot s : EnumSlot.getSlots())
 			{
-				tryToAdd(player, p);
-			} else if (player.holdedItems.get(EnumHoldPosition.HAND_RIGHT) instanceof Palette p && !forceDead)
-			{
-				tryToAdd(player, p);
+				if (player.holdedItems.get(s) instanceof Palette p)
+				{
+					if (tryToAdd(player, p))
+						break;
+				}
 			}
 		}
 	}
 
-	private void tryToAdd(Player player, Palette p)
+	private boolean tryToAdd(Player player, Palette p)
 	{
 		if (new Vector3f(getPosition()).add(0.5f, 1f / 32f, 0.5f).distance(player.getPosition()) <= 5 && p.canBeAdded(blockType))
 		{
@@ -97,8 +98,10 @@ public class BlockItemEntity extends EntityBase implements IRenderable, ITickabl
 			if (new Vector3f(getPosition()).add(0.5f, 1f / 32f, 0.5f).distance(player.getPosition()) <= 0.1f)
 			{
 				setDead(p.addItem(blockType, model));
+				return true;
 			}
 		}
+		return false;
 	}
 
 	private float calculateSize(double y)

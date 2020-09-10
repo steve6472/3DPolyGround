@@ -47,5 +47,6 @@ public class CommandRegistry
 		new LightCommand(dispatcher);
 		new SpawnPaletteCommand(dispatcher);
 		new SpawnMiningToolCommand(dispatcher);
+		new GamemodeCommand(dispatcher);
 	}
 }

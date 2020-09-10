@@ -2,7 +2,7 @@ package steve6472.polyground.entity;
 
 import steve6472.polyground.block.Block;
 import steve6472.polyground.entity.interfaces.*;
-import steve6472.polyground.entity.player.EnumHoldPosition;
+import steve6472.polyground.entity.player.EnumSlot;
 import steve6472.polyground.entity.player.IHoldable;
 import steve6472.polyground.world.World;
 import steve6472.sge.main.game.mixable.IPosition3f;
@@ -54,7 +54,7 @@ public class EntityManager
 				c.tick();
 
 			if (o instanceof IHoldable c)
-				c.tick(EnumHoldPosition.GROUND);
+				c.tick(EnumSlot.GROUND);
 
 			if (o instanceof ICollideable c)
 			{
@@ -94,7 +94,7 @@ public class EntityManager
 		for (Object o : entities)
 		{
 			if (o instanceof IHoldable r)
-				r.render(EnumHoldPosition.GROUND);
+				r.render(EnumSlot.GROUND);
 		}
 	}
 

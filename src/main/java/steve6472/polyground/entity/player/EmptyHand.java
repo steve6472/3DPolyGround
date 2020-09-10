@@ -45,13 +45,13 @@ public class EmptyHand implements IHoldable
 	}
 
 	@Override
-	public void tick(EnumHoldPosition holdPosition)
+	public void tick(EnumSlot holdPosition)
 	{
 		position.set(CaveGame.getInstance().getPlayer().getPosition());
 	}
 
 	@Override
-	public void render(EnumHoldPosition position)
+	public void render(EnumSlot position)
 	{
 
 	}

@@ -86,6 +86,9 @@ public class ItemBar extends Component
 	@Event
 	public void scroll(ScrollEvent e)
 	{
+		if (!isVisible())
+			return;
+
 		if (e.getyOffset() > 0)
 			scroll--;
 		if (e.getyOffset() < 0)
