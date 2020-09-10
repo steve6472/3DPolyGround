@@ -29,7 +29,7 @@ public class StateLoader
 		block.setDefaultState(new BlockState(block, new BlockModel[] {model}, null, null, t));
 	}
 
-	private static BlockModel[] loadModels(JSONArray modelsArray, JSONArray rotation, boolean uvLock)
+	private static BlockModel[] loadModels(JSONArray modelsArray, JSONArray rotation)
 	{
 		BlockModel[] models = new BlockModel[modelsArray.length()];
 
@@ -46,7 +46,7 @@ public class StateLoader
 		if (properties.isEmpty())
 		{
 			if (blockstates.has("models"))
-				block.setDefaultState(new BlockState(block, loadModels(blockstates.getJSONArray("models"), new JSONArray().put(0).put(0).put(0), true), null, null, blockstates.optJSONArray("tags")));
+				block.setDefaultState(new BlockState(block, loadModels(blockstates.getJSONArray("models"), new JSONArray().put(0).put(0).put(0)), null, null, blockstates.optJSONArray("tags")));
 			else
 				block.setDefaultState(new BlockState(block, new BlockModel[]{new BlockModel(blockstates.getString("model"), new JSONArray().put(0).put(0).put(0))}, null, null, blockstates.optJSONArray("tags")));
 			return;
@@ -162,7 +162,7 @@ public class StateLoader
 				if (modelPath != null)
 					state = new BlockState(block, new BlockModel[]{new BlockModel(modelPath, rotation)}, map, tileStates, tags);
 				else if (modelsArray != null)
-					state = new BlockState(block, loadModels(modelsArray, rotation, uvLock), map, tileStates, tags);
+					state = new BlockState(block, loadModels(modelsArray, rotation), map, tileStates, tags);
 				else
 					throw new IllegalStateException("wut, no model found");
 				if (block.getDefaultState() == null)

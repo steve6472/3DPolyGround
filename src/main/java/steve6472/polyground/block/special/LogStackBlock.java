@@ -1,5 +1,6 @@
 package steve6472.polyground.block.special;
 
+import org.json.JSONObject;
 import steve6472.polyground.EnumFace;
 import steve6472.polyground.block.properties.IProperty;
 import steve6472.polyground.block.properties.IntProperty;
@@ -8,7 +9,6 @@ import steve6472.polyground.block.states.States;
 import steve6472.polyground.entity.player.Player;
 import steve6472.polyground.world.World;
 
-import java.io.File;
 import java.util.List;
 
 /**********************
@@ -21,9 +21,9 @@ public class LogStackBlock extends CustomBlock
 {
 	public static IntProperty LOGS = States.LOGS;
 
-	public LogStackBlock(File f)
+	public LogStackBlock(JSONObject json)
 	{
-		super(f);
+		super(json);
 		setDefaultState(getDefaultState().with(LOGS, 6).get());
 	}
 

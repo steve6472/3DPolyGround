@@ -1,7 +1,7 @@
 package steve6472.polyground.gfx.particle.particles.torch.spawner;
 
 import org.joml.Vector3f;
-import steve6472.SSS;
+import org.json.JSONObject;
 import steve6472.polyground.world.World;
 
 /**********************
@@ -14,5 +14,5 @@ public abstract class Spawner
 {
 	public abstract void spawn(Vector3f position, World world, float x, float y, float z);
 
-	public abstract void loadSpawnData(SSS data);
+	public abstract void loadSpawnData(JSONObject json);
 }

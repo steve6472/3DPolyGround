@@ -1,8 +1,7 @@
 package steve6472.polyground.registry.block;
 
+import org.json.JSONObject;
 import steve6472.polyground.block.Block;
-
-import java.io.File;
 
 public class SpecialBlockEntry<T extends Block>
 {
@@ -13,8 +12,8 @@ public class SpecialBlockEntry<T extends Block>
 		this.factory = factory;
 	}
 
-	public T createNew(File f)
+	public T createNew(JSONObject json)
 	{
-		return factory.create(f);
+		return factory.create(json);
 	}
 }

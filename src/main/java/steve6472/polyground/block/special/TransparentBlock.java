@@ -1,8 +1,7 @@
 package steve6472.polyground.block.special;
 
+import org.json.JSONObject;
 import steve6472.polyground.block.Block;
-
-import java.io.File;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
@@ -12,8 +11,8 @@ import java.io.File;
  ***********************/
 public class TransparentBlock extends Block
 {
-	public TransparentBlock(File f)
+	public TransparentBlock(JSONObject json)
 	{
-		super(f);
+		super(json);
 	}
 }

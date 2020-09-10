@@ -1,5 +1,6 @@
 package steve6472.polyground.block.special;
 
+import org.json.JSONObject;
 import steve6472.polyground.CaveGame;
 import steve6472.polyground.EnumFace;
 import steve6472.polyground.block.Block;
@@ -12,7 +13,6 @@ import steve6472.polyground.world.World;
 import steve6472.sge.main.KeyList;
 import steve6472.sge.main.events.MouseEvent;
 
-import java.io.File;
 import java.util.List;
 
 /**********************
@@ -25,9 +25,9 @@ public class SnowLayerBlock extends CustomBlock
 {
 	public static final IntProperty SNOW_LAYER = States.SNOW_LAYERS;
 
-	public SnowLayerBlock(File f)
+	public SnowLayerBlock(JSONObject json)
 	{
-		super(f);
+		super(json);
 		setDefaultState(getDefaultState().with(SNOW_LAYER, 1).get());
 		isFull = false;
 	}
@@ -80,7 +80,8 @@ public class SnowLayerBlock extends CustomBlock
 			int width = state.get(SNOW_LAYER);
 			if (width > 1)
 			{
-				spawnLoot(state.with(SNOW_LAYER, 1).get(), world, x, y, z);
+				if (player.gamemode.spawBlockLoot)
+					spawnLoot(state.with(SNOW_LAYER, 1).get(), world, x, y, z);
 				world.setState(state.with(SNOW_LAYER, width - 1).get(), x, y, z);
 				player.processNextBlockBreak = false;
 			}

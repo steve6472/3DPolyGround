@@ -1,9 +1,12 @@
 package steve6472.polyground.block.special;
 
 import org.joml.Vector3f;
-import steve6472.SSS;
+import org.json.JSONObject;
 import steve6472.polyground.block.Block;
 import steve6472.polyground.block.states.BlockState;
+import steve6472.polyground.gfx.light.EnumLightSource;
+import steve6472.polyground.gfx.light.Light;
+import steve6472.polyground.gfx.light.LightManager;
 import steve6472.polyground.gfx.particle.particles.LightParticle;
 import steve6472.polyground.gfx.particle.particles.torch.motion.AcidFormula;
 import steve6472.polyground.gfx.particle.particles.torch.motion.Formula;
@@ -12,13 +15,9 @@ import steve6472.polyground.gfx.particle.particles.torch.spawner.BoxSpawner;
 import steve6472.polyground.gfx.particle.particles.torch.spawner.Spawner;
 import steve6472.polyground.gfx.particle.particles.torch.spawner.SphereSpawner;
 import steve6472.polyground.world.World;
-import steve6472.polyground.gfx.light.EnumLightSource;
-import steve6472.polyground.gfx.light.Light;
-import steve6472.polyground.gfx.light.LightManager;
 import steve6472.sge.main.util.ColorUtil;
 import steve6472.sge.main.util.RandomUtil;
 
-import java.io.File;
 import java.util.HashMap;
 import java.util.function.Supplier;
 
@@ -30,12 +29,10 @@ import java.util.function.Supplier;
  ***********************/
 public class TorchBlock extends Block
 {
-	private File f;
 	private float r, g, b, a;
 	private float constant, linear, quadratic;
 	private EnumMotionFormula motionFormula;
-	private SSS formulaData;
-	private SSS spawnerData;
+	private JSONObject formulaData;
 	private Spawner spawner;
 
 	private static HashMap<EnumMotionFormula, Supplier<Formula>> formulas;
@@ -52,71 +49,63 @@ public class TorchBlock extends Block
 		spawners.put(EnumSpawner.SPHERE, SphereSpawner::new);
 	}
 
-	private static Spawner getSpawner(EnumSpawner formula, SSS formulaData)
+	private static Spawner getSpawner(EnumSpawner formula, JSONObject formulaData)
 	{
 		Spawner f = spawners.get(formula).get();
 		f.loadSpawnData(formulaData);
 		return f;
 	}
 
-	private static Formula getFormula(EnumMotionFormula formula, SSS formulaData)
+	private static Formula getFormula(EnumMotionFormula formula, JSONObject formulaData)
 	{
 		Formula f = formulas.get(formula).get();
 		f.loadFormulaData(formulaData);
 		return f;
 	}
 
-	public TorchBlock(File f)
+	public TorchBlock(JSONObject json)
 	{
-		super(f);
-		this.f = f;
+		super(json);
 	}
 
 	@Override
-	public void postLoad()
+	public void load(JSONObject json)
 	{
-		if (f.isFile())
+		int color;
+
+		if (json.has("color"))
+			color = (int) Long.parseLong(json.getString("color"), 16);
+		else
+			color = 0xffffff;
+
+		float[] col = ColorUtil.getColors(color);
+		r = col[0];
+		g = col[1];
+		b = col[2];
+		a = col[3];
+
+		constant = json.getFloat("constant");
+		linear = json.getFloat("linear");
+		quadratic = json.getFloat("quadratic");
+
+		motionFormula = EnumMotionFormula.TORCH;
+		if (json.has("motion_formula")) motionFormula = EnumMotionFormula.valueOf(json.getString("motion_formula"));
+
+		if (json.has("data_formula"))
 		{
-			int color;
-
-			SSS sss = new SSS(f);
-			if (sss.hasValue("color"))
-				color = sss.getHexInt("color");
-			else
-				color = 0xffffffff;
-
-			float[] col = ColorUtil.getColors(color);
-			r = col[0];
-			g = col[1];
-			b = col[2];
-			a = col[3];
-
-			constant = sss.getFloat("constant");
-			linear = sss.getFloat("linear");
-			quadratic = sss.getFloat("quadratic");
-
-			motionFormula = EnumMotionFormula.TORCH;
-			if (sss.containsName("motionFormula")) motionFormula = EnumMotionFormula.valueOf(sss.getString("motionFormula"));
-
-			if (sss.containsName("formulaData"))
-			{
-				String[] data = sss.getStringArray("formulaData");
-				formulaData = new SSS(data);
-			}
-
-			EnumSpawner enumSpawner = null;
-			if (sss.containsName("spawner")) enumSpawner = EnumSpawner.valueOf(sss.getString("spawner"));
-
-			if (sss.containsName("spawnerData"))
-			{
-				String[] data = sss.getStringArray("spawnerData");
-				spawnerData = new SSS(data);
-			}
-			if (enumSpawner != null)
-				spawner = getSpawner(enumSpawner, spawnerData);
+			formulaData = json.getJSONObject("data_formula");
 		}
 
-		f = null;
+		EnumSpawner enumSpawner = null;
+		if (json.has("spawner")) enumSpawner = EnumSpawner.valueOf(json.getString("spawner"));
+
+		if (json.has("data_spawner"))
+		{
+			JSONObject arr = json.getJSONObject("data_spawner");
+
+			if (enumSpawner != null)
+				spawner = getSpawner(enumSpawner, arr);
+		}
 	}
 
 	@Override

@@ -1,10 +1,6 @@
 package steve6472.polyground.generator.special;
 
-import steve6472.SSS;
-import steve6472.ValueHolder;
-
-import java.util.ArrayList;
-import java.util.List;
+import org.json.JSONObject;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
@@ -15,7 +11,7 @@ import java.util.List;
 public class SpecialBuilder implements ISpecial
 {
 	private final String name;
-	private final List<ValueHolder> values;
+	private final JSONObject json;
 
 	public static SpecialBuilder create(String name)
 	{
@@ -30,22 +26,19 @@ public class SpecialBuilder implements ISpecial
 	private SpecialBuilder(String name)
 	{
 		this.name = name;
-		values = new ArrayList<>();
+		json = new JSONObject();
 	}
 
 	public SpecialBuilder addValue(String name, Object value)
 	{
-		values.add(new ValueHolder(name, value));
+		json.put(name, value);
 		return this;
 	}
 
 	@Override
-	public void generate(SSS sss)
+	public JSONObject generate()
 	{
-		for (ValueHolder v : values)
-		{
-			sss.add(v.name, v.value);
-		}
+		return json;
 	}
 
 	@Override

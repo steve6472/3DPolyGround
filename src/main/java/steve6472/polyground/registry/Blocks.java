@@ -1,19 +1,19 @@
 package steve6472.polyground.registry;
 
 import org.json.JSONObject;
-import steve6472.SSS;
 import steve6472.polyground.CaveGame;
 import steve6472.polyground.block.Block;
 import steve6472.polyground.block.BlockTextureHolder;
 import steve6472.polyground.block.model.BlockModel;
 import steve6472.polyground.block.model.IElement;
+import steve6472.polyground.block.model.ModelLoader;
 import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.registry.block.SpecialBlockRegistry;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Objects;
 
 /**********************
@@ -33,15 +33,16 @@ public class Blocks
 		File[] blocksFile = new File("game/objects/blocks").listFiles();
 
 		reference = new HashMap<>();
-		List<Block> tempBlocks = new ArrayList<>();
+		LinkedHashMap<Block, JSONObject> temp = new LinkedHashMap<>();
 
-		tempBlocks.add(Block.createAir());
+		temp.put(Block.createAir(), new JSONObject());
 		reference.put("air", 0);
 		WaterRegistry.tempVolumes.add(1000.0);
 
-		tempBlocks.add(Block.createError());
+		temp.put(Block.createError(), new JSONObject());
 		reference.put("error", 1);
 		WaterRegistry.tempVolumes.add(0.0);
+
 
 		int systemBlocks = 2;
 
@@ -52,25 +53,30 @@ public class Blocks
 				if (blocksFile[i].isDirectory())
 					continue;
 
-				SSS t = new SSS(blocksFile[i]);
-				Block block;
-
-				if (t.containsName("debug") && t.getBoolean("debug") && !CaveGame.DEBUG)
+				if (!blocksFile[i].getName().endsWith(".json"))
+				{
 					continue;
-
-				if (t.containsName("special") && SpecialBlockRegistry.getKeys().contains(t.getString("special")))
-				{
-					block = SpecialBlockRegistry.createSpecialBlock(t.getString("special"), blocksFile[i]);
-				} else
-				{
-					block = new Block(blocksFile[i]);
 				}
 
-				game.getEventHandler().register(block);
+				JSONObject json = new JSONObject(ModelLoader.read(blocksFile[i]));
+				Block block;
+
+				if (json.optBoolean("debug") && !CaveGame.DEBUG)
+					continue;
+
+				if (json.has("special") && SpecialBlockRegistry.getKeys().contains(json.getJSONObject("special").getString("name")))
+				{
+					block = SpecialBlockRegistry.createSpecialBlock(json.getJSONObject("special").getString("name"), json);
+				} else
+				{
+					block = new Block(json);
+				}
 
 				if (!reference.containsKey(block.getName()))
 				{
-					tempBlocks.add(block);
+					temp.put(block, json);
+					game.getEventHandler().register(block);
+
 					reference.put(block.getName(), i + systemBlocks);
 				} else
 				{
@@ -79,54 +85,47 @@ public class Blocks
 			}
 		}
 
-		blocks = new Block[tempBlocks.size()];
+		blocks = new Block[temp.size()];
 
-		for (int i = 0; i < tempBlocks.size(); i++)
+		int index = 0;
+		for (Block block : temp.keySet())
 		{
-			blocks[i] = tempBlocks.get(i);
+			blocks[index] = block;
+			index++;
 		}
 
-		tempBlocks.forEach(Block::postLoad);
-
-		/*
-		for (int i = 0; i < tempBlocks.size(); i++)
+		for (Map.Entry<Block, JSONObject> entry : temp.entrySet())
 		{
-			for (BlockState bs : blocks[i].getDefaultState().getPossibleStates())
+			Block key = entry.getKey();
+			JSONObject value = entry.getValue();
+			try
 			{
-				if (bs.getBlockModel(world, x, y, z) != null && bs.getBlockModel(world, x, y, z).getCubes() != null)
-				{
-					for (Cube c : bs.getBlockModel(world, x, y, z).getCubes())
-					{
-						for (CubeFace f : c.getFaces())
-						{
-							if (f != null)
-								if (f.hasProperty(FaceRegistry.conditionedTexture))
-									f.getProperty(FaceRegistry.conditionedTexture).fixBlockId();
-						}
-					}
-				}
+				key.load(value.optJSONObject("special"));
+			} catch (Exception ex)
+			{
+				System.err.println("Error while loading block '" + key.getName() + "'");
+				ex.printStackTrace();
+				System.exit(2);
 			}
-		}*/
+		}
 
 		BlockTextureHolder.compileTextures(0);
 
 		game.mainRender.buildHelper.atlasSize = BlockTextureHolder.getAtlas().getTileCount();
 		game.mainRender.buildHelper.texel = 1f / (float) BlockTextureHolder.getAtlas().getTileCount();
 
-		tempBlocks.forEach(b -> {
-			b.getDefaultState().getPossibleStates().forEach(ps -> {
-				for (BlockModel model : ps.getBlockModels())
+		temp.forEach((b, j) -> b.getDefaultState().getPossibleStates().forEach(ps -> {
+			for (BlockModel model : ps.getBlockModels())
+			{
+				if (model.getElements() != null)
 				{
-					if (model.getElements() != null)
+					for (IElement triangle : model.getElements())
 					{
-						for (IElement triangle : model.getElements())
-						{
-							triangle.fixUv(game.mainRender.buildHelper.texel);
-						}
+						triangle.fixUv(game.mainRender.buildHelper.texel);
 					}
 				}
-			});
-		});
+			}
+		}));
 	}
 
 	public static Block getBlockByName(String name)

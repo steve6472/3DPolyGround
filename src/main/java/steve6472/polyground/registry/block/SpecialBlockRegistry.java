@@ -1,9 +1,9 @@
 package steve6472.polyground.registry.block;
 
+import org.json.JSONObject;
 import steve6472.polyground.block.Block;
 import steve6472.polyground.block.special.*;
 
-import java.io.File;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Set;
@@ -28,7 +28,6 @@ public class SpecialBlockRegistry
 	public static final SpecialBlockEntry<CustomBlock> custom = register("custom", CustomBlock::new);
 	public static final SpecialBlockEntry<LightSourceBlock> light = register("light", LightSourceBlock::new);
 	public static final SpecialBlockEntry<TorchBlock> torch = register("torch", TorchBlock::new);
-	public static final SpecialBlockEntry<MicroBlock> microBlock = register("micro_block", MicroBlock::new);
 	public static final SpecialBlockEntry<WaterGeneratorBlock> waterGenerator = register("watergenerator", WaterGeneratorBlock::new);
 	public static final SpecialBlockEntry<StateTest> stateTest = register("state_test", StateTest::new);
 	public static final SpecialBlockEntry<SnowLayerBlock> snowLayer = register("snow_layer", SnowLayerBlock::new);
@@ -46,9 +45,9 @@ public class SpecialBlockRegistry
 		return entry;
 	}
 
-	public static Block createSpecialBlock(String id, File f)
+	public static Block createSpecialBlock(String id, JSONObject json)
 	{
-		return specialBlockRegistry.get(id).createNew(f);
+		return specialBlockRegistry.get(id).createNew(json);
 	}
 
 	public static Collection<SpecialBlockEntry<? extends Block>> getEntries()

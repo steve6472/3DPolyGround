@@ -2,7 +2,6 @@ package steve6472.polyground.block;
 
 import org.joml.AABBf;
 import org.json.JSONObject;
-import steve6472.SSS;
 import steve6472.polyground.EnumFace;
 import steve6472.polyground.block.model.BlockModel;
 import steve6472.polyground.block.model.CubeHitbox;
@@ -83,11 +82,11 @@ public class Block
 		StateLoader.generateState(this, blockModel, tags);
 	}
 
-	public Block(File f)
+	public Block(JSONObject json)
 	{
 		isFull = true;
-		name = f.getName().substring(0, f.getName().length() - 4);
-		generateStates(new SSS(f).getString("blockstate"));
+		name = json.getString("name");
+		generateStates(json.getString("blockstate"));
 	}
 
 	public String getName()
@@ -127,7 +126,7 @@ public class Block
 
 	/* Other Something */
 
-	public void postLoad()
+	public void load(JSONObject json)
 	{
 
 	}

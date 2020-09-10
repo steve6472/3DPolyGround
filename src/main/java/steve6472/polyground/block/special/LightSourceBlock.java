@@ -1,6 +1,6 @@
 package steve6472.polyground.block.special;
 
-import steve6472.SSS;
+import org.json.JSONObject;
 import steve6472.polyground.EnumFace;
 import steve6472.polyground.block.Block;
 import steve6472.polyground.block.states.BlockState;
@@ -10,8 +10,6 @@ import steve6472.polyground.gfx.light.LightManager;
 import steve6472.polyground.world.World;
 import steve6472.sge.main.util.ColorUtil;
 
-import java.io.File;
-
 /**********************
  * Created by steve6472 (Mirek Jozefek)
  * On date: 23.11.2019
@@ -20,57 +18,39 @@ import java.io.File;
  ***********************/
 public class LightSourceBlock extends Block implements ILightBlock
 {
-	private File f;
 	private int color;
 	private float constant, linear, quadratic;
 	private float xOffset, yOffset, zOffset;
 	private float dirX, dirY, dirZ, cutOff;
 
-	public LightSourceBlock(File f)
+	public LightSourceBlock(JSONObject json)
 	{
-		super(f);
-		this.f = f;
+		super(json);
 	}
 
 	@Override
-	public void postLoad()
+	public void load(JSONObject json)
 	{
-		if (f.isFile())
-		{
-			SSS sss = new SSS(f);
-			if (sss.hasValue("color"))
-				color = sss.getHexInt("color");
-			else
-				color = 0xffffff;
+		System.out.println(name + " " + json);
+		if (json.has("color"))
+			color = (int) Long.parseLong(json.getString("color"), 16);
+		else
+			color = 0xffffff;
 
-			constant = sss.getFloat("constant");
-			linear = sss.getFloat("linear");
-			quadratic = sss.getFloat("quadratic");
-			if (sss.containsName("isFull"))
-				isFull = sss.getBoolean("isFull");
+		constant = json.getFloat("constant");
+		linear = json.getFloat("linear");
+		quadratic = json.getFloat("quadratic");
 
-			if (sss.containsName("lightXOffset"))
-				xOffset = sss.getFloat("lightXOffset") / 16f;
-			if (sss.containsName("lightYOffset"))
-				yOffset = sss.getFloat("lightYOffset") / 16f;
-			if (sss.containsName("lightZOffset"))
-				zOffset = sss.getFloat("lightZOffset") / 16f;
+		isFull = json.optBoolean("isFull", isFull);
 
-			if (sss.containsName("dirX"))
-				dirX = sss.getFloat("dirX");
-			if (sss.containsName("dirY"))
-				dirY = sss.getFloat("dirY");
-			else
-				dirY = -1;
-			if (sss.containsName("dirZ"))
-				dirZ = sss.getFloat("dirZ");
-			if (sss.containsName("cutOff"))
-				cutOff = sss.getFloat("cutOff");
-			else
-				cutOff = -60;
-		}
+		xOffset = json.optFloat("lightXOffset", 0) / 16f;
+		yOffset = json.optFloat("lightYOffset", 0) / 16f;
+		zOffset = json.optFloat("lightZOffset", 0) / 16f;
 
-		f = null;
+		dirX = json.optFloat("dirX", 0);
+		dirY = json.optFloat("dirY", -1);
+		dirZ = json.optFloat("dirZ", 0);
+		cutOff = json.optFloat("cutOff", -60);
 	}
 
 	@Override

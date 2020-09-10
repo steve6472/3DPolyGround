@@ -1,7 +1,7 @@
 package steve6472.polyground.gfx.particle.particles.torch.motion;
 
 import org.joml.Vector3f;
-import steve6472.SSS;
+import org.json.JSONObject;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
@@ -18,7 +18,7 @@ public class TorchFormula extends Formula
 	}
 
 	@Override
-	public void loadFormulaData(SSS data)
+	public void loadFormulaData(JSONObject json)
 	{
 
 	}

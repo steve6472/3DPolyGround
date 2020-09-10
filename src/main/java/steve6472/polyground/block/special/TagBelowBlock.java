@@ -1,12 +1,11 @@
 package steve6472.polyground.block.special;
 
-import steve6472.SSS;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import steve6472.polyground.EnumFace;
 import steve6472.polyground.block.Block;
 import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.world.World;
-
-import java.io.File;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
@@ -17,22 +16,23 @@ import java.io.File;
 public class TagBelowBlock extends CustomBlock
 {
 	private String[] tags;
-	private File f;
 	private boolean and = false;
 
-	public TagBelowBlock(File f)
+	public TagBelowBlock(JSONObject json)
 	{
-		super(f);
-		this.f = f;
+		super(json);
 	}
 
 	@Override
-	public void postLoad()
+	public void load(JSONObject json)
 	{
-		SSS sss = new SSS(f);
-		tags = sss.getStringArray("tags");
-		and = sss.getString("operation").equals("and");
-		f = null;
+		JSONArray arr = json.getJSONArray("tags");
+		tags = new String[arr.length()];
+		for (int i = 0; i < arr.length(); i++)
+		{
+			tags[i] = arr.getString(i);
+		}
+		and = json.getString("operation").equals("and");
 	}
 
 	@Override

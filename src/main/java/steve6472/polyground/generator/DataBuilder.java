@@ -577,7 +577,7 @@ public class DataBuilder
 		{
 			System.out.println("\tWith Special \"" + itemSpecial.getName() + "\"");
 			sss.add("special", itemSpecial.getName());
-			itemSpecial.generate(sss);
+			itemSpecial.generate();
 		}
 		if (debug)
 			sss.add("debug", true);
@@ -609,26 +609,31 @@ public class DataBuilder
 	private void block() throws IOException
 	{
 		System.out.println("Generating block " + blockName);
-		File block = new File(DataGenerator.BLOCKS, blockName + ".txt");
+		File block = new File(DataGenerator.BLOCKS, blockName + ".json");
 		if (block.createNewFile())
 		{
 			System.out.println("Created block " + block.getPath());
 		}
 
-		SSS sss = new SSS(block);
-		sss.clear();
+		JSONObject json = new JSONObject();
+		json.put("blockstate", blockName);
+		json.put("name", blockName);
 
-		sss.add("blockstate", blockName);
 		if (blockSpecial != null)
 		{
 			System.out.println("\tWith Special \"" + blockSpecial.getName() + "\"");
-			sss.add("special", blockSpecial.getName());
-			blockSpecial.generate(sss);
+			JSONObject special = blockSpecial.generate();
+			if (special != null)
+			{
+				special.put("name", blockSpecial.getName());
+				json.put("special", special);
+			}
+			System.out.println(PrettyJson.prettify(special));
 		}
 		if (debug)
-			sss.add("debug", true);
+			json.put("debug", true);
 
-		sss.save(block);
+		save(block, json);
 
 		blockState.generate(blockName);
 	}

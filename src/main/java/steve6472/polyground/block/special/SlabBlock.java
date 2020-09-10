@@ -1,5 +1,6 @@
 package steve6472.polyground.block.special;
 
+import org.json.JSONObject;
 import steve6472.polyground.CaveGame;
 import steve6472.polyground.EnumFace;
 import steve6472.polyground.HitResult;
@@ -15,7 +16,6 @@ import steve6472.polyground.world.World;
 import steve6472.sge.main.KeyList;
 import steve6472.sge.main.events.MouseEvent;
 
-import java.io.File;
 import java.util.List;
 
 /**********************
@@ -29,9 +29,9 @@ public class SlabBlock extends Block
 	public static final EnumProperty<EnumSlabType> TYPE = States.SLAB_TYPE;
 	public static final EnumProperty<EnumAxis> AXIS = States.AXIS;
 
-	public SlabBlock(File f)
+	public SlabBlock(JSONObject json)
 	{
-		super(f);
+		super(json);
 		isFull = false;
 		setDefaultState(getDefaultState().with(TYPE, EnumSlabType.BOTTOM).with(AXIS, EnumAxis.Y).get());
 	}

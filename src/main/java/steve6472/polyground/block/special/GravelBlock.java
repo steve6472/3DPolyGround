@@ -1,8 +1,7 @@
 package steve6472.polyground.block.special;
 
+import org.json.JSONObject;
 import steve6472.polyground.block.Block;
-
-import java.io.File;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
@@ -12,9 +11,9 @@ import java.io.File;
  ***********************/
 public class GravelBlock extends Block
 {
-	public GravelBlock(File f)
+	public GravelBlock(JSONObject json)
 	{
-		super(f);
+		super(json);
 	}
 
 	/*

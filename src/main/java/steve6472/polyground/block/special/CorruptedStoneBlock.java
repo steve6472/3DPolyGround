@@ -1,6 +1,7 @@
 package steve6472.polyground.block.special;
 
 import org.joml.Vector3f;
+import org.json.JSONObject;
 import steve6472.polyground.block.Block;
 import steve6472.polyground.block.Tags;
 import steve6472.polyground.block.properties.IProperty;
@@ -13,7 +14,6 @@ import steve6472.polyground.registry.Blocks;
 import steve6472.polyground.world.World;
 import steve6472.sge.main.util.RandomUtil;
 
-import java.io.File;
 import java.util.List;
 
 /**********************
@@ -28,14 +28,14 @@ public class CorruptedStoneBlock extends Block
 
 	private BlockState spreadTo;
 
-	public CorruptedStoneBlock(File f)
+	public CorruptedStoneBlock(JSONObject json)
 	{
-		super(f);
+		super(json);
 		setDefaultState(getDefaultState().with(DISTANCE, 1).get());
 	}
 
 	@Override
-	public void postLoad()
+	public void load(JSONObject json)
 	{
 		spreadTo = Blocks.getDefaultState("stone");
 	}

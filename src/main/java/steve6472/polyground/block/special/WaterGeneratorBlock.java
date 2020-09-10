@@ -1,10 +1,9 @@
 package steve6472.polyground.block.special;
 
+import org.json.JSONObject;
 import steve6472.polyground.block.Block;
 import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.world.World;
-
-import java.io.File;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
@@ -14,9 +13,9 @@ import java.io.File;
  ***********************/
 public class WaterGeneratorBlock extends Block
 {
-	public WaterGeneratorBlock(File f)
+	public WaterGeneratorBlock(JSONObject json)
 	{
-		super(f);
+		super(json);
 		isFull = false;
 	}
 

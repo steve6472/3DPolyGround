@@ -13,6 +13,9 @@ public class PrettyJson
 {
 	public static String prettify(JSONObject json)
 	{
+		if (json == null)
+			return null;
+
 		byte i = 0;
 
 		StringBuilder sb = new StringBuilder();

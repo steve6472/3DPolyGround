@@ -1,7 +1,7 @@
 package steve6472.polyground.gfx.particle.particles.torch.motion;
 
 import org.joml.Vector3f;
-import steve6472.SSS;
+import org.json.JSONObject;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
@@ -13,5 +13,5 @@ public abstract class Formula
 {
 	public abstract void calc(Vector3f position, float time);
 
-	public abstract void loadFormulaData(SSS data);
+	public abstract void loadFormulaData(JSONObject json);
 }

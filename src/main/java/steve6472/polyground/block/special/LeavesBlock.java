@@ -1,5 +1,6 @@
 package steve6472.polyground.block.special;
 
+import org.json.JSONObject;
 import steve6472.polyground.EnumFace;
 import steve6472.polyground.block.Block;
 import steve6472.polyground.block.Tags;
@@ -11,7 +12,6 @@ import steve6472.polyground.block.states.States;
 import steve6472.polyground.entity.player.Player;
 import steve6472.polyground.world.World;
 
-import java.io.File;
 import java.util.List;
 
 /**********************
@@ -25,9 +25,9 @@ public class LeavesBlock extends Block
 	public static BooleanProperty PERSISTENT = States.PERSISTENT;
 	public static IntProperty DISTANCE = States.DISTANCE_1_7;
 
-	public LeavesBlock(File f)
+	public LeavesBlock(JSONObject json)
 	{
-		super(f);
+		super(json);
 		isFull = false;
 		setDefaultState(getDefaultState().with(PERSISTENT, false).with(DISTANCE, 1).get());
 	}

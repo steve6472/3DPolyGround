@@ -1,13 +1,11 @@
 package steve6472.polyground.block.special;
 
-import steve6472.SSS;
+import org.json.JSONObject;
 import steve6472.polyground.block.Block;
 import steve6472.polyground.block.Tags;
 import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.registry.Blocks;
 import steve6472.polyground.world.World;
-
-import java.io.File;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
@@ -17,7 +15,6 @@ import java.io.File;
  ***********************/
 public class SpreadBlock extends Block
 {
-	private final File file;
 	/**
 	 * Turn what
 	 */
@@ -27,10 +24,9 @@ public class SpreadBlock extends Block
 	 */
 	private BlockState targetSet;
 
-	public SpreadBlock(File f)
+	public SpreadBlock(JSONObject json)
 	{
-		super(f);
-		this.file = f;
+		super(json);
 	}
 
 	@Override
@@ -40,25 +36,21 @@ public class SpreadBlock extends Block
 	}
 
 	@Override
-	public void postLoad()
+	public void load(JSONObject json)
 	{
-		if (file.isFile())
+		if (json.has("target_state"))
 		{
-			SSS sss = new SSS(file);
-			if (sss.containsName("target_state"))
-			{
-				target = Blocks.getStateByName(sss.getString("target"), sss.getString("target_state"));
-			} else
-			{
-				target = Blocks.getDefaultState(sss.getString("target"));
-			}
-			if (sss.containsName("target_set_state"))
-			{
-				targetSet = Blocks.getStateByName(sss.getString("target_set"), sss.getString("target_set_state"));
-			} else
-			{
-				targetSet = Blocks.getDefaultState(sss.getString("target_set"));
-			}
+			target = Blocks.getStateByName(json.getString("target"), json.getString("target_state"));
+		} else
+		{
+			target = Blocks.getDefaultState(json.getString("target"));
+		}
+		if (json.has("target_set_state"))
+		{
+			targetSet = Blocks.getStateByName(json.getString("target_set"), json.getString("target_set_state"));
+		} else
+		{
+			targetSet = Blocks.getDefaultState(json.getString("target_set"));
 		}
 	}
 

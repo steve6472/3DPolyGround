@@ -1,6 +1,6 @@
 package steve6472.polyground.block.special;
 
-import steve6472.SSS;
+import org.json.JSONObject;
 import steve6472.polyground.EnumFace;
 import steve6472.polyground.block.Block;
 import steve6472.polyground.block.properties.EnumProperty;
@@ -13,7 +13,6 @@ import steve6472.polyground.gfx.light.LightManager;
 import steve6472.polyground.world.World;
 import steve6472.sge.main.util.ColorUtil;
 
-import java.io.File;
 import java.util.List;
 
 /**********************
@@ -25,50 +24,31 @@ import java.util.List;
 public class DirectionalLightSourceBlock extends Block implements ILightBlock
 {
 	public static final EnumProperty<EnumFace> FACING = States.FACING;
-	private File f;
 	private int color;
 	private float constant, linear, quadratic;
 	private float xOffset, yOffset, zOffset;
 	private float cutOff;
 
-	public DirectionalLightSourceBlock(File f)
+	public DirectionalLightSourceBlock(JSONObject json)
 	{
-		super(f);
-		this.f = f;
+		super(json);
 		setDefaultState(getDefaultState().with(FACING, EnumFace.UP).get());
 	}
 
 	@Override
-	public void postLoad()
+	public void load(JSONObject json)
 	{
-		if (f.isFile())
-		{
-			SSS sss = new SSS(f);
-			if (sss.hasValue("color"))
-				color = sss.getHexInt("color");
-			else
-				color = 0xffffff;
+		constant = json.getFloat("constant");
+		linear = json.getFloat("linear");
+		quadratic = json.getFloat("quadratic");
 
-			constant = sss.getFloat("constant");
-			linear = sss.getFloat("linear");
-			quadratic = sss.getFloat("quadratic");
-			if (sss.containsName("isFull"))
-				isFull = sss.getBoolean("isFull");
+		isFull = json.optBoolean("isFull", isFull);
 
-			if (sss.containsName("lightXOffset"))
-				xOffset = sss.getFloat("lightXOffset") / 16f;
-			if (sss.containsName("lightYOffset"))
-				yOffset = sss.getFloat("lightYOffset") / 16f;
-			if (sss.containsName("lightZOffset"))
-				zOffset = sss.getFloat("lightZOffset") / 16f;
+		xOffset = json.optFloat("lightXOffset") / 16f;
+		yOffset = json.optFloat("lightYOffset") / 16f;
+		zOffset = json.optFloat("lightZOffset") / 16f;
 
-			if (sss.containsName("cutOff"))
-				cutOff = sss.getFloat("cutOff");
-			else
-				cutOff = -60;
-		}
-
-		f = null;
+		cutOff = json.optFloat("cutOff", -60);
 	}
 
 	@Override

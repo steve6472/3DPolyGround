@@ -1,22 +1,13 @@
 package steve6472.polyground.block.special;
 
-import steve6472.polyground.block.Block;
-
-import java.io.File;
-
 /**********************
  * Created by steve6472 (Mirek Jozefek)
  * On date: 20.12.2019
  * Project: SJP
  *
  ***********************/
-public class MicroBlock extends Block// implements IBlockData
+public class MicroBlock //extends Block// implements IBlockData
 {
-	public MicroBlock(File f)
-	{
-		super(f);
-		isFull = false;
-	}
 
 	/*
 	@Override

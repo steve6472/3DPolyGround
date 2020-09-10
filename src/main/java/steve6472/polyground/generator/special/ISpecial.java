@@ -1,6 +1,6 @@
 package steve6472.polyground.generator.special;
 
-import steve6472.SSS;
+import org.json.JSONObject;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
@@ -10,7 +10,7 @@ import steve6472.SSS;
  ***********************/
 public interface ISpecial
 {
-	void generate(SSS sss);
+	JSONObject generate();
 
 	String getName();
 }

@@ -1,5 +1,6 @@
 package steve6472.polyground.block.special;
 
+import org.json.JSONObject;
 import steve6472.polyground.CaveGame;
 import steve6472.polyground.EnumFace;
 import steve6472.polyground.block.properties.IProperty;
@@ -11,7 +12,6 @@ import steve6472.polyground.world.World;
 import steve6472.sge.main.KeyList;
 import steve6472.sge.main.events.MouseEvent;
 
-import java.io.File;
 import java.util.List;
 
 /**********************
@@ -24,9 +24,9 @@ public class StalaBlock extends CustomBlock
 {
 	public static final IntProperty WIDTH = States.STALA_WIDTH;
 
-	public StalaBlock(File f)
+	public StalaBlock(JSONObject json)
 	{
-		super(f);
+		super(json);
 		isFull = false;
 		setDefaultState(getDefaultState().with(WIDTH, 1).get());
 	}

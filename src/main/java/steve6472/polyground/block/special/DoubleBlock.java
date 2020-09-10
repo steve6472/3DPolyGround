@@ -1,5 +1,6 @@
 package steve6472.polyground.block.special;
 
+import org.json.JSONObject;
 import steve6472.polyground.EnumFace;
 import steve6472.polyground.block.Block;
 import steve6472.polyground.block.Tags;
@@ -11,7 +12,6 @@ import steve6472.polyground.block.states.States;
 import steve6472.polyground.entity.player.Player;
 import steve6472.polyground.world.World;
 
-import java.io.File;
 import java.util.List;
 
 /**********************
@@ -24,9 +24,9 @@ public class DoubleBlock extends CustomBlock
 {
 	public static final EnumProperty<EnumHalf> HALF = States.HALF;
 
-	public DoubleBlock(File f)
+	public DoubleBlock(JSONObject json)
 	{
-		super(f);
+		super(json);
 		setDefaultState(getDefaultState().with(HALF, EnumHalf.BOTTOM).get());
 	}
 

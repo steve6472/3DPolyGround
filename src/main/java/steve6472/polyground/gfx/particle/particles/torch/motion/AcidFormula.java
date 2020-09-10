@@ -1,7 +1,7 @@
 package steve6472.polyground.gfx.particle.particles.torch.motion;
 
 import org.joml.Vector3f;
-import steve6472.SSS;
+import org.json.JSONObject;
 import steve6472.sge.main.util.RandomUtil;
 
 /**********************
@@ -22,7 +22,7 @@ public class AcidFormula extends Formula
 	}
 
 	@Override
-	public void loadFormulaData(SSS data)
+	public void loadFormulaData(JSONObject json)
 	{
 
 	}

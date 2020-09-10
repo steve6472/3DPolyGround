@@ -1,5 +1,6 @@
 package steve6472.polyground.block.special;
 
+import org.json.JSONObject;
 import steve6472.polyground.EnumFace;
 import steve6472.polyground.block.Block;
 import steve6472.polyground.block.properties.EnumProperty;
@@ -10,7 +11,6 @@ import steve6472.polyground.block.states.States;
 import steve6472.polyground.entity.player.Player;
 import steve6472.polyground.world.World;
 
-import java.io.File;
 import java.util.List;
 
 /**********************
@@ -23,9 +23,9 @@ public class PillarBlock extends Block
 {
 	public static final EnumProperty<EnumAxis> AXIS = States.AXIS;
 
-	public PillarBlock(File f)
+	public PillarBlock(JSONObject json)
 	{
-		super(f);
+		super(json);
 		setDefaultState(getDefaultState().with(AXIS, EnumAxis.Y).get());
 	}
 

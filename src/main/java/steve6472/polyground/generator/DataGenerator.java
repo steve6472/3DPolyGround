@@ -98,238 +98,7 @@ public class DataGenerator
 
 //		DataBuilder.create().torch("slime_torch", true).blockSpecial(new SimpleSpecial("state_test")).itemModel(new ItemFromTexture("slime_torch")).generate();
 	}
-
-	public void generateFeatures()
-	{
-		FeatureBuilder.create(FeatureRegistry.STACKABLE_PILLAR.name())
-			.path("desert")
-			.name("tall_cactus")
-			.matchTags("block_under", Tags.CACTUS_TOP)
-			.blockState("block", BlockStateBuilder.create().block("cactus"))
-			.doubleArg("next_chance", 0.1)
-			.integer("max_height", 22)
-			.generate();
-
-		FeatureBuilder.create(FeatureRegistry.PILLAR.name())
-			.path("desert")
-			.name("cactus")
-			.matchTags("block_under", Tags.CACTUS_TOP)
-			.provideStates("block", BlockStateBuilder.create().block("cactus"))
-			.integer("min_height", 1)
-			.integer("max_height", 3)
-			.generate();
-
-		FeatureBuilder.create(FeatureRegistry.PILLAR.name())
-			.path("common")
-			.name("top_snow")
-//			.matchBlocks("block_under", "grass", "dirt", "stone", "sand")
-			.matchAlwaysTrue("block_under")
-			.provideStates("block",
-				BlockStateBuilder.create().block("snow_layer").state(SnowLayerBlock.SNOW_LAYER, 1),
-				BlockStateBuilder.create().block("snow_layer").state(SnowLayerBlock.SNOW_LAYER, 2),
-				BlockStateBuilder.create().block("snow_layer").state(SnowLayerBlock.SNOW_LAYER, 3),
-				BlockStateBuilder.create().block("snow_layer").state(SnowLayerBlock.SNOW_LAYER, 4))
-			.integer("min_height", 1)
-			.integer("max_height", 1)
-			.generate();
-
-		FeatureBuilder.create(FeatureRegistry.VEGETATION_PATCH.name())
-			.path("desert")
-			.name("shrubs")
-			.matchTags("block_under", Tags.SHRUBS_TOP)
-			.blockState("block", BlockStateBuilder.create().block("shrub"))
-			.integer("radius", 2)
-			.doubleArg("chance", 0.5)
-			.bool("decay", true)
-			.generate();
-
-		FeatureBuilder.create(FeatureRegistry.VEGETATION_PATCH.name())
-			.path("common")
-			.name("grass_patch")
-			.matchTags("block_under", Tags.FLOWER_TOP)
-			.blockState("block", BlockStateBuilder.create().block("small_grass"))
-			.integer("radius", 2)
-			.doubleArg("chance", 0.3)
-			.bool("decay", true)
-			.generate();
-
-		FeatureBuilder.create(FeatureRegistry.VEGETATION_PATCH.name())
-			.path("common")
-			.name("tall_grass_patch")
-			.matchTags("block_under", Tags.FLOWER_TOP)
-			.blockState("block", BlockStateBuilder.create().block("tall_grass"))
-			.integer("radius", 4)
-			.doubleArg("chance", 0.5)
-			.bool("decay", true)
-			.generate();
-
-		FeatureBuilder.create(FeatureRegistry.VEGETATION_PATCH.name())
-			.path("common")
-			.name("grass_patch_mixed")
-			.matchTags("block_under", Tags.FLOWER_TOP)
-			.blockState("block", BlockStateBuilder.create().block("tall_grass"))
-			.integer("radius", 4)
-			.doubleArg("chance", 0.75)
-			.bool("decay", true)
-			.generate();
-
-		FeatureBuilder.create(FeatureRegistry.VEGETATION_PATCH.name())
-			.path("common")
-			.name("pebbles")
-			.matchBlocks("block_under", "sand", "grass", "dirt", "stone")
-			.blockState("block", BlockStateBuilder.create().block("pebbles"))
-			.integer("radius", 3)
-			.doubleArg("chance", 0.3)
-			.bool("decay", true)
-			.generate();
-
-		FeatureBuilder.create(FeatureRegistry.VEGETATION_PATCH.name())
-			.path("common")
-			.name("sticks")
-			.matchBlocks("block_under", "sand", "grass", "dirt", "stone")
-			.blockState("block", BlockStateBuilder.create().block("stick"))
-			.integer("radius", 3)
-			.doubleArg("chance", 0.3)
-			.bool("decay", true)
-			.generate();
-
-		FeatureBuilder.create(FeatureRegistry.TREE.name())
-			.path("trees")
-			.name("oak_tree")
-			.matchBlocks("match_under", "grass", "dirt")
-			.blockState("log", BlockStateBuilder.create().block("oak_log"))
-			.blockState("leaves", BlockStateBuilder.create().block("oak_leaves"))
-			.blockState("set_under", BlockStateBuilder.create().block("dirt"))
-			.integer("height_min", 5)
-			.integer("height_max", 7)
-			.generate();
-
-		FeatureBuilder.create(FeatureRegistry.TOP_SNOW.name())
-			.path("mountain")
-			.name("top_mountain_snow")
-			.matchAlwaysTrue("target")
-			.provideStates("snow",
-				BlockStateBuilder.create().block("snow_layer").state(SnowLayerBlock.SNOW_LAYER, 1),
-				BlockStateBuilder.create().block("snow_layer").state(SnowLayerBlock.SNOW_LAYER, 2),
-				BlockStateBuilder.create().block("snow_layer").state(SnowLayerBlock.SNOW_LAYER, 3),
-				BlockStateBuilder.create().block("snow_layer").state(SnowLayerBlock.SNOW_LAYER, 4))
-			.integer("height_start", 46)
-			.integer("height_max", 52)
-			.generate();
-
-		FeatureBuilder.create(FeatureRegistry.TILE_REPLACE_PATCH.name())
-			.path("mountain")
-			.name("mountain_snow_patches")
-			.matchBlocks("target", "stone")
-			.provideStates("block", BlockStateBuilder.create().block("snow_block"))
-			.doubleArg("chance", 1)
-			.integer("radius", 4)
-			.bool("decay_from_center", true)
-			.bool("only_top", false)
-			.generate();
-	}
-
-	public void generateBiomes()
-	{
-		BiomeBuilder.create()
-			.name("desert")
-			.surface("sand", "sandstone", "stone", 4, 8)
-			.heightMap(4, 0.3f, 0.03f, 8, 18)
-			.climate(0.05f, 1f, 0f, -1f)
-			.foliageColor(183 / 255f, 212 / 255f, 80 / 255f)
-			.feature(EnumFeatureStage.VEGETATION, 1d / 100d, "shrubs")
-			.feature(EnumFeatureStage.VEGETATION, 1d / 256d / 4d, "tall_cactus")
-			.feature(EnumFeatureStage.VEGETATION, 1d / 256d, "cactus")
-			.feature(EnumFeatureStage.VEGETATION, 1d / 256d / 8d, "pebbles")
-			.generate();
-
-		BiomeBuilder.create()
-			.name("desert_hills")
-			.surface("sand", "sandstone", "stone", 4, 8)
-			.heightMap(6, 0.5f, 0.05f, 9, 33)
-			.climate(0.65f, 0.95f, 0f, -0.99f)
-			.foliageColor(183 / 255f, 212 / 255f, 80 / 255f)
-			.feature(EnumFeatureStage.VEGETATION, 1d / 100d, "shrubs")
-			.feature(EnumFeatureStage.VEGETATION, 1d / 256d / 4d, "tall_cactus")
-			.feature(EnumFeatureStage.VEGETATION, 1d / 256d, "cactus")
-			.feature(EnumFeatureStage.VEGETATION, 1d / 256d / 8d, "pebbles")
-			.generate();
-
-		BiomeBuilder.create()
-			.name("forest")
-			.surface("grass", "dirt", "stone", 4, 14)
-			.heightMap(8, 0.07f, 0.007f, 12, 22)
-			.climate(0.1f, 0.25f, 0f, -0.6f)
-			.foliageColor(92 / 255f, 184 / 255f, 64 / 255f)
-			.feature(EnumFeatureStage.VEGETATION, 1d / 100d, "grass_patch")
-			.feature(EnumFeatureStage.VEGETATION, 1d / 512d, "pebbles")
-			.feature(EnumFeatureStage.VEGETATION, 1d / 256d, "sticks")
-			.feature(EnumFeatureStage.TREE, 1d / 5d, "oak_tree")
-			.generate();
-
-		BiomeBuilder.create()
-			.name("plains")
-			.surface("grass", "dirt", "stone", 4, 12)
-			.heightMap(7, 0.07f, 0.006f, 10, 20)
-			.climate(0f, 0.2f, 0f, -0.3f)
-			.foliageColor(92 / 255f, 200 / 255f, 64 / 255f)
-			.feature(EnumFeatureStage.VEGETATION, 1d / 100d, "grass_patch")
-			.feature(EnumFeatureStage.VEGETATION, 1d / 220d, "tall_grass_patch")
-			.feature(EnumFeatureStage.VEGETATION, 1d / 512d, "pebbles")
-			.generate();
-
-		BiomeBuilder.create()
-			.name("tundra")
-			.surface("grass", "dirt", "stone", 4, 12)
-			.heightMap(7, 0.06f, 0.005f, 10, 18)
-			.climate(0f, -1f, 0f, 0.25f)
-			.foliageColor(92 / 255f, 200 / 255f, 64 / 255f)
-			.feature(EnumFeatureStage.TOP_MODIFICATION, 1, "top_snow")
-			.feature(EnumFeatureStage.TREE, 1d / 300d, "oak_tree")
-			.generate();
-
-		BiomeBuilder.create()
-			.name("savanna")
-			.surface("grass", "dirt", "stone", 4, 14)
-			.heightMap(6, 0.3f, 0.019f, 12, 23)
-			.climate(0.1f, 0.65f, 0.0f, 0.05f)
-			.foliageColor(120 / 255f, 190 / 255f, 60 / 255f)
-			.feature(EnumFeatureStage.TREE, 1d / 400d, "oak_tree")
-			.feature(EnumFeatureStage.VEGETATION, 1d / 256d, "pebbles")
-			.feature(EnumFeatureStage.VEGETATION, 1d / 100d, "grass_patch")
-			.generate();
-
-		BiomeBuilder.create()
-			.name("savanna_plateau")
-			.surface("grass", "dirt", "stone", 4, 14)
-			.heightMap(6, 0.3f, 0.003f, 23, 30)
-			.climate(0.8f, 0.60f, 0.3f, 0.0f)
-			.foliageColor(120 / 255f, 190 / 255f, 60 / 255f)
-			.feature(EnumFeatureStage.TREE, 1d / 400d, "oak_tree")
-			.feature(EnumFeatureStage.VEGETATION, 1d / 256d, "pebbles")
-			.feature(EnumFeatureStage.VEGETATION, 1d / 100d, "grass_patch")
-			.generate();
-
-		BiomeBuilder.create()
-			.name("mountains")
-			.surface("stone", "stone", "stone", 0, 12)
-			.heightMap(3, 0.2f, 0.025f, 15, 50)
-			.climate(1f, 0.1f, 0.0f, 0.17f)
-			.foliageColor(92 / 255f, 160 / 255f, 64 / 255f)
-			.generate();
-
-		BiomeBuilder.create()
-			.name("cold_mountains")
-			.surface("stone", "stone", "stone", 0, 12)
-			.heightMap(3, 0.2f, 0.025f, 15, 50)
-			.climate(1f, -1f, 0.0f, 0.15f)
-			.foliageColor(92 / 255f, 160 / 255f, 64 / 255f)
-			.feature(EnumFeatureStage.TOP_MODIFICATION, 1d, "top_mountain_snow")
-			.feature(EnumFeatureStage.TOP_MODIFICATION, 1.0 / 500.0, "mountain_snow_patches")
-			.generate();
-	}
-
-	private SpecialBuilder tagSpecial(boolean and, String... tags)
+	private SpecialBuilder tagBelowSpecial(boolean and, String... tags)
 	{
 		return SpecialBuilder.create("tag_below").addValue("operation", and ? "and" : "or").addValue("tags", tags);
 	}
@@ -373,7 +142,7 @@ public class DataGenerator
 		DataBuilder.create().stairs("brick_stairs", "bricks").generate();
 
 //		DataBuilder.create().plusBlock("small_grass", true).blockSpecial(tagSpecial(true, Tags.FLOWER_TOP)).addTag(Tags.TRANSPARENT).generate();
-		DataBuilder.create().plusBlock("shrub", true).blockSpecial(tagSpecial(true, Tags.SHRUBS_TOP)).addTag(Tags.TRANSPARENT).generate();
+		DataBuilder.create().plusBlock("shrub", true).blockSpecial(tagBelowSpecial(true, Tags.SHRUBS_TOP)).addTag(Tags.TRANSPARENT).generate();
 
 		DataBuilder.create().oreBlock("coal_ore", "stone", "ore_overlay", 77, 77, 77).addTags(Tags.SOLID).generate();
 
@@ -420,7 +189,7 @@ public class DataGenerator
 
 		DataBuilder.create()
 			.fullBlock("small_grass")
-			.blockSpecial(tagSpecial(true, Tags.FLOWER_TOP))
+			.blockSpecial(tagBelowSpecial(true, Tags.FLOWER_TOP))
 			.addTag(Tags.TRANSPARENT)
 			.blockState(StateBuilder.create().singleModel(BlockModelBuilder.create("small_grass").externalPath("custom_models/small_grass.bbmodel")))
 			.generate();
@@ -487,7 +256,7 @@ public class DataGenerator
 
 		DataBuilder.create()
 			.fullBlock("stick")
-			.blockSpecial(tagSpecial(true, Tags.SOLID))
+			.blockSpecial(tagBelowSpecial(true, Tags.SOLID))
 			.blockState(StateBuilder.create()
 				.singleModel(
 					(BlockModelBuilder.create("stick_1").modelPath("stick")
@@ -580,7 +349,7 @@ public class DataGenerator
 			.itemName("cactus")
 			.blockToPlace("cactus")
 			.itemModel(new ItemFromBlock("cactus"))
-			.blockSpecial(tagSpecial(true, Tags.CACTUS_TOP))
+			.blockSpecial(tagBelowSpecial(true, Tags.CACTUS_TOP))
 			.blockState(StateBuilder.create().singleModel(BlockModelBuilder.create("cactus")
 				.addCube(CubeBuilder.create()
 					.min(1, 0, 1)
@@ -980,6 +749,7 @@ public class DataGenerator
 
 	}
 
+
 	private static PropertyBuilder snowState(int height)
 	{
 		return PropertyBuilder.create().addProperty(States.SNOW_LAYERS, height);
@@ -997,5 +767,238 @@ public class DataGenerator
 					.autoUv(true))
 			);
 	}
+
+
+
+	public void generateFeatures()
+	{
+		FeatureBuilder.create(FeatureRegistry.STACKABLE_PILLAR.name())
+			.path("desert")
+			.name("tall_cactus")
+			.matchTags("block_under", Tags.CACTUS_TOP)
+			.blockState("block", BlockStateBuilder.create().block("cactus"))
+			.doubleArg("next_chance", 0.1)
+			.integer("max_height", 22)
+			.generate();
+
+		FeatureBuilder.create(FeatureRegistry.PILLAR.name())
+			.path("desert")
+			.name("cactus")
+			.matchTags("block_under", Tags.CACTUS_TOP)
+			.provideStates("block", BlockStateBuilder.create().block("cactus"))
+			.integer("min_height", 1)
+			.integer("max_height", 3)
+			.generate();
+
+		FeatureBuilder.create(FeatureRegistry.PILLAR.name())
+			.path("common")
+			.name("top_snow")
+			//			.matchBlocks("block_under", "grass", "dirt", "stone", "sand")
+			.matchAlwaysTrue("block_under")
+			.provideStates("block",
+				BlockStateBuilder.create().block("snow_layer").state(SnowLayerBlock.SNOW_LAYER, 1),
+				BlockStateBuilder.create().block("snow_layer").state(SnowLayerBlock.SNOW_LAYER, 2),
+				BlockStateBuilder.create().block("snow_layer").state(SnowLayerBlock.SNOW_LAYER, 3),
+				BlockStateBuilder.create().block("snow_layer").state(SnowLayerBlock.SNOW_LAYER, 4))
+			.integer("min_height", 1)
+			.integer("max_height", 1)
+			.generate();
+
+		FeatureBuilder.create(FeatureRegistry.VEGETATION_PATCH.name())
+			.path("desert")
+			.name("shrubs")
+			.matchTags("block_under", Tags.SHRUBS_TOP)
+			.blockState("block", BlockStateBuilder.create().block("shrub"))
+			.integer("radius", 2)
+			.doubleArg("chance", 0.5)
+			.bool("decay", true)
+			.generate();
+
+		FeatureBuilder.create(FeatureRegistry.VEGETATION_PATCH.name())
+			.path("common")
+			.name("grass_patch")
+			.matchTags("block_under", Tags.FLOWER_TOP)
+			.blockState("block", BlockStateBuilder.create().block("small_grass"))
+			.integer("radius", 2)
+			.doubleArg("chance", 0.3)
+			.bool("decay", true)
+			.generate();
+
+		FeatureBuilder.create(FeatureRegistry.VEGETATION_PATCH.name())
+			.path("common")
+			.name("tall_grass_patch")
+			.matchTags("block_under", Tags.FLOWER_TOP)
+			.blockState("block", BlockStateBuilder.create().block("tall_grass"))
+			.integer("radius", 4)
+			.doubleArg("chance", 0.5)
+			.bool("decay", true)
+			.generate();
+
+		FeatureBuilder.create(FeatureRegistry.VEGETATION_PATCH.name())
+			.path("common")
+			.name("grass_patch_mixed")
+			.matchTags("block_under", Tags.FLOWER_TOP)
+			.blockState("block", BlockStateBuilder.create().block("tall_grass"))
+			.integer("radius", 4)
+			.doubleArg("chance", 0.75)
+			.bool("decay", true)
+			.generate();
+
+		FeatureBuilder.create(FeatureRegistry.VEGETATION_PATCH.name())
+			.path("common")
+			.name("pebbles")
+			.matchBlocks("block_under", "sand", "grass", "dirt", "stone")
+			.blockState("block", BlockStateBuilder.create().block("pebbles"))
+			.integer("radius", 3)
+			.doubleArg("chance", 0.3)
+			.bool("decay", true)
+			.generate();
+
+		FeatureBuilder.create(FeatureRegistry.VEGETATION_PATCH.name())
+			.path("common")
+			.name("sticks")
+			.matchBlocks("block_under", "sand", "grass", "dirt", "stone")
+			.blockState("block", BlockStateBuilder.create().block("stick"))
+			.integer("radius", 3)
+			.doubleArg("chance", 0.3)
+			.bool("decay", true)
+			.generate();
+
+		FeatureBuilder.create(FeatureRegistry.TREE.name())
+			.path("trees")
+			.name("oak_tree")
+			.matchBlocks("match_under", "grass", "dirt")
+			.blockState("log", BlockStateBuilder.create().block("oak_log"))
+			.blockState("leaves", BlockStateBuilder.create().block("oak_leaves"))
+			.blockState("set_under", BlockStateBuilder.create().block("dirt"))
+			.integer("height_min", 5)
+			.integer("height_max", 7)
+			.generate();
+
+		FeatureBuilder.create(FeatureRegistry.TOP_SNOW.name())
+			.path("mountain")
+			.name("top_mountain_snow")
+			.matchAlwaysTrue("target")
+			.provideStates("snow",
+				BlockStateBuilder.create().block("snow_layer").state(SnowLayerBlock.SNOW_LAYER, 1),
+				BlockStateBuilder.create().block("snow_layer").state(SnowLayerBlock.SNOW_LAYER, 2),
+				BlockStateBuilder.create().block("snow_layer").state(SnowLayerBlock.SNOW_LAYER, 3),
+				BlockStateBuilder.create().block("snow_layer").state(SnowLayerBlock.SNOW_LAYER, 4))
+			.integer("height_start", 46)
+			.integer("height_max", 52)
+			.generate();
+
+		FeatureBuilder.create(FeatureRegistry.TILE_REPLACE_PATCH.name())
+			.path("mountain")
+			.name("mountain_snow_patches")
+			.matchBlocks("target", "stone")
+			.provideStates("block", BlockStateBuilder.create().block("snow_block"))
+			.doubleArg("chance", 1)
+			.integer("radius", 4)
+			.bool("decay_from_center", true)
+			.bool("only_top", false)
+			.generate();
+	}
+
+	public void generateBiomes()
+	{
+		BiomeBuilder.create()
+			.name("desert")
+			.surface("sand", "sandstone", "stone", 4, 8)
+			.heightMap(4, 0.3f, 0.03f, 8, 18)
+			.climate(0.05f, 1f, 0f, -1f)
+			.foliageColor(183 / 255f, 212 / 255f, 80 / 255f)
+			.feature(EnumFeatureStage.VEGETATION, 1d / 100d, "shrubs")
+			.feature(EnumFeatureStage.VEGETATION, 1d / 256d / 4d, "tall_cactus")
+			.feature(EnumFeatureStage.VEGETATION, 1d / 256d, "cactus")
+			.feature(EnumFeatureStage.VEGETATION, 1d / 256d / 8d, "pebbles")
+			.generate();
+
+		BiomeBuilder.create()
+			.name("desert_hills")
+			.surface("sand", "sandstone", "stone", 4, 8)
+			.heightMap(6, 0.5f, 0.05f, 9, 33)
+			.climate(0.65f, 0.95f, 0f, -0.99f)
+			.foliageColor(183 / 255f, 212 / 255f, 80 / 255f)
+			.feature(EnumFeatureStage.VEGETATION, 1d / 100d, "shrubs")
+			.feature(EnumFeatureStage.VEGETATION, 1d / 256d / 4d, "tall_cactus")
+			.feature(EnumFeatureStage.VEGETATION, 1d / 256d, "cactus")
+			.feature(EnumFeatureStage.VEGETATION, 1d / 256d / 8d, "pebbles")
+			.generate();
+
+		BiomeBuilder.create()
+			.name("forest")
+			.surface("grass", "dirt", "stone", 4, 14)
+			.heightMap(8, 0.07f, 0.007f, 12, 22)
+			.climate(0.1f, 0.25f, 0f, -0.6f)
+			.foliageColor(92 / 255f, 184 / 255f, 64 / 255f)
+			.feature(EnumFeatureStage.VEGETATION, 1d / 100d, "grass_patch")
+			.feature(EnumFeatureStage.VEGETATION, 1d / 512d, "pebbles")
+			.feature(EnumFeatureStage.VEGETATION, 1d / 256d, "sticks")
+			.feature(EnumFeatureStage.TREE, 1d / 5d, "oak_tree")
+			.generate();
+
+		BiomeBuilder.create()
+			.name("plains")
+			.surface("grass", "dirt", "stone", 4, 12)
+			.heightMap(7, 0.07f, 0.006f, 10, 20)
+			.climate(0f, 0.2f, 0f, -0.3f)
+			.foliageColor(92 / 255f, 200 / 255f, 64 / 255f)
+			.feature(EnumFeatureStage.VEGETATION, 1d / 100d, "grass_patch")
+			.feature(EnumFeatureStage.VEGETATION, 1d / 220d, "tall_grass_patch")
+			.feature(EnumFeatureStage.VEGETATION, 1d / 512d, "pebbles")
+			.generate();
+
+		BiomeBuilder.create()
+			.name("tundra")
+			.surface("grass", "dirt", "stone", 4, 12)
+			.heightMap(7, 0.06f, 0.005f, 10, 18)
+			.climate(0f, -1f, 0f, 0.25f)
+			.foliageColor(92 / 255f, 200 / 255f, 64 / 255f)
+			.feature(EnumFeatureStage.TOP_MODIFICATION, 1, "top_snow")
+			.feature(EnumFeatureStage.TREE, 1d / 300d, "oak_tree")
+			.generate();
+
+		BiomeBuilder.create()
+			.name("savanna")
+			.surface("grass", "dirt", "stone", 4, 14)
+			.heightMap(6, 0.3f, 0.019f, 12, 23)
+			.climate(0.1f, 0.65f, 0.0f, 0.05f)
+			.foliageColor(120 / 255f, 190 / 255f, 60 / 255f)
+			.feature(EnumFeatureStage.TREE, 1d / 400d, "oak_tree")
+			.feature(EnumFeatureStage.VEGETATION, 1d / 256d, "pebbles")
+			.feature(EnumFeatureStage.VEGETATION, 1d / 100d, "grass_patch")
+			.generate();
+
+		BiomeBuilder.create()
+			.name("savanna_plateau")
+			.surface("grass", "dirt", "stone", 4, 14)
+			.heightMap(6, 0.3f, 0.003f, 23, 30)
+			.climate(0.8f, 0.60f, 0.3f, 0.0f)
+			.foliageColor(120 / 255f, 190 / 255f, 60 / 255f)
+			.feature(EnumFeatureStage.TREE, 1d / 400d, "oak_tree")
+			.feature(EnumFeatureStage.VEGETATION, 1d / 256d, "pebbles")
+			.feature(EnumFeatureStage.VEGETATION, 1d / 100d, "grass_patch")
+			.generate();
+
+		BiomeBuilder.create()
+			.name("mountains")
+			.surface("stone", "stone", "stone", 0, 12)
+			.heightMap(3, 0.2f, 0.025f, 15, 50)
+			.climate(1f, 0.1f, 0.0f, 0.17f)
+			.foliageColor(92 / 255f, 160 / 255f, 64 / 255f)
+			.generate();
+
+		BiomeBuilder.create()
+			.name("cold_mountains")
+			.surface("stone", "stone", "stone", 0, 12)
+			.heightMap(3, 0.2f, 0.025f, 15, 50)
+			.climate(1f, -1f, 0.0f, 0.15f)
+			.foliageColor(92 / 255f, 160 / 255f, 64 / 255f)
+			.feature(EnumFeatureStage.TOP_MODIFICATION, 1d, "top_mountain_snow")
+			.feature(EnumFeatureStage.TOP_MODIFICATION, 1.0 / 500.0, "mountain_snow_patches")
+			.generate();
+	}
+
 
 }

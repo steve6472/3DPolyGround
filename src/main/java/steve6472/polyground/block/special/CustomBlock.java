@@ -1,13 +1,12 @@
 package steve6472.polyground.block.special;
 
+import org.json.JSONObject;
 import steve6472.polyground.block.model.BlockModel;
 import steve6472.polyground.block.model.IElement;
 import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.world.ModelBuilder;
 import steve6472.polyground.world.World;
 import steve6472.polyground.world.chunk.ModelLayer;
-
-import java.io.File;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
@@ -17,9 +16,9 @@ import java.io.File;
  ***********************/
 public class CustomBlock extends TransparentBlock
 {
-	public CustomBlock(File f)
+	public CustomBlock(JSONObject json)
 	{
-		super(f);
+		super(json);
 		isFull = false;
 	}
 

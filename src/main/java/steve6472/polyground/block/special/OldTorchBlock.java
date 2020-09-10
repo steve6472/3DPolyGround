@@ -1,26 +1,13 @@
 package steve6472.polyground.block.special;
 
-import org.joml.Vector3f;
-import steve6472.SSS;
-import steve6472.polyground.block.Block;
-import steve6472.polyground.block.states.BlockState;
-import steve6472.polyground.world.World;
-import steve6472.polyground.gfx.light.EnumLightSource;
-import steve6472.polyground.gfx.light.Light;
-import steve6472.polyground.gfx.light.LightManager;
-import steve6472.sge.main.util.ColorUtil;
-import steve6472.sge.main.util.RandomUtil;
-
-import java.io.File;
-
 /**********************
  * Created by steve6472 (Mirek Jozefek)
  * On date: 23.11.2019
  * Project: SJP
  *
  ***********************/
-public class OldTorchBlock extends Block
-{
+public class OldTorchBlock// extends Block
+{/*
 	private File f;
 	private float r, g, b, a;
 	private float constant, linear, quadratic;
@@ -116,11 +103,11 @@ public class OldTorchBlock extends Block
 			r, g, b, a, l
 			);
 		subChunk.getWorld().getPg().particles.addParticle(p);*/
-	}
+	/*}
 
 	/**
 	 * @author https://karthikkaranth.me/blog/generating-random-points-in-a-sphere/
-	 */
+	 *//*
 	private Vector3f getRandomSpherePos(float radius)
 	{
 		double u = Math.random();
@@ -146,5 +133,5 @@ public class OldTorchBlock extends Block
 	private enum EnumMotionFormula
 	{
 		TORCH, UP, BEAM
-	}
+	}*/
 }

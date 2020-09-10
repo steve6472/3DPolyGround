@@ -1,6 +1,6 @@
 package steve6472.polyground.generator.special;
 
-import steve6472.SSS;
+import org.json.JSONObject;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
@@ -18,8 +18,9 @@ public class SimpleSpecial implements ISpecial
 	}
 
 	@Override
-	public void generate(SSS sss)
+	public JSONObject generate()
 	{
+		return new JSONObject();
 	}
 
 	@Override

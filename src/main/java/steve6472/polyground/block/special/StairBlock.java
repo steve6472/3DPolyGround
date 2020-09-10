@@ -1,5 +1,6 @@
 package steve6472.polyground.block.special;
 
+import org.json.JSONObject;
 import steve6472.polyground.EnumFace;
 import steve6472.polyground.block.Block;
 import steve6472.polyground.block.properties.EnumProperty;
@@ -9,7 +10,6 @@ import steve6472.polyground.block.states.States;
 import steve6472.polyground.entity.player.Player;
 import steve6472.polyground.world.World;
 
-import java.io.File;
 import java.util.List;
 
 /**********************
@@ -22,9 +22,9 @@ public class StairBlock extends Block
 {
 	public static final EnumProperty<EnumFace> FACING = States.FACING_BLOCK;
 
-	public StairBlock(File f)
+	public StairBlock(JSONObject json)
 	{
-		super(f);
+		super(json);
 		isFull = false;
 		setDefaultState(getDefaultState().with(FACING, EnumFace.NORTH).get());
 	}
