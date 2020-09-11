@@ -214,6 +214,12 @@ public class DataGenerator
 			.generate();
 
 		DataBuilder.create()
+			.fullBlock("backpack")
+			.blockState(StateBuilder.create().singleModel(BlockModelBuilder.create("backpack").externalPath("custom_models/backpack.bbmodel")))
+			.blockSpecial(new SimpleSpecial("custom"))
+			.generate();
+
+		DataBuilder.create()
 			.fullBlock("small_palette")
 			.blockState(StateBuilder.create().singleModel(BlockModelBuilder.create("small_palette").externalPath("custom_models/small_palette.bbmodel")))
 			.blockSpecial(new SimpleSpecial("custom"))
@@ -242,6 +248,18 @@ public class DataGenerator
 				.addState(PropertyBuilder.create().addProperty(LogStackBlock.LOGS, 4), BlockModelBuilder.create("log_stack_4").modelPath("log_stack").externalPath("custom_models/log_stack_4.bbmodel"))
 				.addState(PropertyBuilder.create().addProperty(LogStackBlock.LOGS, 5), BlockModelBuilder.create("log_stack_5").modelPath("log_stack").externalPath("custom_models/log_stack_5.bbmodel"))
 				.addState(PropertyBuilder.create().addProperty(LogStackBlock.LOGS, 6), BlockModelBuilder.create("log_stack_6").modelPath("log_stack").externalPath("custom_models/log_stack_6.bbmodel"))
+			).generate();
+
+		DataBuilder.create()
+			.fullBlock("conveyor_belt")
+			.blockSpecial(new SimpleSpecial("conveyor_belt"))
+			.blockState(StateBuilder.create()
+				.addState(PropertyBuilder.create().addProperty(ConveyorBeltBlock.FACING, EnumFace.UP),    BlockModelBuilder.create("conveyor_belt").externalPath("custom_models/conveyor_belt.bbmodel"))
+				.addState(PropertyBuilder.create().addProperty(ConveyorBeltBlock.FACING, EnumFace.DOWN),  BlockModelBuilder.noGen("conveyor_belt"))
+				.addState(PropertyBuilder.create().addProperty(ConveyorBeltBlock.FACING, EnumFace.NORTH), BlockModelBuilder.noGen("conveyor_belt"))
+				.addState(PropertyBuilder.create().addProperty(ConveyorBeltBlock.FACING, EnumFace.EAST).rot(0, 270, 0),  BlockModelBuilder.noGen("conveyor_belt"))
+				.addState(PropertyBuilder.create().addProperty(ConveyorBeltBlock.FACING, EnumFace.SOUTH).rot(0, 180, 0), BlockModelBuilder.noGen("conveyor_belt"))
+				.addState(PropertyBuilder.create().addProperty(ConveyorBeltBlock.FACING, EnumFace.WEST).rot(0, 90, 0),   BlockModelBuilder.noGen("conveyor_belt"))
 			).generate();
 
 		DataBuilder.create()

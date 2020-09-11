@@ -37,6 +37,8 @@ public class SpecialBlockRegistry
 	public static final SpecialBlockEntry<CorruptedStoneBlock> corruptedStone = register("corrupted_stone", CorruptedStoneBlock::new);
 	public static final SpecialBlockEntry<LogStackBlock> logStack = register("log_stack", LogStackBlock::new);
 	public static final SpecialBlockEntry<DirectionalLightSourceBlock> dirLight = register("dir_light", DirectionalLightSourceBlock::new);
+	public static final SpecialBlockEntry<DirectionalBlock> directional = register("directional", DirectionalBlock::new);
+	public static final SpecialBlockEntry<ConveyorBeltBlock> conveyorBelt = register("conveyor_belt", ConveyorBeltBlock::new);
 
 	public static <T extends Block> SpecialBlockEntry<T> register(String id, ISpecialBlockFactory<T> factory)
 	{

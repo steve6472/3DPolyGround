@@ -3,6 +3,7 @@ package steve6472.polyground;
 import org.joml.AABBf;
 import org.joml.Vector3f;
 import org.lwjgl.opengl.GL11;
+import steve6472.polyground.gfx.MainRender;
 import steve6472.polyground.gfx.shaders.MainShader;
 import steve6472.polyground.tessellators.BasicTessellator;
 import steve6472.sge.gfx.Tessellator;
@@ -91,6 +92,11 @@ public class AABBUtil
 		}
 
 		return za;
+	}
+
+	public static void renderAABB(float x, float y, float z, float size, float lineWidth)
+	{
+		AABBUtil.renderAABB(x - size, y - size, z - size, x + size, y + size, z + size, lineWidth, CaveGame.getInstance().mainRender.basicTess, MainRender.shaders.mainShader);
 	}
 
 	public static void renderAABB(float minX, float minY, float minZ, float maxX, float maxY, float maxZ, float lineWidth, BasicTessellator tess, MainShader mainShader)

@@ -8,10 +8,10 @@ package steve6472.polyground.entity.player;
  ***********************/
 public enum EnumSlot
 {
-	GROUND, CREATIVE_BELT, HAND_LEFT, HAND_RIGHT;
+	GROUND, CREATIVE_BELT, HAND_LEFT, HAND_RIGHT, BACK;
 
-	private static final EnumSlot[] VALUES = {GROUND, CREATIVE_BELT, HAND_LEFT, HAND_RIGHT};
-	private static final EnumSlot[] SLOTS = {HAND_LEFT, HAND_RIGHT};
+	private static final EnumSlot[] VALUES = {GROUND, CREATIVE_BELT, HAND_LEFT, HAND_RIGHT, BACK};
+	private static final EnumSlot[] SLOTS = {HAND_LEFT, HAND_RIGHT, BACK};
 
 	public static EnumSlot[] getValues()
 	{

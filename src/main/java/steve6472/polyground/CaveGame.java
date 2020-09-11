@@ -8,7 +8,9 @@ import steve6472.polyground.block.model.IElement;
 import steve6472.polyground.block.model.ModelLoader;
 import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.commands.CommandSource;
+import steve6472.polyground.entity.Backpack;
 import steve6472.polyground.entity.MiningTool;
+import steve6472.polyground.entity.Palette;
 import steve6472.polyground.entity.player.Player;
 import steve6472.polyground.events.CancellableEvent;
 import steve6472.polyground.events.SpecialBlockRegistryEvent;
@@ -109,6 +111,7 @@ public class CaveGame extends MainApp
 
 		MiningTool.initModel(mainRender.buildHelper, modelLoader);
 		Palette.initModel(mainRender.buildHelper, modelLoader);
+		Backpack.initModel(mainRender.buildHelper, modelLoader);
 
 		getEventHandler().runEvent(new WindowSizeEvent(getWindowWidth(), getWindowHeight()));
 

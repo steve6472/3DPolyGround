@@ -5,11 +5,8 @@ import steve6472.polyground.EnumFace;
 import steve6472.polyground.block.Block;
 import steve6472.polyground.block.properties.EnumProperty;
 import steve6472.polyground.block.properties.IProperty;
-import steve6472.polyground.block.properties.enums.EnumAxis;
 import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.block.states.States;
-import steve6472.polyground.entity.BlockItemEntity;
-import steve6472.polyground.entity.EntityBase;
 import steve6472.polyground.entity.player.Player;
 import steve6472.polyground.world.World;
 
@@ -17,18 +14,18 @@ import java.util.List;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
- * On date: 05.07.2020
+ * On date: 11.09.2020
  * Project: CaveGame
  *
  ***********************/
-public class PillarBlock extends Block
+public class DirectionalBlock extends Block
 {
-	public static final EnumProperty<EnumAxis> AXIS = States.AXIS;
+	public static final EnumProperty<EnumFace> FACING = States.FACING;
 
-	public PillarBlock(JSONObject json)
+	public DirectionalBlock(JSONObject json)
 	{
 		super(json);
-		setDefaultState(getDefaultState().with(AXIS, EnumAxis.Y).get());
+		setDefaultState(getDefaultState().with(FACING, EnumFace.UP).get());
 	}
 
 	@Override
@@ -37,18 +34,12 @@ public class PillarBlock extends Block
 		if (placedOn == null)
 			return getDefaultState();
 
-		return switch (placedOn)
-			{
-				case UP, DOWN -> getDefaultState().with(AXIS, EnumAxis.Y).get();
-				case NORTH, SOUTH -> getDefaultState().with(AXIS, EnumAxis.X).get();
-				case EAST, WEST -> getDefaultState().with(AXIS, EnumAxis.Z).get();
-				case NONE -> getDefaultState();
-			};
+		return getDefaultState().with(FACING, placedOn).get();
 	}
 
 	@Override
 	public void fillStates(List<IProperty<?>> properties)
 	{
-		properties.add(AXIS);
+		properties.add(FACING);
 	}
 }

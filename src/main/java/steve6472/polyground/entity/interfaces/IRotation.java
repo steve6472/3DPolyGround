@@ -34,6 +34,16 @@ public interface IRotation
 		getRotations().set(pitch, yaw, roll);
 	}
 
+	default void addRotations(float pitch, float yaw, float roll)
+	{
+		getRotations().add(pitch, yaw, roll);
+	}
+
+	default void setRotationsAng(float pitchAng, float yawAng, float rollAng)
+	{
+		getRotations().set((float) Math.toRadians(pitchAng), (float) Math.toRadians(yawAng), (float) Math.toRadians(rollAng));
+	}
+
 	default void setPitchAng(float pitchAng)
 	{
 		getRotations().x = (float) Math.toRadians(pitchAng);

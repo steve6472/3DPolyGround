@@ -1,16 +1,20 @@
 package steve6472.polyground.entity;
 
+import org.joml.AABBf;
 import org.joml.Vector3f;
+import steve6472.polyground.AABBUtil;
 import steve6472.polyground.CaveGame;
-import steve6472.polyground.Palette;
 import steve6472.polyground.block.Block;
 import steve6472.polyground.block.model.BlockModel;
+import steve6472.polyground.block.model.CubeHitbox;
+import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.entity.interfaces.IKillable;
 import steve6472.polyground.entity.interfaces.IRenderable;
 import steve6472.polyground.entity.interfaces.ITickable;
 import steve6472.polyground.entity.interfaces.IWorldContainer;
 import steve6472.polyground.entity.player.EnumSlot;
 import steve6472.polyground.entity.player.Player;
+import steve6472.polyground.gfx.MainRender;
 import steve6472.polyground.world.World;
 import steve6472.sge.main.Util;
 
@@ -24,6 +28,8 @@ import java.util.function.Function;
  ***********************/
 public class BlockItemEntity extends EntityBase implements IRenderable, ITickable, IKillable, IWorldContainer
 {
+	private static final AABBf HITBOX = new AABBf(-1f / 19f, -1f / 19f, -1f / 19f, 1f / 19f, 1f / 19f, 1f / 19f);
+
 	public final DynamicEntityModel model;
 	private final Block blockType;
 	private World world;
@@ -36,8 +42,8 @@ public class BlockItemEntity extends EntityBase implements IRenderable, ITickabl
 		this.blockType = blockType;
 		model = new DynamicEntityModel();
 		model.load(blockModel.getElements());
-		setPosition(x, y, z);
-		setPivotPoint(0.5f, 0f, 0.5f);
+		setPosition(x + 0.5f, y + 0.5f, z + 0.5f);
+		setPivotPoint(.5f, .5f, .5f);
 	}
 
 	@Override
@@ -58,19 +64,73 @@ public class BlockItemEntity extends EntityBase implements IRenderable, ITickabl
 		return "item";
 	}
 
+	private static final AABBf test0 = new AABBf(), test1 = new AABBf();
+
+	private static void move(AABBf aabb, float x, float y, float z)
+	{
+		aabb.minX += x; aabb.maxX += x;
+		aabb.minY += y; aabb.maxY += y;
+		aabb.minZ += z; aabb.maxZ += z;
+	}
+
+	private void setupTest()
+	{
+		move(test1.set(HITBOX), getX(), getY(), getZ());
+	}
+
+	private boolean testPosition(float x, float y, float z, boolean runCollision)
+	{
+		for (int i = -1; i < 2; i++)
+		{
+			for (int j = -1; j < 2; j++)
+			{
+				for (int k = -1; k < 2; k++)
+				{
+					int X = (int) Math.floor(x + i), Y = (int) Math.floor(y + j), Z = (int) Math.floor(z + k);
+					BlockState state = world.getState(X, Y, Z);
+					BlockModel model = state.getBlockModel(world, X, Y, Z);
+					if (model != null && model.getCubes() != null)
+					{
+						for (CubeHitbox cube : model.getCubes())
+						{
+							if (cube.isCollisionBox())
+							{
+								move(test0.set(cube.getAabb()), X, Y, Z);
+								if (test0.intersectsAABB(test1))
+								{
+									if (runCollision)
+										state.getBlock().entityCollision(this, world, state, X, Y, Z);
+									MainRender.t.add(new AABBf(test0));
+									return false;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+
+		return true;
+	}
+
 	@Override
 	public void tick()
 	{
 		timeAlive += 1f / 60d;
-		if (timeAlive >= 1.2)
+
+		if (timeAlive >= 1.2f)
 		{
-			if (world.getState((int) getX(), (int) getY(), (int) getZ()).getBlock() != Block.air)
+			float fallSpeed = 1f / 60f;
+
+			setupTest();
+
+			if (testPosition(getX(), getY() - 1f / 16f, getZ(), false))
 			{
-				addPosition(0, 1f / 60f, 0);
+				addPosition(0, -fallSpeed, 0);
 			}
-			if (world.getState((int) getX(), (int) (getY() - 0.1f), (int) getZ()).getBlock() == Block.air)
+			if (!testPosition(getX(), getY(), getZ(), true))
 			{
-				addPosition(0, -1f / 60f, 0);
+				setPosition(getX(), test0.maxY + 1f / 19f, getZ());
 			}
 
 			if (getY() < 0)
@@ -86,16 +146,17 @@ public class BlockItemEntity extends EntityBase implements IRenderable, ITickabl
 						break;
 				}
 			}
+			addRotations(0.017453292519943295f, 0.017453292519943295f, 0.017453292519943295f);
 		}
 	}
 
 	private boolean tryToAdd(Player player, Palette p)
 	{
-		if (new Vector3f(getPosition()).add(0.5f, 1f / 32f, 0.5f).distance(player.getPosition()) <= 5 && p.canBeAdded(blockType))
+		if (new Vector3f(getPosition()).distance(player.getPosition()) <= 5 && p.canBeAdded(blockType))
 		{
-			Vector3f dir = new Vector3f(player.getPosition()).sub(getPosition()).sub(0.5f, 1f / 32f, 0.5f).normalize().mul(Math.min((float) ((timeAlive - 1.2) * (timeAlive - 1.2)) / 20f, 0.1f));
+			Vector3f dir = new Vector3f(player.getPosition()).sub(getPosition()).normalize().mul(Math.min((float) ((timeAlive - 1.2f) * (timeAlive - 1.2f)) / 20f, 0.1f));
 			addPosition(dir);
-			if (new Vector3f(getPosition()).add(0.5f, 1f / 32f, 0.5f).distance(player.getPosition()) <= 0.1f)
+			if (new Vector3f(getPosition()).distance(player.getPosition()) <= 0.1f)
 			{
 				setDead(p.addItem(blockType, model));
 				return true;
@@ -110,26 +171,37 @@ public class BlockItemEntity extends EntityBase implements IRenderable, ITickabl
 			return 1 / 16f;
 		Function<Double, Double> f1 = Math::cos;
 		Function<Double, Double> f2 = x -> Math.sin((x + 1.4) * 5) * 0.4;
-		Function<Double, Double> f4 = x -> 1 - smoothstep(1.1, 0, f1.apply(x));
+		Function<Double, Double> f4 = x -> 1 - smoothstep(f1.apply(x));
 		Function<Double, Double> f5 = x -> x * 1.83;
-		Function<Double, Double> f6 = x -> mix(f2.apply(f5.apply(x)), 1, f4.apply(f5.apply(x)));
+		Function<Double, Double> f6 = x -> mix(f2.apply(f5.apply(x)), f4.apply(f5.apply(x)));
 		return f6.apply(y).floatValue();
 	}
 
 	@Override
 	public void render()
 	{
-		model.render(CaveGame.getInstance().getCamera().getViewMatrix(), this, this, calculateSize(timeAlive));
+		DynamicEntityModel.QUAT.identity().rotateXYZ(getRotations().x, getRotations().y, getRotations().z);
+
+		DynamicEntityModel.MAT.identity()
+			.translate(getPosition().x - 0.5f, getPosition().y - 0.5f, getPosition().z - 0.5f)
+			.translate(getPivotPoint())
+			.scale(calculateSize(timeAlive))
+			.rotate(DynamicEntityModel.QUAT)
+			.translate(-getPivotPoint().x, -getPivotPoint().y, -getPivotPoint().z)
+		;
+
+		model.render(CaveGame.getInstance().getCamera().getViewMatrix(), DynamicEntityModel.MAT);
+		AABBUtil.renderAABB(getX(), getY(), getZ(), 1f / 19f, 1);
 	}
 
-	private double mix(double x, double y, double a)
+	private double mix(double x, double a)
 	{
-		return x * (1d - a) + y * a;
+		return x * (1d - a) + a;
 	}
 
-	private double smoothstep(double edge0, double edge1, double x)
+	private double smoothstep(double x)
 	{
-		double t = Util.clamp(0.0, 1.0, (x - edge0) / (edge1 - edge0));
+		double t = Util.clamp(0.0, 1.0, (x - 1.1) / -1.1);
 		return t * t * (3.0 - 2.0 * t);
 	}
 

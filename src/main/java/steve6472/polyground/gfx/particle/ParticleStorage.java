@@ -81,8 +81,6 @@ public class ParticleStorage
 
 	private void subRender(HashMap<Class<? extends Particle>, List<Particle>> map)
 	{
-//		AABBf test = new AABBf();
-
 		for (Class<? extends Particle> type : map.keySet())
 		{
 			List<Particle> list = map.get(type);

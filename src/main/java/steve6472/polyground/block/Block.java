@@ -12,6 +12,7 @@ import steve6472.polyground.block.properties.IProperty;
 import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.block.states.StateLoader;
 import steve6472.polyground.entity.BlockItemEntity;
+import steve6472.polyground.entity.EntityBase;
 import steve6472.polyground.entity.player.Player;
 import steve6472.polyground.world.ModelBuilder;
 import steve6472.polyground.world.World;
@@ -338,5 +339,10 @@ public class Block
 	 */
 	public void onClick(BlockState state, World world, Player player, EnumFace clickedOn, MouseEvent click, int x, int y, int z)
 	{
+	}
+
+	public void entityCollision(EntityBase entity, World world, BlockState state, int x, int y, int z)
+	{
+
 	}
 }

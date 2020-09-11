@@ -26,8 +26,8 @@ import static org.lwjgl.opengl.GL20.*;
  ***********************/
 public class DynamicEntityModel
 {
-	private static final Quaternionf quat = new Quaternionf();
-	private static final Matrix4f mat = new Matrix4f();
+	public static final Quaternionf QUAT = new Quaternionf();
+	public static final Matrix4f MAT = new Matrix4f();
 	private static final ModelBuilder modelBuilder = new ModelBuilder();
 
 	List<Vector3f> vert;
@@ -76,17 +76,17 @@ public class DynamicEntityModel
 
 	public static Matrix4f createMatrix(IPosition3f position, IRotation rotation, float scale)
 	{
-		quat.identity()
+		QUAT.identity()
 			.rotateXYZ(rotation.getRotations().x, rotation.getRotations().y, rotation.getRotations().z);
 
-		mat.identity()
+		MAT.identity()
 			.translate(position.getPosition())
 			.translate(rotation.getPivotPoint())
-			.rotate(quat)
+			.rotate(QUAT)
 			.scale(scale)
 			.translate(-rotation.getPivotPoint().x, -rotation.getPivotPoint().y, -rotation.getPivotPoint().z);
 
-		return mat;
+		return MAT;
 	}
 
 	public void render(Matrix4f viewMatrix, IPosition3f position, IRotation rotation, float scale)

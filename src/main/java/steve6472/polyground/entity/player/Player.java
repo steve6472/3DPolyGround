@@ -7,11 +7,11 @@ import org.joml.Vector3f;
 import steve6472.polyground.CaveGame;
 import steve6472.polyground.EnumFace;
 import steve6472.polyground.HitResult;
-import steve6472.polyground.Palette;
 import steve6472.polyground.block.Block;
 import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.entity.EntityHitbox;
 import steve6472.polyground.entity.MiningTool;
+import steve6472.polyground.entity.Palette;
 import steve6472.polyground.world.World;
 import steve6472.sge.main.KeyList;
 import steve6472.sge.main.events.Event;
@@ -70,6 +70,7 @@ public class Player implements IMotion3f, IPosition3f
 
 		holdedItems.put(EnumSlot.HAND_LEFT, EMPTY_HAND);
 		holdedItems.put(EnumSlot.HAND_RIGHT, EMPTY_HAND);
+		holdedItems.put(EnumSlot.BACK, EMPTY_HAND);
 
 		hitbox = new EntityHitbox(0.3f, 0.9f, 0.3f, this, this);
 

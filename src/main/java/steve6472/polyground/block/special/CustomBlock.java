@@ -22,8 +22,7 @@ public class CustomBlock extends TransparentBlock
 		isFull = false;
 	}
 
-	@Override
-	public int createModel(int x, int y, int z, World world, BlockState state, ModelBuilder buildHelper, ModelLayer modelLayer)
+	public static int model(int x, int y, int z, World world, BlockState state, ModelBuilder buildHelper, ModelLayer modelLayer)
 	{
 		int tris = 0;
 		BlockModel model = state.getBlockModel(world, x, y, z);
@@ -39,5 +38,11 @@ public class CustomBlock extends TransparentBlock
 		}
 
 		return tris;
+	}
+
+	@Override
+	public int createModel(int x, int y, int z, World world, BlockState state, ModelBuilder buildHelper, ModelLayer modelLayer)
+	{
+		return model(x, y, z, world, state, buildHelper, modelLayer);
 	}
 }

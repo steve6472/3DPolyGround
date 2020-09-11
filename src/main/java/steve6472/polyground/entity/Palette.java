@@ -1,11 +1,10 @@
-package steve6472.polyground;
+package steve6472.polyground.entity;
 
 import org.joml.AABBf;
 import org.joml.Vector3f;
+import steve6472.polyground.CaveGame;
 import steve6472.polyground.block.Block;
 import steve6472.polyground.block.model.ModelLoader;
-import steve6472.polyground.entity.DynamicEntityModel;
-import steve6472.polyground.entity.StaticEntityModel;
 import steve6472.polyground.entity.interfaces.IRotation;
 import steve6472.polyground.entity.player.EnumSlot;
 import steve6472.polyground.entity.player.IHoldable;
@@ -118,10 +117,15 @@ public class Palette implements IHoldable, IRotation
 		}
 	}
 
+	protected StaticEntityModel getModel()
+	{
+		return PALLETE_MODEL;
+	}
+
 	@Override
 	public void render(EnumSlot position)
 	{
-		PALLETE_MODEL.render(CaveGame.getInstance().getCamera().getViewMatrix(), this, this, 1f);
+		getModel().render(CaveGame.getInstance().getCamera().getViewMatrix(), this, this, 1f);
 
 		int index = 0;
 
