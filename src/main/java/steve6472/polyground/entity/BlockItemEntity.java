@@ -2,7 +2,6 @@ package steve6472.polyground.entity;
 
 import org.joml.AABBf;
 import org.joml.Vector3f;
-import steve6472.polyground.AABBUtil;
 import steve6472.polyground.CaveGame;
 import steve6472.polyground.block.Block;
 import steve6472.polyground.block.model.BlockModel;
@@ -14,7 +13,6 @@ import steve6472.polyground.entity.interfaces.ITickable;
 import steve6472.polyground.entity.interfaces.IWorldContainer;
 import steve6472.polyground.entity.player.EnumSlot;
 import steve6472.polyground.entity.player.Player;
-import steve6472.polyground.gfx.MainRender;
 import steve6472.polyground.world.World;
 import steve6472.sge.main.Util;
 
@@ -100,7 +98,7 @@ public class BlockItemEntity extends EntityBase implements IRenderable, ITickabl
 								{
 									if (runCollision)
 										state.getBlock().entityCollision(this, world, state, X, Y, Z);
-									MainRender.t.add(new AABBf(test0));
+//									MainRender.t.add(new AABBf(test0));
 									return false;
 								}
 							}
@@ -191,7 +189,7 @@ public class BlockItemEntity extends EntityBase implements IRenderable, ITickabl
 		;
 
 		model.render(CaveGame.getInstance().getCamera().getViewMatrix(), DynamicEntityModel.MAT);
-		AABBUtil.renderAABB(getX(), getY(), getZ(), 1f / 19f, 1);
+//		AABBUtil.renderAABB(getX(), getY(), getZ(), 1f / 19f, 1);
 	}
 
 	private double mix(double x, double a)

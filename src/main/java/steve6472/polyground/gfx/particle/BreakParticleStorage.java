@@ -1,7 +1,7 @@
 package steve6472.polyground.gfx.particle;
 
 import steve6472.polyground.CaveGame;
-import steve6472.polyground.block.BlockTextureHolder;
+import steve6472.polyground.block.BlockAtlas;
 import steve6472.polyground.gfx.MainRender;
 import steve6472.polyground.gfx.particle.particles.BreakParticle;
 import steve6472.polyground.tessellators.BreakParticleTessellator;
@@ -58,7 +58,7 @@ public class BreakParticleStorage
 			return;
 
 		MainRender.shaders.breakParticleShader.bind(CaveGame.getInstance().getCamera().getViewMatrix());
-		BlockTextureHolder.getAtlas().getSprite().bind(0);
+		BlockAtlas.getAtlas().getSprite().bind(0);
 
 		BreakParticleTessellator tess = particleTess;
 		tess.begin(particles.size());

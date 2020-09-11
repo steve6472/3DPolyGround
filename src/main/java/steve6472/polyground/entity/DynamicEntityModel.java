@@ -1,7 +1,7 @@
 package steve6472.polyground.entity;
 
 import org.joml.*;
-import steve6472.polyground.block.BlockTextureHolder;
+import steve6472.polyground.block.BlockAtlas;
 import steve6472.polyground.block.model.IElement;
 import steve6472.polyground.entity.interfaces.IRotation;
 import steve6472.polyground.gfx.MainRender;
@@ -101,7 +101,7 @@ public class DynamicEntityModel
 		MainRender.shaders.entityShader.setTransformation(mat);
 		MainRender.shaders.entityShader.setUniform(EntityShader.NORMAL_MATRIX, new Matrix3f(new Matrix4f(mat).invert().transpose3x3()));
 
-		BlockTextureHolder.getAtlas().getSprite().bind(0);
+		BlockAtlas.getAtlas().getSprite().bind(0);
 
 		loadBuffer(0, 3, vertBuffer);
 		loadBuffer(1, 4, colBuffer);

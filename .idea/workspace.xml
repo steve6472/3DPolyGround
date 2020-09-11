@@ -67,7 +67,7 @@
       <recent name="D:\CaveGame\src\main\java\steve6472\polyground\block" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.Gen-CaveGame">
+  <component name="RunManager" selected="Application.CaveGame">
     <configuration name="BlockBenchTranslator" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="steve6472.polyground.BlockBenchTranslator" />
       <module name="CaveGame" />
@@ -217,22 +217,22 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="463" y="105" key="FileChooserDialogImpl/0.0.1366.728@0.0.1366.728" timestamp="1599343011985" />
-    <state width="327" height="621" key="GridCell.Tab.0.bottom" timestamp="1599863836482">
+    <state width="1291" height="621" key="GridCell.Tab.0.bottom" timestamp="1599864488504">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="327" height="621" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1599863836482" />
-    <state width="327" height="621" key="GridCell.Tab.0.center" timestamp="1599863836482">
+    <state width="1291" height="621" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1599864488504" />
+    <state width="1291" height="621" key="GridCell.Tab.0.center" timestamp="1599864488504">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="327" height="621" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1599863836482" />
-    <state width="327" height="621" key="GridCell.Tab.0.left" timestamp="1599863836482">
+    <state width="1291" height="621" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1599864488504" />
+    <state width="1291" height="621" key="GridCell.Tab.0.left" timestamp="1599864488504">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="327" height="621" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1599863836482" />
-    <state width="327" height="621" key="GridCell.Tab.0.right" timestamp="1599863836482">
+    <state width="1291" height="621" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1599864488504" />
+    <state width="1291" height="621" key="GridCell.Tab.0.right" timestamp="1599864488504">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="327" height="621" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1599863836482" />
+    <state width="1291" height="621" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1599864488504" />
     <state width="327" height="621" key="GridCell.Tab.1.bottom" timestamp="1599863836482">
       <screen x="0" y="0" width="1366" height="728" />
     </state>

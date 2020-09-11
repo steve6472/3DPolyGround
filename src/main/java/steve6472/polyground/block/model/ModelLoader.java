@@ -7,7 +7,7 @@ import org.json.JSONObject;
 import steve6472.polyground.BlockBenchTranslator;
 import steve6472.polyground.CaveGame;
 import steve6472.polyground.PrettyJson;
-import steve6472.polyground.block.BlockTextureHolder;
+import steve6472.polyground.block.BlockAtlas;
 import steve6472.polyground.block.model.elements.CubeElement;
 import steve6472.polyground.block.model.elements.ElUtil;
 import steve6472.polyground.block.model.elements.PlaneElement;
@@ -112,8 +112,8 @@ public class ModelLoader
 				if (triObj.has("texture"))
 				{
 					String texture = triObj.getString("texture");
-					BlockTextureHolder.putTexture(texture);
-					el.setTexture(BlockTextureHolder.getTextureId(texture));
+					BlockAtlas.putTexture(texture);
+					el.setTexture(BlockAtlas.getTextureId(texture));
 				}
 			}
 		}
@@ -132,8 +132,8 @@ public class ModelLoader
 				if (planeObj.has("texture"))
 				{
 					String texture = planeObj.getString("texture");
-					BlockTextureHolder.putTexture(texture);
-					el.setTexture(BlockTextureHolder.getTextureId(texture));
+					BlockAtlas.putTexture(texture);
+					el.setTexture(BlockAtlas.getTextureId(texture));
 				}
 			}
 		}

@@ -12,7 +12,7 @@ import java.util.HashMap;
  * Project: SJP
  *
  ***********************/
-public class BlockTextureHolder
+public class BlockAtlas
 {
 	private static final HashMap<Integer, String> usedTextures = new HashMap<>();
 	private static final HashMap<String, Integer> usedTexturesReference = new HashMap<>();

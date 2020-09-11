@@ -4,7 +4,7 @@ import org.joml.Vector3f;
 import org.joml.Vector4f;
 import org.json.JSONObject;
 import steve6472.polyground.EnumFace;
-import steve6472.polyground.block.BlockTextureHolder;
+import steve6472.polyground.block.BlockAtlas;
 import steve6472.polyground.block.model.IElement;
 import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.world.Cull;
@@ -130,8 +130,8 @@ public class CubeElement implements IElement
 		}
 
 		String texture = face.getString("texture");
-		BlockTextureHolder.putTexture(texture);
-		el.setTexture(BlockTextureHolder.getTextureId(texture));
+		BlockAtlas.putTexture(texture);
+		el.setTexture(BlockAtlas.getTextureId(texture));
 
 		return el;
 	}

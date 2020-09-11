@@ -7,7 +7,7 @@ import org.joml.Vector4f;
 import steve6472.polyground.CaveGame;
 import steve6472.polyground.PolyUtil;
 import steve6472.polyground.block.Block;
-import steve6472.polyground.block.BlockTextureHolder;
+import steve6472.polyground.block.BlockAtlas;
 import steve6472.polyground.block.model.BlockModel;
 import steve6472.polyground.block.model.IElement;
 import steve6472.polyground.gfx.MainRender;
@@ -88,8 +88,8 @@ public class ItemAtlas
 		camera = new Camera();
 		camera.calculateOrbit(0, 0, 0, 10f);
 
-		buildHelper.atlasSize = BlockTextureHolder.getAtlas().getTileCount();
-		buildHelper.texel = 1f / (float) BlockTextureHolder.getAtlas().getTileCount();
+		buildHelper.atlasSize = BlockAtlas.getAtlas().getTileCount();
+		buildHelper.texel = 1f / (float) BlockAtlas.getAtlas().getTileCount();
 	}
 
 	public void start()
@@ -154,7 +154,7 @@ public class ItemAtlas
 		MainRender.shaders.flatTexturedShader.setTransformation(transformationMatrix);
 		MainRender.shaders.flatTexturedShader.setProjection(projectionMatrix);
 
-		BlockTextureHolder.getAtlas().getSprite().bind();
+		BlockAtlas.getAtlas().getSprite().bind();
 	}
 
 	private float toRad(float deg)

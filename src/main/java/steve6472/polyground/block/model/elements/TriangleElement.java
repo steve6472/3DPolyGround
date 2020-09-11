@@ -5,7 +5,7 @@ import org.joml.Matrix4f;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.json.JSONObject;
-import steve6472.polyground.block.BlockTextureHolder;
+import steve6472.polyground.block.BlockAtlas;
 import steve6472.polyground.block.model.IElement;
 import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.world.ModelBuilder;
@@ -89,7 +89,7 @@ public class TriangleElement implements IElement
 
 	public void fixUv(float texel)
 	{
-		Rectangle r = BlockTextureHolder.getTexture(texture);
+		Rectangle r = BlockAtlas.getTexture(texture);
 		float x = r.x;
 		float y = r.y;
 		float w = r.width;

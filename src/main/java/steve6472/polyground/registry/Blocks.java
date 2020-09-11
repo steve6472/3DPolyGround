@@ -3,7 +3,7 @@ package steve6472.polyground.registry;
 import org.json.JSONObject;
 import steve6472.polyground.CaveGame;
 import steve6472.polyground.block.Block;
-import steve6472.polyground.block.BlockTextureHolder;
+import steve6472.polyground.block.BlockAtlas;
 import steve6472.polyground.block.model.BlockModel;
 import steve6472.polyground.block.model.IElement;
 import steve6472.polyground.block.model.ModelLoader;
@@ -109,10 +109,10 @@ public class Blocks
 			}
 		}
 
-		BlockTextureHolder.compileTextures(0);
+		BlockAtlas.compileTextures(0);
 
-		game.mainRender.buildHelper.atlasSize = BlockTextureHolder.getAtlas().getTileCount();
-		game.mainRender.buildHelper.texel = 1f / (float) BlockTextureHolder.getAtlas().getTileCount();
+		game.mainRender.buildHelper.atlasSize = BlockAtlas.getAtlas().getTileCount();
+		game.mainRender.buildHelper.texel = 1f / (float) BlockAtlas.getAtlas().getTileCount();
 
 		temp.forEach((b, j) -> b.getDefaultState().getPossibleStates().forEach(ps -> {
 			for (BlockModel model : ps.getBlockModels())

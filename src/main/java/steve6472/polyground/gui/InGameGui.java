@@ -1,7 +1,7 @@
 package steve6472.polyground.gui;
 
 import steve6472.polyground.CaveGame;
-import steve6472.polyground.block.BlockTextureHolder;
+import steve6472.polyground.block.BlockAtlas;
 import steve6472.polyground.entity.player.EnumGameMode;
 import steve6472.polyground.entity.player.EnumSlot;
 import steve6472.polyground.events.InGameGuiEvent;
@@ -120,7 +120,7 @@ public class InGameGui extends Gui implements IGamePause
 		Font.renderCustom(5, 15, 1, String.format("XYZ: %.4f %.4f %.4f", main.getPlayer().getX(), main.getPlayer().getY(), main.getPlayer().getZ()));
 		Font.render("XYZ: " + (int) Math.floor(main.getPlayer().getX()) + " " + (int) Math.floor(main.getPlayer().getY()) + " " + (int) Math.floor(main.getPlayer().getZ()), 5, 25);
 
-		final int as = BlockTextureHolder.getAtlas().getTileCount();
+		final int as = BlockAtlas.getAtlas().getTileCount();
 
 		StringBuilder sb = new StringBuilder();
 
@@ -151,7 +151,7 @@ public class InGameGui extends Gui implements IGamePause
 		Font.render(5, 45, sb.toString());
 
 		if (CaveGame.getInstance().options.renderAtlases)
-			SpriteRender.renderSprite(0, 60 + getLineCount(sb) * 8, as, as, 0, BlockTextureHolder.getAtlas().getSprite().getId());
+			SpriteRender.renderSprite(0, 60 + getLineCount(sb) * 8, as, as, 0, BlockAtlas.getAtlas().getSprite().getId());
 
 		int ts = CaveGame.getInstance().itemAtlas.totalSize;
 

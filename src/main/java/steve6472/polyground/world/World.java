@@ -4,7 +4,7 @@ import org.joml.AABBf;
 import org.joml.Matrix4f;
 import steve6472.polyground.CaveGame;
 import steve6472.polyground.EnumFace;
-import steve6472.polyground.block.BlockTextureHolder;
+import steve6472.polyground.block.BlockAtlas;
 import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.entity.EntityManager;
 import steve6472.polyground.gfx.MainRender;
@@ -327,7 +327,7 @@ public class World implements IWorldBlockProvider
 			MainRender.shaders.worldShader.setUniform(WorldShader.SHADE, shade);
 		}
 
-		BlockTextureHolder.getAtlas().getSprite().bind(0);
+		BlockAtlas.getAtlas().getSprite().bind(0);
 
 		for (Chunk chunk : chunks.getMap().values())
 		{
