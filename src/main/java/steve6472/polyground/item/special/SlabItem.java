@@ -34,6 +34,7 @@ public class SlabItem extends Item
 			if (!player.processNextBlockPlace)
 				return;
 
+
 			BlockState placed = world.getState(x + clickedOn.getXOffset(), y + clickedOn.getYOffset(), z + clickedOn.getZOffset());
 
 			if (!(placed.getBlock() instanceof SlabBlock))

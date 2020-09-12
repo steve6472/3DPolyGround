@@ -1,4 +1,4 @@
-package steve6472.polyground.entity;
+package steve6472.polyground.entity.anim;
 
 public class Interpolator
 {
