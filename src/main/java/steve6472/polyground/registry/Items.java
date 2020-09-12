@@ -1,7 +1,8 @@
 package steve6472.polyground.registry;
 
-import steve6472.SSS;
+import org.json.JSONObject;
 import steve6472.polyground.CaveGame;
+import steve6472.polyground.block.model.ModelLoader;
 import steve6472.polyground.item.Item;
 import steve6472.polyground.registry.specialitem.SpecialItemRegistry;
 
@@ -36,20 +37,20 @@ public class Items
 			if (items[i].isDirectory())
 				continue;
 
-			SSS t = new SSS(items[i]);
+			JSONObject json = new JSONObject(ModelLoader.read(items[i]));
 			Item item = null;
 
-			if (t.containsName("debug") && t.getBoolean("debug") && !CaveGame.DEBUG)
+			if (json.optBoolean("debug") && !CaveGame.DEBUG)
 				continue;
 
-			if (t.containsName("special") && SpecialItemRegistry.getKeys().contains(t.getString("special")))
+			if (json.has("special") && SpecialItemRegistry.getKeys().contains(json.getJSONObject("special").getString("name")))
 			{
-				item = SpecialItemRegistry.createSpecialItem(t.getString("special"), items[i], i + 1);
+				item = SpecialItemRegistry.createSpecialItem(json.getJSONObject("special").getString("name"), json, i + 1);
 			} else
 			{
 				try
 				{
-					item = new Item(items[i], i + 1);
+					item = new Item(json, i + 1);
 				} catch (Exception ex)
 				{
 					System.err.println("Error while creating item " + items[i].getName());

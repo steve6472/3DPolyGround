@@ -12,7 +12,6 @@ public class ItemPlaceholder extends Item
 {
 	public ItemPlaceholder(String name)
 	{
-		super(null, -1);
-		this.name = name;
+		super(name);
 	}
 }

@@ -31,7 +31,6 @@ public class LightSourceBlock extends Block implements ILightBlock
 	@Override
 	public void load(JSONObject json)
 	{
-		System.out.println(name + " " + json);
 		if (json.has("color"))
 			color = (int) Long.parseLong(json.getString("color"), 16);
 		else

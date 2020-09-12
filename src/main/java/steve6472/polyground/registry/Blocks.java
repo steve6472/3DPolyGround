@@ -188,6 +188,7 @@ public class Blocks
 		for (Block block : blocks)
 		{
 			block.item = Items.getItemByName(block.item.getName());
+//			System.out.println(block.item.getClass().getSimpleName());
 		}
 	}
 }

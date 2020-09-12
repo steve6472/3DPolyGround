@@ -1,14 +1,13 @@
 package steve6472.polyground.item.special;
 
+import org.joml.Vector2f;
+import org.json.JSONObject;
 import steve6472.polyground.CaveGame;
 import steve6472.polyground.entity.player.Player;
 import steve6472.polyground.events.InGameGuiEvent;
 import steve6472.polyground.item.Item;
 import steve6472.sge.gfx.font.Font;
 import steve6472.sge.main.events.Event;
-import org.joml.Vector2f;
-
-import java.io.File;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
@@ -18,9 +17,9 @@ import java.io.File;
  ***********************/
 public class SpeedometerItem extends Item
 {
-	public SpeedometerItem(File f, int id)
+	public SpeedometerItem(JSONObject json, int id)
 	{
-		super(f, id);
+		super(json, id);
 		lastPosition = new Vector2f();
 	}
 

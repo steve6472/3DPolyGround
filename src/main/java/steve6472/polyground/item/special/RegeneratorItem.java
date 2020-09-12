@@ -1,13 +1,12 @@
 package steve6472.polyground.item.special;
 
+import org.json.JSONObject;
 import steve6472.polyground.CaveGame;
 import steve6472.polyground.entity.player.EnumSlot;
 import steve6472.polyground.entity.player.Player;
 import steve6472.polyground.item.Item;
 import steve6472.sge.main.KeyList;
 import steve6472.sge.main.events.MouseEvent;
-
-import java.io.File;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
@@ -17,9 +16,9 @@ import java.io.File;
  ***********************/
 public class RegeneratorItem extends Item
 {
-	public RegeneratorItem(File f, int id)
+	public RegeneratorItem(JSONObject json, int id)
 	{
-		super(f, id);
+		super(json, id);
 	}
 
 	@Override

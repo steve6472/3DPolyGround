@@ -12,6 +12,7 @@ import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.entity.EntityHitbox;
 import steve6472.polyground.entity.MiningTool;
 import steve6472.polyground.entity.Palette;
+import steve6472.polyground.item.Item;
 import steve6472.polyground.world.World;
 import steve6472.sge.main.KeyList;
 import steve6472.sge.main.events.Event;
@@ -260,6 +261,39 @@ public class Player implements IMotion3f, IPosition3f
 		holdedItems.put(EnumSlot.HAND_RIGHT, temp);
 	}
 
+	public Palette getHoldedPalette()
+	{
+		IHoldable l = holdedItems.get(EnumSlot.HAND_LEFT);
+		IHoldable r = holdedItems.get(EnumSlot.HAND_RIGHT);
+
+		if (l instanceof Palette p)
+			return p;
+		else if (r instanceof Palette p)
+			return p;
+
+		return null;
+	}
+
+	public Item getHoldedPaletteItem()
+	{
+		if (gamemode == EnumGameMode.CREATIVE)
+			return CaveGame.itemInHand;
+
+		IHoldable l = holdedItems.get(EnumSlot.HAND_LEFT);
+		IHoldable r = holdedItems.get(EnumSlot.HAND_RIGHT);
+		Palette palette = null;
+
+		if (l instanceof Palette p)
+			palette = p;
+		else if (r instanceof Palette p)
+			palette = p;
+
+		if (palette != null)
+			return palette.getItemType() == null ? Item.air : palette.getItemType();
+
+		return Item.air;
+	}
+
 	@Event
 	public void mouseEvent(MouseEvent event)
 	{
@@ -269,6 +303,8 @@ public class Player implements IMotion3f, IPosition3f
 			return;
 		if (game.mainRender.dialogManager.isActive())
 			return;
+
+		Item item = getHoldedPaletteItem();
 
 		if (game.hitPicker.hit)
 		{
@@ -281,14 +317,18 @@ public class Player implements IMotion3f, IPosition3f
 
 			if (gamemode == EnumGameMode.CREATIVE)
 				CaveGame.itemInHand.onClick(world, state, this, EnumSlot.CREATIVE_BELT, hr.getFace(), event, hr.getX(), hr.getY(), hr.getZ());
+			else
+				item.onClick(world, state, this, EnumSlot.CREATIVE_BELT, hr.getFace(), event, hr.getX(), hr.getY(), hr.getZ());
 		}
 
 		if (gamemode == EnumGameMode.CREATIVE)
 			CaveGame.itemInHand.onClick(this, EnumSlot.CREATIVE_BELT, event);
+		else
+			item.onClick(this, EnumSlot.CREATIVE_BELT, event);
 
 		if (event.getButton() == KeyList.RMB && event.getAction() == KeyList.PRESS)
 		{
-			pressRMB();
+			pressRMB(event);
 		}
 
 		if (event.getButton() == KeyList.LMB && event.getAction() == KeyList.PRESS)
@@ -305,7 +345,7 @@ public class Player implements IMotion3f, IPosition3f
 		processNextBlockBreak = true;
 	}
 
-	private void pressRMB()
+	private void pressRMB(MouseEvent event)
 	{
 		IHoldable l = holdedItems.get(EnumSlot.HAND_LEFT);
 		IHoldable r = holdedItems.get(EnumSlot.HAND_RIGHT);

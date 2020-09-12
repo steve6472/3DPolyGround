@@ -1,5 +1,6 @@
 package steve6472.polyground.item.special;
 
+import org.json.JSONObject;
 import steve6472.polyground.CaveGame;
 import steve6472.polyground.EnumFace;
 import steve6472.polyground.block.properties.IProperty;
@@ -16,8 +17,6 @@ import steve6472.sge.main.KeyList;
 import steve6472.sge.main.events.Event;
 import steve6472.sge.main.events.MouseEvent;
 
-import java.io.File;
-
 /**********************
  * Created by steve6472 (Mirek Jozefek)
  * On date: 06.10.2019
@@ -26,9 +25,9 @@ import java.io.File;
  ***********************/
 public class BlockInspectorItem extends Item
 {
-	public BlockInspectorItem(File f, int id)
+	public BlockInspectorItem(JSONObject json, int id)
 	{
-		super(f, id);
+		super(json, id);
 	}
 
 	@Override

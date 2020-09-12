@@ -11,6 +11,7 @@ import steve6472.polyground.block.properties.enums.EnumAxis;
 import steve6472.polyground.block.properties.enums.EnumSlabType;
 import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.block.states.States;
+import steve6472.polyground.entity.Palette;
 import steve6472.polyground.entity.player.Player;
 import steve6472.polyground.world.World;
 import steve6472.sge.main.KeyList;
@@ -80,8 +81,10 @@ public class SlabBlock extends Block
 
 		if (click.getButton() == KeyList.RMB)
 		{
-			if (CaveGame.itemInHand.getBlockToPlace() != this)
+			if (player.getHoldedPaletteItem().getBlockToPlace() != this)
 				return;
+
+			Palette palette = player.getHoldedPalette();
 
 			// Combining
 
@@ -90,8 +93,8 @@ public class SlabBlock extends Block
 				if ((state.get(TYPE) == EnumSlabType.BOTTOM && clickedOn == EnumFace.UP) || (state.get(TYPE) == EnumSlabType.TOP && clickedOn == EnumFace.DOWN))
 				{
 					world.setState(state.with(TYPE, EnumSlabType.DOUBLE).with(AXIS, EnumAxis.Y).get(), x, y, z);
-
 					player.processNextBlockPlace = false;
+					if (palette != null) palette.removeItem();
 				}
 			} else if (state.get(AXIS) == EnumAxis.X)
 			{
@@ -99,6 +102,7 @@ public class SlabBlock extends Block
 				{
 					world.setState(state.with(TYPE, EnumSlabType.DOUBLE).with(AXIS, EnumAxis.X).get(), x, y, z);
 					player.processNextBlockPlace = false;
+					if (palette != null) palette.removeItem();
 				}
 			} else if (state.get(AXIS) == EnumAxis.Z)
 			{
@@ -106,6 +110,7 @@ public class SlabBlock extends Block
 				{
 					world.setState(state.with(TYPE, EnumSlabType.DOUBLE).with(AXIS, EnumAxis.Z).get(), x, y, z);
 					player.processNextBlockPlace = false;
+					if (palette != null) palette.removeItem();
 				}
 			}
 			return;

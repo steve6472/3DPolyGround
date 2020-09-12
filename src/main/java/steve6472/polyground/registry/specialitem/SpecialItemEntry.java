@@ -1,8 +1,7 @@
 package steve6472.polyground.registry.specialitem;
 
+import org.json.JSONObject;
 import steve6472.polyground.item.Item;
-
-import java.io.File;
 
 public class SpecialItemEntry<T extends Item>
 {
@@ -13,8 +12,8 @@ public class SpecialItemEntry<T extends Item>
 		this.factory = factory;
 	}
 
-	public T createNew(File f, int id)
+	public T createNew(JSONObject json, int id)
 	{
-		return factory.create(f, id);
+		return factory.create(json, id);
 	}
 }

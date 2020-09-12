@@ -2,6 +2,7 @@ package steve6472.polyground.item.special;
 
 import org.joml.Vector2f;
 import org.joml.Vector3f;
+import org.json.JSONObject;
 import steve6472.polyground.CaveGame;
 import steve6472.polyground.EnumFace;
 import steve6472.polyground.PolyUtil;
@@ -17,8 +18,6 @@ import steve6472.sge.main.KeyList;
 import steve6472.sge.main.events.Event;
 import steve6472.sge.main.events.MouseEvent;
 
-import java.io.File;
-
 /**********************
  * Created by steve6472 (Mirek Jozefek)
  * On date: 06.10.2019
@@ -27,9 +26,9 @@ import java.io.File;
  ***********************/
 public class WorldEditItem extends Item
 {
-	public WorldEditItem(File f, int id)
+	public WorldEditItem(JSONObject json, int id)
 	{
-		super(f, id);
+		super(json, id);
 		firstPos = new Vector3f();
 		secondPos = new Vector3f();
 		firstPosScreen = new Vector2f();

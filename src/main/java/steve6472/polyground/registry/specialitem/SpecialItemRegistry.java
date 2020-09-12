@@ -1,9 +1,9 @@
 package steve6472.polyground.registry.specialitem;
 
+import org.json.JSONObject;
 import steve6472.polyground.item.Item;
 import steve6472.polyground.item.special.*;
 
-import java.io.File;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Set;
@@ -36,9 +36,9 @@ public class SpecialItemRegistry
 		return entry;
 	}
 
-	public static Item createSpecialItem(String id, File f, int itemId)
+	public static Item createSpecialItem(String id, JSONObject json, int itemId)
 	{
-		return specialItemRegistry.get(id).createNew(f, itemId);
+		return specialItemRegistry.get(id).createNew(json, itemId);
 	}
 
 	public static Collection<SpecialItemEntry<? extends Item>> getEntries()

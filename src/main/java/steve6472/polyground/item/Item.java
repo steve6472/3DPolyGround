@@ -44,22 +44,24 @@ public class Item
 		this.name = "air";
 	}
 
-	public Item(File f, int id)
+	public Item(String name)
+	{
+		this.id = 0;
+		this.name = name;
+	}
+
+	public Item(JSONObject json, int id)
 	{
 		this.id = id;
 
-		if (f != null && f.isFile())
-		{
-			JSONObject json = new JSONObject(ModelLoader.read(f));
-			name = json.getString("name");
+		name = json.getString("name");
 
-			if (json.has("block"))
-				block = Blocks.getBlockByName(json.getString("block"));
+		if (json.has("block"))
+			block = Blocks.getBlockByName(json.getString("block"));
 
-			ItemModelLoader.loadModel(json.getString("model"), this);
+		ItemModelLoader.loadModel(json.getString("model"), this);
 
-			loadModel(json.getString("model"));
-		}
+		loadModel(json.getString("model"));
 	}
 
 	public void loadModel(String path)

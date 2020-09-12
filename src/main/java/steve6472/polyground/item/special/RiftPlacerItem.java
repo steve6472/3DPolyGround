@@ -1,6 +1,7 @@
 package steve6472.polyground.item.special;
 
 import org.joml.Vector3f;
+import org.json.JSONObject;
 import steve6472.polyground.CaveGame;
 import steve6472.polyground.commands.coms.RiftCommand;
 import steve6472.polyground.entity.player.EnumSlot;
@@ -11,7 +12,6 @@ import steve6472.sge.main.KeyList;
 import steve6472.sge.main.events.Event;
 import steve6472.sge.main.events.MouseEvent;
 
-import java.io.File;
 import java.util.Collections;
 import java.util.Iterator;
 
@@ -23,9 +23,9 @@ import java.util.Iterator;
  ***********************/
 public class RiftPlacerItem extends Item
 {
-	public RiftPlacerItem(File f, int id)
+	public RiftPlacerItem(JSONObject json, int id)
 	{
-		super(f, id);
+		super(json, id);
 		pos = new Vector3f();
 	}
 

@@ -1,6 +1,7 @@
 package steve6472.polyground.item.special;
 
 import org.joml.Vector3f;
+import org.json.JSONObject;
 import steve6472.polyground.CaveGame;
 import steve6472.polyground.commands.coms.TeleCommand;
 import steve6472.polyground.entity.player.EnumSlot;
@@ -10,8 +11,6 @@ import steve6472.polyground.item.Item;
 import steve6472.sge.main.KeyList;
 import steve6472.sge.main.events.Event;
 import steve6472.sge.main.events.MouseEvent;
-
-import java.io.File;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
@@ -23,9 +22,9 @@ public class TeleportPlacerItem extends Item
 {
 	private Vector3f pos;
 
-	public TeleportPlacerItem(File f, int id)
+	public TeleportPlacerItem(JSONObject json, int id)
 	{
-		super(f, id);
+		super(json, id);
 		pos = new Vector3f();
 	}
 

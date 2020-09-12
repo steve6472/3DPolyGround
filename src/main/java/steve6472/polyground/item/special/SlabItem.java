@@ -1,5 +1,6 @@
 package steve6472.polyground.item.special;
 
+import org.json.JSONObject;
 import steve6472.polyground.EnumFace;
 import steve6472.polyground.block.properties.enums.EnumSlabType;
 import steve6472.polyground.block.special.SlabBlock;
@@ -11,8 +12,6 @@ import steve6472.polyground.world.World;
 import steve6472.sge.main.KeyList;
 import steve6472.sge.main.events.MouseEvent;
 
-import java.io.File;
-
 /**********************
  * Created by steve6472 (Mirek Jozefek)
  * On date: 24.09.2019
@@ -21,9 +20,9 @@ import java.io.File;
  ***********************/
 public class SlabItem extends Item
 {
-	public SlabItem(File f, int id)
+	public SlabItem(JSONObject json, int id)
 	{
-		super(f, id);
+		super(json, id);
 	}
 
 	@Override
@@ -33,7 +32,6 @@ public class SlabItem extends Item
 		{
 			if (!player.processNextBlockPlace)
 				return;
-
 
 			BlockState placed = world.getState(x + clickedOn.getXOffset(), y + clickedOn.getYOffset(), z + clickedOn.getZOffset());
 
