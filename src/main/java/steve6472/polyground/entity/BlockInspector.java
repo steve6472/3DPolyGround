@@ -15,18 +15,18 @@ import steve6472.polyground.world.World;
  * Project: CaveGame
  *
  ***********************/
-public class MiningTool extends EntityBase implements IHoldable
+public class BlockInspector extends EntityBase implements IHoldable
 {
-	private static final StaticEntityModel MINING_TOOL_MODEL = new StaticEntityModel();
+	private static final StaticEntityModel MODEL = new StaticEntityModel();
 	private Player player;
 	public static final AABBf AABB = new AABBf(-0.5f, -0.5f, -0.5f, 0.5f, 0.5f, 0.5f);
 
 	public static void initModel(ModelBuilder modelBuilder, ModelLoader modelLoader)
 	{
-		MINING_TOOL_MODEL.load(modelBuilder, modelLoader, "custom_models/mining_tool.bbmodel", true);
+		MODEL.load(modelBuilder, modelLoader, "custom_models/block_inspector.bbmodel", true);
 	}
 
-	public MiningTool()
+	public BlockInspector()
 	{
 	}
 
@@ -50,7 +50,7 @@ public class MiningTool extends EntityBase implements IHoldable
 	@Override
 	public void render(EnumSlot position)
 	{
-		MINING_TOOL_MODEL.render(CaveGame.getInstance().getCamera().getViewMatrix(), this, this, 1);
+		MODEL.render(CaveGame.getInstance().getCamera().getViewMatrix(), this, this, 1);
 	}
 
 	@Override
@@ -81,6 +81,6 @@ public class MiningTool extends EntityBase implements IHoldable
 	@Override
 	public String getName()
 	{
-		return "mining_tool";
+		return "block_inspector";
 	}
 }

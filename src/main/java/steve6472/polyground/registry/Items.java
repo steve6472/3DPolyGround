@@ -21,11 +21,9 @@ public class Items
 	private static HashMap<String, Item> items;
 	private static HashMap<Integer, String> reference;
 
-	public static void register(CaveGame pg)
+	public static void register(CaveGame game)
 	{
-//		File[] blocks = new File(MainApp.class.getResource("/items").getFile()).listFiles();
 		File[] items = new File("game/objects/items").listFiles();
-		//		File[] blocks = new File("items").listFiles();
 
 		reference = new HashMap<>();
 		Items.items = new HashMap<>();
@@ -56,11 +54,11 @@ public class Items
 				{
 					System.err.println("Error while creating item " + items[i].getName());
 					ex.printStackTrace();
-					pg.exit();
+					game.exit();
 				}
 			}
 
-			pg.getEventHandler().register(item);
+			game.getEventHandler().register(item);
 
 			if (!Items.items.containsKey(item.getName()) && !reference.containsKey(i + 1))
 			{

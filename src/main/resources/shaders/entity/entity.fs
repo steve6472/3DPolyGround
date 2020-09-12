@@ -56,5 +56,5 @@ void main()
 		}
 	}
 
-	outTexture = vec4(lighting, 1.0);
+	outTexture = vec4(lighting, tex.a);
 }

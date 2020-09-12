@@ -2,6 +2,7 @@ package steve6472.polyground.commands.coms;
 
 import com.mojang.brigadier.CommandDispatcher;
 import steve6472.polyground.entity.Backpack;
+import steve6472.polyground.entity.BlockInspector;
 import steve6472.polyground.entity.Palette;
 import steve6472.polyground.commands.Command;
 import steve6472.polyground.commands.CommandSource;
@@ -34,6 +35,15 @@ public class SpawnPaletteCommand extends Command
 		dispatcher.register(literal("backpack").executes(c -> {
 
 			Backpack p = new Backpack(null);
+			p.setPosition(c.getSource().getPlayer().getPosition());
+			c.getSource().getWorld().getEntityManager().addEntity(p);
+
+			return 1;
+		}));
+
+		dispatcher.register(literal("block_inspector").executes(c -> {
+
+			BlockInspector p = new BlockInspector();
 			p.setPosition(c.getSource().getPlayer().getPosition());
 			c.getSource().getWorld().getEntityManager().addEntity(p);
 

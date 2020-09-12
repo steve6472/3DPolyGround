@@ -1,7 +1,6 @@
 package steve6472.polyground.generator;
 
 import org.json.JSONObject;
-import steve6472.SSS;
 import steve6472.polyground.EnumFace;
 import steve6472.polyground.PrettyJson;
 import steve6472.polyground.block.Tags;
@@ -563,29 +562,34 @@ public class DataBuilder
 	private void item() throws IOException
 	{
 		System.out.println("Generating item " + itemName);
-		File item = new File(DataGenerator.ITEMS, itemName + ".txt");
+		File item = new File(DataGenerator.ITEMS, itemName + ".json");
 		if (item.createNewFile())
 		{
 			System.out.println("Created item " + item.getPath());
 		}
 
-		SSS sss = new SSS(item);
-		sss.clear();
+		JSONObject json = new JSONObject();
+		json.put("name", itemName);
 
-		sss.add("model", "item/" + itemModelPath + itemName);
+		json.put("model", "item/" + itemModelPath + itemName);
 		if (itemSpecial != null)
 		{
 			System.out.println("\tWith Special \"" + itemSpecial.getName() + "\"");
-			sss.add("special", itemSpecial.getName());
-			itemSpecial.generate();
+			JSONObject special = itemSpecial.generate();
+			if (special != null)
+			{
+				special.put("name", itemSpecial.getName());
+				json.put("special", special);
+			}
+			System.out.println(PrettyJson.prettify(special));
 		}
 		if (debug)
-			sss.add("debug", true);
+			json.put("debug", true);
 
 		if (blockToPlace != null)
 		{
 			System.out.println("\tPlaces " + blockToPlace);
-			sss.add("place", blockToPlace);
+			json.put("block", blockToPlace);
 		}
 
 		if (!itemModelPath.isBlank())
@@ -601,7 +605,7 @@ public class DataBuilder
 			}
 		}
 
-		sss.save(item);
+		save(item, json);
 
 		save(new File(DataGenerator.ITEM_MODELS, itemModelPath + itemName + ".json"), new JSONObject(itemModel.build()));
 	}
@@ -618,6 +622,7 @@ public class DataBuilder
 		JSONObject json = new JSONObject();
 		json.put("blockstate", blockName);
 		json.put("name", blockName);
+		json.put("item", itemName);
 
 		if (blockSpecial != null)
 		{

@@ -27,7 +27,7 @@ public class Backpack extends Palette
 
 	public static void initModel(ModelBuilder modelBuilder, ModelLoader modelLoader)
 	{
-		BACKPACK_MODEL.load(modelBuilder, modelLoader, "custom_models/backpack.bbmodel");
+		BACKPACK_MODEL.load(modelBuilder, modelLoader, "custom_models/backpack.bbmodel", true);
 	}
 
 	@Override

@@ -1,9 +1,12 @@
 package steve6472.polyground.item;
 
-import steve6472.SSS;
+import org.json.JSONObject;
+import steve6472.polyground.CaveGame;
 import steve6472.polyground.EnumFace;
 import steve6472.polyground.block.Block;
+import steve6472.polyground.block.model.ModelLoader;
 import steve6472.polyground.block.states.BlockState;
+import steve6472.polyground.entity.StaticEntityModel;
 import steve6472.polyground.entity.player.EnumSlot;
 import steve6472.polyground.entity.player.Player;
 import steve6472.polyground.registry.Blocks;
@@ -26,7 +29,9 @@ public class Item
 
 	public String name;
 
-	private Block toPlace;
+	private Block block;
+
+	public StaticEntityModel model;
 
 	public static Item createAir()
 	{
@@ -42,17 +47,31 @@ public class Item
 	public Item(File f, int id)
 	{
 		this.id = id;
-		name = f.getName().substring(0, f.getName().length() - 4);
 
-		if (f.isFile())
+		if (f != null && f.isFile())
 		{
-			SSS sss = new SSS(f);
+			JSONObject json = new JSONObject(ModelLoader.read(f));
+			name = json.getString("name");
 
-			if (sss.containsName("place"))
-				toPlace = Blocks.getBlockByName(sss.getString("place"));
+			if (json.has("block"))
+				block = Blocks.getBlockByName(json.getString("block"));
 
-			ItemModelLoader.loadModel(sss.getString("model"), this);
+			ItemModelLoader.loadModel(json.getString("model"), this);
+
+			loadModel(json.getString("model"));
 		}
+	}
+
+	public void loadModel(String path)
+	{
+		JSONObject json = new JSONObject(ModelLoader.read(new File("game/objects/models/" + path + ".json")));
+
+		model = new StaticEntityModel();
+
+		if (json.getString("type").equals("from_block"))
+			model.load(CaveGame.getInstance().mainRender.buildHelper, Blocks.getDefaultState(json.getString("block")).getBlockModels()[0].getElements(), false);
+		else if (json.getString("type").equals("from_model"))
+			model.load(CaveGame.getInstance().mainRender.buildHelper, CaveGame.getInstance().modelLoader, "custom_models/" + json.getString("model_name") + ".json", true);
 	}
 
 	public String getName()
@@ -67,7 +86,7 @@ public class Item
 
 	public Block getBlockToPlace()
 	{
-		return toPlace;
+		return block;
 	}
 
 	/**

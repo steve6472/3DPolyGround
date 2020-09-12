@@ -14,6 +14,7 @@ import steve6472.polyground.block.states.StateLoader;
 import steve6472.polyground.entity.BlockItemEntity;
 import steve6472.polyground.entity.EntityBase;
 import steve6472.polyground.entity.player.Player;
+import steve6472.polyground.item.Item;
 import steve6472.polyground.world.ModelBuilder;
 import steve6472.polyground.world.World;
 import steve6472.polyground.world.chunk.ModelLayer;
@@ -37,10 +38,12 @@ public class Block
 
 	public String name;
 	private BlockState defaultState;
+	public Item item;
 
 	public static Block createAir()
 	{
 		air = new Block("air", new BlockModel(), Tags.TRANSPARENT);
+		air.item = new ItemPlaceholder("air");
 		return air;
 	}
 
@@ -71,6 +74,7 @@ public class Block
 		BlockModel model = new BlockModel(new IElement[]{c}, cube);
 
 		error = new Block("error", model, Tags.ERROR, Tags.SOLID);
+		error.item = new ItemPlaceholder("air");
 		error.isFull = true;
 
 		return error;
@@ -87,6 +91,7 @@ public class Block
 	{
 		isFull = true;
 		name = json.getString("name");
+		item = new ItemPlaceholder(json.optString("item", "air"));
 		generateStates(json.getString("blockstate"));
 	}
 
@@ -242,7 +247,7 @@ public class Block
 
 	}
 
-	/**
+	/*
 	 *
 	 * @param state State of this block
 	 * @param world world
@@ -255,7 +260,7 @@ public class Block
 //
 //	}
 
-	/**
+	/*
 	 * @param state State of this block
 	 * @param world world
 	 * @param updateFrom which direction was the block updated
@@ -323,7 +328,7 @@ public class Block
 	 */
 	public void spawnLoot(BlockState state, World world, int x, int y, int z)
 	{
-		world.getEntityManager().addEntity(new BlockItemEntity(state.getBlock(), state.getBlockModel(world, x, y, z), x, y, z));
+		world.getEntityManager().addEntity(new BlockItemEntity(state.getBlock().item, x, y, z));
 	}
 
 	/**

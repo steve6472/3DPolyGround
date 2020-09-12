@@ -71,6 +71,7 @@ public class BlockAtlas
 	{
 		if (!usedTexturesReference.containsKey(name))
 		{
+//			System.out.println("New texture: '" + name + "' id: " + usedTexturesReference.size());
 			usedTexturesReference.put(name, usedTexturesReference.size());
 			usedTextures.put(usedTexturesReference.get(name), name);
 		}

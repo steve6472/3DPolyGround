@@ -43,7 +43,6 @@ public class Blocks
 		reference.put("error", 1);
 		WaterRegistry.tempVolumes.add(0.0);
 
-
 		int systemBlocks = 2;
 
 		if (blocksFile != null)
@@ -62,7 +61,10 @@ public class Blocks
 				Block block;
 
 				if (json.optBoolean("debug") && !CaveGame.DEBUG)
+				{
+					systemBlocks--;
 					continue;
+				}
 
 				if (json.has("special") && SpecialBlockRegistry.getKeys().contains(json.getJSONObject("special").getString("name")))
 				{
@@ -75,7 +77,6 @@ public class Blocks
 				if (!reference.containsKey(block.getName()))
 				{
 					temp.put(block, json);
-					game.getEventHandler().register(block);
 
 					reference.put(block.getName(), i + systemBlocks);
 				} else
@@ -90,6 +91,7 @@ public class Blocks
 		int index = 0;
 		for (Block block : temp.keySet())
 		{
+			game.getEventHandler().register(block);
 			blocks[index] = block;
 			index++;
 		}
@@ -179,5 +181,13 @@ public class Blocks
 	public static Block[] getAllBlocks()
 	{
 		return blocks;
+	}
+
+	public static void fixItems()
+	{
+		for (Block block : blocks)
+		{
+			block.item = Items.getItemByName(block.item.getName());
+		}
 	}
 }

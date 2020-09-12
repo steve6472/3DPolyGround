@@ -3,7 +3,6 @@ package steve6472.polyground.entity;
 import org.joml.AABBf;
 import org.joml.Vector3f;
 import steve6472.polyground.CaveGame;
-import steve6472.polyground.block.Block;
 import steve6472.polyground.block.model.BlockModel;
 import steve6472.polyground.block.model.CubeHitbox;
 import steve6472.polyground.block.states.BlockState;
@@ -13,6 +12,7 @@ import steve6472.polyground.entity.interfaces.ITickable;
 import steve6472.polyground.entity.interfaces.IWorldContainer;
 import steve6472.polyground.entity.player.EnumSlot;
 import steve6472.polyground.entity.player.Player;
+import steve6472.polyground.item.Item;
 import steve6472.polyground.world.World;
 import steve6472.sge.main.Util;
 
@@ -28,18 +28,15 @@ public class BlockItemEntity extends EntityBase implements IRenderable, ITickabl
 {
 	private static final AABBf HITBOX = new AABBf(-1f / 19f, -1f / 19f, -1f / 19f, 1f / 19f, 1f / 19f, 1f / 19f);
 
-	public final DynamicEntityModel model;
-	private final Block blockType;
+	private final Item itemType;
 	private World world;
 	private double timeAlive;
 	private boolean forceDead = false;
 
-	public BlockItemEntity(Block blockType, BlockModel blockModel, int x, int y, int z)
+	public BlockItemEntity(Item itemType, int x, int y, int z)
 	{
 		super();
-		this.blockType = blockType;
-		model = new DynamicEntityModel();
-		model.load(blockModel.getElements());
+		this.itemType = itemType;
 		setPosition(x + 0.5f, y + 0.5f, z + 0.5f);
 		setPivotPoint(.5f, .5f, .5f);
 	}
@@ -150,13 +147,13 @@ public class BlockItemEntity extends EntityBase implements IRenderable, ITickabl
 
 	private boolean tryToAdd(Player player, Palette p)
 	{
-		if (new Vector3f(getPosition()).distance(player.getPosition()) <= 5 && p.canBeAdded(blockType))
+		if (new Vector3f(getPosition()).distance(player.getPosition()) <= 5 && p.canBeAdded(itemType))
 		{
 			Vector3f dir = new Vector3f(player.getPosition()).sub(getPosition()).normalize().mul(Math.min((float) ((timeAlive - 1.2f) * (timeAlive - 1.2f)) / 20f, 0.1f));
 			addPosition(dir);
 			if (new Vector3f(getPosition()).distance(player.getPosition()) <= 0.1f)
 			{
-				setDead(p.addItem(blockType, model));
+				setDead(p.addItem(itemType));
 				return true;
 			}
 		}
@@ -188,7 +185,7 @@ public class BlockItemEntity extends EntityBase implements IRenderable, ITickabl
 			.translate(-getPivotPoint().x, -getPivotPoint().y, -getPivotPoint().z)
 		;
 
-		model.render(CaveGame.getInstance().getCamera().getViewMatrix(), DynamicEntityModel.MAT);
+		itemType.model.render(CaveGame.getInstance().getCamera().getViewMatrix(), DynamicEntityModel.MAT);
 //		AABBUtil.renderAABB(getX(), getY(), getZ(), 1f / 19f, 1);
 	}
 

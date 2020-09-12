@@ -325,9 +325,9 @@ public class Player implements IMotion3f, IPosition3f
 				if (gamemode == EnumGameMode.CREATIVE)
 				{
 					blockToPlace = CaveGame.itemInHand.getBlockToPlace();
-				} else if (palette != null)
+				} else if (palette != null && palette.getItemType() != null)
 				{
-					blockToPlace = palette.getBlockType();
+					blockToPlace = palette.getItemType().getBlockToPlace();
 				}
 
 				if (blockToPlace != null)

@@ -220,6 +220,12 @@ public class DataGenerator
 			.generate();
 
 		DataBuilder.create()
+			.fullBlock("block_inspector")
+			.blockState(StateBuilder.create().singleModel(BlockModelBuilder.create("block_inspector").externalPath("custom_models/block_inspector.bbmodel")))
+			.blockSpecial(new SimpleSpecial("custom"))
+			.generate();
+
+		DataBuilder.create()
 			.fullBlock("small_palette")
 			.blockState(StateBuilder.create().singleModel(BlockModelBuilder.create("small_palette").externalPath("custom_models/small_palette.bbmodel")))
 			.blockSpecial(new SimpleSpecial("custom"))

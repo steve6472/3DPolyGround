@@ -9,6 +9,7 @@ import steve6472.polyground.block.model.ModelLoader;
 import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.commands.CommandSource;
 import steve6472.polyground.entity.Backpack;
+import steve6472.polyground.entity.BlockInspector;
 import steve6472.polyground.entity.MiningTool;
 import steve6472.polyground.entity.Palette;
 import steve6472.polyground.entity.player.Player;
@@ -107,11 +108,14 @@ public class CaveGame extends MainApp
 		itemAtlas = new ItemAtlas(this);
 		Items.register(this);
 
+		Blocks.fixItems();
+
 		itemInHand = Items.getItemByName("stone");
 
 		MiningTool.initModel(mainRender.buildHelper, modelLoader);
 		Palette.initModel(mainRender.buildHelper, modelLoader);
 		Backpack.initModel(mainRender.buildHelper, modelLoader);
+		BlockInspector.initModel(mainRender.buildHelper, modelLoader);
 
 		getEventHandler().runEvent(new WindowSizeEvent(getWindowWidth(), getWindowHeight()));
 

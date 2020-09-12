@@ -33,10 +33,13 @@ public class StaticEntityModel
 
 	int vao, vertexCount;
 
-	public void load(ModelBuilder modelBuilder, ModelLoader modelLoader, String path)
+	public void load(ModelBuilder modelBuilder, ModelLoader modelLoader, String path, boolean fixUv)
 	{
-		IElement[] elements = modelLoader.loadElements(ModelLoader.load(path, false), 0, 0, 0);
+		load(modelBuilder, modelLoader.loadElements(ModelLoader.load(path, false), 0, 0, 0), fixUv);
+	}
 
+	public void load(ModelBuilder modelBuilder, IElement[] elements, boolean fixUv)
+	{
 		List<Vector3f> vert = new ArrayList<>();
 		List<Vector4f> col = new ArrayList<>();
 		List<Vector2f> text = new ArrayList<>();
@@ -47,7 +50,7 @@ public class StaticEntityModel
 
 		for (IElement e : elements)
 		{
-			e.fixUv(modelBuilder.texel);
+			if (fixUv) e.fixUv(modelBuilder.texel);
 			vertexCount += e.build(modelBuilder, ModelLayer.NORMAL, null, null, 0, 0, 0);
 		}
 
@@ -61,7 +64,7 @@ public class StaticEntityModel
 		unbindVAO();
 	}
 
-	public void render(Matrix4f viewMatrix, IPosition3f position, IRotation rotation, float scale)
+	public static Matrix4f createMatrix(IPosition3f position, IRotation rotation, float scale)
 	{
 		quat.identity()
 			.rotateXYZ(rotation.getRotations().x, rotation.getRotations().y, rotation.getRotations().z);
@@ -73,6 +76,16 @@ public class StaticEntityModel
 			.scale(scale)
 			.translate(-rotation.getPivotPoint().x, -rotation.getPivotPoint().y, -rotation.getPivotPoint().z);
 
+		return mat;
+	}
+
+	public void render(Matrix4f viewMatrix, IPosition3f position, IRotation rotation, float scale)
+	{
+		render(viewMatrix, createMatrix(position, rotation, scale));
+	}
+
+	public void render(Matrix4f viewMatrix, Matrix4f mat)
+	{
 		MainRender.shaders.entityShader.bind(viewMatrix);
 		MainRender.shaders.entityShader.setTransformation(mat);
 		MainRender.shaders.entityShader.setUniform(EntityShader.NORMAL_MATRIX, new Matrix3f(new Matrix4f(mat).invert().transpose3x3()));

@@ -9,12 +9,10 @@ import steve6472.polyground.entity.interfaces.IRotation;
 import steve6472.polyground.entity.player.EnumSlot;
 import steve6472.polyground.entity.player.IHoldable;
 import steve6472.polyground.entity.player.Player;
+import steve6472.polyground.item.Item;
 import steve6472.polyground.world.ModelBuilder;
 import steve6472.polyground.world.World;
 import steve6472.sge.main.game.mixable.IPosition3f;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
@@ -28,9 +26,9 @@ public class Palette implements IHoldable, IRotation
 	private static final Dummy DUMMY = new Dummy();
 	private static final AABBf AABB = new AABBf(-0.375f, 0, -0.375f, 0.375f, 0.1875f, 0.375f);
 
-	private Block blockType;
+	private Item itemType;
 	private Player player;
-	private final List<DynamicEntityModel> items;
+	private int count;
 	private final Vector3f position, rotations, pivotPoint;
 
 	public Palette(Player player)
@@ -39,7 +37,6 @@ public class Palette implements IHoldable, IRotation
 		this.position = new Vector3f();
 		this.rotations = new Vector3f();
 		this.pivotPoint = new Vector3f();
-		items = new ArrayList<>();
 	}
 
 	@Override
@@ -59,30 +56,30 @@ public class Palette implements IHoldable, IRotation
 		this.player = null;
 	}
 
-	public Block getBlockType()
+	public Item getItemType()
 	{
-		return blockType;
+		return itemType;
 	}
 
-	public boolean canBeAdded(Block blocktype)
+	public boolean canBeAdded(Item itemType)
 	{
-		return blockType == null || blocktype == this.blockType && items.size() < 8 * 8 * 8;
+		return this.itemType == null || itemType == this.itemType && count < 8 * 8 * 8;
 	}
 
-	public boolean addItem(Block blockType, DynamicEntityModel model)
+	public boolean addItem(Item itemType)
 	{
-		if (items.isEmpty())
+		if (count == 0)
 		{
-			this.blockType = blockType;
-			items.add(model);
+			this.itemType = itemType;
+			count++;
 			return true;
 		} else
 		{
-			if (this.blockType != blockType)
+			if (this.itemType != itemType)
 				return false;
 			else
 			{
-				items.add(model);
+				count++;
 				return true;
 			}
 		}
@@ -135,12 +132,10 @@ public class Palette implements IHoldable, IRotation
 			{
 				for (int k = 0; k < 8; k++)
 				{
-					if (index >= items.size())
+					if (index >= count)
 						return;
 
-					DynamicEntityModel m = items.get(index);
-
-					m.render(CaveGame.getInstance().getCamera().getViewMatrix(),
+					itemType.model.render(CaveGame.getInstance().getCamera().getViewMatrix(),
 
 						DynamicEntityModel.createMatrix(this, this, 1f)
 							.translate(j / 16f - 0.25f, i / 16f + 1 / 16f, k / 16f - 0.25f)
@@ -154,21 +149,21 @@ public class Palette implements IHoldable, IRotation
 
 	public boolean removeItem()
 	{
-		if (items.isEmpty())
+		if (count == 0)
 		{
 			return false;
 		} else
 		{
-			items.remove(items.size() - 1);
-			if (items.isEmpty())
-				blockType = null;
+			count--;
+			if (count == 0)
+				itemType = null;
 			return true;
 		}
 	}
 
 	public static void initModel(ModelBuilder modelBuilder, ModelLoader modelLoader)
 	{
-		PALLETE_MODEL.load(modelBuilder, modelLoader, "custom_models/small_palette.bbmodel");
+		PALLETE_MODEL.load(modelBuilder, modelLoader, "custom_models/small_palette.bbmodel", true);
 	}
 
 	@Override
