@@ -25,7 +25,7 @@ import steve6472.polyground.world.chunk.Chunk;
 public class HitPicker
 {
 	private World world;
-	HitResult hitResult;
+	final HitResult hitResult;
 
 	public HitPicker(World world)
 	{
@@ -36,13 +36,12 @@ public class HitPicker
 
 	public float closest;
 
-	private Vector2f hr;
-	public boolean hit;
+	private final Vector2f hr;
 
 	public void tick(Player player, CaveGame game)
 	{
 		closest = Float.MAX_VALUE;
-		hit = false;
+		hitResult.setHit(false);;
 		int ix = (int) Math.floor(player.getX());
 		int iy = (int) Math.floor(player.getY());
 		int iz = (int) Math.floor(player.getZ());
@@ -82,7 +81,7 @@ public class HitPicker
 								{
 									if (hr.x <= closest)
 									{
-										hit = true;
+										hitResult.setHit(true);
 										closest = hr.x;
 										hitResult.setBlockCoords(i, j, k);
 										hitResult.setAabb(t.getAabb());
@@ -95,9 +94,9 @@ public class HitPicker
 			}
 		}
 
-		hit = closest <= 4.3f;
+		hitResult.setHit(closest <= 4.3f);
 
-		if (hit)
+		if (hitResult.isHit())
 		{
 			hitResult.setDistance(closest);
 			hitResult.setPreciseCoords(player.viewDir.x * closest + player.getX(), player.viewDir.y * closest + player.getY() + player.eyeHeight, player.viewDir.z * closest + player.getZ());
@@ -132,6 +131,11 @@ public class HitPicker
 			}
 
 		}
+	}
+
+	public void setWorld(World world)
+	{
+		this.world = world;
 	}
 
 	public HitResult getHitResult()

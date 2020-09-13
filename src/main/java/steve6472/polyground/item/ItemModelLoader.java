@@ -45,6 +45,10 @@ public class ItemModelLoader
 			{
 				fromTexture(json.getString("texture"), item);
 			}
+			if (json.getString("type").equals("from_model"))
+			{
+				fromTexture("null", item);
+			}
 		}
 	}
 

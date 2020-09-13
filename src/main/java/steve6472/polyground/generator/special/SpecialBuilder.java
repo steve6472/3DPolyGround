@@ -38,7 +38,7 @@ public class SpecialBuilder implements ISpecial
 	@Override
 	public JSONObject generate()
 	{
-		return json;
+		return json.put("name", name);
 	}
 
 	@Override

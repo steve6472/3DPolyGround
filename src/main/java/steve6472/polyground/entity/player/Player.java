@@ -10,9 +10,10 @@ import steve6472.polyground.HitResult;
 import steve6472.polyground.block.Block;
 import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.entity.EntityHitbox;
-import steve6472.polyground.entity.MiningTool;
-import steve6472.polyground.entity.Palette;
+import steve6472.polyground.entity.item.MiningTool;
+import steve6472.polyground.entity.item.Palette;
 import steve6472.polyground.item.Item;
+import steve6472.polyground.item.special.BlockItem;
 import steve6472.polyground.world.World;
 import steve6472.sge.main.KeyList;
 import steve6472.sge.main.events.Event;
@@ -306,7 +307,7 @@ public class Player implements IMotion3f, IPosition3f
 
 		Item item = getHoldedPaletteItem();
 
-		if (game.hitPicker.hit)
+		if (getHitResult().isHit())
 		{
 			HitResult hr = game.hitPicker.getHitResult();
 			World world = game.getWorld();
@@ -316,8 +317,9 @@ public class Player implements IMotion3f, IPosition3f
 			game.world.getBlock(hr.getX(), hr.getY(), hr.getZ()).onClick(state, world, this, hr.getFace(), event, hr.getX(), hr.getY(), hr.getZ());
 
 			if (gamemode == EnumGameMode.CREATIVE)
+			{
 				CaveGame.itemInHand.onClick(world, state, this, EnumSlot.CREATIVE_BELT, hr.getFace(), event, hr.getX(), hr.getY(), hr.getZ());
-			else
+			} else
 				item.onClick(world, state, this, EnumSlot.CREATIVE_BELT, hr.getFace(), event, hr.getX(), hr.getY(), hr.getZ());
 		}
 
@@ -328,7 +330,7 @@ public class Player implements IMotion3f, IPosition3f
 
 		if (event.getButton() == KeyList.RMB && event.getAction() == KeyList.PRESS)
 		{
-			pressRMB(event);
+			pressRMB();
 		}
 
 		if (event.getButton() == KeyList.LMB && event.getAction() == KeyList.PRESS)
@@ -345,35 +347,27 @@ public class Player implements IMotion3f, IPosition3f
 		processNextBlockBreak = true;
 	}
 
-	private void pressRMB(MouseEvent event)
+	private void pressRMB()
 	{
-		IHoldable l = holdedItems.get(EnumSlot.HAND_LEFT);
-		IHoldable r = holdedItems.get(EnumSlot.HAND_RIGHT);
-		Palette palette = null;
+		if (getGamemode() == EnumGameMode.CREATIVE)
+			return;
 
-		if (l instanceof Palette p)
-			palette = p;
-		else if (r instanceof Palette p)
-			palette = p;
+		Palette palette = getHoldedPalette();
 
-		if (game.hitPicker.hit)
+		if (getHitResult().isHit())
 		{
 			if (processNextBlockPlace)
 			{
 				HitResult hr = game.hitPicker.getHitResult();
 				Block blockToPlace = null;
-				if (gamemode == EnumGameMode.CREATIVE)
+				if (palette != null && palette.getItemType() != null && palette.getItemType() instanceof BlockItem bi)
 				{
-					blockToPlace = CaveGame.itemInHand.getBlockToPlace();
-				} else if (palette != null && palette.getItemType() != null)
-				{
-					blockToPlace = palette.getItemType().getBlockToPlace();
+					blockToPlace = bi.getBlock();
 				}
 
 				if (blockToPlace != null)
 				{
-					if (gamemode == EnumGameMode.SURVIVAL && palette != null)
-						palette.removeItem();
+					palette.removeItem();
 
 					EnumFace face = hr.getFace();
 					int x = hr.getX() + face.getXOffset();
@@ -389,7 +383,7 @@ public class Player implements IMotion3f, IPosition3f
 
 	private void pressLMB()
 	{
-		if (game.hitPicker.hit && processNextBlockBreak && canBreakBlocks())
+		if (getHitResult().isHit() && processNextBlockBreak && canBreakBlocks())
 		{
 			HitResult hr = CaveGame.getInstance().hitPicker.getHitResult();
 			World world = CaveGame.getInstance().world;
@@ -410,7 +404,7 @@ public class Player implements IMotion3f, IPosition3f
 		HitResult hr = game.hitPicker.getHitResult();
 		IHoldable targetHoldable = getFirstTargetedHoldable();
 
-		if (!game.hitPicker.hit)
+		if (!getHitResult().isHit())
 			return;
 
 		if (targetHoldable != null)

@@ -3,7 +3,7 @@ package steve6472.polyground.commands.coms;
 import com.mojang.brigadier.CommandDispatcher;
 import steve6472.polyground.entity.Backpack;
 import steve6472.polyground.entity.BlockInspector;
-import steve6472.polyground.entity.Palette;
+import steve6472.polyground.entity.item.Palette;
 import steve6472.polyground.commands.Command;
 import steve6472.polyground.commands.CommandSource;
 

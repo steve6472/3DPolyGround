@@ -11,7 +11,7 @@ import steve6472.polyground.block.model.elements.CubeElement;
 import steve6472.polyground.block.properties.IProperty;
 import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.block.states.StateLoader;
-import steve6472.polyground.entity.BlockItemEntity;
+import steve6472.polyground.entity.item.BlockItemEntity;
 import steve6472.polyground.entity.EntityBase;
 import steve6472.polyground.entity.player.Player;
 import steve6472.polyground.item.Item;

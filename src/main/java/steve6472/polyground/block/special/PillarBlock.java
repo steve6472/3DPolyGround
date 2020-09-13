@@ -8,8 +8,6 @@ import steve6472.polyground.block.properties.IProperty;
 import steve6472.polyground.block.properties.enums.EnumAxis;
 import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.block.states.States;
-import steve6472.polyground.entity.BlockItemEntity;
-import steve6472.polyground.entity.EntityBase;
 import steve6472.polyground.entity.player.Player;
 import steve6472.polyground.world.World;
 

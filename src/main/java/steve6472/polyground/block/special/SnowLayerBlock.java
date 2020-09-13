@@ -7,8 +7,9 @@ import steve6472.polyground.block.properties.IProperty;
 import steve6472.polyground.block.properties.IntProperty;
 import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.block.states.States;
-import steve6472.polyground.entity.Palette;
+import steve6472.polyground.entity.item.Palette;
 import steve6472.polyground.entity.player.Player;
+import steve6472.polyground.item.special.BlockItem;
 import steve6472.polyground.world.World;
 import steve6472.sge.main.KeyList;
 import steve6472.sge.main.events.MouseEvent;
@@ -77,7 +78,7 @@ public class SnowLayerBlock extends CustomBlock
 
 		if (click.getButton() == KeyList.RMB)
 		{
-			if (player.getHoldedPaletteItem().getBlockToPlace() == this)
+			if (player.getHoldedPaletteItem() instanceof BlockItem bi && bi.getBlock() == this)
 			{
 				int width = state.get(SNOW_LAYER);
 
@@ -85,7 +86,8 @@ public class SnowLayerBlock extends CustomBlock
 				{
 					world.setState(state.with(SNOW_LAYER, width + 1).get(), x, y, z);
 					player.processNextBlockPlace = false;
-					if (palette != null) palette.removeItem();
+					if (palette != null)
+						palette.removeItem();
 				}
 			}
 		} else if (click.getButton() == KeyList.LMB)

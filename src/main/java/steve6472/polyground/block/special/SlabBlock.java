@@ -11,8 +11,9 @@ import steve6472.polyground.block.properties.enums.EnumAxis;
 import steve6472.polyground.block.properties.enums.EnumSlabType;
 import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.block.states.States;
-import steve6472.polyground.entity.Palette;
+import steve6472.polyground.entity.item.Palette;
 import steve6472.polyground.entity.player.Player;
+import steve6472.polyground.item.special.BlockItem;
 import steve6472.polyground.world.World;
 import steve6472.sge.main.KeyList;
 import steve6472.sge.main.events.MouseEvent;
@@ -81,7 +82,7 @@ public class SlabBlock extends Block
 
 		if (click.getButton() == KeyList.RMB)
 		{
-			if (player.getHoldedPaletteItem().getBlockToPlace() != this)
+			if (!(player.getHoldedPaletteItem() instanceof BlockItem bi) || bi.getBlock() != this)
 				return;
 
 			Palette palette = player.getHoldedPalette();

@@ -1,8 +1,10 @@
-package steve6472.polyground.entity;
+package steve6472.polyground.entity.item;
 
 import org.joml.AABBf;
 import steve6472.polyground.CaveGame;
 import steve6472.polyground.block.model.ModelLoader;
+import steve6472.polyground.entity.EntityBase;
+import steve6472.polyground.entity.StaticEntityModel;
 import steve6472.polyground.entity.player.EnumSlot;
 import steve6472.polyground.entity.player.IHoldable;
 import steve6472.polyground.entity.player.Player;

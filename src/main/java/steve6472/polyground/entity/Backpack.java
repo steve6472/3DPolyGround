@@ -1,6 +1,7 @@
 package steve6472.polyground.entity;
 
 import steve6472.polyground.block.model.ModelLoader;
+import steve6472.polyground.entity.item.Palette;
 import steve6472.polyground.entity.player.Player;
 import steve6472.polyground.world.ModelBuilder;
 

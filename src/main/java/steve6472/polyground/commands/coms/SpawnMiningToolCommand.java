@@ -3,7 +3,7 @@ package steve6472.polyground.commands.coms;
 import com.mojang.brigadier.CommandDispatcher;
 import steve6472.polyground.commands.Command;
 import steve6472.polyground.commands.CommandSource;
-import steve6472.polyground.entity.MiningTool;
+import steve6472.polyground.entity.item.MiningTool;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)

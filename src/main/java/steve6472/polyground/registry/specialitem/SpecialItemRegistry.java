@@ -18,6 +18,7 @@ public class SpecialItemRegistry
 {
 	private static final HashMap<String, SpecialItemEntry<? extends Item>> specialItemRegistry = new HashMap<>();
 
+	public static final SpecialItemEntry<BlockItem> blockItem = register("block", BlockItem::new);
 	public static final SpecialItemEntry<SlabItem> slabItem = register("slab", SlabItem::new);
 	public static final SpecialItemEntry<SpeedometerItem> speedometerItem = register("speedometer", SpeedometerItem::new);
 	public static final SpecialItemEntry<BlockInspectorItem> blockInspector = register("block_inspector", BlockInspectorItem::new);

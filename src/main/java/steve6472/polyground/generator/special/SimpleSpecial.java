@@ -20,7 +20,7 @@ public class SimpleSpecial implements ISpecial
 	@Override
 	public JSONObject generate()
 	{
-		return new JSONObject();
+		return new JSONObject().put("name", name);
 	}
 
 	@Override

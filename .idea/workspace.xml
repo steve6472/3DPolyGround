@@ -46,7 +46,7 @@
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.0" />
     <property name="restartRequiresConfirmation" value="false" />
-    <property name="settings.editor.selected.configurable" value="configurable.group.editor" />
+    <property name="settings.editor.selected.configurable" value="editor.preferences.tabs" />
   </component>
   <component name="RecentsManager">
     <key name="MoveMembersDialog.RECENTS_KEY">
@@ -189,10 +189,10 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="140" y="0" width="1092" height="728" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1366.728@0.0.1366.728" timestamp="1597247857083" />
-    <state x="270" y="26" width="476" height="598" key="#com.intellij.ide.util.MemberChooser" timestamp="1599844046544">
+    <state x="270" y="26" width="476" height="598" key="#com.intellij.ide.util.MemberChooser" timestamp="1600008180989">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="270" y="26" width="476" height="598" key="#com.intellij.ide.util.MemberChooser/0.0.1366.728@0.0.1366.728" timestamp="1599844046544" />
+    <state x="270" y="26" width="476" height="598" key="#com.intellij.ide.util.MemberChooser/0.0.1366.728@0.0.1366.728" timestamp="1600008180989" />
     <state x="415" y="111" key="#com.intellij.ide.util.TreeClassChooserDialog" timestamp="1593696801649">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
@@ -209,50 +209,50 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="415" y="111" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1366.728@0.0.1366.728" timestamp="1599924282066" />
-    <state x="94" y="94" width="1178" height="540" maximized="true" key="DiffContextDialog" timestamp="1598565952350">
+    <state x="94" y="94" width="1178" height="540" maximized="true" key="DiffContextDialog" timestamp="1600010183238">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="94" y="94" width="1178" height="540" maximized="true" key="DiffContextDialog/0.0.1366.728@0.0.1366.728" timestamp="1598565952350" />
+    <state x="94" y="94" width="1178" height="540" maximized="true" key="DiffContextDialog/0.0.1366.728@0.0.1366.728" timestamp="1600010183238" />
     <state x="463" y="105" key="FileChooserDialogImpl" timestamp="1599343011985">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="463" y="105" key="FileChooserDialogImpl/0.0.1366.728@0.0.1366.728" timestamp="1599343011985" />
-    <state width="247" height="621" key="GridCell.Tab.0.bottom" timestamp="1599930073616">
+    <state width="1291" height="621" key="GridCell.Tab.0.bottom" timestamp="1600011292096">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="247" height="621" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1599930073616" />
-    <state width="247" height="621" key="GridCell.Tab.0.center" timestamp="1599930073616">
+    <state width="1291" height="621" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1600011292096" />
+    <state width="1291" height="621" key="GridCell.Tab.0.center" timestamp="1600011292096">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="247" height="621" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1599930073616" />
-    <state width="247" height="621" key="GridCell.Tab.0.left" timestamp="1599930073616">
+    <state width="1291" height="621" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1600011292096" />
+    <state width="1291" height="621" key="GridCell.Tab.0.left" timestamp="1600011292096">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="247" height="621" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1599930073616" />
-    <state width="247" height="621" key="GridCell.Tab.0.right" timestamp="1599930073616">
+    <state width="1291" height="621" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1600011292096" />
+    <state width="1291" height="621" key="GridCell.Tab.0.right" timestamp="1600011292096">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="247" height="621" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1599930073616" />
-    <state width="247" height="621" key="GridCell.Tab.1.bottom" timestamp="1599930073617">
+    <state width="1291" height="621" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1600011292096" />
+    <state width="570" height="621" key="GridCell.Tab.1.bottom" timestamp="1600009921239">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="247" height="621" key="GridCell.Tab.1.bottom/0.0.1366.728@0.0.1366.728" timestamp="1599930073617" />
-    <state width="247" height="621" key="GridCell.Tab.1.center" timestamp="1599930073616">
+    <state width="570" height="621" key="GridCell.Tab.1.bottom/0.0.1366.728@0.0.1366.728" timestamp="1600009921239" />
+    <state width="570" height="621" key="GridCell.Tab.1.center" timestamp="1600009921239">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="247" height="621" key="GridCell.Tab.1.center/0.0.1366.728@0.0.1366.728" timestamp="1599930073616" />
-    <state width="247" height="621" key="GridCell.Tab.1.left" timestamp="1599930073616">
+    <state width="570" height="621" key="GridCell.Tab.1.center/0.0.1366.728@0.0.1366.728" timestamp="1600009921239" />
+    <state width="570" height="621" key="GridCell.Tab.1.left" timestamp="1600009921239">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="247" height="621" key="GridCell.Tab.1.left/0.0.1366.728@0.0.1366.728" timestamp="1599930073616" />
-    <state width="247" height="621" key="GridCell.Tab.1.right" timestamp="1599930073617">
+    <state width="570" height="621" key="GridCell.Tab.1.left/0.0.1366.728@0.0.1366.728" timestamp="1600009921239" />
+    <state width="570" height="621" key="GridCell.Tab.1.right" timestamp="1600009921239">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="247" height="621" key="GridCell.Tab.1.right/0.0.1366.728@0.0.1366.728" timestamp="1599930073617" />
-    <state x="25" y="17" width="1058" height="711" key="SettingsEditor" timestamp="1599228019024">
+    <state width="570" height="621" key="GridCell.Tab.1.right/0.0.1366.728@0.0.1366.728" timestamp="1600009921239" />
+    <state x="-71" y="0" width="1058" height="711" key="SettingsEditor" timestamp="1600007469743">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="25" y="17" width="1058" height="711" key="SettingsEditor/0.0.1366.728@0.0.1366.728" timestamp="1599228019024" />
+    <state x="-71" y="0" width="1058" height="711" key="SettingsEditor/0.0.1366.728@0.0.1366.728" timestamp="1600007469743" />
     <state x="404" y="105" width="540" height="524" key="StructurePopup" timestamp="1593623290788">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
@@ -265,10 +265,10 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="68" y="96" width="1178" height="540" maximized="true" key="com.intellij.history.integration.ui.views.FileHistoryDialog/0.0.1366.728@0.0.1366.728" timestamp="1599059395094" />
-    <state x="135" y="0" width="1182" height="728" maximized="true" key="com.intellij.history.integration.ui.views.SelectionHistoryDialog" timestamp="1599246760368">
+    <state x="135" y="0" width="1182" height="728" maximized="true" key="com.intellij.history.integration.ui.views.SelectionHistoryDialog" timestamp="1600010183238">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="135" y="0" width="1182" height="728" maximized="true" key="com.intellij.history.integration.ui.views.SelectionHistoryDialog/0.0.1366.728@0.0.1366.728" timestamp="1599246760368" />
+    <state x="135" y="0" width="1182" height="728" maximized="true" key="com.intellij.history.integration.ui.views.SelectionHistoryDialog/0.0.1366.728@0.0.1366.728" timestamp="1600010183238" />
     <state x="432" y="38" key="com.intellij.testIntegration.createTest.CreateTestDialog" timestamp="1593816014246">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
@@ -297,10 +297,10 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="341" y="163" width="672" height="677" key="run.anything.popup/0.0.1366.728@0.0.1366.728" timestamp="1599763445702" />
-    <state x="346" y="49" width="672" height="160" key="search.everywhere.popup" timestamp="1599929621167">
+    <state x="346" y="49" width="672" height="160" key="search.everywhere.popup" timestamp="1600010212976">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="346" y="49" width="672" height="160" key="search.everywhere.popup/0.0.1366.728@0.0.1366.728" timestamp="1599929621167" />
+    <state x="346" y="49" width="672" height="160" key="search.everywhere.popup/0.0.1366.728@0.0.1366.728" timestamp="1600010212976" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

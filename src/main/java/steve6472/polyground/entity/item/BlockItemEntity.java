@@ -1,4 +1,4 @@
-package steve6472.polyground.entity;
+package steve6472.polyground.entity.item;
 
 import org.joml.AABBf;
 import org.joml.Vector3f;
@@ -6,6 +6,8 @@ import steve6472.polyground.CaveGame;
 import steve6472.polyground.block.model.BlockModel;
 import steve6472.polyground.block.model.CubeHitbox;
 import steve6472.polyground.block.states.BlockState;
+import steve6472.polyground.entity.DynamicEntityModel;
+import steve6472.polyground.entity.EntityBase;
 import steve6472.polyground.entity.interfaces.IKillable;
 import steve6472.polyground.entity.interfaces.IRenderable;
 import steve6472.polyground.entity.interfaces.ITickable;

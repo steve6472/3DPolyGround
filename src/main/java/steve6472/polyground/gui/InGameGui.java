@@ -124,7 +124,7 @@ public class InGameGui extends Gui implements IGamePause
 
 		StringBuilder sb = new StringBuilder();
 
-		if (main.hitPicker.hit)
+		if (main.hitPicker.getHitResult().isHit())
 		{
 			sb.append("Distance: ").append(main.hitPicker.getHitResult().getDistance()).append("\n");
 			sb.append("Side: ").append(main.hitPicker.getHitResult().getFace()).append("/").append(main.hitPicker.getHitResult().getFace().getAxis()).append("\n");

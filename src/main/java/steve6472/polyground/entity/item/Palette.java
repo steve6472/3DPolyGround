@@ -1,10 +1,12 @@
-package steve6472.polyground.entity;
+package steve6472.polyground.entity.item;
 
 import org.joml.AABBf;
 import org.joml.Vector3f;
 import steve6472.polyground.CaveGame;
 import steve6472.polyground.block.Block;
 import steve6472.polyground.block.model.ModelLoader;
+import steve6472.polyground.entity.DynamicEntityModel;
+import steve6472.polyground.entity.StaticEntityModel;
 import steve6472.polyground.entity.interfaces.IRotation;
 import steve6472.polyground.entity.player.EnumSlot;
 import steve6472.polyground.entity.player.IHoldable;

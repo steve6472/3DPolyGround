@@ -3,7 +3,6 @@ package steve6472.polyground.item;
 import org.json.JSONObject;
 import steve6472.polyground.CaveGame;
 import steve6472.polyground.EnumFace;
-import steve6472.polyground.block.Block;
 import steve6472.polyground.block.model.ModelLoader;
 import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.entity.StaticEntityModel;
@@ -26,10 +25,7 @@ public class Item
 	public static Item air;
 
 	private final int id;
-
-	public String name;
-
-	private Block block;
+	public final String name;
 
 	public StaticEntityModel model;
 
@@ -56,9 +52,6 @@ public class Item
 
 		name = json.getString("name");
 
-		if (json.has("block"))
-			block = Blocks.getBlockByName(json.getString("block"));
-
 		ItemModelLoader.loadModel(json.getString("model"), this);
 
 		loadModel(json.getString("model"));
@@ -84,11 +77,6 @@ public class Item
 	public int getId()
 	{
 		return id;
-	}
-
-	public Block getBlockToPlace()
-	{
-		return block;
 	}
 
 	/**

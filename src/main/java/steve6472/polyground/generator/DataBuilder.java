@@ -35,7 +35,6 @@ public class DataBuilder
 {
 	private IModel itemModel;
 	private ISpecial blockSpecial, itemSpecial;
-	private String blockToPlace;
 	private String blockName, itemName;
 	private String itemModelPath;
 	private boolean debug = false;
@@ -81,12 +80,6 @@ public class DataBuilder
 		return this;
 	}
 
-	public DataBuilder blockToPlace(String block)
-	{
-		blockToPlace = block;
-		return this;
-	}
-
 	public DataBuilder blockSpecial(ISpecial special)
 	{
 		blockSpecial = special;
@@ -110,7 +103,6 @@ public class DataBuilder
 		itemModelPath = "";
 		itemSpecial = null;
 		itemName = null;
-		blockToPlace = null;
 		itemModel = null;
 		return this;
 	}
@@ -195,8 +187,8 @@ public class DataBuilder
 		blockSpecial = new SimpleSpecial("custom");
 		itemModel = new ItemFromTexture(name);
 		blockName = name;
+		itemSpecial = SpecialBuilder.create("block").addValue("block", blockName);
 		itemName = name;
-		blockToPlace = name;
 		return this;
 	}
 
@@ -226,7 +218,7 @@ public class DataBuilder
 		itemModel = new ItemFromBlock(name);
 		blockName = name;
 		itemName = name;
-		blockToPlace = name;
+		itemSpecial = SpecialBuilder.create("block").addValue("block", blockName);
 		return this;
 	}
 
@@ -315,8 +307,8 @@ public class DataBuilder
 						.texture(name))));
 		itemModel = new ItemFromBlock(name);
 		blockName = name;
+		itemSpecial = SpecialBuilder.create("block").addValue("block", blockName);
 		itemName = name;
-		blockToPlace = name;
 		return this;
 	}
 
@@ -329,8 +321,8 @@ public class DataBuilder
 						.texture(texture))));
 		itemModel = new ItemFromBlock(name);
 		blockName = name;
+		itemSpecial = SpecialBuilder.create("block").addValue("block", blockName);
 		itemName = name;
-		blockToPlace = name;
 		return this;
 	}
 
@@ -349,8 +341,8 @@ public class DataBuilder
 				));
 		itemModel = new ItemFromBlock(name);
 		blockName = name;
+		itemSpecial = SpecialBuilder.create("block").addValue("block", blockName);
 		itemName = name;
-		blockToPlace = name;
 		return this;
 	}
 
@@ -378,10 +370,9 @@ public class DataBuilder
 		return DataBuilder.create()
 			.blockName(name)
 			.itemName(name)
-			.blockToPlace(name)
 			.blockSpecial(new SimpleSpecial("slab"))
 			.itemModel(new ItemFromBlock(name))
-			.itemSpecial(new SimpleSpecial("slab"))
+			.itemSpecial(SpecialBuilder.create("slab").addValue("block", name))
 			.blockState(StateBuilder.create()
 				.addState(PropertyBuilder.create()
 						.addProperty(SlabBlock.TYPE, EnumSlabType.BOTTOM)
@@ -458,7 +449,7 @@ public class DataBuilder
 		return DataBuilder.create()
 			.blockName(name)
 			.itemName(name)
-			.blockToPlace(name)
+			.itemSpecial(SpecialBuilder.create("block").addValue("block", name))
 			.blockSpecial(new SimpleSpecial("stairs"))
 			.itemModel(new ItemFromBlock(name))
 			.blockState(StateBuilder.create()
@@ -496,7 +487,7 @@ public class DataBuilder
 		itemModel = new ItemFromBlock(name);
 		blockName = name;
 		itemName = name;
-		blockToPlace = name;
+		itemSpecial = SpecialBuilder.create("block").addValue("block", blockName);
 		blockSpecial = new SimpleSpecial("transparent");
 		addTag(Tags.TRANSPARENT);
 		return this;
@@ -518,7 +509,7 @@ public class DataBuilder
 		return DataBuilder.create()
 			.blockName(name)
 			.itemName(name)
-			.blockToPlace(name)
+			.itemSpecial(SpecialBuilder.create("block").addValue("block", name))
 			.blockSpecial(new SimpleSpecial("stala"))
 			.itemModel(new ItemFromBlock(name))
 			.blockState(StateBuilder.create()
@@ -578,19 +569,12 @@ public class DataBuilder
 			JSONObject special = itemSpecial.generate();
 			if (special != null)
 			{
-				special.put("name", itemSpecial.getName());
 				json.put("special", special);
 			}
 			System.out.println(PrettyJson.prettify(special));
 		}
 		if (debug)
 			json.put("debug", true);
-
-		if (blockToPlace != null)
-		{
-			System.out.println("\tPlaces " + blockToPlace);
-			json.put("block", blockToPlace);
-		}
 
 		if (!itemModelPath.isBlank())
 		{
@@ -630,7 +614,6 @@ public class DataBuilder
 			JSONObject special = blockSpecial.generate();
 			if (special != null)
 			{
-				special.put("name", blockSpecial.getName());
 				json.put("special", special);
 			}
 			System.out.println(PrettyJson.prettify(special));

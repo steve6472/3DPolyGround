@@ -17,6 +17,7 @@ public class HitResult
 	private EnumFace face;
 	private BlockState state;
 	private AABBf aabb;
+	private boolean hit;
 
 	public HitResult()
 	{
@@ -35,6 +36,11 @@ public class HitResult
 		this.px = px;
 		this.py = py;
 		this.pz = pz;
+	}
+
+	public void setHit(boolean hit)
+	{
+		this.hit = hit;
 	}
 
 	public EnumFace getFace()
@@ -120,5 +126,10 @@ public class HitResult
 	public AABBf getAabb()
 	{
 		return aabb;
+	}
+
+	public boolean isHit()
+	{
+		return hit;
 	}
 }

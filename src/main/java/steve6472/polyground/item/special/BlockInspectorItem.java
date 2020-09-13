@@ -44,7 +44,7 @@ public class BlockInspectorItem extends Item
 	@Event
 	public void renderBlock(InGameGuiEvent.PostRender e)
 	{
-		if (CaveGame.itemInHand == this && CaveGame.getInstance().hitPicker.hit)
+		if (CaveGame.itemInHand == this && CaveGame.getInstance().hitPicker.getHitResult().isHit())
 		{
 			StringBuilder text = new StringBuilder();
 			BlockState state = CaveGame.getInstance().hitPicker.getHitResult().getState();
