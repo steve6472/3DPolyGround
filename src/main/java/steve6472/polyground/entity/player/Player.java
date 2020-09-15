@@ -320,13 +320,18 @@ public class Player implements IMotion3f, IPosition3f
 			{
 				CaveGame.itemInHand.onClick(world, state, this, EnumSlot.CREATIVE_BELT, hr.getFace(), event, hr.getX(), hr.getY(), hr.getZ());
 			} else
+			{
 				item.onClick(world, state, this, EnumSlot.CREATIVE_BELT, hr.getFace(), event, hr.getX(), hr.getY(), hr.getZ());
+			}
 		}
 
 		if (gamemode == EnumGameMode.CREATIVE)
+		{
 			CaveGame.itemInHand.onClick(this, EnumSlot.CREATIVE_BELT, event);
-		else
+		} else
+		{
 			item.onClick(this, EnumSlot.CREATIVE_BELT, event);
+		}
 
 		if (event.getButton() == KeyList.RMB && event.getAction() == KeyList.PRESS)
 		{
@@ -360,6 +365,7 @@ public class Player implements IMotion3f, IPosition3f
 			{
 				HitResult hr = game.hitPicker.getHitResult();
 				Block blockToPlace = null;
+
 				if (palette != null && palette.getItemType() != null && palette.getItemType() instanceof BlockItem bi)
 				{
 					blockToPlace = bi.getBlock();
@@ -367,15 +373,17 @@ public class Player implements IMotion3f, IPosition3f
 
 				if (blockToPlace != null)
 				{
-					palette.removeItem();
-
 					EnumFace face = hr.getFace();
 					int x = hr.getX() + face.getXOffset();
 					int y = hr.getY() + face.getYOffset();
 					int z = hr.getZ() + face.getZOffset();
 
 					BlockState stateToPlace = blockToPlace.getStateForPlacement(game.world, this, face, x, y, z);
-					game.world.setState(stateToPlace, x, y, z, 5);
+					if (stateToPlace.getBlock().isValidPosition(stateToPlace, world, x, y, z))
+					{
+						palette.removeItem();
+						world.setState(stateToPlace, x, y, z, 1);
+					}
 				}
 			}
 		}

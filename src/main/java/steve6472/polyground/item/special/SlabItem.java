@@ -6,6 +6,7 @@ import steve6472.polyground.HitResult;
 import steve6472.polyground.block.properties.enums.EnumSlabType;
 import steve6472.polyground.block.special.SlabBlock;
 import steve6472.polyground.block.states.BlockState;
+import steve6472.polyground.entity.item.Palette;
 import steve6472.polyground.entity.player.EnumGameMode;
 import steve6472.polyground.entity.player.EnumSlot;
 import steve6472.polyground.entity.player.Player;
@@ -29,8 +30,10 @@ public class SlabItem extends BlockItem
 	@Override
 	public void onClick(World world, BlockState state, Player player, EnumSlot slot, EnumFace clickedOn, MouseEvent click, int x, int y, int z)
 	{
-		if (click.getAction() != KeyList.PRESS || click.getButton() != KeyList.RMB || player.getGamemode() != EnumGameMode.CREATIVE)
+		if (click.getAction() != KeyList.PRESS || click.getButton() != KeyList.RMB)
+		{
 			return;
+		}
 
 		boolean placedBlock = false;
 
@@ -48,24 +51,41 @@ public class SlabItem extends BlockItem
 				BlockState stateToPlace = getBlock().getStateForPlacement(world, player, face, X, Y, Z);
 				if (stateToPlace.getBlock().isValidPosition(state, world, X, Y, Z))
 				{
+					if (player.getGamemode() == EnumGameMode.SURVIVAL)
+					{
+						Palette palette = player.getHoldedPalette();
+						if (palette != null)
+						{
+							palette.removeItem();
+						}
+					}
 					placedBlock = true;
 					world.setState(stateToPlace, X, Y, Z, 1);
 				}
 			}
 		}
 
+		player.processNextBlockPlace = false;
+
 		if (!placedBlock)
 		{
-			if (!player.processNextBlockPlace)
-				return;
-
 			BlockState placed = world.getState(x + clickedOn.getXOffset(), y + clickedOn.getYOffset(), z + clickedOn.getZOffset());
 
 			if (placed.getBlock() != getBlock())
+			{
 				return;
+			}
 
 			if (placed.get(SlabBlock.TYPE) != EnumSlabType.DOUBLE)
 			{
+				if (player.getGamemode() == EnumGameMode.SURVIVAL)
+				{
+					Palette palette = player.getHoldedPalette();
+					if (palette != null)
+					{
+						palette.removeItem();
+					}
+				}
 				world.setState(placed.with(SlabBlock.TYPE, EnumSlabType.DOUBLE).with(SlabBlock.AXIS, placed.get(SlabBlock.AXIS)).get(),
 					x + clickedOn.getXOffset(), y + clickedOn.getYOffset(), z + clickedOn.getZOffset());
 			}
