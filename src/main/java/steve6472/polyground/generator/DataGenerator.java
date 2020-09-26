@@ -122,13 +122,14 @@ public class DataGenerator
 		DataBuilder.create().fullBlock("stone").addTags(Tags.SOLID).generate();
 		DataBuilder.create().fullBlock("cobblestone").addTags(Tags.SOLID).generate();
 		DataBuilder.create().fullBlock("bedrock").addTags(Tags.SOLID).generate();
-		DataBuilder.create().fullBlock("gravel").addTags(Tags.SOLID).generate();
-		DataBuilder.create().fullBlock("oak_planks").addTags(Tags.SOLID).generate();
+		DataBuilder.create().fullBlock("oak_planks").addTags(Tags.SOLID, Tags.PICKABLE).generate();
 		DataBuilder.create().fullBlock("andesite").addTags(Tags.SOLID).generate();
 		DataBuilder.create().fullBlock("diorite").addTags(Tags.SOLID).generate();
 		DataBuilder.create().fullBlock("granite").addTags(Tags.SOLID).generate();
-		DataBuilder.create().fullBlock("sand").addTags(Tags.CACTUS_TOP, Tags.SHRUBS_TOP, Tags.SOLID).generate();
 		DataBuilder.create().fullBlock("dirt").addTags(Tags.FLOWER_TOP, Tags.SOLID).generate();
+
+		DataBuilder.create().fullBlock("sand").blockSpecial(new SimpleSpecial("falling_block")).addTags(Tags.CACTUS_TOP, Tags.SHRUBS_TOP, Tags.SOLID).generate();
+		DataBuilder.create().fullBlock("gravel").blockSpecial(new SimpleSpecial("falling_block")).addTags(Tags.SOLID).generate();
 
 		DataBuilder.create().fullBlock("snow_block", "snow").addTags(Tags.SOLID).generate();
 
@@ -169,7 +170,7 @@ public class DataGenerator
 			.addTagToState().with(SlabBlock.TYPE, EnumSlabType.DOUBLE).finish(Tags.SOLID).generate();
 
 		DataBuilder.create().pillarBlock("oak_log", "oak_log_side", "oak_log")
-			.addTagToState().finish(Tags.LOG, Tags.SOLID).generate();
+			.addTagToState().finish(Tags.LOG, Tags.SOLID, Tags.PICKABLE).generate();
 		DataBuilder.create().pillarBlock("crystal_log", "crystal_log_side", "crystal_log")
 			.addTagToState().finish(Tags.LOG, Tags.SOLID).generate();
 
@@ -234,7 +235,7 @@ public class DataGenerator
 			.fullBlock("wooden_box")
 			.blockState(StateBuilder.create().singleModel(BlockModelBuilder.create("wooden_box").externalPath("custom_models/wooden_box.bbmodel")))
 			.blockSpecial(new SimpleSpecial("custom"))
-			.addTags(Tags.SOLID)
+			.addTags(Tags.SOLID, Tags.PICKABLE)
 			.generate();
 
 		DataBuilder.create()
@@ -247,12 +248,12 @@ public class DataGenerator
 			.fullBlock("log_stack")
 			.blockSpecial(new SimpleSpecial("log_stack"))
 			.blockState(StateBuilder.create()
-				.addState(PropertyBuilder.create().addProperty(LogStackBlock.LOGS, 1), BlockModelBuilder.create("log_stack_1").modelPath("log_stack").externalPath("custom_models/log_stack_1.bbmodel"))
-				.addState(PropertyBuilder.create().addProperty(LogStackBlock.LOGS, 2), BlockModelBuilder.create("log_stack_2").modelPath("log_stack").externalPath("custom_models/log_stack_2.bbmodel"))
-				.addState(PropertyBuilder.create().addProperty(LogStackBlock.LOGS, 3), BlockModelBuilder.create("log_stack_3").modelPath("log_stack").externalPath("custom_models/log_stack_3.bbmodel"))
-				.addState(PropertyBuilder.create().addProperty(LogStackBlock.LOGS, 4), BlockModelBuilder.create("log_stack_4").modelPath("log_stack").externalPath("custom_models/log_stack_4.bbmodel"))
-				.addState(PropertyBuilder.create().addProperty(LogStackBlock.LOGS, 5), BlockModelBuilder.create("log_stack_5").modelPath("log_stack").externalPath("custom_models/log_stack_5.bbmodel"))
-				.addState(PropertyBuilder.create().addProperty(LogStackBlock.LOGS, 6), BlockModelBuilder.create("log_stack_6").modelPath("log_stack").externalPath("custom_models/log_stack_6.bbmodel"))
+				.addState(PropertyBuilder.create().addProperty(LogStackBlock.LOGS, 1).tags(Tags.PICKABLE), BlockModelBuilder.create("log_stack_1").modelPath("log_stack").externalPath("custom_models/log_stack_1.bbmodel"))
+				.addState(PropertyBuilder.create().addProperty(LogStackBlock.LOGS, 2).tags(Tags.PICKABLE), BlockModelBuilder.create("log_stack_2").modelPath("log_stack").externalPath("custom_models/log_stack_2.bbmodel"))
+				.addState(PropertyBuilder.create().addProperty(LogStackBlock.LOGS, 3).tags(Tags.PICKABLE), BlockModelBuilder.create("log_stack_3").modelPath("log_stack").externalPath("custom_models/log_stack_3.bbmodel"))
+				.addState(PropertyBuilder.create().addProperty(LogStackBlock.LOGS, 4).tags(Tags.PICKABLE), BlockModelBuilder.create("log_stack_4").modelPath("log_stack").externalPath("custom_models/log_stack_4.bbmodel"))
+				.addState(PropertyBuilder.create().addProperty(LogStackBlock.LOGS, 5).tags(Tags.PICKABLE), BlockModelBuilder.create("log_stack_5").modelPath("log_stack").externalPath("custom_models/log_stack_5.bbmodel"))
+				.addState(PropertyBuilder.create().addProperty(LogStackBlock.LOGS, 6).tags(Tags.PICKABLE), BlockModelBuilder.create("log_stack_6").modelPath("log_stack").externalPath("custom_models/log_stack_6.bbmodel"))
 			).generate();
 
 		DataBuilder.create()
@@ -273,7 +274,7 @@ public class DataGenerator
 				BlockModelBuilder.create("pebbles_1").modelPath("pebbles").externalPath("custom_models/pebbles_1.bbmodel"),
 				BlockModelBuilder.create("pebbles_2").modelPath("pebbles").externalPath("custom_models/pebbles_2.bbmodel"),
 				BlockModelBuilder.create("pebbles_3").modelPath("pebbles").externalPath("custom_models/pebbles_3.bbmodel"),
-				BlockModelBuilder.create("pebbles_4").modelPath("pebbles").externalPath("custom_models/pebbles_4.bbmodel")))
+				BlockModelBuilder.create("pebbles_4").modelPath("pebbles").externalPath("custom_models/pebbles_4.bbmodel")).tags(Tags.PICKABLE))
 			.blockSpecial(new SimpleSpecial("custom"))
 			.generate();
 
@@ -319,7 +320,7 @@ public class DataGenerator
 					),
 					(BlockModelBuilder.create("stick_4").modelPath("stick").externalPath("custom_models/stick_4.json")),
 					(BlockModelBuilder.create("stick_5").modelPath("stick").externalPath("custom_models/stick_5.bbmodel"))
-				)
+				).tags(Tags.PICKABLE)
 			).generate();
 
 		DataBuilder.create()

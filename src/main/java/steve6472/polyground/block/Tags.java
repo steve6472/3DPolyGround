@@ -52,4 +52,9 @@ public class Tags
 	 * Any block that has all faces solid and is 16x16x16 should have this tag
 	 */
 	public static final String SOLID = "solid";
+
+	/**
+	 * Any block that can be picked up by the player with hands
+	 */
+	public static final String PICKABLE = "pickable";
 }
