@@ -45,8 +45,6 @@ public class CommandRegistry
 		new TeleCommand(dispatcher);
 		new RandomTicksCommand(dispatcher);
 		new LightCommand(dispatcher);
-		new SpawnPaletteCommand(dispatcher);
-		new SpawnMiningToolCommand(dispatcher);
 		new GamemodeCommand(dispatcher);
 	}
 }

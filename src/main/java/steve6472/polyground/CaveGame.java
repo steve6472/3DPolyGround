@@ -8,10 +8,7 @@ import steve6472.polyground.block.model.IElement;
 import steve6472.polyground.block.model.ModelLoader;
 import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.commands.CommandSource;
-import steve6472.polyground.entity.Backpack;
-import steve6472.polyground.entity.BlockInspector;
-import steve6472.polyground.entity.item.MiningTool;
-import steve6472.polyground.entity.item.Palette;
+import steve6472.polyground.entity.player.EnumGameMode;
 import steve6472.polyground.entity.player.Player;
 import steve6472.polyground.events.CancellableEvent;
 import steve6472.polyground.events.SpecialBlockRegistryEvent;
@@ -111,11 +108,6 @@ public class CaveGame extends MainApp
 		Blocks.fixItems();
 
 		itemInHand = Items.getItemByName("stone");
-
-		MiningTool.initModel(mainRender.buildHelper, modelLoader);
-		Palette.initModel(mainRender.buildHelper, modelLoader);
-		Backpack.initModel(mainRender.buildHelper, modelLoader);
-		BlockInspector.initModel(mainRender.buildHelper, modelLoader);
 
 		getEventHandler().runEvent(new WindowSizeEvent(getWindowWidth(), getWindowHeight()));
 
@@ -358,6 +350,12 @@ public class CaveGame extends MainApp
 
 				if (e.getKey() == KeyList.O)
 					options.renderAtlases = !options.renderAtlases;
+
+				if (e.getKey() == KeyList.G)
+					if (player.getGamemode() == EnumGameMode.CREATIVE)
+						player.gamemode = EnumGameMode.SURVIVAL;
+					else
+						player.gamemode = EnumGameMode.CREATIVE;
 
 				if (e.getKey() == KeyList.F5)
 				{

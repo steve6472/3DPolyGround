@@ -1,7 +1,6 @@
 package steve6472.polyground.entity.item;
 
 import org.joml.AABBf;
-import org.joml.Vector3f;
 import steve6472.polyground.CaveGame;
 import steve6472.polyground.block.model.BlockModel;
 import steve6472.polyground.block.model.CubeHitbox;
@@ -12,9 +11,7 @@ import steve6472.polyground.entity.interfaces.IKillable;
 import steve6472.polyground.entity.interfaces.IRenderable;
 import steve6472.polyground.entity.interfaces.ITickable;
 import steve6472.polyground.entity.interfaces.IWorldContainer;
-import steve6472.polyground.entity.player.EnumSlot;
 import steve6472.polyground.entity.player.Player;
-import steve6472.polyground.item.Item;
 import steve6472.polyground.world.World;
 import steve6472.sge.main.Util;
 
@@ -28,19 +25,29 @@ import java.util.function.Function;
  ***********************/
 public class BlockItemEntity extends EntityBase implements IRenderable, ITickable, IKillable, IWorldContainer
 {
-	private static final AABBf HITBOX = new AABBf(-1f / 19f, -1f / 19f, -1f / 19f, 1f / 19f, 1f / 19f, 1f / 19f);
-
-	private final Item itemType;
+	public BlockState state;
+	private final AABBf hitbox;
 	private World world;
 	private double timeAlive;
 	private boolean forceDead = false;
+	private final Player player;
 
-	public BlockItemEntity(Item itemType, int x, int y, int z)
+	public BlockItemEntity(Player player, BlockState state, int x, int y, int z)
 	{
 		super();
-		this.itemType = itemType;
+		this.player = player;
+		this.state = state;
+		this.hitbox = new AABBf();
 		setPosition(x + 0.5f, y + 0.5f, z + 0.5f);
 		setPivotPoint(.5f, .5f, .5f);
+	}
+
+	private void loadHitbox(BlockModel model)
+	{
+		for (CubeHitbox cube : model.getCubes())
+		{
+			hitbox.union(cube.getAabb());
+		}
 	}
 
 	@Override
@@ -72,7 +79,7 @@ public class BlockItemEntity extends EntityBase implements IRenderable, ITickabl
 
 	private void setupTest()
 	{
-		move(test1.set(HITBOX), getX(), getY(), getZ());
+		move(test1.set(hitbox), getX(), getY(), getZ());
 	}
 
 	private boolean testPosition(float x, float y, float z, boolean runCollision)
@@ -115,7 +122,7 @@ public class BlockItemEntity extends EntityBase implements IRenderable, ITickabl
 	{
 		timeAlive += 1f / 60d;
 
-		if (timeAlive >= 1.2f)
+		if (timeAlive >= 1.2f && player == null)
 		{
 			float fallSpeed = 1f / 60f;
 
@@ -133,33 +140,8 @@ public class BlockItemEntity extends EntityBase implements IRenderable, ITickabl
 			if (getY() < 0)
 				setY(0);
 
-			Player player = CaveGame.getInstance().getPlayer();
-
-			for (EnumSlot s : EnumSlot.getSlots())
-			{
-				if (player.holdedItems.get(s) instanceof Palette p)
-				{
-					if (tryToAdd(player, p))
-						break;
-				}
-			}
-			addRotations(0.017453292519943295f, 0.017453292519943295f, 0.017453292519943295f);
 		}
-	}
-
-	private boolean tryToAdd(Player player, Palette p)
-	{
-		if (new Vector3f(getPosition()).distance(player.getPosition()) <= 5 && p.canBeAdded(itemType))
-		{
-			Vector3f dir = new Vector3f(player.getPosition()).sub(getPosition()).normalize().mul(Math.min((float) ((timeAlive - 1.2f) * (timeAlive - 1.2f)) / 20f, 0.1f));
-			addPosition(dir);
-			if (new Vector3f(getPosition()).distance(player.getPosition()) <= 0.1f)
-			{
-				setDead(p.addItem(itemType));
-				return true;
-			}
-		}
-		return false;
+		setRotations(0, player.getCamera().getYaw() + 1.5707963267948966f, player.getCamera().getPitch());
 	}
 
 	private float calculateSize(double y)
@@ -180,14 +162,14 @@ public class BlockItemEntity extends EntityBase implements IRenderable, ITickabl
 		DynamicEntityModel.QUAT.identity().rotateXYZ(getRotations().x, getRotations().y, getRotations().z);
 
 		DynamicEntityModel.MAT.identity()
-			.translate(getPosition().x - 0.5f, getPosition().y - 0.5f, getPosition().z - 0.5f)
-			.translate(getPivotPoint())
-			.scale(calculateSize(timeAlive))
+			.translate(player.getX(), player.getY() + player.eyeHeight, player.getZ())
 			.rotate(DynamicEntityModel.QUAT)
+			.translate(1.2f, -0.5f, -0.9f)
+			.scale(0.75f)
 			.translate(-getPivotPoint().x, -getPivotPoint().y, -getPivotPoint().z)
 		;
 
-		itemType.model.render(CaveGame.getInstance().getCamera().getViewMatrix(), DynamicEntityModel.MAT);
+		state.getBlockModel(world, 0, 0, 0).getModel().render(CaveGame.getInstance().getCamera().getViewMatrix(), DynamicEntityModel.MAT);
 //		AABBUtil.renderAABB(getX(), getY(), getZ(), 1f / 19f, 1);
 	}
 

@@ -6,8 +6,6 @@ import steve6472.polyground.HitResult;
 import steve6472.polyground.block.properties.enums.EnumSlabType;
 import steve6472.polyground.block.special.SlabBlock;
 import steve6472.polyground.block.states.BlockState;
-import steve6472.polyground.entity.item.Palette;
-import steve6472.polyground.entity.player.EnumGameMode;
 import steve6472.polyground.entity.player.EnumSlot;
 import steve6472.polyground.entity.player.Player;
 import steve6472.polyground.world.World;
@@ -51,14 +49,6 @@ public class SlabItem extends BlockItem
 				BlockState stateToPlace = getBlock().getStateForPlacement(world, player, face, X, Y, Z);
 				if (stateToPlace.getBlock().isValidPosition(state, world, X, Y, Z))
 				{
-					if (player.getGamemode() == EnumGameMode.SURVIVAL)
-					{
-						Palette palette = player.getHoldedPalette();
-						if (palette != null)
-						{
-							palette.removeItem();
-						}
-					}
 					placedBlock = true;
 					world.setState(stateToPlace, X, Y, Z, 1);
 				}
@@ -78,14 +68,6 @@ public class SlabItem extends BlockItem
 
 			if (placed.get(SlabBlock.TYPE) != EnumSlabType.DOUBLE)
 			{
-				if (player.getGamemode() == EnumGameMode.SURVIVAL)
-				{
-					Palette palette = player.getHoldedPalette();
-					if (palette != null)
-					{
-						palette.removeItem();
-					}
-				}
 				world.setState(placed.with(SlabBlock.TYPE, EnumSlabType.DOUBLE).with(SlabBlock.AXIS, placed.get(SlabBlock.AXIS)).get(),
 					x + clickedOn.getXOffset(), y + clickedOn.getYOffset(), z + clickedOn.getZOffset());
 			}

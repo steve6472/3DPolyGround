@@ -11,7 +11,6 @@ import steve6472.polyground.block.model.elements.CubeElement;
 import steve6472.polyground.block.properties.IProperty;
 import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.block.states.StateLoader;
-import steve6472.polyground.entity.item.BlockItemEntity;
 import steve6472.polyground.entity.EntityBase;
 import steve6472.polyground.entity.player.Player;
 import steve6472.polyground.item.Item;
@@ -19,6 +18,7 @@ import steve6472.polyground.world.ModelBuilder;
 import steve6472.polyground.world.World;
 import steve6472.polyground.world.chunk.ModelLayer;
 import steve6472.sge.main.events.MouseEvent;
+import steve6472.sge.main.util.Pair;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -192,6 +192,60 @@ public class Block
 		return getDefaultState();
 	}
 
+	public Pair<BlockState, BlockState> getStateForPlacement(World world, BlockState heldState, Player player, EnumFace placedOn, int x, int y, int z)
+	{
+		return new Pair<>(Block.air.getDefaultState(), heldState);
+	}
+
+	/**
+	 * This function gets run twice,
+	 * once for the block player directly clicked on
+	 * and once for the offseted block opposite of the face player clicked on
+	 * <br>
+	 * One should return null!
+	 * <br>
+	 * If the first one return non-null value this function will not be called for the second time
+	 *
+	 * @param world world
+	 * @param worldState state of placed block the player clicked on
+	 * @param heldState state of held block, {@code Block.air} if nothing is held
+	 * @param player player
+	 * @param placedOn side the player placed the block on
+	 * @param x x position
+	 * @param y y position
+	 * @param z z position
+	 * @return Pair of BlockStates <br> A = State to be held<br> B = State to be placed in world<br>Return null if no change should be made!
+	 */
+	public Pair<BlockState, BlockState> merge(World world, BlockState worldState, BlockState heldState, Player player, EnumFace placedOn, int x, int y, int z)
+	{
+		return new Pair<>(Block.air.getDefaultState(), heldState.getBlock().getStateForPlacement(world, player, placedOn, x, y, z));
+	}
+
+	public boolean canMerge(BlockState holdedState, BlockState worldState, Player player, EnumFace clickedOn, int x, int y, int z)
+	{
+		return false;
+	}
+
+	/**
+	 *
+	 * @param world world
+	 * @param worldState state of placed block
+	 * @param heldState state of held block, {@code Block.air} if nothing is held
+	 * @param player player
+	 * @param clickedOn side the player clicked on
+	 * @param x x position
+	 * @param y y position
+	 * @param z z position
+	 * @return Pair of BlockStates <br> A = State to be held<br>    B = State to be placed in world<br>Return null if no change should be made!
+	 */
+	public Pair<BlockState, BlockState> getStatesForPickup(World world, BlockState worldState, BlockState heldState, Player player, EnumFace clickedOn, int x, int y, int z)
+	{
+		if (heldState.isAir())
+			return new Pair<>(worldState, Block.air.getDefaultState());
+		else
+			return null;
+	}
+
 	/**
 	 * Runs every tick if {@code isTickable()} is true
 	 *
@@ -328,7 +382,7 @@ public class Block
 	 */
 	public void spawnLoot(BlockState state, World world, int x, int y, int z)
 	{
-		world.getEntityManager().addEntity(new BlockItemEntity(state.getBlock().item, x, y, z));
+//		world.getEntityManager().addEntity(new BlockItemEntity(state.getBlock().item, x, y, z));
 	}
 
 	/**

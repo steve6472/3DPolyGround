@@ -56,7 +56,10 @@ public class StaticEntityModel
 
 		vertexCount *= 3;
 
-		vao = createVAO();
+		if (vao == 0)
+			vao = createVAO();
+		else
+			bindVAO(vao);
 		storeFloatDataInAttributeList(0, 3, ThreadedModelBuilder.toFloatBuffer3(vert));
 		storeFloatDataInAttributeList(1, 4, ThreadedModelBuilder.toFloatBuffer4(col));
 		storeFloatDataInAttributeList(2, 2, ThreadedModelBuilder.toFloatBuffer2(text));

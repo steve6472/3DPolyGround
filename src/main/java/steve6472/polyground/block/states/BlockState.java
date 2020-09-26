@@ -91,6 +91,11 @@ public class BlockState
 		return h ^ (h >> 16);
 	}
 
+	public boolean isAir()
+	{
+		return getBlock() == Block.air;
+	}
+
 	public Block getBlock()
 	{
 		return block;

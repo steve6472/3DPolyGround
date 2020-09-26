@@ -3,7 +3,6 @@ package steve6472.polyground.gui;
 import steve6472.polyground.CaveGame;
 import steve6472.polyground.block.BlockAtlas;
 import steve6472.polyground.entity.player.EnumGameMode;
-import steve6472.polyground.entity.player.EnumSlot;
 import steve6472.polyground.events.InGameGuiEvent;
 import steve6472.polyground.gfx.light.Light;
 import steve6472.polyground.gfx.light.LightManager;
@@ -145,8 +144,8 @@ public class InGameGui extends Gui implements IGamePause
 		sb.append("Scheduled Ticks: ").append(CaveGame.getInstance().world.scheduledTicks()).append("/").append(CaveGame.getInstance().world.scheduledTicks_()).append("\n");
 		sb.append("OnGround: ").append(CaveGame.getInstance().getPlayer().isOnGround).append("\n");
 
-		sb.append("Left Hand: ").append(CaveGame.getInstance().getPlayer().holdedItems.get(EnumSlot.HAND_LEFT).getName()).append("\n");
-		sb.append("Right Hand: ").append(CaveGame.getInstance().getPlayer().holdedItems.get(EnumSlot.HAND_RIGHT).getName());
+//		sb.append("Left Hand: ").append(CaveGame.getInstance().getPlayer().holdedItems.get(EnumSlot.HAND_LEFT).getName()).append("\n");
+//		sb.append("Right Hand: ").append(CaveGame.getInstance().getPlayer().holdedItems.get(EnumSlot.HAND_RIGHT).getName());
 
 		Font.render(5, 45, sb.toString());
 

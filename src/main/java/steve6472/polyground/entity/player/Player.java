@@ -1,19 +1,15 @@
 package steve6472.polyground.entity.player;
 
-import org.joml.Intersectionf;
 import org.joml.Math;
-import org.joml.Vector2f;
 import org.joml.Vector3f;
 import steve6472.polyground.CaveGame;
 import steve6472.polyground.EnumFace;
 import steve6472.polyground.HitResult;
 import steve6472.polyground.block.Block;
+import steve6472.polyground.block.Tags;
 import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.entity.EntityHitbox;
-import steve6472.polyground.entity.item.MiningTool;
-import steve6472.polyground.entity.item.Palette;
-import steve6472.polyground.item.Item;
-import steve6472.polyground.item.special.BlockItem;
+import steve6472.polyground.entity.item.BlockItemEntity;
 import steve6472.polyground.world.World;
 import steve6472.sge.main.KeyList;
 import steve6472.sge.main.events.Event;
@@ -22,8 +18,7 @@ import steve6472.sge.main.events.MouseEvent;
 import steve6472.sge.main.game.Camera;
 import steve6472.sge.main.game.mixable.IMotion3f;
 import steve6472.sge.main.game.mixable.IPosition3f;
-
-import java.util.HashMap;
+import steve6472.sge.main.util.Pair;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
@@ -56,8 +51,9 @@ public class Player implements IMotion3f, IPosition3f
 	public float flySpeed = 0.007f;
 	public boolean processNextBlockPlace = true;
 	public boolean processNextBlockBreak = true;
-	public HashMap<EnumSlot, IHoldable> holdedItems;
 	public EnumGameMode gamemode;
+
+	public BlockItemEntity held;
 
 	public Player(CaveGame game)
 	{
@@ -67,12 +63,6 @@ public class Player implements IMotion3f, IPosition3f
 		position = new Vector3f(-2, 0.05f, 0);
 		motion = new Vector3f();
 		viewDir = new Vector3f();
-
-		holdedItems = new HashMap<>();
-
-		holdedItems.put(EnumSlot.HAND_LEFT, EMPTY_HAND);
-		holdedItems.put(EnumSlot.HAND_RIGHT, EMPTY_HAND);
-		holdedItems.put(EnumSlot.BACK, EMPTY_HAND);
 
 		hitbox = new EntityHitbox(0.3f, 0.9f, 0.3f, this, this);
 
@@ -179,11 +169,6 @@ public class Player implements IMotion3f, IPosition3f
 			getPosition().y = 0;
 
 		updateHitbox();
-
-		for (EnumSlot holdPosition : holdedItems.keySet())
-		{
-			holdedItems.get(holdPosition).tick(holdPosition);
-		}
 	}
 
 	public void updateHitbox()
@@ -212,10 +197,6 @@ public class Player implements IMotion3f, IPosition3f
 
 	public void render()
 	{
-		for (EnumSlot holdPosition : holdedItems.keySet())
-		{
-			holdedItems.get(holdPosition).render(holdPosition);
-		}
 	}
 
 	@Event
@@ -247,52 +228,6 @@ public class Player implements IMotion3f, IPosition3f
 		{
 			noClip = !noClip;
 		}
-
-		// Swap hands
-		if (e.getAction() == KeyList.PRESS && e.getKey() == KeyList.F)
-		{
-			swapHands();
-		}
-	}
-
-	public void swapHands()
-	{
-		IHoldable temp = holdedItems.get(EnumSlot.HAND_LEFT);
-		holdedItems.put(EnumSlot.HAND_LEFT, holdedItems.get(EnumSlot.HAND_RIGHT));
-		holdedItems.put(EnumSlot.HAND_RIGHT, temp);
-	}
-
-	public Palette getHoldedPalette()
-	{
-		IHoldable l = holdedItems.get(EnumSlot.HAND_LEFT);
-		IHoldable r = holdedItems.get(EnumSlot.HAND_RIGHT);
-
-		if (l instanceof Palette p)
-			return p;
-		else if (r instanceof Palette p)
-			return p;
-
-		return null;
-	}
-
-	public Item getHoldedPaletteItem()
-	{
-		if (gamemode == EnumGameMode.CREATIVE)
-			return CaveGame.itemInHand;
-
-		IHoldable l = holdedItems.get(EnumSlot.HAND_LEFT);
-		IHoldable r = holdedItems.get(EnumSlot.HAND_RIGHT);
-		Palette palette = null;
-
-		if (l instanceof Palette p)
-			palette = p;
-		else if (r instanceof Palette p)
-			palette = p;
-
-		if (palette != null)
-			return palette.getItemType() == null ? Item.air : palette.getItemType();
-
-		return Item.air;
 	}
 
 	@Event
@@ -304,8 +239,6 @@ public class Player implements IMotion3f, IPosition3f
 			return;
 		if (game.mainRender.dialogManager.isActive())
 			return;
-
-		Item item = getHoldedPaletteItem();
 
 		if (getHitResult().isHit())
 		{
@@ -321,7 +254,8 @@ public class Player implements IMotion3f, IPosition3f
 				CaveGame.itemInHand.onClick(world, state, this, EnumSlot.CREATIVE_BELT, hr.getFace(), event, hr.getX(), hr.getY(), hr.getZ());
 			} else
 			{
-				item.onClick(world, state, this, EnumSlot.CREATIVE_BELT, hr.getFace(), event, hr.getX(), hr.getY(), hr.getZ());
+				if (held != null)
+					held.state.getBlock().item.onClick(world, state, this, EnumSlot.CREATIVE_BELT, hr.getFace(), event, hr.getX(), hr.getY(), hr.getZ());
 			}
 		}
 
@@ -330,7 +264,8 @@ public class Player implements IMotion3f, IPosition3f
 			CaveGame.itemInHand.onClick(this, EnumSlot.CREATIVE_BELT, event);
 		} else
 		{
-			item.onClick(this, EnumSlot.CREATIVE_BELT, event);
+			if (held != null)
+				held.state.getBlock().item.onClick(this, EnumSlot.CREATIVE_BELT, event);
 		}
 
 		if (event.getButton() == KeyList.RMB && event.getAction() == KeyList.PRESS)
@@ -354,35 +289,81 @@ public class Player implements IMotion3f, IPosition3f
 
 	private void pressRMB()
 	{
-		if (getGamemode() == EnumGameMode.CREATIVE)
-			return;
-
-		Palette palette = getHoldedPalette();
-
-		if (getHitResult().isHit())
+		if (held != null && processNextBlockPlace)
 		{
-			if (processNextBlockPlace)
-			{
-				HitResult hr = game.hitPicker.getHitResult();
-				Block blockToPlace = null;
+			HitResult hr = game.hitPicker.getHitResult();
+			Block blockToPlace = held.state.getBlock();
 
-				if (palette != null && palette.getItemType() != null && palette.getItemType() instanceof BlockItem bi)
+			if (hr.isHit() && blockToPlace != null)
+			{
+				EnumFace face = hr.getFace();
+
+				int x = hr.getX();
+				int y = hr.getY();
+				int z = hr.getZ();
+
+				boolean merge = blockToPlace.canMerge(held.state, world.getState(x, y, z), this, face, x, y, z);
+
+				if (!merge)
 				{
-					blockToPlace = bi.getBlock();
+					x += face.getXOffset();
+					y += face.getYOffset();
+					z += face.getZOffset();
+
+					// If state can not merge with the clicked block try the offseted block
+					merge = blockToPlace.canMerge(held.state, world.getState(x, y, z), this, face, x, y, z);
 				}
 
-				if (blockToPlace != null)
+				if (merge)
 				{
-					EnumFace face = hr.getFace();
-					int x = hr.getX() + face.getXOffset();
-					int y = hr.getY() + face.getYOffset();
-					int z = hr.getZ() + face.getZOffset();
+					BlockState curr = world.getState(x, y, z);
 
-					BlockState stateToPlace = blockToPlace.getStateForPlacement(game.world, this, face, x, y, z);
-					if (stateToPlace.getBlock().isValidPosition(stateToPlace, world, x, y, z))
+					Pair<BlockState, BlockState> pair = blockToPlace.merge(world, curr, held.state == null ? Block.air.getDefaultState() : held.state, this, face, x, y, z);
+
+					if (pair != null)
 					{
-						palette.removeItem();
-						world.setState(stateToPlace, x, y, z, 1);
+						world.setState(pair.getB(), x, y, z, 1);
+
+						if (pair.getA() == null || pair.getA().isAir())
+						{
+							getWorld().getEntityManager().removeEntity(held);
+							held = null;
+						} else
+						{
+							if (held == null)
+							{
+								BlockItemEntity item = new BlockItemEntity(this, pair.getA(), x, y, z);
+								held = item;
+								getWorld().getEntityManager().addEntity(item);
+							} else
+							{
+								held.state = pair.getA();
+							}
+						}
+					}
+				} else
+				{
+					Pair<BlockState, BlockState> pair = blockToPlace.getStateForPlacement(world, held.state, this, face, x, y, z);
+					if (pair.getB().getBlock().isValidPosition(pair.getB(), world, x, y, z) && pair.getB().getBlock() != world.getState(x, y, z).getBlock())
+					{
+						world.setState(pair.getB(), x, y, z, 1);
+
+						if (pair.getA() == null || pair.getA().isAir())
+						{
+							getWorld().getEntityManager().removeEntity(held);
+							held = null;
+						} else
+						{
+							if (held == null)
+							{
+								BlockItemEntity item = new BlockItemEntity(this, pair.getA(), x, y, z);
+								held = item;
+								getWorld().getEntityManager().addEntity(item);
+							} else
+							{
+								held.state = pair.getA();
+							}
+						}
 					}
 				}
 			}
@@ -391,94 +372,65 @@ public class Player implements IMotion3f, IPosition3f
 
 	private void pressLMB()
 	{
-		if (getHitResult().isHit() && processNextBlockBreak && canBreakBlocks())
+		if (gamemode == EnumGameMode.CREATIVE)
 		{
-			HitResult hr = CaveGame.getInstance().hitPicker.getHitResult();
-			World world = CaveGame.getInstance().world;
+			if (getHitResult().isHit() && processNextBlockBreak)
+			{
+				HitResult hr = CaveGame.getInstance().hitPicker.getHitResult();
+				World world = CaveGame.getInstance().world;
 
-			int x = hr.getX();
-			int y = hr.getY();
-			int z = hr.getZ();
+				int x = hr.getX();
+				int y = hr.getY();
+				int z = hr.getZ();
 
-			BlockState state = world.getState(x, y, z);
+				BlockState state = world.getState(x, y, z);
 
-			state.getBlock().onPlayerBreak(state, world, this, hr.getFace(), x, y, z);
-			world.setBlock(Block.air, hr.getX(), hr.getY(), hr.getZ());
+				state.getBlock().onPlayerBreak(state, world, this, hr.getFace(), x, y, z);
+				world.setBlock(Block.air, hr.getX(), hr.getY(), hr.getZ());
+			}
+		} else
+		{
+			if (getHitResult().isHit() && processNextBlockBreak)
+			{
+				HitResult hr = CaveGame.getInstance().hitPicker.getHitResult();
+				World world = CaveGame.getInstance().world;
+
+				int x = hr.getX();
+				int y = hr.getY();
+				int z = hr.getZ();
+
+				BlockState state = world.getState(x, y, z);
+				if (state.hasTag(Tags.PICKABLE))
+				{
+					Pair<BlockState, BlockState> pair = state.getBlock().getStatesForPickup(world, state,
+						held == null ? Block.air.getDefaultState() : held.state,
+						this, hr.getFace(), x, y, z);
+
+					if (pair != null)
+					{
+						if (held == null)
+						{
+							BlockItemEntity item = new BlockItemEntity(this, pair.getA(), x, y, z);
+							held = item;
+							getWorld().getEntityManager().addEntity(item);
+						} else
+						{
+							held.state = pair.getA();
+						}
+						world.setState(pair.getB(), x, y, z);
+					}
+				}
+			}
 		}
 	}
 
 	private void pressMMB()
 	{
-		HitResult hr = game.hitPicker.getHitResult();
-		IHoldable targetHoldable = getFirstTargetedHoldable();
-
-		if (!getHitResult().isHit())
-			return;
-
-		if (targetHoldable != null)
-		{
-			if (targetHoldableDistance <= 3f)
-			{
-				if (holdedItems.get(EnumSlot.HAND_RIGHT) == EMPTY_HAND)
-				{
-					holdedItems.put(EnumSlot.HAND_RIGHT, targetHoldable.pickUp(world, this));
-				} else if (holdedItems.get(EnumSlot.HAND_LEFT) == EMPTY_HAND)
-				{
-					holdedItems.put(EnumSlot.HAND_LEFT, targetHoldable.pickUp(world, this));
-				} else
-				{
-					// Swap items
-					holdedItems.get(EnumSlot.HAND_LEFT).place(world, hr.getPx(), hr.getPy(), hr.getPz());
-					holdedItems.put(EnumSlot.HAND_LEFT, targetHoldable.pickUp(world, this));
-				}
-			}
-		} else
-		{
-			if (hr.getFace() == EnumFace.UP)
-			{
-				if (holdedItems.get(EnumSlot.HAND_RIGHT) != EMPTY_HAND)
-				{
-					holdedItems.get(EnumSlot.HAND_RIGHT).place(world, hr.getPx(), hr.getPy(), hr.getPz());
-					holdedItems.put(EnumSlot.HAND_RIGHT, EMPTY_HAND);
-				} else if (holdedItems.get(EnumSlot.HAND_LEFT) != EMPTY_HAND)
-				{
-					holdedItems.get(EnumSlot.HAND_LEFT).place(world, hr.getPx(), hr.getPy(), hr.getPz());
-					holdedItems.put(EnumSlot.HAND_LEFT, EMPTY_HAND);
-				}
-			}
-		}
-
-	}
-
-	private static final Vector2f target = new Vector2f();
-	private static final Vector3f distanceTest = new Vector3f();
-	private static float targetHoldableDistance;
-
-	private IHoldable getFirstTargetedHoldable()
-	{
-		for (Object o : game.world.getEntityManager().getEntities())
-		{
-			if (o instanceof IHoldable p)
-			{
-				if (Intersectionf.intersectRayAab(
-					camera.getX(), camera.getY(), camera.getZ(),
-					viewDir.x, viewDir.y, viewDir.z,
-					p.getHitbox().minX + p.getX(), p.getHitbox().minY + p.getY(), p.getHitbox().minZ + p.getZ(),
-					p.getHitbox().maxX + p.getX(), p.getHitbox().maxY + p.getY(), p.getHitbox().maxZ + p.getZ(), target))
-				{
-					targetHoldableDistance = distanceTest.set(
-						viewDir.x, viewDir.y, viewDir.z).mul(target.x).add(camera.getX(), camera.getY(),
-						camera.getZ()).distance(camera.getX(), camera.getY(), camera.getZ());
-					return p;
-				}
-			}
-		}
-		return null;
 	}
 
 	public boolean canBreakBlocks()
 	{
-		return (gamemode == EnumGameMode.CREATIVE || holdedItems.get(EnumSlot.HAND_RIGHT) instanceof MiningTool);
+		return gamemode == EnumGameMode.CREATIVE;
 	}
 
 	public EnumGameMode getGamemode()

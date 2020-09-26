@@ -126,6 +126,7 @@ public class Blocks
 						triangle.fixUv(game.mainRender.buildHelper.texel);
 					}
 				}
+				model.createModel(game.mainRender.buildHelper);
 			}
 		}));
 	}

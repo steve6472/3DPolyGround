@@ -3,7 +3,9 @@ package steve6472.polyground.block.model;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import steve6472.polyground.CaveGame;
+import steve6472.polyground.entity.StaticEntityModel;
 import steve6472.polyground.registry.WaterRegistry;
+import steve6472.polyground.world.ModelBuilder;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
@@ -18,6 +20,7 @@ public class BlockModel
 	private final String path;
 	private final int rotX, rotY, rotZ;
 	private boolean isBlockbenchModel;
+	private StaticEntityModel model;
 
 	/**
 	 * Air Model Constructor
@@ -26,6 +29,7 @@ public class BlockModel
 	{
 		rotX = rotY = rotZ = 0;
 		path = null;
+		model = new StaticEntityModel();
 	}
 
 	public BlockModel(String path, JSONArray rot)
@@ -34,6 +38,7 @@ public class BlockModel
 		this.rotX = rot.getInt(0) % 360;
 		this.rotY = rot.getInt(1) % 360;
 		this.rotZ = rot.getInt(2) % 360;
+		model = new StaticEntityModel();
 
 		if (path.isBlank())
 			throw new IllegalArgumentException("Model path is blank! '" + path + "'");
@@ -60,6 +65,12 @@ public class BlockModel
 		*/
 	}
 
+	public void createModel(ModelBuilder buildHelper)
+	{
+		if (path != null)
+			model.load(buildHelper, elements, false);
+	}
+
 	public void reload()
 	{
 		if (path == null)
@@ -69,6 +80,7 @@ public class BlockModel
 
 		cubes = CaveGame.getInstance().modelLoader.loadCubes(json, rotX, rotY, rotZ);
 		elements = CaveGame.getInstance().modelLoader.loadElements(json, rotX, rotY, rotZ);
+		createModel(CaveGame.getInstance().mainRender.buildHelper);
 	}
 
 	public BlockModel(IElement[] elements, CubeHitbox... cubes)
@@ -97,5 +109,10 @@ public class BlockModel
 	public boolean isBlockbenchModel()
 	{
 		return isBlockbenchModel;
+	}
+
+	public StaticEntityModel getModel()
+	{
+		return model;
 	}
 }

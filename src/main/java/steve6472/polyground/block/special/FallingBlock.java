@@ -1,6 +1,7 @@
 package steve6472.polyground.block.special;
 
 import org.json.JSONObject;
+import steve6472.polyground.EnumFace;
 import steve6472.polyground.block.Block;
 import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.world.World;
@@ -19,7 +20,7 @@ public class FallingBlock extends Block
 	}
 
 	@Override
-	public void tick(BlockState state, World world, int x, int y, int z)
+	public void onBlockAdded(BlockState state, World world, BlockState oldState, int x, int y, int z)
 	{
 		if (world.getBlock(x, y - 1, z) == Block.air && y > 0)
 		{
@@ -29,8 +30,12 @@ public class FallingBlock extends Block
 	}
 
 	@Override
-	public boolean isTickable()
+	public void neighbourChange(BlockState state, World world, EnumFace updateFrom, int x, int y, int z)
 	{
-		return true;
+		if (world.getBlock(x, y - 1, z) == Block.air && y > 0)
+		{
+			world.setBlock(Block.air, x, y, z);
+			world.getEntityManager().addEntity(new steve6472.polyground.entity.FallingBlock(state, x, y, z));
+		}
 	}
 }
