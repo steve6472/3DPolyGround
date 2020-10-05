@@ -22,6 +22,7 @@ import steve6472.polyground.world.chunk.ModelLayer;
 import steve6472.sge.main.KeyList;
 import steve6472.sge.main.events.MouseEvent;
 import steve6472.sge.main.util.ColorUtil;
+import steve6472.sge.main.util.RandomUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,9 +49,16 @@ public class KnappingBlock extends CustomBlock implements IBlockData
 	@Override
 	public void onClick(BlockState state, World world, Player player, EnumFace clickedOn, MouseEvent click, int x, int y, int z)
 	{
-		if (click.getButton() == KeyList.LMB && click.getAction() == KeyList.PRESS)
+		if (click.getButton() == KeyList.LMB && click.getAction() == KeyList.PRESS && player.heldItem != null && player.heldItem.item.name.equals("hammerstone"))
 		{
 			player.processNextBlockBreak = false;
+
+			if (RandomUtil.decide(10))
+			{
+				world.getEntityManager().removeEntity(player.heldItem);
+				player.heldItem = null;
+				return;
+			}
 
 			KnappingData data = (KnappingData) world.getData(x, y, z);
 			if (data == null)

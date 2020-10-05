@@ -10,6 +10,10 @@ import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.world.World;
 import steve6472.sge.main.game.mixable.IMotion3f;
 import steve6472.sge.main.game.mixable.IPosition3f;
+import steve6472.sge.main.util.Triple;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
@@ -191,6 +195,9 @@ public class EntityHitbox
 
 		float xa = xaOrg, ya = yaOrg, za = zaOrg;
 
+		List<BlockState> queuedEntityCollision = new ArrayList<>();
+		List<Triple<Integer, Integer, Integer>> queuedEntityCollisionPos = new ArrayList<>();
+
 		for (int i = sx; i < ex; i++)
 		{
 			for (int j = sy; j < ey; j++)
@@ -215,7 +222,8 @@ public class EntityHitbox
 
 								if (entity != null)
 								{
-									state.getBlock().entityCollision(entity, world, state, x, y, z);
+									queuedEntityCollision.add(state);
+									queuedEntityCollisionPos.add(new Triple<>(x, y, z));
 								}
 
 								ya = AABBUtil.clipYCollide(getHitbox(), temp, ya);
@@ -247,9 +255,14 @@ public class EntityHitbox
 			motion.setMotionZ(0.0f);
 		}
 
-		position.setX((getHitbox().minX + getHitbox().maxX) / 2.0F);
-		position.setY(getHitbox().minY);
-		position.setZ((getHitbox().minZ + getHitbox().maxZ) / 2.0F);
+		position.setPosition((getHitbox().minX + getHitbox().maxX) / 2.0F, getHitbox().minY, (getHitbox().minZ + getHitbox().maxZ) / 2.0F);
+
+		for (int i = 0; i < queuedEntityCollision.size(); i++)
+		{
+			BlockState state = queuedEntityCollision.get(i);
+			Triple<Integer, Integer, Integer> pos = queuedEntityCollisionPos.get(i);
+			state.getBlock().entityCollision(entity, world, state, pos.getA(), pos.getB(), pos.getC());
+		}
 
 		return yaOrg != ya && yaOrg < 0.0F;
 	}

@@ -97,6 +97,7 @@ public class OptionsGui extends Gui implements IGamePause
 		checkBox("renderTeleporters", 10, 10 + x++ * 30, () -> options.renderTeleporters, b -> options.renderTeleporters = b);
 		checkBox("renderRifts", 10, 10 + x++ * 30, () -> options.renderRifts, b -> options.renderRifts = b);
 		checkBox("renderChunkOutline", 10, 10 + x++ * 30, () -> options.renderChunkOutline, b -> options.renderChunkOutline = b);
+		checkBox("renderDataBlocks", 10, 10 + x++ * 30, () -> options.renderDataBlocks, b -> options.renderDataBlocks = b);
 		checkBox("renderLights", 10, 10 + x++ * 30, () -> options.renderLights, b -> options.renderLights = b);
 		checkBox("renderSkybox", 10, 10 + x * 30, () -> options.renderSkybox, b -> options.renderSkybox = b);
 

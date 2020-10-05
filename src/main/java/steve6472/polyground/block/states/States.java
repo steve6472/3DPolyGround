@@ -4,10 +4,7 @@ import steve6472.polyground.EnumFace;
 import steve6472.polyground.block.properties.BooleanProperty;
 import steve6472.polyground.block.properties.EnumProperty;
 import steve6472.polyground.block.properties.IntProperty;
-import steve6472.polyground.block.properties.enums.EnumAxis;
-import steve6472.polyground.block.properties.enums.EnumHalf;
-import steve6472.polyground.block.properties.enums.EnumHalfSnowy;
-import steve6472.polyground.block.properties.enums.EnumSlabType;
+import steve6472.polyground.block.properties.enums.*;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
@@ -25,6 +22,7 @@ public class States
 	public static final EnumProperty<EnumFace> FACING = EnumProperty.create("facing", EnumFace.class, EnumFace.NORTH, EnumFace.EAST, EnumFace.SOUTH, EnumFace.WEST, EnumFace.UP, EnumFace.DOWN);
 	public static final EnumProperty<EnumAxis> AXIS = EnumProperty.create("axis", EnumAxis.class, EnumAxis.getValues());
 	public static final EnumProperty<EnumHalf> HALF = EnumProperty.create("half", EnumHalf.class, EnumHalf.getValues());
+	public static final EnumProperty<EnumStoneType> STONE_TYPE = EnumProperty.create("stone_type", EnumStoneType.class, EnumStoneType.getValues());
 	public static final EnumProperty<EnumHalfSnowy> HALF_SNOWY = EnumProperty.create("half_snowy", EnumHalfSnowy.class, EnumHalfSnowy.getValues());
 
 	public static final IntProperty STALA_WIDTH = IntProperty.create("width", 1, 7);

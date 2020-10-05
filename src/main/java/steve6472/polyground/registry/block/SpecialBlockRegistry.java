@@ -42,6 +42,7 @@ public class SpecialBlockRegistry
 	public static final SpecialBlockEntry<ConveyorBeltBlock> conveyorBelt = register("conveyor_belt", ConveyorBeltBlock::new);
 	public static final SpecialBlockEntry<FallingBlock> fallingBlock = register("falling_block", FallingBlock::new);
 	public static final SpecialBlockEntry<KnappingBlock> stoneKnapping = register("stone_knapping", KnappingBlock::new);
+	public static final SpecialBlockEntry<HammerstoneBlock> hammerstone = register("hammerstone", HammerstoneBlock::new);
 
 	public static <T extends Block> SpecialBlockEntry<T> register(String id, ISpecialBlockFactory<T> factory)
 	{

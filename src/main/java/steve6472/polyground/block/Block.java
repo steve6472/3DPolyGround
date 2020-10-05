@@ -203,9 +203,26 @@ public class Block
 		return getDefaultState();
 	}
 
+	/*
 	public Pair<BlockState, BlockState> getStateForPlacement(World world, BlockState heldState, Player player, EnumFace placedOn, int x, int y, int z)
 	{
 		return new Pair<>(Block.air.getDefaultState(), heldState);
+	}*/
+
+	/**
+	 *
+	 * @param world world
+	 * @param heldState state in players hand
+	 * @param player player who placed the block
+	 * @param placedOn side the block was placed on
+	 * @param x x position
+	 * @param y y position
+	 * @param z z position
+	 * @return blockstate that will be placed if possible
+	 */
+	public Pair<BlockState, BlockState> getStateForPlacement(World world, BlockState heldState, Player player, EnumFace placedOn, int x, int y, int z)
+	{
+		return new Pair<>(Block.air.getDefaultState(), getStateForPlacement(world, player, placedOn, x, y, z));
 	}
 
 	/**
@@ -412,6 +429,11 @@ public class Block
 	}
 
 	public void entityCollision(EntityBase entity, World world, BlockState state, int x, int y, int z)
+	{
+
+	}
+
+	public void entityOnBlockCollision(EntityBase entity, World world, BlockState state, int x, int y, int z)
 	{
 
 	}

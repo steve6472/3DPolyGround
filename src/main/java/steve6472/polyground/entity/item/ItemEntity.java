@@ -3,7 +3,9 @@ package steve6472.polyground.entity.item;
 import org.joml.AABBf;
 import org.joml.Math;
 import org.joml.Vector3f;
+import steve6472.polyground.AABBUtil;
 import steve6472.polyground.CaveGame;
+import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.entity.DynamicEntityModel;
 import steve6472.polyground.entity.EntityBase;
 import steve6472.polyground.entity.EntityHitbox;
@@ -14,6 +16,7 @@ import steve6472.polyground.entity.interfaces.IWorldContainer;
 import steve6472.polyground.entity.player.Player;
 import steve6472.polyground.item.Item;
 import steve6472.polyground.world.World;
+import steve6472.sge.main.game.mixable.IPosition3f;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
@@ -21,7 +24,7 @@ import steve6472.polyground.world.World;
  * Project: CaveGame
  *
  ***********************/
-public class ItemEntity extends EntityBase implements IRenderable, ITickable, IKillable, IWorldContainer
+public class ItemEntity extends EntityBase implements IRenderable, ITickable, IKillable, IWorldContainer, IPosition3f
 {
 	public Item item;
 	private final EntityHitbox entityHitbox;
@@ -100,7 +103,13 @@ public class ItemEntity extends EntityBase implements IRenderable, ITickable, IK
 			if (getPosition().y < 0)
 				getPosition().y = 0;
 
-			entityHitbox.setHitbox(getX(), getY() + 0.25f, getZ());
+			updateHitbox();
+
+			if (isOnGround)
+			{
+				BlockState state = world.getState((int) Math.floor(getX()), (int) Math.floor(getY() - 0.00001f), (int) Math.floor(getZ()));
+				state.getBlock().entityOnBlockCollision(this, world, state, (int) Math.floor(getX()), (int) Math.floor(getY()), (int) Math.floor(getZ()));
+			}
 		}
 
 		if (player != null)
@@ -134,12 +143,12 @@ public class ItemEntity extends EntityBase implements IRenderable, ITickable, IK
 			DynamicEntityModel.MAT.identity()
 				.translate(getX(), getY(), getZ())
 				.rotate(DynamicEntityModel.QUAT)
-				.translate(-0.5f, 0, -0.5f);
+				.translate(-0.5f, 0, -0.5f)
 			;
 		}
 
 		item.model.render(CaveGame.getInstance().getCamera().getViewMatrix(), DynamicEntityModel.MAT);
-//		AABBUtil.renderAABBf(getHitbox(), 1);
+		AABBUtil.renderAABBf(getHitbox(), 1);
 	}
 
 	public void setPlayer(Player player)
@@ -159,9 +168,16 @@ public class ItemEntity extends EntityBase implements IRenderable, ITickable, IK
 		return world;
 	}
 
-	private void updateHitbox()
+	public void updateHitbox()
 	{
-		entityHitbox.setHitbox(getX(), getY(), getZ());
+		entityHitbox.setHitbox(getX(), getY() + 0.25f, getZ());
+	}
+
+	@Override
+	public void setPosition(Vector3f position)
+	{
+		super.setPosition(position);
+		updateHitbox();
 	}
 
 	@Override
@@ -178,24 +194,31 @@ public class ItemEntity extends EntityBase implements IRenderable, ITickable, IK
 		updateHitbox();
 	}
 
-//	@Override
-//	public void setX(float x)
-//	{
-//		super.setX(x);
-//		updateHitbox();
-//	}
-//
-//	@Override
-//	public void setY(float y)
-//	{
-//		super.setY(y);
-//		updateHitbox();
-//	}
-//
-//	@Override
-//	public void setZ(float z)
-//	{
-//		super.setZ(z);
-//		updateHitbox();
-//	}
+	@Override
+	public void addPosition(float x, float y, float z)
+	{
+		super.addPosition(x, y, z);
+		updateHitbox();
+	}
+
+	@Override
+	public void setX(float x)
+	{
+		super.setX(x);
+		updateHitbox();
+	}
+
+	@Override
+	public void setY(float y)
+	{
+		super.setY(y);
+		updateHitbox();
+	}
+
+	@Override
+	public void setZ(float z)
+	{
+		super.setZ(z);
+		updateHitbox();
+	}
 }

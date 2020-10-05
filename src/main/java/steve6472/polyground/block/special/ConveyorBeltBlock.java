@@ -46,7 +46,7 @@ public class ConveyorBeltBlock extends DirectionalBlock
 	}
 
 	@Override
-	public void entityCollision(EntityBase entity, World world, BlockState state, int x, int y, int z)
+	public void entityOnBlockCollision(EntityBase entity, World world, BlockState state, int x, int y, int z)
 	{
 		EnumFace f = state.get(FACING);
 		entity.addPosition(f.getXOffset() / 60f, 0, f.getZOffset() / 60f);

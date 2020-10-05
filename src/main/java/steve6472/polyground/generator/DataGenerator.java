@@ -5,6 +5,7 @@ import steve6472.polyground.block.Tags;
 import steve6472.polyground.block.properties.enums.EnumAxis;
 import steve6472.polyground.block.properties.enums.EnumHalf;
 import steve6472.polyground.block.properties.enums.EnumSlabType;
+import steve6472.polyground.block.properties.enums.EnumStoneType;
 import steve6472.polyground.block.special.*;
 import steve6472.polyground.block.states.States;
 import steve6472.polyground.generator.biome.BiomeBuilder;
@@ -263,14 +264,29 @@ public class DataGenerator
 			.fullBlock("flint")
 			.blockState(
 				StateBuilder.create()
-					.addState(PropertyBuilder.create().addProperty(FourDirectionalBlock.FACING, EnumFace.NORTH).tags(Tags.PICKABLE).custom(true),
+					.addState(PropertyBuilder.create().addProperty(FourDirectionalBlock.FACING, EnumFace.NORTH)
+							.tags(Tags.PICKABLE, Tags.TRANSPARENT)
+							.custom(true),
 						BlockModelBuilder.create("flint_1").externalPath("custom_models/flint_1.bbmodel"))
-					.addState(PropertyBuilder.create().addProperty(FourDirectionalBlock.FACING, EnumFace.EAST).tags(Tags.PICKABLE).custom(true).rot(0, 90, 0),
+
+					.addState(PropertyBuilder.create().addProperty(FourDirectionalBlock.FACING, EnumFace.EAST)
+							.tags(Tags.PICKABLE, Tags.TRANSPARENT)
+							.custom(true)
+							.rot(0, 90, 0),
 						BlockModelBuilder.noGen("flint_1"))
-					.addState(PropertyBuilder.create().addProperty(FourDirectionalBlock.FACING, EnumFace.SOUTH).tags(Tags.PICKABLE).custom(true).rot(0, 180, 0),
+
+					.addState(PropertyBuilder.create().addProperty(FourDirectionalBlock.FACING, EnumFace.SOUTH)
+							.tags(Tags.PICKABLE, Tags.TRANSPARENT)
+							.custom(true)
+							.rot(0, 180, 0),
 						BlockModelBuilder.noGen("flint_1"))
-					.addState(PropertyBuilder.create().addProperty(FourDirectionalBlock.FACING, EnumFace.WEST).tags(Tags.PICKABLE).custom(true).rot(0, 270, 0),
+
+					.addState(PropertyBuilder.create().addProperty(FourDirectionalBlock.FACING, EnumFace.WEST)
+							.tags(Tags.PICKABLE, Tags.TRANSPARENT)
+							.custom(true)
+							.rot(0, 270, 0),
 						BlockModelBuilder.noGen("flint_1")))
+
 			.blockSpecial(new SimpleSpecial("four_directional"))
 			.generate();
 
@@ -306,6 +322,28 @@ public class DataGenerator
 				BlockModelBuilder.create("pebbles_3").modelPath("pebbles").externalPath("custom_models/pebbles_3.bbmodel"),
 				BlockModelBuilder.create("pebbles_4").modelPath("pebbles").externalPath("custom_models/pebbles_4.bbmodel")).tags(Tags.PICKABLE))
 			.blockSpecial(new SimpleSpecial("custom"))
+			.generate();
+
+		DataBuilder.create()
+			.fullBlock("hammerstone")
+			.blockState(
+				StateBuilder.create()
+					.addState(PropertyBuilder.create().addProperty(HammerstoneBlock.STONE_TYPE, EnumStoneType.SANDSTONE)
+							.tags(Tags.PICKABLE, Tags.TRANSPARENT)
+							.custom(true),
+						BlockModelBuilder.create("hammerstone_sandstone_1").modelPath("hammerstones").externalPath("custom_models/hammerstone_sandstone_1.bbmodel"))
+
+					.addState(PropertyBuilder.create().addProperty(HammerstoneBlock.STONE_TYPE, EnumStoneType.LIMESTONE)
+							.tags(Tags.PICKABLE, Tags.TRANSPARENT)
+							.custom(true),
+						BlockModelBuilder.create("hammerstone_limestone_1").modelPath("hammerstones").externalPath("custom_models/hammerstone_limestone_1.bbmodel"))
+
+					.addState(PropertyBuilder.create().addProperty(HammerstoneBlock.STONE_TYPE, EnumStoneType.QUARTZITE)
+							.tags(Tags.PICKABLE, Tags.TRANSPARENT)
+							.custom(true),
+						BlockModelBuilder.create("hammerstone_quartzite_1").modelPath("hammerstones").externalPath("custom_models/hammerstone_quartzite_1.bbmodel")))
+
+			.blockSpecial(new SimpleSpecial("hammerstone"))
 			.generate();
 
 		DataBuilder.create()
