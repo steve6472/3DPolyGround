@@ -72,7 +72,7 @@ public class KnappingBlock extends CustomBlock implements IBlockData
 			if (match != null)
 			{
 				world.setBlock(Block.air, x, y, z);
-				ItemEntity e = new ItemEntity(null, match.getResult(), x, y + 0.25f, z);
+				ItemEntity e = new ItemEntity(null, match.getResult(), x + 0.5f, y + 0.25f, z + 0.5f);
 				world.getEntityManager().addEntity(e);
 			}
 
@@ -130,10 +130,6 @@ public class KnappingBlock extends CustomBlock implements IBlockData
 		buildHelper.setSubChunk(world.getSubChunkFromBlockCoords(x, y, z));
 
 		KnappingData data = (KnappingData) world.getData(x, y, z);
-		System.out.println("looking for data at " + x + " " + y + " " + z);
-
-//		if (data == null)
-//			return 0;
 
 		for (int i = 0; i < 16; i++)
 		{

@@ -254,16 +254,24 @@ public class DataGenerator
 			.generate();
 
 		DataBuilder.create()
-			.fullBlock("flint")
-			.blockState(StateBuilder.create().singleModel(BlockModelBuilder.create("flint_1").externalPath("custom_models/flint_1.bbmodel")))
-			.blockSpecial(new SimpleSpecial("custom"))
-			.addTags(Tags.PICKABLE)
-			.generate();
-
-		DataBuilder.create()
 			.fullBlock("icicle")
 			.blockState(StateBuilder.create().singleModel(BlockModelBuilder.create("icicle").externalPath("custom_models/icicle.bbmodel")))
 			.blockSpecial(new SimpleSpecial("custom"))
+			.generate();
+
+		DataBuilder.create()
+			.fullBlock("flint")
+			.blockState(
+				StateBuilder.create()
+					.addState(PropertyBuilder.create().addProperty(FourDirectionalBlock.FACING, EnumFace.NORTH).tags(Tags.PICKABLE).custom(true),
+						BlockModelBuilder.create("flint_1").externalPath("custom_models/flint_1.bbmodel"))
+					.addState(PropertyBuilder.create().addProperty(FourDirectionalBlock.FACING, EnumFace.EAST).tags(Tags.PICKABLE).custom(true).rot(0, 90, 0),
+						BlockModelBuilder.noGen("flint_1"))
+					.addState(PropertyBuilder.create().addProperty(FourDirectionalBlock.FACING, EnumFace.SOUTH).tags(Tags.PICKABLE).custom(true).rot(0, 180, 0),
+						BlockModelBuilder.noGen("flint_1"))
+					.addState(PropertyBuilder.create().addProperty(FourDirectionalBlock.FACING, EnumFace.WEST).tags(Tags.PICKABLE).custom(true).rot(0, 270, 0),
+						BlockModelBuilder.noGen("flint_1")))
+			.blockSpecial(new SimpleSpecial("four_directional"))
 			.generate();
 
 		DataBuilder.create()

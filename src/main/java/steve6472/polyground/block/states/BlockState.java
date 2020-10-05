@@ -27,14 +27,16 @@ public class BlockState
 	private final List<BlockState> possibleStates;
 	private final BlockModel[] blockModel;
 	private final Set<String> tags;
+	private final boolean custom;
 	private final int id;
 
-	public BlockState(Block block, BlockModel[] model, HashMap<IProperty<?>, Comparable<?>> properties, List<BlockState> possibleStates, JSONArray tags)
+	public BlockState(Block block, BlockModel[] model, HashMap<IProperty<?>, Comparable<?>> properties, List<BlockState> possibleStates, JSONArray tags, boolean custom)
 	{
 		this.id = ID++;
 		this.block = block;
 		this.blockModel = model;
 		this.properties = properties;
+		this.custom = custom;
 		if (possibleStates == null)
 		{
 			this.possibleStates = new ArrayList<>(1);
@@ -227,5 +229,10 @@ public class BlockState
 	public String toString()
 	{
 		return "BlockState{" + "block=" + block.getName() + ", tags=" + tags + (properties == null ? "}" : ", properties=" + properties + '}');
+	}
+
+	public boolean isCustom()
+	{
+		return custom;
 	}
 }

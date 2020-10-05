@@ -38,6 +38,7 @@ public class SpecialBlockRegistry
 	public static final SpecialBlockEntry<LogStackBlock> logStack = register("log_stack", LogStackBlock::new);
 	public static final SpecialBlockEntry<DirectionalLightSourceBlock> dirLight = register("dir_light", DirectionalLightSourceBlock::new);
 	public static final SpecialBlockEntry<DirectionalBlock> directional = register("directional", DirectionalBlock::new);
+	public static final SpecialBlockEntry<FourDirectionalBlock> fourDirectional = register("four_directional", FourDirectionalBlock::new);
 	public static final SpecialBlockEntry<ConveyorBeltBlock> conveyorBelt = register("conveyor_belt", ConveyorBeltBlock::new);
 	public static final SpecialBlockEntry<FallingBlock> fallingBlock = register("falling_block", FallingBlock::new);
 	public static final SpecialBlockEntry<KnappingBlock> stoneKnapping = register("stone_knapping", KnappingBlock::new);

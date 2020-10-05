@@ -3,6 +3,7 @@ package steve6472.polyground.block.states;
 import org.joml.AABBf;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import steve6472.polyground.PrettyJson;
 import steve6472.polyground.block.Block;
 import steve6472.polyground.block.model.BlockModel;
 import steve6472.polyground.block.model.CubeHitbox;
@@ -29,7 +30,7 @@ public class StateLoader
 		JSONArray t = new JSONArray();
 		for (String s : tags)
 			t.put(s);
-		block.setDefaultState(new BlockState(block, new BlockModel[] {model}, null, null, t));
+		block.setDefaultState(new BlockState(block, new BlockModel[] {model}, null, null, t, false));
 	}
 
 	private static BlockModel[] loadModels(JSONArray modelsArray, JSONArray rotation)
@@ -50,13 +51,13 @@ public class StateLoader
 		{
 			if (blockstates.optBoolean("empty"))
 			{
-				block.setDefaultState(new BlockState(block, new BlockModel[] {new BlockModel(new IElement[0], new CubeHitbox(new AABBf(0, 0, 0, 1, 1, 1)))}, null, null, blockstates.optJSONArray("tags")));
+				block.setDefaultState(new BlockState(block, new BlockModel[] {new BlockModel(new IElement[0], new CubeHitbox(new AABBf(0, 0, 0, 1, 1, 1)))}, null, null, blockstates.optJSONArray("tags"), false));
 				return;
 			}
 			if (blockstates.has("models"))
-				block.setDefaultState(new BlockState(block, loadModels(blockstates.getJSONArray("models"), new JSONArray().put(0).put(0).put(0)), null, null, blockstates.optJSONArray("tags")));
+				block.setDefaultState(new BlockState(block, loadModels(blockstates.getJSONArray("models"), new JSONArray().put(0).put(0).put(0)), null, null, blockstates.optJSONArray("tags"), blockstates.optBoolean("custom")));
 			else
-				block.setDefaultState(new BlockState(block, new BlockModel[]{new BlockModel(blockstates.getString("model"), new JSONArray().put(0).put(0).put(0))}, null, null, blockstates.optJSONArray("tags")));
+				block.setDefaultState(new BlockState(block, new BlockModel[]{new BlockModel(blockstates.getString("model"), new JSONArray().put(0).put(0).put(0))}, null, null, blockstates.optJSONArray("tags"), blockstates.optBoolean("custom")));
 			return;
 		}
 
@@ -116,8 +117,9 @@ public class StateLoader
 			JSONArray modelsArray = null;
 			String modelPath = null;
 			JSONArray rotation = new JSONArray().put(0).put(0).put(0);
-			boolean uvLock = true;
 			JSONArray tags = null;
+			JSONObject matchObject = null;
+			boolean custom = false;
 
 			if (models == null)
 			{
@@ -144,20 +146,20 @@ public class StateLoader
 					}
 					if (match)
 					{
-						JSONObject object = models.get(j);
-						if (object.has("model"))
+						matchObject = models.get(j);
+						if (matchObject.has("model"))
 						{
-							modelPath = object.getString("model");
+							modelPath = matchObject.getString("model");
 						} else
 						{
-							modelsArray = object.getJSONArray("models");
+							modelsArray = matchObject.getJSONArray("models");
 						}
-						if (object.has("rotation"))
+						if (matchObject.has("rotation"))
 						{
-							rotation = object.getJSONArray("rotation");
+							rotation = matchObject.getJSONArray("rotation");
 						}
-						tags = object.optJSONArray("tags");
-						uvLock = object.optBoolean("uvlock", false);
+						custom = matchObject.optBoolean("custom");
+						tags = matchObject.optJSONArray("tags");
 						break;
 					}
 				}
@@ -167,11 +169,16 @@ public class StateLoader
 			{
 				BlockState state;
 				if (modelPath != null)
-					state = new BlockState(block, new BlockModel[]{new BlockModel(modelPath, rotation)}, map, tileStates, tags);
-				else if (modelsArray != null)
-					state = new BlockState(block, loadModels(modelsArray, rotation), map, tileStates, tags);
-				else
+				{
+					state = new BlockState(block, new BlockModel[]{new BlockModel(modelPath, rotation)}, map, tileStates, tags, custom);
+				} else if (modelsArray != null)
+				{
+					state = new BlockState(block, loadModels(modelsArray, rotation), map, tileStates, tags, custom);
+				} else
+				{
+					System.err.println(PrettyJson.prettify(matchObject));
 					throw new IllegalStateException("wut, no model found");
+				}
 				if (block.getDefaultState() == null)
 					block.setDefaultState(state);
 				tileStates.add(state);

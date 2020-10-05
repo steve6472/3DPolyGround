@@ -17,6 +17,7 @@ public class PropertyBuilder
 	private int rotX, rotY, rotZ;
 	private boolean uvLock;
 	private final List<String> tags;
+	private boolean custom;
 
 	public static PropertyBuilder create()
 	{
@@ -51,6 +52,12 @@ public class PropertyBuilder
 	public PropertyBuilder uvLock(boolean uvLock)
 	{
 		this.uvLock = uvLock;
+		return this;
+	}
+
+	public PropertyBuilder custom(boolean custom)
+	{
+		this.custom = custom;
 		return this;
 	}
 
@@ -94,6 +101,11 @@ public class PropertyBuilder
 	public boolean isUvLock()
 	{
 		return uvLock;
+	}
+
+	public boolean isCustom()
+	{
+		return custom;
 	}
 
 	public JSONObject build()

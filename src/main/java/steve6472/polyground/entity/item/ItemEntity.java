@@ -3,7 +3,6 @@ package steve6472.polyground.entity.item;
 import org.joml.AABBf;
 import org.joml.Math;
 import org.joml.Vector3f;
-import steve6472.polyground.AABBUtil;
 import steve6472.polyground.CaveGame;
 import steve6472.polyground.entity.DynamicEntityModel;
 import steve6472.polyground.entity.EntityBase;
@@ -112,7 +111,7 @@ public class ItemEntity extends EntityBase implements IRenderable, ITickable, IK
 			entityHitbox.setHitbox(getX(), getY(), getZ());
 		} else
 		{
-			setRotations(0f, 0f, 0f);
+			setRotations(0, getRotations().y, 0f);
 		}
 	}
 
@@ -135,12 +134,12 @@ public class ItemEntity extends EntityBase implements IRenderable, ITickable, IK
 			DynamicEntityModel.MAT.identity()
 				.translate(getX(), getY(), getZ())
 				.rotate(DynamicEntityModel.QUAT)
-				.scale(0.75f)
+				.translate(-0.5f, 0, -0.5f);
 			;
 		}
 
 		item.model.render(CaveGame.getInstance().getCamera().getViewMatrix(), DynamicEntityModel.MAT);
-		AABBUtil.renderAABBf(getHitbox(), 1);
+//		AABBUtil.renderAABBf(getHitbox(), 1);
 	}
 
 	public void setPlayer(Player player)

@@ -26,6 +26,7 @@ public class StateBuilder
 	List<Pair<PropertyBuilder, BlockModelBuilder>> models;
 	private JSONArray tags;
 	private boolean isEmpty;
+	private boolean custom;
 
 	public static StateBuilder create()
 	{
@@ -80,12 +81,21 @@ public class StateBuilder
 		return this;
 	}
 
+	public StateBuilder custom(boolean custom)
+	{
+		if (this.tags == null)
+			throw new NullPointerException("Custom can be selected in StateBuilder only if there is only single model! and 'singleModel' was called first");
+		this.custom = custom;
+		return this;
+	}
+
 	public void generate(String blockName)
 	{
 		JSONObject main = new JSONObject();
 		if (isEmpty)
 		{
 			main.put("empty", true);
+
 
 			// Save block state
 			if (this.tags.isEmpty())
@@ -98,6 +108,7 @@ public class StateBuilder
 			if (singleModel.length == 1)
 			{
 				main.put("model", "block/" + singleModel[0].getModelPath() + singleModel[0].getModelName());
+				if (custom) main.put("custom", true);
 				// Save block state
 				if (this.tags.isEmpty())
 					DataBuilder.save(new File(DataGenerator.BLOCK_STATES, blockName + ".json"), main);
@@ -138,6 +149,8 @@ public class StateBuilder
 					model.put("rotation", new JSONArray().put(s.getA().getRotX()).put(s.getA().getRotY()).put(s.getA().getRotZ()));
 				if (s.getA().isUvLock())
 					model.put("uvlock", true);
+				if (s.getA().isCustom())
+					model.put("custom", true);
 				if (!s.getA().getTags().isEmpty())
 				{
 					JSONArray tags = new JSONArray();

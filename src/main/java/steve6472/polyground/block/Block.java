@@ -9,6 +9,7 @@ import steve6472.polyground.block.model.IElement;
 import steve6472.polyground.block.model.ModelLoader;
 import steve6472.polyground.block.model.elements.CubeElement;
 import steve6472.polyground.block.properties.IProperty;
+import steve6472.polyground.block.special.CustomBlock;
 import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.block.states.StateLoader;
 import steve6472.polyground.entity.EntityBase;
@@ -159,6 +160,11 @@ public class Block
 
 	public int createModel(int x, int y, int z, World world, BlockState state, ModelBuilder buildHelper, ModelLayer modelLayer)
 	{
+		if (state.isCustom())
+		{
+			return CustomBlock.model(x, y, z, world, state, buildHelper, modelLayer);
+		}
+
 		int tris = 0;
 
 		BlockModel model = state.getBlockModel(world, x, y, z);

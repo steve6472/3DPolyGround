@@ -23,7 +23,7 @@ public class Cull
 
 		Block middleBlock = middleState.getBlock();
 
-		if (middleBlock instanceof CustomBlock || testedBlock instanceof CustomBlock)
+		if (middleBlock instanceof CustomBlock || testedBlock instanceof CustomBlock || testedState.isCustom())
 			return true;
 
 		if (middleBlock instanceof StairBlock)

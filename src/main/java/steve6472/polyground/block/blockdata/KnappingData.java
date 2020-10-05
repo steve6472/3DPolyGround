@@ -56,13 +56,6 @@ public class KnappingData extends BlockData
 	public void read(CompoundTag tag)
 	{
 		stone = NBTArrayUtil.longToBoolArray(tag.getLongArray("grid"));
-		System.out.println("loaded data : ");
-		NBTArrayUtil.printBoolArray(stone);
-		for (boolean b : stone)
-		{
-			if (b)
-				pieceCount++;
-		}
 	}
 
 	@Override
