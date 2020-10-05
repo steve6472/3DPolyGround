@@ -49,10 +49,19 @@ public class ConveyorBeltBlock extends DirectionalBlock
 	public void entityOnBlockCollision(EntityBase entity, World world, BlockState state, int x, int y, int z)
 	{
 		EnumFace f = state.get(FACING);
-		entity.addPosition(f.getXOffset() / 60f, 0, f.getZOffset() / 60f);
+		entity.getMotion().add(f.getXOffset() / 100f, 0, f.getZOffset() / 100f);
 
-		if (f.getAxis() == EnumAxis.X) entity.setZ(z + 0.5f);
-		if (f.getAxis() == EnumAxis.Z) entity.setX(x + 0.5f);
+		if (f.getAxis() == EnumAxis.X)
+		{
+			float d = z + 0.5f - entity.getZ();
+			entity.getMotion().add(0, 0, d / 50f);
+		}
+
+		if (f.getAxis() == EnumAxis.Z)
+		{
+			float d = x + 0.5f - entity.getX();
+			entity.getMotion().add(d / 50f, 0, 0);
+		}
 	}
 
 	@Override
