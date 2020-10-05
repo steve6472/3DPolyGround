@@ -20,6 +20,7 @@ import steve6472.polyground.gui.MainMenu;
 import steve6472.polyground.gui.OptionsGui;
 import steve6472.polyground.item.Item;
 import steve6472.polyground.item.ItemAtlas;
+import steve6472.polyground.knapping.Recipes;
 import steve6472.polyground.registry.Blocks;
 import steve6472.polyground.registry.CommandRegistry;
 import steve6472.polyground.registry.Items;
@@ -64,6 +65,7 @@ public class CaveGame extends MainApp
 	public ModelLoader modelLoader;
 	public ItemAtlas itemAtlas;
 	public HitPicker hitPicker;
+	public Recipes knappingRecipes;
 
 	public MainRender mainRender;
 
@@ -105,7 +107,8 @@ public class CaveGame extends MainApp
 		itemAtlas = new ItemAtlas(this);
 		Items.register(this);
 
-		Blocks.fixItems();
+		Blocks.finish(this);
+		knappingRecipes = new Recipes();
 
 		itemInHand = Items.getItemByName("stone");
 

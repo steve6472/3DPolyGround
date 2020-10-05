@@ -1,7 +1,5 @@
 package steve6472.polyground.block.blockdata;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 
 /**********************
@@ -12,7 +10,9 @@ import java.io.IOException;
  ***********************/
 public abstract class BlockData
 {
-	public abstract void write(DataOutputStream output) throws IOException;
+	public abstract void write() throws IOException;
 
-	public abstract void read(DataInputStream input) throws IOException;
+	public abstract void read() throws IOException;
+
+	public abstract String getId();
 }

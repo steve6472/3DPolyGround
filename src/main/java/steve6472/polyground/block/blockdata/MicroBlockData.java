@@ -18,7 +18,7 @@ import java.util.List;
  * Project: SJP
  *
  ***********************/
-public class MicroBlockData extends BlockData
+public class MicroBlockData// extends BlockData
 {
 	private HashMap<Integer, PalleteEntry> pallete;
 	private int[][][] ids;
@@ -29,7 +29,7 @@ public class MicroBlockData extends BlockData
 		ids = new int[16][16][16];
 	}
 
-	@Override
+//	@Override
 	public void write(DataOutputStream output) throws IOException
 	{/*
 		SmartSave.setDataOutputStream(output);
@@ -48,7 +48,7 @@ public class MicroBlockData extends BlockData
 		SmartSave.setDataOutputStream(null);*/
 	}
 
-	@Override
+//	@Override
 	public void read(DataInputStream input) throws IOException
 	{/*
 		short[] idList = (short[]) SmartSave.get("pallete_ids");

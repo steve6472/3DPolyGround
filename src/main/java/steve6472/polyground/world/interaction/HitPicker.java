@@ -72,7 +72,7 @@ public class HitPicker
 						BlockState state = c.getWorld().getState(i, j, k);
 						if (state.getBlock() != Block.air)
 						{
-							for (CubeHitbox t : state.getBlockModel(world, i, j, k).getCubes())
+							for (CubeHitbox t : state.getBlock().getHitbox(world, state, i, j, k))
 							{
 								if (!t.isHitbox())
 									continue;
@@ -118,7 +118,7 @@ public class HitPicker
 
 			hitResult.setState(world.getState(hitResult.getX(), hitResult.getY(), hitResult.getZ()));
 
-			for (CubeHitbox t : hitResult.getState().getBlockModel(world, hitResult.getX(), hitResult.getY(), hitResult.getZ()).getCubes())
+			for (CubeHitbox t : hitResult.getState().getBlock().getHitbox(world, hitResult.getState(), hitResult.getX(), hitResult.getY(), hitResult.getZ()))
 			{
 				if (!t.isHitbox() || !t.isVisible())
 					continue;

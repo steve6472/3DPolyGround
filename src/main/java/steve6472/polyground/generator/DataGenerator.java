@@ -189,6 +189,12 @@ public class DataGenerator
 			.addTags(Tags.SOLID).generate();
 
 		DataBuilder.create()
+			.fullBlock("stone_knapping")
+			.blockSpecial(new SimpleSpecial("stone_knapping"))
+			.blockState(StateBuilder.create().emptyModel())
+			.generate();
+
+		DataBuilder.create()
 			.fullBlock("small_grass")
 			.blockSpecial(tagBelowSpecial(true, Tags.FLOWER_TOP))
 			.addTag(Tags.TRANSPARENT)
@@ -234,10 +240,24 @@ public class DataGenerator
 			.generate();
 
 		DataBuilder.create()
+			.fullBlock("flint_axe_head")
+			.blockState(StateBuilder.create().singleModel(BlockModelBuilder.create("flint_axe_head").externalPath("custom_models/flint_axe_head.bbmodel")))
+			.blockSpecial(new SimpleSpecial("custom"))
+			.addTags(Tags.PICKABLE)
+			.generate();
+
+		DataBuilder.create()
 			.fullBlock("wooden_box")
 			.blockState(StateBuilder.create().singleModel(BlockModelBuilder.create("wooden_box").externalPath("custom_models/wooden_box.bbmodel")))
 			.blockSpecial(new SimpleSpecial("custom"))
 			.addTags(Tags.SOLID, Tags.PICKABLE)
+			.generate();
+
+		DataBuilder.create()
+			.fullBlock("flint")
+			.blockState(StateBuilder.create().singleModel(BlockModelBuilder.create("flint_1").externalPath("custom_models/flint_1.bbmodel")))
+			.blockSpecial(new SimpleSpecial("custom"))
+			.addTags(Tags.PICKABLE)
 			.generate();
 
 		DataBuilder.create()

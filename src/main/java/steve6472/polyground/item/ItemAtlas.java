@@ -194,9 +194,6 @@ public class ItemAtlas
 
 	private int model(Block block, ModelLayer modelLayer)
 	{
-		if (block == null || block.getDefaultState().getBlockModel(dummyWorld, 0, 0, 0).getCubes() == null)
-			return 0;
-
 		int tris = 0;
 
 		BlockModel model = block.getDefaultState().getBlockModel(dummyWorld, 0, 0, 0);

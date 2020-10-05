@@ -96,6 +96,7 @@ public class BlockModel
 		return cubes[index];
 	}
 
+	@Deprecated
 	public CubeHitbox[] getCubes()
 	{
 		return cubes;

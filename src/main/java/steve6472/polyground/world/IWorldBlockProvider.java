@@ -3,6 +3,8 @@ package steve6472.polyground.world;
 import steve6472.polyground.EnumFace;
 import steve6472.polyground.HitResult;
 import steve6472.polyground.block.Block;
+import steve6472.polyground.block.blockdata.BlockData;
+import steve6472.polyground.block.blockdata.IBlockData;
 import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.world.chunk.Chunk;
 import steve6472.polyground.world.chunk.SubChunk;
@@ -104,6 +106,15 @@ public interface IWorldBlockProvider extends IChunkProvider
 				state.getBlock().onBlockAdded(state, getWorld(), oldState, x, y, z);
 				sc.getTickableBlocks().set(cx, cy, cz, state.getBlock().isTickable());
 
+				if (state.getBlock() instanceof IBlockData)
+				{
+					BlockData data = ((IBlockData) state.getBlock()).createNewBlockEntity(state);
+					sc.setBlockData(data, cx, cz, cy);
+				} else
+				{
+					sc.setBlockData(null, cx, cy, cz);
+				}
+
 				if ((flags & 1) != 0)
 				{
 					for (EnumFace face : EnumFace.getFaces())
@@ -157,6 +168,30 @@ public interface IWorldBlockProvider extends IChunkProvider
 	default void setState(BlockState state, HitResult hitResult)
 	{
 		setState(state, hitResult.getX(), hitResult.getY(), hitResult.getZ());
+	}
+
+	/*
+	 * Data
+	 */
+
+	default BlockData getData(int x, int y, int z)
+	{
+		Chunk c = getChunkFromBlockPos(x, z);
+
+		if (c == null)
+			return null;
+		else
+		{
+			int cx = Math.floorMod(x, 16);
+			int cy = y % 16;
+			int cz = Math.floorMod(z, 16);
+
+			if (isOutOfChunkBounds(getWorld(), cx, y, cz))
+				return null;
+
+			SubChunk sc = c.getSubChunk(y / 16);
+			return sc.getBlockData(cx, cy, cz);
+		}
 	}
 
 	// Water

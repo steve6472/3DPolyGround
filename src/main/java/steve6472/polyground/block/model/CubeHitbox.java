@@ -22,6 +22,7 @@ public class CubeHitbox
 		this.aabb = aabb;
 		isHitbox = true;
 		isCollisionBox = true;
+		isVisible = true;
 		name = "";
 	}
 

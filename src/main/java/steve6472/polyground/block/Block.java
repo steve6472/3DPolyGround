@@ -100,6 +100,11 @@ public class Block
 		return name;
 	}
 
+	public CubeHitbox[] getHitbox(World world, BlockState state, int x, int y, int z)
+	{
+		return state.getBlockModel(world, x, y, z).getCubes();
+	}
+
 	/* States */
 
 	public BlockState getDefaultState()

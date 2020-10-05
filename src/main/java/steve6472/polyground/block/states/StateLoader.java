@@ -1,9 +1,12 @@
 package steve6472.polyground.block.states;
 
+import org.joml.AABBf;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import steve6472.polyground.block.Block;
 import steve6472.polyground.block.model.BlockModel;
+import steve6472.polyground.block.model.CubeHitbox;
+import steve6472.polyground.block.model.IElement;
 import steve6472.polyground.block.properties.EnumProperty;
 import steve6472.polyground.block.properties.IProperty;
 
@@ -45,13 +48,17 @@ public class StateLoader
 	{
 		if (properties.isEmpty())
 		{
+			if (blockstates.optBoolean("empty"))
+			{
+				block.setDefaultState(new BlockState(block, new BlockModel[] {new BlockModel(new IElement[0], new CubeHitbox(new AABBf(0, 0, 0, 1, 1, 1)))}, null, null, blockstates.optJSONArray("tags")));
+				return;
+			}
 			if (blockstates.has("models"))
 				block.setDefaultState(new BlockState(block, loadModels(blockstates.getJSONArray("models"), new JSONArray().put(0).put(0).put(0)), null, null, blockstates.optJSONArray("tags")));
 			else
 				block.setDefaultState(new BlockState(block, new BlockModel[]{new BlockModel(blockstates.getString("model"), new JSONArray().put(0).put(0).put(0))}, null, null, blockstates.optJSONArray("tags")));
 			return;
 		}
-
 
 		Map<JSONObject, JSONObject> models = null;
 		if (blockstates.has("models"))

@@ -1,6 +1,8 @@
 package steve6472.polyground.entity.player;
 
+import org.joml.Intersectionf;
 import org.joml.Math;
+import org.joml.Vector2f;
 import org.joml.Vector3f;
 import steve6472.polyground.CaveGame;
 import steve6472.polyground.EnumFace;
@@ -9,7 +11,8 @@ import steve6472.polyground.block.Block;
 import steve6472.polyground.block.Tags;
 import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.entity.EntityHitbox;
-import steve6472.polyground.entity.item.BlockItemEntity;
+import steve6472.polyground.entity.item.BlockEntity;
+import steve6472.polyground.entity.item.ItemEntity;
 import steve6472.polyground.world.World;
 import steve6472.sge.main.KeyList;
 import steve6472.sge.main.events.Event;
@@ -29,8 +32,6 @@ import steve6472.sge.main.util.Pair;
 public class Player implements IMotion3f, IPosition3f
 {
 	private static final float RAD_90 = Math.toRadians(90f);
-
-	public static final IHoldable EMPTY_HAND = new EmptyHand();
 
 	private final Vector3f motion, position;
 	private final CaveGame game;
@@ -53,7 +54,8 @@ public class Player implements IMotion3f, IPosition3f
 	public boolean processNextBlockBreak = true;
 	public EnumGameMode gamemode;
 
-	public BlockItemEntity held;
+	public BlockEntity heldBlock;
+	public ItemEntity heldItem;
 
 	public Player(CaveGame game)
 	{
@@ -254,8 +256,8 @@ public class Player implements IMotion3f, IPosition3f
 				CaveGame.itemInHand.onClick(world, state, this, EnumSlot.CREATIVE_BELT, hr.getFace(), event, hr.getX(), hr.getY(), hr.getZ());
 			} else
 			{
-				if (held != null)
-					held.state.getBlock().item.onClick(world, state, this, EnumSlot.CREATIVE_BELT, hr.getFace(), event, hr.getX(), hr.getY(), hr.getZ());
+				if (heldBlock != null)
+					heldBlock.state.getBlock().item.onClick(world, state, this, EnumSlot.CREATIVE_BELT, hr.getFace(), event, hr.getX(), hr.getY(), hr.getZ());
 			}
 		}
 
@@ -264,8 +266,8 @@ public class Player implements IMotion3f, IPosition3f
 			CaveGame.itemInHand.onClick(this, EnumSlot.CREATIVE_BELT, event);
 		} else
 		{
-			if (held != null)
-				held.state.getBlock().item.onClick(this, EnumSlot.CREATIVE_BELT, event);
+			if (heldBlock != null)
+				heldBlock.state.getBlock().item.onClick(this, EnumSlot.CREATIVE_BELT, event);
 		}
 
 		if (event.getButton() == KeyList.RMB && event.getAction() == KeyList.PRESS)
@@ -289,10 +291,10 @@ public class Player implements IMotion3f, IPosition3f
 
 	private void pressRMB()
 	{
-		if (held != null && processNextBlockPlace)
+		if (heldBlock != null && processNextBlockPlace)
 		{
 			HitResult hr = game.hitPicker.getHitResult();
-			Block blockToPlace = held.state.getBlock();
+			Block blockToPlace = heldBlock.state.getBlock();
 
 			if (hr.isHit() && blockToPlace != null)
 			{
@@ -302,7 +304,7 @@ public class Player implements IMotion3f, IPosition3f
 				int y = hr.getY();
 				int z = hr.getZ();
 
-				boolean merge = blockToPlace.canMerge(held.state, world.getState(x, y, z), this, face, x, y, z);
+				boolean merge = blockToPlace.canMerge(heldBlock.state, world.getState(x, y, z), this, face, x, y, z);
 
 				if (!merge)
 				{
@@ -311,14 +313,14 @@ public class Player implements IMotion3f, IPosition3f
 					z += face.getZOffset();
 
 					// If state can not merge with the clicked block try the offseted block
-					merge = blockToPlace.canMerge(held.state, world.getState(x, y, z), this, face, x, y, z);
+					merge = blockToPlace.canMerge(heldBlock.state, world.getState(x, y, z), this, face, x, y, z);
 				}
 
 				if (merge)
 				{
 					BlockState curr = world.getState(x, y, z);
 
-					Pair<BlockState, BlockState> pair = blockToPlace.merge(world, curr, held.state == null ? Block.air.getDefaultState() : held.state, this, face, x, y, z);
+					Pair<BlockState, BlockState> pair = blockToPlace.merge(world, curr, heldBlock.state == null ? Block.air.getDefaultState() : heldBlock.state, this, face, x, y, z);
 
 					if (pair != null)
 					{
@@ -326,42 +328,42 @@ public class Player implements IMotion3f, IPosition3f
 
 						if (pair.getA() == null || pair.getA().isAir())
 						{
-							getWorld().getEntityManager().removeEntity(held);
-							held = null;
+							getWorld().getEntityManager().removeEntity(heldBlock);
+							heldBlock = null;
 						} else
 						{
-							if (held == null)
+							if (heldBlock == null)
 							{
-								BlockItemEntity item = new BlockItemEntity(this, pair.getA(), x, y, z);
-								held = item;
+								BlockEntity item = new BlockEntity(this, pair.getA(), x, y, z);
+								heldBlock = item;
 								getWorld().getEntityManager().addEntity(item);
 							} else
 							{
-								held.state = pair.getA();
+								heldBlock.state = pair.getA();
 							}
 						}
 					}
 				} else
 				{
-					Pair<BlockState, BlockState> pair = blockToPlace.getStateForPlacement(world, held.state, this, face, x, y, z);
+					Pair<BlockState, BlockState> pair = blockToPlace.getStateForPlacement(world, heldBlock.state, this, face, x, y, z);
 					if (pair.getB().getBlock().isValidPosition(pair.getB(), world, x, y, z) && pair.getB().getBlock() != world.getState(x, y, z).getBlock())
 					{
 						world.setState(pair.getB(), x, y, z, 1);
 
 						if (pair.getA() == null || pair.getA().isAir())
 						{
-							getWorld().getEntityManager().removeEntity(held);
-							held = null;
+							getWorld().getEntityManager().removeEntity(heldBlock);
+							heldBlock = null;
 						} else
 						{
-							if (held == null)
+							if (heldBlock == null)
 							{
-								BlockItemEntity item = new BlockItemEntity(this, pair.getA(), x, y, z);
-								held = item;
+								BlockEntity item = new BlockEntity(this, pair.getA(), x, y, z);
+								heldBlock = item;
 								getWorld().getEntityManager().addEntity(item);
 							} else
 							{
-								held.state = pair.getA();
+								heldBlock.state = pair.getA();
 							}
 						}
 					}
@@ -403,19 +405,19 @@ public class Player implements IMotion3f, IPosition3f
 				if (state.hasTag(Tags.PICKABLE))
 				{
 					Pair<BlockState, BlockState> pair = state.getBlock().getStatesForPickup(world, state,
-						held == null ? Block.air.getDefaultState() : held.state,
+						heldBlock == null ? Block.air.getDefaultState() : heldBlock.state,
 						this, hr.getFace(), x, y, z);
 
 					if (pair != null)
 					{
-						if (held == null)
+						if (heldBlock == null)
 						{
-							BlockItemEntity item = new BlockItemEntity(this, pair.getA(), x, y, z);
-							held = item;
+							BlockEntity item = new BlockEntity(this, pair.getA(), x, y, z);
+							heldBlock = item;
 							getWorld().getEntityManager().addEntity(item);
 						} else
 						{
-							held.state = pair.getA();
+							heldBlock.state = pair.getA();
 						}
 						world.setState(pair.getB(), x, y, z);
 					}
@@ -426,6 +428,69 @@ public class Player implements IMotion3f, IPosition3f
 
 	private void pressMMB()
 	{
+		ItemEntity target = getTargetedItem();
+
+		if (heldItem == null)
+		{
+			if (target != null)
+			{
+				heldItem = target;
+				heldItem.setPlayer(this);
+			}
+
+		} else
+		{
+			if (!getHitResult().isHit())
+				return;
+
+			heldItem.setPlayer(null);
+			heldItem.setPosition(getHitResult().getPx(), getHitResult().getPy() + 0.25f, getHitResult().getPz());
+
+			if (target == null)
+			{
+				heldItem = null;
+			} else
+			{
+				heldItem = target;
+				heldItem.setPlayer(this);
+			}
+		}
+	}
+
+	public ItemEntity getTargetedItem()
+	{
+		Vector2f target = new Vector2f();
+		Vector3f distanceTest = new Vector3f();
+		float distance = Float.MAX_VALUE;
+		ItemEntity r = null;
+
+		for (Object o : game.world.getEntityManager().getEntities())
+		{
+			if (o instanceof ItemEntity p)
+			{
+				if (heldItem != null && p == heldItem)
+					continue;
+
+				if (Intersectionf.intersectRayAab(
+					camera.getX(), camera.getY(), camera.getZ(),
+					viewDir.x, viewDir.y, viewDir.z,
+					p.getHitbox().minX, p.getHitbox().minY, p.getHitbox().minZ,
+					p.getHitbox().maxX, p.getHitbox().maxY, p.getHitbox().maxZ, target))
+				{
+					float currDistance = distanceTest.set(
+						viewDir.x, viewDir.y, viewDir.z).mul(target.x).add(camera.getX(), camera.getY(),
+						camera.getZ()).distance(camera.getX(), camera.getY(), camera.getZ());
+
+					if (currDistance < distance)
+					{
+						r = p;
+						distance = currDistance;
+					}
+				}
+			}
+		}
+
+		return r;
 	}
 
 	public boolean canBreakBlocks()

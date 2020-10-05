@@ -55,6 +55,19 @@ public final class ModelBuilder
 		vert.add(new Vector3f(v2).add(x, y, z));
 	}
 
+	/**
+	 * Uses v0, v1, v2 directly, adds block position to them
+	 * @param v0 v0
+	 * @param v1 v1
+	 * @param v2 v2
+	 */
+	public void tri_(Vector3f v0, Vector3f v1, Vector3f v2)
+	{
+		vert.add(v0.add(x, y, z));
+		vert.add(v1.add(x, y, z));
+		vert.add(v2.add(x, y, z));
+	}
+
 	public void uv(Vector2f uv)
 	{
 		text.add(uv);

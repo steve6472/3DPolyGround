@@ -618,6 +618,7 @@ public class DataBuilder
 			}
 			System.out.println(PrettyJson.prettify(special));
 		}
+
 		if (debug)
 			json.put("debug", true);
 

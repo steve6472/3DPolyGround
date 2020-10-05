@@ -22,7 +22,7 @@ public class PlayerCollider
 		BlockState state;
 		if ((state = world.getState(x, y, z)) != Block.air.getDefaultState())
 		{
-			for (CubeHitbox t : state.getBlockModel(world, x, y, z).getCubes())
+			for (CubeHitbox t : state.getBlock().getHitbox(world, state, x, y, z))
 			{
 				if (!t.isCollisionBox())
 					continue;

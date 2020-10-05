@@ -10,7 +10,7 @@ import java.io.IOException;
  * Project: SJP
  *
  ***********************/
-public class ScanBlockData extends BlockData
+public class ScanBlockData// extends BlockData
 {
 	byte time;
 
@@ -26,13 +26,13 @@ public class ScanBlockData extends BlockData
 		return 1f / 127f * (float) time;
 	}
 
-	@Override
+//	@Override
 	public void write(DataOutputStream output) throws IOException
 	{
 		output.writeByte(time);
 	}
 
-	@Override
+//	@Override
 	public void read(DataInputStream input) throws IOException
 	{
 		time = input.readByte();

@@ -25,6 +25,7 @@ public class StateBuilder
 	private BlockModelBuilder[] singleModel;
 	List<Pair<PropertyBuilder, BlockModelBuilder>> models;
 	private JSONArray tags;
+	private boolean isEmpty;
 
 	public static StateBuilder create()
 	{
@@ -55,6 +56,13 @@ public class StateBuilder
 		return this;
 	}
 
+	public StateBuilder emptyModel()
+	{
+		tags = new JSONArray();
+		isEmpty = true;
+		return this;
+	}
+
 	public StateBuilder tag(String tag)
 	{
 		if (this.tags == null)
@@ -75,7 +83,17 @@ public class StateBuilder
 	public void generate(String blockName)
 	{
 		JSONObject main = new JSONObject();
-		if (singleModel != null)
+		if (isEmpty)
+		{
+			main.put("empty", true);
+
+			// Save block state
+			if (this.tags.isEmpty())
+				DataBuilder.save(new File(DataGenerator.BLOCK_STATES, blockName + ".json"), main);
+			else
+				DataBuilder.save(new File(DataGenerator.BLOCK_STATES, blockName + ".json"), main.put("tags", this.tags));
+		}
+		else if (singleModel != null)
 		{
 			if (singleModel.length == 1)
 			{

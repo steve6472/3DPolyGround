@@ -80,6 +80,13 @@ public class ItemBar extends Component
 
 		CaveGame.itemInHand = Items.getItemById(scroll + 1);
 
+		if (CaveGame.itemInHand == null)
+		{
+			scroll = 0;
+			CaveGame.itemInHand = Items.getItemById(scroll + 1);
+			return;
+		}
+
 		Font.renderCustom(getMain().getWidth() - Font.getTextWidth(CaveGame.itemInHand.getName(), 1) - 5, 5, 1f, CaveGame.itemInHand.getName());
 	}
 

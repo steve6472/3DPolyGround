@@ -55,7 +55,7 @@ public class SubChunk implements IBiomeProvider
 
 		tickableBlocks = new ChunkPosStorage();
 
-		blockData = new SubChunkBlockData(this);
+		blockData = new SubChunkBlockData();
 		blocks = new SubChunkBlocks();
 		water = new SubChunkWater(this);
 	}
@@ -133,27 +133,6 @@ public class SubChunk implements IBiomeProvider
 	public World getWorld()
 	{
 		return getParent().getWorld();
-	}
-
-	@Deprecated
-	public BlockData[][][] getBlockData()
-	{
-		return blockData.getBlockData();
-	}
-
-	@Deprecated
-	public BlockData getBlockData(int x, int y, int z)
-	{
-		if (x >= 0 && x < 16 && z >= 0 && z < 16 && y >= 0 && y < 16)
-			return getBlockData()[x][y][z];
-		else
-			return null;
-	}
-
-	@Deprecated
-	public void setBlockEntity(int x, int y, int z, BlockData blockData)
-	{
-		getBlockData()[x][y][z] = blockData;
 	}
 
 	public Chunk getParent()
@@ -293,6 +272,25 @@ public class SubChunk implements IBiomeProvider
 	public void setBiome(Biome biome, int x, int y, int z)
 	{
 		setBiome(biome.getId(), x, y, z);
+	}
+
+	/*
+	 * Data
+	 */
+
+	public BlockData[][][] getBlockData()
+	{
+		return blockData.getBlockData();
+	}
+
+	public BlockData getBlockData(int x, int y, int z)
+	{
+		return blockData.getBlockData(x, y, z);
+	}
+
+	public void setBlockData(BlockData blockData, int x, int z, int y)
+	{
+		this.blockData.setBlockData(blockData, x, y, z);
 	}
 
 	@Override

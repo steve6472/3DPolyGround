@@ -7,6 +7,7 @@ import steve6472.polyground.block.BlockAtlas;
 import steve6472.polyground.block.model.BlockModel;
 import steve6472.polyground.block.model.IElement;
 import steve6472.polyground.block.model.ModelLoader;
+import steve6472.polyground.block.model.elements.Bakery;
 import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.registry.block.SpecialBlockRegistry;
 
@@ -111,24 +112,31 @@ public class Blocks
 			}
 		}
 
+		BlockAtlas.putTexture("white");
+
 		BlockAtlas.compileTextures(0);
 
 		game.mainRender.buildHelper.atlasSize = BlockAtlas.getAtlas().getTileCount();
 		game.mainRender.buildHelper.texel = 1f / (float) BlockAtlas.getAtlas().getTileCount();
 
-		temp.forEach((b, j) -> b.getDefaultState().getPossibleStates().forEach(ps -> {
-			for (BlockModel model : ps.getBlockModels())
-			{
-				if (model.getElements() != null)
+		Bakery.load(BlockAtlas.getTexture(BlockAtlas.getTextureId("white")), game.mainRender.buildHelper);
+
+		for (Block b : blocks)
+		{
+			b.getDefaultState().getPossibleStates().forEach(ps -> {
+				for (BlockModel model : ps.getBlockModels())
 				{
-					for (IElement triangle : model.getElements())
+					if (model.getElements() != null)
 					{
-						triangle.fixUv(game.mainRender.buildHelper.texel);
+						for (IElement triangle : model.getElements())
+						{
+							triangle.fixUv(game.mainRender.buildHelper.texel);
+						}
 					}
+					model.createModel(game.mainRender.buildHelper);
 				}
-				model.createModel(game.mainRender.buildHelper);
-			}
-		}));
+			});
+		}
 	}
 
 	public static Block getBlockByName(String name)
@@ -184,7 +192,7 @@ public class Blocks
 		return blocks;
 	}
 
-	public static void fixItems()
+	public static void finish(CaveGame game)
 	{
 		for (Block block : blocks)
 		{

@@ -99,6 +99,11 @@ public class AABBUtil
 		AABBUtil.renderAABB(x - size, y - size, z - size, x + size, y + size, z + size, lineWidth, CaveGame.getInstance().mainRender.basicTess, MainRender.shaders.mainShader);
 	}
 
+	public static void renderAABB(float x, float y, float z, AABBf aabb, float lineWidth)
+	{
+		AABBUtil.renderAABB(x + aabb.minX, y + aabb.minY, z + aabb.minZ, x + aabb.maxX, y + aabb.maxY, z + aabb.maxZ, lineWidth, CaveGame.getInstance().mainRender.basicTess, MainRender.shaders.mainShader);
+	}
+
 	public static void renderAABB(float minX, float minY, float minZ, float maxX, float maxY, float maxZ, float lineWidth, BasicTessellator tess, MainShader mainShader)
 	{
 		mainShader.bind();
@@ -348,6 +353,11 @@ public class AABBUtil
 	public static void renderAABBf(AABBf box, BasicTessellator tess, float lineWidth, MainShader mainShader)
 	{
 		renderAABB(box.minX, box.minY, box.minZ, box.maxX, box.maxY, box.maxZ, lineWidth, tess, mainShader);
+	}
+
+	public static void renderAABBf(AABBf box, float lineWidth)
+	{
+		renderAABB(box.minX, box.minY, box.minZ, box.maxX, box.maxY, box.maxZ, lineWidth, CaveGame.getInstance().mainRender.basicTess, MainRender.shaders.mainShader);
 	}
 
 	public static Vector3f getCenter(AABBf box)

@@ -10,14 +10,16 @@ import steve6472.polyground.block.blockdata.BlockData;
  ***********************/
 public class SubChunkBlockData
 {
-	private SubChunk subChunk;
+	private final BlockData[][][] blockData;
 
-	private BlockData[][][] blockData;
-
-	public SubChunkBlockData(SubChunk subChunk)
+	public SubChunkBlockData()
 	{
-		this.subChunk = subChunk;
 		blockData = new BlockData[16][16][16];
+	}
+
+	public void setBlockData(BlockData data, int x, int y, int z)
+	{
+		blockData[x][y][z] = data;
 	}
 
 	public BlockData getBlockData(int x, int y, int z)

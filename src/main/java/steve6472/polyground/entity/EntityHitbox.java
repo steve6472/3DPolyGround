@@ -76,7 +76,13 @@ public class EntityHitbox
 
 	public boolean stepUp(World world)
 	{
-		return testStepUp(world, floor(expandedHitbox.minX) - floor(position.getX()) - 1, floor(expandedHitbox.minY) - floor(position.getY()) - 1, floor(expandedHitbox.minZ) - floor(position.getZ()) - 1, ceil(expandedHitbox.maxX) - floor(position.getX()) + 1, ceil(expandedHitbox.maxY) - floor(position.getY()) + 1, ceil(expandedHitbox.maxZ) - floor(position.getZ()) + 1);
+		return testStepUp(world,
+			floor(expandedHitbox.minX) - floor(position.getX()) - 1,
+			floor(expandedHitbox.minY) - floor(position.getY()) - 1,
+			floor(expandedHitbox.minZ) - floor(position.getZ()) - 1,
+			ceil(expandedHitbox.maxX) - floor(position.getX()) + 1,
+			ceil(expandedHitbox.maxY) - floor(position.getY()) + 1,
+			ceil(expandedHitbox.maxZ) - floor(position.getZ()) + 1);
 	}
 
 	/**
@@ -85,7 +91,24 @@ public class EntityHitbox
 	 */
 	public boolean collideWithWorld(World world)
 	{
-		return test(world, floor(expandedHitbox.minX) - floor(position.getX()) - 1, floor(expandedHitbox.minY) - floor(position.getY()) - 1, floor(expandedHitbox.minZ) - floor(position.getZ()) - 1, ceil(expandedHitbox.maxX) - floor(position.getX()) + 1, ceil(expandedHitbox.maxY) - floor(position.getY()) + 1, ceil(expandedHitbox.maxZ) - floor(position.getZ()) + 1);
+		return test(world, null,
+			floor(expandedHitbox.minX) - floor(position.getX()) - 1,
+			floor(expandedHitbox.minY) - floor(position.getY()) - 1,
+			floor(expandedHitbox.minZ) - floor(position.getZ()) - 1,
+			ceil(expandedHitbox.maxX) - floor(position.getX()) + 1,
+			ceil(expandedHitbox.maxY) - floor(position.getY()) + 1,
+			ceil(expandedHitbox.maxZ) - floor(position.getZ()) + 1);
+	}
+
+	public boolean collideWithWorld(World world, EntityBase entity)
+	{
+		return test(world, entity,
+			floor(expandedHitbox.minX) - floor(position.getX()) - 1,
+			floor(expandedHitbox.minY) - floor(position.getY()) - 1,
+			floor(expandedHitbox.minZ) - floor(position.getZ()) - 1,
+			ceil(expandedHitbox.maxX) - floor(position.getX()) + 1,
+			ceil(expandedHitbox.maxY) - floor(position.getY()) + 1,
+			ceil(expandedHitbox.maxZ) - floor(position.getZ()) + 1);
 	}
 
 	private static int floor(float n)
@@ -104,7 +127,7 @@ public class EntityHitbox
 			return false;
 
 		int ix = (int) Math.floor(position.getX());
-		int iy = (int) Math.floor(position.getY() + 0.005f) + 1;
+		int iy = (int) Math.floor(position.getY() + 0.005f);
 		int iz = (int) Math.floor(position.getZ());
 
 		float stepUp = 0;
@@ -121,7 +144,7 @@ public class EntityHitbox
 					BlockState state;
 					if ((state = world.getState(x, y, z)) != Block.air.getDefaultState())
 					{
-						for (CubeHitbox t : state.getBlockModel(world, x, y, z).getCubes())
+						for (CubeHitbox t : state.getBlock().getHitbox(world, state, x, y, z))
 						{
 							if (!t.isCollisionBox())
 								continue;
@@ -156,10 +179,10 @@ public class EntityHitbox
 		return true;
 	}
 
-	private boolean test(World world, int sx, int sy, int sz, int ex, int ey, int ez)
+	private boolean test(World world, EntityBase entity, int sx, int sy, int sz, int ex, int ey, int ez)
 	{
 		int ix = (int) Math.floor(position.getX());
-		int iy = (int) Math.floor(position.getY()) + 1;
+		int iy = (int) Math.floor(position.getY());
 		int iz = (int) Math.floor(position.getZ());
 
 		float xaOrg = motion.getMotionX();
@@ -179,7 +202,7 @@ public class EntityHitbox
 					BlockState state;
 					if ((state = world.getState(x, y, z)) != Block.air.getDefaultState())
 					{
-						for (CubeHitbox t : state.getBlockModel(world, x, y, z).getCubes())
+						for (CubeHitbox t : state.getBlock().getHitbox(world, state, x, y, z))
 						{
 							if (!t.isCollisionBox())
 								continue;
@@ -189,6 +212,11 @@ public class EntityHitbox
 							{
 								temp.setMin(x + t.getAabb().minX, y + t.getAabb().minY, z + t.getAabb().minZ);
 								temp.setMax(x + t.getAabb().maxX, y + t.getAabb().maxY, z + t.getAabb().maxZ);
+
+								if (entity != null)
+								{
+									state.getBlock().entityCollision(entity, world, state, x, y, z);
+								}
 
 								ya = AABBUtil.clipYCollide(getHitbox(), temp, ya);
 
@@ -220,7 +248,7 @@ public class EntityHitbox
 		}
 
 		position.setX((getHitbox().minX + getHitbox().maxX) / 2.0F);
-		position.setY(getHitbox().minY + 0.0F);
+		position.setY(getHitbox().minY);
 		position.setZ((getHitbox().minZ + getHitbox().maxZ) / 2.0F);
 
 		return yaOrg != ya && yaOrg < 0.0F;

@@ -1,6 +1,7 @@
 package steve6472.polyground.gui;
 
 import steve6472.polyground.CaveGame;
+import steve6472.polyground.GuiTest;
 import steve6472.polyground.block.BlockAtlas;
 import steve6472.polyground.entity.player.EnumGameMode;
 import steve6472.polyground.events.InGameGuiEvent;
@@ -51,6 +52,8 @@ public class InGameGui extends Gui implements IGamePause
 		itemBar = new ItemBar();
 		addComponent(itemBar);
 		gcLog = new GCLog();
+
+		getMainApp().getEventHandler().register(new GuiTest());
 	}
 
 	@Event
@@ -145,7 +148,7 @@ public class InGameGui extends Gui implements IGamePause
 		sb.append("OnGround: ").append(CaveGame.getInstance().getPlayer().isOnGround).append("\n");
 
 //		sb.append("Left Hand: ").append(CaveGame.getInstance().getPlayer().holdedItems.get(EnumSlot.HAND_LEFT).getName()).append("\n");
-//		sb.append("Right Hand: ").append(CaveGame.getInstance().getPlayer().holdedItems.get(EnumSlot.HAND_RIGHT).getName());
+		sb.append("Right Hand: ").append(CaveGame.getInstance().getPlayer().heldItem);
 
 		Font.render(5, 45, sb.toString());
 
