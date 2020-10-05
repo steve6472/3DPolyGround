@@ -1,18 +1,19 @@
 package steve6472.polyground.world.chunk;
 
+import net.querz.nbt.io.NBTUtil;
+import net.querz.nbt.io.NamedTag;
+import net.querz.nbt.tag.*;
 import steve6472.polyground.block.Block;
+import steve6472.polyground.block.properties.*;
 import steve6472.polyground.block.special.ILightBlock;
 import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.registry.Blocks;
 import steve6472.polyground.world.generator.EnumChunkStage;
-import steve6472.sge.main.smartsave.SmartSave;
-import steve6472.sge.main.util.Pair;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
+import java.util.LinkedHashMap;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
@@ -28,62 +29,19 @@ public class ChunkSerializer
 		if (!chunk.exists())
 			chunk.mkdir();
 
-		File subChunkPath = new File("game/worlds/" + subChunk.getWorld().worldName + "/chunk_" + subChunk.getParent().getX() + "_" + subChunk.getParent().getZ() + "/sub_" + subChunk.getLayer() + ".txt");
+		File subChunkPath = new File("game/worlds/" + subChunk.getWorld().worldName + "/chunk_" + subChunk.getParent().getX() + "_" + subChunk.getParent().getZ() + "/sub_" + subChunk.getLayer() + ".nbt");
 		if (!subChunkPath.exists())
 			chunk.createNewFile();
 
-		SmartSave.openOutput(subChunkPath);
+		CompoundTag main = new CompoundTag();
 
-		var pair = generatePallete(subChunk);
-		HashMap<Short, String> pallete = pair.getA();
-		HashMap<Integer, Short> map = pair.getB();
+		// Load palette
+		LinkedHashMap<BlockState, Short> palette = new LinkedHashMap<>();
 
-		short[] ids = createPalleteIdArray(pallete);
-		String[] names = createPalleteNames(pallete);
+		// And save to palette tag at the same time
+		ListTag<CompoundTag> paletteTag = new ListTag<>(CompoundTag.class);
 
-		SmartSave.writeData("pallete_ids", ids);
-		SmartSave.writeData("pallete_names", names);
-
-		saveToChunk(subChunk, map);
-
-		SmartSave.closeOutput();
-	}
-
-	private static void saveToChunk(SubChunk subChunk, HashMap<Integer, Short> map) throws IOException
-	{
-		short[][][] ids = new short[16][16][16];
-		for (int i = 0; i < 16; i++)
-		{
-			for (int j = 0; j < 16; j++)
-			{
-				for (int k = 0; k < 16; k++)
-				{
-					ids[i][j][k] = map.get(subChunk.getState(i, j, k).getId());
-				}
-			}
-		}
-		SmartSave.writeData("blocks", ids);
-	}
-
-	private static short[] translate(HashMap<Integer, Short> map, int[] array)
-	{
-		short[] arr = new short[array.length];
-
-		for (int i = 0; i < array.length; i++)
-		{
-			arr[i] = map.get(array[i]);
-		}
-
-		return arr;
-	}
-
-	private static Pair<HashMap<Short, String>, HashMap<Integer, Short>> generatePallete(SubChunk subChunk)
-	{
-		HashMap<Short, String> pallete = new HashMap<>();
-		HashMap<Integer, Short> map = new HashMap<>();
-		List<Integer> registratedIds = new ArrayList<>();
-
-		short lastId = 0;
+		short c = 0;
 
 		for (int i = 0; i < 16; i++)
 		{
@@ -92,102 +50,206 @@ public class ChunkSerializer
 				for (int k = 0; k < 16; k++)
 				{
 					BlockState state = subChunk.getState(i, j, k);
-					int id = state.getId();
-					if (!registratedIds.contains(id))
+					if (!palette.containsKey(state))
 					{
-						map.put(id, lastId);
-						registratedIds.add(id);
-						pallete.put(lastId, state.getBlock().getName() + state.getStateString());
-						lastId++;
+						palette.put(state, c);
+
+						CompoundTag stateTag = stateToTag(state);
+						stateTag.putShort("index", c);
+						paletteTag.add(stateTag);
+
+						c++;
 					}
 				}
 			}
 		}
 
-		return new Pair<>(pallete, map);
+		// Save palette to tag
+		main.put("palette", paletteTag);
+
+		// Save blocks to tag
+
+		ListTag<CompoundTag> sectionsTag = new ListTag<>(CompoundTag.class);
+		for (int y = 0; y < 16; y++)
+		{
+			CompoundTag sectionTag = new CompoundTag();
+			sectionTag.putByte("y", (byte) y);
+
+			short[] shortIdArray = new short[256];
+			for (int x = 0; x < 16; x++)
+			{
+				for (int z = 0; z < 16; z++)
+				{
+					short id = palette.get(subChunk.getState(x, y, z));
+					shortIdArray[x + 16 * z] = id;
+				}
+			}
+
+			sectionTag.putLongArray("states", encodeShortToLongArray(shortIdArray));
+
+			sectionsTag.add(sectionTag);
+		}
+		main.put("sections", sectionsTag);
+
+		//		palette.forEach((k, v) -> System.out.println(k + " -> " + v));
+
+		try
+		{
+			NBTUtil.write(main, subChunkPath);
+			//			System.out.println(SNBTUtil.toSNBT(main));
+		} catch (IOException e)
+		{
+			e.printStackTrace();
+		}
 	}
 
-	private static short[] createPalleteIdArray(HashMap<Short, String> pallete)
+	private static CompoundTag stateToTag(BlockState state)
 	{
-		short[] ids = new short[pallete.size()];
+		CompoundTag stateTag = new CompoundTag();
+		stateTag.putString("name", state.getBlock().getName());
 
-		int i = 0;
-		for (short j : pallete.keySet())
+		if (state.getProperties() != null)
 		{
-			ids[i] = j;
-			i++;
+			CompoundTag propertiesTag = new CompoundTag();
+			state.getProperties().forEach((p, v) ->
+			{
+				if (p instanceof BooleanProperty) propertiesTag.putBoolean(p.getName(), (Boolean) v);
+				if (p instanceof IntProperty) propertiesTag.putInt(p.getName(), (Integer) v);
+				if (p instanceof StringProperty) propertiesTag.putString(p.getName(), (String) v);
+				if (p instanceof EnumProperty<?>) propertiesTag.putString(p.getName(), v.toString());
+			});
+
+			stateTag.put("properties", propertiesTag);
 		}
 
-		return ids;
+		return stateTag;
 	}
 
-	private static String[] createPalleteNames(HashMap<Short, String> pallete)
+	private static BlockState stateFromTag(CompoundTag stateTag)
 	{
-		String[] a = new String[pallete.size()];
-		int i = 0;
-		for (String s : pallete.values())
+		String name = stateTag.getString("name");
+
+		if (stateTag.containsKey("properties"))
 		{
-			a[i] = s;
-			i++;
+			Block block = Blocks.getBlockByName(name);
+
+			HashMap<String, String> propertyMap = new HashMap<>();
+			CompoundTag propertiesTag = stateTag.getCompoundTag("properties");
+			for (String s : propertiesTag.keySet())
+			{
+				// Load boolean in different fucking way cause FUCKING NBT does not differentiate between byte and boolean
+
+				Tag<?> tag = propertiesTag.get(s);
+
+				if (tag instanceof ByteTag)
+				{
+					for (IProperty<?> iProperty : block.getDefaultState().getProperties().keySet())
+					{
+						if (iProperty.getName().equals(s) && iProperty instanceof BooleanProperty)
+						{
+							propertyMap.put(s, Boolean.toString(propertiesTag.getBoolean(s)));
+						}
+					}
+				} else if (tag instanceof StringTag st)
+				{
+					propertyMap.put(s, st.getValue());
+				} else
+				{
+					propertyMap.put(s, propertiesTag.get(s).valueToString());
+				}
+			}
+
+//			propertyMap.forEach((k, v) -> System.out.println("Property map: " + k + " -> " + v));
+
+			return Blocks.getBlockByName(name).getDefaultState().fromStateString(propertyMap);
 		}
-		return a;
+		return Blocks.getBlockByName(name).getDefaultState();
+	}
+
+	private static short[] decodeLongToShortArray(long[] arr)
+	{
+		short[] out = new short[arr.length * 4];
+
+		for (int i = 0; i < arr.length; i++)
+		{
+			long l = arr[i];
+
+			short s0 = (short) (l & 0xffff);
+			short s1 = (short) ((l >> 16) & 0xffff);
+			short s2 = (short) ((l >> 32) & 0xffff);
+			short s3 = (short) ((l >> 48) & 0xffff);
+
+			out[i * 4] = s0;
+			out[i * 4 + 1] = s1;
+			out[i * 4 + 2] = s2;
+			out[i * 4 + 3] = s3;
+		}
+
+		return out;
+	}
+
+	private static long[] encodeShortToLongArray(short[] arr)
+	{
+		long[] out = new long[arr.length / 4 + (arr.length % 4 != 0 ? 1 : 0)];
+
+		for (int i = 0; i < out.length; i++)
+		{
+			long s0 = (arr.length > i * 4) ? arr[i * 4] : 0;
+			long s1 = (arr.length > i * 4 + 1) ? arr[i * 4 + 1] : 0;
+			long s2 = (arr.length > i * 4 + 2) ? arr[i * 4 + 2] : 0;
+			long s3 = (arr.length > i * 4 + 3) ? arr[i * 4 + 3] : 0;
+
+			if (s0 < 0 || s1 < 0 || s2 < 0 || s3 < 0)
+				throw new IllegalArgumentException("Element in array can not be negative! long array index: " + i);
+
+			long l = s0 | (s1 << 16) | (s2 << 32) | (s3 << 48);
+			out[i] = l;
+		}
+
+		return out;
 	}
 
 	public static SubChunk deserialize(SubChunk subChunk) throws IOException
 	{
-		File subChunkPath = new File("game/worlds/" + subChunk.getWorld().worldName + "/chunk_" + subChunk.getX() + "_" + subChunk.getZ() + "/sub_" + subChunk.getLayer() + ".txt");
-		SmartSave.openInput(subChunkPath);
-		SmartSave.readFull();
+		File subChunkPath = new File("game/worlds/" + subChunk.getWorld().worldName + "/chunk_" + subChunk.getX() + "_" + subChunk.getZ() + "/sub_" + subChunk.getLayer() + ".nbt");
 
-		short[] idList = (short[]) SmartSave.get("pallete_ids");
-		String[] nameList = (String[]) SmartSave.get("pallete_names");
+		NamedTag named = NBTUtil.read(subChunkPath);
+		CompoundTag main = (CompoundTag) named.getTag();
 
-		HashMap<Short, String> pallete = new HashMap<>();
-		for (short i = 0; i < idList.length; i++)
+		// Load palette from tag
+
+		HashMap<Short, BlockState> palette = new HashMap<>();
+
+		ListTag<CompoundTag> paletteTag = (ListTag<CompoundTag>) main.getListTag("palette");
+		for (CompoundTag c : paletteTag)
 		{
-			pallete.put(idList[i], nameList[i]);
+			palette.put(c.getShort("index"), stateFromTag(c));
 		}
 
-		short[][][] blocks = (short[][][]) SmartSave.get("blocks");
+//		palette.forEach((k, v) -> System.out.println(k + " -> " + v));
 
-		final Block error = Blocks.getBlockByName("error");
-
-		for (int i = 0; i < 16; i++)
+		ListTag<CompoundTag> sectionsTag = (ListTag<CompoundTag>) main.getListTag("sections");
+		sectionsTag.forEach(sectionTag ->
 		{
-			for (int j = 0; j < 16; j++)
+			int y = sectionTag.getByte("y");
+			short[] ids = decodeLongToShortArray(sectionTag.getLongArray("states"));
+
+			for (int x = 0; x < 16; x++)
 			{
-				for (int k = 0; k < 16; k++)
+				for (int z = 0; z < 16; z++)
 				{
-					try
-					{
-						String block = pallete.get(blocks[i][j][k]);
-						BlockState state;
-						if (block.contains("[") && block.contains("]"))
-						{
-							String[] s = pallete.get(blocks[i][j][k]).split("\\[");
-							state = Blocks.getStateByName(s[0], "[" + s[1]);
-						} else
-						{
-							state = Blocks.getBlockByName(block).getDefaultState();
-						}
+					BlockState state = palette.get(ids[x + 16 * z]);
+					subChunk.setState(state, x, y, z);
 
-						subChunk.setState(state, i, j, k);
-						if (state.getBlock() instanceof ILightBlock lb)
-							lb.spawnLight(state, subChunk.getWorld(), i + subChunk.getX() * 16, j + subChunk.getLayer() * 16, k + subChunk.getZ() * 16);
-
-					} catch (Exception ex)
-					{
-						System.err.println("Could not find " + pallete.get(blocks[i][j][k]) + "! Replacing will error");
-						subChunk.setBlock(error, i, j, k);
-					}
+					if (state.getBlock() instanceof ILightBlock lb)
+						lb.spawnLight(state, subChunk.getWorld(), x + subChunk.getX() * 16, y + subChunk.getLayer() * 16, z + subChunk.getZ() * 16);
 				}
 			}
-		}
-
-		SmartSave.closeInput();
+		});
 
 		subChunk.stage = EnumChunkStage.FINISHED;
 		subChunk.rebuild();
+
 		return subChunk;
 	}
 }

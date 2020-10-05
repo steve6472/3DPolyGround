@@ -160,6 +160,28 @@ public class BlockState
 		return getBlock().getDefaultState();
 	}
 
+	public BlockState fromStateString(HashMap<String, String> map)
+	{
+		for (BlockState state : possibleStates)
+		{
+			boolean match = true;
+			for (IProperty<?> property : state.getProperties().keySet())
+			{
+				String val = map.get(property.getName());
+				Comparable<?> c = state.getProperties().get(property);
+				if (!val.equals(c.toString()))
+				{
+					match = false;
+					break;
+				}
+			}
+			if (match)
+				return state;
+		}
+
+		return getBlock().getDefaultState();
+	}
+
 	public boolean hasTag(String tag)
 	{
 		return tags.contains(tag);

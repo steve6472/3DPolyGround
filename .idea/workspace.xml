@@ -69,6 +69,11 @@
       <recent name="steve6472.polyground.world.generator.feature.components.match" />
     </key>
   </component>
+  <component name="RunAnythingCache">
+    <option name="myCommands">
+      <command value="16 * 16" />
+    </option>
+  </component>
   <component name="RunManager" selected="Application.CaveGame">
     <configuration name="A" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="steve6472.polyground.A" />
