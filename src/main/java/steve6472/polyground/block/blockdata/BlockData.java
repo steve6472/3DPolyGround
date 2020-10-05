@@ -1,6 +1,6 @@
 package steve6472.polyground.block.blockdata;
 
-import java.io.IOException;
+import net.querz.nbt.tag.CompoundTag;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
@@ -10,9 +10,9 @@ import java.io.IOException;
  ***********************/
 public abstract class BlockData
 {
-	public abstract void write() throws IOException;
+	public abstract CompoundTag write();
 
-	public abstract void read() throws IOException;
+	public abstract void read(CompoundTag tag);
 
 	public abstract String getId();
 }

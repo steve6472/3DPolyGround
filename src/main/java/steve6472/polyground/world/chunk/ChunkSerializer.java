@@ -3,11 +3,15 @@ package steve6472.polyground.world.chunk;
 import net.querz.nbt.io.NBTUtil;
 import net.querz.nbt.io.NamedTag;
 import net.querz.nbt.tag.*;
+import steve6472.polyground.NBTArrayUtil;
 import steve6472.polyground.block.Block;
+import steve6472.polyground.block.blockdata.BlockData;
+import steve6472.polyground.block.blockdata.IBlockData;
 import steve6472.polyground.block.properties.*;
 import steve6472.polyground.block.special.ILightBlock;
 import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.registry.Blocks;
+import steve6472.polyground.registry.data.DataRegistry;
 import steve6472.polyground.world.generator.EnumChunkStage;
 
 import java.io.File;
@@ -35,6 +39,9 @@ public class ChunkSerializer
 
 		CompoundTag main = new CompoundTag();
 
+		// Load data
+		ListTag<CompoundTag> dataTag = new ListTag<>(CompoundTag.class);
+
 		// Load palette
 		LinkedHashMap<BlockState, Short> palette = new LinkedHashMap<>();
 
@@ -60,12 +67,33 @@ public class ChunkSerializer
 
 						c++;
 					}
+
+					if (state.getBlock() instanceof IBlockData)
+					{
+						try
+						{
+							BlockData data = subChunk.getBlockData(i, j, k);
+							CompoundTag tag = data.write();
+							tag.putInt("x", i);
+							tag.putInt("y", j);
+							tag.putInt("z", k);
+							tag.putString("name", data.getId());
+							dataTag.add(tag);
+						} catch (Exception ex)
+						{
+							System.err.println("Error while saving Block Data at " + i + " " + j + " " + k + " " + state.getBlock().getName());
+							ex.printStackTrace();
+						}
+					}
 				}
 			}
 		}
 
 		// Save palette to tag
 		main.put("palette", paletteTag);
+
+		// Save data to tag
+		main.put("data", dataTag);
 
 		// Save blocks to tag
 
@@ -85,7 +113,7 @@ public class ChunkSerializer
 				}
 			}
 
-			sectionTag.putLongArray("states", encodeShortToLongArray(shortIdArray));
+			sectionTag.putLongArray("states", NBTArrayUtil.shortToLongArray(shortIdArray));
 
 			sectionsTag.add(sectionTag);
 		}
@@ -166,49 +194,6 @@ public class ChunkSerializer
 		return Blocks.getBlockByName(name).getDefaultState();
 	}
 
-	private static short[] decodeLongToShortArray(long[] arr)
-	{
-		short[] out = new short[arr.length * 4];
-
-		for (int i = 0; i < arr.length; i++)
-		{
-			long l = arr[i];
-
-			short s0 = (short) (l & 0xffff);
-			short s1 = (short) ((l >> 16) & 0xffff);
-			short s2 = (short) ((l >> 32) & 0xffff);
-			short s3 = (short) ((l >> 48) & 0xffff);
-
-			out[i * 4] = s0;
-			out[i * 4 + 1] = s1;
-			out[i * 4 + 2] = s2;
-			out[i * 4 + 3] = s3;
-		}
-
-		return out;
-	}
-
-	private static long[] encodeShortToLongArray(short[] arr)
-	{
-		long[] out = new long[arr.length / 4 + (arr.length % 4 != 0 ? 1 : 0)];
-
-		for (int i = 0; i < out.length; i++)
-		{
-			long s0 = (arr.length > i * 4) ? arr[i * 4] : 0;
-			long s1 = (arr.length > i * 4 + 1) ? arr[i * 4 + 1] : 0;
-			long s2 = (arr.length > i * 4 + 2) ? arr[i * 4 + 2] : 0;
-			long s3 = (arr.length > i * 4 + 3) ? arr[i * 4 + 3] : 0;
-
-			if (s0 < 0 || s1 < 0 || s2 < 0 || s3 < 0)
-				throw new IllegalArgumentException("Element in array can not be negative! long array index: " + i);
-
-			long l = s0 | (s1 << 16) | (s2 << 32) | (s3 << 48);
-			out[i] = l;
-		}
-
-		return out;
-	}
-
 	public static SubChunk deserialize(SubChunk subChunk) throws IOException
 	{
 		File subChunkPath = new File("game/worlds/" + subChunk.getWorld().worldName + "/chunk_" + subChunk.getX() + "_" + subChunk.getZ() + "/sub_" + subChunk.getLayer() + ".nbt");
@@ -232,7 +217,7 @@ public class ChunkSerializer
 		sectionsTag.forEach(sectionTag ->
 		{
 			int y = sectionTag.getByte("y");
-			short[] ids = decodeLongToShortArray(sectionTag.getLongArray("states"));
+			short[] ids = NBTArrayUtil.longToShortArray(sectionTag.getLongArray("states"));
 
 			for (int x = 0; x < 16; x++)
 			{
@@ -246,6 +231,23 @@ public class ChunkSerializer
 				}
 			}
 		});
+
+		if (main.containsKey("data"))
+		{
+			ListTag<CompoundTag> dataTag = (ListTag<CompoundTag>) main.getListTag("data");
+			dataTag.forEach(data ->
+			{
+				int x = data.getInt("x");
+				int y = data.getInt("y");
+				int z = data.getInt("z");
+				String name = data.getString("name");
+
+				BlockData blockData = DataRegistry.createData(name);
+				blockData.read(data);
+				subChunk.setBlockData(blockData, x, y, z);
+			});
+		}
+
 
 		subChunk.stage = EnumChunkStage.FINISHED;
 		subChunk.rebuild();

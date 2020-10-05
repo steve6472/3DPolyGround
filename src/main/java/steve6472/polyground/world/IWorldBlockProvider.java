@@ -109,7 +109,7 @@ public interface IWorldBlockProvider extends IChunkProvider
 				if (state.getBlock() instanceof IBlockData)
 				{
 					BlockData data = ((IBlockData) state.getBlock()).createNewBlockEntity(state);
-					sc.setBlockData(data, cx, cz, cy);
+					sc.setBlockData(data, cx, cy, cz);
 				} else
 				{
 					sc.setBlockData(null, cx, cy, cz);

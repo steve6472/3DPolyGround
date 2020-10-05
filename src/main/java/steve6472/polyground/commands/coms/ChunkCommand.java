@@ -3,6 +3,7 @@ package steve6472.polyground.commands.coms;
 import com.mojang.brigadier.CommandDispatcher;
 import org.joml.Vector2i;
 import steve6472.polyground.EnumFace;
+import steve6472.polyground.block.blockdata.BlockData;
 import steve6472.polyground.commands.Command;
 import steve6472.polyground.commands.CommandSource;
 import steve6472.polyground.commands.arguments.ChunkArgument;
@@ -113,6 +114,20 @@ public class ChunkCommand extends Command
 			for (SubChunk sc : chunk.getSubChunks())
 			{
 				System.out.println(sc);
+				for (int i = 0; i < 16; i++)
+				{
+					for (int j = 0; j < 16; j++)
+					{
+						for (int k = 0; k < 16; k++)
+						{
+							BlockData data = sc.getBlockDataContainer().getBlockData(i, j, k);
+							if (data != null)
+							{
+								System.out.println("-- Data at " + i + " " + j + " " + k + ":\n\t" + data);
+							}
+						}
+					}
+				}
 //				System.out.println("--areFeaturesGeneratedForStage=" + sc.areFeaturesGeneratedForStage(sc.lastFeatureStage));
 //				System.out.println("--maxRange=" + sc.maxRange);
 //				System.out.println("--presentBiomes=" + sc.presentBiomes);

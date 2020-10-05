@@ -1,10 +1,10 @@
 package steve6472.polyground.block.blockdata;
 
+import net.querz.nbt.tag.CompoundTag;
 import steve6472.polyground.CaveGame;
+import steve6472.polyground.NBTArrayUtil;
 import steve6472.polyground.knapping.Recipe;
 import steve6472.polyground.registry.data.DataRegistry;
-
-import java.io.IOException;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
@@ -14,12 +14,12 @@ import java.io.IOException;
  ***********************/
 public class KnappingData extends BlockData
 {
-	public boolean[][] stone;
+	public boolean[] stone;
 	public int pieceCount = 0;
 
 	public KnappingData()
 	{
-		stone = new boolean[16][16];
+		stone = new boolean[256];
 
 //		for (int i = 3; i < 13; i++)
 //		{
@@ -36,24 +36,33 @@ public class KnappingData extends BlockData
 		{
 			for (int j = 0; j < 16; j++)
 			{
-				if (stone[i][j] = recipe.getPattern()[i][j])
+				if (stone[i + j * 16] = recipe.getPattern()[i][j])
 					pieceCount++;
 			}
 		}
-		stone[0][0] = true;
+		stone[0] = true;
 		pieceCount++;
 	}
 
 	@Override
-	public void write() throws IOException
+	public CompoundTag write()
 	{
-
+		CompoundTag tag = new CompoundTag();
+		tag.putLongArray("grid", NBTArrayUtil.boolToLongArray(stone));
+		return tag;
 	}
 
 	@Override
-	public void read() throws IOException
+	public void read(CompoundTag tag)
 	{
-
+		stone = NBTArrayUtil.longToBoolArray(tag.getLongArray("grid"));
+		System.out.println("loaded data : ");
+		NBTArrayUtil.printBoolArray(stone);
+		for (boolean b : stone)
+		{
+			if (b)
+				pieceCount++;
+		}
 	}
 
 	@Override

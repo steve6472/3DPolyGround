@@ -59,7 +59,7 @@ public class KnappingBlock extends CustomBlock implements IBlockData
 			Vector2i c = getLookedAtPiece(world, player, x, y, z);
 			if (c != null)
 			{
-				data.stone[c.x][c.y] = false;
+				data.stone[c.x + c.y * 16] = false;
 				data.pieceCount--;
 			}
 
@@ -96,7 +96,7 @@ public class KnappingBlock extends CustomBlock implements IBlockData
 		{
 			for (int j = 0; j < 16; j++)
 			{
-				if (data.stone[i][j])
+				if (data.stone[i + j * 16])
 				{
 					box.setMin(x + i * 1f / 16f, y, z + j * 1f / 16f);
 					box.setMax(x + i * 1f / 16f + 1f / 16f, y + 1f / 16f, z + j * 1f / 16f + 1f / 16f);
@@ -130,14 +130,16 @@ public class KnappingBlock extends CustomBlock implements IBlockData
 		buildHelper.setSubChunk(world.getSubChunkFromBlockCoords(x, y, z));
 
 		KnappingData data = (KnappingData) world.getData(x, y, z);
-		if (data == null)
-			return 0;
+		System.out.println("looking for data at " + x + " " + y + " " + z);
+
+//		if (data == null)
+//			return 0;
 
 		for (int i = 0; i < 16; i++)
 		{
 			for (int j = 0; j < 16; j++)
 			{
-				if (data.stone[i][j])
+				if (data.stone[i + j * 16])
 				{
 					int a = (int) (hash(world.getSeed(), x * ((i << 4) + 1) - j, y, z * -((j << 5) + 1) + i) % 32) + 50;
 					tris += Bakery.coloredCube_1x1(i, 0, j, ColorUtil.getColor(a, a, a));
@@ -169,7 +171,7 @@ public class KnappingBlock extends CustomBlock implements IBlockData
 		{
 			for (int j = 0; j < 16; j++)
 			{
-				if (data.stone[i][j])
+				if (data.stone[i + j * 16])
 				{
 					box_.setMin(i * 1f / 16f, 0, j * 1f / 16f);
 					box_.setMax(i * 1f / 16f + 1f / 16f, 1f / 16f, j * 1f / 16f + 1f / 16f);
@@ -195,7 +197,7 @@ public class KnappingBlock extends CustomBlock implements IBlockData
 				{
 					for (int j = 0; j < 16; j++)
 					{
-						if (!r.getPattern()[i][j] && data.stone[i][j])
+						if (!r.getPattern()[i][j] && data.stone[i + j * 16])
 						{
 							hitboxes.add(new CubeHitbox(new AABBf(i * 1f / 16f, 0f, j * 1f / 16f, i * 1f / 16f + 1f / 16f, 1f / 16f, j * 1f / 16f + 1f / 16f)));
 						}

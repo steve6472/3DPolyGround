@@ -288,9 +288,14 @@ public class SubChunk implements IBiomeProvider
 		return blockData.getBlockData(x, y, z);
 	}
 
-	public void setBlockData(BlockData blockData, int x, int z, int y)
+	public void setBlockData(BlockData blockData, int x, int y, int z)
 	{
 		this.blockData.setBlockData(blockData, x, y, z);
+	}
+
+	public SubChunkBlockData getBlockDataContainer()
+	{
+		return blockData;
 	}
 
 	@Override

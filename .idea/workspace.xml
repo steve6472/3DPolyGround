@@ -111,13 +111,6 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="Creator" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="steve6472.polyground.generator.creator.Creator" />
-      <module name="CaveGame" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="DataGenerator" type="Application" factoryName="Application" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="steve6472.polyground.generator.DataGenerator" />
       <module name="CaveGame" />
@@ -147,24 +140,31 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="NBTArrayUtil" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="steve6472.polyground.NBTArrayUtil" />
+      <module name="CaveGame" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <list>
       <item itemvalue="Application.CaveGame-Debug" />
       <item itemvalue="Application.CaveGame" />
       <item itemvalue="Application.DataGenerator" />
       <item itemvalue="Application.Gen-CaveGame" />
       <item itemvalue="Application.BlockBenchTranslator" />
-      <item itemvalue="Application.Creator" />
       <item itemvalue="Application.A" />
       <item itemvalue="Application.KnappingRecipeCreator" />
       <item itemvalue="Application.NBT" />
+      <item itemvalue="Application.NBTArrayUtil" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.NBTArrayUtil" />
         <item itemvalue="Application.NBT" />
         <item itemvalue="Application.KnappingRecipeCreator" />
         <item itemvalue="Application.A" />
         <item itemvalue="Application.BlockBenchTranslator" />
-        <item itemvalue="Application.Creator" />
       </list>
     </recent_temporary>
   </component>

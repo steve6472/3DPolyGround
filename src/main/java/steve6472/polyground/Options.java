@@ -57,6 +57,7 @@ public class Options
 	public boolean renderChunkOutline = false;
 	public boolean renderLights = false;
 	public boolean renderSkybox = true;
+	public boolean renderDataBlocks = false;
 
 	public float mouseSensitivity = 0.1f;
 

@@ -39,13 +39,13 @@ public class Recipe
 		return pattern;
 	}
 
-	public boolean isMatch(boolean[][] grid)
+	public boolean isMatch(boolean[] grid)
 	{
 		for (int i = 0; i < 16; i++)
 		{
 			for (int j = 0; j < 16; j++)
 			{
-				if (grid[i][j] != pattern[i][j])
+				if (grid[i + j * 16] != pattern[i][j])
 					return false;
 			}
 		}

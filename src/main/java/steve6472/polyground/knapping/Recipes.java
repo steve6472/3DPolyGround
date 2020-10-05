@@ -51,7 +51,7 @@ public class Recipes
 	 * @param grid boolean[][] of knapping grid placed in the world
 	 * @return null if no match is found, recipe otherwise
 	 */
-	public Recipe getMatch(boolean[][] grid)
+	public Recipe getMatch(boolean[] grid)
 	{
 		for (Recipe r : recipes)
 		{

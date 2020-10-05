@@ -13,11 +13,11 @@ import steve6472.polyground.gfx.light.LightManager;
 import steve6472.polyground.gfx.shaders.CGGShader;
 import steve6472.polyground.gfx.shaders.world.WorldShader;
 import steve6472.polyground.gui.InGameGui;
-import steve6472.polyground.world.biomes.Features;
 import steve6472.polyground.rift.RiftManager;
 import steve6472.polyground.teleporter.TeleporterManager;
 import steve6472.polyground.world.biomes.Biome;
 import steve6472.polyground.world.biomes.Biomes;
+import steve6472.polyground.world.biomes.Features;
 import steve6472.polyground.world.chunk.Chunk;
 import steve6472.polyground.world.chunk.ModelLayer;
 import steve6472.polyground.world.chunk.SubChunk;
@@ -424,8 +424,27 @@ public class World implements IWorldBlockProvider
 				if (!subChunkFrustum(chunk.getX() * 16, k * 16, chunk.getZ() * 16))
 					continue;
 
+				//TODO: Move up... ??
 				if (game.options.renderChunkOutline)
 					MainRender.t.add(new AABBf(chunk.getX() * 16, k * 16, chunk.getZ() * 16, chunk.getX() * 16 + 16, k * 16 + 16, chunk.getZ() * 16 + 16));
+
+
+				if (game.options.renderDataBlocks)
+				{
+					SubChunk sc = chunk.getSubChunk(k);
+
+					for (int i = 0; i < 16; i++)
+					{
+						for (int j = 0; j < 16; j++)
+						{
+							for (int l = 0; l < 16; l++)
+							{
+								if (sc.getBlockData(i, j, l) != null)
+									MainRender.t.add(new AABBf(chunk.getX() * 16 + i, k * 16 + j, chunk.getZ() * 16 + l, chunk.getX() * 16 + i + 1, k * 16 + j + 1, chunk.getZ() * 16 + l + 1));
+							}
+						}
+					}
+				}
 			}
 		}
 	}
