@@ -2,6 +2,7 @@ package steve6472.polyground.gui;
 
 import org.lwjgl.opengl.GL30;
 import steve6472.polyground.CaveGame;
+import steve6472.polyground.block.Block;
 import steve6472.polyground.entity.player.EnumGameMode;
 import steve6472.polyground.gfx.ItemRenderer;
 import steve6472.polyground.gfx.MainRender;
@@ -133,10 +134,21 @@ public class CreativeWheel extends Component
 		float x = (v0x + v1x + v2x + v3x) / 4f;
 		float y = (v0y + v1y + v2y + v3y) / 4f;
 
-		ItemRenderer.renderBlock(
-			items ? Blocks.getBlockByName(s) : Blocks.getBlockByName(currentGroup.groups().get(s).preview()),
-			getMain(), x, y,
-			30, 225, 0, 2f);
+		if (items)
+		{
+			Block b = Blocks.getBlockByName(s);
+			if (b == Block.error)
+			{
+				Item item = Items.getItemByName(s);
+				ItemRenderer.renderModel(item.model, getMain(), x, y, 30, 225, 0, 2f);
+			} else
+			{
+				ItemRenderer.renderBlock(b, getMain(), x, y, 30, 225, 0, 2f);
+			}
+		} else
+		{
+			ItemRenderer.renderBlock(Blocks.getBlockByName(currentGroup.groups().get(s).preview()), getMain(), x, y, 30, 225, 0, 2f);
+		}
 
 		if (items)
 		{

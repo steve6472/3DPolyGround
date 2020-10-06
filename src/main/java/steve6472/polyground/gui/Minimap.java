@@ -1,6 +1,7 @@
 package steve6472.polyground.gui;
 
 import org.joml.Matrix4f;
+import org.lwjgl.opengl.GL30;
 import steve6472.polyground.CaveGame;
 import steve6472.polyground.PolyUtil;
 import steve6472.polyground.events.WorldEvent;
@@ -39,6 +40,7 @@ public class Minimap extends Component
 		buffer.resize(getWidth(), getHeight());
 		camera = new Camera();
 		projectionMatrix = PolyUtil.createProjectionMatrix(getWidth(), getHeight(), 512, 70);
+		GL30.glBindFramebuffer(36160, 0);
 //		projectionMatrix = new Matrix4f().ortho(0, 0, getWidth(), getHeight(), 0.1f, 512);
 	}
 

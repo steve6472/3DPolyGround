@@ -33,7 +33,7 @@ public class CustomBlock extends TransparentBlock
 		{
 			for (IElement c : model.getElements())
 			{
-				tris += c.build(buildHelper, modelLayer, world, state, x, y, z);
+				tris += c.build(buildHelper, modelLayer, null, state, x, y, z);
 			}
 		}
 

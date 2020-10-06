@@ -2,10 +2,7 @@ package steve6472.polyground.generator;
 
 import steve6472.polyground.EnumFace;
 import steve6472.polyground.block.Tags;
-import steve6472.polyground.block.properties.enums.EnumAxis;
-import steve6472.polyground.block.properties.enums.EnumHalf;
-import steve6472.polyground.block.properties.enums.EnumSlabType;
-import steve6472.polyground.block.properties.enums.EnumStoneType;
+import steve6472.polyground.block.properties.enums.*;
 import steve6472.polyground.block.special.*;
 import steve6472.polyground.block.states.States;
 import steve6472.polyground.generator.biome.BiomeBuilder;
@@ -240,6 +237,13 @@ public class DataGenerator
 			.generate();
 
 		DataBuilder.create()
+			.fullBlock("chisel")
+			.blockSpecial(new SimpleSpecial("chisel"))
+			.blockState(StateBuilder.create().emptyModel())
+			.itemGroupPath("misc")
+			.generate();
+
+		DataBuilder.create()
 			.fullBlock("small_grass")
 			.blockSpecial(tagBelowSpecial(true, Tags.FLOWER_TOP))
 			.addTag(Tags.TRANSPARENT)
@@ -320,6 +324,37 @@ public class DataGenerator
 			.blockState(StateBuilder.create().singleModel(BlockModelBuilder.create("icicle").externalPath("custom_models/icicle.bbmodel")))
 			.blockSpecial(new SimpleSpecial("custom"))
 			.itemGroupPath("misc")
+			.generate();
+
+		// Items ?
+
+		DataBuilder.create()
+			.itemName("red_powder")
+			.itemModel(new ItemFromModel("red_powder"))
+			.itemGroupPath("misc")
+			.generate();
+
+		DataBuilder.create()
+			.itemName("green_powder")
+			.itemModel(new ItemFromModel("green_powder"))
+			.itemGroupPath("misc")
+			.generate();
+
+		DataBuilder.create()
+			.itemName("blue_powder")
+			.itemModel(new ItemFromModel("blue_powder"))
+			.itemGroupPath("misc")
+			.generate();
+
+		DataBuilder.create()
+			.fullBlock("flower")
+			.blockSpecial(new SimpleSpecial("flower"))
+			.blockState(StateBuilder.create()
+				.addState(PropertyBuilder.create().addProperty(FlowerBlock.FLOWER_COLOR, EnumFlowerColor.RED).tags(Tags.PICKABLE), BlockModelBuilder.create("red_flower").externalPath("custom_models/red_flower.bbmodel"))
+				.addState(PropertyBuilder.create().addProperty(FlowerBlock.FLOWER_COLOR, EnumFlowerColor.GREEN).tags(Tags.PICKABLE), BlockModelBuilder.create("green_flower").externalPath("custom_models/green_flower.bbmodel"))
+				.addState(PropertyBuilder.create().addProperty(FlowerBlock.FLOWER_COLOR, EnumFlowerColor.BLUE).tags(Tags.PICKABLE), BlockModelBuilder.create("blue_flower").externalPath("custom_models/blue_flower.bbmodel"))
+			)
+			.itemGroupPath("nature")
 			.generate();
 
 		DataBuilder.create()

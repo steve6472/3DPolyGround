@@ -1,15 +1,10 @@
 package steve6472.polyground.gui;
 
 import steve6472.polyground.CaveGame;
-import steve6472.polyground.gfx.MainRender;
-import steve6472.polyground.gfx.shaders.ItemTextureShader;
+import steve6472.polyground.gfx.ItemRenderer;
 import steve6472.polyground.item.Item;
-import steve6472.polyground.item.ItemAtlas;
 import steve6472.polyground.registry.Items;
-import steve6472.polyground.tessellators.ItemTextureTessellator;
-import steve6472.sge.gfx.Sprite;
 import steve6472.sge.gfx.SpriteRender;
-import steve6472.sge.gfx.Tessellator;
 import steve6472.sge.gfx.font.Font;
 import steve6472.sge.gui.Component;
 import steve6472.sge.main.MainApp;
@@ -25,12 +20,10 @@ import steve6472.sge.main.events.ScrollEvent;
 public class ItemBar extends Component
 {
 	public int scroll = 0;
-	private ItemTextureTessellator itemTextureTessellator;
 
 	@Override
 	public void init(MainApp main)
 	{
-		itemTextureTessellator = new ItemTextureTessellator(6 * 7 * 2);
 	}
 
 	@Override
@@ -43,14 +36,6 @@ public class ItemBar extends Component
 	public void render()
 	{
 		SpriteRender.renderDoubleBorder(getX(), getY() + 38 * 3, 38, 38, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0);
-
-		ItemAtlas itemAtlas = CaveGame.getInstance().itemAtlas;
-		Sprite.bind(0, itemAtlas.itemAtlas.texture);
-
-		MainRender.shaders.itemTextureShader.bind();
-		MainRender.shaders.itemTextureShader.setUniform(ItemTextureShader.ATLAS, 0);
-
-		itemTextureTessellator.begin(6 * 7);
 
 		for (int i = 0; ; i++)
 		{
@@ -69,14 +54,8 @@ public class ItemBar extends Component
 			if (i - scroll < -3)
 				continue;
 
-			renderItem(getX() + 3, getY() + i * 38 + 3 + 38 * (3 + -scroll), 32, 32, i);
+			ItemRenderer.renderModel(item.model, getMain(), getX() + 3 + 16, getY() + i * 38 + 38 * (3 + -scroll) + 19, 30, 225, 0, 1.25f);
 		}
-
-		itemTextureTessellator.loadPos(0);
-		itemTextureTessellator.loadTexture(1);
-		itemTextureTessellator.loadAlpha(2);
-		itemTextureTessellator.draw(Tessellator.TRIANGLES);
-		itemTextureTessellator.disable(0, 1, 2);
 
 		CaveGame.itemInHand = Items.getItemById(scroll + 1);
 
@@ -105,41 +84,5 @@ public class ItemBar extends Component
 			scroll = 0;
 		if (scroll >= Items.getAllItems().size() - 1)
 			scroll = Items.getAllItems().size() - 2;
-	}
-
-	private void renderItem(int x, int y, int w, int h, int index)
-	{
-		float u = index % CaveGame.getInstance().itemAtlas.getTileCount();
-		float v = index / CaveGame.getInstance().itemAtlas.getTileCount();
-
-		float t = 1f / (float) CaveGame.getInstance().itemAtlas.getTileCount();
-
-		float minU = u * t;
-		float minV = v * t;
-		float maxU = u * t + t;
-		float maxV = v * t + t;
-
-		float topAlpha = 1;
-		float bottomAlpha = 1;
-
-		if (index - scroll > 2)
-		{
-			topAlpha = 1.25f;
-			bottomAlpha = 0;
-		}
-
-		if (index - scroll < -2)
-		{
-			topAlpha = 0;
-			bottomAlpha = 1.25f;
-		}
-
-		itemTextureTessellator.pos(x, y).texture(minU, minV).alpha(topAlpha).endVertex();
-		itemTextureTessellator.pos(x, y + h).texture(minU, maxV).alpha(bottomAlpha).endVertex();
-		itemTextureTessellator.pos(x + w, y + h).texture(maxU, maxV).alpha(bottomAlpha).endVertex();
-
-		itemTextureTessellator.pos(x + w, y + h).texture(maxU, maxV).alpha(bottomAlpha).endVertex();
-		itemTextureTessellator.pos(x + w, y).texture(maxU, minV).alpha(topAlpha).endVertex();
-		itemTextureTessellator.pos(x, y).texture(minU, minV).alpha(topAlpha).endVertex();
 	}
 }

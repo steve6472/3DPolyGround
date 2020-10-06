@@ -158,11 +158,6 @@ public class InGameGui extends Gui implements IGamePause
 
 		if (CaveGame.getInstance().options.renderAtlases)
 			SpriteRender.renderSprite(0, 60 + getLineCount(sb) * 8, as, as, 0, BlockAtlas.getAtlas().getSprite().getId());
-
-		int ts = CaveGame.getInstance().itemAtlas.totalSize;
-
-		if (CaveGame.getInstance().options.renderAtlases)
-			SpriteRender.renderSprite(getMainApp().getWidth() - ts, 15, ts, ts, 0, CaveGame.getInstance().itemAtlas.itemAtlas.texture);
 	}
 
 	private int getLineCount(StringBuilder sb)

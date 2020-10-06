@@ -23,6 +23,11 @@ public class ItemRenderer
 		if (model == null)
 			return;
 
+		renderModel(model, main, x, y, rotX, rotY, rotZ, scale);
+	}
+
+	public static void renderModel(StaticEntityModel model, MainApp main, float x, float y, float rotX, float rotY, float rotZ, float scale)
+	{
 		EntityShader shader = MainRender.shaders.entityShader;
 
 		float w = main.getWidth();
@@ -35,14 +40,13 @@ public class ItemRenderer
 
 		model.render(
 			new Matrix4f()
-				.translate(0f, 0, 0),
-			new Matrix4f()
 				.translate(-w / 2f + x, h / 2f - y, 0)
-				.scale(16f)
-				.scale(scale)
 				.rotate((float) Math.toRadians(rotX), 1, 0, 0)
 				.rotate((float) Math.toRadians(rotY), 0, 1, 0)
-				.rotate((float) Math.toRadians(rotZ), 0, 0, 1)
+				.rotate((float) Math.toRadians(rotZ), 0, 0, 1),
+			new Matrix4f()
+				.scale(16f)
+				.scale(scale)
 				.translate(-0.5f, -0.5f, -0.5f)
 		);
 

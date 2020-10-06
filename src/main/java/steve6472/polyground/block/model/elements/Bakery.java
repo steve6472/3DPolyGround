@@ -106,7 +106,7 @@ public class Bakery
 		builder.uv(whiteUV);
 		builder.uv(whiteUV);
 		builder.uv(whiteUV);
-		builder.normalTri(normal);
+		builder.normalTri(new Vector3f(normal));
 		builder.colorTri(ColorUtil.getRed(color) / 255f, ColorUtil.getGreen(color) / 255f, ColorUtil.getBlue(color) / 255f);
 
 		return 1;

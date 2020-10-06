@@ -1,8 +1,6 @@
 package steve6472.polyground;
 
-import steve6472.sge.main.util.RandomUtil;
-
-import java.util.Arrays;
+import java.io.IOException;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
@@ -104,8 +102,8 @@ public class NBTArrayUtil
 	}
 
 
-	public static void main(String[] args)
-	{
+	public static void main(String[] args) throws IOException
+	{/*
 		boolean[] arr = new boolean[256];
 
 		for (int i = 0; i < 256; i++)
@@ -118,7 +116,40 @@ public class NBTArrayUtil
 		printBoolArray(arr);
 		System.out.println(Arrays.toString(longArr));
 
-		printBoolArray(longToBoolArray(longArr));
+		printBoolArray(longToBoolArray(longArr));*/
+
+//		CompoundTag tag = (CompoundTag) NBTUtil.read("D:\\CaveGame\\game\\worlds\\house\\chunk_0_0\\sub_0.nbt").getTag();
+//		ListTag<CompoundTag> d = (ListTag<CompoundTag>) tag.getListTag("data");
+//		CompoundTag a = d.get(0);
+//		CompoundTag b = d.get(1);
+//
+//		a.putInt("x", 9);
+//		a.putInt("y", 1);
+//		a.putInt("z", 9);
+//
+//		b.putInt("x", 1);
+//		b.putInt("y", 1);
+//		b.putInt("z", 0);
+//
+//		d.forEach(ct ->
+//		{
+//			for (String s : ct.keySet())
+//			{
+//				if (!s.contains("layer"))
+//				{
+//					try
+//					{
+//						System.out.println(s + ":" + SNBTUtil.toSNBT(ct.get(s)));
+//					} catch (IOException e)
+//					{
+//						e.printStackTrace();
+//					}
+//				}
+//			}
+//			System.out.println();
+//		});
+//		System.out.println(SNBTUtil.toSNBT(d));
+//		NBTUtil.write(tag, "D:\\CaveGame\\game\\worlds\\house\\chunk_0_0\\sub_0.nbt");
 	}
 
 	public static void printBoolArray(boolean[] arr)

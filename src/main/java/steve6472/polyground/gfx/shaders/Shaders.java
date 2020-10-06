@@ -30,7 +30,6 @@ public class Shaders
 	public FlatTexturedShader flatTexturedShader;
 	public WorldShader worldShader;
 	public BreakParticleShader breakParticleShader;
-	public ItemTextureShader itemTextureShader;
 	public DebugShader debugShader;
 	public RiftShader riftShader;
 	public WaterShader waterShader;
@@ -58,7 +57,6 @@ public class Shaders
 		flatTexturedShader = new FlatTexturedShader();
 		worldShader = new WorldShader();
 		breakParticleShader = new BreakParticleShader();
-		itemTextureShader = new ItemTextureShader();
 		debugShader = new DebugShader();
 		riftShader = new RiftShader();
 		waterShader = new WaterShader();
@@ -105,9 +103,6 @@ public class Shaders
 		breakParticleShader.setProjection(projectionMatrix);
 
 		Matrix4f ortho = new Matrix4f().ortho(0, event.getWidth(), event.getHeight(), 0, 1, -1);
-
-		itemTextureShader.bind();
-		itemTextureShader.setProjection(ortho);
 
 		color2DShader.bind();
 		color2DShader.setProjection(ortho);

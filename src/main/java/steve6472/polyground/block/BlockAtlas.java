@@ -69,11 +69,22 @@ public class BlockAtlas
 
 	public static void putTexture(String name)
 	{
-		if (!usedTexturesReference.containsKey(name))
+		try
 		{
-//			System.out.println("New texture: '" + name + "' id: " + usedTexturesReference.size());
-			usedTexturesReference.put(name, usedTexturesReference.size());
-			usedTextures.put(usedTexturesReference.get(name), name);
+			if (!usedTexturesReference.containsKey(name))
+			{
+				if (textures != null)
+				{
+					throw new IllegalStateException("Textures already compiled");
+				}
+//				System.out.println("New texture: '" + name + "' id: " + usedTexturesReference.size());
+				usedTexturesReference.put(name, usedTexturesReference.size());
+				usedTextures.put(usedTexturesReference.get(name), name);
+			}
+		} catch (Exception ex)
+		{
+			ex.printStackTrace();
+			System.exit(64);
 		}
 	}
 

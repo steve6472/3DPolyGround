@@ -30,7 +30,6 @@ public class Blocks
 
 	public static void register(CaveGame game)
 	{
-//		File[] blocksFile = new File(MainApp.class.getResource("/blocks").getFile()).listFiles();
 		File[] blocksFile = new File("game/objects/blocks").listFiles();
 
 		reference = new HashMap<>();
@@ -113,30 +112,6 @@ public class Blocks
 		}
 
 		BlockAtlas.putTexture("white");
-
-		BlockAtlas.compileTextures(0);
-
-		game.mainRender.buildHelper.atlasSize = BlockAtlas.getAtlas().getTileCount();
-		game.mainRender.buildHelper.texel = 1f / (float) BlockAtlas.getAtlas().getTileCount();
-
-		Bakery.load(BlockAtlas.getTexture(BlockAtlas.getTextureId("white")), game.mainRender.buildHelper);
-
-		for (Block b : blocks)
-		{
-			b.getDefaultState().getPossibleStates().forEach(ps -> {
-				for (BlockModel model : ps.getBlockModels())
-				{
-					if (model.getElements() != null)
-					{
-						for (IElement triangle : model.getElements())
-						{
-							triangle.fixUv(game.mainRender.buildHelper.texel);
-						}
-					}
-					model.createModel(game.mainRender.buildHelper);
-				}
-			});
-		}
 	}
 
 	public static Block getBlockByName(String name)
@@ -198,6 +173,30 @@ public class Blocks
 		{
 			block.item = Items.getItemByName(block.item.getName());
 //			System.out.println(block.item.getClass().getSimpleName());
+		}
+
+		BlockAtlas.compileTextures(0);
+
+		game.mainRender.buildHelper.atlasSize = BlockAtlas.getAtlas().getTileCount();
+		game.mainRender.buildHelper.texel = 1f / (float) BlockAtlas.getAtlas().getTileCount();
+
+		Bakery.load(BlockAtlas.getTexture(BlockAtlas.getTextureId("white")), game.mainRender.buildHelper);
+
+		for (Block b : blocks)
+		{
+			b.getDefaultState().getPossibleStates().forEach(ps -> {
+				for (BlockModel model : ps.getBlockModels())
+				{
+					if (model.getElements() != null)
+					{
+						for (IElement element : model.getElements())
+						{
+							element.fixUv(game.mainRender.buildHelper.texel);
+						}
+					}
+					model.createModel(game.mainRender.buildHelper);
+				}
+			});
 		}
 	}
 }

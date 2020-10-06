@@ -1,6 +1,7 @@
 package steve6472.polyground.registry.data;
 
 import steve6472.polyground.block.blockdata.BlockData;
+import steve6472.polyground.block.blockdata.ChiselBlockData;
 import steve6472.polyground.block.blockdata.KnappingData;
 
 import java.util.Collection;
@@ -18,6 +19,7 @@ public class DataRegistry
 	private static final HashMap<String, DataEntry<? extends BlockData>> dataRegistry = new HashMap<>();
 
 	public static final DataEntry<KnappingData> stoneKnapping = register("knapping", KnappingData::new);
+	public static final DataEntry<ChiselBlockData> chisel = register("chisel", ChiselBlockData::new);
 
 	public static <T extends BlockData> DataEntry<T> register(String id, IDataFactory<T> factory)
 	{
