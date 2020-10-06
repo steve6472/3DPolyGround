@@ -22,11 +22,17 @@ public final class ModelBuilder
 	private int x;
 	private int y;
 	private int z;
+	private Vector3f offset;
 	private List<Vector3f> vert;
 	private List<Vector4f> col;
 	private List<Vector2f> text;
 	private List<Vector3f> norm;
 	private SubChunk sc;
+
+	public ModelBuilder()
+	{
+		offset = new Vector3f();
+	}
 
 	public void load(List<Vector3f> vert, List<Vector4f> col, List<Vector2f> text, List<Vector3f> norm)
 	{
@@ -41,6 +47,12 @@ public final class ModelBuilder
 		this.x = x;
 		this.y = y;
 		this.z = z;
+		setOffset(0, 0, 0);
+	}
+
+	public void setOffset(float offsetX, float offsetY, float offsetZ)
+	{
+		offset.set(offsetX, offsetY, offsetZ);
 	}
 
 	public void setSubChunk(SubChunk sc)
@@ -50,9 +62,9 @@ public final class ModelBuilder
 
 	public void tri(Vector3f v0, Vector3f v1, Vector3f v2)
 	{
-		vert.add(new Vector3f(v0).add(x, y, z));
-		vert.add(new Vector3f(v1).add(x, y, z));
-		vert.add(new Vector3f(v2).add(x, y, z));
+		vert.add(new Vector3f(v0).add(x, y, z).add(offset));
+		vert.add(new Vector3f(v1).add(x, y, z).add(offset));
+		vert.add(new Vector3f(v2).add(x, y, z).add(offset));
 	}
 
 	/**
@@ -63,9 +75,9 @@ public final class ModelBuilder
 	 */
 	public void tri_(Vector3f v0, Vector3f v1, Vector3f v2)
 	{
-		vert.add(v0.add(x, y, z));
-		vert.add(v1.add(x, y, z));
-		vert.add(v2.add(x, y, z));
+		vert.add(v0.add(x, y, z).add(offset));
+		vert.add(v1.add(x, y, z).add(offset));
+		vert.add(v2.add(x, y, z).add(offset));
 	}
 
 	public void uv(Vector2f uv)

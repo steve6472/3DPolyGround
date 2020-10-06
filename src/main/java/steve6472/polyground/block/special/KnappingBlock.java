@@ -53,7 +53,7 @@ public class KnappingBlock extends CustomBlock implements IBlockData
 		{
 			player.processNextBlockBreak = false;
 
-			if (RandomUtil.decide(10))
+			if (RandomUtil.decide(30))
 			{
 				world.getEntityManager().removeEntity(player.heldItem);
 				player.heldItem = null;
@@ -145,8 +145,17 @@ public class KnappingBlock extends CustomBlock implements IBlockData
 			{
 				if (data.stone[i + j * 16])
 				{
-					int a = (int) (hash(world.getSeed(), x * ((i << 4) + 1) - j, y, z * -((j << 5) + 1) + i) % 32) + 50;
-					tris += Bakery.coloredCube_1x1(i, 0, j, ColorUtil.getColor(a, a, a));
+					int flags = Bakery.createFaceFlags(
+						i != 15 && data.stone[(i + 1) + j * 16],
+						j != 15 && data.stone[i + (j + 1) * 16],
+						i != 0 && data.stone[(i - 1) + j * 16],
+						j != 0 && data.stone[i + (j - 1) * 16],
+						false,
+						true
+					);
+
+					int a = (int) (hash(world.getSeed(), x * ((i << 4) + 1) - j, y, z * -((j << 5) + 1) + i) % 32) + 20;
+					tris += Bakery.coloredCube_1x1(i, 0, j, ColorUtil.getColor(a, a, a), flags);
 				}
 			}
 		}

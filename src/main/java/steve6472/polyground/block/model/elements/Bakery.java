@@ -24,53 +24,73 @@ public class Bakery
 	public static void load(Rectangle r, ModelBuilder builder)
 	{
 		Bakery.builder = builder;
-		System.out.println(r);
 		float x = r.x;
 		float y = r.y;
 		float w = r.width;
 		float h = r.height;
 		float texel = builder.texel;
 		whiteUV.set((x + w * 0.5f) * texel, (y + h * 0.5f) * texel);
-		System.out.println(whiteUV);
 	}
 
-	public static int coloredCube_1x1(int x, int y, int z, int color)
+	public static int createFaceFlags(boolean north, boolean east, boolean south, boolean west, boolean up, boolean down)
+	{
+		return (north ? 1 : 0) | ((east ? 1 : 0) << 1) | ((south ? 1 : 0) << 2) | ((west ? 1 : 0) << 3) | ((up ? 1 : 0) << 4) | ((down ? 1 : 0) << 5);
+	}
+
+	/**
+	 *
+	 * @param x x coordinate on cube
+	 * @param y y coordinate on cube
+	 * @param z z coordinate on cube
+	 * @param color hex color
+	 * @param faceFlags flags to disable rendering of faces
+	 *                  1 - disable north
+	 *                  2 - disable east
+	 *                  4 - disable south
+	 *                  8 - disable west
+	 *                  16 - disable up
+	 *                  32 - disable down
+	 * @return number of triangles
+	 */
+	public static int coloredCube_1x1(int x, int y, int z, int color, int faceFlags)
 	{
 		Vector3f from = new Vector3f(x * 1f / 16f, y * 1f / 16f, z * 1f / 16f);
 		Vector3f to = new Vector3f(x * 1f / 16f + 1f / 16f, y * 1f / 16f + 1f / 16f, z * 1f / 16f + 1f / 16f);
 
-		coloredQuad(
+		int tris = 0;
+
+		if ((faceFlags & 1) != 1) tris += coloredQuad(
 			new Vector3f(to.x, to.y, to.z),
 			new Vector3f(to.x, from.y, to.z),
 			new Vector3f(to.x, from.y, from.z),
 			new Vector3f(to.x, to.y, from.z), color);
-		coloredQuad(
+		if ((faceFlags & 2) != 2) tris += coloredQuad(
 			new Vector3f(from.x, to.y, to.z),
 			new Vector3f(from.x, from.y, to.z),
 			new Vector3f(to.x, from.y, to.z),
 			new Vector3f(to.x, to.y, to.z), color);
-		coloredQuad(
+		if ((faceFlags & 4) != 4) tris += coloredQuad(
 			new Vector3f(from.x, to.y, from.z),
 			new Vector3f(from.x, from.y, from.z),
 			new Vector3f(from.x, from.y, to.z),
 			new Vector3f(from.x, to.y, to.z), color);
-		coloredQuad(
+		if ((faceFlags & 8) != 8) tris += coloredQuad(
 			new Vector3f(to.x, to.y, from.z),
 			new Vector3f(to.x, from.y, from.z),
 			new Vector3f(from.x, from.y, from.z),
 			new Vector3f(from.x, to.y, from.z), color);
-		coloredQuad(
+		if ((faceFlags & 16) != 16) tris += coloredQuad(
 			new Vector3f(to.x, to.y, from.z),
 			new Vector3f(from.x, to.y, from.z),
 			new Vector3f(from.x, to.y, to.z),
 			new Vector3f(to.x, to.y, to.z), color);
-		coloredQuad(
+		if ((faceFlags & 32) != 32) tris += coloredQuad(
 			new Vector3f(from.x, from.y, from.z),
 			new Vector3f(to.x, from.y, from.z),
 			new Vector3f(to.x, from.y, to.z),
 			new Vector3f(from.x, from.y, to.z), color);
 
-		return 12;
+		return tris;
 	}
 
 	public static int coloredQuad(Vector3f v0, Vector3f v1, Vector3f v2, Vector3f v3, int color)

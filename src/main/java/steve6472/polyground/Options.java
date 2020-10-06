@@ -58,6 +58,7 @@ public class Options
 	public boolean renderLights = false;
 	public boolean renderSkybox = true;
 	public boolean renderDataBlocks = false;
+	public boolean renderItemEntityOutline = false;
 
 	public float mouseSensitivity = 0.1f;
 

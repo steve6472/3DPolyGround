@@ -1,9 +1,7 @@
 package steve6472.polyground.block.blockdata;
 
 import net.querz.nbt.tag.CompoundTag;
-import steve6472.polyground.CaveGame;
 import steve6472.polyground.NBTArrayUtil;
-import steve6472.polyground.knapping.Recipe;
 import steve6472.polyground.registry.data.DataRegistry;
 
 /**********************
@@ -21,15 +19,24 @@ public class KnappingData extends BlockData
 	{
 		stone = new boolean[256];
 
-//		for (int i = 3; i < 13; i++)
+//		for (int i = 0; i < 16; i++)
 //		{
-//			for (int j = 1; j < 15; j++)
+//			for (int j = 0; j < 16; j++)
 //			{
-//				stone[i][j] = true;
+//				stone[i + j * 16] = true;
 //				pieceCount++;
 //			}
 //		}
 
+		for (int i = 3; i < 13; i++)
+		{
+			for (int j = 1; j < 15; j++)
+			{
+				stone[i + j * 16] = true;
+				pieceCount++;
+			}
+		}
+/*
 		Recipe recipe = CaveGame.getInstance().knappingRecipes.getRecipes().get(0);
 
 		for (int i = 0; i < 16; i++)
@@ -41,7 +48,7 @@ public class KnappingData extends BlockData
 			}
 		}
 		stone[0] = true;
-		pieceCount++;
+		pieceCount++;*/
 	}
 
 	@Override

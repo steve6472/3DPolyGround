@@ -148,7 +148,9 @@ public class ItemEntity extends EntityBase implements IRenderable, ITickable, IK
 		}
 
 		item.model.render(CaveGame.getInstance().getCamera().getViewMatrix(), DynamicEntityModel.MAT);
-		AABBUtil.renderAABBf(getHitbox(), 1);
+
+		if (CaveGame.getInstance().options.renderItemEntityOutline)
+			AABBUtil.renderAABBf(getHitbox(), 1);
 	}
 
 	public void setPlayer(Player player)

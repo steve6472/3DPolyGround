@@ -7,7 +7,6 @@ import steve6472.polyground.block.properties.IProperty;
 import steve6472.polyground.block.properties.IntProperty;
 import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.block.states.States;
-import steve6472.polyground.entity.EntityBase;
 import steve6472.polyground.entity.player.Player;
 import steve6472.polyground.world.World;
 import steve6472.sge.main.KeyList;
@@ -30,13 +29,6 @@ public class SnowLayerBlock extends CustomBlock
 		super(json);
 		setDefaultState(getDefaultState().with(SNOW_LAYER, 1).get());
 		isFull = false;
-	}
-
-	@Override
-	public void entityOnBlockCollision(EntityBase entity, World world, BlockState state, int x, int y, int z)
-	{
-		int power = state.get(SNOW_LAYER);
-		entity.getMotion().add(0, power / 80f, 0);
 	}
 
 	@Override
