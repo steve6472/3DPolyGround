@@ -24,7 +24,7 @@ import steve6472.sge.main.events.ScrollEvent;
  ***********************/
 public class ItemBar extends Component
 {
-	private int scroll = 0;
+	public int scroll = 0;
 	private ItemTextureTessellator itemTextureTessellator;
 
 	@Override

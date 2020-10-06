@@ -1,5 +1,6 @@
 package steve6472.polyground.generator;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 import steve6472.polyground.EnumFace;
 import steve6472.polyground.PrettyJson;
@@ -37,6 +38,7 @@ public class DataBuilder
 	private ISpecial blockSpecial, itemSpecial;
 	private String blockName, itemName;
 	private String itemModelPath;
+	private JSONArray itemGroupPaths;
 	private boolean debug = false;
 	public StateBuilder blockState;
 
@@ -48,6 +50,7 @@ public class DataBuilder
 	private DataBuilder()
 	{
 		itemModelPath = "";
+		itemGroupPaths = new JSONArray();
 	}
 
 	public DataBuilder blockState(StateBuilder state)
@@ -77,6 +80,12 @@ public class DataBuilder
 	public DataBuilder itemName(String name)
 	{
 		itemName = name;
+		return this;
+	}
+
+	public DataBuilder itemGroupPath(String groupPath)
+	{
+		itemGroupPaths.put(groupPath);
 		return this;
 	}
 
@@ -348,10 +357,15 @@ public class DataBuilder
 
 	public DataBuilder leaves(String name)
 	{
-		return leaves(name, true);
+		return leaves(name, name, true);
 	}
 
-	public DataBuilder leaves(String name, boolean biomeTint)
+	public DataBuilder leaves(String name, String texture)
+	{
+		return leaves(name, texture, true);
+	}
+
+	public DataBuilder leaves(String name, String texture, boolean biomeTint)
 	{
 		return DataBuilder.create().fullBlock(name)
 			.blockSpecial(new SimpleSpecial("leaves"))
@@ -359,7 +373,7 @@ public class DataBuilder
 				BlockModelBuilder.create(name)
 					.addCube(CubeBuilder.create()
 						.fullBlock()
-						.face(FaceBuilder.create().texture(name).biomeTint(biomeTint))
+						.face(FaceBuilder.create().texture(texture).biomeTint(biomeTint))
 					)
 				)
 			);
@@ -561,6 +575,9 @@ public class DataBuilder
 
 		JSONObject json = new JSONObject();
 		json.put("name", itemName);
+
+		if (!itemGroupPaths.isEmpty())
+			json.put("groups", itemGroupPaths);
 
 		json.put("model", "item/" + itemModelPath + itemName);
 		if (itemSpecial != null)

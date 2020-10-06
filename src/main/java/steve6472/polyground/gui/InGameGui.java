@@ -1,7 +1,6 @@
 package steve6472.polyground.gui;
 
 import steve6472.polyground.CaveGame;
-import steve6472.polyground.GuiTest;
 import steve6472.polyground.block.BlockAtlas;
 import steve6472.polyground.entity.player.EnumGameMode;
 import steve6472.polyground.events.InGameGuiEvent;
@@ -33,6 +32,7 @@ public class InGameGui extends Gui implements IGamePause
 	public ItemBar itemBar;
 	public GameChat chat;
 	public Minimap minimap;
+	public CreativeWheel creativeWheel;
 
 	private GCLog gcLog;
 
@@ -53,7 +53,8 @@ public class InGameGui extends Gui implements IGamePause
 		addComponent(itemBar);
 		gcLog = new GCLog();
 
-		getMainApp().getEventHandler().register(new GuiTest());
+		creativeWheel = new CreativeWheel();
+		addComponent(creativeWheel);
 	}
 
 	@Event
@@ -61,6 +62,7 @@ public class InGameGui extends Gui implements IGamePause
 	{
 		chat.setLocation(2, e.getHeight() - 14);
 		minimap.setLocation(e.getWidth() - 110, 20);
+		creativeWheel.setLocation(e.getWidth() / 2, e.getHeight() / 2);
 	}
 
 	@Override
@@ -74,6 +76,8 @@ public class InGameGui extends Gui implements IGamePause
 		CaveGame.getInstance().options.isMouseFree = chat.isFocused();
 		itemBar.setVisible(CaveGame.getInstance().getPlayer().getGamemode() == EnumGameMode.CREATIVE);
 		itemBar.setLocation(getMainApp().getWidth() - 38, getMainApp().getHeight() / 2 - (7 * 38) / 2);
+
+		creativeWheel.setVisible(CaveGame.getInstance().getPlayer().getGamemode() == EnumGameMode.CREATIVE);
 
 		CaveGame.runGameEvent(new InGameGuiEvent.PostTick(this));
 	}

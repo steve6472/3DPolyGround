@@ -36,6 +36,7 @@ public class Shaders
 	public WaterShader waterShader;
 	public DialogShader dialogShader;
 	public EntityShader entityShader;
+	public Color2DShader color2DShader;
 
 	public CGGShader gShader;
 	public AbstractDeferredShader<LightUniform> deferredShader;
@@ -62,6 +63,7 @@ public class Shaders
 		riftShader = new RiftShader();
 		waterShader = new WaterShader();
 		dialogShader = new DialogShader();
+		color2DShader = new Color2DShader();
 
 		gShader = new CGGShader("deferred/g");
 
@@ -106,6 +108,9 @@ public class Shaders
 
 		itemTextureShader.bind();
 		itemTextureShader.setProjection(ortho);
+
+		color2DShader.bind();
+		color2DShader.setProjection(ortho);
 
 		debugShader.bind();
 		debugShader.setProjection(projectionMatrix);

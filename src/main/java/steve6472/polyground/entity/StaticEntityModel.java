@@ -51,7 +51,11 @@ public class StaticEntityModel
 		for (IElement e : elements)
 		{
 			if (fixUv) e.fixUv(modelBuilder.texel);
-			vertexCount += e.build(modelBuilder, ModelLayer.NORMAL, null, null, 0, 0, 0);
+
+			for (int i = ModelLayer.values().length - 1; i >= 0; i--)
+			{
+				vertexCount += e.build(modelBuilder, ModelLayer.values()[i], null, null, 0, 0, 0);
+			}
 		}
 
 		vertexCount *= 3;

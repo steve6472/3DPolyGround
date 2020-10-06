@@ -1,9 +1,8 @@
-package steve6472.polyground;
+package steve6472.polyground.gfx;
 
 import org.joml.Matrix4f;
 import steve6472.polyground.block.Block;
 import steve6472.polyground.entity.StaticEntityModel;
-import steve6472.polyground.gfx.MainRender;
 import steve6472.polyground.gfx.shaders.EntityShader;
 import steve6472.sge.main.MainApp;
 
@@ -15,11 +14,14 @@ import static org.lwjgl.opengl.GL11.*;
  * Project: CaveGame
  *
  ***********************/
-public class GuiTest
+public class ItemRenderer
 {
-	public static void renderBlock(Block block, MainApp main, float rotX, float rotY, float rotZ, float scale)
+	public static void renderBlock(Block block, MainApp main, float x, float y, float rotX, float rotY, float rotZ, float scale)
 	{
 		StaticEntityModel model = block.getDefaultState().getBlockModels()[0].getModel();
+
+		if (model == null)
+			return;
 
 		EntityShader shader = MainRender.shaders.entityShader;
 
@@ -35,6 +37,7 @@ public class GuiTest
 			new Matrix4f()
 				.translate(0f, 0, 0),
 			new Matrix4f()
+				.translate(-w / 2f + x, h / 2f - y, 0)
 				.scale(16f)
 				.scale(scale)
 				.rotate((float) Math.toRadians(rotX), 1, 0, 0)

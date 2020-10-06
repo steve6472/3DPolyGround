@@ -20,6 +20,7 @@ import steve6472.polyground.gui.MainMenu;
 import steve6472.polyground.gui.OptionsGui;
 import steve6472.polyground.item.Item;
 import steve6472.polyground.item.ItemAtlas;
+import steve6472.polyground.item.ItemGroups;
 import steve6472.polyground.knapping.Recipes;
 import steve6472.polyground.registry.Blocks;
 import steve6472.polyground.registry.CommandRegistry;
@@ -66,6 +67,7 @@ public class CaveGame extends MainApp
 	public ItemAtlas itemAtlas;
 	public HitPicker hitPicker;
 	public Recipes knappingRecipes;
+	public ItemGroups itemGroups;
 
 	public MainRender mainRender;
 
@@ -104,6 +106,7 @@ public class CaveGame extends MainApp
 
 		commandRegistry = new CommandRegistry();
 
+		itemGroups = new ItemGroups();
 		itemAtlas = new ItemAtlas(this);
 		Items.register(this);
 
@@ -111,6 +114,7 @@ public class CaveGame extends MainApp
 		knappingRecipes = new Recipes();
 
 		itemInHand = Items.getItemByName("stone");
+		inGameGui.creativeWheel.load();
 
 		getEventHandler().runEvent(new WindowSizeEvent(getWindowWidth(), getWindowHeight()));
 
@@ -317,7 +321,7 @@ public class CaveGame extends MainApp
 			}
 		}
 
-		return false;
+		return inGameGui.isVisible() && inGameGui.creativeWheel.isOpen() && player.gamemode == EnumGameMode.CREATIVE;
 	}
 
 	@Override

@@ -37,7 +37,7 @@ public class ItemEntity extends EntityBase implements IRenderable, ITickable, IK
 		super();
 		this.player = player;
 		this.item = item;
-		entityHitbox = new EntityHitbox(0.25f, 0.25f, 0.25f, this, this);
+		entityHitbox = new EntityHitbox(0.25f / 2f, 0.25f / 2f, 0.25f / 2f, this, this);
 		setPosition(x, y, z);
 		setPivotPoint(.5f, .5f, .5f);
 	}
@@ -172,7 +172,7 @@ public class ItemEntity extends EntityBase implements IRenderable, ITickable, IK
 
 	public void updateHitbox()
 	{
-		entityHitbox.setHitbox(getX(), getY() + 0.25f, getZ());
+		entityHitbox.setHitbox(getX(), getY() + 0.25f / 2f, getZ());
 	}
 
 	@Override

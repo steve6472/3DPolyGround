@@ -1,5 +1,6 @@
 package steve6472.polyground.item;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 import steve6472.polyground.CaveGame;
 import steve6472.polyground.EnumFace;
@@ -51,6 +52,15 @@ public class Item
 		this.id = id;
 
 		name = json.getString("name");
+
+		if (json.has("groups"))
+		{
+			JSONArray groups = json.getJSONArray("groups");
+			for (int i = 0; i < groups.length(); i++)
+			{
+				CaveGame.getInstance().itemGroups.addItem(this, groups.getString(i));
+			}
+		}
 
 		ItemModelLoader.loadModel(json.getString("model"), this);
 
