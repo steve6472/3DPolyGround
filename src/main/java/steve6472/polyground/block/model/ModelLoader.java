@@ -174,7 +174,14 @@ public class ModelLoader
 	private void addRot(JSONObject json, int rotX, int rotY, int rotZ)
 	{
 		json.put("point_type", "origin");
-		json.put("rotation", new JSONArray().put(rotX).put(rotY).put(rotZ));
+		if (json.has("rotation"))
+		{
+			JSONArray r = json.getJSONArray("rotation");
+			json.put("rotation", new JSONArray().put(r.getFloat(0) + rotX).put(r.getFloat(1) + rotY).put(r.getFloat(2) + rotZ));
+		} else
+		{
+			json.put("rotation", new JSONArray().put(rotX).put(rotY).put(rotZ));
+		}
 	}
 
 	public static String read(File f)

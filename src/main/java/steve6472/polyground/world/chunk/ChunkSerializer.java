@@ -191,7 +191,11 @@ public class ChunkSerializer
 
 //			propertyMap.forEach((k, v) -> System.out.println("Property map: " + k + " -> " + v));
 
-			return Blocks.getBlockByName(name).getDefaultState().fromStateString(propertyMap);
+			// Properties were probably removed
+			if (block.getDefaultState().getProperties() == null)
+				return block.getDefaultState();
+
+			return block.getDefaultState().fromStateString(propertyMap);
 		}
 		return Blocks.getBlockByName(name).getDefaultState();
 	}

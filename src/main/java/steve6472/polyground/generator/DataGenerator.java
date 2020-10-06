@@ -256,16 +256,10 @@ public class DataGenerator
 
 		DataBuilder.create()
 			.fullBlock("amethine")
-			.blockSpecial(new SimpleSpecial("directional"))
-			.blockState(StateBuilder.create()
-				.addState(PropertyBuilder.create().addProperty(ConveyorBeltBlock.FACING, EnumFace.UP).rot(0, 0, 0).custom(true).tags(Tags.PICKABLE),    BlockModelBuilder.create("amethine").externalPath("custom_models/amethine.bbmodel"))
-				.addState(PropertyBuilder.create().addProperty(ConveyorBeltBlock.FACING, EnumFace.DOWN).rot(180, 0, 0).custom(true).tags(Tags.PICKABLE),  BlockModelBuilder.noGen("amethine"))
-				.addState(PropertyBuilder.create().addProperty(ConveyorBeltBlock.FACING, EnumFace.NORTH).rot(90, 0, 0).custom(true).tags(Tags.PICKABLE), BlockModelBuilder.noGen("amethine"))
-				.addState(PropertyBuilder.create().addProperty(ConveyorBeltBlock.FACING, EnumFace.EAST).rot(90, 270, 0).custom(true).tags(Tags.PICKABLE),  BlockModelBuilder.noGen("amethine"))
-				.addState(PropertyBuilder.create().addProperty(ConveyorBeltBlock.FACING, EnumFace.SOUTH).rot(90, 180, 0).custom(true).tags(Tags.PICKABLE), BlockModelBuilder.noGen("amethine"))
-				.addState(PropertyBuilder.create().addProperty(ConveyorBeltBlock.FACING, EnumFace.WEST).rot(90, 90, 0).custom(true).tags(Tags.PICKABLE),   BlockModelBuilder.noGen("amethine"))
-			)
+			.blockSpecial(new SimpleSpecial("custom"))
+			.blockState(StateBuilder.create().singleModel(BlockModelBuilder.create("amethine").externalPath("custom_models/amethine.bbmodel")).custom(true))
 			.itemGroupPath("nature.cave")
+			.addTags(Tags.PICKABLE)
 			.generate();
 
 		DataBuilder.create()
