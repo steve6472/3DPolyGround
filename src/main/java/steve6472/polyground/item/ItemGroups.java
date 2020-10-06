@@ -52,6 +52,7 @@ public class ItemGroups
 					.addChild(GroupBuilder.create("Taiga", "taiga", "snow_layer"))
 					.addChild(GroupBuilder.create("Hills", "hills", "gravel"))
 					.addChild(GroupBuilder.create("Leaves", "leaves", "oak_leaves"))
+					.addChild(GroupBuilder.create("Cave", "cave", "amethine"))
 			)
 			.addChild(GroupBuilder.create("Misc", "misc", "wooden_box"))
 			.generate();

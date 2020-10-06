@@ -1,5 +1,6 @@
 package steve6472.polyground.block.model.elements;
 
+import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 import org.json.JSONObject;
@@ -115,7 +116,22 @@ public class CubeElement implements IElement
 
 		el.cull = face.optBoolean("cull", true);
 
-		ElUtil.rot(element, v0, v1, v2, v3);
+		Matrix4f mat = ElUtil.rotMat(element, v0, v1, v2, v3);
+
+		if (element.has("outliner_rot"))
+		{
+			if (mat == ElUtil.EMPTY_MATRIX)
+				mat = new Matrix4f();
+
+			Vector3f parentOrigin = ElUtil.loadVertex3("outliner_origin", element).div(16f);
+			Vector3f parentRotation = ElUtil.loadVertex3("outliner_rot", element);
+			Matrix4f parentMat = ElUtil.rotMat(parentOrigin.x, parentOrigin.y, parentOrigin.z,
+				parentRotation.x, parentRotation.y, parentRotation.z);
+
+			parentMat.mul(mat, mat);
+		}
+
+		ElUtil.rot(mat, v0, v1, v2, v3);
 
 		el.modelLayer = ElUtil.layer(face);
 		if (face.optBoolean("uvlock", false) && !enumFace.isSide())

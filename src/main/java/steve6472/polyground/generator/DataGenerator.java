@@ -177,7 +177,7 @@ public class DataGenerator
 		DataBuilder.create().leaves("acacia_leaves", "leaves/acacia_leaves").itemGroupPath("nature.leaves").generate();
 		DataBuilder.create().leaves("dark_oak_leaves", "leaves/dark_oak_leaves").itemGroupPath("nature.leaves").generate();
 		DataBuilder.create().leaves("jungle_leaves", "leaves/jungle_leaves").itemGroupPath("nature.leaves").generate();
-		DataBuilder.create().leaves("crystal_leaves", "leaves/crystal_leaves").generate();
+		DataBuilder.create().leaves("crystal_leaves", "leaves/crystal_leaves").itemGroupPath("nature.cave").generate();
 
 		DataBuilder.create().slab("dirt_slab", "dirt")
 			.addTagToState().with(SlabBlock.TYPE, EnumSlabType.TOP).with(SlabBlock.AXIS, EnumAxis.Y).finish(Tags.FLOWER_TOP)
@@ -216,7 +216,7 @@ public class DataGenerator
 			.addTagToState().finish(Tags.LOG, Tags.SOLID, Tags.PICKABLE).generate();
 
 		DataBuilder.create().pillarBlock("crystal_log", "crystal_log_side", "crystal_log")
-			.addTagToState().finish(Tags.LOG, Tags.SOLID).generate();
+			.addTagToState().finish(Tags.LOG, Tags.SOLID).itemGroupPath("nature.cave").generate();
 
 		DataBuilder.create().stala("stone_stala", "stone", "stone").itemGroupPath("building.stone").generate();
 		DataBuilder.create().stala("granite_stala", "granite", "granite").itemGroupPath("building.stone").generate();
@@ -251,7 +251,21 @@ public class DataGenerator
 			.fullBlock("corrupted_stone")
 			.blockSpecial(new SimpleSpecial("corrupted_stone"))
 			.addTags(Tags.CORRUPTED, Tags.SOLID)
-			.itemGroupPath("building.stone")
+			.itemGroupPath("nature.cave")
+			.generate();
+
+		DataBuilder.create()
+			.fullBlock("amethine")
+			.blockSpecial(new SimpleSpecial("directional"))
+			.blockState(StateBuilder.create()
+				.addState(PropertyBuilder.create().addProperty(ConveyorBeltBlock.FACING, EnumFace.UP).rot(0, 0, 0).custom(true).tags(Tags.PICKABLE),    BlockModelBuilder.create("amethine").externalPath("custom_models/amethine.bbmodel"))
+				.addState(PropertyBuilder.create().addProperty(ConveyorBeltBlock.FACING, EnumFace.DOWN).rot(180, 0, 0).custom(true).tags(Tags.PICKABLE),  BlockModelBuilder.noGen("amethine"))
+				.addState(PropertyBuilder.create().addProperty(ConveyorBeltBlock.FACING, EnumFace.NORTH).rot(90, 0, 0).custom(true).tags(Tags.PICKABLE), BlockModelBuilder.noGen("amethine"))
+				.addState(PropertyBuilder.create().addProperty(ConveyorBeltBlock.FACING, EnumFace.EAST).rot(90, 270, 0).custom(true).tags(Tags.PICKABLE),  BlockModelBuilder.noGen("amethine"))
+				.addState(PropertyBuilder.create().addProperty(ConveyorBeltBlock.FACING, EnumFace.SOUTH).rot(90, 180, 0).custom(true).tags(Tags.PICKABLE), BlockModelBuilder.noGen("amethine"))
+				.addState(PropertyBuilder.create().addProperty(ConveyorBeltBlock.FACING, EnumFace.WEST).rot(90, 90, 0).custom(true).tags(Tags.PICKABLE),   BlockModelBuilder.noGen("amethine"))
+			)
+			.itemGroupPath("nature.cave")
 			.generate();
 
 		DataBuilder.create()
