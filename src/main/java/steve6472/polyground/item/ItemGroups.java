@@ -55,6 +55,12 @@ public class ItemGroups
 					.addChild(GroupBuilder.create("Cave", "cave", "amethine"))
 			)
 			.addChild(GroupBuilder.create("Misc", "misc", "wooden_box"))
+			.addChild(
+				GroupBuilder.create("Items", "items", "block_inspector")
+					.addChild(GroupBuilder.create("Powders", "powders", "cyan_powder"))
+					.addChild(GroupBuilder.create("A", "a", "stone"))
+					.addChild(GroupBuilder.create("B", "b", "stone"))
+			)
 			.generate();
 	}
 

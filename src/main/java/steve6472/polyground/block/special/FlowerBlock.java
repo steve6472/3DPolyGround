@@ -46,16 +46,11 @@ public class FlowerBlock extends Block
 	{
 		if (click.getAction() == KeyList.PRESS && click.getButton() == KeyList.MMB)
 		{
-			int ox = (int) (hash(world.getSeed(), -x, y, z * (1 << 4) + 1) % 12) - 6;
-			int oz = (int) (hash(world.getSeed(), x * -((1 << 5) + 1), y, -z) % 12) - 6;
+			int ox = (int) (hash(world.getSeed() + 1, -x, y, z * (1 << 4) + 1) % 12) - 6;
+			int oz = (int) (hash(world.getSeed() + 1, x * -((1 << 5) + 1), y, -z) % 12) - 6;
 
 			world.setBlock(Block.air, x, y, z);
-			Item item = switch (state.get(FLOWER_COLOR))
-				{
-					case RED -> Items.getItemByName("red_powder");
-					case GREEN -> Items.getItemByName("green_powder");
-					case BLUE -> Items.getItemByName("blue_powder");
-				};
+			Item item = Items.getItemByName(state.get(FLOWER_COLOR).name().toLowerCase() + "_powder");
 			ItemEntity e = new ItemEntity(null, item, x + 0.5f + ox / 16f, y + 0.25f, z + 0.5f + oz / 16f);
 			world.getEntityManager().addEntity(e);
 		}
@@ -64,8 +59,8 @@ public class FlowerBlock extends Block
 	@Override
 	public int createModel(int x, int y, int z, World world, BlockState state, ModelBuilder buildHelper, ModelLayer modelLayer)
 	{
-		int ox = (int) (hash(world.getSeed(), -x, y, z * (1 << 4) + 1) % 12) - 6;
-		int oz = (int) (hash(world.getSeed(), x * -((1 << 5) + 1), y, -z) % 12) - 6;
+		int ox = (int) (hash(world.getSeed() + 1, -x, y, z * (1 << 4) + 1) % 12) - 6;
+		int oz = (int) (hash(world.getSeed() + 1, x * -((1 << 5) + 1), y, -z) % 12) - 6;
 
 		buildHelper.setOffset(ox / 16f, 0, oz / 16f);
 		return CustomBlock.model(x, y, z, world, state, buildHelper, modelLayer);
@@ -78,8 +73,8 @@ public class FlowerBlock extends Block
 		CubeHitbox[] copy = new CubeHitbox[model.length];
 		for (int i = 0; i < copy.length; i++)
 		{
-			int ox = (int) (hash(world.getSeed(), -x, y, z * (1 << 4) + 1) % 12) - 6;
-			int oz = (int) (hash(world.getSeed(), x * -((1 << 5) + 1), y, -z) % 12) - 6;
+			int ox = (int) (hash(world.getSeed() + 1, -x, y, z * (1 << 4) + 1) % 12) - 6;
+			int oz = (int) (hash(world.getSeed() + 1, x * -((1 << 5) + 1), y, -z) % 12) - 6;
 
 			CubeHitbox c = model[i];
 			CubeHitbox cubeHitbox = new CubeHitbox(new AABBf(c.getAabb()));
@@ -109,7 +104,7 @@ public class FlowerBlock extends Block
 	@Override
 	public BlockState getStateForPlacement(World world, Player player, EnumFace placedOn, int x, int y, int z)
 	{
-		return getDefaultState().with(FLOWER_COLOR, EnumFlowerColor.values()[RandomUtil.randomInt(0, 2)]).get();
+		return getDefaultState().with(FLOWER_COLOR, EnumFlowerColor.getValues()[RandomUtil.randomInt(0, EnumFlowerColor.getValues().length - 1)]).get();
 	}
 
 	@Override

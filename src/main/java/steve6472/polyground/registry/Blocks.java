@@ -111,7 +111,7 @@ public class Blocks
 			}
 		}
 
-		BlockAtlas.putTexture("white");
+		BlockAtlas.putTexture("block/white");
 	}
 
 	public static Block getBlockByName(String name)
@@ -180,7 +180,7 @@ public class Blocks
 		game.mainRender.buildHelper.atlasSize = BlockAtlas.getAtlas().getTileCount();
 		game.mainRender.buildHelper.texel = 1f / (float) BlockAtlas.getAtlas().getTileCount();
 
-		Bakery.load(BlockAtlas.getTexture(BlockAtlas.getTextureId("white")), game.mainRender.buildHelper);
+		Bakery.load(BlockAtlas.getTexture(BlockAtlas.getTextureId("block/white")), game.mainRender.buildHelper);
 
 		for (Block b : blocks)
 		{

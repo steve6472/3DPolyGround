@@ -36,7 +36,7 @@ public class BlockAtlas
 		{
 			try
 			{
-				atlas.add(usedTextures.get(i), new File("game/textures/block/" + usedTextures.get(i) + ".png"));
+				atlas.add(usedTextures.get(i), new File("game/textures/" + usedTextures.get(i) + ".png"));
 			} catch (NullPointerException ex)
 			{
 				System.err.println(usedTextures.get(i));

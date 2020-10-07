@@ -107,6 +107,15 @@ public class DataBuilder
 		return this;
 	}
 
+	public DataBuilder item(String name, String group)
+	{
+		return
+			DataBuilder.create()
+				.itemName(name)
+				.itemModel(new ItemFromModel(name))
+				.itemGroupPath(group);
+	}
+
 	public DataBuilder noItem()
 	{
 		itemModelPath = "";

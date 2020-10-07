@@ -326,33 +326,36 @@ public class DataGenerator
 			.itemGroupPath("misc")
 			.generate();
 
+		DataBuilder.create()
+			.fullBlock("paint_bucket")
+			.blockState(StateBuilder.create().singleModel(BlockModelBuilder.create("paint_bucket").externalPath("custom_models/paint_bucket.bbmodel")))
+			.blockSpecial(new SimpleSpecial("paint_bucket"))
+			.itemGroupPath("misc")
+			.generate();
+
 		// Items ?
 
-		DataBuilder.create()
-			.itemName("red_powder")
-			.itemModel(new ItemFromModel("red_powder"))
-			.itemGroupPath("misc")
-			.generate();
-
-		DataBuilder.create()
-			.itemName("green_powder")
-			.itemModel(new ItemFromModel("green_powder"))
-			.itemGroupPath("misc")
-			.generate();
-
-		DataBuilder.create()
-			.itemName("blue_powder")
-			.itemModel(new ItemFromModel("blue_powder"))
-			.itemGroupPath("misc")
-			.generate();
+		DataBuilder.create().item("red_powder", "items.powders").generate();
+		DataBuilder.create().item("green_powder", "items.powders").generate();
+		DataBuilder.create().item("blue_powder", "items.powders").generate();
+		DataBuilder.create().item("cyan_powder", "items.powders").generate();
+		DataBuilder.create().item("magenta_powder", "items.powders").generate();
+		DataBuilder.create().item("yellow_powder", "items.powders").generate();
+		DataBuilder.create().item("black_powder", "items.powders").generate();
+		DataBuilder.create().item("white_powder", "items.powders").generate();
 
 		DataBuilder.create()
 			.fullBlock("flower")
 			.blockSpecial(new SimpleSpecial("flower"))
 			.blockState(StateBuilder.create()
-				.addState(PropertyBuilder.create().addProperty(FlowerBlock.FLOWER_COLOR, EnumFlowerColor.RED).tags(Tags.PICKABLE), BlockModelBuilder.create("red_flower").externalPath("custom_models/red_flower.bbmodel"))
-				.addState(PropertyBuilder.create().addProperty(FlowerBlock.FLOWER_COLOR, EnumFlowerColor.GREEN).tags(Tags.PICKABLE), BlockModelBuilder.create("green_flower").externalPath("custom_models/green_flower.bbmodel"))
-				.addState(PropertyBuilder.create().addProperty(FlowerBlock.FLOWER_COLOR, EnumFlowerColor.BLUE).tags(Tags.PICKABLE), BlockModelBuilder.create("blue_flower").externalPath("custom_models/blue_flower.bbmodel"))
+				.addState(PropertyBuilder.create().addProperty(FlowerBlock.FLOWER_COLOR, EnumFlowerColor.RED).tags(Tags.PICKABLE), BlockModelBuilder.create("red_flower").externalPath("custom_models/flowers/red_flower.bbmodel"))
+				.addState(PropertyBuilder.create().addProperty(FlowerBlock.FLOWER_COLOR, EnumFlowerColor.GREEN).tags(Tags.PICKABLE), BlockModelBuilder.create("green_flower").externalPath("custom_models/flowers/green_flower.bbmodel"))
+				.addState(PropertyBuilder.create().addProperty(FlowerBlock.FLOWER_COLOR, EnumFlowerColor.BLUE).tags(Tags.PICKABLE), BlockModelBuilder.create("blue_flower").externalPath("custom_models/flowers/blue_flower.bbmodel"))
+				.addState(PropertyBuilder.create().addProperty(FlowerBlock.FLOWER_COLOR, EnumFlowerColor.CYAN).tags(Tags.PICKABLE), BlockModelBuilder.create("cyan_flower").externalPath("custom_models/flowers/cyan_flower.bbmodel"))
+				.addState(PropertyBuilder.create().addProperty(FlowerBlock.FLOWER_COLOR, EnumFlowerColor.MAGENTA).tags(Tags.PICKABLE), BlockModelBuilder.create("magenta_flower").externalPath("custom_models/flowers/magenta_flower.bbmodel"))
+				.addState(PropertyBuilder.create().addProperty(FlowerBlock.FLOWER_COLOR, EnumFlowerColor.YELLOW).tags(Tags.PICKABLE), BlockModelBuilder.create("yellow_flower").externalPath("custom_models/flowers/yellow_flower.bbmodel"))
+				.addState(PropertyBuilder.create().addProperty(FlowerBlock.FLOWER_COLOR, EnumFlowerColor.WHITE).tags(Tags.PICKABLE), BlockModelBuilder.create("white_flower").externalPath("custom_models/flowers/white_flower.bbmodel"))
+				.addState(PropertyBuilder.create().addProperty(FlowerBlock.FLOWER_COLOR, EnumFlowerColor.BLACK).tags(Tags.PICKABLE), BlockModelBuilder.create("black_flower").externalPath("custom_models/flowers/black_flower.bbmodel"))
 			)
 			.itemGroupPath("nature")
 			.generate();

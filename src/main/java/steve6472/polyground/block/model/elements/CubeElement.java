@@ -23,10 +23,11 @@ public class CubeElement implements IElement
 {
 	public PlaneElement north, east, south, west, up, down;
 	public String name;
+	private final boolean isBlock;
 
-	public CubeElement()
+	public CubeElement(boolean isBlock)
 	{
-
+		this.isBlock = isBlock;
 	}
 
 	@Override
@@ -145,7 +146,7 @@ public class CubeElement implements IElement
 			el.createTriangles(v0, v1, v2, v3, ElUtil.EMPTY_MATRIX, uv, face.optFloat("rotation", 0), tint, biomeTint);
 		}
 
-		String texture = face.getString("texture");
+		String texture = (isBlock ? "block/" : "item/") + face.getString("texture");
 		BlockAtlas.putTexture(texture);
 		el.setTexture(BlockAtlas.getTextureId(texture));
 

@@ -33,9 +33,9 @@ public class StaticEntityModel
 
 	int vao, vertexCount;
 
-	public void load(ModelBuilder modelBuilder, ModelLoader modelLoader, String path, boolean fixUv)
+	public void load(ModelBuilder modelBuilder, ModelLoader modelLoader, String path, boolean fixUv, boolean isBlock)
 	{
-		load(modelBuilder, modelLoader.loadElements(ModelLoader.load(path, false), 0, 0, 0), fixUv);
+		load(modelBuilder, modelLoader.loadElements(ModelLoader.load(path, false), 0, 0, 0, isBlock), fixUv);
 	}
 
 	public void load(ModelBuilder modelBuilder, IElement[] elements, boolean fixUv)

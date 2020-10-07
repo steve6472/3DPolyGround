@@ -55,7 +55,7 @@ public class Block
 		cube.setHitbox(true);
 		cube.setVisible(true);
 
-		CubeElement c = new CubeElement();
+		CubeElement c = new CubeElement(true);
 		JSONObject j = new JSONObject("""
 			{
 			    "from": [0, 0, 0],

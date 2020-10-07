@@ -94,7 +94,7 @@ public class ModelLoader
 		return cubes.toArray(new CubeHitbox[0]);
 	}
 
-	public IElement[] loadElements(JSONObject json, int rotX, int rotY, int rotZ)
+	public IElement[] loadElements(JSONObject json, int rotX, int rotY, int rotZ, boolean isBlock)
 	{
 		List<IElement> elements = new ArrayList<>();
 
@@ -148,7 +148,7 @@ public class ModelLoader
 				{
 					addRot(cubeObj, rotX, rotY, rotZ);
 				}
-				CubeElement el = new CubeElement();
+				CubeElement el = new CubeElement(isBlock);
 				try
 				{
 					el.load(cubeObj);
