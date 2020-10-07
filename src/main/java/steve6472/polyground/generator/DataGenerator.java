@@ -481,13 +481,13 @@ public class DataGenerator
 						.hitbox(false)
 						.min(8, 0, 0)
 						.max(8, 16, 16)
-						.face(FaceBuilder.create().texture("tall_grass_bottom").biomeTint(true), EnumFace.SOUTH, EnumFace.NORTH)
+						.face(FaceBuilder.create().texture("block/tall_grass_bottom").biomeTint(true), EnumFace.SOUTH, EnumFace.NORTH)
 					).addCube(CubeBuilder.create()
 						.collisionBox(false)
 						.hitbox(false)
 						.min(0, 0, 8)
 						.max(16, 16, 8)
-						.face(FaceBuilder.create().texture("tall_grass_bottom").biomeTint(true), EnumFace.EAST, EnumFace.WEST)
+						.face(FaceBuilder.create().texture("block/tall_grass_bottom").biomeTint(true), EnumFace.EAST, EnumFace.WEST)
 					)
 				)
 				.addState(PropertyBuilder.create().addProperty(DoubleBlock.HALF, EnumHalf.TOP).tag(Tags.TRANSPARENT), BlockModelBuilder.create("tall_grass_top")
@@ -499,13 +499,13 @@ public class DataGenerator
 						.hitbox(false)
 						.min(8, 0, 0)
 						.max(8, 16, 16)
-						.face(FaceBuilder.create().texture("tall_grass_top").biomeTint(true), EnumFace.SOUTH, EnumFace.NORTH)
+						.face(FaceBuilder.create().texture("block/tall_grass_top").biomeTint(true), EnumFace.SOUTH, EnumFace.NORTH)
 					).addCube(CubeBuilder.create()
 						.collisionBox(false)
 						.hitbox(false)
 						.min(0, 0, 8)
 						.max(16, 16, 8)
-						.face(FaceBuilder.create().texture("tall_grass_top").biomeTint(true), EnumFace.EAST, EnumFace.WEST)
+						.face(FaceBuilder.create().texture("block/tall_grass_top").biomeTint(true), EnumFace.EAST, EnumFace.WEST)
 					)
 				)
 			)
@@ -522,10 +522,10 @@ public class DataGenerator
 					.min(1, 0, 1)
 					.max(15, 16, 15)
 					.face(FaceBuilder.create()
-						.texture("cactus_top")
+						.texture("block/cactus_top")
 						.autoUv(true), EnumFace.UP)
 					.face(FaceBuilder.create()
-						.texture("cactus_bottom")
+						.texture("block/cactus_bottom")
 						.autoUv(true), EnumFace.DOWN)
 				).addCube(CubeBuilder.create()
 					.collisionBox(false)
@@ -533,7 +533,7 @@ public class DataGenerator
 					.min(0, 0, 1)
 					.max(16, 16, 15)
 					.face(FaceBuilder.create()
-						.texture("cactus_side")
+						.texture("block/cactus_side")
 						.autoUv(true), EnumFace.EAST, EnumFace.WEST)
 				).addCube(CubeBuilder.create()
 					.collisionBox(false)
@@ -541,7 +541,7 @@ public class DataGenerator
 					.min(1, 0, 0)
 					.max(15, 16, 16)
 					.face(FaceBuilder.create()
-						.texture("cactus_side")
+						.texture("block/cactus_side")
 						.autoUv(true), EnumFace.NORTH, EnumFace.SOUTH)
 				)
 			).tag(Tags.CACTUS_TOP))
@@ -555,14 +555,14 @@ public class DataGenerator
 			.itemModel(new ItemFromBlock("snow_layer"))
 			.blockSpecial(new SimpleSpecial("snow_layer"))
 			.blockState(StateBuilder.create()
-				.addState(snowState(1), snowLayer(1, "snow"))
-				.addState(snowState(2), snowLayer(2, "snow"))
-				.addState(snowState(3), snowLayer(3, "snow"))
-				.addState(snowState(4), snowLayer(4, "snow"))
-				.addState(snowState(5), snowLayer(5, "snow"))
-				.addState(snowState(6), snowLayer(6, "snow"))
-				.addState(snowState(7), snowLayer(7, "snow"))
-				.addState(snowState(8).tag(Tags.SOLID), snowLayer(8, "snow"))
+				.addState(snowState(1), snowLayer(1, "block/snow"))
+				.addState(snowState(2), snowLayer(2, "block/snow"))
+				.addState(snowState(3), snowLayer(3, "block/snow"))
+				.addState(snowState(4), snowLayer(4, "block/snow"))
+				.addState(snowState(5), snowLayer(5, "block/snow"))
+				.addState(snowState(6), snowLayer(6, "block/snow"))
+				.addState(snowState(7), snowLayer(7, "block/snow"))
+				.addState(snowState(8).tag(Tags.SOLID), snowLayer(8, "block/snow"))
 			)
 			.itemGroupPath("nature")
 			.generate();
@@ -572,18 +572,18 @@ public class DataGenerator
 				BlockModelBuilder.create("grass")
 					.addCube(CubeBuilder.create()
 						.fullBlock()
-						.face(FaceBuilder.create().texture("dirt"), EnumFace.NORTH, EnumFace.EAST, EnumFace.SOUTH, EnumFace.WEST, EnumFace.DOWN))
+						.face(FaceBuilder.create().texture("block/dirt"), EnumFace.NORTH, EnumFace.EAST, EnumFace.SOUTH, EnumFace.WEST, EnumFace.DOWN))
 					.addCube(CubeBuilder.create()
 						.fullBlock()
 						.hitbox(false)
 						.collisionBox(false)
 						.face(FaceBuilder.create()
-								.texture("grass_block_side_overlay")
+								.texture("block/grass_block_side_overlay")
 								.biomeTint(true)
 								.modelLayer(ModelLayer.OVERLAY_0),
 							CubeBuilder.SIDE)
 						.face(FaceBuilder.create()
-							.texture("grass_block_top")
+							.texture("block/grass_block_top")
 							.biomeTint(true)
 							.modelLayer(ModelLayer.OVERLAY_0), EnumFace.UP
 						)
@@ -602,7 +602,7 @@ public class DataGenerator
 					.addCube(CubeBuilder.create()
 						.fullBlock()
 						.face(FaceBuilder.create()
-							.texture("green_screen")
+							.texture("block/green_screen")
 							.modelLayer(ModelLayer.LIGHT)
 						)
 					)
@@ -625,18 +625,18 @@ public class DataGenerator
 							.torch()
 							.collisionBox(false)
 							.face(FaceBuilder.create()
-									.texture("slime_torch")
+									.texture("block/slime_torch")
 									.modelLayer(ModelLayer.LIGHT)
 								,CubeBuilder.SIDE
 							)
 							.face(FaceBuilder.create()
-									.texture("slime_torch")
+									.texture("block/slime_torch")
 									.modelLayer(ModelLayer.LIGHT)
 									.uv(7,  6, 9, 8)
 								, EnumFace.UP
 							)
 							.face(FaceBuilder.create()
-									.texture("slime_torch")
+									.texture("block/slime_torch")
 									.modelLayer(ModelLayer.LIGHT)
 									.uv(7,  11, 9, 13)
 								, EnumFace.DOWN
@@ -649,17 +649,17 @@ public class DataGenerator
 							.torch()
 							.collisionBox(false)
 							.face(FaceBuilder.create()
-									.texture("slime_torch_off")
+									.texture("block/slime_torch_off")
 								,CubeBuilder.SIDE
 							)
 							.face(FaceBuilder.create()
-									.texture("slime_torch_off")
+									.texture("block/slime_torch_off")
 									.modelLayer(ModelLayer.LIGHT)
 									.uv(7,  6, 9, 8)
 								, EnumFace.UP
 							)
 							.face(FaceBuilder.create()
-									.texture("slime_torch_off")
+									.texture("block/slime_torch_off")
 									.modelLayer(ModelLayer.LIGHT)
 									.uv(7,  11, 9, 13)
 								, EnumFace.DOWN
@@ -685,10 +685,10 @@ public class DataGenerator
 						.addCube(CubeBuilder.create()
 							.bottomSlab()
 							.face(FaceBuilder.create()
-								.texture("smooth_stone")
+								.texture("block/smooth_stone")
 								.uvlock(true), CubeBuilder.TOP_BOTTOM)
 							.face(FaceBuilder.create()
-								.texture("smooth_stone_slab")
+								.texture("block/smooth_stone_slab")
 								.uvlock(true), CubeBuilder.SIDE)
 						)
 				).addState(PropertyBuilder.create()
@@ -699,10 +699,10 @@ public class DataGenerator
 						.addCube(CubeBuilder.create()
 							.topSlab()
 							.face(FaceBuilder.create()
-								.texture("smooth_stone")
+								.texture("block/smooth_stone")
 								.uvlock(true), CubeBuilder.TOP_BOTTOM)
 							.face(FaceBuilder.create()
-								.texture("smooth_stone_slab")
+								.texture("block/smooth_stone_slab")
 								.uvlock(true), CubeBuilder.SIDE)
 						)
 				).addState(PropertyBuilder.create()
@@ -713,10 +713,10 @@ public class DataGenerator
 						.addCube(CubeBuilder.create()
 							.fullBlock()
 							.face(FaceBuilder.create()
-								.texture("smooth_stone")
+								.texture("block/smooth_stone")
 								.uvlock(true), CubeBuilder.TOP_BOTTOM)
 							.face(FaceBuilder.create()
-								.texture("smooth_stone_slab")
+								.texture("block/smooth_stone_slab")
 								.uvlock(true), CubeBuilder.SIDE)
 						)
 				).addState(PropertyBuilder.create()
@@ -728,13 +728,13 @@ public class DataGenerator
 							.min(0, 0, 0)
 							.max(8, 16, 16)
 							.face(FaceBuilder.create()
-								.texture("smooth_stone_slab_side")
+								.texture("block/smooth_stone_slab_side")
 								, CubeBuilder.TOP_BOTTOM)
 							.face(FaceBuilder.create()
-								.texture("smooth_stone")
+								.texture("block/smooth_stone")
 								, EnumFace.NORTH, EnumFace.SOUTH)
 							.face(FaceBuilder.create()
-								.texture("smooth_stone_slab_side")
+								.texture("block/smooth_stone_slab_side")
 								.uv(0, 8, 16, 0)
 								.rotation(90)
 								, EnumFace.EAST, EnumFace.WEST)
@@ -752,17 +752,17 @@ public class DataGenerator
 							.min(0, 0, 8)
 							.max(16, 16, 16)
 							.face(FaceBuilder.create()
-								.texture("smooth_stone_slab_side")
+								.texture("block/smooth_stone_slab_side")
 								.uv(0, 0, 16, 8)
 								.rotation(90)
 								, CubeBuilder.TOP_BOTTOM)
 							.face(FaceBuilder.create()
-								.texture("smooth_stone_slab_side")
+								.texture("block/smooth_stone_slab_side")
 								.uv(0, 8, 16, 0)
 								.rotation(90)
 								, EnumFace.NORTH, EnumFace.SOUTH)
 							.face(FaceBuilder.create()
-								.texture("smooth_stone")
+								.texture("block/smooth_stone")
 								, EnumFace.EAST, EnumFace.WEST)
 						)
 				).addState(PropertyBuilder.create()
@@ -782,13 +782,13 @@ public class DataGenerator
 						.addCube(CubeBuilder.create()
 							.fullBlock()
 							.face(FaceBuilder.create()
-								.texture("smooth_stone")
+								.texture("block/smooth_stone")
 								.uvlock(true), EnumFace.NORTH, EnumFace.SOUTH)
 							.face(FaceBuilder.create()
-								.texture("smooth_stone_slab")
+								.texture("block/smooth_stone_slab")
 								, EnumFace.UP, EnumFace.DOWN)
 							.face(FaceBuilder.create()
-								.texture("smooth_stone_slab")
+								.texture("block/smooth_stone_slab")
 								.rotation(90)
 								.uvlock(true), EnumFace.EAST, EnumFace.WEST)
 						)
@@ -798,37 +798,8 @@ public class DataGenerator
 			.generate();
 
 /*
-		DataBuilder.create().fullBlock("bedrock").generate();
-		DataBuilder.create().fullBlock("bricks").generate();
-		DataBuilder.create().fullBlock("cobblestone").generate();
-		DataBuilder.create().fullBlock("green_screen").generate();
-		DataBuilder.create().fullBlock("oak_plank").generate();
-		DataBuilder.create().fullBlock("iron_block").generate();
-		DataBuilder.create().fullBlock("sand").generate();
-		DataBuilder.create().fullBlock("stone").generate();
-
 		DataBuilder.create().doubleSlabBlock("dirt", "dirt_slab_top", "dirt_slab_bottom").generate();
 		DataBuilder.create().doubleSlabBlock("double_smooth_slab", "smooth_slab_top", "smooth_slab_bottom").generate();
-
-		DataBuilder.create().transparentFullBlock("glass").generate();
-		DataBuilder.create().transparentFullBlock("framed_glass").generate();
-
-		decorativeFullLeavesBlock("oak_leaves", 48f / 104f, 67f / 100f, 19f / 104f);
-		decorativeFullLeavesBlock("dark_oak_leaves", 48f / 104f, 67f / 100f, 19f / 104f);
-		decorativeFullLeavesBlock("birch_leaves", 56f / 112f, 71f / 109f, 37f / 112f);
-		decorativeFullLeavesBlock("jungle_leaves", 52f / 112f, 73f / 109f, 21f / 112f);
-		decorativeFullLeavesBlock("spruce_leaves", 32f / 85f, 51f / 85f, 32f / 85f);
-		decorativeFullLeavesBlock("acacia_leaves", 74f / 158f, 106f / 158f, 29f / 158f);*/
-/*
-//		decorativeFullSidedBlock("oak_log", "oak_log", "oak_log", "oak_log_side");
-
-//		grassBlock("grass", 0.5686275f, 0.7411765f, 0.34901962f);
-//		grassBlock("red_grass", 1f, 0f, 0f);
-//		grassBlock("green_grass", 0f, 1f, 0f);
-//		grassBlock("blue_grass", 0f, 0f, 1f);
-
-		/* Smooth Slab */
-//		sidedSlabFamily("smooth_slab_top", "smooth_slab_bottom", "double_smooth_slab", "smooth_slab", "smooth_stone", "smooth_stone", "smooth_stone_slab");
 
 		/* Old Grass Block Slab */
 //		sidedSlabFamily("old_grass_block_slab_top", "old_grass_block_slab_bottom", "old_grass_block", "old_grass_block_slab", "old_grass_block_top", "dirt", "old_grass_block_slab_side", "old_grass_block_side");
@@ -838,16 +809,10 @@ public class DataGenerator
 
 		/* Old Full Grass Block Slab */
 //		fullSlabFamily("old_full_grass_block_slab_top", "old_full_grass_block_slab_bottom", "old_full_grass_block", "old_full_grass_block_slab", "old_grass_block_top");
-
 		/* Grass Block Slab */
 //		topSlabGrassTinted("grass_block_slab_top", 0.5686275f, 0.7411765f, 0.34901962f);
 //		bottomSlabGrassTinted("grass_block_slab_bottom", 0.5686275f, 0.7411765f, 0.34901962f);
 //		item("grass_block_slab", new ItemFromBlock("grass_block_slab_bottom"), new SlabSpecial("grass_block_slab_top", "grass_block_slab_bottom", "grass"), "grass_block_slab_bottom");
-
-
-//		fallingFullBlock("sand");
-//		fallingFullBlock("gravel");
-
 //		specialItem("speedometer", new SimpleSpecial("speedometer"));
 //		specialItem("block_inspector", new SimpleSpecial("block_inspector"));
 //		specialItem("wooden_axe", new SimpleSpecial("worldedit"));
@@ -984,7 +949,7 @@ public class DataGenerator
 			.path("desert")
 			.name("shrubs")
 			.matchTags("block_under", Tags.SHRUBS_TOP)
-			.blockState("block", BlockStateBuilder.create().block("shrub"))
+			.provideStates("block", BlockStateBuilder.create().block("shrub"))
 			.integer("radius", 2)
 			.doubleArg("chance", 0.5)
 			.bool("decay", true)
@@ -994,7 +959,7 @@ public class DataGenerator
 			.path("common")
 			.name("grass_patch")
 			.matchTags("block_under", Tags.FLOWER_TOP)
-			.blockState("block", BlockStateBuilder.create().block("small_grass"))
+			.provideStates("block", BlockStateBuilder.create().block("small_grass"))
 			.integer("radius", 2)
 			.doubleArg("chance", 0.3)
 			.bool("decay", true)
@@ -1004,7 +969,7 @@ public class DataGenerator
 			.path("common")
 			.name("tall_grass_patch")
 			.matchTags("block_under", Tags.FLOWER_TOP)
-			.blockState("block", BlockStateBuilder.create().block("tall_grass"))
+			.provideStates("block", BlockStateBuilder.create().block("tall_grass"))
 			.integer("radius", 4)
 			.doubleArg("chance", 0.5)
 			.bool("decay", true)
@@ -1014,7 +979,7 @@ public class DataGenerator
 			.path("common")
 			.name("grass_patch_mixed")
 			.matchTags("block_under", Tags.FLOWER_TOP)
-			.blockState("block", BlockStateBuilder.create().block("tall_grass"))
+			.provideStates("block", BlockStateBuilder.create().block("tall_grass"))
 			.integer("radius", 4)
 			.doubleArg("chance", 0.75)
 			.bool("decay", true)
@@ -1024,7 +989,7 @@ public class DataGenerator
 			.path("common")
 			.name("pebbles")
 			.matchBlocks("block_under", "sand", "grass", "dirt", "stone")
-			.blockState("block", BlockStateBuilder.create().block("pebbles"))
+			.provideStates("block", BlockStateBuilder.create().block("pebbles"))
 			.integer("radius", 3)
 			.doubleArg("chance", 0.3)
 			.bool("decay", true)
@@ -1032,9 +997,27 @@ public class DataGenerator
 
 		FeatureBuilder.create(FeatureRegistry.VEGETATION_PATCH.name())
 			.path("common")
+			.name("flowers")
+			.matchBlocks("block_under", "grass", "dirt")
+			.provideStates("block",
+				BlockStateBuilder.create().block("flower").state(FlowerBlock.FLOWER_COLOR, EnumFlowerColor.RED),
+				BlockStateBuilder.create().block("flower").state(FlowerBlock.FLOWER_COLOR, EnumFlowerColor.GREEN),
+				BlockStateBuilder.create().block("flower").state(FlowerBlock.FLOWER_COLOR, EnumFlowerColor.BLUE),
+				BlockStateBuilder.create().block("flower").state(FlowerBlock.FLOWER_COLOR, EnumFlowerColor.CYAN),
+				BlockStateBuilder.create().block("flower").state(FlowerBlock.FLOWER_COLOR, EnumFlowerColor.MAGENTA),
+				BlockStateBuilder.create().block("flower").state(FlowerBlock.FLOWER_COLOR, EnumFlowerColor.YELLOW),
+				BlockStateBuilder.create().block("flower").state(FlowerBlock.FLOWER_COLOR, EnumFlowerColor.WHITE),
+				BlockStateBuilder.create().block("flower").state(FlowerBlock.FLOWER_COLOR, EnumFlowerColor.BLACK))
+			.integer("radius", 4)
+			.doubleArg("chance", 0.4)
+			.bool("decay", true)
+			.generate();
+
+		FeatureBuilder.create(FeatureRegistry.VEGETATION_PATCH.name())
+			.path("common")
 			.name("sticks")
 			.matchBlocks("block_under", "sand", "grass", "dirt", "stone")
-			.blockState("block", BlockStateBuilder.create().block("stick"))
+			.provideStates("block", BlockStateBuilder.create().block("stick"))
 			.integer("radius", 3)
 			.doubleArg("chance", 0.3)
 			.bool("decay", true)
@@ -1111,6 +1094,7 @@ public class DataGenerator
 			.feature(EnumFeatureStage.VEGETATION, 1d / 100d, "grass_patch")
 			.feature(EnumFeatureStage.VEGETATION, 1d / 512d, "pebbles")
 			.feature(EnumFeatureStage.VEGETATION, 1d / 256d, "sticks")
+			.feature(EnumFeatureStage.VEGETATION, 1d / 512d, "flowers")
 			.feature(EnumFeatureStage.TREE, 1d / 5d, "oak_tree")
 			.generate();
 
@@ -1123,6 +1107,7 @@ public class DataGenerator
 			.feature(EnumFeatureStage.VEGETATION, 1d / 100d, "grass_patch")
 			.feature(EnumFeatureStage.VEGETATION, 1d / 220d, "tall_grass_patch")
 			.feature(EnumFeatureStage.VEGETATION, 1d / 512d, "pebbles")
+			.feature(EnumFeatureStage.VEGETATION, 1d / 256d, "flowers")
 			.generate();
 
 		BiomeBuilder.create()

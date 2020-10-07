@@ -94,7 +94,7 @@ public class ModelLoader
 		return cubes.toArray(new CubeHitbox[0]);
 	}
 
-	public IElement[] loadElements(JSONObject json, int rotX, int rotY, int rotZ, boolean isBlock)
+	public IElement[] loadElements(JSONObject json, int rotX, int rotY, int rotZ)
 	{
 		List<IElement> elements = new ArrayList<>();
 
@@ -148,14 +148,14 @@ public class ModelLoader
 				{
 					addRot(cubeObj, rotX, rotY, rotZ);
 				}
-				CubeElement el = new CubeElement(isBlock);
+				CubeElement el = new CubeElement();
 				try
 				{
 					el.load(cubeObj);
 				} catch (Exception ex)
 				{
-					ex.printStackTrace();
 					System.err.println(PrettyJson.prettify(cubeObj));
+					ex.printStackTrace();
 				}
 				if (rotY != 0 && rotY % 90 == 0)
 				{

@@ -4,6 +4,7 @@ import steve6472.polyground.gfx.atlas.Atlas;
 
 import java.awt.*;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.HashMap;
 
 /**********************
@@ -76,6 +77,10 @@ public class BlockAtlas
 				if (textures != null)
 				{
 					throw new IllegalStateException("Textures already compiled");
+				}
+				if (!new File("game/textures/" + name + ".png").exists())
+				{
+					throw new FileNotFoundException("Texture '" + name + "' does not exist!");
 				}
 //				System.out.println("New texture: '" + name + "' id: " + usedTexturesReference.size());
 				usedTexturesReference.put(name, usedTexturesReference.size());

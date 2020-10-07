@@ -33,7 +33,7 @@ public class StaticEntityModel implements IModel
 
 	public void load(ModelBuilder modelBuilder, ModelLoader modelLoader, String path, boolean fixUv, boolean isBlock)
 	{
-		load(modelBuilder, modelLoader.loadElements(ModelLoader.load(path, false), 0, 0, 0, isBlock), fixUv);
+		load(modelBuilder, modelLoader.loadElements(ModelLoader.load(path, false), 0, 0, 0), fixUv);
 	}
 
 	public void load(ModelBuilder modelBuilder, IElement[] elements, boolean fixUv)

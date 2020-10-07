@@ -56,18 +56,18 @@ public class Block
 		cube.setHitbox(true);
 		cube.setVisible(true);
 
-		CubeElement c = new CubeElement(true);
+		CubeElement c = new CubeElement();
 		JSONObject j = new JSONObject("""
 			{
 			    "from": [0, 0, 0],
 			    "to": [16, 16, 16],
 			    "faces": {
-			        "east":  {"texture": "null"},
-			        "south": {"texture": "null"},
-			        "north": {"texture": "null"},
-			        "west":  {"texture": "null"},
-			        "up":    {"texture": "null"},
-			        "down":  {"texture": "null"}
+			        "east":  {"texture": "block/null"},
+			        "south": {"texture": "block/null"},
+			        "north": {"texture": "block/null"},
+			        "west":  {"texture": "block/null"},
+			        "up":    {"texture": "block/null"},
+			        "down":  {"texture": "block/null"}
 			    }
 			}
 			""");

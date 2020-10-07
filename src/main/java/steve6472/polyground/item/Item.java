@@ -79,7 +79,7 @@ public class Item
 		IElement[] elements = null;
 		if (js.getString("type").equals("from_model"))
 		{
-			elements = CaveGame.getInstance().modelLoader.loadElements(ModelLoader.load("custom_models/items/" + js.getString("model_name") + ".bbmodel", true), 0, 0, 0, false);
+			elements = CaveGame.getInstance().modelLoader.loadElements(ModelLoader.load("custom_models/items/" + js.getString("model_name") + ".bbmodel", true), 0, 0, 0);
 		}
 
 		modelQueue.add(new Pair<>(elements, (el) -> loadModel(js, el)));

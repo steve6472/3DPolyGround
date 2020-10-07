@@ -165,13 +165,14 @@ public class BlockBenchTranslator
 			JSONObject texture = textures.getJSONObject(i);
 			if (texture.getInt("id") == id)
 			{
-				String name = texture.getString("name");
-				if (name.endsWith(".png"))
-					name = name.substring(0, name.length() - 4);
-				return name;
+				String path = texture.getString("path");
+				path = path.replace("\\", "/");
+				path = path.substring(path.indexOf("textures") + 9);
+				path = path.substring(0, path.length() - 4);
+				return path;
 			}
 		}
-		return "null";
+		return "block/null";
 	}
 
 	private record OutlinerTransformation(Vector3f origin, Vector3f rotation, UUID uuid, List<UUID> children)

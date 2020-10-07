@@ -47,7 +47,7 @@ public class BlockModel
 		isBlockbenchModel = json.optBoolean("blockbench", false);
 
 		cubes = CaveGame.getInstance().modelLoader.loadCubes(json, rotX, rotY, rotZ);
-		elements = CaveGame.getInstance().modelLoader.loadElements(json, rotX, rotY, rotZ, true);
+		elements = CaveGame.getInstance().modelLoader.loadElements(json, rotX, rotY, rotZ);
 
 		double volume = 0;
 
@@ -81,7 +81,7 @@ public class BlockModel
 		JSONObject json = ModelLoader.loadJSONModel(path);
 
 		cubes = CaveGame.getInstance().modelLoader.loadCubes(json, rotX, rotY, rotZ);
-		elements = CaveGame.getInstance().modelLoader.loadElements(json, rotX, rotY, rotZ, true);
+		elements = CaveGame.getInstance().modelLoader.loadElements(json, rotX, rotY, rotZ);
 		createModel(CaveGame.getInstance().mainRender.buildHelper);
 	}
 

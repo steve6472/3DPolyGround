@@ -202,13 +202,13 @@ public class DataBuilder
 					.hitbox(false)
 					.min(8, 0, 0)
 					.max(8, 16, 16)
-					.face(FaceBuilder.create().texture(name).biomeTint(biomeTint), EnumFace.SOUTH, EnumFace.NORTH)
+					.face(FaceBuilder.create().texture("block/" + name).biomeTint(biomeTint), EnumFace.SOUTH, EnumFace.NORTH)
 				).addCube(CubeBuilder.create()
 					.collisionBox(false)
 					.hitbox(false)
 					.min(0, 0, 8)
 					.max(16, 16, 8)
-					.face(FaceBuilder.create().texture(name).biomeTint(biomeTint), EnumFace.EAST, EnumFace.WEST)
+					.face(FaceBuilder.create().texture("block/" + name).biomeTint(biomeTint), EnumFace.EAST, EnumFace.WEST)
 				)
 			);
 		blockSpecial = new SimpleSpecial("custom");
@@ -231,7 +231,7 @@ public class DataBuilder
 					.addCube(CubeBuilder.create()
 						.fullBlock()
 						.face(FaceBuilder.create()
-							.texture(name)
+							.texture("block/" + name)
 							.modelLayer(ModelLayer.LIGHT))));
 		blockSpecial(SpecialBuilder.create("light")
 			.addValue("color", color)
@@ -261,11 +261,11 @@ public class DataBuilder
 				.singleModel(BlockModelBuilder.create(name)
 					.addCube(CubeBuilder.create()
 						.fullBlock()
-						.face(FaceBuilder.create().texture(baseTexture))
+						.face(FaceBuilder.create().texture("block/" + baseTexture))
 					).addCube(CubeBuilder.create()
 						.fullBlock()
 						.face(FaceBuilder.create()
-							.texture(overlayTexture)
+							.texture("block/" + overlayTexture)
 							.tint(red, green, blue)
 							.modelLayer(ModelLayer.OVERLAY_0))
 					)
@@ -275,6 +275,9 @@ public class DataBuilder
 
 	public DataBuilder lightOreBlock(String name, String baseTexture, String overlayTexture, float red, float green, float blue, String lightColor, float constant, float linear, float quadratic)
 	{
+		baseTexture = "block/" + baseTexture;
+		overlayTexture = "block/" + overlayTexture;
+
 		return DataBuilder.create().fullBlock(name)
 			.blockSpecial(SpecialBuilder.create("light")
 				.addValue("color", lightColor)
@@ -300,6 +303,9 @@ public class DataBuilder
 
 	public DataBuilder pillarBlock(String name, String sideTexture, String topTexture)
 	{
+		sideTexture = "block/" + sideTexture;
+		topTexture = "block/" + topTexture;
+
 		return DataBuilder.create().fullBlock(name)
 			.blockSpecial(new SimpleSpecial("pilliar"))
 			.blockState(StateBuilder.create()
@@ -331,7 +337,7 @@ public class DataBuilder
 			.singleModel(BlockModelBuilder.create(name)
 				.addCube(CubeBuilder.create()
 					.fullBlock().face(FaceBuilder.create()
-						.texture(name))));
+						.texture("block/" + name))));
 		itemModel = new ItemFromBlock(name);
 		blockName = name;
 		itemSpecial = SpecialBuilder.create("block").addValue("block", blockName);
@@ -345,7 +351,7 @@ public class DataBuilder
 			.singleModel(BlockModelBuilder.create(name)
 				.addCube(CubeBuilder.create()
 					.fullBlock().face(FaceBuilder.create()
-						.texture(texture))));
+						.texture("block/" + texture))));
 		itemModel = new ItemFromBlock(name);
 		blockName = name;
 		itemSpecial = SpecialBuilder.create("block").addValue("block", blockName);
@@ -360,11 +366,11 @@ public class DataBuilder
 				.addCube(CubeBuilder.create()
 					.fullBlock()
 					.face(FaceBuilder.create()
-						.texture(textureTop), EnumFace.UP)
+						.texture("block/" + textureTop), EnumFace.UP)
 					.face(FaceBuilder.create()
-						.texture(textureSide), CubeBuilder.SIDE)
+						.texture("block/" + textureSide), CubeBuilder.SIDE)
 					.face(FaceBuilder.create()
-						.texture(textureBottom), EnumFace.DOWN)
+						.texture("block/" + textureBottom), EnumFace.DOWN)
 				));
 		itemModel = new ItemFromBlock(name);
 		blockName = name;
@@ -391,7 +397,7 @@ public class DataBuilder
 				BlockModelBuilder.create(name)
 					.addCube(CubeBuilder.create()
 						.fullBlock()
-						.face(FaceBuilder.create().texture(texture).biomeTint(biomeTint))
+						.face(FaceBuilder.create().texture("block/" + texture).biomeTint(biomeTint))
 					)
 				)
 			);
@@ -415,7 +421,7 @@ public class DataBuilder
 						.addCube(CubeBuilder.create()
 							.bottomSlab()
 							.face(FaceBuilder.create()
-								.texture(texture)
+								.texture("block/" + texture)
 								.uvlock(true))
 						)
 				).addState(PropertyBuilder.create()
@@ -426,7 +432,7 @@ public class DataBuilder
 						.addCube(CubeBuilder.create()
 							.topSlab()
 							.face(FaceBuilder.create()
-								.texture(texture)
+								.texture("block/" + texture)
 								.uvlock(true))
 						)
 				).addState(PropertyBuilder.create()
@@ -437,7 +443,7 @@ public class DataBuilder
 						.addCube(CubeBuilder.create()
 							.fullBlock()
 							.face(FaceBuilder.create()
-								.texture(texture)
+								.texture("block/" + texture)
 								.uvlock(true))
 						)
 				).addState(PropertyBuilder.create()
@@ -449,7 +455,7 @@ public class DataBuilder
 							.min(0, 0, 0)
 							.max(8, 16, 16)
 							.face(FaceBuilder.create()
-								.texture(texture)
+								.texture("block/" + texture)
 								.uvlock(true))
 						)
 				).addState(PropertyBuilder.create()
@@ -494,14 +500,14 @@ public class DataBuilder
 						.bottomSlab()
 						.name(CubeTags.STAIR_BOTTOM)
 						.face(FaceBuilder.create()
-							.texture(texture)
+							.texture("block/" + texture)
 							.uvlock(true)
 						)
 					)
 					.addCube(CubeBuilder.create()
 						.stairTop()
 						.face(FaceBuilder.create()
-							.texture(texture)
+							.texture("block/" + texture)
 							.uvlock(true)
 							, EnumFace.UP, EnumFace.NORTH, EnumFace.EAST, EnumFace.SOUTH, EnumFace.WEST
 						)
@@ -534,7 +540,7 @@ public class DataBuilder
 			.min(8 - width, 0, 8 - width)
 			.max(8 + width, 16, 8 + width)
 			.face(FaceBuilder.create()
-				.texture(texture)
+				.texture("block/" + texture)
 				.autoUv(true))
 		);
 
