@@ -13,6 +13,10 @@ import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.entity.EntityHitbox;
 import steve6472.polyground.entity.item.BlockEntity;
 import steve6472.polyground.entity.item.ItemEntity;
+import steve6472.polyground.item.Item;
+import steve6472.polyground.item.itemdata.IItemData;
+import steve6472.polyground.item.itemdata.ItemData;
+import steve6472.polyground.registry.Blocks;
 import steve6472.polyground.world.World;
 import steve6472.sge.main.KeyList;
 import steve6472.sge.main.events.Event;
@@ -291,6 +295,19 @@ public class Player implements IMotion3f, IPosition3f
 
 	private void pressRMB()
 	{
+		if (gamemode == EnumGameMode.CREATIVE && Blocks.getBlockByName(CaveGame.itemInHand.getName()) == Block.error && getHitResult().isHit())
+		{
+			Item item = CaveGame.itemInHand;
+			ItemData data = null;
+			if (item instanceof IItemData id)
+				data = id.createNewItemData();
+
+			ItemEntity entity = new ItemEntity(null, item, data, getHitResult().getPx(), getHitResult().getPy() + 0.001f, getHitResult().getPz());
+			world.getEntityManager().addEntity(entity);
+
+			return;
+		}
+
 		if (heldBlock != null && processNextBlockPlace)
 		{
 			HitResult hr = game.hitPicker.getHitResult();
