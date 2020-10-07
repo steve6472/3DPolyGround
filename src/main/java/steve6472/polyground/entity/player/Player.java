@@ -511,6 +511,27 @@ public class Player implements IMotion3f, IPosition3f
 		return r;
 	}
 
+	public Item getItemInHand()
+	{
+		if (heldItem == null)
+			return null;
+
+		return heldItem.item;
+	}
+
+	public ItemData getItemDataInHand()
+	{
+		if (heldItem == null)
+			return null;
+
+		return heldItem.itemData;
+	}
+
+	public boolean holdsItem()
+	{
+		return getItemInHand() != null;
+	}
+
 	public boolean canBreakBlocks()
 	{
 		return gamemode == EnumGameMode.CREATIVE;

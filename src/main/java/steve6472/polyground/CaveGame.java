@@ -5,7 +5,6 @@ import steve6472.polyground.block.Block;
 import steve6472.polyground.block.BlockAtlas;
 import steve6472.polyground.block.model.BlockModel;
 import steve6472.polyground.block.model.IElement;
-import steve6472.polyground.block.model.ModelLoader;
 import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.commands.CommandSource;
 import steve6472.polyground.entity.player.EnumGameMode;
@@ -62,7 +61,6 @@ public class CaveGame extends MainApp
 	private Player player;
 	public World world;
 	public CommandRegistry commandRegistry;
-	public ModelLoader modelLoader;
 	public HitPicker hitPicker;
 	public Recipes knappingRecipes;
 	public ItemGroups itemGroups;
@@ -87,7 +85,6 @@ public class CaveGame extends MainApp
 		player = new Player(this);
 		getEventHandler().register(player);
 
-		modelLoader = new ModelLoader();
 		mainRender = new MainRender(this);
 
 		getEventHandler().runEvent(new SpecialBlockRegistryEvent());

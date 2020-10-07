@@ -57,9 +57,9 @@ public class ChiselBlock extends CustomBlock implements IBlockData
 
 			Vector4i c = getLookedAtPiece(world, player, x, y, z);
 
-			if (c != null && player.heldItem != null)
+			if (c != null && player.holdsItem())
 			{
-				if (player.heldItem.itemData instanceof BrushData bd)
+				if (player.getItemDataInHand() instanceof BrushData bd)
 				{
 					int cx = c.x;
 					int cy = c.y;
@@ -82,7 +82,7 @@ public class ChiselBlock extends CustomBlock implements IBlockData
 
 			Vector4i c = getLookedAtPiece(world, player, x, y, z);
 
-			if (c != null && player.heldItem != null && player.heldItem.item.getName().equals("chisel_tool"))
+			if (c != null && player.holdsItem() && player.getItemInHand().getName().equals("chisel_tool"))
 			{
 				if (click.getButton() == KeyList.LMB)
 				{
@@ -119,7 +119,7 @@ public class ChiselBlock extends CustomBlock implements IBlockData
 	@Override
 	public boolean isPickable(BlockState state, Player player)
 	{
-		return player.heldItem == null || !player.heldItem.item.getName().equals("chisel_tool");
+		return !player.holdsItem() || !player.getItemInHand().getName().equals("chisel_tool");
 	}
 
 	private Vector4i getLookedAtPiece(World world, Player player, int x, int y, int z)

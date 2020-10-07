@@ -64,7 +64,7 @@ public class ModelLoader
 		return new AABBf(from.getFloat(0) / 16f, from.getFloat(1) / 16f, from.getFloat(2) / 16f, to.getFloat(0) / 16f, to.getFloat(1) / 16f, to.getFloat(2) / 16f);
 	}
 
-	public CubeHitbox[] loadCubes(JSONObject json, int rotX, int rotY, int rotZ)
+	public static CubeHitbox[] loadCubes(JSONObject json, int rotX, int rotY, int rotZ)
 	{
 		if (!json.has("cubes"))
 			return new CubeHitbox[0];
@@ -94,7 +94,7 @@ public class ModelLoader
 		return cubes.toArray(new CubeHitbox[0]);
 	}
 
-	public IElement[] loadElements(JSONObject json, int rotX, int rotY, int rotZ)
+	public static IElement[] loadElements(JSONObject json, int rotX, int rotY, int rotZ)
 	{
 		List<IElement> elements = new ArrayList<>();
 
@@ -171,7 +171,7 @@ public class ModelLoader
 		return elements.isEmpty() ? null : elements.toArray(IElement[]::new);
 	}
 
-	private void addRot(JSONObject json, int rotX, int rotY, int rotZ)
+	private static void addRot(JSONObject json, int rotX, int rotY, int rotZ)
 	{
 		json.put("point_type", "origin");
 		if (json.has("rotation"))
