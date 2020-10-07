@@ -55,12 +55,16 @@ public class StateLoader
 				return;
 			}
 			if (blockstates.has("models"))
+			{
 				block.setDefaultState(new BlockState(block, loadModels(blockstates.getJSONArray("models"), new JSONArray().put(0).put(0).put(0)), null, null, blockstates.optJSONArray("tags"), blockstates.optBoolean("custom")));
-			else
+			} else
+			{
 				block.setDefaultState(new BlockState(block, new BlockModel[]{new BlockModel(blockstates.getString("model"), new JSONArray().put(0).put(0).put(0))}, null, null, blockstates.optJSONArray("tags"), blockstates.optBoolean("custom")));
+			}
 			return;
 		}
 
+		BlockModel blockModel = null;
 		Map<JSONObject, JSONObject> models = null;
 		if (blockstates.has("models"))
 		{
@@ -72,6 +76,9 @@ public class StateLoader
 				JSONObject m = array.getJSONObject(i);
 				models.put(m.getJSONObject("state"), m);
 			}
+		} else
+		{
+			blockModel = new BlockModel(blockstates.getString("model"), new JSONArray().put(0).put(0).put(0));
 		}
 
 		// Generate all possible state values
@@ -90,7 +97,9 @@ public class StateLoader
 		}
 
 		for (int i = 0; i < possibleStatesCount; i++)
+		{
 			possibleValues.add(new ArrayList<>(properties.size()));
+		}
 
 		for (int i = 0; i < possibleStatesCount; i++)
 		{
@@ -129,6 +138,7 @@ public class StateLoader
 				for (JSONObject j : models.keySet())
 				{
 					boolean match = true;
+
 					for (IProperty<?> p : map.keySet())
 					{
 						if (j.has(p.getName()))
@@ -144,6 +154,7 @@ public class StateLoader
 							}
 						}
 					}
+
 					if (match)
 					{
 						matchObject = models.get(j);
@@ -170,7 +181,10 @@ public class StateLoader
 				BlockState state;
 				if (modelPath != null)
 				{
-					state = new BlockState(block, new BlockModel[]{new BlockModel(modelPath, rotation)}, map, tileStates, tags, custom);
+					if (blockModel != null)
+						state = new BlockState(block, new BlockModel[] {blockModel}, map, tileStates, null, false);
+					else
+					    state = new BlockState(block, new BlockModel[] {new BlockModel(modelPath, rotation)}, map, tileStates, tags, custom);
 				} else if (modelsArray != null)
 				{
 					state = new BlockState(block, loadModels(modelsArray, rotation), map, tileStates, tags, custom);

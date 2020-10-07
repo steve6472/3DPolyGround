@@ -12,10 +12,7 @@ import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.registry.block.SpecialBlockRegistry;
 
 import java.io.File;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
@@ -182,21 +179,24 @@ public class Blocks
 
 		Bakery.load(BlockAtlas.getTexture(BlockAtlas.getTextureId("block/white")), game.mainRender.buildHelper);
 
+		Set<BlockModel> models = new HashSet<>();
+
 		for (Block b : blocks)
 		{
 			b.getDefaultState().getPossibleStates().forEach(ps -> {
-				for (BlockModel model : ps.getBlockModels())
-				{
-					if (model.getElements() != null)
-					{
-						for (IElement element : model.getElements())
-						{
-							element.fixUv(game.mainRender.buildHelper.texel);
-						}
-					}
-					model.createModel(game.mainRender.buildHelper);
-				}
+				models.addAll(Arrays.asList(ps.getBlockModels()));
 			});
 		}
+
+		models.forEach(model -> {
+			if (model.getElements() != null)
+			{
+				for (IElement element : model.getElements())
+				{
+					element.fixUv(game.mainRender.buildHelper.texel);
+				}
+			}
+			model.createModel(game.mainRender.buildHelper);
+		});
 	}
 }
