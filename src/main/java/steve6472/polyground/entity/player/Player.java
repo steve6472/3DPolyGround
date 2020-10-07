@@ -9,6 +9,7 @@ import steve6472.polyground.EnumFace;
 import steve6472.polyground.HitResult;
 import steve6472.polyground.block.Block;
 import steve6472.polyground.block.Tags;
+import steve6472.polyground.block.blockdata.BlockData;
 import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.entity.EntityHitbox;
 import steve6472.polyground.entity.item.BlockEntity;
@@ -509,6 +510,27 @@ public class Player implements IMotion3f, IPosition3f
 		}
 
 		return r;
+	}
+
+	public BlockState getBlockInHand()
+	{
+		if (heldBlock == null)
+			return null;
+
+		return heldBlock.state;
+	}
+
+	public BlockData getBlockDataInHand()
+	{
+		if (heldBlock == null)
+			return null;
+
+		return heldBlock.data;
+	}
+
+	public boolean holdsBlock()
+	{
+		return getBlockInHand() != null;
 	}
 
 	public Item getItemInHand()

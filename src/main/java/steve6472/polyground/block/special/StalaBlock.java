@@ -37,7 +37,7 @@ public class StalaBlock extends CustomBlock
 		{
 			for (int i = 0; i < state.get(WIDTH); i++)
 			{
-				spawnLoot(state, world, x, y, z);
+				spawnLoot(world, state, x, y, z);
 			}
 		}
 	}
@@ -69,7 +69,7 @@ public class StalaBlock extends CustomBlock
 				player.processNextBlockBreak = false;
 				if(player.gamemode.spawBlockLoot)
 				{
-					spawnLoot(state, world, x, y, z);
+					spawnLoot(world, state, x, y, z);
 				}
 			}
 		}

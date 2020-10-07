@@ -35,7 +35,7 @@ void main()
 	vec3 texture = tex.rgb;
 
 	// then calculate lighting as usual
-	vec3 lighting = texture * 0.1; // hard-coded ambient component
+	vec3 lighting = texture * 0.05; // hard-coded ambient component
 	vec3 viewDir = normalize(cameraPos - vPosition);
 
 	for (int i = 0; i < LIGHT_COUNT; ++i)
@@ -51,10 +51,12 @@ void main()
 			float attenuation = 1.0 / (light.attenuation.x + light.attenuation.y * distance + light.attenuation.z * (distance * distance));
 
 			// diffuse
-			vec3 diffuse = max(dot(vNormal, lightDir), 0.0) * texture * light.color;
+			vec3 diffuse = max(dot(vNormal, lightDir), 0.0) * light.color;
 			lighting += diffuse * attenuation;
 		}
 	}
+	
+	lighting = lighting * texture;
 
 	outTexture = vec4(lighting, tex.a);
 }

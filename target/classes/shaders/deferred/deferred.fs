@@ -39,7 +39,7 @@ void main()
 	vec3 texture = albedo;
 
 	// then calculate lighting as usual
-	vec3 lighting = texture * 0.1; // hard-coded ambient component
+	vec3 lighting = texture * 0.05; // hard-coded ambient component
 	vec3 viewDir = normalize(cameraPos - fragPos);
 
 	for (int i = 0; i < LIGHT_COUNT; ++i)
@@ -55,10 +55,12 @@ void main()
 			float attenuation = 1.0 / (light.attenuation.x + light.attenuation.y * distance + light.attenuation.z * (distance * distance));
 
 			// diffuse
-			vec3 diffuse = max(dot(normal, lightDir), 0.0) * texture * light.color;
+			vec3 diffuse = max(dot(normal, lightDir), 0.0) * light.color;
 			lighting += diffuse * attenuation;
 		}
 	}
+
+	lighting = texture * lighting;
 
 	float emiDistance = length(cameraPos - emissionPos);
 	float norDistance = length(cameraPos - fragPos);

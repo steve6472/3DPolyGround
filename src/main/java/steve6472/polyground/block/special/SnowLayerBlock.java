@@ -36,7 +36,7 @@ public class SnowLayerBlock extends CustomBlock
 	{
 		if (!isValidPosition(state, world, x, y, z))
 		{
-			spawnLoot(state, world, x, y, z);
+			spawnLoot(world, state, x, y, z);
 			world.setBlock(Block.air, x, y, z);
 		}
 	}
@@ -55,11 +55,11 @@ public class SnowLayerBlock extends CustomBlock
 	}
 
 	@Override
-	public void spawnLoot(BlockState state, World world, int x, int y, int z)
+	public void spawnLoot(World world, BlockState state, int x, int y, int z)
 	{
 		for (int i = 0; i < state.get(SNOW_LAYER); i++)
 		{
-			super.spawnLoot(state, world, x, y, z);
+			super.spawnLoot(world, state, x, y, z);
 		}
 	}
 
@@ -89,7 +89,7 @@ public class SnowLayerBlock extends CustomBlock
 			if (width > 1)
 			{
 				if (player.gamemode.spawBlockLoot)
-					super.spawnLoot(state, world, x, y, z);
+					super.spawnLoot(world, state, x, y, z);
 				world.setState(state.with(SNOW_LAYER, width - 1).get(), x, y, z);
 				player.processNextBlockBreak = false;
 			}

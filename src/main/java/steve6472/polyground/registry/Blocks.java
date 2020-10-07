@@ -164,6 +164,9 @@ public class Blocks
 		return blocks;
 	}
 
+	public static final Set<BlockModel> models = new HashSet<>();
+	public static final Set<IElement[]> elements = new HashSet<>();
+
 	public static void finish(CaveGame game)
 	{
 		for (Block block : blocks)
@@ -179,24 +182,25 @@ public class Blocks
 
 		Bakery.load(BlockAtlas.getTexture(BlockAtlas.getTextureId("block/white")), game.mainRender.buildHelper);
 
-		Set<BlockModel> models = new HashSet<>();
-
 		for (Block b : blocks)
 		{
-			b.getDefaultState().getPossibleStates().forEach(ps -> {
-				models.addAll(Arrays.asList(ps.getBlockModels()));
-			});
+			b.getDefaultState().getPossibleStates().forEach(ps -> models.addAll(Arrays.asList(ps.getBlockModels())));
 		}
 
 		models.forEach(model -> {
 			if (model.getElements() != null)
 			{
-				for (IElement element : model.getElements())
-				{
-					element.fixUv(game.mainRender.buildHelper.texel);
-				}
+				elements.add(model.getElements());
 			}
-			model.createModel(game.mainRender.buildHelper);
 		});
+
+		elements.forEach(els -> {
+			for (IElement element : els)
+			{
+				element.fixUv(game.mainRender.buildHelper.texel);
+			}
+		});
+
+		models.forEach(model -> model.createModel(game.mainRender.buildHelper));
 	}
 }

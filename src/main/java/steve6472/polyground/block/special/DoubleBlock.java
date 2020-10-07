@@ -37,7 +37,7 @@ public class DoubleBlock extends CustomBlock
 		if (!isValid)
 		{
 			if (state.get(HALF) == EnumHalf.BOTTOM)
-				spawnLoot(state, world, x, y, z);
+				spawnLoot(world, state, x, y, z);
 			world.setBlock(Block.air, x, y, z);
 		}
 	}

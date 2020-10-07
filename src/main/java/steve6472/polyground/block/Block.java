@@ -396,7 +396,7 @@ public class Block
 	}
 
 	/**
-	 * Default spawns loot, see {@link #spawnLoot(BlockState, World, int, int, int)}
+	 * Default spawns loot, see {@link #spawnLoot(World, BlockState, int, int, int)}
 	 *
 	 * @param state State of this block
 	 * @param world world
@@ -409,18 +409,18 @@ public class Block
 	public void onPlayerBreak(BlockState state, World world, Player player, EnumFace breakedFrom, int x, int y, int z)
 	{
 		if (player.getGamemode().spawBlockLoot)
-			spawnLoot(state, world, x, y, z);
+			spawnLoot(world, state, x, y, z);
 	}
 
 	/**
 	 * Spawns loot at the center of the block
-	 * @param state state of block
 	 * @param world world
+	 * @param state state of block
 	 * @param x x position
 	 * @param y y position
 	 * @param z z position
 	 */
-	public void spawnLoot(BlockState state, World world, int x, int y, int z)
+	public void spawnLoot(World world, BlockState state, int x, int y, int z)
 	{
 //		world.getEntityManager().addEntity(new BlockItemEntity(state.getBlock().item, x, y, z));
 	}
