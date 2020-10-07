@@ -102,6 +102,14 @@
     <configuration name="CaveGame" type="Application" factoryName="Application" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="steve6472.polyground.CaveGame" />
       <module name="CaveGame" />
+      <selectedOptions>
+        <option name="before.launch.openToolWindow" />
+        <option name="commandLineParameters" />
+        <option name="environmentVariables" />
+        <option name="jrePath" />
+        <option name="mainClass" />
+        <option name="workingDirectory" />
+      </selectedOptions>
       <method v="2">
         <option name="Make" enabled="true" />
       </method>

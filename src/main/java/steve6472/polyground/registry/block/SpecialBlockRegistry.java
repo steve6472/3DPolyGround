@@ -46,6 +46,8 @@ public class SpecialBlockRegistry
 	public static final SpecialBlockEntry<ChiselBlock> chisel = register("chisel", ChiselBlock::new);
 	public static final SpecialBlockEntry<FlowerBlock> flower = register("flower", FlowerBlock::new);
 	public static final SpecialBlockEntry<PaintBucketBlock> paintBucket = register("paint_bucket", PaintBucketBlock::new);
+	public static final SpecialBlockEntry<AxeBlock> axeBlock = register("axe_block", AxeBlock::new);
+	public static final SpecialBlockEntry<HempBlock> hemp = register("hemp",HempBlock::new);
 
 	public static <T extends Block> SpecialBlockEntry<T> register(String id, ISpecialBlockFactory<T> factory)
 	{

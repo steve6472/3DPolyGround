@@ -78,7 +78,10 @@ public class StateLoader
 			}
 		} else
 		{
-			blockModel = new BlockModel(blockstates.getString("model"), new JSONArray().put(0).put(0).put(0));
+			if (blockstates.optBoolean("empty"))
+				blockModel = new BlockModel(new IElement[0], new CubeHitbox(new AABBf(0, 0, 0, 1, 1, 1)));
+			else
+				blockModel = new BlockModel(blockstates.getString("model"), new JSONArray().put(0).put(0).put(0));
 		}
 
 		// Generate all possible state values
@@ -132,7 +135,8 @@ public class StateLoader
 
 			if (models == null)
 			{
-				modelPath = blockstates.getString("model");
+				if (blockstates.has("model"))
+					modelPath = blockstates.getString("model");
 			} else
 			{
 				for (JSONObject j : models.keySet())
@@ -179,12 +183,12 @@ public class StateLoader
 			try
 			{
 				BlockState state;
-				if (modelPath != null)
+				if (modelPath == null && blockModel != null)
 				{
-					if (blockModel != null)
-						state = new BlockState(block, new BlockModel[] {blockModel}, map, tileStates, null, false);
-					else
-					    state = new BlockState(block, new BlockModel[] {new BlockModel(modelPath, rotation)}, map, tileStates, tags, custom);
+					state = new BlockState(block, new BlockModel[] {blockModel}, map, tileStates, null, false);
+				} else if (modelPath != null)
+				{
+					state = new BlockState(block, new BlockModel[] {new BlockModel(modelPath, rotation)}, map, tileStates, tags, custom);
 				} else if (modelsArray != null)
 				{
 					state = new BlockState(block, loadModels(modelsArray, rotation), map, tileStates, tags, custom);

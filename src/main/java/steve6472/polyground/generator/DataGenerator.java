@@ -304,14 +304,6 @@ public class DataGenerator
 			.generate();
 
 		DataBuilder.create()
-			.fullBlock("flint_axe_head")
-			.blockState(StateBuilder.create().singleModel(BlockModelBuilder.create("flint_axe_head").externalPath("custom_models/flint_axe_head.bbmodel")))
-			.blockSpecial(new SimpleSpecial("custom"))
-			.addTags(Tags.PICKABLE)
-			.itemGroupPath("misc")
-			.generate();
-
-		DataBuilder.create()
 			.fullBlock("wooden_box")
 			.blockState(StateBuilder.create().singleModel(BlockModelBuilder.create("wooden_box").externalPath("custom_models/wooden_box.bbmodel")))
 			.blockSpecial(new SimpleSpecial("custom"))
@@ -333,8 +325,18 @@ public class DataGenerator
 			.itemGroupPath("misc")
 			.generate();
 
+		DataBuilder.create()
+			.fullBlock("axe_assembly")
+			.blockSpecial(new SimpleSpecial("axe_block"))
+			.blockState(StateBuilder.create().emptyModel())
+			.itemGroupPath("misc")
+			.generate();
+
 		// Items ?
 
+		DataBuilder.create().item("flint_axe_head", "items").generate();
+		DataBuilder.create().item("flint_axe", "axe/full_axe", "items").generate();
+		DataBuilder.create().item("hemp_string", "hemp", "items").generate();
 		DataBuilder.create().item("red_powder", "items.powders").generate();
 		DataBuilder.create().item("green_powder", "items.powders").generate();
 		DataBuilder.create().item("blue_powder", "items.powders").generate();
@@ -358,6 +360,17 @@ public class DataGenerator
 				.addState(PropertyBuilder.create().addProperty(FlowerBlock.FLOWER_COLOR, EnumFlowerColor.YELLOW).tags(Tags.PICKABLE), BlockModelBuilder.create("yellow_flower").externalPath("custom_models/flowers/yellow_flower.bbmodel"))
 				.addState(PropertyBuilder.create().addProperty(FlowerBlock.FLOWER_COLOR, EnumFlowerColor.WHITE).tags(Tags.PICKABLE), BlockModelBuilder.create("white_flower").externalPath("custom_models/flowers/white_flower.bbmodel"))
 				.addState(PropertyBuilder.create().addProperty(FlowerBlock.FLOWER_COLOR, EnumFlowerColor.BLACK).tags(Tags.PICKABLE), BlockModelBuilder.create("black_flower").externalPath("custom_models/flowers/black_flower.bbmodel"))
+			)
+			.itemGroupPath("nature")
+			.generate();
+
+		DataBuilder.create()
+			.fullBlock("hemp")
+			.blockSpecial(new SimpleSpecial("hemp"))
+			.blockState(StateBuilder.create()
+				.addState(PropertyBuilder.create().addProperty(HempBlock.STAGE, 3), BlockModelBuilder.create("hemp_3").externalPath("custom_models/hemp_full.bbmodel"))
+				.addState(PropertyBuilder.create().addProperty(HempBlock.STAGE, 2), BlockModelBuilder.create("hemp_2").externalPath("custom_models/hemp_half.bbmodel"))
+				.addState(PropertyBuilder.create().addProperty(HempBlock.STAGE, 1), BlockModelBuilder.create("hemp_1").externalPath("custom_models/hemp_empty.bbmodel"))
 			)
 			.itemGroupPath("nature")
 			.generate();

@@ -40,6 +40,22 @@ public class CustomBlock extends TransparentBlock
 		return tris;
 	}
 
+	public static int model(IElement[] elements, int x, int y, int z, World world, ModelBuilder buildHelper, ModelLayer modelLayer)
+	{
+		int tris = 0;
+		buildHelper.setSubChunk(world.getSubChunkFromBlockCoords(x, y, z));
+
+		if (elements != null)
+		{
+			for (IElement c : elements)
+			{
+				tris += c.build(buildHelper, modelLayer, null, null, x, y, z);
+			}
+		}
+
+		return tris;
+	}
+
 	@Override
 	public int createModel(int x, int y, int z, World world, BlockState state, ModelBuilder buildHelper, ModelLayer modelLayer)
 	{

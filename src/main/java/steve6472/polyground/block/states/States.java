@@ -17,6 +17,10 @@ public class States
 	public static final BooleanProperty LIT = BooleanProperty.create("lit");
 	public static final BooleanProperty PERSISTENT = BooleanProperty.create("persistent");
 
+	public static final BooleanProperty HAS_HEAD = BooleanProperty.create("head");
+	public static final BooleanProperty HAS_STICK = BooleanProperty.create("stick");
+	public static final BooleanProperty HAS_STRING = BooleanProperty.create("string");
+
 	public static final EnumProperty<EnumSlabType> SLAB_TYPE = EnumProperty.create("type", EnumSlabType.class, EnumSlabType.getValues());
 	public static final EnumProperty<EnumFace> FACING_BLOCK = EnumProperty.create("facing", EnumFace.class, EnumFace.NORTH, EnumFace.EAST, EnumFace.SOUTH, EnumFace.WEST);
 	public static final EnumProperty<EnumFace> FACING = EnumProperty.create("facing", EnumFace.class, EnumFace.NORTH, EnumFace.EAST, EnumFace.SOUTH, EnumFace.WEST, EnumFace.UP, EnumFace.DOWN);
@@ -31,4 +35,5 @@ public class States
 	public static final IntProperty DISTANCE_1_7 = IntProperty.create("distance", 1, 7);
 	public static final IntProperty DISTANCE_1_6 = IntProperty.create("distance", 1, 6);
 	public static final IntProperty LOGS = IntProperty.create("logs", 1, 6);
+	public static final IntProperty STAGE_1_3 = IntProperty.create("stage", 1, 3);
 }
