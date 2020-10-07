@@ -11,6 +11,7 @@ import steve6472.polyground.block.properties.enums.EnumFlowerColor;
 import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.entity.player.EnumGameMode;
 import steve6472.polyground.entity.player.Player;
+import steve6472.polyground.item.itemdata.BrushData;
 import steve6472.polyground.world.ModelBuilder;
 import steve6472.polyground.world.World;
 import steve6472.polyground.world.chunk.ModelLayer;
@@ -46,11 +47,36 @@ public class PaintBucketBlock extends CustomBlock implements IBlockData
 			PaintBucketData data = (PaintBucketData) world.getData(x, y, z);
 			if (data == null)
 				return;
-			
+
 			player.processNextBlockPlace = false;
 
 			if (player.heldItem != null)
 			{
+				if (player.heldItem.item.getName().equals("brush"))
+				{
+					if (player.heldItem.itemData instanceof BrushData bd)
+					{
+						bd.color = ColorUtil.getColor(data.red, data.green, data.blue, 1);
+					}
+					player.processNextBlockPlace = false;
+					return;
+				}
+
+				boolean foundColorMatch = false;
+				for (EnumFlowerColor fc : EnumFlowerColor.getValues())
+				{
+					if (player.heldItem.item.getName().toUpperCase().startsWith(fc.name().toUpperCase()) && player.heldItem.item.getName().contains("powder"))
+					{
+						foundColorMatch = true;
+						break;
+					}
+				}
+
+				if (!foundColorMatch)
+				{
+					return;
+				}
+
 				EnumFlowerColor c = EnumFlowerColor.valueOf(player.heldItem.item.getName().split("_")[0].toUpperCase());
 
 				float r = c.r / 255f / 10f;
@@ -79,6 +105,11 @@ public class PaintBucketBlock extends CustomBlock implements IBlockData
 		}
 	}
 
+	@Override
+	public boolean isPickable(BlockState state, Player player)
+	{
+		return true;
+	}
 
 	@Override
 	public int createModel(int x, int y, int z, World world, BlockState state, ModelBuilder buildHelper, ModelLayer modelLayer)

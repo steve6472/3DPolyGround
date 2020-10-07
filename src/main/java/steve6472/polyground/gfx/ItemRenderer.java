@@ -2,7 +2,6 @@ package steve6472.polyground.gfx;
 
 import org.joml.Matrix4f;
 import steve6472.polyground.block.Block;
-import steve6472.polyground.entity.StaticEntityModel;
 import steve6472.polyground.gfx.shaders.EntityShader;
 import steve6472.sge.main.MainApp;
 

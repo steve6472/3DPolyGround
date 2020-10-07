@@ -16,10 +16,10 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Interface" />
         <option value="Enum" />
         <option value="Record" />
         <option value="Class" />
+        <option value="Interface" />
       </list>
     </option>
   </component>
@@ -44,30 +44,30 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="com.intellij.ide.scratch.LRUPopupBuilder$1/New Scratch File" value="JShellLanguage" />
     <property name="ignore.preview.features.used" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/main/java/steve6472/polyground/registry/data" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../openjdk-15" />
     <property name="project.structure.last.edited" value="Modules" />
-    <property name="project.structure.proportion" value="0.0" />
-    <property name="project.structure.side.proportion" value="0.0" />
+    <property name="project.structure.proportion" value="0.15" />
+    <property name="project.structure.side.proportion" value="0.2" />
     <property name="restartRequiresConfirmation" value="false" />
-    <property name="settings.editor.selected.configurable" value="debugger.stepping" />
+    <property name="settings.editor.selected.configurable" value="preferences.general" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\CaveGame\src\main\java\steve6472\polyground\registry\itemdata" />
+      <recent name="D:\CaveGame\src\main\java\steve6472\polyground\registry" />
       <recent name="D:\CaveGame\src\main\java\steve6472\polyground\registry\data" />
       <recent name="D:\CaveGame\src\main\java\steve6472\polyground\registry\blockdata" />
       <recent name="D:\CaveGame\src\main\resources\shaders\entity" />
-      <recent name="D:\CaveGame\src\main\java\steve6472\polyground\registry\feature" />
-      <recent name="D:\CaveGame\src\main\java\steve6472\polyground\gfx" />
     </key>
     <key name="MoveMembersDialog.RECENTS_KEY">
       <recent name="steve6472.polyground.gfx.MainRender" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="steve6472.polyground.commands.coms" />
       <recent name="steve6472.polyground.block.special" />
       <recent name="steve6472.polyground.block.blockdata" />
       <recent name="steve6472.polyground.generator.models" />
       <recent name="steve6472.polyground.tessellators" />
-      <recent name="steve6472.polyground.entity.item" />
     </key>
   </component>
   <component name="RunAnythingCache">

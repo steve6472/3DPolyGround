@@ -6,7 +6,7 @@ import org.joml.Vector3f;
 import steve6472.polyground.AABBUtil;
 import steve6472.polyground.CaveGame;
 import steve6472.polyground.block.states.BlockState;
-import steve6472.polyground.entity.DynamicEntityModel;
+import steve6472.polyground.gfx.DynamicEntityModel;
 import steve6472.polyground.entity.EntityBase;
 import steve6472.polyground.entity.EntityHitbox;
 import steve6472.polyground.entity.interfaces.IKillable;
@@ -15,6 +15,7 @@ import steve6472.polyground.entity.interfaces.ITickable;
 import steve6472.polyground.entity.interfaces.IWorldContainer;
 import steve6472.polyground.entity.player.Player;
 import steve6472.polyground.item.Item;
+import steve6472.polyground.item.itemdata.ItemData;
 import steve6472.polyground.world.World;
 import steve6472.sge.main.game.mixable.IPosition3f;
 
@@ -27,16 +28,18 @@ import steve6472.sge.main.game.mixable.IPosition3f;
 public class ItemEntity extends EntityBase implements IRenderable, ITickable, IKillable, IWorldContainer, IPosition3f
 {
 	public Item item;
+	public ItemData itemData;
 	private final EntityHitbox entityHitbox;
 	private World world;
 	private boolean forceDead = false;
 	private Player player;
 
-	public ItemEntity(Player player, Item item, float x, float y, float z)
+	public ItemEntity(Player player, Item item, ItemData itemData, float x, float y, float z)
 	{
 		super();
 		this.player = player;
 		this.item = item;
+		this.itemData = itemData;
 		entityHitbox = new EntityHitbox(0.25f / 2f, 0.25f / 2f, 0.25f / 2f, this, this);
 		setPosition(x, y, z);
 		setPivotPoint(.5f, .5f, .5f);

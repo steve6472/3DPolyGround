@@ -3,7 +3,7 @@ package steve6472.polyground.block.model;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import steve6472.polyground.CaveGame;
-import steve6472.polyground.entity.StaticEntityModel;
+import steve6472.polyground.gfx.StaticEntityModel;
 import steve6472.polyground.registry.WaterRegistry;
 import steve6472.polyground.world.ModelBuilder;
 
@@ -68,7 +68,9 @@ public class BlockModel
 	public void createModel(ModelBuilder buildHelper)
 	{
 		if (path != null)
+		{
 			model.load(buildHelper, elements, false);
+		}
 	}
 
 	public void reload()
@@ -89,11 +91,7 @@ public class BlockModel
 		this.elements = elements;
 		rotX = rotY = rotZ = 0;
 		this.cubes = cubes;
-	}
 
-	public CubeHitbox getCube(int index)
-	{
-		return cubes[index];
 	}
 
 	@Deprecated

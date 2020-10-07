@@ -116,6 +116,15 @@ public class DataBuilder
 				.itemGroupPath(group);
 	}
 
+	public DataBuilder item(String name, String model, String group)
+	{
+		return
+			DataBuilder.create()
+				.itemName(name)
+				.itemModel(new ItemFromModel(model))
+				.itemGroupPath(group);
+	}
+
 	public DataBuilder noItem()
 	{
 		itemModelPath = "";

@@ -7,7 +7,7 @@ import steve6472.polyground.EnumFace;
 import steve6472.polyground.block.model.IElement;
 import steve6472.polyground.block.model.ModelLoader;
 import steve6472.polyground.block.states.BlockState;
-import steve6472.polyground.entity.StaticEntityModel;
+import steve6472.polyground.gfx.StaticEntityModel;
 import steve6472.polyground.entity.player.EnumSlot;
 import steve6472.polyground.entity.player.Player;
 import steve6472.polyground.registry.Blocks;

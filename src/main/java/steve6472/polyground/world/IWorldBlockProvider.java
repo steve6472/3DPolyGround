@@ -174,6 +174,24 @@ public interface IWorldBlockProvider extends IChunkProvider
 	 * Data
 	 */
 
+	default void setData(BlockData data, int x, int y, int z)
+	{
+		Chunk c = getChunkFromBlockPos(x, z);
+
+		if (c != null)
+		{
+			int cx = Math.floorMod(x, 16);
+			int cy = y % 16;
+			int cz = Math.floorMod(z, 16);
+
+			if (isOutOfChunkBounds(getWorld(), cx, y, cz))
+				return;
+
+			SubChunk sc = c.getSubChunk(y / 16);
+			sc.setBlockData(data, cx, cy, cz);
+		}
+	}
+
 	default BlockData getData(int x, int y, int z)
 	{
 		Chunk c = getChunkFromBlockPos(x, z);

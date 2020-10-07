@@ -51,7 +51,7 @@ public class FlowerBlock extends Block
 
 			world.setBlock(Block.air, x, y, z);
 			Item item = Items.getItemByName(state.get(FLOWER_COLOR).name().toLowerCase() + "_powder");
-			ItemEntity e = new ItemEntity(null, item, x + 0.5f + ox / 16f, y + 0.25f, z + 0.5f + oz / 16f);
+			ItemEntity e = new ItemEntity(null, item, null, x + 0.5f + ox / 16f, y + 0.25f, z + 0.5f + oz / 16f);
 			world.getEntityManager().addEntity(e);
 		}
 	}

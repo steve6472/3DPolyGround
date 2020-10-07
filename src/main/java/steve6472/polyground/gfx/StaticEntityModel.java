@@ -1,4 +1,4 @@
-package steve6472.polyground.entity;
+package steve6472.polyground.gfx;
 
 import org.joml.*;
 import org.lwjgl.opengl.GL30;
@@ -6,8 +6,6 @@ import steve6472.polyground.block.BlockAtlas;
 import steve6472.polyground.block.model.IElement;
 import steve6472.polyground.block.model.ModelLoader;
 import steve6472.polyground.entity.interfaces.IRotation;
-import steve6472.polyground.gfx.MainRender;
-import steve6472.polyground.gfx.ThreadedModelBuilder;
 import steve6472.polyground.gfx.shaders.EntityShader;
 import steve6472.polyground.world.ModelBuilder;
 import steve6472.polyground.world.chunk.ModelLayer;
@@ -26,7 +24,7 @@ import static steve6472.sge.gfx.VertexObjectCreator.*;
  * Project: CaveGame
  *
  ***********************/
-public class StaticEntityModel
+public class StaticEntityModel implements IModel
 {
 	private static final Quaternionf quat = new Quaternionf();
 	private static final Matrix4f mat = new Matrix4f();

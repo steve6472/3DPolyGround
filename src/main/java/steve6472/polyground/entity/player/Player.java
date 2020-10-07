@@ -334,7 +334,7 @@ public class Player implements IMotion3f, IPosition3f
 						{
 							if (heldBlock == null)
 							{
-								BlockEntity item = new BlockEntity(this, pair.getA(), x, y, z);
+								BlockEntity item = new BlockEntity(this, pair.getA(), world.getData(x, y, z), x, y, z);
 								heldBlock = item;
 								getWorld().getEntityManager().addEntity(item);
 							} else
@@ -349,6 +349,7 @@ public class Player implements IMotion3f, IPosition3f
 					if (pair.getB().getBlock().isValidPosition(pair.getB(), world, x, y, z) && pair.getB().getBlock() != world.getState(x, y, z).getBlock())
 					{
 						world.setState(pair.getB(), x, y, z, 1);
+						world.setData(heldBlock.data, x, y, z);
 
 						if (pair.getA() == null || pair.getA().isAir())
 						{
@@ -358,7 +359,7 @@ public class Player implements IMotion3f, IPosition3f
 						{
 							if (heldBlock == null)
 							{
-								BlockEntity item = new BlockEntity(this, pair.getA(), x, y, z);
+								BlockEntity item = new BlockEntity(this, pair.getA(), world.getData(x, y, z), x, y, z);
 								heldBlock = item;
 								getWorld().getEntityManager().addEntity(item);
 							} else
@@ -402,7 +403,7 @@ public class Player implements IMotion3f, IPosition3f
 				int z = hr.getZ();
 
 				BlockState state = world.getState(x, y, z);
-				if (state.hasTag(Tags.PICKABLE))
+				if (state.hasTag(Tags.PICKABLE) || state.getBlock().isPickable(state, this))
 				{
 					Pair<BlockState, BlockState> pair = state.getBlock().getStatesForPickup(world, state,
 						heldBlock == null ? Block.air.getDefaultState() : heldBlock.state,
@@ -412,7 +413,7 @@ public class Player implements IMotion3f, IPosition3f
 					{
 						if (heldBlock == null)
 						{
-							BlockEntity item = new BlockEntity(this, pair.getA(), x, y, z);
+							BlockEntity item = new BlockEntity(this, pair.getA(), world.getData(x, y, z), x, y, z);
 							heldBlock = item;
 							getWorld().getEntityManager().addEntity(item);
 						} else

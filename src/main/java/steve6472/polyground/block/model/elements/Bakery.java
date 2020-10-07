@@ -16,7 +16,7 @@ import java.awt.*;
  ***********************/
 public class Bakery
 {
-	private static ModelBuilder builder;
+	private static ModelBuilder builder, tempBuilder;
 
 	private static final Vector3f normal = new Vector3f();
 	private final static Vector2f whiteUV = new Vector2f();
@@ -30,6 +30,18 @@ public class Bakery
 		float h = r.height;
 		float texel = builder.texel;
 		whiteUV.set((x + w * 0.5f) * texel, (y + h * 0.5f) * texel);
+	}
+
+	public static void tempBuilder(ModelBuilder tempBuilder)
+	{
+		Bakery.tempBuilder = builder;
+		Bakery.builder = tempBuilder;
+	}
+
+	public static void worldBuilder()
+	{
+		Bakery.builder = Bakery.tempBuilder;
+		Bakery.tempBuilder = null;
 	}
 
 	public static int createFaceFlags(boolean north, boolean east, boolean south, boolean west, boolean up, boolean down)

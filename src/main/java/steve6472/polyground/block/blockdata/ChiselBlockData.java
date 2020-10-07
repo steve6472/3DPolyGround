@@ -1,7 +1,11 @@
 package steve6472.polyground.block.blockdata;
 
 import net.querz.nbt.tag.CompoundTag;
-import steve6472.polyground.registry.data.DataRegistry;
+import org.joml.Matrix4f;
+import steve6472.polyground.block.model.elements.Bakery;
+import steve6472.polyground.gfx.DynamicEntityModel;
+import steve6472.polyground.gfx.IModel;
+import steve6472.polyground.registry.blockdata.BlockDataRegistry;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
@@ -9,10 +13,11 @@ import steve6472.polyground.registry.data.DataRegistry;
  * Project: CaveGame
  *
  ***********************/
-public class ChiselBlockData extends BlockData
+public class ChiselBlockData extends BlockData implements IModel
 {
 	public int[][] grid;
 	public int pieceCount;
+	public DynamicEntityModel model;
 
 	public ChiselBlockData()
 	{
@@ -27,6 +32,45 @@ public class ChiselBlockData extends BlockData
 				pieceCount++;
 			}
 		}
+
+		model = new DynamicEntityModel();
+		updateModel();
+	}
+
+	public void updateModel()
+	{
+		model.load((modelBuilder) -> {
+
+			Bakery.tempBuilder(modelBuilder);
+
+			int tris = 0;
+
+			for (int i = 0; i < 16; i++)
+			{
+				for (int j = 0; j < 16; j++)
+				{
+					for (int k = 0; k < 16; k++)
+					{
+						int flags = Bakery.createFaceFlags(
+							i != 15 && grid[j][(i + 1) + k * 16] != 0,
+							k != 15 && grid[j][i + (k + 1) * 16] != 0,
+							i != 0 && grid[j][(i - 1) + k * 16] != 0,
+							k != 0 && grid[j][i + (k - 1) * 16] != 0,
+							j != 15 && grid[j + 1][i + k * 16] != 0,
+							j != 0 && grid[j - 1][i + k * 16] != 0
+						);
+						if (grid[j][i + k * 16] != 0)
+						{
+							tris += Bakery.coloredCube_1x1(i, j, k, grid[j][i + k * 16], flags);
+						}
+					}
+				}
+			}
+
+			Bakery.worldBuilder();
+
+			return tris;
+		});
 	}
 
 	@Override
@@ -51,11 +95,19 @@ public class ChiselBlockData extends BlockData
 			int[] layer = tag.getIntArray("layer" + i);
 			grid[i] = layer;
 		}
+
+		updateModel();
 	}
 
 	@Override
 	public String getId()
 	{
-		return DataRegistry.chisel.getId();
+		return BlockDataRegistry.chisel.getId();
+	}
+
+	@Override
+	public void render(Matrix4f viewMatrix, Matrix4f mat)
+	{
+		model.render(viewMatrix, mat);
 	}
 }

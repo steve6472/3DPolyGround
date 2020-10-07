@@ -343,6 +343,8 @@ public class DataGenerator
 		DataBuilder.create().item("yellow_powder", "items.powders").generate();
 		DataBuilder.create().item("black_powder", "items.powders").generate();
 		DataBuilder.create().item("white_powder", "items.powders").generate();
+		DataBuilder.create().item("brush", "items").itemSpecial(new SimpleSpecial("brush")).generate();
+		DataBuilder.create().item("chisel_tool", "chisel", "items").generate();
 
 		DataBuilder.create()
 			.fullBlock("flower")

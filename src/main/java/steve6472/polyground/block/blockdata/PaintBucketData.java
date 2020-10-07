@@ -1,7 +1,7 @@
 package steve6472.polyground.block.blockdata;
 
 import net.querz.nbt.tag.CompoundTag;
-import steve6472.polyground.registry.data.DataRegistry;
+import steve6472.polyground.registry.blockdata.BlockDataRegistry;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
@@ -41,6 +41,6 @@ public class PaintBucketData extends BlockData
 	@Override
 	public String getId()
 	{
-		return DataRegistry.paintBucket.getId();
+		return BlockDataRegistry.paintBucket.getId();
 	}
 }

@@ -29,6 +29,7 @@ public class SpecialItemRegistry
 	public static final SpecialItemEntry<WaterBucketItem> waterBucket = register("waterbucket", WaterBucketItem::new);
 	public static final SpecialItemEntry<VoidBucketItem> voidBucket = register("voidbucket", VoidBucketItem::new);
 	public static final SpecialItemEntry<TeleportPlacerItem> teleplacer = register("tele_placer", TeleportPlacerItem::new);
+	public static final SpecialItemEntry<BrushItem> brush = register("brush", BrushItem::new);
 
 	public static <T extends Item> SpecialItemEntry<T> register(String id, ISpecialItemFactory<T> factory)
 	{

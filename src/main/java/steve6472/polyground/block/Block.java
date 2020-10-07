@@ -14,6 +14,7 @@ import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.block.states.StateLoader;
 import steve6472.polyground.entity.EntityBase;
 import steve6472.polyground.entity.player.Player;
+import steve6472.polyground.gfx.IModel;
 import steve6472.polyground.item.Item;
 import steve6472.polyground.world.ModelBuilder;
 import steve6472.polyground.world.World;
@@ -105,6 +106,12 @@ public class Block
 	{
 		return state.getBlockModel(world, x, y, z).getCubes();
 	}
+
+	public IModel getModel(World world, BlockState state, int x, int y, int z)
+	{
+		return state.getBlockModel(world, x, y, z).getModel();
+	}
+
 
 	/* States */
 
@@ -250,6 +257,11 @@ public class Block
 	}
 
 	public boolean canMerge(BlockState holdedState, BlockState worldState, Player player, EnumFace clickedOn, int x, int y, int z)
+	{
+		return false;
+	}
+
+	public boolean isPickable(BlockState state, Player player)
 	{
 		return false;
 	}

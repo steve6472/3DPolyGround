@@ -1,11 +1,9 @@
-package steve6472.polyground.entity;
+package steve6472.polyground.gfx;
 
 import org.joml.*;
 import steve6472.polyground.block.BlockAtlas;
 import steve6472.polyground.block.model.IElement;
 import steve6472.polyground.entity.interfaces.IRotation;
-import steve6472.polyground.gfx.MainRender;
-import steve6472.polyground.gfx.ThreadedModelBuilder;
 import steve6472.polyground.gfx.shaders.EntityShader;
 import steve6472.polyground.world.ModelBuilder;
 import steve6472.polyground.world.chunk.ModelLayer;
@@ -14,6 +12,7 @@ import steve6472.sge.main.game.mixable.IPosition3f;
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL20.*;
@@ -24,7 +23,7 @@ import static org.lwjgl.opengl.GL20.*;
  * Project: CaveGame
  *
  ***********************/
-public class DynamicEntityModel
+public class DynamicEntityModel implements IModel
 {
 	public static final Quaternionf QUAT = new Quaternionf();
 	public static final Matrix4f MAT = new Matrix4f();
@@ -48,6 +47,21 @@ public class DynamicEntityModel
 
 	public void load(IElement[] elements)
 	{
+		load(modelBuilder -> {
+			int vertexCount = 0;
+			for (IElement e : elements)
+			{
+				for (ModelLayer layer : ModelLayer.values())
+				{
+					vertexCount += e.build(modelBuilder, layer, null, null, 0, 0, 0);
+				}
+			}
+			return vertexCount;
+		});
+	}
+
+	public void load(Function<ModelBuilder, Integer> p)
+	{
 		vertexCount = 0;
 
 		vert.clear();
@@ -58,13 +72,7 @@ public class DynamicEntityModel
 		modelBuilder.load(0, 0, 0);
 		modelBuilder.load(vert, col, text, norm);
 
-		for (IElement e : elements)
-		{
-			for (ModelLayer layer : ModelLayer.values())
-			{
-				vertexCount += e.build(modelBuilder, layer, null, null, 0, 0, 0);
-			}
-		}
+		vertexCount = p.apply(modelBuilder);
 
 		vertexCount *= 3;
 
@@ -96,7 +104,6 @@ public class DynamicEntityModel
 
 	public void render(Matrix4f viewMatrix, Matrix4f mat)
 	{
-
 		MainRender.shaders.entityShader.bind(viewMatrix);
 		MainRender.shaders.entityShader.setTransformation(mat);
 		MainRender.shaders.entityShader.setUniform(EntityShader.NORMAL_MATRIX, new Matrix3f(new Matrix4f(mat).invert().transpose3x3()));

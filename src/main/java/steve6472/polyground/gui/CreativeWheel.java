@@ -271,7 +271,7 @@ public class CreativeWheel extends Component
 	@Event
 	public void toggle(KeyEvent e)
 	{
-		if (e.getAction() == KeyList.PRESS && e.getKey() == KeyList.E && CaveGame.getInstance().getPlayer().gamemode == EnumGameMode.CREATIVE)
+		if (!CaveGame.getInstance().options.isInMenu && !CaveGame.getInstance().inGameGui.chat.isFocused() && e.getAction() == KeyList.PRESS && e.getKey() == KeyList.E && CaveGame.getInstance().getPlayer().gamemode == EnumGameMode.CREATIVE)
 		{
 			open = !open;
 			currentGroup = CaveGame.getInstance().itemGroups.getRoot();

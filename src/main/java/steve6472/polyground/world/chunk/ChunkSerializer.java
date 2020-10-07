@@ -11,7 +11,7 @@ import steve6472.polyground.block.properties.*;
 import steve6472.polyground.block.special.ILightBlock;
 import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.registry.Blocks;
-import steve6472.polyground.registry.data.DataRegistry;
+import steve6472.polyground.registry.blockdata.BlockDataRegistry;
 import steve6472.polyground.world.generator.EnumChunkStage;
 
 import java.io.File;
@@ -248,7 +248,7 @@ public class ChunkSerializer
 				int z = data.getInt("z");
 				String name = data.getString("name");
 
-				BlockData blockData = DataRegistry.createData(name);
+				BlockData blockData = BlockDataRegistry.createData(name);
 				blockData.read(data);
 				subChunk.setBlockData(blockData, x, y, z);
 			});

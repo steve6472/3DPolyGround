@@ -45,7 +45,7 @@ public class HammerstoneBlock extends Block
 			int oz = (int) (hash(world.getSeed(), x * -((1 << 5) + 1), y, -z) % 12) - 6;
 
 			world.setBlock(Block.air, x, y, z);
-			ItemEntity e = new ItemEntity(null, item, x + 0.5f + ox / 16f, y + 0.25f, z + 0.5f + oz / 16f);
+			ItemEntity e = new ItemEntity(null, item, null, x + 0.5f + ox / 16f, y + 0.25f, z + 0.5f + oz / 16f);
 			world.getEntityManager().addEntity(e);
 		}
 	}

@@ -46,5 +46,7 @@ public class CommandRegistry
 		new RandomTicksCommand(dispatcher);
 		new LightCommand(dispatcher);
 		new GamemodeCommand(dispatcher);
+		new BrushCommand(dispatcher);
+		new ChiselCommand(dispatcher);
 	}
 }

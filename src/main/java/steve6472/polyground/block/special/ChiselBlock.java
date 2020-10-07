@@ -14,12 +14,12 @@ import steve6472.polyground.block.model.CubeHitbox;
 import steve6472.polyground.block.model.elements.Bakery;
 import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.entity.player.Player;
+import steve6472.polyground.item.itemdata.BrushData;
 import steve6472.polyground.world.ModelBuilder;
 import steve6472.polyground.world.World;
 import steve6472.polyground.world.chunk.ModelLayer;
 import steve6472.sge.main.KeyList;
 import steve6472.sge.main.events.MouseEvent;
-import steve6472.sge.main.util.RandomUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,6 +49,31 @@ public class ChiselBlock extends CustomBlock implements IBlockData
 	@Override
 	public void onClick(BlockState state, World world, Player player, EnumFace clickedOn, MouseEvent click, int x, int y, int z)
 	{
+		if (click.getButton() == KeyList.RMB && click.getAction() == KeyList.PRESS)
+		{
+			ChiselBlockData data = (ChiselBlockData) world.getData(x, y, z);
+			if (data == null)
+				return;
+
+			Vector4i c = getLookedAtPiece(world, player, x, y, z);
+
+			if (c != null && player.heldItem != null)
+			{
+				if (player.heldItem.itemData instanceof BrushData bd)
+				{
+					int cx = c.x;
+					int cy = c.y;
+					int cz = c.z;
+					data.grid[cy][cx + cz * 16] = bd.color;
+
+					data.updateModel();
+					world.getSubChunkFromBlockCoords(x, y, z).rebuild();
+					return;
+
+				}
+			}
+		}
+
 		if (click.getButton() != KeyList.MMB && click.getAction() == KeyList.PRESS)
 		{
 			ChiselBlockData data = (ChiselBlockData) world.getData(x, y, z);
@@ -56,7 +81,8 @@ public class ChiselBlock extends CustomBlock implements IBlockData
 				return;
 
 			Vector4i c = getLookedAtPiece(world, player, x, y, z);
-			if (c != null)
+
+			if (c != null && player.heldItem != null && player.heldItem.item.getName().equals("chisel_tool"))
 			{
 				if (click.getButton() == KeyList.LMB)
 				{
@@ -71,21 +97,29 @@ public class ChiselBlock extends CustomBlock implements IBlockData
 					int cz = c.z + f.getZOffset();
 					if (cx >= 0 && cx < 16 && cy >= 0 && cy < 16 && cz >= 0 && cz < 16)
 					{
-						int r = RandomUtil.randomInt(0, 16) * 16 - 1;
-						data.grid[cy][cx + cz * 16] = (r & 255) << 16 | (r & 255) << 8 | r & 255;
+						data.grid[cy][cx + cz * 16] = 0x303030;
 						data.pieceCount++;
 					}
 					player.processNextBlockPlace = false;
 				}
-			}
 
-			if (data.pieceCount == 0)
-			{
-				world.setBlock(Block.air, x, y, z);
-			}
+				if (data.pieceCount == 0)
+				{
+					world.setBlock(Block.air, x, y, z);
+					world.getSubChunkFromBlockCoords(x, y, z).rebuild();
+					return;
+				}
 
-			world.getSubChunkFromBlockCoords(x, y, z).rebuild();
+				data.updateModel();
+				world.getSubChunkFromBlockCoords(x, y, z).rebuild();
+			}
 		}
+	}
+
+	@Override
+	public boolean isPickable(BlockState state, Player player)
+	{
+		return player.heldItem == null || !player.heldItem.item.getName().equals("chisel_tool");
 	}
 
 	private Vector4i getLookedAtPiece(World world, Player player, int x, int y, int z)

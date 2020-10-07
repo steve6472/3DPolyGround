@@ -1,14 +1,16 @@
 package steve6472.polyground.entity.item;
 
 import steve6472.polyground.CaveGame;
+import steve6472.polyground.block.blockdata.BlockData;
 import steve6472.polyground.block.states.BlockState;
-import steve6472.polyground.entity.DynamicEntityModel;
+import steve6472.polyground.gfx.DynamicEntityModel;
 import steve6472.polyground.entity.EntityBase;
 import steve6472.polyground.entity.interfaces.IKillable;
 import steve6472.polyground.entity.interfaces.IRenderable;
 import steve6472.polyground.entity.interfaces.ITickable;
 import steve6472.polyground.entity.interfaces.IWorldContainer;
 import steve6472.polyground.entity.player.Player;
+import steve6472.polyground.gfx.IModel;
 import steve6472.polyground.world.World;
 
 /**********************
@@ -20,15 +22,18 @@ import steve6472.polyground.world.World;
 public class BlockEntity extends EntityBase implements IRenderable, ITickable, IKillable, IWorldContainer
 {
 	public BlockState state;
+	public BlockData data;
 	private World world;
 	private boolean forceDead = false;
 	private final Player player;
 
-	public BlockEntity(Player player, BlockState state, int x, int y, int z)
+	public BlockEntity(Player player, BlockState state, BlockData data, int x, int y, int z)
 	{
 		super();
+
 		this.player = player;
 		this.state = state;
+		this.data = data;
 		setPosition(x + 0.5f, y + 0.5f, z + 0.5f);
 		setPivotPoint(.5f, .5f, .5f);
 	}
@@ -71,7 +76,14 @@ public class BlockEntity extends EntityBase implements IRenderable, ITickable, I
 			.translate(-getPivotPoint().x, -getPivotPoint().y, -getPivotPoint().z)
 		;
 
-		state.getBlockModel(world, 0, 0, 0).getModel().render(CaveGame.getInstance().getCamera().getViewMatrix(), DynamicEntityModel.MAT);
+		if (data != null && data instanceof IModel m)
+		{
+			m.render(CaveGame.getInstance().getCamera().getViewMatrix(), DynamicEntityModel.MAT);
+		} else
+		{
+			state.getBlock().getModel(world, state, 0, 0, 0).render(CaveGame.getInstance().getCamera().getViewMatrix(), DynamicEntityModel.MAT);
+		}
+
 	}
 
 	/*

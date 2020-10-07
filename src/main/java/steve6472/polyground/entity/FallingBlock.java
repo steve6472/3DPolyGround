@@ -6,6 +6,7 @@ import steve6472.polyground.entity.interfaces.IKillable;
 import steve6472.polyground.entity.interfaces.IRenderable;
 import steve6472.polyground.entity.interfaces.ITickable;
 import steve6472.polyground.entity.interfaces.IWorldContainer;
+import steve6472.polyground.gfx.DynamicEntityModel;
 import steve6472.polyground.world.World;
 
 /**********************
