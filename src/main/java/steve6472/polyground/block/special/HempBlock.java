@@ -68,13 +68,14 @@ public class HempBlock extends Block
 
 		Item hemp = Items.getItemByName("hemp_string");
 		ItemEntity entity = new ItemEntity(null, hemp, null, x + sin + 0.5f, y + RandomUtil.randomFloat(0, 1f), z + cos + 0.5f);
+		entity.setYaw((float) RandomUtil.randomRadian());
 		world.getEntityManager().addEntity(entity);
 	}
 
 	@Override
 	public void randomTick(BlockState state, World world, int x, int y, int z)
 	{
-		if (world.getRandom().nextInt(10) != 7)
+		if (world.getRandom().nextInt(5) != 2)
 			return;
 
 		if (state.get(STAGE) < 3)

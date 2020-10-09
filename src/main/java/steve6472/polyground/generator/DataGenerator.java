@@ -337,6 +337,9 @@ public class DataGenerator
 		DataBuilder.create().item("flint_axe_head", "items").generate();
 		DataBuilder.create().item("flint_axe", "axe/full_axe", "items").generate();
 		DataBuilder.create().item("hemp_string", "hemp", "items").generate();
+		DataBuilder.create().item("hammerstone_limestone", "items").generate();
+		DataBuilder.create().item("hammerstone_sandstone", "items").generate();
+		DataBuilder.create().item("hammerstone_quartzite", "items").generate();
 		DataBuilder.create().item("red_powder", "items.powders").generate();
 		DataBuilder.create().item("green_powder", "items.powders").generate();
 		DataBuilder.create().item("blue_powder", "items.powders").generate();

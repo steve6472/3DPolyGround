@@ -46,14 +46,21 @@ public class FlowerBlock extends Block
 	{
 		if (click.getAction() == KeyList.PRESS && click.getButton() == KeyList.MMB)
 		{
-			int ox = (int) (hash(world.getSeed() + 1, -x, y, z * (1 << 4) + 1) % 12) - 6;
-			int oz = (int) (hash(world.getSeed() + 1, x * -((1 << 5) + 1), y, -z) % 12) - 6;
-
 			world.setBlock(Block.air, x, y, z);
-			Item item = Items.getItemByName(state.get(FLOWER_COLOR).name().toLowerCase() + "_powder");
-			ItemEntity e = new ItemEntity(null, item, null, x + 0.5f + ox / 16f, y + 0.25f, z + 0.5f + oz / 16f);
-			world.getEntityManager().addEntity(e);
+			spawnLoot(world, state, x, y, z);
 		}
+	}
+
+	@Override
+	public void spawnLoot(World world, BlockState state, int x, int y, int z)
+	{
+		int ox = (int) (hash(world.getSeed() + 1, -x, y, z * (1 << 4) + 1) % 12) - 6;
+		int oz = (int) (hash(world.getSeed() + 1, x * -((1 << 5) + 1), y, -z) % 12) - 6;
+
+		Item item = Items.getItemByName(state.get(FLOWER_COLOR).name().toLowerCase() + "_powder");
+		ItemEntity e = new ItemEntity(null, item, null, x + 0.5f + ox / 16f, y + 0.25f, z + 0.5f + oz / 16f);
+		e.setYaw((float) RandomUtil.randomRadian());
+		world.getEntityManager().addEntity(e);
 	}
 
 	@Override

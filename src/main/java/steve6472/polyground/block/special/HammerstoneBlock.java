@@ -12,6 +12,8 @@ import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.block.states.States;
 import steve6472.polyground.entity.item.ItemEntity;
 import steve6472.polyground.entity.player.Player;
+import steve6472.polyground.item.Item;
+import steve6472.polyground.registry.Items;
 import steve6472.polyground.world.ModelBuilder;
 import steve6472.polyground.world.World;
 import steve6472.polyground.world.chunk.ModelLayer;
@@ -45,6 +47,14 @@ public class HammerstoneBlock extends Block
 			int oz = (int) (hash(world.getSeed(), x * -((1 << 5) + 1), y, -z) % 12) - 6;
 
 			world.setBlock(Block.air, x, y, z);
+
+			Item item = switch (state.get(STONE_TYPE))
+				{
+					case SANDSTONE -> Items.getItemByName("hammerstone_sandstone");
+					case LIMESTONE -> Items.getItemByName("hammerstone_limestone");
+					case QUARTZITE -> Items.getItemByName("hammerstone_quartzite");
+				};
+
 			ItemEntity e = new ItemEntity(null, item, null, x + 0.5f + ox / 16f, y + 0.25f, z + 0.5f + oz / 16f);
 			world.getEntityManager().addEntity(e);
 		}

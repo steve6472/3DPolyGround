@@ -49,7 +49,7 @@ public class KnappingBlock extends CustomBlock implements IBlockData
 	@Override
 	public void onClick(BlockState state, World world, Player player, EnumFace clickedOn, MouseEvent click, int x, int y, int z)
 	{
-		if (click.getButton() == KeyList.LMB && click.getAction() == KeyList.PRESS && player.heldItem != null && player.heldItem.item.name.equals("hammerstone"))
+		if (click.getButton() == KeyList.LMB && click.getAction() == KeyList.PRESS && player.heldItem != null && player.heldItem.item.name.startsWith("hammerstone"))
 		{
 			player.processNextBlockBreak = false;
 

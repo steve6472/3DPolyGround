@@ -127,7 +127,9 @@ public class HitPicker
 
 
 				MainRender.shaders.mainShader.bind(game.getCamera().getViewMatrix());
-				AABBUtil.renderAABB(hitResult.getX() - 0.001f + aabb.minX, hitResult.getY() - 0.001f + aabb.minY, hitResult.getZ() - 0.001f + aabb.minZ, hitResult.getX() + 0.001f + aabb.maxX, hitResult.getY() + 0.001f + aabb.maxY, hitResult.getZ() + 0.001f + aabb.maxZ, 1f, game.mainRender.basicTess, MainRender.shaders.mainShader);
+
+				if (game.options.renderBlockOutline)
+					AABBUtil.renderAABB(hitResult.getX() - 0.001f + aabb.minX, hitResult.getY() - 0.001f + aabb.minY, hitResult.getZ() - 0.001f + aabb.minZ, hitResult.getX() + 0.001f + aabb.maxX, hitResult.getY() + 0.001f + aabb.maxY, hitResult.getZ() + 0.001f + aabb.maxZ, 1f, game.mainRender.basicTess, MainRender.shaders.mainShader);
 			}
 
 		}

@@ -55,7 +55,7 @@ void main()
 			lighting += diffuse * attenuation;
 		}
 	}
-	
+
 	lighting = lighting * texture;
 
 	outTexture = vec4(lighting, tex.a);

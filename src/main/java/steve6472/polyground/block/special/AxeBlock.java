@@ -33,7 +33,15 @@ public class AxeBlock extends CustomBlock
 	public static final BooleanProperty STICK = States.HAS_STICK;
 	public static final BooleanProperty STRING = States.HAS_STRING;
 
-	private static IElement[] MODEL_HEAD, MODEL_STICK, MODEL_STRING;
+	private final static IElement[] MODEL_HEAD = ModelLoader.loadElements(ModelLoader.load("custom_models/items/axe/head.bbmodel", true), 0, 0, 0);
+	private final static IElement[] MODEL_STICK = ModelLoader.loadElements(ModelLoader.load("custom_models/items/axe/stick.bbmodel", true), 0, 0, 0);
+	private final static IElement[] MODEL_STRING = ModelLoader.loadElements(ModelLoader.load("custom_models/items/axe/string.bbmodel", true), 0, 0, 0);
+
+	static {
+		Blocks.elements.add(MODEL_HEAD);
+		Blocks.elements.add(MODEL_STICK);
+		Blocks.elements.add(MODEL_STRING);
+	}
 
 	public AxeBlock(JSONObject json)
 	{
@@ -44,13 +52,6 @@ public class AxeBlock extends CustomBlock
 	public void load(JSONObject json)
 	{
 		super.load(json);
-		MODEL_HEAD = ModelLoader.loadElements(ModelLoader.load("custom_models/items/axe/head.bbmodel", true), 0, 0, 0);
-		MODEL_STICK = ModelLoader.loadElements(ModelLoader.load("custom_models/items/axe/stick.bbmodel", true), 0, 0, 0);
-		MODEL_STRING = ModelLoader.loadElements(ModelLoader.load("custom_models/items/axe/string.bbmodel", true), 0, 0, 0);
-
-		Blocks.elements.add(MODEL_HEAD);
-		Blocks.elements.add(MODEL_STICK);
-		Blocks.elements.add(MODEL_STRING);
 	}
 
 	@Override
