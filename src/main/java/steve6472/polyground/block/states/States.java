@@ -16,6 +16,7 @@ public class States
 {
 	public static final BooleanProperty LIT = BooleanProperty.create("lit");
 	public static final BooleanProperty PERSISTENT = BooleanProperty.create("persistent");
+	public static final BooleanProperty HAS_LEAVES = BooleanProperty.create("leaves");
 
 	public static final BooleanProperty HAS_HEAD = BooleanProperty.create("head");
 	public static final BooleanProperty HAS_STICK = BooleanProperty.create("stick");
@@ -36,4 +37,5 @@ public class States
 	public static final IntProperty DISTANCE_1_6 = IntProperty.create("distance", 1, 6);
 	public static final IntProperty LOGS = IntProperty.create("logs", 1, 6);
 	public static final IntProperty STAGE_1_3 = IntProperty.create("stage", 1, 3);
+	public static final IntProperty RADIUS_0_7 = IntProperty.create("radius", 0, 7);
 }

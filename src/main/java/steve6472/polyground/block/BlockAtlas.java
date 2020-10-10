@@ -93,6 +93,11 @@ public class BlockAtlas
 		}
 	}
 
+	public static HashMap<String, Integer> getUsedTexturesReference()
+	{
+		return usedTexturesReference;
+	}
+
 	public static int getTextureId(String name)
 	{
 		return usedTexturesReference.get(name);

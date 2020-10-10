@@ -35,7 +35,7 @@ public class CommandRegistry
 		new LoadWorldCommand(dispatcher);
 		new SetWorldName(dispatcher);
 		new HelpCommand(dispatcher);
-		new BlocksCommand(dispatcher);
+		new DumpCommand(dispatcher);
 		new SetCommand(dispatcher);
 		new SensitivityCommand(dispatcher);
 		new ModelLayerCommand(dispatcher);

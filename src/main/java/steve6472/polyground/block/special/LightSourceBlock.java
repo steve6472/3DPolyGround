@@ -144,17 +144,5 @@ public class LightSourceBlock extends Block implements ILightBlock
 			}
 		}
 
-	private class Node
-	{
-		public int x, y, z;
-		int distance;
-
-		Node(int x, int y, int z, int distance)
-		{
-			this.x = x;
-			this.y = y;
-			this.z = z;
-			this.distance = distance;
-		}
-	}*/
+	*/
 }

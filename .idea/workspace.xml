@@ -23,13 +23,6 @@
       </list>
     </option>
   </component>
-  <component name="MavenImportPreferences">
-    <option name="generalSettings">
-      <MavenGeneralSettings>
-        <option name="mavenHome" value="D:\Toolbox\apps\IDEA-C\ch-0\203.3645.34\plugins\maven\lib\maven3" />
-      </MavenGeneralSettings>
-    </option>
-  </component>
   <component name="ProblemsViewState">
     <option name="selectedIndex" value="1" />
   </component>
@@ -76,7 +69,7 @@
       <command value="3.14159265358979323846 * 2" />
     </option>
   </component>
-  <component name="RunManager" selected="Application.Gen-CaveGame">
+  <component name="RunManager" selected="Application.CaveGame">
     <configuration name="A" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="steve6472.polyground.A" />
       <module name="CaveGame" />

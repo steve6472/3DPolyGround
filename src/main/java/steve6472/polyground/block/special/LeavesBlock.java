@@ -71,7 +71,7 @@ public class LeavesBlock extends Block
 
 	private static int getDistance(BlockState state)
 	{
-		if (state.hasTag(Tags.LOG))
+		if (state.hasTag(Tags.LOG) || state.getBlock() instanceof BranchBlock)
 			return 0;
 		else
 			return state.getBlock() instanceof LeavesBlock ? state.get(DISTANCE): 7;

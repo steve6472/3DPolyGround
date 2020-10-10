@@ -3,6 +3,7 @@ package steve6472.polyground.block.model.elements;
 import org.joml.GeometryUtils;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
+import steve6472.polyground.block.BlockAtlas;
 import steve6472.polyground.world.ModelBuilder;
 import steve6472.sge.main.util.ColorUtil;
 
@@ -66,8 +67,31 @@ public class Bakery
 	 */
 	public static int coloredCube_1x1(int x, int y, int z, int color, int faceFlags)
 	{
+		return coloredCube(x, y, z, 1, 1, 1, color, faceFlags);
+	}
+
+	/**
+	 *
+	 * @param x x coordinate on cube
+	 * @param y y coordinate on cube
+	 * @param z z coordinate on cube
+	 * @param w width (x)
+	 * @param h height (y)
+	 * @param d depth (z)
+	 * @param color hex color
+	 * @param faceFlags flags to disable rendering of faces
+	 *                  1 - disable north
+	 *                  2 - disable east
+	 *                  4 - disable south
+	 *                  8 - disable west
+	 *                  16 - disable up
+	 *                  32 - disable down
+	 * @return number of triangles
+	 */
+	public static int coloredCube(int x, int y, int z, int w, int h, int d, int color, int faceFlags)
+	{
 		Vector3f from = new Vector3f(x * 1f / 16f, y * 1f / 16f, z * 1f / 16f);
-		Vector3f to = new Vector3f(x * 1f / 16f + 1f / 16f, y * 1f / 16f + 1f / 16f, z * 1f / 16f + 1f / 16f);
+		Vector3f to = new Vector3f(x * 1f / 16f + w * 1f / 16f, y * 1f / 16f + h * 1f / 16f, z * 1f / 16f + d * 1f / 16f);
 
 		int tris = 0;
 
@@ -105,9 +129,146 @@ public class Bakery
 		return tris;
 	}
 
+	/**
+	 *
+	 * @param x x coordinate on cube
+	 * @param y y coordinate on cube
+	 * @param z z coordinate on cube
+	 * @param w width (x)
+	 * @param h height (y)
+	 * @param d depth (z)
+	 * @param texture block texture (has to be loaded)
+	 * @param faceFlags flags to disable rendering of faces
+	 *                  1 - disable north
+	 *                  2 - disable east
+	 *                  4 - disable south
+	 *                  8 - disable west
+	 *                  16 - disable up
+	 *                  32 - disable down
+	 * @return number of triangles
+	 */
+	public static int autoTexturedCube(int x, int y, int z, int w, int h, int d, String texture, int faceFlags)
+	{
+		return autoTexturedCube(x, y, z, w, h, d, texture, faceFlags, 0);
+	}
+
+	/**
+	 *
+	 * @param x x coordinate on cube
+	 * @param y y coordinate on cube
+	 * @param z z coordinate on cube
+	 * @param w width (x)
+	 * @param h height (y)
+	 * @param d depth (z)
+	 * @param texture block texture (has to be loaded)
+	 * @param faceFlags flags to disable rendering of faces
+	 *                  1 - disable north
+	 *                  2 - disable east
+	 *                  4 - disable south
+	 *                  8 - disable west
+	 *                  16 - disable up
+	 *                  32 - disable down
+	 * @param biomeTintFlags flags to enable biome tint
+	 *                       use same bits as faceFlags
+	 * @return number of triangles
+	 */
+	public static int autoTexturedCube(int x, int y, int z, int w, int h, int d, String texture, int faceFlags, int biomeTintFlags)
+	{
+		Vector3f from = new Vector3f(x * 1f / 16f, y * 1f / 16f, z * 1f / 16f);
+		Vector3f to = new Vector3f(x * 1f / 16f + w * 1f / 16f, y * 1f / 16f + h * 1f / 16f, z * 1f / 16f + d * 1f / 16f);
+
+		int tex = BlockAtlas.getTextureId(texture);
+
+		int tris = 0;
+
+		if ((faceFlags & 1) != 1) tris += texturedQuad(
+			new Vector3f(to.x, to.y, to.z),
+			new Vector3f(to.x, from.y, to.z),
+			new Vector3f(to.x, from.y, from.z),
+			new Vector3f(to.x, to.y, from.z),
+			uv(tex, new Vector2f(1 - to.z, 1 - to.y)),
+			uv(tex, new Vector2f(1 - to.z, 1 - from.y)),
+			uv(tex, new Vector2f(1 - from.z, 1 - from.y)),
+			uv(tex, new Vector2f(1 - from.z, 1 - to.y)),
+			(biomeTintFlags & 1) == 1
+		);
+
+		if ((faceFlags & 2) != 2) tris += texturedQuad(
+			new Vector3f(from.x, to.y, to.z),
+			new Vector3f(from.x, from.y, to.z),
+			new Vector3f(to.x, from.y, to.z),
+			new Vector3f(to.x, to.y, to.z),
+			uv(tex, new Vector2f(from.x, 1 - to.y)),
+			uv(tex, new Vector2f(from.x, 1 - from.y)),
+			uv(tex, new Vector2f(to.x, 1 - from.y)),
+			uv(tex, new Vector2f(to.x, 1 - to.y)),
+			(biomeTintFlags & 2) == 2
+		);
+
+		if ((faceFlags & 4) != 4) tris += texturedQuad(
+			new Vector3f(from.x, to.y, from.z),
+			new Vector3f(from.x, from.y, from.z),
+			new Vector3f(from.x, from.y, to.z),
+			new Vector3f(from.x, to.y, to.z),
+			uv(tex, new Vector2f(from.z, 1 - to.y)),
+			uv(tex, new Vector2f(from.z, 1 - from.y)),
+			uv(tex, new Vector2f(to.z, 1 - from.y)),
+			uv(tex, new Vector2f(to.z, 1 - to.y)),
+			(biomeTintFlags & 4) == 4
+		);
+
+		if ((faceFlags & 8) != 8) tris += texturedQuad(
+			new Vector3f(to.x, to.y, from.z),
+			new Vector3f(to.x, from.y, from.z),
+			new Vector3f(from.x, from.y, from.z),
+			new Vector3f(from.x, to.y, from.z),
+			uv(tex, new Vector2f(1 - to.x, 1 - to.y)),
+			uv(tex, new Vector2f(1 - to.x, 1 - from.y)),
+			uv(tex, new Vector2f(1 - from.x, 1 - from.y)),
+			uv(tex, new Vector2f(1 - from.x, 1 - to.y)),
+			(biomeTintFlags & 8) == 8
+		);
+
+		if ((faceFlags & 16) != 16) tris += texturedQuad(
+			new Vector3f(to.x, to.y, from.z),
+			new Vector3f(from.x, to.y, from.z),
+			new Vector3f(from.x, to.y, to.z),
+			new Vector3f(to.x, to.y, to.z),
+			uv(tex, new Vector2f(1 - to.x, from.z)),
+			uv(tex, new Vector2f(1 - from.x, from.z)),
+			uv(tex, new Vector2f(1 - from.x, to.z)),
+			uv(tex, new Vector2f(1 - to.x, to.z)),
+			(biomeTintFlags & 16) == 16
+		);
+
+		if ((faceFlags & 32) != 32) tris += texturedQuad(
+			new Vector3f(from.x, from.y, from.z),
+			new Vector3f(to.x, from.y, from.z),
+			new Vector3f(to.x, from.y, to.z),
+			new Vector3f(from.x, from.y, to.z),
+			uv(tex, new Vector2f(1 - to.x, from.z)),
+			uv(tex, new Vector2f(1 - from.x, from.z)),
+			uv(tex, new Vector2f(1 - from.x, to.z)),
+			uv(tex, new Vector2f(1 - to.x, to.z)),
+			(biomeTintFlags & 32) == 32
+		);
+
+		return tris;
+	}
+
 	public static int coloredQuad(Vector3f v0, Vector3f v1, Vector3f v2, Vector3f v3, int color)
 	{
 		return coloredTriangle(v0, v1, v2, color) + coloredTriangle(v2, v3, v0, color);
+	}
+
+	public static int texturedQuad(Vector3f v0, Vector3f v1, Vector3f v2, Vector3f v3, Vector2f uv0, Vector2f uv1, Vector2f uv2, Vector2f uv3)
+	{
+		return texturedQuad(v0, v1, v2, v3, uv0, uv1, uv2, uv3, false);
+	}
+
+	public static int texturedQuad(Vector3f v0, Vector3f v1, Vector3f v2, Vector3f v3, Vector2f uv0, Vector2f uv1, Vector2f uv2, Vector2f uv3, boolean biomeTint)
+	{
+		return texturedTriangle(v0, v1, v2, uv0, uv1, uv2, biomeTint) + texturedTriangle(v2, v3, v0, uv2, uv3, uv0, biomeTint);
 	}
 
 	public static int coloredTriangle(Vector3f v0, Vector3f v1, Vector3f v2, int color)
@@ -122,5 +283,48 @@ public class Bakery
 		builder.colorTri(ColorUtil.getRed(color) / 255f, ColorUtil.getGreen(color) / 255f, ColorUtil.getBlue(color) / 255f);
 
 		return 1;
+	}
+
+	public static int texturedTriangle(Vector3f v0, Vector3f v1, Vector3f v2, Vector2f uv0, Vector2f uv1, Vector2f uv2)
+	{
+		return texturedTriangle(v0, v1, v2, uv0, uv1, uv2, false);
+	}
+
+	public static int texturedTriangle(Vector3f v0, Vector3f v1, Vector3f v2, Vector2f uv0, Vector2f uv1, Vector2f uv2, boolean biomeTint)
+	{
+		GeometryUtils.normal(v0, v1, v2, normal);
+
+		builder.tri(v0, v1, v2);
+		builder.uv(uv0);
+		builder.uv(uv1);
+		builder.uv(uv2);
+		builder.normalTri(new Vector3f(normal));
+
+		if (biomeTint)
+		{
+			Vector3f bt = builder.getBiomeTint();
+			builder.colorTri(bt.x, bt.y, bt.z);
+		} else
+		{
+			builder.colorTri(1, 1, 1);
+		}
+
+		return 1;
+	}
+
+	public static Vector2f uv(int texture, Vector2f uv)
+	{
+		Rectangle r = BlockAtlas.getTexture(texture);
+		float x = r.x;
+		float y = r.y;
+		float w = r.width;
+		float h = r.height;
+		uv.set((x + w * uv.x) * builder.texel, (y + h * uv.y) * builder.texel);
+		return uv;
+	}
+
+	public static Vector2f uv(String texture, Vector2f uv)
+	{
+		return uv(BlockAtlas.getTextureId(texture), uv);
 	}
 }

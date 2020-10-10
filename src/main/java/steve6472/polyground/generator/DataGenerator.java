@@ -282,13 +282,6 @@ public class DataGenerator
 			.generate();
 
 		DataBuilder.create()
-			.fullBlock("backpack")
-			.blockState(StateBuilder.create().singleModel(BlockModelBuilder.create("backpack").externalPath("custom_models/backpack.bbmodel")))
-			.blockSpecial(new SimpleSpecial("custom"))
-			.itemGroupPath("misc")
-			.generate();
-
-		DataBuilder.create()
 			.fullBlock("block_inspector")
 			.blockState(StateBuilder.create().singleModel(BlockModelBuilder.create("block_inspector").externalPath("custom_models/block_inspector.bbmodel")))
 			.blockSpecial(new SimpleSpecial("custom"))
@@ -328,6 +321,20 @@ public class DataGenerator
 		DataBuilder.create()
 			.fullBlock("axe_assembly")
 			.blockSpecial(new SimpleSpecial("axe_block"))
+			.blockState(StateBuilder.create().emptyModel())
+			.itemGroupPath("misc")
+			.generate();
+
+		DataBuilder.create()
+			.fullBlock("branch")
+			.blockSpecial(new SimpleSpecial("branch"))
+			.blockState(StateBuilder.create().emptyModel())
+			.itemGroupPath("building.wood")
+			.generate();
+
+		DataBuilder.create()
+			.fullBlock("sapling")
+			.blockSpecial(new SimpleSpecial("sapling"))
 			.blockState(StateBuilder.create().emptyModel())
 			.itemGroupPath("misc")
 			.generate();

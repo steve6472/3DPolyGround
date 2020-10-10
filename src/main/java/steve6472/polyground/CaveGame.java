@@ -5,6 +5,7 @@ import steve6472.polyground.block.Block;
 import steve6472.polyground.block.BlockAtlas;
 import steve6472.polyground.block.model.BlockModel;
 import steve6472.polyground.block.model.IElement;
+import steve6472.polyground.block.special.BranchBlock;
 import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.commands.CommandSource;
 import steve6472.polyground.entity.player.EnumGameMode;
@@ -164,9 +165,18 @@ public class CaveGame extends MainApp
 	private boolean oldCrosshair;
 	private boolean oldCrosshairFlag;
 
+	int treeCooldown = 0;
+
 	@Override
 	public void tick()
 	{
+		treeCooldown++;
+		if (treeCooldown >= 2)
+		{
+			treeCooldown = 0;
+			BranchBlock.trees.forEach(c -> c.grow(world));
+		}
+
 		currentWaterCount = lastWaterCount * 36;
 		lastWaterCount = 0;
 		mainRender.waterTess.begin(Math.min(currentWaterCount, 16777216));
