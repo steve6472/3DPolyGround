@@ -1,25 +1,46 @@
 package steve6472.polyground.block.tree;
 
+import org.joml.Math;
+import org.joml.Vector3d;
 import steve6472.polyground.EnumFace;
 import steve6472.polyground.block.Block;
 import steve6472.polyground.block.special.BranchBlock;
 import steve6472.polyground.registry.Blocks;
 import steve6472.polyground.world.World;
+import steve6472.sge.main.util.Pair;
 import steve6472.sge.main.util.RandomUtil;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Objects;
 
 public class Tree
 {
 	private static final int MAX_TRUNK_SIZE = 40;
+	private static final int MIN_BRANCH_SIZE = 4;
+	private static final int MAX_BRANCH_SIZE = 8;
+	private static final int MIN_BRANCH_BLOCK_COUNT = 3;
+	private static final int MAX_BRANCH_BLOCK_COUNT = 6;
+	private static final int BRANCH_GROWTH_TRUNK_THRESHOLD = 5;
+	private static final int MAX_BRANCH_COUNT = 5;
+	private static final int MIN_BRANCH_HEIGHT = 3;
+	private static final int MAX_BRANCH_RADIUS = 2;
 
 	private Node root;
-	private HashSet<Node> nodes;
-	private int totalSize, trunkSize;
+	private Array3D<Integer> nodes;
+	private List<Branch> branches;
+	private int totalSize, trunkSize, trunkHeight;
+	private long seed;
 
 	public Tree()
 	{
+		seed = System.nanoTime();
+	}
 
+	public Tree(long seed)
+	{
+		this.seed = seed;
 	}
 
 	public Node getRoot()
@@ -27,38 +48,276 @@ public class Tree
 		return root;
 	}
 
-	public HashSet<Node> getNodes()
+	public Array3D<Integer> getNodes()
 	{
 		return nodes;
+	}
+
+	public List<Branch> getBranches()
+	{
+		return branches;
 	}
 
 	public void analyze(World world, int x, int y, int z)
 	{
 		root = findTree(world, x, y, z);
-		nodes.add(root);
-		totalSize = calculateSize();
-		trunkSize = calculateTrunkSize();
+		seed = Objects.hash(root.x, root.y, root.z);
+		nodes.put(root.toBlockPos(), root.radius);
+		totalSize = calculateSize(nodes);
+		calculateTrunkSize();
+		branches = findBranches();
 	}
 
 	public void grow(World world)
 	{
-		if (trunkSize < MAX_TRUNK_SIZE)
+		// Decide what should grow
+		if (RandomUtil.flipACoin())
 		{
-			growTrunk();
-			trunkSize = calculateTrunkSize();
+			if (trunkSize < MAX_TRUNK_SIZE && !RandomUtil.decide(10))
+			{
+				growTrunk();
+				calculateTrunkSize();
+			}
+		} else
+		{
+			if (branches.size() < MAX_BRANCH_COUNT)
+			{
+				if (!RandomUtil.decide(10))
+					growNewBranch();
+			}
+
+			if (!RandomUtil.decide(10) && branches.size() > 0)
+			{
+				growBranch(branches.get(RandomUtil.randomInt(0, branches.size() - 1)));
+			}
 		}
 
 		set(world);
 	}
 
+	private void growNewBranch()
+	{
+		EnumFace f = EnumFace.getCardinal()[RandomUtil.randomInt(0, 3)];
+
+		int x = root.x + f.getXOffset();
+		int y = trunkHeight + root.y - 1;
+		int z = root.z + f.getZOffset();
+
+		long hash = hash(seed, x, y, z);
+
+		int scale = 12;
+
+		int ts = scale - (int) (trunkSize * ((double) scale / (double) MAX_TRUNK_SIZE)) + 1;
+
+		if ((hash % ts) == 0 && trunkHeight >= MIN_BRANCH_HEIGHT)
+		{
+			if (countBranchesAroundTrunk(y) < (trunkHeight < 4 ? 1 : 2))
+			{
+				Node newBranch = new Node(x, y, z, 0);
+
+				if (canBranchGrow(newBranch, EnumFace.NONE, true))
+				{
+					nodes.put(newBranch.toBlockPos(), newBranch.radius);
+					Node n = new Node(newBranch.toBlockPos(), newBranch.radius);
+					List<Node> nodes = new ArrayList<>();
+					nodes.add(n);
+					branches.add(
+						new Branch(n, nodes, RandomUtil.randomInt(MIN_BRANCH_SIZE, MAX_BRANCH_SIZE), RandomUtil.randomInt(MIN_BRANCH_BLOCK_COUNT, MAX_BRANCH_BLOCK_COUNT)));
+				}
+			}
+		}
+	}
+
+	private long hash(long seed, int x, int y, int z)
+	{
+		long h = seed + x * 668265263L + y * 2147483647L + z * 374761393L;
+		h = (h ^ (h >> 14)) * 1274126177L;
+		return h ^ (h >> 16);
+	}
+
 	private void set(World world)
 	{
-		Block branch = Blocks.getBlockByName("branch");
+		Block branchBlock = Blocks.getBlockByName("branch");
 
-		for (Node n : nodes)
+		nodes.forEach((pos, radius) ->
+			world.setState(branchBlock.getDefaultState().with(BranchBlock.LEAVES, radius == 0 && !pos.equals(root.x, root.y, root.z)).with(BranchBlock.RADIUS, radius).get(), pos.getX(), pos.getY(), pos.getZ()));
+
+		leavesBlob(world, root.toBlockPos().up(trunkHeight), trunkSize / (MAX_TRUNK_SIZE / 3.5));
+
+		for (Branch branch : branches)
 		{
-			world.setState(branch.getDefaultState().with(BranchBlock.LEAVES, false).with(BranchBlock.RADIUS, n.radius).get(), n.x, n.y, n.z);
+			Node lastNode = branch.nodes().get(branch.nodes().size() - 1);
+			leavesBlob(world, lastNode.toBlockPos(), 1.2);
+
+			if (branch.nodes().size() > 1)
+			{
+				int r = RandomUtil.randomInt(0, branch.nodes().size() - 2);
+				Node n = branch.nodes().get(r);
+				leavesBlob(world, n.toBlockPos(), Math.min(n.radius(), 1) + 0.5);
+			}
 		}
+	}
+
+	private void leavesBlob(World world, BlockPos pos, double radius)
+	{
+		radius = Math.min(radius, 3.5);
+		int r = (int) Math.ceil(radius) + 1;
+
+		Block leaves = Blocks.getBlockByName("oak_leaves");
+
+		for (int x = -r; x < r; x++)
+		{
+			for (int y = -1; y < r; y++)
+			{
+				for (int z = -r; z < r; z++)
+				{
+					double dist = Vector3d.distance(0, 0, 0, x, y, z);
+					if (dist <= radius)
+					{
+						if (world.getBlock(pos.getX() + x, pos.getY() + y, pos.getZ() + z) == Block.air)
+							world.setBlock(leaves, pos.getX() + x, pos.getY() + y, pos.getZ() + z);
+					}
+				}
+			}
+		}
+	}
+
+	private void growBranch(Branch branch)
+	{
+		Node start = branch.start();
+		List<Node> nodes = branch.nodes();
+
+		int branchSize = 0;
+		for (Node n1 : branch.nodes())
+		{
+			branchSize += n1.radius + 1;
+		}
+
+		if (branchSize >= branch.maxSize())
+			return;
+
+		if (trunkSize < BRANCH_GROWTH_TRUNK_THRESHOLD)
+			return;
+
+		EnumFace f = EnumFace.getValues()[RandomUtil.randomInt(0, 5)];
+
+		if (f == EnumFace.DOWN)
+			return;
+
+		// The first branch can NOT grow up, it could connect to trunk
+		if (branchSize == 1 && f == EnumFace.UP)
+			return;
+
+		int x = root.x + f.getXOffset();
+		int y = trunkHeight + root.y - 1;
+		int z = root.z + f.getZOffset();
+
+		long hash = hash(seed, x, y, z);
+
+		int scale = 6;
+
+		int ts = Math.max(1, scale - (int) (trunkSize * ((double) scale / (double) MAX_TRUNK_SIZE)));
+
+		if (nodes.size() < branch.maxCount() && (branchSize == 1 || (hash % ts) == 0) && RandomUtil.flipACoin())
+		{
+			Node from;
+
+			if (branchSize == 1)
+				from = start;
+			else
+				from = nodes.get(nodes.size() - 1);
+
+			growBranchNext(f, from, branch);
+		}
+		else if (RandomUtil.decide(2))
+		{
+			int r = RandomUtil.randomInt(0, nodes.size() - 1);
+			Node n = nodes.get(r);
+
+			if (n.radius >= MAX_BRANCH_RADIUS)
+				return;
+
+			// Test if trunk is smaller
+			if (n == start)
+			{
+				Integer tr = this.nodes.get(new BlockPos(root.x, n.y, root.z));
+				if (tr != null && tr <= n.radius)
+					return;
+			}
+
+			// Test if previous branch is smaller
+			if (r > 0)
+			{
+				Node prev = nodes.get(r - 1);
+				if (prev.radius <= n.radius)
+				{
+					return;
+				}
+			}
+
+			// Test if next branch is not bigger
+			if (r + 1 < nodes.size())
+			{
+				Node next = nodes.get(r + 1);
+
+				if (n.radius > next.radius)
+				{
+					return;
+				}
+			}
+
+			// If the selected branch is last, it can not grow
+			if (n == nodes.get(nodes.size() - 1))
+				return;
+
+			Node node = new Node(n.x, n.y, n.z, n.radius + 1);
+			nodes.set(r, node);
+			this.nodes.put(n.toBlockPos(), n.radius + 1);
+		}
+	}
+
+	private void growBranchNext(EnumFace f, Node from, Branch branch)
+	{
+		Node n = new Node(from.x + f.getXOffset(), from.y + f.getYOffset(), from.z + f.getZOffset(), 0);
+		if (canBranchGrow(n, f, false))
+		{
+			branch.nodes().add(n);
+			nodes.put(n.toBlockPos(), n.radius);
+		}
+	}
+
+	private int countBranchesAroundTrunk(int y)
+	{
+		int c = 0;
+		for (EnumFace f : EnumFace.getCardinal())
+		{
+			int x = root.x + f.getXOffset();
+			int z = root.z + f.getZOffset();
+			if (nodes.contains(new BlockPos(x, y, z)))
+				c++;
+		}
+		return c;
+	}
+
+	private boolean canBranchGrow(Node block, EnumFace from, boolean ignoreTrunk)
+	{
+		for (EnumFace f : EnumFace.getFaces())
+		{
+			if (f == from.getOpposite())
+				continue;
+
+			int x = block.x + f.getXOffset();
+			int y = block.y + f.getYOffset();
+			int z = block.z + f.getZOffset();
+
+			if (ignoreTrunk && root.x == x && root.z == z)
+				continue;
+
+			if (nodes.contains(new BlockPos(x, y, z)))
+				return false;
+		}
+
+		return true;
 	}
 
 	private void growTrunk()
@@ -67,13 +326,19 @@ public class Tree
 
 		if (trunk.size() == 1)
 		{
-			if (RandomUtil.flipACoin())
+			if (!RandomUtil.decide(10))
 			{
 				nodes.clear();
-				nodes.add(new Node(trunk.get(0).x, trunk.get(0).y, trunk.get(0).z, 1));
-				nodes.add(new Node(trunk.get(0).x, trunk.get(0).y + 1, trunk.get(0).z, 0));
+				nodes.put(trunk.get(0).toBlockPos(), 1);
+				nodes.put(trunk.get(0).toBlockPos().up(), 0);
 			}
 			return;
+		}
+
+		if (trunkHeight < 5 && trunkSize >= 20)
+		{
+			System.out.println("Trying to prevent bad trees");
+			nodes.put(root.toBlockPos().up(trunkHeight), 0);
 		}
 
 		for (int i = 0, size = trunk.size(); i < size; i++)
@@ -82,7 +347,7 @@ public class Tree
 			if (n.radius < 7)
 			{
 				// decide if it should increse radius
-				if (RandomUtil.decide(3))
+				if (RandomUtil.decide(2))
 				{
 					// Check if it can increse radius
 					if (i > 0)
@@ -115,14 +380,13 @@ public class Tree
 
 						if (RandomUtil.decide(chance))
 						{
-							nodes.add(new Node(n.x, n.y + 1, n.z, 0));
+							nodes.put(n.toBlockPos().up(), 0);
 						}
 					}
 
-					if (RandomUtil.decide(2))
+					if (RandomUtil.decide(1))
 					{
-						nodes.remove(n);
-						nodes.add(new Node(n.x, n.y, n.z, n.radius + 1));
+						nodes.put(n.toBlockPos(), n.radius + 1);
 					}
 				}
 			}
@@ -132,34 +396,115 @@ public class Tree
 	private List<Node> getTrunkNodes()
 	{
 		List<Node> trunkNodes = new ArrayList<>();
-		for (Node n : nodes)
+
+		for (Pair<BlockPos, Integer> node : nodes)
 		{
-			if (n.x == root.x && n.z == root.z)
-				trunkNodes.add(n);
+			if (node.getA().getX() == root.x && node.getA().getZ() == root.z)
+				trunkNodes.add(new Node(node.getA(), node.getB()));
 		}
 		trunkNodes.sort(Comparator.comparingInt(a -> a.y));
 		return trunkNodes;
 	}
 
-	private int calculateSize()
+	private int calculateSize(Array3D<Integer> nodes)
 	{
 		int i = 0;
-		for (Node n : nodes)
+		for (Pair<BlockPos, Integer> n : nodes)
 		{
-			i += n.radius + 1;
+			i += n.getB() + 1;
 		}
 		return i;
 	}
 
-	private int calculateTrunkSize()
+	private void calculateTrunkSize()
 	{
-		int i = 0;
-		for (Node n : nodes)
+		trunkHeight = 0;
+		trunkSize = 0;
+
+		for (Pair<BlockPos, Integer> node : nodes)
 		{
-			if (n.x == root.x && n.z == root.z)
-				i += n.radius + 1;
+			if (node.getA().getX() == root.x && node.getA().getZ() == root.z)
+			{
+				trunkSize += node.getB() + 1;
+				trunkHeight++;
+			}
 		}
-		return i;
+	}
+
+	private List<Branch> findBranches()
+	{
+		List<Branch> branches = new ArrayList<>();
+		List<Node> branchStarts = new ArrayList<>();
+
+		for (Pair<BlockPos, Integer> node : nodes)
+		{
+			for (EnumFace f : EnumFace.getCardinal())
+			{
+				int x = node.getA().getX() + f.getXOffset();
+				int z = node.getA().getZ() + f.getZOffset();
+
+				// Block is next to trunk
+				if (root.x == x && root.z == z)
+				{
+					branchStarts.add(new Node(node.getA(), node.getB()));
+					break;
+				}
+			}
+		}
+
+		for (Node bs : branchStarts)
+		{
+			branches.add(new Branch(bs, findBranch(bs), MAX_BRANCH_SIZE, MAX_BRANCH_BLOCK_COUNT));
+		}
+
+		return branches;
+	}
+
+	private int getRadius(int x, int y, int z)
+	{
+		Integer r = nodes.get(new BlockPos(x, y, z));
+		return r == null ? -1 : r;
+	}
+
+	private List<Node> findBranch(Node node)
+	{
+		List<Node> pos = new ArrayList<>();
+		pos.add(node);
+		
+		List<Node> newNodes = new ArrayList<>();
+
+		int iterations = 0;
+
+		while (iterations < 8)
+		{
+			for (Node n : pos)
+			{
+				for (EnumFace f : EnumFace.getFaces())
+				{
+					Node newNode = new Node(n.x + f.getXOffset(), n.y + f.getYOffset(), n.z + f.getZOffset(), getRadius(n.x + f.getXOffset(), n.y + f.getYOffset(), n.z + f.getZOffset()));
+
+					// Do NOT got back to trunk!
+					if (newNode.x == root.x && newNode.z == root.z)
+						continue;
+
+					// Check if node exists and is not already listed
+					if (nodes.contains(newNode.toBlockPos()) && !pos.contains(newNode))
+					{
+						newNodes.add(newNode);
+					}
+				}
+			}
+
+			if (newNodes.isEmpty())
+				break;
+
+			pos.addAll(newNodes);
+			newNodes.clear();
+
+			iterations++;
+		}
+
+		return pos;
 	}
 
 	/**
@@ -172,9 +517,8 @@ public class Tree
 	 */
 	public Node findTree(World world, int x, int y, int z)
 	{
-		HashSet<Node> checkedPositions = new HashSet<>();
-		nodes = checkedPositions;
-		checkedPositions.add(new Node(x, y, z, world.getState(x, y, z).get(BranchBlock.RADIUS)));
+		nodes = new Array3D<>();
+		nodes.put(new BlockPos(x, y, z), world.getState(x, y, z).get(BranchBlock.RADIUS));
 		int maxRadius = world.getState(x, y, z).get(BranchBlock.RADIUS);
 
 		List<Node> newNodes = new ArrayList<>();
@@ -183,25 +527,24 @@ public class Tree
 
 		while (iterations < 32)
 		{
-			for (Node node : checkedPositions)
+			for (Pair<BlockPos, Integer> pair : nodes)
 			{
+				BlockPos node = pair.getA();
+
 				for (EnumFace face : EnumFace.getFaces())
 				{
-					int cx = node.x + face.getXOffset();
-					int cy = node.y + face.getYOffset();
-					int cz = node.z + face.getZOffset();
+					BlockPos pos = new BlockPos(node).offset(face);
 
-					if (world.getBlock(cx, cy, cz) instanceof BranchBlock)
+					if (world.getBlock(pos.getX(), pos.getY(), pos.getZ()) instanceof BranchBlock)
 					{
-						int r = world.getState(cx, cy, cz).get(BranchBlock.RADIUS);
-						Node pos = new Node(cx, cy, cz, r);
+						int r = world.getState(pos.getX(), pos.getY(), pos.getZ()).get(BranchBlock.RADIUS);
 
 						// Do not test already existing branches
-						if (checkedPositions.contains(pos))
+						if (nodes.contains(pos))
 							continue;
 
 						maxRadius = Math.max(maxRadius, r);
-						newNodes.add(pos);
+						newNodes.add(new Node(pos, r));
 					}
 				}
 			}
@@ -209,123 +552,42 @@ public class Tree
 			if (newNodes.isEmpty())
 				break;
 
-			checkedPositions.addAll(newNodes);
+			for (Node node : newNodes)
+			{
+				nodes.put(node.toBlockPos(), node.radius);
+			}
 			newNodes.clear();
 
 			iterations++;
 		}
 
-		List<Node> biggestNodes = new ArrayList<>();
-		for (Node node : checkedPositions)
-		{
-			if (node.radius == maxRadius)
-			{
-				biggestNodes.add(node);
-			}
-		}
+		List<BlockPos> biggestNodes = new ArrayList<>();
+		final int finalMaxRadius = maxRadius;
 
-		Node lowestNode = biggestNodes.get(0);
+		nodes.forEach((pos, rad) -> {
+			if (rad == finalMaxRadius)
+				biggestNodes.add(pos);
+		});
 
-		for (int i = 1; i < biggestNodes.size(); i++)
-		{
-			Node node = biggestNodes.get(i);
-			if (node.y < lowestNode.y)
-				lowestNode = node;
-		}
-
-		return lowestNode;
-	}
-
-	public Node findRoot(World world, int x, int y, int z)
-	{
-		HashSet<Node> checkedPositions = new HashSet<>();
-		checkedPositions.add(new Node(x, y, z, world.getState(x, y, z).get(BranchBlock.RADIUS)));
-		int maxRadius = world.getState(x, y, z).get(BranchBlock.RADIUS);
-
-		List<Node> newNodes = new ArrayList<>();
-
-		int iterations = 0;
-
-		while (iterations < 32)
-		{
-			for (Node node : checkedPositions)
-			{
-				for (EnumFace face : EnumFace.getFaces())
-				{
-					int cx = node.x + face.getXOffset();
-					int cy = node.y + face.getYOffset();
-					int cz = node.z + face.getZOffset();
-
-					if (world.getBlock(cx, cy, cz) instanceof BranchBlock)
-					{
-						int r = world.getState(cx, cy, cz).get(BranchBlock.RADIUS);
-
-						// Branch can only grow, this node needs to be smaller or have the same size as the one before it
-						if (node.radius > r)
-							continue;
-
-						Node pos = new Node(cx, cy, cz, r);
-
-						// Do not test already existing branches
-						if (checkedPositions.contains(pos))
-							continue;
-
-						maxRadius = Math.max(maxRadius, r);
-
-						// Found radius 7, only possible in trunk
-						if (maxRadius == 7)
-						{
-							int ly = pos.y;
-							// Find lowest block
-							while (ly > 0)
-							{
-								if (!(world.getBlock(x, ly, z) instanceof BranchBlock))
-								{
-									return pos;
-								} else
-								{
-									ly--;
-								}
-							}
-						}
-
-						newNodes.add(pos);
-					}
-				}
-			}
-
-			if (newNodes.isEmpty())
-				break;
-
-			checkedPositions.addAll(newNodes);
-			newNodes.clear();
-
-			iterations++;
-		}
-
-		List<Node> biggestNodes = new ArrayList<>();
-		for (Node node : checkedPositions)
-		{
-			if (node.radius == maxRadius)
-			{
-				biggestNodes.add(node);
-			}
-		}
-
-		Node lowestNode = biggestNodes.get(0);
+		BlockPos lowestNode = biggestNodes.get(0);
 
 		for (int i = 1; i < biggestNodes.size(); i++)
 		{
-			Node node = biggestNodes.get(i);
-			if (node.y < lowestNode.y)
+			BlockPos node = biggestNodes.get(i);
+			if (node.getY() < lowestNode.getY())
 				lowestNode = node;
 		}
 
-		return lowestNode;
+		return new Node(lowestNode, maxRadius);
 	}
 
 	public record Node(int x, int y, int z, int radius)
 	{
+		public Node(BlockPos pos, int radius)
+		{
+			this(pos.getX(), pos.getY(), pos.getZ(), radius);
+		}
+
 		@Override
 		public boolean equals(Object o)
 		{
@@ -335,6 +597,11 @@ public class Tree
 				return false;
 			Node position = (Node) o;
 			return x == position.x && y == position.y && z == position.z;
+		}
+
+		public BlockPos toBlockPos()
+		{
+			return new BlockPos(x, y, z);
 		}
 
 		@Override

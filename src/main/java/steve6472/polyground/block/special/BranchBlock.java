@@ -98,7 +98,7 @@ public class BranchBlock extends CustomBlock
 		if (check(world.getState(x, y, z - 1), state))
 			tris += Bakery.autoTexturedCube(8 - radius, 8 - radius, 0, diameter, diameter, 8 - radius, "block/wood/log/oak_log", 0);
 
-		if (check(world.getState(x, y + 1, z), state))
+		if (check(world.getState(x, y + 1, z), state) || world.getState(x, y + 1, z).getBlock() instanceof LeavesBlock)
 			tris += Bakery.autoTexturedCube(8 - radius, 8 - radius + diameter, 8 - radius, diameter, 8 - radius, diameter, "block/wood/log/oak_log", 0);
 
 		if (check(world.getState(x, y - 1, z), state))
@@ -138,7 +138,7 @@ public class BranchBlock extends CustomBlock
 		if (check(world.getState(x, y, z - 1), state))
 			collisionBox.add(fromWidth(0.5f - radius, 0.5f - radius, 0, diameter, diameter, 0.5f - radius));
 
-		if (check(world.getState(x, y + 1, z), state))
+		if (check(world.getState(x, y + 1, z), state) || world.getState(x, y + 1, z).getBlock() instanceof LeavesBlock)
 			collisionBox.add(fromWidth(0.5f - radius, 0.5f - radius + diameter, 0.5f - radius, diameter, 0.5f - radius, diameter));
 
 		if (check(world.getState(x, y - 1, z), state))
@@ -175,28 +175,11 @@ public class BranchBlock extends CustomBlock
 			(itself.get(RADIUS) == 0 && world.getBlock() instanceof LeavesBlock); // Branch can connect to leaves
 	}
 
-	public static List<Tree> trees = new ArrayList<>();
-
 	@Override
 	public void randomTick(BlockState state, World world, int x, int y, int z)
 	{
-		if (world.getRandom().nextInt(10) != 7)
-			return;
-	}
-
-	@Override
-	public void neighbourChange(BlockState state, World world, EnumFace updateFrom, int x, int y, int z)
-	{
-		// TODO: test, remove
-		if (!world.getBlock(x + updateFrom.getXOffset(), y + updateFrom.getYOffset(), z + updateFrom.getZOffset()).getName().equals("acacia_leaves"))
-			return;
-
 		Tree tree = new Tree();
 		tree.analyze(world, x, y, z);
-
-		trees.removeIf(t -> t.getRoot().x() == tree.getRoot().x() && t.getRoot().y() == tree.getRoot().y() && t.getRoot().z() == tree.getRoot().z());
-		trees.add(tree);
-
 		tree.grow(world);
 	}
 

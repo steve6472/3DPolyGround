@@ -239,19 +239,6 @@ public class MainRender
 		basicTess.draw(Tessellator.LINES);
 		basicTess.disable(0, 1);
 
-		/*
-		 * Tree test
-		 */
-//		glDisable(GL_DEPTH_TEST);
-//		for (Tree t : BranchBlock.trees)
-//		{
-//			t.getNodes().forEach(n ->
-//			{
-//				AABBUtil.renderAABB(n.x() + 0.5f, n.y() + 0.5f, n.z() + 0.5f, (n.radius() + 1) / 16f, 1);
-//			});
-//		}
-//		glEnable(GL_DEPTH_TEST);
-
 		/* END */
 
 		if (game.options.renderTeleporters)

@@ -23,8 +23,9 @@
       </list>
     </option>
   </component>
-  <component name="ProblemsViewState">
-    <option name="selectedIndex" value="1" />
+  <component name="HighlightingSettingsPerFile">
+    <setting file="jar://$PROJECT_DIR$/../openjdk-15/lib/src.zip!/java.base/java/util/List.java" root0="SKIP_INSPECTION" />
+    <setting file="jar://$PROJECT_DIR$/../openjdk-15/lib/src.zip!/java.base/java/util/ArrayList.java" root0="SKIP_INSPECTION" />
   </component>
   <component name="ProjectId" id="1ZTuvkYYsXrUbdXdp4wzwE1yruE" />
   <component name="ProjectViewState">
@@ -42,7 +43,10 @@
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="restartRequiresConfirmation" value="false" />
-    <property name="settings.editor.selected.configurable" value="preferences.general" />
+    <property name="settings.editor.selected.configurable" value="editor.reader.mode" />
+  </component>
+  <component name="ReaderModeSettings">
+    <option name="showLigatures" value="false" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -72,13 +76,6 @@
   <component name="RunManager" selected="Application.CaveGame">
     <configuration name="A" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="steve6472.polyground.A" />
-      <module name="CaveGame" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="BlockBenchTranslator" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="steve6472.polyground.BlockBenchTranslator" />
       <module name="CaveGame" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -116,6 +113,13 @@
     </configuration>
     <configuration name="DataGenerator" type="Application" factoryName="Application" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="steve6472.polyground.generator.DataGenerator" />
+      <module name="CaveGame" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="E" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="steve6472.polyground.E" />
       <module name="CaveGame" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -159,15 +163,15 @@
       <item itemvalue="Application.KnappingRecipeCreator" />
       <item itemvalue="Application.NBT" />
       <item itemvalue="Application.NBTArrayUtil" />
-      <item itemvalue="Application.BlockBenchTranslator" />
+      <item itemvalue="Application.E" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.E" />
         <item itemvalue="Application.NBTArrayUtil" />
         <item itemvalue="Application.NBT" />
         <item itemvalue="Application.KnappingRecipeCreator" />
         <item itemvalue="Application.A" />
-        <item itemvalue="Application.BlockBenchTranslator" />
       </list>
     </recent_temporary>
   </component>

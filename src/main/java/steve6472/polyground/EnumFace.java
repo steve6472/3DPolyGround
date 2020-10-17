@@ -57,6 +57,7 @@ public enum EnumFace
 
 	private static final EnumFace[] VALUES = new EnumFace[] {UP, DOWN, NORTH, EAST, SOUTH, WEST, NONE};
 	private static final EnumFace[] FACES = new EnumFace[] {UP, DOWN, NORTH, EAST, SOUTH, WEST};
+	private static final EnumFace[] CARDINAL = new EnumFace[] {NORTH, EAST, SOUTH, WEST};
 	private static final EnumFace[] FACES_REVERSED = new EnumFace[] {WEST, SOUTH, EAST, NORTH, DOWN, UP};
 
 	public EnumAxis getAxis()
@@ -82,6 +83,11 @@ public enum EnumFace
 	public static EnumFace[] getFaces()
 	{
 		return FACES;
+	}
+
+	public static EnumFace[] getCardinal()
+	{
+		return CARDINAL;
 	}
 
 	public static EnumFace[] getFacesReversed()
