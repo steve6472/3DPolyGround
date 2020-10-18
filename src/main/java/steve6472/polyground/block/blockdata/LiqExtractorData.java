@@ -5,42 +5,31 @@ import steve6472.polyground.registry.blockdata.BlockDataRegistry;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
- * On date: 06.10.2020
+ * On date: 18.10.2020
  * Project: CaveGame
  *
  ***********************/
-public class PaintBucketData extends BlockData
+public class LiqExtractorData extends BlockData
 {
-	public float red, green, blue;
-
-	public PaintBucketData()
-	{
-		red = 0f;
-		green = 0f;
-		blue = 0f;
-	}
+	public int amount;
 
 	@Override
 	public CompoundTag write()
 	{
 		CompoundTag tag = new CompoundTag();
-		tag.putFloat("red", red);
-		tag.putFloat("green", green);
-		tag.putFloat("blue", blue);
+		tag.putInt("amount", Math.min(amount, 1000));
 		return tag;
 	}
 
 	@Override
 	public void read(CompoundTag tag)
 	{
-		red = tag.getFloat("red");
-		green = tag.getFloat("green");
-		blue = tag.getFloat("blue");
+		this.amount = Math.min(tag.getInt("amount"), 1000);
 	}
 
 	@Override
 	public String getId()
 	{
-		return BlockDataRegistry.paintBucket.id();
+		return BlockDataRegistry.liqExtractor.id();
 	}
 }

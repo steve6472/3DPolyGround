@@ -40,7 +40,7 @@ public class SaplingFeature extends Feature
 		{
 			world.setBlock(Blocks.getBlockByName("sapling"), x, y + 1, z);
 
-			int tickCount = RandomUtil.randomInt(100, 150);
+			int tickCount = RandomUtil.randomInt(150, 200);
 			for (int i = 0; i < tickCount; i++)
 			{
 				BlockState s = world.getState(x, y + 1, z);

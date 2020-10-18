@@ -51,6 +51,7 @@ public class SpecialBlockRegistry
 	public static final SpecialBlockEntry<BranchBlock> branch = register("branch", BranchBlock::new);
 	public static final SpecialBlockEntry<SaplingBlock> sapling = register("sapling", SaplingBlock::new);
 	public static final SpecialBlockEntry<RootBlock> root = register("root", RootBlock::new);
+	public static final SpecialBlockEntry<LiqExtractorBlock> liqExtractor = register("liq_extractor", LiqExtractorBlock::new);
 
 	public static <T extends Block> SpecialBlockEntry<T> register(String id, ISpecialBlockFactory<T> factory)
 	{

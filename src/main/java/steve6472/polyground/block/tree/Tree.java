@@ -332,10 +332,12 @@ public class Tree
 
 			if (nodes.contains(new BlockPos(x, y, z)))
 				return false;
-			
+
 			Block b = world.getBlock(x, y, z);
-			if (!(b instanceof LeavesBlock) || b != Block.air)
+			if (!(b instanceof LeavesBlock) && b != Block.air)
+			{
 				return false;
+			}
 		}
 
 		return true;

@@ -100,11 +100,6 @@ public class ElUtil
 		}
 	}
 
-	public static void rotUv(JSONObject obj, Vector2f... uvs)
-	{
-
-	}
-
 	private static Vector3f center(Vector3f... vectors)
 	{
 		Vector3f v = new Vector3f();

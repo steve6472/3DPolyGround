@@ -2,6 +2,8 @@ package steve6472.polyground.block.model;
 
 import org.joml.AABBf;
 import org.joml.Matrix4f;
+import org.joml.Quaternionf;
+import org.joml.Vector3f;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import steve6472.polyground.BlockBenchTranslator;
@@ -32,6 +34,8 @@ public class ModelLoader
 	{
 		return load("game/objects/models/" + path + ".json", true);
 	}
+
+	public static boolean t = false;
 
 	public static JSONObject load(String path, boolean move)
 	{
@@ -178,6 +182,18 @@ public class ModelLoader
 		{
 			JSONArray r = json.getJSONArray("rotation");
 			json.put("rotation", new JSONArray().put(r.getFloat(0) + rotX).put(r.getFloat(1) + rotY).put(r.getFloat(2) + rotZ));
+
+			if (json.has("point"))
+			{
+				Vector3f point = ElUtil.loadVertex3("point", json);
+				Matrix4f rotMat = new Matrix4f();
+				rotMat.translate(8f, 8f, 8f);
+				rotMat.rotate(new Quaternionf().rotateXYZ(rotX, rotY, rotZ));
+				rotMat.translate(-8f, -8f, -8f);
+				rotMat.transformPosition(point);
+				json.put("point", new JSONArray().put(point.x).put(point.y).put(point.z));
+				json.put("point_type", "point");
+			}
 		} else
 		{
 			json.put("rotation", new JSONArray().put(rotX).put(rotY).put(rotZ));

@@ -8,9 +8,4 @@ public record BlockDataEntry<T extends BlockData>(IBlockDataFactory<T> factory, 
 	{
 		return factory.create();
 	}
-
-	public String getId()
-	{
-		return id;
-	}
 }

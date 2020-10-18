@@ -122,12 +122,18 @@ public class DataGenerator
 
 	private void item(String name, String group, String model)
 	{
-		DataBuilder.create().item(name, group, model).generate();
+		DataBuilder
+			.create()
+			.item(name, group, model)
+			.generate();
 	}
 
 	private void item(String name, String group)
 	{
-		DataBuilder.create().item(name, group).generate();
+		DataBuilder
+			.create()
+			.item(name, group)
+			.generate();
 	}
 
 	public void generateBlocksItems()
@@ -755,6 +761,36 @@ public class DataGenerator
 					.create("icicle")
 					.externalPath("custom_models/icicle.bbmodel")))
 			.blockSpecial(new SimpleSpecial("custom"))
+			.itemGroupPath("misc")
+			.generate();
+
+		DataBuilder
+			.create()
+			.fullBlock("liq_extractor")
+			.blockState(StateBuilder
+				.create()
+				.addState(PropertyBuilder
+					.create()
+					.addProperty(LiqExtractorBlock.FACING, EnumFace.NORTH)
+					.tags(Tags.PICKABLE, Tags.LIQ_CONNECT), BlockModelBuilder
+					.create("liq_extractor")
+					.externalPath("custom_models/liq_extractor.bbmodel"))
+				.addState(PropertyBuilder
+					.create()
+					.addProperty(LiqExtractorBlock.FACING, EnumFace.EAST)
+					.tags(Tags.PICKABLE, Tags.LIQ_CONNECT)
+					.rot(0, -90, 0), BlockModelBuilder.noGen("liq_extractor"))
+				.addState(PropertyBuilder
+					.create()
+					.addProperty(LiqExtractorBlock.FACING, EnumFace.SOUTH)
+					.tags(Tags.PICKABLE, Tags.LIQ_CONNECT)
+					.rot(0, -180, 0), BlockModelBuilder.noGen("liq_extractor"))
+				.addState(PropertyBuilder
+					.create()
+					.addProperty(LiqExtractorBlock.FACING, EnumFace.WEST)
+					.tags(Tags.PICKABLE, Tags.LIQ_CONNECT)
+					.rot(0, -270, 0), BlockModelBuilder.noGen("liq_extractor")))
+			.blockSpecial(new SimpleSpecial("liq_extractor"))
 			.itemGroupPath("misc")
 			.generate();
 
@@ -1892,7 +1928,7 @@ public class DataGenerator
 			.feature(EnumFeatureStage.VEGETATION, 1d / 512d, "pebbles")
 			.feature(EnumFeatureStage.VEGETATION, 1d / 256d, "sticks")
 			.feature(EnumFeatureStage.VEGETATION, 1d / 512d, "flowers")
-//			.feature(EnumFeatureStage.TREE, 1d / 5d, "oak_tree")
+			//			.feature(EnumFeatureStage.TREE, 1d / 5d, "oak_tree")
 			.feature(EnumFeatureStage.TREE, 1d / 5d, "sapling")
 			.generate();
 

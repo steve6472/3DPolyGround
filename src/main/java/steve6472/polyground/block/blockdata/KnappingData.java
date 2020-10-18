@@ -68,6 +68,6 @@ public class KnappingData extends BlockData
 	@Override
 	public String getId()
 	{
-		return BlockDataRegistry.stoneKnapping.getId();
+		return BlockDataRegistry.stoneKnapping.id();
 	}
 }

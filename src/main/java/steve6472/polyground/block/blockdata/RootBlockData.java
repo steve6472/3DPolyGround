@@ -96,6 +96,6 @@ public class RootBlockData extends BlockData
 	@Override
 	public String getId()
 	{
-		return BlockDataRegistry.root.getId();
+		return BlockDataRegistry.root.id();
 	}
 }

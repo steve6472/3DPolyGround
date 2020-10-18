@@ -20,6 +20,7 @@ public class BlockDataRegistry
 	public static final BlockDataEntry<ChiselBlockData> chisel = register("chisel", ChiselBlockData::new);
 	public static final BlockDataEntry<PaintBucketData> paintBucket = register("paint_bucket", PaintBucketData::new);
 	public static final BlockDataEntry<RootBlockData> root = register("root", RootBlockData::new);
+	public static final BlockDataEntry<LiqExtractorData> liqExtractor = register("liq_extractor", LiqExtractorData::new);
 
 	public static <T extends BlockData> BlockDataEntry<T> register(String id, IBlockDataFactory<T> factory)
 	{

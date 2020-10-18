@@ -57,4 +57,9 @@ public class Tags
 	 * Any block that can be picked up by the player with hands
 	 */
 	public static final String PICKABLE = "pickable";
+
+	/**
+	 * Liq pipes can connect to these blocks
+	 */
+	public static final String LIQ_CONNECT = "liq_connect";
 }

@@ -102,7 +102,7 @@ public class ChiselBlockData extends BlockData implements IModel
 	@Override
 	public String getId()
 	{
-		return BlockDataRegistry.chisel.getId();
+		return BlockDataRegistry.chisel.id();
 	}
 
 	@Override
