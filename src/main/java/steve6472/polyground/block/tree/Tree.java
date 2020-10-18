@@ -7,6 +7,7 @@ import steve6472.polyground.block.Block;
 import steve6472.polyground.block.blockdata.BlockData;
 import steve6472.polyground.block.blockdata.RootBlockData;
 import steve6472.polyground.block.special.BranchBlock;
+import steve6472.polyground.block.special.LeavesBlock;
 import steve6472.polyground.registry.Blocks;
 import steve6472.polyground.world.World;
 import steve6472.sge.main.util.Pair;
@@ -103,7 +104,7 @@ public class Tree
 
 			if (!RandomUtil.decide(10) && branches.size() > 0)
 			{
-				growBranch(branches.get(RandomUtil.randomInt(0, branches.size() - 1)));
+				growBranch(world, branches.get(RandomUtil.randomInt(0, branches.size() - 1)));
 			}
 		}
 
@@ -130,7 +131,7 @@ public class Tree
 			{
 				Node newBranch = new Node(x, y, z, 0);
 
-				if (canBranchGrow(newBranch, EnumFace.NONE, true))
+				if (canBranchGrow(world, newBranch, EnumFace.NONE, true))
 				{
 					nodes.put(newBranch.toBlockPos(), newBranch.radius);
 					Node n = new Node(newBranch.toBlockPos(), newBranch.radius);
@@ -198,7 +199,7 @@ public class Tree
 		}
 	}
 
-	private void growBranch(Branch branch)
+	private void growBranch(World world, Branch branch)
 	{
 		Node start = branch.start();
 		List<Node> nodes = branch.nodes();
@@ -243,7 +244,7 @@ public class Tree
 			else
 				from = nodes.get(nodes.size() - 1);
 
-			growBranchNext(f, from, branch);
+			growBranchNext(world, f, from, branch);
 		}
 		else if (RandomUtil.decide(2))
 		{
@@ -292,10 +293,10 @@ public class Tree
 		}
 	}
 
-	private void growBranchNext(EnumFace f, Node from, Branch branch)
+	private void growBranchNext(World world, EnumFace f, Node from, Branch branch)
 	{
 		Node n = new Node(from.x + f.getXOffset(), from.y + f.getYOffset(), from.z + f.getZOffset(), 0);
-		if (canBranchGrow(n, f, false))
+		if (canBranchGrow(world, n, f, false))
 		{
 			branch.nodes().add(n);
 			nodes.put(n.toBlockPos(), n.radius);
@@ -315,7 +316,7 @@ public class Tree
 		return c;
 	}
 
-	private boolean canBranchGrow(Node block, EnumFace from, boolean ignoreTrunk)
+	private boolean canBranchGrow(World world, Node block, EnumFace from, boolean ignoreTrunk)
 	{
 		for (EnumFace f : EnumFace.getFaces())
 		{
@@ -330,6 +331,10 @@ public class Tree
 				continue;
 
 			if (nodes.contains(new BlockPos(x, y, z)))
+				return false;
+			
+			Block b = world.getBlock(x, y, z);
+			if (!(b instanceof LeavesBlock) || b != Block.air)
 				return false;
 		}
 
