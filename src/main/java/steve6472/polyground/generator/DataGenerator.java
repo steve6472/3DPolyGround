@@ -615,6 +615,31 @@ public class DataGenerator
 
 		DataBuilder
 			.create()
+			.fullBlock("root")
+			.blockSpecial(new SimpleSpecial("root"))
+			.blockState(StateBuilder
+				.create()
+				.singleModel(BlockModelBuilder
+					.create("root")
+					.addCube(CubeBuilder
+						.create()
+						.fullBlock()
+						.face(FaceBuilder
+							.create()
+							.texture("block/root_side"), CubeBuilder.SIDE)
+						.face(FaceBuilder
+							.create()
+							.texture("block/dirt"), EnumFace.DOWN)
+						.face(FaceBuilder
+							.create()
+							.texture("block/grass_block_top")
+							.biomeTint(true)
+							.modelLayer(ModelLayer.OVERLAY_0), EnumFace.UP))))
+			.itemGroupPath("nature")
+			.generate();
+
+		DataBuilder
+			.create()
 			.fullBlock("chisel")
 			.blockSpecial(new SimpleSpecial("chisel"))
 			.blockState(StateBuilder
@@ -1785,6 +1810,13 @@ public class DataGenerator
 			.generate();
 
 		FeatureBuilder
+			.create(FeatureRegistry.SAPLING.name())
+			.path("trees")
+			.name("sapling")
+			.matchBlocks("match_under", "grass", "dirt")
+			.generate();
+
+		FeatureBuilder
 			.create(FeatureRegistry.TOP_SNOW.name())
 			.path("mountain")
 			.name("top_mountain_snow")
@@ -1860,7 +1892,8 @@ public class DataGenerator
 			.feature(EnumFeatureStage.VEGETATION, 1d / 512d, "pebbles")
 			.feature(EnumFeatureStage.VEGETATION, 1d / 256d, "sticks")
 			.feature(EnumFeatureStage.VEGETATION, 1d / 512d, "flowers")
-			.feature(EnumFeatureStage.TREE, 1d / 5d, "oak_tree")
+//			.feature(EnumFeatureStage.TREE, 1d / 5d, "oak_tree")
+			.feature(EnumFeatureStage.TREE, 1d / 5d, "sapling")
 			.generate();
 
 		BiomeBuilder

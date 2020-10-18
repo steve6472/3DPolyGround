@@ -48,5 +48,6 @@ public class CommandRegistry
 		new GamemodeCommand(dispatcher);
 		new BrushCommand(dispatcher);
 		new ChiselCommand(dispatcher);
+		new PrintNBTCommand(dispatcher);
 	}
 }

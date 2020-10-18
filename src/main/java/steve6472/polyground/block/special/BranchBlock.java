@@ -101,7 +101,7 @@ public class BranchBlock extends CustomBlock
 		if (check(world.getState(x, y + 1, z), state) || world.getState(x, y + 1, z).getBlock() instanceof LeavesBlock)
 			tris += Bakery.autoTexturedCube(8 - radius, 8 - radius + diameter, 8 - radius, diameter, 8 - radius, diameter, "block/wood/log/oak_log", 0);
 
-		if (check(world.getState(x, y - 1, z), state))
+		if (check(world.getState(x, y - 1, z), state) || world.getState(x, y - 1, z).getBlock() instanceof RootBlock)
 			tris += Bakery.autoTexturedCube(8 - radius, 0, 8 - radius, diameter, 8 - radius, diameter, "block/wood/log/oak_log", 0);
 
 		return tris;
@@ -141,7 +141,8 @@ public class BranchBlock extends CustomBlock
 		if (check(world.getState(x, y + 1, z), state) || world.getState(x, y + 1, z).getBlock() instanceof LeavesBlock)
 			collisionBox.add(fromWidth(0.5f - radius, 0.5f - radius + diameter, 0.5f - radius, diameter, 0.5f - radius, diameter));
 
-		if (check(world.getState(x, y - 1, z), state))
+		BlockState down = world.getState(x, y - 1, z);
+		if (check(down, state) || down.getBlock() instanceof RootBlock || down.getBlock().getName().equals("grass"))
 			collisionBox.add(fromWidth(0.5f - radius, 0, 0.5f - radius, diameter, 0.5f - radius, diameter));
 
 		CubeHitbox[] hitboxes = new CubeHitbox[collisionBox.size() + 1];
@@ -171,7 +172,6 @@ public class BranchBlock extends CustomBlock
 	private boolean check(BlockState world, BlockState itself)
 	{
 		return world.getBlock() == this || world.getBlock() == Blocks.getBlockByName("oak_log") ||
-			world.getBlock() == Blocks.getBlockByName("grass") ||
 			(itself.get(RADIUS) == 0 && world.getBlock() instanceof LeavesBlock); // Branch can connect to leaves
 	}
 

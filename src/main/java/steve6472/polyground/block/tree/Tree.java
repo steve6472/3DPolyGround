@@ -4,6 +4,8 @@ import org.joml.Math;
 import org.joml.Vector3d;
 import steve6472.polyground.EnumFace;
 import steve6472.polyground.block.Block;
+import steve6472.polyground.block.blockdata.BlockData;
+import steve6472.polyground.block.blockdata.RootBlockData;
 import steve6472.polyground.block.special.BranchBlock;
 import steve6472.polyground.registry.Blocks;
 import steve6472.polyground.world.World;
@@ -17,21 +19,18 @@ import java.util.Objects;
 
 public class Tree
 {
-	private static final int MAX_TRUNK_SIZE = 40;
-	private static final int MIN_BRANCH_SIZE = 4;
-	private static final int MAX_BRANCH_SIZE = 8;
-	private static final int MIN_BRANCH_BLOCK_COUNT = 3;
-	private static final int MAX_BRANCH_BLOCK_COUNT = 6;
-	private static final int BRANCH_GROWTH_TRUNK_THRESHOLD = 5;
-	private static final int MAX_BRANCH_COUNT = 5;
-	private static final int MIN_BRANCH_HEIGHT = 3;
-	private static final int MAX_BRANCH_RADIUS = 2;
+	private static int maxTrunkSize = 40;
+	private static int branchGrowthTrunkThreshold = 5;
+	private static int maxBranchCount = 5;
+	private static int minBranchHeight = 3;
+	private static int maxBranchRadius = 2;
 
 	private Node root;
 	private Array3D<Integer> nodes;
 	private List<Branch> branches;
 	private int totalSize, trunkSize, trunkHeight;
 	private long seed;
+	private RootBlockData data;
 
 	public Tree()
 	{
@@ -61,29 +60,45 @@ public class Tree
 	public void analyze(World world, int x, int y, int z)
 	{
 		root = findTree(world, x, y, z);
+
+		BlockData data = world.getData(root.x, root.y - 1, root.z);
+		if (data == null)
+			return;
+
+		this.data = (RootBlockData) data;
+
 		seed = Objects.hash(root.x, root.y, root.z);
 		nodes.put(root.toBlockPos(), root.radius);
 		totalSize = calculateSize(nodes);
 		calculateTrunkSize();
 		branches = findBranches();
+
+		maxTrunkSize = this.data.maxTrunkSize;
+		branchGrowthTrunkThreshold = this.data.branchGrowthTrunkThreshold;
+		maxBranchCount = this.data.maxBranchCount;
+		minBranchHeight = this.data.minBranchHeight;
+		maxBranchRadius = this.data.maxBranchRadius;
 	}
 
 	public void grow(World world)
 	{
+		if (data == null)
+			return;
+
 		// Decide what should grow
 		if (RandomUtil.flipACoin())
 		{
-			if (trunkSize < MAX_TRUNK_SIZE && !RandomUtil.decide(10))
+			if (trunkSize < maxTrunkSize && !RandomUtil.decide(10))
 			{
 				growTrunk();
 				calculateTrunkSize();
 			}
 		} else
 		{
-			if (branches.size() < MAX_BRANCH_COUNT)
+			if (branches.size() < maxBranchCount)
 			{
 				if (!RandomUtil.decide(10))
-					growNewBranch();
+					growNewBranch(world);
 			}
 
 			if (!RandomUtil.decide(10) && branches.size() > 0)
@@ -95,7 +110,7 @@ public class Tree
 		set(world);
 	}
 
-	private void growNewBranch()
+	private void growNewBranch(World world)
 	{
 		EnumFace f = EnumFace.getCardinal()[RandomUtil.randomInt(0, 3)];
 
@@ -107,9 +122,9 @@ public class Tree
 
 		int scale = 12;
 
-		int ts = scale - (int) (trunkSize * ((double) scale / (double) MAX_TRUNK_SIZE)) + 1;
+		int ts = Math.max(1, scale - (int) (trunkSize * ((double) scale / (double) maxTrunkSize)));
 
-		if ((hash % ts) == 0 && trunkHeight >= MIN_BRANCH_HEIGHT)
+		if ((hash % ts) == 0 && trunkHeight >= minBranchHeight)
 		{
 			if (countBranchesAroundTrunk(y) < (trunkHeight < 4 ? 1 : 2))
 			{
@@ -121,8 +136,9 @@ public class Tree
 					Node n = new Node(newBranch.toBlockPos(), newBranch.radius);
 					List<Node> nodes = new ArrayList<>();
 					nodes.add(n);
-					branches.add(
-						new Branch(n, nodes, RandomUtil.randomInt(MIN_BRANCH_SIZE, MAX_BRANCH_SIZE), RandomUtil.randomInt(MIN_BRANCH_BLOCK_COUNT, MAX_BRANCH_BLOCK_COUNT)));
+					Branch branch = new Branch(n, nodes, RandomUtil.randomInt(4, 8), RandomUtil.randomInt(3, 5));
+					data.addBranch(branch.start().x, branch.start().y, branch.start().z, branch.maxSize(), branch.maxCount());
+					branches.add(branch);
 				}
 			}
 		}
@@ -142,7 +158,7 @@ public class Tree
 		nodes.forEach((pos, radius) ->
 			world.setState(branchBlock.getDefaultState().with(BranchBlock.LEAVES, radius == 0 && !pos.equals(root.x, root.y, root.z)).with(BranchBlock.RADIUS, radius).get(), pos.getX(), pos.getY(), pos.getZ()));
 
-		leavesBlob(world, root.toBlockPos().up(trunkHeight), trunkSize / (MAX_TRUNK_SIZE / 3.5));
+		leavesBlob(world, root.toBlockPos().up(trunkHeight), trunkSize / (maxTrunkSize / 3.5));
 
 		for (Branch branch : branches)
 		{
@@ -160,7 +176,7 @@ public class Tree
 
 	private void leavesBlob(World world, BlockPos pos, double radius)
 	{
-		radius = Math.min(radius, 3.5);
+		radius = Math.min(radius, 3.2);
 		int r = (int) Math.ceil(radius) + 1;
 
 		Block leaves = Blocks.getBlockByName("oak_leaves");
@@ -196,7 +212,7 @@ public class Tree
 		if (branchSize >= branch.maxSize())
 			return;
 
-		if (trunkSize < BRANCH_GROWTH_TRUNK_THRESHOLD)
+		if (trunkSize < branchGrowthTrunkThreshold)
 			return;
 
 		EnumFace f = EnumFace.getValues()[RandomUtil.randomInt(0, 5)];
@@ -216,7 +232,7 @@ public class Tree
 
 		int scale = 6;
 
-		int ts = Math.max(1, scale - (int) (trunkSize * ((double) scale / (double) MAX_TRUNK_SIZE)));
+		int ts = Math.max(1, scale - (int) (trunkSize * ((double) scale / (double) maxTrunkSize)));
 
 		if (nodes.size() < branch.maxCount() && (branchSize == 1 || (hash % ts) == 0) && RandomUtil.flipACoin())
 		{
@@ -234,7 +250,7 @@ public class Tree
 			int r = RandomUtil.randomInt(0, nodes.size() - 1);
 			Node n = nodes.get(r);
 
-			if (n.radius >= MAX_BRANCH_RADIUS)
+			if (n.radius >= maxBranchRadius)
 				return;
 
 			// Test if trunk is smaller
@@ -335,9 +351,9 @@ public class Tree
 			return;
 		}
 
+		// Try to prevent bad trees
 		if (trunkHeight < 5 && trunkSize >= 20)
 		{
-			System.out.println("Trying to prevent bad trees");
 			nodes.put(root.toBlockPos().up(trunkHeight), 0);
 		}
 
@@ -454,7 +470,11 @@ public class Tree
 
 		for (Node bs : branchStarts)
 		{
-			branches.add(new Branch(bs, findBranch(bs), MAX_BRANCH_SIZE, MAX_BRANCH_BLOCK_COUNT));
+			RootBlockData.BranchData branch = data.getBranch(bs.x, bs.y, bs.z);
+			if (branch != null)
+			{
+				branches.add(new Branch(bs, findBranch(bs), branch.maxSize(), branch.maxBlockCount()));
+			}
 		}
 
 		return branches;

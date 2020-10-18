@@ -21,6 +21,7 @@ public class FeatureRegistry
 	public static final FeatureEntry PILLAR = register("pillar", PillarFeature::new);
 	public static final FeatureEntry VEGETATION_PATCH = register("vegetation_patch", VegetationPatchFeature::new);
 	public static final FeatureEntry TREE = register("tree", TreeFeature::new);
+	public static final FeatureEntry SAPLING = register("sapling", SaplingFeature::new);
 	public static final FeatureEntry TOP_SNOW = register("top_snow", TopSnowFeature::new);
 	public static final FeatureEntry ORE_VEIN = register("ore_vein", OreVein::new);
 	public static final FeatureEntry TILE_REPLACE_PATCH = register("tile_replace_patch", TileReplacePatchFeature::new);

@@ -1,6 +1,7 @@
 package steve6472.polyground.block.special;
 
 import org.json.JSONObject;
+import steve6472.polyground.block.Tags;
 import steve6472.polyground.block.model.elements.Bakery;
 import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.registry.Blocks;
@@ -38,6 +39,17 @@ public class SaplingBlock extends CustomBlock
 	}
 
 	@Override
+	public boolean isValidPosition(BlockState state, World world, int x, int y, int z)
+	{
+		BlockState st = world.getState(x, y - 1, z);
+
+		if (st.hasTag(Tags.FLOWER_TOP))
+			return super.isValidPosition(state, world, x, y, z);
+
+		return false;
+	}
+
+	@Override
 	public void randomTick(BlockState state, World world, int x, int y, int z)
 	{
 //		if (world.getRandom().nextInt(10) != 8)
@@ -45,6 +57,7 @@ public class SaplingBlock extends CustomBlock
 
 		world.setState(Blocks.getDefaultState("branch").with(BranchBlock.LEAVES, false).with(BranchBlock.RADIUS, 0).get(), x, y, z);
 		world.setState(Blocks.getDefaultState("oak_leaves"), x, y + 1, z);
+		world.setState(Blocks.getDefaultState("root"), x, y - 1, z);
 	}
 
 	@Override
