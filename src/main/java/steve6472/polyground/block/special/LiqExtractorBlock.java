@@ -37,13 +37,13 @@ public class LiqExtractorBlock extends FourDirectionalBlock implements IBlockDat
 	{
 		int tris = CustomBlock.model(x, y, z, world, state, buildHelper, modelLayer);
 
-//		if (modelLayer == ModelLayer.OVERLAY_0)
+		if (modelLayer == ModelLayer.TRANSPARENT)
 		{
 			LiqExtractorData data = (LiqExtractorData) world.getData(x, y, z);
 			if (data.amount > 0)
 			{
 				int h = (int) Math.ceil(data.amount / 1000.0d * 10d);
-				Bakery.autoTexturedCube(1, 1, 1, 14, h, 14, "block/liq", 0);
+				tris += Bakery.autoTexturedCube(1, 1, 1, 14, h, 14, "block/liq", 0);
 			}
 		}
 
@@ -53,7 +53,7 @@ public class LiqExtractorBlock extends FourDirectionalBlock implements IBlockDat
 	@Override
 	public void tick(BlockState state, World world, int x, int y, int z)
 	{
-		if (world.getBlock(x, y + 1, z).getName().equals("amethine") && RandomUtil.decide(10))
+		if (world.getBlock(x, y + 1, z).getName().equals("amethine") && RandomUtil.decide(2))
 		{
 			LiqExtractorData data = (LiqExtractorData) world.getData(x, y, z);
 			boolean _999 = data.amount == 999;

@@ -5,31 +5,28 @@ import steve6472.polyground.registry.blockdata.BlockDataRegistry;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
- * On date: 18.10.2020
+ * On date: 19.10.2020
  * Project: CaveGame
  *
  ***********************/
-public class LiqExtractorData extends BlockData
+public class PipeData extends BlockData
 {
-	public int amount;
-
 	@Override
 	public CompoundTag write()
 	{
 		CompoundTag tag = new CompoundTag();
-		tag.putInt("amount", amount);
 		return tag;
 	}
 
 	@Override
 	public void read(CompoundTag tag)
 	{
-		this.amount = tag.getInt("amount");
+
 	}
 
 	@Override
 	public String getId()
 	{
-		return BlockDataRegistry.liqExtractor.id();
+		return BlockDataRegistry.pipeData.id();
 	}
 }

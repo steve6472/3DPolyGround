@@ -11,6 +11,7 @@ import steve6472.polyground.block.properties.IntProperty;
 import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.block.states.States;
 import steve6472.polyground.block.tree.Tree;
+import steve6472.polyground.entity.player.EnumGameMode;
 import steve6472.polyground.entity.player.Player;
 import steve6472.polyground.registry.Blocks;
 import steve6472.polyground.world.ModelBuilder;
@@ -43,15 +44,18 @@ public class BranchBlock extends CustomBlock
 	@Override
 	public void onClick(BlockState state, World world, Player player, EnumFace clickedOn, MouseEvent click, int x, int y, int z)
 	{
+		if (player.gamemode != EnumGameMode.CREATIVE)
+			return;
+
 		if (click.getAction() == KeyList.PRESS)
 		{
 			if (click.getButton() == KeyList.LMB)
 			{
-//				if (state.get(LEAVES))
-//				{
-//					world.setState(state.with(LEAVES, false).get(), x, y, z);
-//					player.processNextBlockBreak = false;
-//				}
+				if (state.get(LEAVES))
+				{
+					world.setState(state.with(LEAVES, false).get(), x, y, z);
+					player.processNextBlockBreak = false;
+				}
 			} else if (click.getButton() == KeyList.MMB)
 			{
 				int radius = state.get(RADIUS);

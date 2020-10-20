@@ -828,6 +828,16 @@ public class DataGenerator
 
 		DataBuilder
 			.create()
+			.fullBlock("pipe")
+			.blockSpecial(new SimpleSpecial("pipe"))
+			.blockState(StateBuilder
+				.create()
+				.emptyModel())
+			.itemGroupPath("misc")
+			.generate();
+
+		DataBuilder
+			.create()
 			.fullBlock("sapling")
 			.blockSpecial(new SimpleSpecial("sapling"))
 			.blockState(StateBuilder

@@ -100,11 +100,21 @@ public class ElUtil
 		}
 	}
 
-	private static Vector3f center(Vector3f... vectors)
+	public static Vector3f center(Vector3f... vectors)
 	{
 		Vector3f v = new Vector3f();
 
 		for (Vector3f vector : vectors)
+			v.add(vector);
+
+		return v.div(vectors.length);
+	}
+
+	public static Vector2f center(Vector2f... vectors)
+	{
+		Vector2f v = new Vector2f();
+
+		for (Vector2f vector : vectors)
 			v.add(vector);
 
 		return v.div(vectors.length);

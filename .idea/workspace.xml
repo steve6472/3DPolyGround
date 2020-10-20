@@ -16,10 +16,10 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Enum" />
         <option value="Record" />
-        <option value="Interface" />
+        <option value="Enum" />
         <option value="Class" />
+        <option value="Interface" />
       </list>
     </option>
   </component>
@@ -43,7 +43,7 @@
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="restartRequiresConfirmation" value="false" />
-    <property name="settings.editor.selected.configurable" value="editor.reader.mode" />
+    <property name="settings.editor.selected.configurable" value="preferences.sourceCode.Java" />
   </component>
   <component name="ReaderModeSettings">
     <option name="showLigatures" value="false" />
@@ -59,10 +59,13 @@
     <key name="MoveMembersDialog.RECENTS_KEY">
       <recent name="steve6472.polyground.gfx.MainRender" />
     </key>
+    <key name="CreateBuilderDialog.RecentsKey">
+      <recent name="steve6472.polyground.block.model.elements" />
+    </key>
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="steve6472.polyground.block.special" />
       <recent name="steve6472.polyground.world.generator.feature" />
       <recent name="steve6472.polyground.commands.coms" />
-      <recent name="steve6472.polyground.block.special" />
       <recent name="steve6472.polyground.block.blockdata" />
       <recent name="steve6472.polyground.generator.models" />
     </key>

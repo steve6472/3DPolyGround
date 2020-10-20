@@ -234,6 +234,9 @@ public class ChunkSerializer
 
 					if (state.getBlock() instanceof ILightBlock lb)
 						lb.spawnLight(state, subChunk.getWorld(), x + subChunk.getX() * 16, y + subChunk.getLayer() * 16, z + subChunk.getZ() * 16);
+
+					if (state.getBlock().isTickable())
+						subChunk.getTickableBlocks().add(x, y, z);
 				}
 			}
 		});

@@ -1,7 +1,9 @@
 package steve6472.polyground.gui;
 
+import net.querz.nbt.io.SNBTUtil;
 import steve6472.polyground.CaveGame;
 import steve6472.polyground.block.BlockAtlas;
+import steve6472.polyground.block.blockdata.BlockData;
 import steve6472.polyground.entity.player.EnumGameMode;
 import steve6472.polyground.events.InGameGuiEvent;
 import steve6472.polyground.gfx.light.Light;
@@ -13,6 +15,8 @@ import steve6472.sge.gui.components.GCLog;
 import steve6472.sge.main.MainApp;
 import steve6472.sge.main.events.Event;
 import steve6472.sge.main.events.WindowSizeEvent;
+
+import java.io.IOException;
 
 import static org.lwjgl.opengl.GL11.*;
 
@@ -152,7 +156,21 @@ public class InGameGui extends Gui implements IGamePause
 		sb.append("OnGround: ").append(CaveGame.getInstance().getPlayer().isOnGround).append("\n");
 
 //		sb.append("Left Hand: ").append(CaveGame.getInstance().getPlayer().holdedItems.get(EnumSlot.HAND_LEFT).getName()).append("\n");
-		sb.append("Right Hand: ").append(CaveGame.getInstance().getPlayer().heldItem);
+		sb.append("Right Hand: ").append(CaveGame.getInstance().getPlayer().heldItem).append("\n");
+
+		BlockData data = CaveGame.getInstance().getWorld().getData(main.hitPicker.getHitResult().getX(), main.hitPicker.getHitResult().getY(), main.hitPicker.getHitResult().getZ());
+		if (data == null)
+			sb.append("NBT: ").append("null");
+		else
+		{
+			try
+			{
+				sb.append("NBT: ").append(SNBTUtil.toSNBT(data.write()));
+			} catch (IOException e)
+			{
+				e.printStackTrace();
+			}
+		}
 
 		Font.render(5, 45, sb.toString());
 

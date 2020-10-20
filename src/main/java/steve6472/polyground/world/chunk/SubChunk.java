@@ -3,6 +3,7 @@ package steve6472.polyground.world.chunk;
 import steve6472.polyground.EnumFace;
 import steve6472.polyground.block.Block;
 import steve6472.polyground.block.blockdata.BlockData;
+import steve6472.polyground.block.blockdata.IWorld;
 import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.gfx.ModelData;
 import steve6472.polyground.gfx.ThreadedModelBuilder;
@@ -291,6 +292,9 @@ public class SubChunk implements IBiomeProvider
 	public void setBlockData(BlockData blockData, int x, int y, int z)
 	{
 		this.blockData.setBlockData(blockData, x, y, z);
+
+		if (blockData instanceof IWorld w)
+			w.setWorld(getWorld(), x + getX() * 16, y + getLayer() * 16, z + getZ() * 16);
 	}
 
 	public SubChunkBlockData getBlockDataContainer()

@@ -85,6 +85,11 @@ public final class ModelBuilder
 		text.add(uv);
 	}
 
+	public void uv(float u, float v)
+	{
+		text.add(new Vector2f(u, v));
+	}
+
 	private final Vector3f DEFAULT_BIOME_COLOR = new Vector3f(92 / 255f, 184 / 255f, 64 / 255f);
 
 	public Vector3f getBiomeTint()

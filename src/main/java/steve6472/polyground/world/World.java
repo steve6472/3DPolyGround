@@ -361,6 +361,10 @@ public class World implements IWorldBlockProvider
 				 */
 				for (int i = SubChunk.getModelCount() - 1; i >= 0; i--)
 				{
+					// Do not render the transparent layer
+					if (ModelLayer.TRANSPARENT.ordinal() == i)
+						continue;
+
 					if (sc.isEmpty(i))
 						continue;
 
@@ -408,6 +412,89 @@ public class World implements IWorldBlockProvider
 		}
 
 		entityManager.render();
+
+		renderTransparent(deferred, countChunks);
+	}
+
+	public void renderTransparent(boolean deferred, boolean countChunks)
+	{
+		if (countChunks)
+		{
+			InGameGui.chunks = 0;
+			InGameGui.chunkLayers = 0;
+		}
+
+		if (deferred)
+		{
+			MainRender.shaders.gShader.bind(game.getCamera().getViewMatrix());
+			MainRender.shaders.gShader.setUniform(CGGShader.EMISSION_TOGGLE, 0.0f);
+
+			game.mainRender.gBuffer.bindFrameBuffer();
+		} else
+		{
+			MainRender.shaders.worldShader.bind();
+			MainRender.shaders.worldShader.setView(game.getCamera().getViewMatrix());
+			MainRender.shaders.worldShader.setUniform(WorldShader.SHADE, shade);
+		}
+
+		BlockAtlas.getAtlas().getSprite().bind(0);
+
+		for (Chunk chunk : chunks.getMap().values())
+		{
+			if (chunk == null)
+				continue;
+			if (!chunkFrustum(chunk.getX() * 16, chunk.getZ() * 16))
+				continue;
+
+			for (int k = 0; k < chunk.getSubChunks().length; k++)
+			{
+				SubChunk sc = chunk.getSubChunk(k);
+				if (sc.isEmpty())
+					continue;
+				if (!subChunkFrustum(chunk.getX() * 16, k * 16, chunk.getZ() * 16))
+					continue;
+
+				if (deferred)
+				{
+					MainRender.shaders.gShader.setTransformation(mat.identity().translate(chunk.getX() * 16, k * 16, chunk.getZ() * 16));
+				} else
+				{
+					MainRender.shaders.worldShader.setTransformation(mat.identity().translate(chunk.getX() * 16, k * 16, chunk.getZ() * 16));
+				}
+
+				if (countChunks)
+					InGameGui.chunks++;
+
+				ModelLayer TRANSPARENT = ModelLayer.TRANSPARENT;
+				int i = TRANSPARENT.ordinal();
+
+				if (sc.isEmpty(TRANSPARENT.ordinal()))
+					continue;
+
+				if (enabled != -1 && TRANSPARENT.ordinal() != enabled)
+					continue;
+
+				if (countChunks)
+					InGameGui.chunkLayers++;
+
+				glBindVertexArray(sc.getModel(i).getVao());
+
+				for (int l = 0; l < 4; l++)
+					glEnableVertexAttribArray(l);
+
+				glDrawArrays(Tessellator3D.TRIANGLES, 0, sc.getTriangleCount(i) * 3);
+			}
+		}
+
+		for (int l = 0; l < 4; l++)
+			glDisableVertexAttribArray(l);
+
+		glBindVertexArray(0);
+
+		if (deferred)
+		{
+			game.mainRender.gBuffer.unbindCurrentFrameBuffer();
+		}
 	}
 
 	private void renderChunkOutlines()

@@ -1,8 +1,7 @@
 package steve6472.polyground.block.model.elements;
 
-import org.joml.GeometryUtils;
-import org.joml.Vector2f;
-import org.joml.Vector3f;
+import org.joml.*;
+import steve6472.polyground.EnumFace;
 import steve6472.polyground.block.BlockAtlas;
 import steve6472.polyground.world.ModelBuilder;
 import steve6472.sge.main.util.ColorUtil;
@@ -168,14 +167,62 @@ public class Bakery
 	 *                  8 - disable west
 	 *                  16 - disable up
 	 *                  32 - disable down
+	 * @return number of triangles
+	 */
+	public static int autoTexturedCube(float x, float y, float z, float w, float h, float d, String texture, int faceFlags)
+	{
+		return autoTexturedCube(x, y, z, w, h, d, texture, faceFlags, 0);
+	}
+
+	/**
+	 *
+	 * @param x x coordinate on cube
+	 * @param y y coordinate on cube
+	 * @param z z coordinate on cube
+	 * @param w width (x)
+	 * @param h height (y)
+	 * @param d depth (z)
+	 * @param texture block texture (has to be loaded)
+	 * @param faceFlags flags to disable rendering of faces
+	 *                  1 - disable north
+	 *                  2 - disable east
+	 *                  4 - disable south
+	 *                  8 - disable west
+	 *                  16 - disable up
+	 *                  32 - disable down
 	 * @param biomeTintFlags flags to enable biome tint
 	 *                       use same bits as faceFlags
 	 * @return number of triangles
 	 */
 	public static int autoTexturedCube(int x, int y, int z, int w, int h, int d, String texture, int faceFlags, int biomeTintFlags)
 	{
-		Vector3f from = new Vector3f(x * 1f / 16f, y * 1f / 16f, z * 1f / 16f);
-		Vector3f to = new Vector3f(x * 1f / 16f + w * 1f / 16f, y * 1f / 16f + h * 1f / 16f, z * 1f / 16f + d * 1f / 16f);
+		return autoTexturedCube((float) x, y, z, w, h, d, texture, faceFlags, biomeTintFlags);
+	}
+
+	/**
+	 *
+	 * @param x x coordinate on cube
+	 * @param y y coordinate on cube
+	 * @param z z coordinate on cube
+	 * @param w width (x)
+	 * @param h height (y)
+	 * @param d depth (z)
+	 * @param texture block texture (has to be loaded)
+	 * @param faceFlags flags to disable rendering of faces
+	 *                  1 - disable north
+	 *                  2 - disable east
+	 *                  4 - disable south
+	 *                  8 - disable west
+	 *                  16 - disable up
+	 *                  32 - disable down
+	 * @param biomeTintFlags flags to enable biome tint
+	 *                       use same bits as faceFlags
+	 * @return number of triangles
+	 */
+	public static int autoTexturedCube(float x, float y, float z, float w, float h, float d, String texture, int faceFlags, int biomeTintFlags)
+	{
+		Vector3f from = new Vector3f(x / 16f, y / 16f, z / 16f);
+		Vector3f to = new Vector3f(x / 16f + w / 16f, y / 16f + h / 16f, z / 16f + d / 16f);
 
 		int tex = BlockAtlas.getTextureId(texture);
 
@@ -256,6 +303,119 @@ public class Bakery
 		return tris;
 	}
 
+
+	static int face(EnumFace face, CubeBaker cubeBaker, FaceBaker faceBaker, byte flip)
+	{
+		Vector3f from = new Vector3f(cubeBaker.getBox().minX, cubeBaker.getBox().minY, cubeBaker.getBox().minZ);
+		Vector3f to = new Vector3f(cubeBaker.getBox().maxX, cubeBaker.getBox().maxY, cubeBaker.getBox().maxZ);
+
+		int tris = 0;
+
+		if (face == EnumFace.NORTH) tris += quad(
+			new Vector3f(to.x, to.y, to.z),
+			new Vector3f(to.x, from.y, to.z),
+			new Vector3f(to.x, from.y, from.z),
+			new Vector3f(to.x, to.y, from.z), faceBaker, flip);
+		if (face == EnumFace.EAST) tris += quad(
+			new Vector3f(from.x, to.y, to.z),
+			new Vector3f(from.x, from.y, to.z),
+			new Vector3f(to.x, from.y, to.z),
+			new Vector3f(to.x, to.y, to.z), faceBaker, flip);
+		if (face == EnumFace.SOUTH) tris += quad(
+			new Vector3f(from.x, to.y, from.z),
+			new Vector3f(from.x, from.y, from.z),
+			new Vector3f(from.x, from.y, to.z),
+			new Vector3f(from.x, to.y, to.z), faceBaker, flip);
+		if (face == EnumFace.WEST) tris += quad(
+			new Vector3f(to.x, to.y, from.z),
+			new Vector3f(to.x, from.y, from.z),
+			new Vector3f(from.x, from.y, from.z),
+			new Vector3f(from.x, to.y, from.z), faceBaker, flip);
+		if (face == EnumFace.UP) tris += quad(
+			new Vector3f(to.x, to.y, from.z),
+			new Vector3f(from.x, to.y, from.z),
+			new Vector3f(from.x, to.y, to.z),
+			new Vector3f(to.x, to.y, to.z), faceBaker, flip);
+		if (face == EnumFace.DOWN) tris += quad(
+			new Vector3f(from.x, from.y, from.z),
+			new Vector3f(to.x, from.y, from.z),
+			new Vector3f(to.x, from.y, to.z),
+			new Vector3f(from.x, from.y, to.z), faceBaker, flip);
+
+		return tris;
+	}
+
+	static int quad(Vector3f v0, Vector3f v1, Vector3f v2, Vector3f v3, FaceBaker face, byte flip)
+	{
+		UvBuilder uv = face.uv;
+
+		if ((flip & 1) == 1)
+		{
+			Vector3f temp = v0;
+			v0 = v3;
+			v3 = temp;
+			temp = v1;
+			v1 = v2;
+			v2 = temp;
+			uv.flipX();
+		}
+
+		if ((flip & 2) == 2)
+		{
+			Vector3f temp = v0;
+			v0 = v3;
+			v3 = temp;
+			temp = v1;
+			v1 = v2;
+			v2 = temp;
+			uv.flipX();
+		}
+
+		if ((flip & 4) == 4)
+		{
+			Vector3f temp = v0;
+			v0 = v3;
+			v3 = temp;
+			temp = v1;
+			v1 = v2;
+			v2 = temp;
+			uv.flipX();
+		}
+
+		GeometryUtils.normal(v0, v1, v2, normal);
+		Vector3f norm = new Vector3f(normal);
+		int texture = BlockAtlas.getTextureId(face.getTexture());
+
+		builder.tri(v0, v1, v2);
+		builder.uv(uv(texture, uv.u0, uv.v0));
+		builder.uv(uv(texture, uv.u0, uv.v1));
+		builder.uv(uv(texture, uv.u1, uv.v1));
+		builder.normalTri(norm);
+
+		builder.tri(v2, v3, v0);
+		builder.uv(uv(texture, uv.u1, uv.v1));
+		builder.uv(uv(texture, uv.u1, uv.v0));
+		builder.uv(uv(texture, uv.u0, uv.v0));
+		builder.normalTri(norm);
+
+		if (face.biomeTint)
+		{
+			Vector3f bt = builder.getBiomeTint();
+			builder.colorTri(bt.x, bt.y, bt.z);
+			builder.colorTri(bt.x, bt.y, bt.z);
+		} else if (face.tint != null)
+		{
+			builder.colorTri(face.tint.x, face.tint.y, face.tint.z);
+			builder.colorTri(face.tint.x, face.tint.y, face.tint.z);
+		} else
+		{
+			builder.colorTri(1, 1, 1);
+			builder.colorTri(1, 1, 1);
+		}
+
+		return 2;
+	}
+
 	public static int coloredQuad(Vector3f v0, Vector3f v1, Vector3f v2, Vector3f v3, int color)
 	{
 		return coloredTriangle(v0, v1, v2, color) + coloredTriangle(v2, v3, v0, color);
@@ -321,6 +481,11 @@ public class Bakery
 		float h = r.height;
 		uv.set((x + w * uv.x) * builder.texel, (y + h * uv.y) * builder.texel);
 		return uv;
+	}
+
+	public static Vector2f uv(int texture, float u, float v)
+	{
+		return uv(texture, new Vector2f(u, v));
 	}
 
 	public static Vector2f uv(String texture, Vector2f uv)
