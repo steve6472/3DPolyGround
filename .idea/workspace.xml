@@ -43,7 +43,7 @@
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="restartRequiresConfirmation" value="false" />
-    <property name="settings.editor.selected.configurable" value="preferences.sourceCode.Java" />
+    <property name="settings.editor.selected.configurable" value="preferences.updates" />
   </component>
   <component name="ReaderModeSettings">
     <option name="showLigatures" value="false" />
@@ -76,7 +76,7 @@
       <command value="3.14159265358979323846 * 2" />
     </option>
   </component>
-  <component name="RunManager" selected="Application.CaveGame">
+  <component name="RunManager" selected="Application.Gen-CaveGame">
     <configuration name="A" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="steve6472.polyground.A" />
       <module name="CaveGame" />

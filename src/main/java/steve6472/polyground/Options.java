@@ -12,7 +12,6 @@ public class Options
 	 * Gameplay
 	 */
 	public boolean enablePostProcessing = false;
-	public boolean renderCrosshair = true;
 
 	/**
 	 * -1 to disable limit
@@ -37,6 +36,16 @@ public class Options
 	public int maxScheduledTicks = 4096 * 16;
 
 	/**
+	 * Render distance
+	 */
+	public int renderDistance = 6;
+
+	/**
+	 * Simulation distance
+	 */
+	public int simulationDistance = 6;
+
+	/**
 	 *
 	 */
 	public int randomTicks = 3;
@@ -44,6 +53,12 @@ public class Options
 	public boolean isGamePaused = true;
 	public boolean isInMenu = true;
 	public boolean isMouseFree = false;
+
+	/*
+	 * Visual
+	 */
+	public boolean renderCrosshair = true;
+	public boolean renderBlockOutline = true;
 
 	/*
 	 * Debug
@@ -59,7 +74,6 @@ public class Options
 	public boolean renderSkybox = true;
 	public boolean renderDataBlocks = false;
 	public boolean renderItemEntityOutline = false;
-	public boolean renderBlockOutline = true;
 
 	public float mouseSensitivity = 0.1f;
 

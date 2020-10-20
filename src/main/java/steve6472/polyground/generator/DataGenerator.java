@@ -974,21 +974,21 @@ public class DataGenerator
 					.addProperty(FourDirectionalBlock.FACING, EnumFace.EAST)
 					.tags(Tags.PICKABLE, Tags.TRANSPARENT)
 					.custom(true)
-					.rot(0, 90, 0), BlockModelBuilder.noGen("flint_1"))
+					.rot(0, -90, 0), BlockModelBuilder.noGen("flint_1"))
 
 				.addState(PropertyBuilder
 					.create()
 					.addProperty(FourDirectionalBlock.FACING, EnumFace.SOUTH)
 					.tags(Tags.PICKABLE, Tags.TRANSPARENT)
 					.custom(true)
-					.rot(0, 180, 0), BlockModelBuilder.noGen("flint_1"))
+					.rot(0, -180, 0), BlockModelBuilder.noGen("flint_1"))
 
 				.addState(PropertyBuilder
 					.create()
 					.addProperty(FourDirectionalBlock.FACING, EnumFace.WEST)
 					.tags(Tags.PICKABLE, Tags.TRANSPARENT)
 					.custom(true)
-					.rot(0, 270, 0), BlockModelBuilder.noGen("flint_1")))
+					.rot(0, -270, 0), BlockModelBuilder.noGen("flint_1")))
 
 			.blockSpecial(new SimpleSpecial("four_directional"))
 			.itemGroupPath("nature")
@@ -1176,6 +1176,7 @@ public class DataGenerator
 						.hitbox(false)
 						.min(8, 0, 0)
 						.max(8, 16, 16)
+						.rotation(0, 45, 0)
 						.face(FaceBuilder
 							.create()
 							.texture("block/tall_grass_bottom")
@@ -1186,6 +1187,7 @@ public class DataGenerator
 						.hitbox(false)
 						.min(0, 0, 8)
 						.max(16, 16, 8)
+						.rotation(0, 45, 0)
 						.face(FaceBuilder
 							.create()
 							.texture("block/tall_grass_bottom")
@@ -1205,6 +1207,7 @@ public class DataGenerator
 						.hitbox(false)
 						.min(8, 0, 0)
 						.max(8, 16, 16)
+						.rotation(0, 45, 0)
 						.face(FaceBuilder
 							.create()
 							.texture("block/tall_grass_top")
@@ -1215,6 +1218,7 @@ public class DataGenerator
 						.hitbox(false)
 						.min(0, 0, 8)
 						.max(16, 16, 8)
+						.rotation(0, 45, 0)
 						.face(FaceBuilder
 							.create()
 							.texture("block/tall_grass_top")

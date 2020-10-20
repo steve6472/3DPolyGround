@@ -2,6 +2,7 @@ package steve6472.polyground.world;
 
 import org.joml.AABBf;
 import org.joml.Matrix4f;
+import org.joml.Vector2f;
 import steve6472.polyground.CaveGame;
 import steve6472.polyground.EnumFace;
 import steve6472.polyground.block.BlockAtlas;
@@ -33,9 +34,6 @@ import steve6472.sge.gfx.GBuffer;
 import steve6472.sge.gfx.Tessellator3D;
 import steve6472.sge.main.game.GridStorage;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.Iterator;
 import java.util.Random;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -160,10 +158,21 @@ public class World implements IWorldBlockProvider
 		}
 		tickScheduler.tick();
 
-		for (Chunk chunk : chunks.getMap().values())
+		for (int x = -game.options.renderDistance; x <= game.options.renderDistance; x++)
 		{
-			chunk.tick();
-			chunk.checkRebuild(builder);
+			for (int z = -game.options.renderDistance; z <= game.options.renderDistance; z++)
+			{
+				int cx = x + ((int) (Math.floor(game.getPlayer().getX())) >> 4);
+				int cz = z + ((int) (Math.floor(game.getPlayer().getZ())) >> 4);
+
+				Chunk chunk = getChunk(cx, cz);
+
+				if (chunk == null)
+
+					continue;
+				chunk.tick();
+				chunk.checkRebuild(builder);
+			}
 		}
 
 		lastWaterTickIndex += game.options.maxWaterTick;
@@ -173,7 +182,7 @@ public class World implements IWorldBlockProvider
 		entityManager.tick();
 	}
 
-	private BlockingQueue<TickScheduler.ScheduledTick> offThreadTicks;
+	private final BlockingQueue<TickScheduler.ScheduledTick> offThreadTicks;
 
 	public void scheduleUpdate(BlockState state, EnumFace from, int x, int y, int z, int tickIn)
 	{
@@ -224,74 +233,6 @@ public class World implements IWorldBlockProvider
 		}
 	}
 
-	private void generateChunks()
-	{
-		int px = (int) Math.floor(CaveGame.getInstance().getPlayer().getX()) >> 4;
-		int pz = (int) Math.floor(CaveGame.getInstance().getPlayer().getZ()) >> 4;
-
-		for (Iterator<Chunk> iter = chunks.getMap().values().iterator(); iter.hasNext(); )
-		{
-			Chunk next = iter.next();
-			if (Math.abs(next.getX() - px) > 6 || Math.abs(next.getZ() - pz) > 6)
-			{
-				if (worldName != null)
-				{
-					try
-					{
-						next.saveChunk(this);
-					} catch (IOException e)
-					{
-						System.err.println("Chunk " + next.getX() + "/" + next.getZ() + " failed to save");
-						System.err.println("    " + e.getMessage() + "\n");
-					}
-				}
-				next.unload();
-				iter.remove();
-			}
-		}
-
-		if (getChunk(px, pz) == null)
-		{
-			generateNewChunk(px, pz);
-			return;
-		}
-
-		int range = 5;
-
-		for (int i = -range; i <= range; i++)
-		{
-			for (int j = -range; j <= range; j++)
-			{
-				if (worldName != null)
-				{
-					if (getChunk(i + px, j + pz) == null)
-					{
-						if (new File("worlds\\" + worldName + "\\chunk_" + (i + px) + "_" + (j + pz)).exists())
-						{
-							Chunk c = new Chunk(i + px, j + pz, this);
-							try
-							{
-								c.loadChunk(this);
-								addChunk(c);
-							} catch (IOException e)
-							{
-								System.err.println("Chunk " + c.getX() + "/" + c.getZ() + " failed to load");
-								System.err.println("    " + e.getMessage() + "\n");
-							}
-							continue;
-						}
-					}
-				}
-
-				if (getChunk(i + px, j + pz) == null)
-				{
-					generateNewChunk(i + px, j + pz);
-					return;
-				}
-			}
-		}
-	}
-
 	private boolean subChunkFrustum(int x, int y, int z)
 	{
 		return game.mainRender.frustum.insideFrsutum(x, y, z, x + 16, y + 16, z + 16);
@@ -329,74 +270,91 @@ public class World implements IWorldBlockProvider
 
 		BlockAtlas.getAtlas().getSprite().bind(0);
 
-		for (Chunk chunk : chunks.getMap().values())
+		for (int x = -game.options.renderDistance; x <= game.options.renderDistance; x++)
 		{
-			if (chunk == null)
-				continue;
-			if (!chunkFrustum(chunk.getX() * 16, chunk.getZ() * 16))
-				continue;
-
-			for (int k = 0; k < chunk.getSubChunks().length; k++)
+			for (int z = -game.options.renderDistance; z <= game.options.renderDistance; z++)
 			{
-				SubChunk sc = chunk.getSubChunk(k);
-				if (sc.isEmpty())
+				int cx = x + ((int) (Math.floor(game.getPlayer().getX())) >> 4);
+				int cz = z + ((int) (Math.floor(game.getPlayer().getZ())) >> 4);
+
+				Chunk chunk = getChunk(cx, cz);
+
+				if (chunk == null)
 					continue;
-				if (!subChunkFrustum(chunk.getX() * 16, k * 16, chunk.getZ() * 16))
+
+				cx *= 16;
+				cz *= 16;
+
+				if (Vector2f.distance(cx + 8, cz + 8, game.getPlayer().getX(), game.getPlayer().getZ()) >= game.options.renderDistance * 16)
 					continue;
 
-				if (deferred)
-				{
-					MainRender.shaders.gShader.setTransformation(mat.identity().translate(chunk.getX() * 16, k * 16, chunk.getZ() * 16));
-				} else
-				{
-					MainRender.shaders.worldShader.setTransformation(mat.identity().translate(chunk.getX() * 16, k * 16, chunk.getZ() * 16));
-				}
+				if (!chunkFrustum(cx, cz))
+					continue;
 
-				if (countChunks)
-					InGameGui.chunks++;
-
-				/*
-				 * Rendered in reverse order to get the desired effect
-				 * (layer 0 -> back texture, layer 1 -> overlay texture)
-				 */
-				for (int i = SubChunk.getModelCount() - 1; i >= 0; i--)
+				for (int k = 0; k < chunk.getSubChunks().length; k++)
 				{
-					// Do not render the transparent layer
-					if (ModelLayer.TRANSPARENT.ordinal() == i)
+					SubChunk sc = chunk.getSubChunk(k);
+
+					if (sc.isEmpty())
 						continue;
 
-					if (sc.isEmpty(i))
+					if (!subChunkFrustum(cx, k * 16, cz))
 						continue;
 
-					if (enabled != -1 && i != enabled)
-						continue;
-
-					if (!deferred)
+					if (deferred)
 					{
-						if (ModelLayer.EMISSION_NORMAL.ordinal() == i || ModelLayer.EMISSION_OVERLAY.ordinal() == i || ModelLayer.LIGHT.ordinal() == i)
-							MainRender.shaders.worldShader.setUniform(WorldShader.SHADE, 1.0f);
-						else
-							MainRender.shaders.worldShader.setUniform(WorldShader.SHADE, shade);
+						MainRender.shaders.gShader.setTransformation(mat.identity().translate(cx, k * 16, cz));
 					} else
 					{
-						if (ModelLayer.EMISSION_NORMAL.ordinal() == i || ModelLayer.EMISSION_OVERLAY.ordinal() == i || ModelLayer.LIGHT.ordinal() == i)
-						{
-							MainRender.shaders.gShader.setUniform(CGGShader.EMISSION_TOGGLE, 1.0f);
-						} else
-						{
-							MainRender.shaders.gShader.setUniform(CGGShader.EMISSION_TOGGLE, 0.0f);
-						}
+						MainRender.shaders.worldShader.setTransformation(mat.identity().translate(cx, k * 16, cz));
 					}
 
 					if (countChunks)
-						InGameGui.chunkLayers++;
+						InGameGui.chunks++;
 
-					glBindVertexArray(sc.getModel(i).getVao());
+					/*
+					 * Rendered in reverse order to get the desired effect
+					 * (layer 0 -> back texture, layer 1 -> overlay texture)
+					 */
+					for (int i = SubChunk.getModelCount() - 1; i >= 0; i--)
+					{
+						// Do not render the transparent layer
+						if (ModelLayer.TRANSPARENT.ordinal() == i)
+							continue;
 
-					for (int l = 0; l < 4; l++)
-						glEnableVertexAttribArray(l);
+						if (sc.isEmpty(i))
+							continue;
 
-					glDrawArrays(Tessellator3D.TRIANGLES, 0, sc.getTriangleCount(i) * 3);
+						if (enabled != -1 && i != enabled)
+							continue;
+
+						if (!deferred)
+						{
+							if (ModelLayer.EMISSION_NORMAL.ordinal() == i || ModelLayer.EMISSION_OVERLAY.ordinal() == i || ModelLayer.LIGHT.ordinal() == i)
+								MainRender.shaders.worldShader.setUniform(WorldShader.SHADE, 1.0f);
+							else
+								MainRender.shaders.worldShader.setUniform(WorldShader.SHADE, shade);
+						} else
+						{
+							if (ModelLayer.EMISSION_NORMAL.ordinal() == i || ModelLayer.EMISSION_OVERLAY.ordinal() == i || ModelLayer.LIGHT.ordinal() == i)
+							{
+								MainRender.shaders.gShader.setUniform(CGGShader.EMISSION_TOGGLE, 1.0f);
+							} else
+							{
+								MainRender.shaders.gShader.setUniform(CGGShader.EMISSION_TOGGLE, 0.0f);
+							}
+						}
+
+						if (countChunks)
+							InGameGui.chunkLayers++;
+
+						glBindVertexArray(sc.getModel(i).getVao());
+
+						for (int l = 0; l < 4; l++)
+							glEnableVertexAttribArray(l);
+
+						glDrawArrays(Tessellator3D.TRIANGLES, 0, sc.getTriangleCount(i) * 3);
+					}
 				}
 			}
 		}
@@ -439,50 +397,67 @@ public class World implements IWorldBlockProvider
 
 		BlockAtlas.getAtlas().getSprite().bind(0);
 
-		for (Chunk chunk : chunks.getMap().values())
+		for (int x = -game.options.renderDistance; x <= game.options.renderDistance; x++)
 		{
-			if (chunk == null)
-				continue;
-			if (!chunkFrustum(chunk.getX() * 16, chunk.getZ() * 16))
-				continue;
-
-			for (int k = 0; k < chunk.getSubChunks().length; k++)
+			for (int z = -game.options.renderDistance; z <= game.options.renderDistance; z++)
 			{
-				SubChunk sc = chunk.getSubChunk(k);
-				if (sc.isEmpty())
-					continue;
-				if (!subChunkFrustum(chunk.getX() * 16, k * 16, chunk.getZ() * 16))
+				int cx = x + ((int) (Math.floor(game.getPlayer().getX())) >> 4);
+				int cz = z + ((int) (Math.floor(game.getPlayer().getZ())) >> 4);
+
+				Chunk chunk = getChunk(cx, cz);
+
+				if (chunk == null)
 					continue;
 
-				if (deferred)
+				cx *= 16;
+				cz *= 16;
+
+				if (Vector2f.distance(cx + 8, cz + 8, game.getPlayer().getX(), game.getPlayer().getZ()) >= game.options.renderDistance * 16)
+					continue;
+
+				if (!chunkFrustum(cx, cz))
+					continue;
+
+				for (int k = 0; k < chunk.getSubChunks().length; k++)
 				{
-					MainRender.shaders.gShader.setTransformation(mat.identity().translate(chunk.getX() * 16, k * 16, chunk.getZ() * 16));
-				} else
-				{
-					MainRender.shaders.worldShader.setTransformation(mat.identity().translate(chunk.getX() * 16, k * 16, chunk.getZ() * 16));
+					SubChunk sc = chunk.getSubChunk(k);
+
+					if (sc.isEmpty())
+						continue;
+
+					if (!subChunkFrustum(chunk.getX() * 16, k * 16, chunk.getZ() * 16))
+						continue;
+
+					if (deferred)
+					{
+						MainRender.shaders.gShader.setTransformation(mat.identity().translate(chunk.getX() * 16, k * 16, chunk.getZ() * 16));
+					} else
+					{
+						MainRender.shaders.worldShader.setTransformation(mat.identity().translate(chunk.getX() * 16, k * 16, chunk.getZ() * 16));
+					}
+
+					if (countChunks)
+						InGameGui.chunks++;
+
+					ModelLayer TRANSPARENT = ModelLayer.TRANSPARENT;
+					int i = TRANSPARENT.ordinal();
+
+					if (sc.isEmpty(TRANSPARENT.ordinal()))
+						continue;
+
+					if (enabled != -1 && TRANSPARENT.ordinal() != enabled)
+						continue;
+
+					if (countChunks)
+						InGameGui.chunkLayers++;
+
+					glBindVertexArray(sc.getModel(i).getVao());
+
+					for (int l = 0; l < 4; l++)
+						glEnableVertexAttribArray(l);
+
+					glDrawArrays(Tessellator3D.TRIANGLES, 0, sc.getTriangleCount(i) * 3);
 				}
-
-				if (countChunks)
-					InGameGui.chunks++;
-
-				ModelLayer TRANSPARENT = ModelLayer.TRANSPARENT;
-				int i = TRANSPARENT.ordinal();
-
-				if (sc.isEmpty(TRANSPARENT.ordinal()))
-					continue;
-
-				if (enabled != -1 && TRANSPARENT.ordinal() != enabled)
-					continue;
-
-				if (countChunks)
-					InGameGui.chunkLayers++;
-
-				glBindVertexArray(sc.getModel(i).getVao());
-
-				for (int l = 0; l < 4; l++)
-					glEnableVertexAttribArray(l);
-
-				glDrawArrays(Tessellator3D.TRIANGLES, 0, sc.getTriangleCount(i) * 3);
 			}
 		}
 

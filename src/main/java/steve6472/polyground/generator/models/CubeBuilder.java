@@ -1,5 +1,6 @@
 package steve6472.polyground.generator.models;
 
+import org.joml.Vector3f;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import steve6472.polyground.EnumFace;
@@ -21,6 +22,8 @@ public class CubeBuilder
 	private boolean isHitbox, isCollisionBox;
 	private String name;
 	private FaceBuilder[] faces;
+	private Vector3f origin;
+	private Vector3f rotation;
 
 	public static CubeBuilder create()
 	{
@@ -33,6 +36,18 @@ public class CubeBuilder
 		isHitbox = true;
 		isCollisionBox = true;
 		name = "";
+	}
+
+	public CubeBuilder origin(float x, float y, float z)
+	{
+		this.origin = new Vector3f(x, y, z);
+		return this;
+	}
+
+	public CubeBuilder rotation(float x, float y, float z)
+	{
+		this.rotation = new Vector3f(x, y, z);
+		return this;
 	}
 
 	public CubeBuilder size(float x, float y, float z, float w, float h, float d)
@@ -158,6 +173,8 @@ public class CubeBuilder
 		if (!isHitbox)       main.put("isHitbox", false);
 		if (!isCollisionBox) main.put("isCollisionBox", false);
 		if (!name.isBlank()) main.put("name", name);
+		if (origin != null)  main.put("point", new JSONArray().put(origin.x).put(origin.y).put(origin.z));
+		if (rotation != null)main.put("rotation", new JSONArray().put(rotation.x).put(rotation.y).put(rotation.z));
 
 		JSONObject faces = new JSONObject();
 		if (this.faces[0] != null) faces.put("up", this.faces[0].build());
