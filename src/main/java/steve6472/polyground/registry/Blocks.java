@@ -24,13 +24,13 @@ public class Blocks
 {
 	private static Block[] blocks;
 	private static HashMap<String, Integer> reference;
+	private static LinkedHashMap<Block, JSONObject> temp = new LinkedHashMap<>();
 
 	public static void register(CaveGame game)
 	{
 		File[] blocksFile = new File("game/objects/blocks").listFiles();
 
 		reference = new HashMap<>();
-		LinkedHashMap<Block, JSONObject> temp = new LinkedHashMap<>();
 
 		temp.put(Block.createAir(), new JSONObject());
 		reference.put("air", 0);
@@ -91,21 +91,6 @@ public class Blocks
 			game.getEventHandler().register(block);
 			blocks[index] = block;
 			index++;
-		}
-
-		for (Map.Entry<Block, JSONObject> entry : temp.entrySet())
-		{
-			Block key = entry.getKey();
-			JSONObject value = entry.getValue();
-			try
-			{
-				key.load(value.optJSONObject("special"));
-			} catch (Exception ex)
-			{
-				System.err.println("Error while loading block '" + key.getName() + "'");
-				ex.printStackTrace();
-				System.exit(2);
-			}
 		}
 
 		BlockAtlas.putTexture("block/white");
@@ -169,6 +154,23 @@ public class Blocks
 
 	public static void finish(CaveGame game)
 	{
+		for (Map.Entry<Block, JSONObject> entry : temp.entrySet())
+		{
+			Block key = entry.getKey();
+			JSONObject value = entry.getValue();
+			try
+			{
+				key.load(value.optJSONObject("special"));
+			} catch (Exception ex)
+			{
+				System.err.println("Error while loading block '" + key.getName() + "'");
+				ex.printStackTrace();
+				System.exit(2);
+			}
+		}
+
+		temp = null;
+
 		for (Block block : blocks)
 		{
 			block.item = Items.getItemByName(block.item.getName());

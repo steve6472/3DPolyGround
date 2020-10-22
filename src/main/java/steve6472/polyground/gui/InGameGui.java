@@ -165,7 +165,8 @@ public class InGameGui extends Gui implements IGamePause
 		{
 			try
 			{
-				sb.append("NBT: ").append(SNBTUtil.toSNBT(data.write()));
+				String snbt = SNBTUtil.toSNBT(data.write());
+				sb.append("NBT: ").append(snbt, 0, Math.min(snbt.length(), 500));
 			} catch (IOException e)
 			{
 				e.printStackTrace();

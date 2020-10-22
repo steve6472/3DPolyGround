@@ -18,47 +18,52 @@ public class SpecialBlockRegistry
 {
 	private static final HashMap<String, SpecialBlockEntry<? extends Block>> specialBlockRegistry = new HashMap<>();
 
-	public static final SpecialBlockEntry<PillarBlock> pilliar = register("pilliar", PillarBlock::new);
-	public static final SpecialBlockEntry<TransparentBlock> transparentBlock = register("transparent", TransparentBlock::new);
-	public static final SpecialBlockEntry<SlabBlock> slab = register("slab", SlabBlock::new);
-	public static final SpecialBlockEntry<StalaBlock> stalaBlock = register("stala", StalaBlock::new);
-	public static final SpecialBlockEntry<StairBlock> stairs = register("stairs", StairBlock::new);
-	public static final SpecialBlockEntry<LeavesBlock> leaves = register("leaves", LeavesBlock::new);
-	public static final SpecialBlockEntry<GravelBlock> gravel = register("gravel", GravelBlock::new);
-	public static final SpecialBlockEntry<CustomBlock> custom = register("custom", CustomBlock::new);
-	public static final SpecialBlockEntry<LightSourceBlock> light = register("light", LightSourceBlock::new);
-	public static final SpecialBlockEntry<TorchBlock> torch = register("torch", TorchBlock::new);
-	public static final SpecialBlockEntry<WaterGeneratorBlock> waterGenerator = register("watergenerator", WaterGeneratorBlock::new);
-	public static final SpecialBlockEntry<StateTest> stateTest = register("state_test", StateTest::new);
-	public static final SpecialBlockEntry<SnowLayerBlock> snowLayer = register("snow_layer", SnowLayerBlock::new);
-	public static final SpecialBlockEntry<DoubleBlock> doubleBlock = register("double_block", DoubleBlock::new);
-	public static final SpecialBlockEntry<TagBelowBlock> tagBelowBlock = register("tag_below", TagBelowBlock::new);
-	public static final SpecialBlockEntry<SpreadBlock> spreadBlock = register("spreadable", SpreadBlock::new);
-	public static final SpecialBlockEntry<CorruptedStoneBlock> corruptedStone = register("corrupted_stone", CorruptedStoneBlock::new);
-	public static final SpecialBlockEntry<LogStackBlock> logStack = register("log_stack", LogStackBlock::new);
-	public static final SpecialBlockEntry<DirectionalLightSourceBlock> dirLight = register("dir_light", DirectionalLightSourceBlock::new);
-	public static final SpecialBlockEntry<DirectionalBlock> directional = register("directional", DirectionalBlock::new);
-	public static final SpecialBlockEntry<FourDirectionalBlock> fourDirectional = register("four_directional", FourDirectionalBlock::new);
-	public static final SpecialBlockEntry<ConveyorBeltBlock> conveyorBelt = register("conveyor_belt", ConveyorBeltBlock::new);
-	public static final SpecialBlockEntry<FallingBlock> fallingBlock = register("falling_block", FallingBlock::new);
-	public static final SpecialBlockEntry<KnappingBlock> stoneKnapping = register("stone_knapping", KnappingBlock::new);
-	public static final SpecialBlockEntry<HammerstoneBlock> hammerstone = register("hammerstone", HammerstoneBlock::new);
-	public static final SpecialBlockEntry<ChiselBlock> chisel = register("chisel", ChiselBlock::new);
-	public static final SpecialBlockEntry<FlowerBlock> flower = register("flower", FlowerBlock::new);
-	public static final SpecialBlockEntry<PaintBucketBlock> paintBucket = register("paint_bucket", PaintBucketBlock::new);
-	public static final SpecialBlockEntry<AxeBlock> axeBlock = register("axe_block", AxeBlock::new);
-	public static final SpecialBlockEntry<HempBlock> hemp = register("hemp", HempBlock::new);
-	public static final SpecialBlockEntry<BranchBlock> branch = register("branch", BranchBlock::new);
-	public static final SpecialBlockEntry<SaplingBlock> sapling = register("sapling", SaplingBlock::new);
-	public static final SpecialBlockEntry<RootBlock> root = register("root", RootBlock::new);
-	public static final SpecialBlockEntry<LiqExtractorBlock> liqExtractor = register("liq_extractor", LiqExtractorBlock::new);
-	public static final SpecialBlockEntry<PipeBlock> pipe = register("pipe", PipeBlock::new);
+	static
+	{
+		register("pilliar", PillarBlock::new);
+		register("transparent", TransparentBlock::new);
+		register("slab", SlabBlock::new);
+		register("stala", StalaBlock::new);
+		register("stairs", StairBlock::new);
+		register("leaves", LeavesBlock::new);
+		register("gravel", GravelBlock::new);
+		register("custom", CustomBlock::new);
+		register("light", LightSourceBlock::new);
+		register("torch", TorchBlock::new);
+		register("watergenerator", WaterGeneratorBlock::new);
+		register("state_test", StateTest::new);
+		register("snow_layer", SnowLayerBlock::new);
+		register("double_block", DoubleBlock::new);
+		register("tag_below", TagBelowBlock::new);
+		register("spreadable", SpreadBlock::new);
+		register("corrupted_stone", CorruptedStoneBlock::new);
+		register("log_stack", LogStackBlock::new);
+		register("dir_light", DirectionalLightSourceBlock::new);
+		register("directional", DirectionalBlock::new);
+		register("four_directional", FourDirectionalBlock::new);
+		register("conveyor_belt", ConveyorBeltBlock::new);
+		register("falling_block", FallingBlock::new);
+		register("flint_knapping", KnappingBlock::new);
+		register("hammerstone", HammerstoneBlock::new);
+		register("chisel", ChiselBlock::new);
+		register("flower", FlowerBlock::new);
+		register("paint_bucket", PaintBucketBlock::new);
+		register("axe_block", AxeBlock::new);
+		register("hemp", HempBlock::new);
+		register("branch", BranchBlock::new);
+		register("sapling", SaplingBlock::new);
+		register("root", RootBlock::new);
+		register("liq_extractor", LiqExtractorBlock::new);
+		register("pipe", PipeBlock::new);
+		register("breakable", BreakableBlock::new);
+		register("flint", FlintBlock::new);
+		register("amethine_core", AmethineCoreBlock::new);
+	}
 
-	public static <T extends Block> SpecialBlockEntry<T> register(String id, ISpecialBlockFactory<T> factory)
+	public static <T extends Block> void register(String id, ISpecialBlockFactory<T> factory)
 	{
 		SpecialBlockEntry<T> entry = new SpecialBlockEntry<>(factory);
 		specialBlockRegistry.put(id, entry);
-		return entry;
 	}
 
 	public static Block createSpecialBlock(String id, JSONObject json)

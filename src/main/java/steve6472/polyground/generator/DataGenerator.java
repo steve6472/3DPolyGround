@@ -120,11 +120,11 @@ public class DataGenerator
 			.addValue("tags", tags);
 	}
 
-	private void item(String name, String group, String model)
+	private void item(String name, String model, String group)
 	{
 		DataBuilder
 			.create()
-			.item(name, group, model)
+			.item(name, model, group)
 			.generate();
 	}
 
@@ -462,6 +462,27 @@ public class DataGenerator
 			.generate();
 		DataBuilder
 			.create()
+			.slab("underground_sandstone_slab", "sandstone_bottom")
+			.addTagToState()
+			.with(SlabBlock.TYPE, EnumSlabType.DOUBLE)
+			.finish(Tags.SOLID)
+			.generate();
+		DataBuilder
+			.create()
+			.slab("limestone_slab", "limestone")
+			.addTagToState()
+			.with(SlabBlock.TYPE, EnumSlabType.DOUBLE)
+			.finish(Tags.SOLID)
+			.generate();
+		DataBuilder
+			.create()
+			.slab("quartzite_slab", "quartzite")
+			.addTagToState()
+			.with(SlabBlock.TYPE, EnumSlabType.DOUBLE)
+			.finish(Tags.SOLID)
+			.generate();
+		DataBuilder
+			.create()
 			.slab("cobblestone_slab", "cobblestone")
 			.addTagToState()
 			.with(SlabBlock.TYPE, EnumSlabType.DOUBLE)
@@ -611,8 +632,8 @@ public class DataGenerator
 
 		DataBuilder
 			.create()
-			.fullBlock("stone_knapping")
-			.blockSpecial(new SimpleSpecial("stone_knapping"))
+			.fullBlock("flint_knapping")
+			.blockSpecial(new SimpleSpecial("flint_knapping"))
 			.blockState(StateBuilder
 				.create()
 				.emptyModel())
@@ -812,7 +833,10 @@ public class DataGenerator
 			.blockSpecial(new SimpleSpecial("axe_block"))
 			.blockState(StateBuilder
 				.create()
-				.emptyModel())
+				.singleModel((BlockModelBuilder
+					.create("axe_template")
+					.externalPath("custom_models/axe_template.bbmodel")))
+			)
 			.itemGroupPath("misc")
 			.generate();
 
@@ -824,6 +848,16 @@ public class DataGenerator
 				.create()
 				.emptyModel())
 			.itemGroupPath("building.wood")
+			.generate();
+
+		DataBuilder
+			.create()
+			.fullBlock("amethine_core")
+			.blockSpecial(new SimpleSpecial("amethine_core"))
+			.blockState(StateBuilder
+				.create()
+				.emptyModel())
+			.itemGroupPath("misc")
 			.generate();
 
 		DataBuilder
@@ -859,15 +893,17 @@ public class DataGenerator
 		item("hammerstone_limestone", "items");
 		item("hammerstone_sandstone", "items");
 		item("hammerstone_quartzite", "items");
-		item("red_powder", "items.powders");
-		item("green_powder", "items.powders");
-		item("blue_powder", "items.powders");
-		item("cyan_powder", "items.powders");
-		item("magenta_powder", "items.powders");
-		item("yellow_powder", "items.powders");
-		item("black_powder", "items.powders");
-		item("white_powder", "items.powders");
+		item("red_powder", "powders/red_powder", "items.powders");
+		item("green_powder", "powders/green_powder", "items.powders");
+		item("blue_powder", "powders/blue_powder", "items.powders");
+		item("cyan_powder", "powders/cyan_powder", "items.powders");
+		item("magenta_powder", "powders/magenta_powder", "items.powders");
+		item("yellow_powder", "powders/yellow_powder", "items.powders");
+		item("black_powder", "powders/black_powder", "items.powders");
+		item("white_powder", "powders/white_powder", "items.powders");
 		item("chisel_tool", "chisel", "items");
+		item("pebble", "items");
+		item("stick_item", "stick", "items");
 
 		DataBuilder
 			.create()
@@ -990,7 +1026,7 @@ public class DataGenerator
 					.custom(true)
 					.rot(0, -270, 0), BlockModelBuilder.noGen("flint_1")))
 
-			.blockSpecial(new SimpleSpecial("four_directional"))
+			.blockSpecial(new SimpleSpecial("flint"))
 			.itemGroupPath("nature")
 			.generate();
 
@@ -1094,9 +1130,15 @@ public class DataGenerator
 					.externalPath("custom_models/pebbles_3.bbmodel"), BlockModelBuilder
 					.create("pebbles_4")
 					.modelPath("pebbles")
-					.externalPath("custom_models/pebbles_4.bbmodel"))
-				.tags(Tags.PICKABLE))
-			.blockSpecial(new SimpleSpecial("custom"))
+					.externalPath("custom_models/pebbles_4.bbmodel")))
+			.blockSpecial(SpecialBuilder
+				.create("breakable")
+				.addValue("item", "pebble")
+				.addValue("random_count", true)
+				.addValue("min", 1)
+				.addValue("max", 4)
+				.addValue("distance", 0.4f)
+				.addValue("random_rotation", true))
 			.itemGroupPath("nature")
 			.generate();
 
@@ -1148,6 +1190,12 @@ public class DataGenerator
 					.externalPath("custom_models/stick_5.bbmodel")))
 				.tags(Tags.PICKABLE))
 			.itemGroupPath("nature.forest")
+			.blockSpecial(SpecialBuilder
+				.create("breakable")
+				.addValue("item", "stick_item")
+				.addValue("count", 1)
+				.addValue("distance", 0.1f)
+				.addValue("random_rotation", true))
 			.generate();
 
 		DataBuilder
@@ -1709,7 +1757,6 @@ public class DataGenerator
 			.create(FeatureRegistry.PILLAR.name())
 			.path("common")
 			.name("top_snow")
-			//			.matchBlocks("block_under", "grass", "dirt", "stone", "sand")
 			.matchAlwaysTrue("block_under")
 			.provideStates("block", BlockStateBuilder
 				.create()
@@ -1726,6 +1773,55 @@ public class DataGenerator
 				.state(SnowLayerBlock.SNOW_LAYER, 4))
 			.integer("min_height", 1)
 			.integer("max_height", 1)
+			.generate();
+
+		FeatureBuilder
+			.create(FeatureRegistry.BOULDER.name())
+			.path("common/boulders")
+			.name("limestone_boulder")
+			.provideStates("block", BlockStateBuilder.create().block("limestone"))
+			.provideStates("slab", BlockStateBuilder.create().block("limestone_slab"))
+			.provideStates("deco", BlockStateBuilder
+				.create()
+				.block("hammerstone")
+				.state(HammerstoneBlock.STONE_TYPE, EnumStoneType.LIMESTONE))
+			.matchAlwaysTrue("block_under")
+			.generate();
+
+		FeatureBuilder
+			.create(FeatureRegistry.BOULDER.name())
+			.path("common/boulders")
+			.name("sandstone_boulder")
+			.provideStates("block", BlockStateBuilder.create().block("sandstone"))
+			.provideStates("slab", BlockStateBuilder.create().block("sandstone_slab"))
+			.provideStates("deco", BlockStateBuilder
+				.create()
+				.block("hammerstone")
+				.state(HammerstoneBlock.STONE_TYPE, EnumStoneType.SANDSTONE))
+			.matchAlwaysTrue("block_under")
+			.generate();
+
+		FeatureBuilder
+			.create(FeatureRegistry.BOULDER.name())
+			.path("common/boulders")
+			.name("quartzite_boulder")
+			.provideStates("block", BlockStateBuilder.create().block("quartzite"))
+			.provideStates("slab", BlockStateBuilder.create().block("quartzite_slab"))
+			.provideStates("deco", BlockStateBuilder
+				.create()
+				.block("hammerstone")
+				.state(HammerstoneBlock.STONE_TYPE, EnumStoneType.QUARTZITE))
+			.matchAlwaysTrue("block_under")
+			.generate();
+
+		FeatureBuilder
+			.create(FeatureRegistry.BOULDER.name())
+			.path("common/boulders")
+			.name("stone_boulder")
+			.provideStates("block", BlockStateBuilder.create().block("stone"))
+			.provideStates("slab", BlockStateBuilder.create().block("stone_slab"))
+			.provideStates("deco", BlockStateBuilder.create().block("pebbles"))
+			.matchAlwaysTrue("block_under")
 			.generate();
 
 		FeatureBuilder
@@ -1751,6 +1847,23 @@ public class DataGenerator
 				.block("small_grass"))
 			.integer("radius", 2)
 			.doubleArg("chance", 0.3)
+			.bool("decay", true)
+			.generate();
+
+		FeatureBuilder
+			.create(FeatureRegistry.VEGETATION_PATCH.name())
+			.path("common")
+			.name("hemp")
+			.matchTags("block_under", Tags.FLOWER_TOP)
+			.provideStates("block", BlockStateBuilder
+				.create()
+				.block("hemp")
+				.state(HempBlock.STAGE, 3), BlockStateBuilder
+				.create()
+				.block("hemp")
+				.state(HempBlock.STAGE, 2))
+			.integer("radius", 5)
+			.doubleArg("chance", 0.05)
 			.bool("decay", true)
 			.generate();
 
@@ -1842,27 +1955,32 @@ public class DataGenerator
 			.generate();
 
 		FeatureBuilder
-			.create(FeatureRegistry.TREE.name())
-			.path("trees")
-			.name("oak_tree")
-			.matchBlocks("match_under", "grass", "dirt")
-			.blockState("log", BlockStateBuilder
+			.create(FeatureRegistry.VEGETATION_PATCH.name())
+			.path("common")
+			.name("flint")
+			.matchBlocks("block_under", "sand", "grass", "dirt", "stone")
+			.provideStates("block", BlockStateBuilder
 				.create()
-				.block("oak_log"))
-			.blockState("leaves", BlockStateBuilder
+				.block("flint")
+				.state(FourDirectionalBlock.FACING, EnumFace.NORTH), BlockStateBuilder
 				.create()
-				.block("oak_leaves"))
-			.blockState("set_under", BlockStateBuilder
+				.block("flint")
+				.state(FourDirectionalBlock.FACING, EnumFace.EAST), BlockStateBuilder
 				.create()
-				.block("dirt"))
-			.integer("height_min", 5)
-			.integer("height_max", 7)
+				.block("flint")
+				.state(FourDirectionalBlock.FACING, EnumFace.SOUTH), BlockStateBuilder
+				.create()
+				.block("flint")
+				.state(FourDirectionalBlock.FACING, EnumFace.WEST))
+			.integer("radius", 4)
+			.doubleArg("chance", 0.5)
+			.bool("decay", true)
 			.generate();
 
 		FeatureBuilder
 			.create(FeatureRegistry.SAPLING.name())
 			.path("trees")
-			.name("sapling")
+			.name("oak_sapling")
 			.matchBlocks("match_under", "grass", "dirt")
 			.generate();
 
@@ -1916,6 +2034,7 @@ public class DataGenerator
 			.feature(EnumFeatureStage.VEGETATION, 1d / 256d / 4d, "tall_cactus")
 			.feature(EnumFeatureStage.VEGETATION, 1d / 256d, "cactus")
 			.feature(EnumFeatureStage.VEGETATION, 1d / 256d / 8d, "pebbles")
+			.feature(EnumFeatureStage.TOP_MODIFICATION, 1d / 3072, "sandstone_boulder")
 			.generate();
 
 		BiomeBuilder
@@ -1938,12 +2057,12 @@ public class DataGenerator
 			.heightMap(8, 0.07f, 0.007f, 12, 22)
 			.climate(0.1f, 0.25f, 0f, -0.6f)
 			.foliageColor(92 / 255f, 184 / 255f, 64 / 255f)
-			.feature(EnumFeatureStage.VEGETATION, 1d / 100d, "grass_patch")
+			.feature(EnumFeatureStage.TOP_MODIFICATION, 1d / 2048, "stone_boulder")
+			.feature(EnumFeatureStage.VEGETATION, 1d / 75d, "grass_patch")
 			.feature(EnumFeatureStage.VEGETATION, 1d / 512d, "pebbles")
-			.feature(EnumFeatureStage.VEGETATION, 1d / 256d, "sticks")
+			.feature(EnumFeatureStage.VEGETATION, 1d / 150d, "sticks")
 			.feature(EnumFeatureStage.VEGETATION, 1d / 512d, "flowers")
-			//			.feature(EnumFeatureStage.TREE, 1d / 5d, "oak_tree")
-			.feature(EnumFeatureStage.TREE, 1d / 5d, "sapling")
+			.feature(EnumFeatureStage.TREE, 1d / 5d, "oak_sapling")
 			.generate();
 
 		BiomeBuilder
@@ -1966,8 +2085,10 @@ public class DataGenerator
 			.heightMap(7, 0.06f, 0.005f, 10, 18)
 			.climate(0f, -1f, 0f, 0.25f)
 			.foliageColor(92 / 255f, 200 / 255f, 64 / 255f)
+			.feature(EnumFeatureStage.TOP_MODIFICATION, 1d / 4096 / 2d, "limestone_boulder")
+			.feature(EnumFeatureStage.TOP_MODIFICATION, 1d / 4096 / 2d, "quartzite_boulder")
 			.feature(EnumFeatureStage.TOP_MODIFICATION, 1, "top_snow")
-			.feature(EnumFeatureStage.TREE, 1d / 300d, "oak_tree")
+			.feature(EnumFeatureStage.TREE, 1d / 300d, "oak_sapling")
 			.generate();
 
 		BiomeBuilder
@@ -1977,9 +2098,12 @@ public class DataGenerator
 			.heightMap(6, 0.3f, 0.019f, 12, 23)
 			.climate(0.1f, 0.65f, 0.0f, 0.05f)
 			.foliageColor(120 / 255f, 190 / 255f, 60 / 255f)
-			.feature(EnumFeatureStage.TREE, 1d / 400d, "oak_tree")
+			.feature(EnumFeatureStage.TOP_MODIFICATION, 1d / 4096 / 2d, "limestone_boulder")
+			.feature(EnumFeatureStage.TOP_MODIFICATION, 1d / 4096 / 2d, "quartzite_boulder")
+			.feature(EnumFeatureStage.TREE, 1d / 400d, "oak_sapling")
 			.feature(EnumFeatureStage.VEGETATION, 1d / 256d, "pebbles")
 			.feature(EnumFeatureStage.VEGETATION, 1d / 100d, "grass_patch")
+			.feature(EnumFeatureStage.VEGETATION, 1d / 4096d, "hemp")
 			.generate();
 
 		BiomeBuilder
@@ -1989,7 +2113,10 @@ public class DataGenerator
 			.heightMap(6, 0.3f, 0.003f, 23, 30)
 			.climate(0.8f, 0.60f, 0.3f, 0.0f)
 			.foliageColor(120 / 255f, 190 / 255f, 60 / 255f)
-			.feature(EnumFeatureStage.TREE, 1d / 400d, "oak_tree")
+			.feature(EnumFeatureStage.TOP_MODIFICATION, 1d / 4096 / 2d, "limestone_boulder")
+			.feature(EnumFeatureStage.TOP_MODIFICATION, 1d / 4096 / 2d, "quartzite_boulder")
+			.feature(EnumFeatureStage.TREE, 1d / 400d, "oak_sapling")
+			.feature(EnumFeatureStage.VEGETATION, 1d / 2048d, "flint")
 			.feature(EnumFeatureStage.VEGETATION, 1d / 256d, "pebbles")
 			.feature(EnumFeatureStage.VEGETATION, 1d / 100d, "grass_patch")
 			.generate();

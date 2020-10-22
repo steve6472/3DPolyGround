@@ -254,7 +254,7 @@ public class Player implements IMotion3f, IPosition3f
 
 			BlockState state = world.getState(hr.getX(), hr.getY(), hr.getZ());
 
-			game.world.getBlock(hr.getX(), hr.getY(), hr.getZ()).onClick(state, world, this, hr.getFace(), event, hr.getX(), hr.getY(), hr.getZ());
+			state.getBlock().onClick(state, world, this, hr.getFace(), event, hr.getX(), hr.getY(), hr.getZ());
 
 			if (gamemode == EnumGameMode.CREATIVE)
 			{
@@ -266,10 +266,10 @@ public class Player implements IMotion3f, IPosition3f
 			}
 		}
 
-		if (gamemode == EnumGameMode.CREATIVE)
+		if (gamemode == EnumGameMode.CREATIVE && event.getAction() == KeyList.PRESS)
 		{
 			CaveGame.itemInHand.onClick(this, EnumSlot.CREATIVE_BELT, event);
-		} else
+		} else if (event.getAction() == KeyList.PRESS)
 		{
 			if (heldBlock != null)
 				heldBlock.state.getBlock().item.onClick(this, EnumSlot.CREATIVE_BELT, event);

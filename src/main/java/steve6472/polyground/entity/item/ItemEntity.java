@@ -34,6 +34,11 @@ public class ItemEntity extends EntityBase implements IRenderable, ITickable, IK
 	private boolean forceDead = false;
 	private Player player;
 
+	public ItemEntity(Item item, ItemData itemData, float x, float y, float z)
+	{
+		this(null, item, itemData, x, y, z);
+	}
+
 	public ItemEntity(Player player, Item item, ItemData itemData, float x, float y, float z)
 	{
 		super();
@@ -154,6 +159,12 @@ public class ItemEntity extends EntityBase implements IRenderable, ITickable, IK
 
 		if (CaveGame.getInstance().options.renderItemEntityOutline)
 			AABBUtil.renderAABBf(getHitbox(), 1);
+	}
+
+	public void remove(Player player)
+	{
+		world.getEntityManager().removeEntity(this);
+		if (player != null) player.heldItem = null;
 	}
 
 	public void setPlayer(Player player)

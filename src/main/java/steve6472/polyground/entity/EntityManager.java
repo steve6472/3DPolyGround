@@ -1,9 +1,11 @@
 package steve6472.polyground.entity;
 
+import org.joml.Quaternionf;
 import steve6472.polyground.block.Block;
 import steve6472.polyground.entity.interfaces.*;
 import steve6472.polyground.entity.player.EnumSlot;
 import steve6472.polyground.entity.player.IHoldable;
+import steve6472.polyground.gfx.stack.Stack;
 import steve6472.polyground.world.World;
 import steve6472.sge.main.game.mixable.IPosition3f;
 
@@ -83,12 +85,32 @@ public class EntityManager
 		}
 	}
 
-	public void render()
+	public void render(Stack stack)
 	{
+		Quaternionf quat = new Quaternionf();
+
 		for (Object o : entities)
 		{
 			if (o instanceof IRenderable r)
 				r.render();
+
+			if (o instanceof IAdvancedRender r)
+			{
+				stack.pushMatrix();
+
+				if (o instanceof IPosition3f p)
+					stack.translate(p.getPosition());
+
+				if (o instanceof IRotation rot)
+				{
+					quat.rotateXYZ(rot.getRotations().x, rot.getRotations().y, rot.getRotations().z);
+					stack.rotate(quat);
+				}
+
+				r.render(stack);
+
+				stack.popMatrix();
+			}
 		}
 
 		for (Object o : entities)

@@ -18,8 +18,8 @@
       <list>
         <option value="Record" />
         <option value="Enum" />
-        <option value="Class" />
         <option value="Interface" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -63,11 +63,11 @@
       <recent name="steve6472.polyground.block.model.elements" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="steve6472.polyground.entity.model" />
       <recent name="steve6472.polyground.block.special" />
       <recent name="steve6472.polyground.world.generator.feature" />
       <recent name="steve6472.polyground.commands.coms" />
       <recent name="steve6472.polyground.block.blockdata" />
-      <recent name="steve6472.polyground.generator.models" />
     </key>
   </component>
   <component name="RunAnythingCache">
@@ -76,14 +76,7 @@
       <command value="3.14159265358979323846 * 2" />
     </option>
   </component>
-  <component name="RunManager" selected="Application.Gen-CaveGame">
-    <configuration name="A" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="steve6472.polyground.A" />
-      <module name="CaveGame" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
+  <component name="RunManager" selected="Application.CaveGame">
     <configuration name="CaveGame-Debug" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="steve6472.polyground.CaveGame" />
       <module name="CaveGame" />
@@ -157,24 +150,31 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="Testity" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="steve6472.polyground.entity.Testity" />
+      <module name="CaveGame" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <list>
       <item itemvalue="Application.CaveGame-Debug" />
       <item itemvalue="Application.CaveGame" />
       <item itemvalue="Application.DataGenerator" />
       <item itemvalue="Application.Gen-CaveGame" />
-      <item itemvalue="Application.A" />
       <item itemvalue="Application.KnappingRecipeCreator" />
       <item itemvalue="Application.NBT" />
       <item itemvalue="Application.NBTArrayUtil" />
       <item itemvalue="Application.E" />
+      <item itemvalue="Application.Testity" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.Testity" />
         <item itemvalue="Application.E" />
         <item itemvalue="Application.NBTArrayUtil" />
         <item itemvalue="Application.NBT" />
         <item itemvalue="Application.KnappingRecipeCreator" />
-        <item itemvalue="Application.A" />
       </list>
     </recent_temporary>
   </component>

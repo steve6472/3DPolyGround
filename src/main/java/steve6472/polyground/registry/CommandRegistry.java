@@ -49,5 +49,6 @@ public class CommandRegistry
 		new BrushCommand(dispatcher);
 		new ChiselCommand(dispatcher);
 		new PrintNBTCommand(dispatcher);
+		new TestityCommand(dispatcher);
 	}
 }

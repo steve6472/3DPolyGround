@@ -14,6 +14,7 @@ import steve6472.polyground.gfx.light.LightManager;
 import steve6472.polyground.gfx.particle.BreakParticleStorage;
 import steve6472.polyground.gfx.particle.ParticleStorage;
 import steve6472.polyground.gfx.shaders.Shaders;
+import steve6472.polyground.gfx.stack.Stack;
 import steve6472.polyground.teleporter.Teleporter;
 import steve6472.polyground.tessellators.BasicTessellator;
 import steve6472.polyground.world.ModelBuilder;
@@ -70,6 +71,7 @@ public class MainRender
 	public ModelBuilder buildHelper;
 	public BasicTessellator basicTess;
 	public BasicTessellator waterTess;
+	public Stack stack;
 
 	public MainRender(CaveGame game)
 	{
@@ -106,6 +108,8 @@ public class MainRender
 
 		modelBuilder = new ThreadedModelBuilder();
 		modelBuilder.start();
+
+		stack = new Stack();
 
 		skybox = new CGSkybox(StaticCubeMap.fromTextureFaces("skybox", new String[]{"side", "side", "top", "bottom", "side", "side"}, "png"), shaders.getProjectionMatrix());
 	}
@@ -238,6 +242,8 @@ public class MainRender
 		basicTess.loadColor(1);
 		basicTess.draw(Tessellator.LINES);
 		basicTess.disable(0, 1);
+
+		game.mainRender.stack.render(game.getCamera().getViewMatrix());
 
 		/* END */
 

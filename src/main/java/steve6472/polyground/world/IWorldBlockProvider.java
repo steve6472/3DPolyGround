@@ -3,6 +3,7 @@ package steve6472.polyground.world;
 import steve6472.polyground.EnumFace;
 import steve6472.polyground.HitResult;
 import steve6472.polyground.block.Block;
+import steve6472.polyground.block.ISpecialRender;
 import steve6472.polyground.block.blockdata.BlockData;
 import steve6472.polyground.block.blockdata.IBlockData;
 import steve6472.polyground.block.states.BlockState;
@@ -114,6 +115,8 @@ public interface IWorldBlockProvider extends IChunkProvider
 				{
 					sc.setBlockData(null, cx, cy, cz);
 				}
+
+				sc.getSpecialRender().set(cx, cy, cz, state.getBlock() instanceof ISpecialRender);
 
 				if ((flags & 1) != 0)
 				{

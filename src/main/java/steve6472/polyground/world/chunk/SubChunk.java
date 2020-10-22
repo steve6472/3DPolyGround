@@ -38,7 +38,7 @@ public class SubChunk implements IBiomeProvider
 	private final SubChunkBlockData blockData;
 	private final SubChunkWater water;
 
-	private final ChunkPosStorage tickableBlocks;
+	private final ChunkPosStorage tickableBlocks, specialRender;
 
 	public SubChunk(Chunk parent, int layer)
 	{
@@ -55,6 +55,7 @@ public class SubChunk implements IBiomeProvider
 		biomes = new int[16][16][16];
 
 		tickableBlocks = new ChunkPosStorage();
+		specialRender = new ChunkPosStorage();
 
 		blockData = new SubChunkBlockData();
 		blocks = new SubChunkBlocks();
@@ -72,6 +73,8 @@ public class SubChunk implements IBiomeProvider
 				blockToTick.getBlock().tick(blockToTick, getWorld(), x + getX() * 16, y + getLayer() * 16, z + getZ() * 16);
 			});
 		}
+
+		specialRender.tick();
 
 //		randomTicks.tick();
 		for (int i = 0; i < getWorld().getGame().options.randomTicks; i++)
@@ -175,6 +178,11 @@ public class SubChunk implements IBiomeProvider
 	public ChunkPosStorage getTickableBlocks()
 	{
 		return tickableBlocks;
+	}
+
+	public ChunkPosStorage getSpecialRender()
+	{
+		return specialRender;
 	}
 
 	public void rebuild()

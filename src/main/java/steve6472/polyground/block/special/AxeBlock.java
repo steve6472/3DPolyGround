@@ -58,7 +58,7 @@ public class AxeBlock extends CustomBlock
 	public void onClick(BlockState state, World world, Player player, EnumFace clickedOn, MouseEvent click, int x, int y, int z)
 	{
 		boolean holdsHead = player.holdsItem() && player.getItemInHand().getName().equals("flint_axe_head");
-		boolean holdsStick = player.holdsBlock() && player.getBlockInHand().getBlock().getName().equals("stick");
+		boolean holdsStick = player.holdsItem() && player.getItemInHand().getName().equals("stick_item");
 		boolean holdsString = player.holdsItem() && player.getItemInHand().getName().equals("hemp_string");
 
 		boolean worldHead = state.get(HEAD);
@@ -68,21 +68,17 @@ public class AxeBlock extends CustomBlock
 		if (!worldHead && holdsHead)
 		{
 			world.setState(state(true, worldStick, worldString), x, y, z);
-			world.getEntityManager().removeEntity(player.heldItem);
-			player.heldItem = null;
+			player.heldItem.remove(player);
 		}
 		else if (!worldStick && holdsStick)
 		{
 			world.setState(state(worldHead, true, worldString), x, y, z);
-			world.getEntityManager().removeEntity(player.heldBlock);
-			player.heldBlock = null;
-			player.processNextBlockPlace = false;
+			player.heldItem.remove(player);
 		}
 		else if (!worldString && holdsString && (worldHead || worldStick))
 		{
 			world.setState(state(worldHead, worldStick, true), x, y, z);
-			world.getEntityManager().removeEntity(player.heldItem);
-			player.heldItem = null;
+			player.heldItem.remove(player);
 		}
 
 		if ((worldStick && worldHead && holdsString) || (worldStick && worldString && holdsHead) || (worldHead && worldString && holdsStick))
@@ -110,7 +106,7 @@ public class AxeBlock extends CustomBlock
 	@Override
 	public int createModel(int x, int y, int z, World world, BlockState state, ModelBuilder buildHelper, ModelLayer modelLayer)
 	{
-		int tris = 0;
+		int tris = super.createModel(x, y, z, world, state, buildHelper, modelLayer);
 
 		if (state.get(HEAD))
 			tris += CustomBlock.model(MODEL_HEAD, x, y, z, world, buildHelper, modelLayer);

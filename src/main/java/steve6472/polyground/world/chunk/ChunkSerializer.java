@@ -5,6 +5,7 @@ import net.querz.nbt.io.NamedTag;
 import net.querz.nbt.tag.*;
 import steve6472.polyground.NBTArrayUtil;
 import steve6472.polyground.block.Block;
+import steve6472.polyground.block.ISpecialRender;
 import steve6472.polyground.block.blockdata.BlockData;
 import steve6472.polyground.block.blockdata.IBlockData;
 import steve6472.polyground.block.properties.*;
@@ -237,6 +238,9 @@ public class ChunkSerializer
 
 					if (state.getBlock().isTickable())
 						subChunk.getTickableBlocks().add(x, y, z);
+
+					if (state.getBlock() instanceof ISpecialRender)
+						subChunk.getSpecialRender().set(x, y, z, true);
 				}
 			}
 		});

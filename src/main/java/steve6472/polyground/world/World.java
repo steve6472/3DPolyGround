@@ -5,7 +5,9 @@ import org.joml.Matrix4f;
 import org.joml.Vector2f;
 import steve6472.polyground.CaveGame;
 import steve6472.polyground.EnumFace;
+import steve6472.polyground.block.Block;
 import steve6472.polyground.block.BlockAtlas;
+import steve6472.polyground.block.ISpecialRender;
 import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.entity.EntityManager;
 import steve6472.polyground.gfx.MainRender;
@@ -295,6 +297,26 @@ public class World implements IWorldBlockProvider
 				{
 					SubChunk sc = chunk.getSubChunk(k);
 
+					final int finalCx = cx;
+					final int finalK = k;
+					final int finalCz = cz;
+
+					sc.getSpecialRender().iterate((bx, by, bz) ->
+					{
+						BlockState state = sc.getState(bx, by, bz);
+						Block block = state.getBlock();
+
+						if (block instanceof ISpecialRender sr)
+						{
+							game.mainRender.stack.pushMatrix();
+							game.mainRender.stack.translate(bx + finalCx, by + finalK * 16, bz + finalCz);
+
+							sr.render(game.mainRender.stack, this, state, bx + finalCx, by + finalK * 16, bz + finalCz);
+
+							game.mainRender.stack.popMatrix();
+						}
+					});
+
 					if (sc.isEmpty())
 						continue;
 
@@ -369,7 +391,7 @@ public class World implements IWorldBlockProvider
 			game.mainRender.gBuffer.unbindCurrentFrameBuffer();
 		}
 
-		entityManager.render();
+		entityManager.render(game.mainRender.stack);
 
 		renderTransparent(deferred, countChunks);
 	}
