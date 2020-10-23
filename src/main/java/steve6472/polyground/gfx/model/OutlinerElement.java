@@ -1,4 +1,4 @@
-package steve6472.polyground.entity.model.loader;
+package steve6472.polyground.gfx.model;
 
 import java.util.UUID;
 

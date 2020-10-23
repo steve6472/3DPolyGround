@@ -19,11 +19,13 @@ public class Atlas
 	private final ImagePacker packer;
 	private StaticTexture texture;
 	private final int size;
+	private final float texel;
 
 	public Atlas(int size)
 	{
 		this.size = size;
 		packer = new ImagePacker(size, size, 0, true);
+		texel = 1f / (float) getTileCount();
 	}
 
 	public void add(String name, File f)
@@ -65,5 +67,10 @@ public class Atlas
 	public int getTileCount()
 	{
 		return size;
+	}
+
+	public float getTexel()
+	{
+		return texel;
 	}
 }

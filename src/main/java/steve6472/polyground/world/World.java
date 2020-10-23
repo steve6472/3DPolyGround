@@ -290,7 +290,7 @@ public class World implements IWorldBlockProvider
 				if (Vector2f.distance(cx + 8, cz + 8, game.getPlayer().getX(), game.getPlayer().getZ()) >= game.options.renderDistance * 16)
 					continue;
 
-				if (!chunkFrustum(chunk.getX() * 16, chunk.getZ() * 16))
+				if (!chunkFrustum(cx, cz))
 					continue;
 
 				for (int k = 0; k < chunk.getSubChunks().length; k++)
@@ -306,7 +306,7 @@ public class World implements IWorldBlockProvider
 					if (deferred)
 					{
 						MainRender.shaders.gShader.setTransformation(mat.identity().translate(cx, k * 16, cz));
-						
+
 						final int finalCx = cx;
 						final int finalK = k;
 						final int finalCz = cz;

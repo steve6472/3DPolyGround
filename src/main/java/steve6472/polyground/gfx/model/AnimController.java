@@ -1,4 +1,4 @@
-package steve6472.polyground.entity.model.loader;
+package steve6472.polyground.gfx.model;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)

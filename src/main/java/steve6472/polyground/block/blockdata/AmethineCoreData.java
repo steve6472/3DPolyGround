@@ -1,9 +1,9 @@
 package steve6472.polyground.block.blockdata;
 
 import net.querz.nbt.tag.CompoundTag;
-import steve6472.polyground.entity.model.CustomModel;
-import steve6472.polyground.entity.model.loader.AnimController;
-import steve6472.polyground.entity.model.loader.Animation;
+import steve6472.polyground.entity.model.Model;
+import steve6472.polyground.gfx.model.AnimController;
+import steve6472.polyground.gfx.model.Animation;
 import steve6472.polyground.gfx.stack.Stack;
 import steve6472.polyground.registry.blockdata.BlockDataRegistry;
 
@@ -15,7 +15,7 @@ import steve6472.polyground.registry.blockdata.BlockDataRegistry;
  ***********************/
 public class AmethineCoreData extends BlockData
 {
-	private static final CustomModel MODEL = new CustomModel("amethine_core");
+	private static final Model MODEL = new Model("amethine_core");
 	private static final Animation placeAnimation = new Animation("amethine_core", "place", MODEL.getAnimElements());
 	private static final Animation idleAnimation= new Animation("amethine_core", "idle", MODEL.getAnimElements());
 

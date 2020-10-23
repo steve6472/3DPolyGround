@@ -1,11 +1,10 @@
 package steve6472.polyground.gfx.stack;
 
-import org.joml.Matrix4f;
-import org.joml.Matrix4fStack;
-import org.joml.Vector3f;
-import org.joml.Vector4f;
+import org.joml.*;
+import steve6472.polyground.block.BlockAtlas;
 import steve6472.polyground.gfx.MainRender;
-import steve6472.polyground.tessellators.BasicTessellator;
+import steve6472.polyground.gfx.shaders.EntityShader;
+import steve6472.polyground.tessellators.StackTessellator;
 import steve6472.sge.gfx.Tessellator;
 
 /**********************
@@ -18,7 +17,7 @@ public class Stack extends Matrix4fStack
 {
 	private static final int MAX_SIZE = 1024 * 32;
 
-	private final BasicTessellator tess;
+	private final StackTessellator tess;
 	private final Vector3f dest3f;
 	private final Vector4f lastColor;
 
@@ -26,7 +25,7 @@ public class Stack extends Matrix4fStack
 	{
 		super(16);
 
-		tess = new BasicTessellator(MAX_SIZE);
+		tess = new StackTessellator(MAX_SIZE);
 		tess.begin(MAX_SIZE);
 		tess.color(1, 1, 1, 1);
 
@@ -55,6 +54,18 @@ public class Stack extends Matrix4fStack
 		return this;
 	}
 
+	public Stack uv(float u, float v)
+	{
+		tess.uv(u, v);
+		return this;
+	}
+
+	public Stack normal(float nx, float ny, float nz)
+	{
+		tess.normal(nx, ny, nz);
+		return this;
+	}
+
 	public Vector4f getLastColor()
 	{
 		return lastColor;
@@ -68,12 +79,17 @@ public class Stack extends Matrix4fStack
 
 	public void render(Matrix4f view)
 	{
-		MainRender.shaders.mainShader.bind(view);
+		MainRender.shaders.entityShader.bind(view);
+		MainRender.shaders.entityShader.setTransformation(new Matrix4f());
+		MainRender.shaders.entityShader.setUniform(EntityShader.NORMAL_MATRIX, new Matrix3f(new Matrix4f(this).invert().transpose3x3()));
+		BlockAtlas.getAtlas().getSprite().bind();
 
 		tess.loadPos(0);
 		tess.loadColor(1);
+		tess.loadUv(2);
+		tess.loadNormal(3);
 		tess.draw(Tessellator.TRIANGLES);
-		tess.disable(0, 1);
+		tess.disable(0, 1, 2, 3);
 	}
 
 	public void reset()

@@ -24,6 +24,7 @@ import steve6472.polyground.registry.Blocks;
 import steve6472.polyground.registry.CommandRegistry;
 import steve6472.polyground.registry.Items;
 import steve6472.polyground.registry.WaterRegistry;
+import steve6472.polyground.registry.model.ModelRegistry;
 import steve6472.polyground.rift.RiftManager;
 import steve6472.polyground.world.World;
 import steve6472.polyground.world.chunk.Chunk;
@@ -91,10 +92,12 @@ public class CaveGame extends MainApp
 
 		itemGroups = new ItemGroups();
 
+		ModelRegistry.init();
 		Blocks.register(this);
 		WaterRegistry.init();
 		Items.register(this);
 		Blocks.finish(this);
+		ModelRegistry.assignTextures();
 		Item.runQueue();
 
 		inGameGui = new InGameGui(this);
@@ -362,8 +365,10 @@ public class CaveGame extends MainApp
 				if (e.getKey() == KeyList.F5)
 				{
 					BlockAtlas.compileTextures(0);
+					ModelRegistry.reload();
+					ModelRegistry.assignTextures();
 
-//					if (e.getMods() == KeyList.M_CONTROL)
+					if (e.getMods() == KeyList.M_CONTROL)
 					{
 						for (Block b : Blocks.getAllBlocks())
 						{

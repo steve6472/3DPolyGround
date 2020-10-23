@@ -15,6 +15,7 @@ import java.util.HashMap;
  ***********************/
 public class BlockAtlas
 {
+	// Todo: replace usedTextures with list
 	private static final HashMap<Integer, String> usedTextures = new HashMap<>();
 	private static final HashMap<String, Integer> usedTexturesReference = new HashMap<>();
 	private static Rectangle[] textures;

@@ -1,33 +1,39 @@
 package steve6472.polyground.tessellators;
 
+import org.joml.Vector3f;
 import steve6472.sge.gfx.AbstractTessellator;
 
 import java.nio.FloatBuffer;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
- * On date: 22.09.2019
- * Project: SJP
+ * On date: 20.12.2018
+ * Project: Poly Creator 2.0
  *
  ***********************/
-public class ItemTessellator extends AbstractTessellator
+public class StackTessellator extends AbstractTessellator
 {
 	private final FloatBuffer pos;
 	private final FloatBuffer color;
 	private final FloatBuffer texture;
+	private final FloatBuffer normal;
 
 	private float x, y, z;
 	private float r, g, b, a;
-	private float u, v;
+	private float tx, ty;
+	private float nx, ny, nz;
 
-	public ItemTessellator(int maxLength)
+	public int current, size;
+
+	public StackTessellator(int maxLength)
 	{
 		this.pos = this.createBuffer(maxLength * 3);
 		this.color = this.createBuffer(maxLength * 4);
 		this.texture = this.createBuffer(maxLength * 2);
+		this.normal = this.createBuffer(maxLength * 3);
 	}
 
-	public ItemTessellator pos(float x, float y, float z)
+	public StackTessellator pos(float x, float y, float z)
 	{
 		this.x = x;
 		this.y = y;
@@ -35,7 +41,15 @@ public class ItemTessellator extends AbstractTessellator
 		return this;
 	}
 
-	public ItemTessellator color(float r, float g, float b, float a)
+	public StackTessellator pos(Vector3f position)
+	{
+		this.x = position.x;
+		this.y = position.y;
+		this.z = position.z;
+		return this;
+	}
+
+	public StackTessellator color(float r, float g, float b, float a)
 	{
 		this.r = r;
 		this.g = g;
@@ -44,10 +58,26 @@ public class ItemTessellator extends AbstractTessellator
 		return this;
 	}
 
-	public ItemTessellator texture(float u, float v)
+	public StackTessellator uv(float tx, float ty)
 	{
-		this.u = u;
-		this.v = v;
+		this.tx = tx;
+		this.ty = ty;
+		return this;
+	}
+
+	public StackTessellator normal(float nx, float ny, float nz)
+	{
+		this.nx = nx;
+		this.ny = ny;
+		this.nz = nz;
+		return this;
+	}
+
+	public StackTessellator normal(Vector3f normal)
+	{
+		this.nx = normal.x;
+		this.ny = normal.y;
+		this.nz = normal.z;
 		return this;
 	}
 
@@ -56,7 +86,9 @@ public class ItemTessellator extends AbstractTessellator
 	{
 		pos.put(x).put(y).put(z);
 		color.put(r).put(g).put(b).put(a);
-		texture.put(u).put(v);
+		texture.put(tx).put(ty);
+		normal.put(nx).put(ny).put(nz);
+		current++;
 		super.endVertex();
 	}
 
@@ -66,8 +98,17 @@ public class ItemTessellator extends AbstractTessellator
 		setBuffer(pos, vertexCount * 3);
 		setBuffer(color, vertexCount * 4);
 		setBuffer(texture, vertexCount * 2);
+		setBuffer(normal, vertexCount * 3);
+
+		current = 0;
+		size = vertexCount;
 
 		super.begin(vertexCount);
+	}
+
+	public boolean hasSpace()
+	{
+		return current < size;
 	}
 
 	public void loadPos(int index)
@@ -80,9 +121,14 @@ public class ItemTessellator extends AbstractTessellator
 		loadBuffer(color, index, 4);
 	}
 
-	public void loadTexture(int index)
+	public void loadUv(int index)
 	{
 		loadBuffer(texture, index, 2);
+	}
+
+	public void loadNormal(int index)
+	{
+		loadBuffer(normal, index, 3);
 	}
 
 	@Override
@@ -93,5 +139,6 @@ public class ItemTessellator extends AbstractTessellator
 		pos.clear();
 		color.clear();
 		texture.clear();
+		normal.clear();
 	}
 }

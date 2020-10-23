@@ -1,7 +1,8 @@
-package steve6472.polyground.entity.model.loader;
+package steve6472.polyground.gfx.model;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import steve6472.polyground.block.BlockAtlas;
 import steve6472.polyground.block.model.ModelLoader;
 
 import java.io.File;
@@ -23,7 +24,9 @@ public class Loader
 	public static OutlinerElement[] load(String modelName)
 	{
 		JSONObject model = new JSONObject(ModelLoader.read(new File("custom_models/entity/" + modelName + ".bbmodel")));
-		HashMap<UUID, Element> elements = loadElements(model.getJSONArray("elements"));
+
+		JSONObject res = model.getJSONObject("resolution");
+		HashMap<UUID, Element> elements = loadElements(model.getJSONArray("elements"), model.getJSONArray("textures"), res.getFloat("width"), res.getFloat("height"));
 
 		return loadOutliner(model.getJSONArray("outliner"), elements);
 	}
@@ -56,7 +59,7 @@ public class Loader
 		}
 	}
 
-	private static HashMap<UUID, Element> loadElements(JSONArray elements)
+	private static HashMap<UUID, Element> loadElements(JSONArray elements, JSONArray textures, float resX, float resY)
 	{
 		HashMap<UUID, Element> map = new HashMap<>();
 
@@ -64,14 +67,14 @@ public class Loader
 		{
 			if (element instanceof JSONObject jsonElement)
 			{
-				loadElement(map, jsonElement);
+				loadElement(map, jsonElement, textures, resX, resY);
 			}
 		}
 
 		return map;
 	}
 
-	private static void loadElement(HashMap<UUID, Element> map, JSONObject json)
+	private static void loadElement(HashMap<UUID, Element> map, JSONObject json, JSONArray textures, float resX, float resY)
 	{
 		Element element = new Element();
 		element.uuid = loadCommon(element, json);
@@ -87,12 +90,14 @@ public class Loader
 		element.toY = to.getFloat(1);
 		element.toZ = to.getFloat(2);
 
-		if (json.has("north")) element.north = loadFace(json.getJSONObject("north"));
-		if (json.has("east")) element.east = loadFace(json.getJSONObject("east"));
-		if (json.has("south")) element.south = loadFace(json.getJSONObject("south"));
-		if (json.has("west")) element.west = loadFace(json.getJSONObject("west"));
-		if (json.has("up")) element.up = loadFace(json.getJSONObject("up"));
-		if (json.has("down")) element.down = loadFace(json.getJSONObject("down"));
+		JSONObject faces = json.getJSONObject("faces");
+
+		if (faces.has("north")) element.north = loadFace(faces.getJSONObject("north"), textures, resX, resY);
+		if (faces.has("east")) element.east = loadFace(faces.getJSONObject("east"), textures, resX, resY);
+		if (faces.has("south")) element.south = loadFace(faces.getJSONObject("south"), textures, resX, resY);
+		if (faces.has("west")) element.west = loadFace(faces.getJSONObject("west"), textures, resX, resY);
+		if (faces.has("up")) element.up = loadFace(faces.getJSONObject("up"), textures, resX, resY);
+		if (faces.has("down")) element.down = loadFace(faces.getJSONObject("down"), textures, resX, resY);
 
 		map.put(element.uuid, element);
 	}
@@ -123,10 +128,18 @@ public class Loader
 		return uuid;
 	}
 
-	private static Element.Face loadFace(JSONObject json)
+	private static Element.Face loadFace(JSONObject json, JSONArray textures, float resX, float resY)
 	{
+		if (!json.has("texture") || json.get("texture") == null || json.isNull("texture"))
+			return null;
+
+		int textureId = json.getInt("texture");
+		String texturePath = findTexture(textures, textureId);
+		BlockAtlas.putTexture(texturePath);
+		int id = BlockAtlas.getTextureId(texturePath);
+
 		JSONArray uv = json.getJSONArray("uv");
-		return new Element.Face(uv.getFloat(0), uv.getFloat(1), uv.getFloat(2), uv.getFloat(3), json.optInt("texture", -1));
+		return new Element.Face(uv.getFloat(0) / resX, uv.getFloat(1) / resY, uv.getFloat(2) / resX, uv.getFloat(3) / resY, id);
 	}
 
 
@@ -157,5 +170,22 @@ public class Loader
 		{
 			throw new IllegalArgumentException(obj.toString());
 		}
+	}
+
+	private static String findTexture(JSONArray textures, int id)
+	{
+		for (int i = 0; i < textures.length(); i++)
+		{
+			JSONObject texture = textures.getJSONObject(i);
+			if (texture.getInt("id") == id)
+			{
+				String path = texture.getString("path");
+				path = path.replace("\\", "/");
+				path = path.substring(path.indexOf("textures") + 9);
+				path = path.substring(0, path.length() - 4);
+				return path;
+			}
+		}
+		return "block/null";
 	}
 }

@@ -3,10 +3,10 @@ package steve6472.polyground.entity;
 import org.joml.Vector3f;
 import steve6472.polyground.entity.interfaces.IAdvancedRender;
 import steve6472.polyground.entity.interfaces.ITickable;
-import steve6472.polyground.entity.model.CustomModel;
-import steve6472.polyground.entity.model.loader.AnimController;
-import steve6472.polyground.entity.model.loader.Animation;
+import steve6472.polyground.gfx.model.AnimController;
+import steve6472.polyground.gfx.model.Animation;
 import steve6472.polyground.gfx.stack.Stack;
+import steve6472.polyground.registry.model.ModelRegistry;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
@@ -17,8 +17,7 @@ import steve6472.polyground.gfx.stack.Stack;
 public class Testity extends EntityBase implements IAdvancedRender, ITickable
 {
 	//	private static final ClaySolderModel MODEL = new ClaySolderModel();
-	private static final CustomModel MODEL = new CustomModel("chest");
-	private static final Animation animation = new Animation("chest", "open", MODEL.getAnimElements());
+	private static final Animation animation = new Animation("chest", "open", ModelRegistry.CHEST.getAnimElements());
 
 	private final AnimController controller;
 
@@ -50,9 +49,8 @@ public class Testity extends EntityBase implements IAdvancedRender, ITickable
 	public void render(Stack stack)
 	{
 		animation.tick(controller);
-		stack.color(0.6f, 0.6f, 0.6f, 1f);
-		MODEL.update();
-		MODEL.render(stack);
+		stack.color(1, 1, 1, 1f);
+		ModelRegistry.CHEST.render(stack);
 	}
 
 	@Override

@@ -1,4 +1,4 @@
-package steve6472.polyground.entity.model.loader;
+package steve6472.polyground.gfx.model;
 
 import org.joml.Vector3f;
 import org.json.JSONArray;

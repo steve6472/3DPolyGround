@@ -1,8 +1,8 @@
-package steve6472.polyground.entity.model.loader;
+package steve6472.polyground.gfx.model;
 
 import org.json.JSONObject;
 import steve6472.polyground.block.model.ModelLoader;
-import steve6472.polyground.entity.model.loader.AnimLoader.Bone;
+import steve6472.polyground.gfx.model.AnimLoader.Bone;
 import steve6472.sge.main.util.Pair;
 
 import java.io.File;
@@ -10,8 +10,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import static steve6472.polyground.entity.model.loader.AnimLoader.Key;
-import static steve6472.polyground.entity.model.loader.AnimLoader.load;
+import static steve6472.polyground.gfx.model.AnimLoader.Key;
+import static steve6472.polyground.gfx.model.AnimLoader.load;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
