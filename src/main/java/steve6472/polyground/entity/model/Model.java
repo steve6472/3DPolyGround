@@ -5,7 +5,6 @@ import steve6472.polyground.gfx.model.Loader;
 import steve6472.polyground.gfx.model.Outliner;
 import steve6472.polyground.gfx.model.OutlinerElement;
 import steve6472.polyground.gfx.stack.Stack;
-import steve6472.polyground.gfx.stack.StackUtil;
 
 import java.util.HashMap;
 
@@ -17,6 +16,8 @@ import java.util.HashMap;
  ***********************/
 public class Model
 {
+	private static final float RAD_90 = (float) (-Math.PI / 2.0);
+
 	private OutlinerElement[] elements;
 	private HashMap<String, OutlinerElement> assignElements;
 	private final String name;
@@ -37,6 +38,7 @@ public class Model
 	{
 		stack.pushMatrix();
 		stack.scale(1f / 16f);
+		stack.rotateY(RAD_90);
 		for (OutlinerElement el : elements)
 		{
 			if (el instanceof Outliner outliner)
@@ -273,11 +275,6 @@ public class Model
 				.endVertex();
 		}
 
-	}
-
-	private void render(Stack stack, Element element)
-	{
-		StackUtil.rectShade(stack, element.fromX, element.fromY, element.fromZ, element.toX - element.fromX, element.toY - element.fromY, element.toZ - element.fromZ);
 	}
 
 	public OutlinerElement[] getElements()
