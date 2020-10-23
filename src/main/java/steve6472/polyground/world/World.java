@@ -242,7 +242,7 @@ public class World implements IWorldBlockProvider
 
 	private boolean chunkFrustum(int x, int z)
 	{
-		return game.mainRender.frustum.insideFrsutum(x, 0, z, x + 16, 16 * 16, z + 16);
+		return game.mainRender.frustum.insideFrsutum(x, 0, z, x + 16, 16 * height, z + 16);
 	}
 
 	public float shade = 1f;
@@ -290,32 +290,12 @@ public class World implements IWorldBlockProvider
 				if (Vector2f.distance(cx + 8, cz + 8, game.getPlayer().getX(), game.getPlayer().getZ()) >= game.options.renderDistance * 16)
 					continue;
 
-				if (!chunkFrustum(cx, cz))
+				if (!chunkFrustum(chunk.getX() * 16, chunk.getZ() * 16))
 					continue;
 
 				for (int k = 0; k < chunk.getSubChunks().length; k++)
 				{
 					SubChunk sc = chunk.getSubChunk(k);
-
-					final int finalCx = cx;
-					final int finalK = k;
-					final int finalCz = cz;
-
-					sc.getSpecialRender().iterate((bx, by, bz) ->
-					{
-						BlockState state = sc.getState(bx, by, bz);
-						Block block = state.getBlock();
-
-						if (block instanceof ISpecialRender sr)
-						{
-							game.mainRender.stack.pushMatrix();
-							game.mainRender.stack.translate(bx + finalCx, by + finalK * 16, bz + finalCz);
-
-							sr.render(game.mainRender.stack, this, state, bx + finalCx, by + finalK * 16, bz + finalCz);
-
-							game.mainRender.stack.popMatrix();
-						}
-					});
 
 					if (sc.isEmpty())
 						continue;
@@ -326,6 +306,25 @@ public class World implements IWorldBlockProvider
 					if (deferred)
 					{
 						MainRender.shaders.gShader.setTransformation(mat.identity().translate(cx, k * 16, cz));
+						
+						final int finalCx = cx;
+						final int finalK = k;
+						final int finalCz = cz;
+						sc.getSpecialRender().iterate((bx, by, bz) ->
+						{
+							BlockState state = sc.getState(bx, by, bz);
+							Block block = state.getBlock();
+
+							if (block instanceof ISpecialRender sr)
+							{
+								game.mainRender.stack.pushMatrix();
+								game.mainRender.stack.translate(bx + finalCx, by + finalK * 16, bz + finalCz);
+
+								sr.render(game.mainRender.stack, this, state, bx + finalCx, by + finalK * 16, bz + finalCz);
+
+								game.mainRender.stack.popMatrix();
+							}
+						});
 					} else
 					{
 						MainRender.shaders.worldShader.setTransformation(mat.identity().translate(cx, k * 16, cz));

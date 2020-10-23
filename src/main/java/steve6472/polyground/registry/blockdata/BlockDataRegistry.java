@@ -22,6 +22,7 @@ public class BlockDataRegistry
 	public static final BlockDataEntry<RootBlockData> root = register("root", RootBlockData::new);
 	public static final BlockDataEntry<LiqExtractorData> liqExtractor = register("liq_extractor", LiqExtractorData::new);
 	public static final BlockDataEntry<PipeData> pipeData = register("pipe", PipeData::new);
+	public static final BlockDataEntry<AmethineCoreData> amethineCore = register("amethine_core", AmethineCoreData::new);
 
 	public static <T extends BlockData> BlockDataEntry<T> register(String id, IBlockDataFactory<T> factory)
 	{

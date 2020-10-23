@@ -149,6 +149,7 @@ public class MainRender
 		if (game.world == null)
 			return;
 
+		stack.reset();
 		if (!CaveGame.runGameEvent(new WorldEvent.PreRender(game.world)))
 			game.world.render(true, true);
 		CaveGame.runGameEvent(new WorldEvent.PostRender(game.world));

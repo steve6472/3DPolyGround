@@ -43,7 +43,7 @@
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="restartRequiresConfirmation" value="false" />
-    <property name="settings.editor.selected.configurable" value="preferences.updates" />
+    <property name="settings.editor.selected.configurable" value="preferences.sourceCode.JSON" />
   </component>
   <component name="ReaderModeSettings">
     <option name="showLigatures" value="false" />
@@ -77,6 +77,13 @@
     </option>
   </component>
   <component name="RunManager" selected="Application.CaveGame">
+    <configuration name="Animation" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="steve6472.polyground.entity.model.loader.Animation" />
+      <module name="CaveGame" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="CaveGame-Debug" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="steve6472.polyground.CaveGame" />
       <module name="CaveGame" />
@@ -129,15 +136,8 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="KnappingRecipeCreator" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="steve6472.polyground.generator.KnappingRecipeCreator" />
-      <module name="CaveGame" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="NBT" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="steve6472.polyground.NBT" />
+    <configuration name="Loader" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="steve6472.polyground.entity.model.loader.Loader" />
       <module name="CaveGame" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -162,19 +162,19 @@
       <item itemvalue="Application.CaveGame" />
       <item itemvalue="Application.DataGenerator" />
       <item itemvalue="Application.Gen-CaveGame" />
-      <item itemvalue="Application.KnappingRecipeCreator" />
-      <item itemvalue="Application.NBT" />
-      <item itemvalue="Application.NBTArrayUtil" />
       <item itemvalue="Application.E" />
+      <item itemvalue="Application.NBTArrayUtil" />
       <item itemvalue="Application.Testity" />
+      <item itemvalue="Application.Loader" />
+      <item itemvalue="Application.Animation" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.Animation" />
+        <item itemvalue="Application.Loader" />
         <item itemvalue="Application.Testity" />
         <item itemvalue="Application.E" />
         <item itemvalue="Application.NBTArrayUtil" />
-        <item itemvalue="Application.NBT" />
-        <item itemvalue="Application.KnappingRecipeCreator" />
       </list>
     </recent_temporary>
   </component>

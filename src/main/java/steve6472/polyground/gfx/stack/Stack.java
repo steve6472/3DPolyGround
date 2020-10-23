@@ -16,7 +16,7 @@ import steve6472.sge.gfx.Tessellator;
  ***********************/
 public class Stack extends Matrix4fStack
 {
-	private static final int MAX_SIZE = 4096;
+	private static final int MAX_SIZE = 1024 * 32;
 
 	private final BasicTessellator tess;
 	private final Vector3f dest3f;
@@ -74,7 +74,10 @@ public class Stack extends Matrix4fStack
 		tess.loadColor(1);
 		tess.draw(Tessellator.TRIANGLES);
 		tess.disable(0, 1);
+	}
 
+	public void reset()
+	{
 		tess.begin(MAX_SIZE);
 		tess.color(1, 1, 1, 1);
 	}

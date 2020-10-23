@@ -82,5 +82,7 @@ public class StackUtil
 		stack.pos(x + w, y, z).endVertex();
 		stack.pos(x + w, y, z + d).endVertex();
 		stack.pos(x, y, z + d).endVertex();
+
+		stack.color(lastColor);
 	}
 }
