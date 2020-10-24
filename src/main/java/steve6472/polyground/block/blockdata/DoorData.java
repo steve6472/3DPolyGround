@@ -25,7 +25,6 @@ public class DoorData extends BlockData
 	public DoorData()
 	{
 		controller = new AnimController();
-		System.out.println("hello");
 	}
 
 	public void render(Stack stack, BlockState state)
