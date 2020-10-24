@@ -7,6 +7,7 @@ import steve6472.polyground.block.ISpecialRender;
 import steve6472.polyground.block.blockdata.BlockData;
 import steve6472.polyground.block.blockdata.IBlockData;
 import steve6472.polyground.block.states.BlockState;
+import steve6472.polyground.block.states.IBlockState;
 import steve6472.polyground.world.chunk.Chunk;
 import steve6472.polyground.world.chunk.SubChunk;
 
@@ -45,9 +46,9 @@ public interface IWorldBlockProvider extends IChunkProvider
 		return x < 0 || x >= 16 || z < 0 || z >= 16 || y < 0 || y >= world.getHeight() * 16;
 	}
 
-	default void setState(BlockState state, int x, int y, int z)
+	default void setState(IBlockState state, int x, int y, int z)
 	{
-		setState(state, x, y, z, 1);
+		setState(state.get(), x, y, z, 1);
 	}
 
 	/**
@@ -55,14 +56,15 @@ public interface IWorldBlockProvider extends IChunkProvider
 	 * 1 - Cause a block update
 	 * 2 - Prevent the block from being re-rendered
 	 * 4 - validate if state can be placed
-	 * //8 - Re-render on the main thread
+	 * 8 - Prevent creating new block data
+	 * //16 - Re-render on the main thread
 	 *
 	 * @param state new State
 	 * @param x x position
 	 * @param y y position
 	 * @param z z position
 	 */
-	default void setState(BlockState state, int x, int y, int z, int flags)
+	default void setState(IBlockState state, int x, int y, int z, int flags)
 	{
 		Chunk c = getChunkFromBlockPos(x, z);
 		if (c != null)
@@ -77,7 +79,7 @@ public interface IWorldBlockProvider extends IChunkProvider
 			SubChunk sc = c.getSubChunk(y / 16);
 
 			BlockState oldState = sc.getState(cx, cy, cz);
-			if (oldState == state)
+			if (oldState == state.get())
 				return;
 
 			boolean shouldRebuild = (flags & 2) == 0;
@@ -98,25 +100,28 @@ public interface IWorldBlockProvider extends IChunkProvider
 			// Validate state
 			if ((flags & 4) != 0)
 			{
-				canBePlaced = state.getBlock().isValidPosition(state, getWorld(), x, y, z);
+				canBePlaced = state.get().getBlock().isValidPosition(state.get(), getWorld(), x, y, z);
 			}
 
 			if (canBePlaced)
 			{
-				sc.setState(state, cx, cy, cz);
-				state.getBlock().onBlockAdded(state, getWorld(), oldState, x, y, z);
-				sc.getTickableBlocks().set(cx, cy, cz, state.getBlock().isTickable());
+				sc.setState(state.get(), cx, cy, cz);
+				state.get().getBlock().onBlockAdded(state.get(), getWorld(), oldState, x, y, z);
+				sc.getTickableBlocks().set(cx, cy, cz, state.get().getBlock().isTickable());
 
-				if (state.getBlock() instanceof IBlockData)
+				if ((flags & 8) != 8)
 				{
-					BlockData data = ((IBlockData) state.getBlock()).createNewBlockEntity(state);
-					sc.setBlockData(data, cx, cy, cz);
-				} else
-				{
-					sc.setBlockData(null, cx, cy, cz);
+					if (state.get().getBlock() instanceof IBlockData)
+					{
+						BlockData data = ((IBlockData) state.get().getBlock()).createNewBlockEntity(state.get());
+						sc.setBlockData(data, cx, cy, cz);
+					} else
+					{
+						sc.setBlockData(null, cx, cy, cz);
+					}
+
+					sc.getSpecialRender().set(cx, cy, cz, state.get().getBlock() instanceof ISpecialRender);
 				}
-
-				sc.getSpecialRender().set(cx, cy, cz, state.getBlock() instanceof ISpecialRender);
 
 				if ((flags & 1) != 0)
 				{
@@ -157,10 +162,10 @@ public interface IWorldBlockProvider extends IChunkProvider
 			setBlock(block, x, y, z);
 	}
 
-	default void setState(BlockState state, int x, int y, int z, Function<BlockState, Boolean> canSet)
+	default void setState(IBlockState state, int x, int y, int z, Function<BlockState, Boolean> canSet)
 	{
 		if (canSet.apply(getState(x, y, z)))
-			setState(state, x, y, z);
+			setState(state.get(), x, y, z);
 	}
 
 	default void setBlock(HitResult hitResult, Block block)
@@ -168,9 +173,9 @@ public interface IWorldBlockProvider extends IChunkProvider
 		setBlock(block, hitResult.getX(), hitResult.getY(), hitResult.getZ());
 	}
 
-	default void setState(BlockState state, HitResult hitResult)
+	default void setState(IBlockState state, HitResult hitResult)
 	{
-		setState(state, hitResult.getX(), hitResult.getY(), hitResult.getZ());
+		setState(state.get(), hitResult.getX(), hitResult.getY(), hitResult.getZ());
 	}
 
 	/*

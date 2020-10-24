@@ -1276,6 +1276,21 @@ public class DataGenerator
 
 		DataBuilder
 			.create()
+			.blockName("oak_door")
+			.itemName("oak_door")
+			.itemSpecial(SpecialBuilder
+				.create("block")
+				.addValue("block", "oak_door"))
+			.itemModel(new ItemFromBlock("null"))
+			.blockSpecial(new SimpleSpecial("door"))
+			.blockState(StateBuilder
+				.create()
+				.emptyModel())
+			.itemGroupPath("building.wood.oak")
+			.generate();
+
+		DataBuilder
+			.create()
 			.blockName("cactus")
 			.itemName("cactus")
 			.itemSpecial(SpecialBuilder

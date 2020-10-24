@@ -74,12 +74,15 @@ public class ChunkSerializer
 						try
 						{
 							BlockData data = subChunk.getBlockData(i, j, k);
-							CompoundTag tag = data.write();
-							tag.putInt("x", i);
-							tag.putInt("y", j);
-							tag.putInt("z", k);
-							tag.putString("name", data.getId());
-							dataTag.add(tag);
+							if (data != null)
+							{
+								CompoundTag tag = data.write();
+								tag.putInt("x", i);
+								tag.putInt("y", j);
+								tag.putInt("z", k);
+								tag.putString("name", data.getId());
+								dataTag.add(tag);
+							}
 						} catch (Exception ex)
 						{
 							System.err.println("Error while saving Block Data at " + i + " " + j + " " + k + " " + state.getBlock().getName());

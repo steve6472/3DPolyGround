@@ -2,38 +2,29 @@ package steve6472.polyground.block.states;
 
 import steve6472.polyground.block.properties.IProperty;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Sort/Order dependant State Finder
  */
-public class StateFinder
+public class StateFinder implements IBlockState
 {
-	private int lastIndex = 0;
 	private final List<BlockState> tileStates;
 
 	StateFinder(List<BlockState> tileStates)
 	{
-		this.tileStates = tileStates;
+		this.tileStates = new ArrayList<>(tileStates);
 	}
 
 	public <T extends Comparable<T>, V extends T> StateFinder with(IProperty<T> property, V value)
 	{
-		for (int i = lastIndex; i < tileStates.size(); i++)
-		{
-			BlockState ts = tileStates.get(i);
-			if (ts.get(property) == value)
-			{
-				lastIndex = i;
-				break;
-			}
-		}
-
+		tileStates.removeIf(pb -> pb.get(property) != value);
 		return this;
 	}
 
 	public BlockState get()
 	{
-		return tileStates.get(lastIndex);
+		return tileStates.get(0);
 	}
 }

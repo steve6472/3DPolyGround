@@ -8,6 +8,7 @@ import steve6472.polyground.entity.player.EnumGameMode;
 import steve6472.polyground.events.InGameGuiEvent;
 import steve6472.polyground.gfx.light.Light;
 import steve6472.polyground.gfx.light.LightManager;
+import steve6472.polyground.item.special.BlockInspectorItem;
 import steve6472.sge.gfx.SpriteRender;
 import steve6472.sge.gfx.font.Font;
 import steve6472.sge.gui.Gui;
@@ -158,10 +159,14 @@ public class InGameGui extends Gui implements IGamePause
 //		sb.append("Left Hand: ").append(CaveGame.getInstance().getPlayer().holdedItems.get(EnumSlot.HAND_LEFT).getName()).append("\n");
 		sb.append("Right Hand: ").append(CaveGame.getInstance().getPlayer().heldItem).append("\n");
 
+		if (main.getPlayer().getHitResult().isHit())
+		{
+			sb.append("\n\n");
+			sb.append(BlockInspectorItem.getString(main.getPlayer().getHitResult().getState())).append("\n");
+		}
+
 		BlockData data = CaveGame.getInstance().getWorld().getData(main.hitPicker.getHitResult().getX(), main.hitPicker.getHitResult().getY(), main.hitPicker.getHitResult().getZ());
-		if (data == null)
-			sb.append("NBT: ").append("null");
-		else
+		if (data != null)
 		{
 			try
 			{

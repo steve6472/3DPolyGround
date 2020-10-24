@@ -17,6 +17,8 @@ public class AnimationRegistry
 	private static final List<Animation> animations = new ArrayList<>();
 
 	public static final Animation CHEST_OPEN = register(ModelRegistry.CHEST, "open");
+	public static final Animation DOOR_OPEN = register(ModelRegistry.DOOR, "open");
+	public static final Animation DOOR_CLOSE = register(ModelRegistry.DOOR, "close");
 	public static final Animation AMETHINE_CORE_PLACE = register(ModelRegistry.AMETHINE_CORE, "place");
 	public static final Animation AMETHINE_CORE_IDLE = register(ModelRegistry.AMETHINE_CORE, "idle");
 

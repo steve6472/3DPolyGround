@@ -67,7 +67,7 @@ public class Animation
 				double t = time(a.time(), b.time(), time);
 
 				float vx = (float) Math.toRadians(-lerp(a.x().getValue(t), b.x().getValue(t), t));
-				float vy = (float) Math.toRadians(lerp(a.y().getValue(t), b.y().getValue(t), t));
+				float vy = (float) Math.toRadians(-lerp(a.y().getValue(t), b.y().getValue(t), t));
 				float vz = (float) Math.toRadians(lerp(a.z().getValue(t), b.z().getValue(t), t));
 
 //				CaveGame.getInstance().inGameGui.chat.addText(String.format("%.3f %.2f %.2f, time: %.2f -> %.2f", time, rot.getA().pos().y, rot.getB().pos().y, t, lerp(a.pos().y, b.pos().y, t)));

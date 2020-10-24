@@ -26,6 +26,14 @@ public class CubeHitbox
 		name = "";
 	}
 
+	public CubeHitbox div(float div)
+	{
+		float inv = 1f / div;
+		aabb.setMin(aabb.minX * inv, aabb.minY * inv, aabb.minZ * inv);
+		aabb.setMax(aabb.maxX * inv, aabb.maxY * inv, aabb.maxZ * inv);
+		return this;
+	}
+
 	public void loadFromJson(JSONObject json)
 	{
 		isHitbox = json.optBoolean("isHitbox", true);
@@ -34,9 +42,10 @@ public class CubeHitbox
 		name = json.optString("name", "");
 	}
 
-	public void setAabb(AABBf aabb)
+	public CubeHitbox setAabb(AABBf aabb)
 	{
 		this.aabb = aabb;
+		return this;
 	}
 
 	public AABBf getAabb()
@@ -54,14 +63,16 @@ public class CubeHitbox
 		return isHitbox;
 	}
 
-	public void setHitbox(boolean hitbox)
+	public CubeHitbox setHitbox(boolean hitbox)
 	{
 		isHitbox = hitbox;
+		return this;
 	}
 
-	public void setVisible(boolean visible)
+	public CubeHitbox setVisible(boolean visible)
 	{
 		isVisible = visible;
+		return this;
 	}
 
 	public boolean isCollisionBox()
@@ -69,9 +80,10 @@ public class CubeHitbox
 		return isCollisionBox;
 	}
 
-	public void setCollisionBox(boolean collisionBox)
+	public CubeHitbox setCollisionBox(boolean collisionBox)
 	{
 		isCollisionBox = collisionBox;
+		return this;
 	}
 
 	public String getName()
@@ -79,8 +91,9 @@ public class CubeHitbox
 		return name;
 	}
 
-	public void setName(String name)
+	public CubeHitbox setName(String name)
 	{
 		this.name = name;
+		return this;
 	}
 }

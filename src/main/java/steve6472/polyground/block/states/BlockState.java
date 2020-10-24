@@ -18,7 +18,7 @@ import java.util.Set;
  * Project: StateTest
  *
  ***********************/
-public class BlockState
+public class BlockState implements IBlockState
 {
 	private static int ID = 0;
 
@@ -234,5 +234,11 @@ public class BlockState
 	public boolean isCustom()
 	{
 		return custom;
+	}
+
+	@Override
+	public BlockState get()
+	{
+		return this;
 	}
 }
