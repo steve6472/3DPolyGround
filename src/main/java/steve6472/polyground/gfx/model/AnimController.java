@@ -10,7 +10,7 @@ public class AnimController
 {
 	private long start;
 	private long pause;
-	private boolean running, paused;
+	private boolean running, paused, loop;
 	private double pauseTime;
 	private double speed;
 
@@ -26,6 +26,16 @@ public class AnimController
 		running = true;
 	}
 
+	public void toggleLoop()
+	{
+		this.loop = !loop;
+	}
+
+	public void setLoop(boolean loop)
+	{
+		this.loop = loop;
+	}
+
 	public void pause()
 	{
 		pauseTime = calculateTime(System.currentTimeMillis());
@@ -36,6 +46,11 @@ public class AnimController
 	public void setSpeed(double speed)
 	{
 		this.speed = speed;
+	}
+
+	public boolean isLooping()
+	{
+		return loop;
 	}
 
 	public boolean hasEnded()

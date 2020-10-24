@@ -22,6 +22,7 @@ public class Testity extends EntityBase implements IAdvancedRender, ITickable
 	{
 		setPosition(pos);
 		controller = new AnimController();
+		controller.setLoop(true);
 	}
 
 	@Override
@@ -37,9 +38,6 @@ public class Testity extends EntityBase implements IAdvancedRender, ITickable
 
 		addPosition(getMotion());
 		getMotion().mul(0.95f);*/
-
-		if (controller.hasEnded())
-			controller.start();
 	}
 
 	@Override

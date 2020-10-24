@@ -1,6 +1,5 @@
 package steve6472.polyground.gfx.model;
 
-import org.joml.Vector3f;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -46,11 +45,17 @@ public class AnimLoader
 		if (!json.has(keyType))
 			return list;
 
+		// type has only one value
 		if (json.get(keyType) instanceof JSONArray arr)
 		{
-			list.add(new Key(0, new Vector3f(arr.getFloat(0),
-				arr.getFloat(1),
-				arr.getFloat(2))));
+			list.add(
+				new Key(
+					0,
+					loadValue(arr.get(0)),
+					loadValue(arr.get(1)),
+					loadValue(arr.get(2))
+				)
+			);
 			return list;
 		}
 
@@ -59,10 +64,14 @@ public class AnimLoader
 		for (String s : type.keySet())
 		{
 			JSONArray arr = type.getJSONArray(s);
-			list.add(new Key(Double.parseDouble(s),
-				new Vector3f(arr.getFloat(0),
-					arr.getFloat(1),
-					arr.getFloat(2))));
+			list.add(
+				new Key(
+					Double.parseDouble(s),
+					loadValue(arr.get(0)),
+					loadValue(arr.get(1)),
+					loadValue(arr.get(2))
+				)
+			);
 		}
 
 		list.sort(Comparator.comparingDouble(a -> a.time));
@@ -70,7 +79,20 @@ public class AnimLoader
 		return list;
 	}
 
-	public record Key(double time, Vector3f pos)
+	private static IKeyValue loadValue(Object o)
+	{
+		if (o instanceof Number n)
+		{
+			return new NumericValue(n.floatValue());
+		} else if (o instanceof String s)
+		{
+			return new ExpressionValue(s);
+		}
+
+		throw new IllegalArgumentException(o.getClass().getCanonicalName());
+	}
+
+	public record Key(double time, IKeyValue x, IKeyValue y, IKeyValue z)
 	{}
 
 	public record Bone(String name, List<Key> positions, List<Key> rotations, List<Key> scales)

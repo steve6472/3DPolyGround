@@ -66,9 +66,9 @@ public class Animation
 				Key b = rot.getB();
 				double t = time(a.time(), b.time(), time);
 
-				float vx = (float) Math.toRadians(-lerp(a.pos().x, b.pos().x, t));
-				float vy = (float) Math.toRadians(lerp(a.pos().y, b.pos().y, t));
-				float vz = (float) Math.toRadians(lerp(a.pos().z, b.pos().z, t));
+				float vx = (float) Math.toRadians(-lerp(a.x().getValue(t), b.x().getValue(t), t));
+				float vy = (float) Math.toRadians(lerp(a.y().getValue(t), b.y().getValue(t), t));
+				float vz = (float) Math.toRadians(lerp(a.z().getValue(t), b.z().getValue(t), t));
 
 //				CaveGame.getInstance().inGameGui.chat.addText(String.format("%.3f %.2f %.2f, time: %.2f -> %.2f", time, rot.getA().pos().y, rot.getB().pos().y, t, lerp(a.pos().y, b.pos().y, t)));
 
@@ -84,9 +84,9 @@ public class Animation
 				Key b = pos.getB();
 				double t = time(a.time(), b.time(), time);
 
-				float vx = (float) lerp(a.pos().x, b.pos().x, t);
-				float vy = (float) lerp(a.pos().y, b.pos().y, t);
-				float vz = (float) lerp(a.pos().z, b.pos().z, t);
+				float vx = (float) lerp(a.x().getValue(t), b.x().getValue(t), t);
+				float vy = (float) lerp(a.y().getValue(t), b.y().getValue(t), t);
+				float vz = (float) lerp(a.z().getValue(t), b.z().getValue(t), t);
 
 				OutlinerElement element = model.getAnimElements().get(bones.name());
 				element.positionX = vx;
@@ -100,9 +100,9 @@ public class Animation
 				Key b = sca.getB();
 				double t = time(a.time(), b.time(), time);
 
-				float vx = (float) lerp(a.pos().x, b.pos().x, t);
-				float vy = (float) lerp(a.pos().y, b.pos().y, t);
-				float vz = (float) lerp(a.pos().z, b.pos().z, t);
+				float vx = (float) lerp(a.x().getValue(t), b.x().getValue(t), t);
+				float vy = (float) lerp(a.y().getValue(t), b.y().getValue(t), t);
+				float vz = (float) lerp(a.z().getValue(t), b.z().getValue(t), t);
 
 				OutlinerElement element = model.getAnimElements().get(bones.name());
 				element.scaleX = vx;
@@ -113,7 +113,10 @@ public class Animation
 
 		if (time >= dLength)
 		{
-			controller.setRunning(false);
+			if (controller.isLooping())
+				controller.start();
+			else
+				controller.setRunning(false);
 		}
 	}
 
@@ -177,17 +180,17 @@ public class Animation
 			System.out.println("\tPositions:");
 			for (Key p : b.positions())
 			{
-				System.out.println("\t\tTime: " + p.time() + " : " + p.pos());
+//				System.out.println("\t\tTime: " + p.time() + " : " + p.pos());
 			}
 			System.out.println("\tRotations:");
 			for (Key p : b.rotations())
 			{
-				System.out.println("\t\tTime: " + p.time() + " : " + p.pos());
+//				System.out.println("\t\tTime: " + p.time() + " : " + p.pos());
 			}
 			System.out.println("\tScales:");
 			for (Key p : b.scales())
 			{
-				System.out.println("\t\tTime: " + p.time() + " : " + p.pos());
+//				System.out.println("\t\tTime: " + p.time() + " : " + p.pos());
 			}
 		}
 	}
