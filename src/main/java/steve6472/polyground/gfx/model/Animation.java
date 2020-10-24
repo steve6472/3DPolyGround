@@ -2,12 +2,12 @@ package steve6472.polyground.gfx.model;
 
 import org.json.JSONObject;
 import steve6472.polyground.block.model.ModelLoader;
+import steve6472.polyground.entity.model.Model;
 import steve6472.polyground.gfx.model.AnimLoader.Bone;
 import steve6472.sge.main.util.Pair;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import static steve6472.polyground.gfx.model.AnimLoader.Key;
@@ -21,16 +21,24 @@ import static steve6472.polyground.gfx.model.AnimLoader.load;
  ***********************/
 public class Animation
 {
-	private final HashMap<String, OutlinerElement> elements;
+	private final String path, name;
+	private final Model model;
 
 	private final List<Bone> bones;
-	private final double dLength;
+	private double dLength;
 
-	public Animation(String path, String name, HashMap<String, OutlinerElement> elements)
+	public Animation(String path, String name, Model model)
 	{
+		this.path = path;
+		this.name = name;
+		this.model = model;
 		this.bones = new ArrayList<>();
-		this.elements = elements;
+		reload();
+	}
 
+	public void reload()
+	{
+		bones.clear();
 		JSONObject jsonObject = new JSONObject(ModelLoader.read(new File("custom_models/entity/" + path + ".animation.json")));
 		dLength = load(jsonObject.getJSONObject("animations").getJSONObject(name), bones);
 	}
@@ -64,7 +72,7 @@ public class Animation
 
 //				CaveGame.getInstance().inGameGui.chat.addText(String.format("%.3f %.2f %.2f, time: %.2f -> %.2f", time, rot.getA().pos().y, rot.getB().pos().y, t, lerp(a.pos().y, b.pos().y, t)));
 
-				OutlinerElement element = elements.get(bones.name());
+				OutlinerElement element = model.getAnimElements().get(bones.name());
 				element.rotationX = vx;
 				element.rotationY = vy;
 				element.rotationZ = vz;
@@ -80,7 +88,7 @@ public class Animation
 				float vy = (float) lerp(a.pos().y, b.pos().y, t);
 				float vz = (float) lerp(a.pos().z, b.pos().z, t);
 
-				OutlinerElement element = elements.get(bones.name());
+				OutlinerElement element = model.getAnimElements().get(bones.name());
 				element.positionX = vx;
 				element.positionY = vy;
 				element.positionZ = vz;
@@ -96,7 +104,7 @@ public class Animation
 				float vy = (float) lerp(a.pos().y, b.pos().y, t);
 				float vz = (float) lerp(a.pos().z, b.pos().z, t);
 
-				OutlinerElement element = elements.get(bones.name());
+				OutlinerElement element = model.getAnimElements().get(bones.name());
 				element.scaleX = vx;
 				element.scaleY = vy;
 				element.scaleZ = vz;

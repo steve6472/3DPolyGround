@@ -4,8 +4,8 @@ import org.joml.Vector3f;
 import steve6472.polyground.entity.interfaces.IAdvancedRender;
 import steve6472.polyground.entity.interfaces.ITickable;
 import steve6472.polyground.gfx.model.AnimController;
-import steve6472.polyground.gfx.model.Animation;
 import steve6472.polyground.gfx.stack.Stack;
+import steve6472.polyground.registry.model.AnimationRegistry;
 import steve6472.polyground.registry.model.ModelRegistry;
 
 /**********************
@@ -16,9 +16,6 @@ import steve6472.polyground.registry.model.ModelRegistry;
  ***********************/
 public class Testity extends EntityBase implements IAdvancedRender, ITickable
 {
-	//	private static final ClaySolderModel MODEL = new ClaySolderModel();
-	private static final Animation animation = new Animation("chest", "open", ModelRegistry.CHEST.getAnimElements());
-
 	private final AnimController controller;
 
 	public Testity(Vector3f pos)
@@ -48,7 +45,7 @@ public class Testity extends EntityBase implements IAdvancedRender, ITickable
 	@Override
 	public void render(Stack stack)
 	{
-		animation.tick(controller);
+		AnimationRegistry.CHEST_OPEN.tick(controller);
 		stack.color(1, 1, 1, 1f);
 		ModelRegistry.CHEST.render(stack);
 	}

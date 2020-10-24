@@ -218,7 +218,7 @@ public class RiftManager
 		rift.getBuffer().bindFrameBuffer(main);
 		DepthFrameBuffer.clearCurrentBuffer();
 
-		main.mainRender.renderTheWorld(false);
+		main.mainRender.renderTheWorld(true);
 
 		main.getPlayer().setCamera(temp);
 		rift.getBuffer().unbindCurrentFrameBuffer(main);

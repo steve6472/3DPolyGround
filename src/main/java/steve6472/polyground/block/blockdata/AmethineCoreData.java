@@ -1,11 +1,11 @@
 package steve6472.polyground.block.blockdata;
 
 import net.querz.nbt.tag.CompoundTag;
-import steve6472.polyground.entity.model.Model;
 import steve6472.polyground.gfx.model.AnimController;
-import steve6472.polyground.gfx.model.Animation;
 import steve6472.polyground.gfx.stack.Stack;
 import steve6472.polyground.registry.blockdata.BlockDataRegistry;
+import steve6472.polyground.registry.model.AnimationRegistry;
+import steve6472.polyground.registry.model.ModelRegistry;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
@@ -15,10 +15,6 @@ import steve6472.polyground.registry.blockdata.BlockDataRegistry;
  ***********************/
 public class AmethineCoreData extends BlockData
 {
-	private static final Model MODEL = new Model("amethine_core");
-	private static final Animation placeAnimation = new Animation("amethine_core", "place", MODEL.getAnimElements());
-	private static final Animation idleAnimation= new Animation("amethine_core", "idle", MODEL.getAnimElements());
-
 	private final AnimController controller;
 	private boolean isIdle;
 
@@ -31,14 +27,12 @@ public class AmethineCoreData extends BlockData
 
 	public void render(Stack stack)
 	{
-		stack.translate(0.5f, 0, 0.5f);
-
 		float c = (float) (Math.cos(Math.toRadians((System.currentTimeMillis() % (3600 * 2)) * 0.05f)) / 4f + 0.70f);
 		stack.color(c, 0, c, 1);
 
 		if (!isIdle)
 		{
-			placeAnimation.tick(controller);
+			AnimationRegistry.AMETHINE_CORE_PLACE.tick(controller);
 
 			if (controller.hasEnded())
 			{
@@ -52,10 +46,10 @@ public class AmethineCoreData extends BlockData
 			if (controller.hasEnded())
 				controller.start();
 
-			idleAnimation.tick(controller);
+			AnimationRegistry.AMETHINE_CORE_IDLE.tick(controller);
 		}
 
-		MODEL.render(stack);
+		ModelRegistry.AMETHINE_CORE.render(stack);
 	}
 
 	@Override

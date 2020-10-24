@@ -19,7 +19,7 @@ public class Model
 	private static final float RAD_90 = (float) (-Math.PI / 2.0);
 
 	private OutlinerElement[] elements;
-	private HashMap<String, OutlinerElement> assignElements;
+	private HashMap<String, OutlinerElement> animElements;
 	private final String name;
 
 	public Model(String name)
@@ -31,7 +31,7 @@ public class Model
 	public void reload()
 	{
 		elements = Loader.load(name);
-		assignElements = Loader.assignElements(elements);
+		animElements = Loader.assignElements(elements);
 	}
 
 	public void render(Stack stack)
@@ -277,6 +277,11 @@ public class Model
 
 	}
 
+	public String getName()
+	{
+		return name;
+	}
+
 	public OutlinerElement[] getElements()
 	{
 		return elements;
@@ -284,6 +289,6 @@ public class Model
 
 	public HashMap<String, OutlinerElement> getAnimElements()
 	{
-		return assignElements;
+		return animElements;
 	}
 }

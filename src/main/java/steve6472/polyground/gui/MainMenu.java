@@ -104,7 +104,7 @@ public class MainMenu extends Gui implements IGamePause
 				registry.dispatcher.execute("loadworld house", registry.commandSource);
 				registry.dispatcher.execute("tp 0.5 1 0.5", registry.commandSource);
 				registry.dispatcher.execute("gms", registry.commandSource);
-				registry.dispatcher.execute("testity", registry.commandSource);
+//				registry.dispatcher.execute("testity", registry.commandSource);
 				registry.dispatcher.execute("tp 0.5 2 0.5", registry.commandSource);
 			} catch (CommandSyntaxException e)
 			{

@@ -94,6 +94,7 @@ public class Stack extends Matrix4fStack
 
 	public void reset()
 	{
+		tess.clear();
 		tess.begin(MAX_SIZE);
 		tess.color(1, 1, 1, 1);
 	}

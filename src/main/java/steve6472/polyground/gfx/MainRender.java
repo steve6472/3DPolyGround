@@ -150,6 +150,7 @@ public class MainRender
 			return;
 
 		stack.reset();
+
 		if (!CaveGame.runGameEvent(new WorldEvent.PreRender(game.world)))
 			game.world.render(true, true);
 		CaveGame.runGameEvent(new WorldEvent.PostRender(game.world));
@@ -220,7 +221,7 @@ public class MainRender
 			postProcessing.doPostProcessing(mainFrameBuffer.texture);
 	}
 
-	public void renderTheWorld(boolean deferred)
+	public void renderTheWorld(boolean renderWorld)
 	{
 		resetFrustum();
 
@@ -260,9 +261,7 @@ public class MainRender
 
 		shaders.mainShader.bind(game.getCamera().getViewMatrix());
 
-		// render only non-deferred!
-		// world would be rendered twice from players perseptive
-		if (!deferred)
+		if (renderWorld)
 		{
 			if (!CaveGame.runGameEvent(new WorldEvent.PreRender(game.world)))
 				game.world.render(false, false);
@@ -275,8 +274,8 @@ public class MainRender
 		if (game.getPlayer() != null)
 			game.getPlayer().render();
 
-		//		CaveGame.shaders.mainShader.bind(getCamera().getViewMatrix());
-		//		AABBUtil.renderAABBf(player.getHitbox().getHitbox(), basicTess, 1, shaders.mainShader);
+//		CaveGame.shaders.mainShader.bind(getCamera().getViewMatrix());
+//		AABBUtil.renderAABBf(player.getHitbox().getHitbox(), basicTess, 1, shaders.mainShader);
 
 		if (game.options.renderSkybox)
 		{

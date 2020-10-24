@@ -135,7 +135,10 @@ public class StackTessellator extends AbstractTessellator
 	public void draw(int mode)
 	{
 		super.draw(mode);
+	}
 
+	public void clear()
+	{
 		pos.clear();
 		color.clear();
 		texture.clear();

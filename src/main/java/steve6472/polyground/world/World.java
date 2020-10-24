@@ -257,6 +257,9 @@ public class World implements IWorldBlockProvider
 			InGameGui.chunkLayers = 0;
 		}
 
+		if (countChunks)
+			entityManager.render(game.mainRender.stack);
+
 		if (deferred)
 		{
 			MainRender.shaders.gShader.bind(game.getCamera().getViewMatrix());
@@ -303,7 +306,7 @@ public class World implements IWorldBlockProvider
 					if (!subChunkFrustum(cx, k * 16, cz))
 						continue;
 
-					if (deferred)
+					if (countChunks)
 					{
 						MainRender.shaders.gShader.setTransformation(mat.identity().translate(cx, k * 16, cz));
 
@@ -319,6 +322,7 @@ public class World implements IWorldBlockProvider
 							{
 								game.mainRender.stack.pushMatrix();
 								game.mainRender.stack.translate(bx + finalCx, by + finalK * 16, bz + finalCz);
+								game.mainRender.stack.translate(0.5f, 0, 0.5f);
 
 								sr.render(game.mainRender.stack, this, state, bx + finalCx, by + finalK * 16, bz + finalCz);
 
@@ -389,8 +393,6 @@ public class World implements IWorldBlockProvider
 		{
 			game.mainRender.gBuffer.unbindCurrentFrameBuffer();
 		}
-
-		entityManager.render(game.mainRender.stack);
 
 		renderTransparent(deferred, countChunks);
 	}
