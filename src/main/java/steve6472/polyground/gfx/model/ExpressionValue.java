@@ -15,6 +15,9 @@ public class ExpressionValue implements IKeyValue
 {
 	private final Expression expression;
 
+	/*
+	 * Replace sin and cos functions with ones that use degrees instead of angles
+	 */
 	private static final Function degSin = new Function("sin")
 	{
 		@Override

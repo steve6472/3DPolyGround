@@ -257,9 +257,6 @@ public class World implements IWorldBlockProvider
 			InGameGui.chunkLayers = 0;
 		}
 
-		if (countChunks)
-			entityManager.render(game.mainRender.stack);
-
 		if (deferred)
 		{
 			MainRender.shaders.gShader.bind(game.getCamera().getViewMatrix());
@@ -388,6 +385,9 @@ public class World implements IWorldBlockProvider
 			glDisableVertexAttribArray(l);
 
 		glBindVertexArray(0);
+
+		if (countChunks)
+			entityManager.render(game.mainRender.stack);
 
 		if (deferred)
 		{

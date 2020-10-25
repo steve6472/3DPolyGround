@@ -29,6 +29,8 @@ public class DoorData extends BlockData
 
 	public void render(Stack stack, BlockState state)
 	{
+		stack.color(1, 1, 1, 1);
+
 		EnumFace facing = state.get(DoorBlock.FACING);
 		EnumLR hinge = state.get(DoorBlock.HINGE);
 
@@ -111,13 +113,15 @@ public class DoorData extends BlockData
 	@Override
 	public CompoundTag write()
 	{
-		return new CompoundTag();
+		CompoundTag tag = new CompoundTag();
+		tag.putBoolean("open", isOpen);
+		return tag;
 	}
 
 	@Override
 	public void read(CompoundTag tag)
 	{
-
+		isOpen = tag.getBoolean("open");
 	}
 
 	@Override

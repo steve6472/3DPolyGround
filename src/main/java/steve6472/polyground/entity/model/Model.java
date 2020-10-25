@@ -36,7 +36,6 @@ public class Model
 
 	public void render(Stack stack)
 	{
-		stack.pushMatrix();
 		stack.scale(1f / 16f);
 		stack.rotateY(RAD_90);
 		for (OutlinerElement el : elements)
@@ -49,13 +48,12 @@ public class Model
 				rect(stack, element);
 			}
 		}
-		stack.popMatrix();
 	}
 
 	private void render(Stack stack, OutlinerElement el)
 	{
 		stack.pushMatrix();
-		stack.translate(el.positionX, el.positionY, el.positionZ);
+		stack.translate(-el.positionX, el.positionY, el.positionZ);
 		stack.translate(el.originX, el.originY, el.originZ);
 		stack.rotateXYZ(el.rotationX, el.rotationY, el.rotationZ);
 		stack.translate(-el.originX, -el.originY, -el.originZ);

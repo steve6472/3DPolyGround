@@ -43,9 +43,9 @@ public class Testity extends EntityBase implements IAdvancedRender, ITickable
 	@Override
 	public void render(Stack stack)
 	{
-		AnimationRegistry.CHEST_OPEN.tick(controller);
+		AnimationRegistry.TEST.tick(controller);
 		stack.color(1, 1, 1, 1f);
-		ModelRegistry.CHEST.render(stack);
+		ModelRegistry.TEST.render(stack);
 	}
 
 	@Override

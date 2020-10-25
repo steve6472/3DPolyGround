@@ -1,5 +1,6 @@
 package steve6472.polyground.gfx.model;
 
+import org.joml.Vector3f;
 import org.json.JSONObject;
 import steve6472.polyground.block.model.ModelLoader;
 import steve6472.polyground.entity.model.Model;
@@ -10,7 +11,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import static steve6472.polyground.gfx.model.AnimLoader.Key;
 import static steve6472.polyground.gfx.model.AnimLoader.load;
 
 /**********************
@@ -21,6 +21,8 @@ import static steve6472.polyground.gfx.model.AnimLoader.load;
  ***********************/
 public class Animation
 {
+	private static final Vector3f TEMP = new Vector3f();
+
 	private final String path, name;
 	private final Model model;
 
@@ -56,58 +58,42 @@ public class Animation
 
 		for (Bone bones : bones)
 		{
-			Pair<Key, Key> pos = getKeys(bones.positions(), time);
-			Pair<Key, Key> rot = getKeys(bones.rotations(), time);
-			Pair<Key, Key> sca = getKeys(bones.scales(), time);
+			int posIndex = binarySearch(bones.positions(), time);
+			int rotIndex = binarySearch(bones.rotations(), time);
+			int scaIndex = binarySearch(bones.scales(), time);
+
+			Pair<IKey, IKey> pos = getKeys(bones.positions(), posIndex);
+			Pair<IKey, IKey> rot = getKeys(bones.rotations(), rotIndex);
+			Pair<IKey, IKey> sca = getKeys(bones.scales(), scaIndex);
 
 			if (rot != null)
 			{
-				Key a = rot.getA();
-				Key b = rot.getB();
-				double t = time(a.time(), b.time(), time);
-
-				float vx = (float) Math.toRadians(-lerp(a.x().getValue(t), b.x().getValue(t), t));
-				float vy = (float) Math.toRadians(-lerp(a.y().getValue(t), b.y().getValue(t), t));
-				float vz = (float) Math.toRadians(lerp(a.z().getValue(t), b.z().getValue(t), t));
-
-//				CaveGame.getInstance().inGameGui.chat.addText(String.format("%.3f %.2f %.2f, time: %.2f -> %.2f", time, rot.getA().pos().y, rot.getB().pos().y, t, lerp(a.pos().y, b.pos().y, t)));
+				animate(rot, time, posIndex, bones.positions());
 
 				OutlinerElement element = model.getAnimElements().get(bones.name());
-				element.rotationX = vx;
-				element.rotationY = vy;
-				element.rotationZ = vz;
+				element.rotationX = (float) Math.toRadians(-TEMP.x());
+				element.rotationY = (float) Math.toRadians(-TEMP.y());
+				element.rotationZ = (float) Math.toRadians(TEMP.z());
 			}
 
 			if (pos != null)
 			{
-				Key a = pos.getA();
-				Key b = pos.getB();
-				double t = time(a.time(), b.time(), time);
-
-				float vx = (float) lerp(a.x().getValue(t), b.x().getValue(t), t);
-				float vy = (float) lerp(a.y().getValue(t), b.y().getValue(t), t);
-				float vz = (float) lerp(a.z().getValue(t), b.z().getValue(t), t);
+				animate(pos, time, posIndex, bones.positions());
 
 				OutlinerElement element = model.getAnimElements().get(bones.name());
-				element.positionX = vx;
-				element.positionY = vy;
-				element.positionZ = vz;
+				element.positionX = TEMP.x();
+				element.positionY = TEMP.y();
+				element.positionZ = TEMP.z();
 			}
 
 			if (sca != null)
 			{
-				Key a = sca.getA();
-				Key b = sca.getB();
-				double t = time(a.time(), b.time(), time);
-
-				float vx = (float) lerp(a.x().getValue(t), b.x().getValue(t), t);
-				float vy = (float) lerp(a.y().getValue(t), b.y().getValue(t), t);
-				float vz = (float) lerp(a.z().getValue(t), b.z().getValue(t), t);
+				animate(sca, time, posIndex, bones.scales());
 
 				OutlinerElement element = model.getAnimElements().get(bones.name());
-				element.scaleX = vx;
-				element.scaleY = vy;
-				element.scaleZ = vz;
+				element.scaleX = TEMP.x();
+				element.scaleY = TEMP.y();
+				element.scaleZ = TEMP.z();
 			}
 		}
 
@@ -120,7 +106,44 @@ public class Animation
 		}
 	}
 
-	private int binarySearch(List<Key> keys, double target)
+	private void animate(Pair<IKey, IKey> pair, double time, int index, List<IKey> keys)
+	{
+		IKey before = pair.getA();
+		IKey after = pair.getB();
+		double t = AnimUtil.time(before.time(), after.time(), time);
+
+		float vx;
+		float vy;
+		float vz;
+
+		if (before.keyType() == EnumKeyType.CATMULL_ROM)
+		{
+			IKey past, future;
+
+			if (index > 0)
+				past = keys.get(index - 1);
+			else
+				past = before;
+
+			if (index + 2 < keys.size())
+				future = keys.get(index + 2);
+			else
+				future = after;
+
+			vx = (float) AnimUtil.catmullLerp(past.x(t), before.x(t), after.x(t), future.x(t), t);
+			vy = (float) AnimUtil.catmullLerp(past.y(t), before.y(t), after.y(t), future.y(t), t);
+			vz = (float) AnimUtil.catmullLerp(past.z(t), before.z(t), after.z(t), future.z(t), t);
+		} else
+		{
+			vx = (float) AnimUtil.lerp(before.x(t), after.x(t), t);
+			vy = (float) AnimUtil.lerp(before.y(t), after.y(t), t);
+			vz = (float) AnimUtil.lerp(before.z(t), after.z(t), t);
+		}
+
+		TEMP.set(vx, vy, vz);
+	}
+
+	private int binarySearch(List<IKey> keys, double target)
 	{
 		if (keys.size() == 0)
 			return -1;
@@ -157,9 +180,8 @@ public class Animation
 		return max;
 	}
 
-	private Pair<Key, Key> getKeys(List<Key> keys, double time)
+	private Pair<IKey, IKey> getKeys(List<IKey> keys, int index)
 	{
-		int index = binarySearch(keys, time);
 		if (index == -1)
 			return null;
 
@@ -170,42 +192,5 @@ public class Animation
 			return new Pair<>(keys.get(index), keys.get(index));
 
 		return new Pair<>(keys.get(index), keys.get(index + 1));
-	}
-
-	public void print()
-	{
-		for (Bone b : bones)
-		{
-			System.out.println(b.name() + ":");
-			System.out.println("\tPositions:");
-			for (Key p : b.positions())
-			{
-//				System.out.println("\t\tTime: " + p.time() + " : " + p.pos());
-			}
-			System.out.println("\tRotations:");
-			for (Key p : b.rotations())
-			{
-//				System.out.println("\t\tTime: " + p.time() + " : " + p.pos());
-			}
-			System.out.println("\tScales:");
-			for (Key p : b.scales())
-			{
-//				System.out.println("\t\tTime: " + p.time() + " : " + p.pos());
-			}
-		}
-	}
-
-	private double time(double start, double end, double time)
-	{
-		// Prevent NaN
-		if (time - start == 0 || end - start == 0)
-			return 0;
-
-		return 1.0 / ((end - start) / (time - start));
-	}
-
-	private static double lerp(double start, double end, double value)
-	{
-		return start + value * (end - start);
 	}
 }

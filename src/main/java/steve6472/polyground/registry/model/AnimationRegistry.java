@@ -21,6 +21,7 @@ public class AnimationRegistry
 	public static final Animation DOOR_CLOSE = register(ModelRegistry.DOOR, "close");
 	public static final Animation AMETHINE_CORE_PLACE = register(ModelRegistry.AMETHINE_CORE, "place");
 	public static final Animation AMETHINE_CORE_IDLE = register(ModelRegistry.AMETHINE_CORE, "idle");
+	public static final Animation TEST = register(ModelRegistry.TEST, "test");
 
 	public static Animation register(Model model, String name)
 	{

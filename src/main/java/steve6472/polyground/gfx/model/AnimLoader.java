@@ -30,17 +30,17 @@ public class AnimLoader
 
 	private static void loadBone(JSONObject boneJson, String boneName, List<Bone> bones)
 	{
-		List<Key> pos = loadKeys(boneJson, "position");
-		List<Key> rot = loadKeys(boneJson, "rotation");
-		List<Key> siz = loadKeys(boneJson, "scale");
+		List<IKey> pos = loadKeys(boneJson, "position");
+		List<IKey> rot = loadKeys(boneJson, "rotation");
+		List<IKey> siz = loadKeys(boneJson, "scale");
 
 		Bone bone = new Bone(boneName, pos, rot, siz);
 		bones.add(bone);
 	}
 
-	private static List<Key> loadKeys(JSONObject json, String keyType)
+	private static List<IKey> loadKeys(JSONObject json, String keyType)
 	{
-		List<Key> list = new ArrayList<>();
+		List<IKey> list = new ArrayList<>();
 
 		if (!json.has(keyType))
 			return list;
@@ -53,7 +53,8 @@ public class AnimLoader
 					0,
 					loadValue(arr.get(0)),
 					loadValue(arr.get(1)),
-					loadValue(arr.get(2))
+					loadValue(arr.get(2)),
+					EnumKeyType.LINEAR
 				)
 			);
 			return list;
@@ -63,18 +64,35 @@ public class AnimLoader
 
 		for (String s : type.keySet())
 		{
-			JSONArray arr = type.getJSONArray(s);
-			list.add(
-				new Key(
-					Double.parseDouble(s),
-					loadValue(arr.get(0)),
-					loadValue(arr.get(1)),
-					loadValue(arr.get(2))
-				)
-			);
+			double time = Double.parseDouble(s);
+			if (type.get(s) instanceof JSONObject o)
+			{
+				JSONArray post = o.getJSONArray("post");
+				list.add(
+					new Key(
+						time,
+						loadValue(post.get(0)),
+						loadValue(post.get(1)),
+						loadValue(post.get(2)),
+						EnumKeyType.CATMULL_ROM
+					)
+				);
+
+			} else if (type.get(s) instanceof JSONArray arr)
+			{
+				list.add(
+					new Key(
+						time,
+						loadValue(arr.get(0)),
+						loadValue(arr.get(1)),
+						loadValue(arr.get(2)),
+						EnumKeyType.LINEAR
+					)
+				);
+			}
 		}
 
-		list.sort(Comparator.comparingDouble(a -> a.time));
+		list.sort(Comparator.comparingDouble(IKey::time));
 
 		return list;
 	}
@@ -92,9 +110,6 @@ public class AnimLoader
 		throw new IllegalArgumentException(o.getClass().getCanonicalName());
 	}
 
-	public record Key(double time, IKeyValue x, IKeyValue y, IKeyValue z)
-	{}
-
-	public record Bone(String name, List<Key> positions, List<Key> rotations, List<Key> scales)
+	public record Bone(String name, List<IKey> positions, List<IKey> rotations, List<IKey> scales)
 	{}
 }
