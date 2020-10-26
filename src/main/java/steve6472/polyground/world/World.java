@@ -17,6 +17,7 @@ import steve6472.polyground.gfx.shaders.CGGShader;
 import steve6472.polyground.gfx.shaders.world.WorldShader;
 import steve6472.polyground.gui.InGameGui;
 import steve6472.polyground.rift.RiftManager;
+import steve6472.polyground.audio.Source;
 import steve6472.polyground.teleporter.TeleporterManager;
 import steve6472.polyground.world.biomes.Biome;
 import steve6472.polyground.world.biomes.Biomes;
@@ -36,6 +37,9 @@ import steve6472.sge.gfx.GBuffer;
 import steve6472.sge.gfx.Tessellator3D;
 import steve6472.sge.main.game.GridStorage;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Random;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -71,6 +75,7 @@ public class World implements IWorldBlockProvider
 	private final RiftManager rifts;
 	private final CaveGame game;
 	private final Random random;
+	private final List<Source> soundSources;
 
 	public String worldName = null;
 
@@ -97,6 +102,7 @@ public class World implements IWorldBlockProvider
 		rifts = null;
 		generator = null;
 		offThreadTicks = null;
+		soundSources = null;
 	}
 
 	public World(CaveGame game, int height, IBiomeGenerator biomeGenerator, IHeightMapGenerator heightMapGenerator, Function<ChunkGenDataStorage, ISurfaceGenerator> surfaceGenerator)
@@ -107,6 +113,7 @@ public class World implements IWorldBlockProvider
 		this.game = game;
 		chunks = new GridStorage<>();
 		tickScheduler = new TickScheduler(this);
+		soundSources = new ArrayList<>();
 
 		features = new Features();
 		features.load();
@@ -137,6 +144,19 @@ public class World implements IWorldBlockProvider
 		LightManager.init();
 	}
 
+	public void addSound(int soundId, float x, float y, float z, float volume, float pitch)
+	{
+		Source source = new Source();
+		source.setVolume(volume);
+		source.setPitch(pitch);
+		source.setPosition(x, y, z);
+		source.play(soundId);
+		soundSources.add(source);
+
+		if (game.options.debugSoundPos)
+			game.mainRender.particles.addBasicParticle(x, y, z, 0.1f, 1, 1, 1, 1, 390);
+	}
+
 	public void tick(ThreadedModelBuilder builder)
 	{
 		if (game.options.generateDistance > -1)
@@ -147,6 +167,16 @@ public class World implements IWorldBlockProvider
 		reachedMax = false;
 		currentWaterTickIndex = 0;
 		InGameGui.waterActive = 0;
+
+		for (Iterator<Source> iterator = soundSources.iterator(); iterator.hasNext(); )
+		{
+			Source source = iterator.next();
+			if (!source.isPlaying())
+			{
+				source.delete();
+				iterator.remove();
+			}
+		}
 
 		while(!offThreadTicks.isEmpty())
 		{
@@ -620,5 +650,10 @@ public class World implements IWorldBlockProvider
 	public World getWorld()
 	{
 		return this;
+	}
+
+	public int getSoundCount()
+	{
+		return soundSources.size();
 	}
 }

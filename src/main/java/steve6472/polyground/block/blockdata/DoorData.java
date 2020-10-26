@@ -7,9 +7,11 @@ import steve6472.polyground.block.special.DoorBlock;
 import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.gfx.model.AnimController;
 import steve6472.polyground.gfx.stack.Stack;
+import steve6472.polyground.registry.SoundRegistry;
 import steve6472.polyground.registry.blockdata.BlockDataRegistry;
 import steve6472.polyground.registry.model.AnimationRegistry;
 import steve6472.polyground.registry.model.ModelRegistry;
+import steve6472.polyground.world.World;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
@@ -17,8 +19,10 @@ import steve6472.polyground.registry.model.ModelRegistry;
  * Project: CaveGame
  *
  ***********************/
-public class DoorData extends BlockData
+public class DoorData extends BlockData implements IWorld
 {
+	private World world;
+	private int x, y, z;
 	private final AnimController controller;
 	private boolean isOpen;
 
@@ -128,5 +132,14 @@ public class DoorData extends BlockData
 	public String getId()
 	{
 		return BlockDataRegistry.door.id();
+	}
+
+	@Override
+	public void setWorld(World world, int x, int y, int z)
+	{
+		this.world = world;
+		this.x = x;
+		this.y = y;
+		this.z = z;
 	}
 }

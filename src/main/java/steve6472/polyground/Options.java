@@ -46,6 +46,11 @@ public class Options
 	public int simulationDistance = 6;
 
 	/**
+	 * Simulation distance
+	 */
+	public float masterVolume = 0.1f;
+
+	/**
 	 *
 	 */
 	public int randomTicks = 3;
@@ -74,6 +79,7 @@ public class Options
 	public boolean renderSkybox = true;
 	public boolean renderDataBlocks = false;
 	public boolean renderItemEntityOutline = false;
+	public boolean debugSoundPos = false;
 
 	public float mouseSensitivity = 0.1f;
 

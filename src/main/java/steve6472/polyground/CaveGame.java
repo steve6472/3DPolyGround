@@ -20,13 +20,11 @@ import steve6472.polyground.gui.OptionsGui;
 import steve6472.polyground.item.Item;
 import steve6472.polyground.item.ItemGroups;
 import steve6472.polyground.knapping.Recipes;
-import steve6472.polyground.registry.Blocks;
-import steve6472.polyground.registry.CommandRegistry;
-import steve6472.polyground.registry.Items;
-import steve6472.polyground.registry.WaterRegistry;
+import steve6472.polyground.registry.*;
 import steve6472.polyground.registry.model.AnimationRegistry;
 import steve6472.polyground.registry.model.ModelRegistry;
 import steve6472.polyground.rift.RiftManager;
+import steve6472.polyground.audio.SoundMaster;
 import steve6472.polyground.world.World;
 import steve6472.polyground.world.chunk.Chunk;
 import steve6472.polyground.world.interaction.HitPicker;
@@ -124,6 +122,9 @@ public class CaveGame extends MainApp
 //				getWindow().maximize();
 		Window.enableVSync(true);
 		mouseUpdated = true;
+
+		SoundMaster.setup();
+		SoundRegistry.init();
 	}
 
 	public Camera getCamera()
@@ -214,6 +215,9 @@ public class CaveGame extends MainApp
 		{
 			if (!options.isInMenu && !options.isGamePaused && !mainRender.dialogManager.isActive() && !inGameGui.chat.isFocused())
 				player.tick();
+
+			SoundMaster.setListenerPosition(player.getX(), player.getY() + player.eyeHeight, player.getZ());
+			SoundMaster.setListenerOrientation(player.getCamera().getViewMatrix());
 		}
 
 
@@ -455,6 +459,7 @@ public class CaveGame extends MainApp
 		DepthFrameBuffer.cleanUp();
 		VertexObjectCreator.cleanUp();
 		getWindow().close();
+		SoundMaster.destroy();
 		System.exit(0);
 	}
 
@@ -509,6 +514,6 @@ public class CaveGame extends MainApp
 	@Override
 	protected boolean enableGLDebug()
 	{
-		return DEBUG;
+		return false;
 	}
 }

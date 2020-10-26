@@ -18,6 +18,7 @@ import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.block.states.States;
 import steve6472.polyground.entity.player.Player;
 import steve6472.polyground.gfx.stack.Stack;
+import steve6472.polyground.registry.SoundRegistry;
 import steve6472.polyground.world.World;
 import steve6472.sge.main.KeyList;
 import steve6472.sge.main.events.MouseEvent;
@@ -86,14 +87,14 @@ public class DoorBlock extends Block implements IBlockData, ISpecialRender
 
 			if (f == facing && o == open && h != hinge)
 			{
-				toggle(world, s, x + offset.getXOffset(), y, z + offset.getZOffset());
+				toggle(world, s, x + offset.getXOffset(), y, z + offset.getZOffset(), false);
 			}
 		}
 
-		toggle(world, state, x, y, z);
+		toggle(world, state, x, y, z, true);
 	}
 
-	private void toggle(World world, BlockState state, int x, int y, int z)
+	private void toggle(World world, BlockState state, int x, int y, int z, boolean playSound)
 	{
 		EnumFace facing = state.get(FACING);
 		EnumLR hinge = state.get(HINGE);
@@ -113,10 +114,37 @@ public class DoorBlock extends Block implements IBlockData, ISpecialRender
 
 		DoorData data = ((DoorData) world.getData(x, y + dataOffset, z));
 
+		int sound;
+
 		if (open)
+		{
 			data.close();
-		else
+			sound = SoundRegistry.WOODEN_DOOR_CLOSE;
+		} else
+		{
 			data.open();
+			sound = SoundRegistry.WOODEN_DOOR_OPEN;
+		}
+
+		if (playSound)
+		{
+			int xOffset = 0;
+			int zOffset = 0;
+			switch (facing)
+			{
+				case NORTH -> {
+					xOffset = 1;
+					zOffset = (hinge == EnumLR.RIGHT ? 1 : 0);
+				}
+				case EAST -> {
+					xOffset = (hinge == EnumLR.RIGHT ? 0 : 1);
+					zOffset = 1;
+				}
+				case SOUTH -> zOffset = (hinge == EnumLR.RIGHT ? 0 : 1);
+				case WEST -> xOffset = (hinge == EnumLR.RIGHT ? 1 : 0);
+			}
+			world.addSound(sound, x + xOffset, y, z + zOffset, 1f, 1f);
+		}
 	}
 
 	@Override
