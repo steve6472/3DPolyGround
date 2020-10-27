@@ -13,6 +13,7 @@ in vec3 nor;
 
 uniform sampler2D albedo;
 uniform float emissionToggle;
+uniform float shade;
 
 vec2 parallaxMapping(vec2 texCoords, vec3 viewDir);
 
@@ -30,6 +31,8 @@ void main()
 	outTexture.rgb *= (1.0 - emissionToggle);
 
 	outEmission = tex * emissionToggle;
+
+	outTexture.rgb *= shade;
 
 	vec3 norm = nor;
 

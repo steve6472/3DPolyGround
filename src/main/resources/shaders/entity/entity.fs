@@ -11,6 +11,7 @@ uniform sampler2D atlas;
 
 uniform vec3 cameraPos;
 uniform mat3 normalMatrix;
+uniform float shade;
 
 struct Light
 {
@@ -35,8 +36,15 @@ void main()
 	vec3 texture = tex.rgb;
 
 	// then calculate lighting as usual
-	vec3 lighting = texture * 0.05; // hard-coded ambient component
+	vec3 lighting = vec3(2);
 	vec3 viewDir = normalize(cameraPos - vPosition);
+
+	const float AMBIENT = 0.5;
+	const float XFAC = -0.15;
+	const float ZFAC = 0.05;
+
+	float yLight = (1.0 + vNormal.y) * 0.5;
+	float light = yLight * (1.0 - AMBIENT) + vNormal.x * vNormal.x * XFAC + vNormal.z * vNormal.z * ZFAC + AMBIENT;
 
 	for (int i = 0; i < LIGHT_COUNT; ++i)
 	{
@@ -56,7 +64,7 @@ void main()
 		}
 	}
 
-	lighting = lighting * texture;
+	lighting = (lighting - 1) * texture * light * shade;
 
 	outTexture = vec4(lighting, tex.a);
 }

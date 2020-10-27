@@ -290,6 +290,7 @@ public class World implements IWorldBlockProvider
 		if (deferred)
 		{
 			MainRender.shaders.gShader.bind(game.getCamera().getViewMatrix());
+			MainRender.shaders.gShader.setUniform(CGGShader.SHADE, shade);
 
 			game.mainRender.gBuffer.bindFrameBuffer();
 			GBuffer.clearCurrentBuffer();
@@ -439,6 +440,7 @@ public class World implements IWorldBlockProvider
 		{
 			MainRender.shaders.gShader.bind(game.getCamera().getViewMatrix());
 			MainRender.shaders.gShader.setUniform(CGGShader.EMISSION_TOGGLE, 0.0f);
+			MainRender.shaders.gShader.setUniform(CGGShader.SHADE, shade);
 
 			game.mainRender.gBuffer.bindFrameBuffer();
 		} else

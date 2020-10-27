@@ -32,15 +32,6 @@ public class LightManager
 		{
 			lights.add(new Light(i));
 		}
-
-		int m = Integer.MAX_VALUE;
-
-		addLight(EnumLightSource.SKY, -m, 0, 0, 0.6f, 0.6f, 0.6f, 1, 0, 0, -1, 0, 0, -60);
-		addLight(EnumLightSource.SKY, m, 0, 0, 0.6f, 0.6f, 0.6f, 1, 0, 0, 1, 0, 0, -60);
-		addLight(EnumLightSource.SKY, 0, -m, 0, 0.5f, 0.5f, 0.5f, 1, 0, 0, 0, -1, 0, -60);
-		addLight(EnumLightSource.SKY, 0, m, 0, 1f, 1f, 1f, 1, 0, 0, 0, 1, 0, -60);
-		addLight(EnumLightSource.SKY, 0, 0, -m, 0.8f, 0.8f, 0.8f, 1, 0, 0, 0, 0, 1, -60);
-		addLight(EnumLightSource.SKY, 0, 0, m, 0.8f, 0.8f, 0.8f, 1, 0, 0, 0, 0, -1, -60);
 	}
 
 	public static void init()
@@ -137,15 +128,8 @@ public class LightManager
 		light.setInactive(false);
 	}
 
-	private static float lastShade = 0;
-
 	public static void updateLights(ILightShader<LightUniform> shader, boolean update)
 	{
-		boolean updateSky = CaveGame.getInstance().getWorld().shade != lastShade;
-		if (!update)
-			lastShade = CaveGame.getInstance().getWorld().shade;
-		float currShade = CaveGame.getInstance().getWorld().shade;
-
 		for (Light light : LightManager.lights)
 		{
 			if (light.shouldUpdateColor())
@@ -155,7 +139,7 @@ public class LightManager
 
 				if (light.getSource() == EnumLightSource.SKY)
 					shader.setUniform(shader.getLights()[light.getIndex()].color,
-						light.getColor().x * currShade, light.getColor().y * currShade, light.getColor().z * currShade);
+						light.getColor().x, light.getColor().y, light.getColor().z);
 
 			}
 			if (light.shouldUpdatePosition())
@@ -173,10 +157,6 @@ public class LightManager
 				shader.setUniform(shader.getLights()[light.getIndex()].spotlight, light.getSpotlight().x, light.getSpotlight().y, light.getSpotlight().z, light.getSpotlight().w);
 				light.setSpotlight(update);
 			}
-
-			if (updateSky && light.getSource() == EnumLightSource.SKY)
-				shader.setUniform(shader.getLights()[light.getIndex()].color,
-					light.getColor().x * currShade, light.getColor().y * currShade, light.getColor().z * currShade);
 		}
 	}
 

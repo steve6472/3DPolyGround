@@ -1,6 +1,8 @@
 package steve6472.polyground.gfx.stack;
 
+import org.joml.Math;
 import org.joml.*;
+import steve6472.polyground.CaveGame;
 import steve6472.polyground.block.BlockAtlas;
 import steve6472.polyground.gfx.MainRender;
 import steve6472.polyground.gfx.shaders.EntityShader;
@@ -62,7 +64,14 @@ public class Stack extends Matrix4fStack
 
 	public Stack normal(float nx, float ny, float nz)
 	{
-		tess.normal(nx, ny, nz);
+		pushMatrix();
+		rotateY((float) (Math.PI / 2f));
+		setTranslation(0, 0, 0);
+		transformPosition(nx, ny, nz, dest3f);
+		dest3f.normalize();
+		tess.normal(dest3f);
+		popMatrix();
+//		tess.normal(nx, ny, nz);
 		return this;
 	}
 
@@ -82,6 +91,7 @@ public class Stack extends Matrix4fStack
 		MainRender.shaders.entityShader.bind(view);
 		MainRender.shaders.entityShader.setTransformation(new Matrix4f());
 		MainRender.shaders.entityShader.setUniform(EntityShader.NORMAL_MATRIX, new Matrix3f(new Matrix4f(this).invert().transpose3x3()));
+		MainRender.shaders.entityShader.setUniform(EntityShader.SHADE, CaveGame.getInstance().world.shade);
 		BlockAtlas.getAtlas().getSprite().bind();
 
 		tess.loadPos(0);

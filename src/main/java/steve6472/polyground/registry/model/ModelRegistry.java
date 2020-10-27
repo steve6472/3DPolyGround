@@ -20,8 +20,8 @@ public class ModelRegistry
 {
 	private static final List<Model> models = new ArrayList<>();
 
-	public static final Model CHEST = register("chest");
 	public static final Model DOOR = register("door");
+	public static final Model CHEST = register("chest");
 	public static final Model AMETHINE_CORE = register("amethine_core");
 	public static final Model PLAYER = register("player");
 	public static final Model TEST = register("test");

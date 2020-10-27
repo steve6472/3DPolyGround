@@ -39,8 +39,15 @@ void main()
 	vec3 texture = albedo;
 
 	// then calculate lighting as usual
-	vec3 lighting = texture * 0.05; // hard-coded ambient component
+	vec3 lighting = vec3(2); // hard-coded ambient component
 	vec3 viewDir = normalize(cameraPos - fragPos);
+
+	const float AMBIENT = 0.5;
+	const float XFAC = -0.15;
+	const float ZFAC = 0.05;
+
+	float yLight = (1.0 + normal.y) * 0.5;
+	float light = yLight * (1.0 - AMBIENT) + normal.x * normal.x * XFAC + normal.z * normal.z * ZFAC + AMBIENT;
 
 	for (int i = 0; i < LIGHT_COUNT; ++i)
 	{
@@ -60,7 +67,7 @@ void main()
 		}
 	}
 
-	lighting = texture * lighting;
+	lighting = (lighting - 1) * texture * light;
 
 	float emiDistance = length(cameraPos - emissionPos);
 	float norDistance = length(cameraPos - fragPos);

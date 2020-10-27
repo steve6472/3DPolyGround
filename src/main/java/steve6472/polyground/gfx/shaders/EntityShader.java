@@ -18,7 +18,7 @@ import java.io.InputStreamReader;
  ***********************/
 public class EntityShader extends AbstractLightShader3D<LightUniform>
 {
-	public static Type ATLAS, NORMAL_MATRIX;
+	public static Type ATLAS, NORMAL_MATRIX, SHADE;
 
 	public EntityShader()
 	{
@@ -30,6 +30,7 @@ public class EntityShader extends AbstractLightShader3D<LightUniform>
 	{
 		addUniform("atlas", ATLAS = new Type(EnumUniformType.INT_1));
 		addUniform("normalMatrix", NORMAL_MATRIX = new Type(EnumUniformType.MAT_3));
+		addUniform("shade", SHADE = new Type(EnumUniformType.FLOAT_1));
 	}
 
 	private static InputStream stream(String name)
