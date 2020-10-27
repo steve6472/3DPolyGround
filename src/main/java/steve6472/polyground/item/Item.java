@@ -72,6 +72,9 @@ public class Item
 			{
 				CaveGame.getInstance().itemGroups.addItem(this, groups.getString(i));
 			}
+		} else
+		{
+			CaveGame.getInstance().itemGroups.addItem(this);
 		}
 
 		JSONObject js = new JSONObject(ModelLoader.read(new File("game/objects/models/" + json.getString("model") + ".json")));

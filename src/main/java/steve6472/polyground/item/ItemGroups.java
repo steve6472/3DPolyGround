@@ -61,6 +61,7 @@ public class ItemGroups
 					.addChild(GroupBuilder.create("A", "a", "stone"))
 					.addChild(GroupBuilder.create("B", "b", "stone"))
 			)
+			.addChild(GroupBuilder.create("Ungrouped", "ungrouped", "null"))
 			.generate();
 	}
 
@@ -76,6 +77,12 @@ public class ItemGroups
 		}
 
 		current.addItem(item);
+	}
+
+	public void addItem(Item item)
+	{
+		mainGroups.groups.get("ungrouped").addItem(item);
+		System.out.println(mainGroups.groups.get("ungrouped").items().size());
 	}
 
 	public ItemGroup getRoot()
