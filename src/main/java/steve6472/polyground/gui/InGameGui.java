@@ -6,6 +6,7 @@ import steve6472.polyground.block.BlockAtlas;
 import steve6472.polyground.block.blockdata.BlockData;
 import steve6472.polyground.entity.player.EnumGameMode;
 import steve6472.polyground.events.InGameGuiEvent;
+import steve6472.polyground.gfx.ItemRenderer;
 import steve6472.polyground.gfx.light.Light;
 import steve6472.polyground.gfx.light.LightManager;
 import steve6472.polyground.item.special.BlockInspectorItem;
@@ -34,7 +35,6 @@ public class InGameGui extends Gui implements IGamePause
 		super(mainApp);
 	}
 
-	public ItemBar itemBar;
 	public GameChat chat;
 	public Minimap minimap;
 	public CreativeWheel creativeWheel;
@@ -54,8 +54,6 @@ public class InGameGui extends Gui implements IGamePause
 		minimap.setLocation(getMainApp().getWidth() - 110, 20);
 		addComponent(minimap);
 
-		itemBar = new ItemBar();
-		addComponent(itemBar);
 		gcLog = new GCLog();
 
 		creativeWheel = new CreativeWheel();
@@ -79,8 +77,6 @@ public class InGameGui extends Gui implements IGamePause
 			return;
 
 		CaveGame.getInstance().options.isMouseFree = chat.isFocused();
-		itemBar.setVisible(CaveGame.getInstance().getPlayer().getGamemode() == EnumGameMode.CREATIVE);
-		itemBar.setLocation(getMainApp().getWidth() - 38, getMainApp().getHeight() / 2 - (7 * 38) / 2);
 
 		creativeWheel.setVisible(CaveGame.getInstance().getPlayer().getGamemode() == EnumGameMode.CREATIVE);
 
@@ -97,6 +93,9 @@ public class InGameGui extends Gui implements IGamePause
 			gcLog.render(10, 120);
 
 		renderTheRest();
+
+		if (CaveGame.getInstance().getPlayer().gamemode == EnumGameMode.CREATIVE)
+			ItemRenderer.renderModel(CaveGame.itemInHand.model, getMainApp(), getMainApp().getWidth() - 20, getMainApp().getHeight() - 20, 30, 225, 0, 1.25f);
 
 		if (CaveGame.getInstance().options.renderCrosshair)
 			renderCrosshair();
@@ -126,61 +125,85 @@ public class InGameGui extends Gui implements IGamePause
 	public void renderTheRest()
 	{
 		CaveGame main = CaveGame.getInstance();
-
-		Font.renderFps(5, 5, main.getFps());
-		Font.renderCustom(5, 15, 1, String.format("XYZ: %.4f %.4f %.4f", main.getPlayer().getX(), main.getPlayer().getY(), main.getPlayer().getZ()));
-		Font.render("XYZ: " + (int) Math.floor(main.getPlayer().getX()) + " " + (int) Math.floor(main.getPlayer().getY()) + " " + (int) Math.floor(main.getPlayer().getZ()), 5, 25);
-
-		final int as = BlockAtlas.getAtlas().getTileCount();
-
 		StringBuilder sb = new StringBuilder();
 
-		if (main.hitPicker.getHitResult().isHit())
+		Font.renderFps(5, 5, main.getFps());
+		sb.append(String.format("XYZ: %.4f %.4f %.4f", main.getPlayer().getX(), main.getPlayer().getY(), main.getPlayer().getZ())).append("\n");
+
+		if (CaveGame.getInstance().getPlayer().gamemode == EnumGameMode.CREATIVE)
 		{
-			sb.append("Distance: ").append(main.hitPicker.getHitResult().getDistance()).append("\n");
-			sb.append("Side: ").append(main.hitPicker.getHitResult().getFace()).append("/").append(main.hitPicker.getHitResult().getFace().getAxis()).append("\n");
-		}
+			sb
+				.append("XYZ: ")
+				.append((int) Math.floor(main.getPlayer().getX()))
+				.append(" ")
+				.append((int) Math.floor(main.getPlayer().getY()))
+				.append(" ")
+				.append((int) Math.floor(main.getPlayer().getZ()))
+				.append("\n");
 
-		sb.append("Particles: ").append(main.mainRender.particles.count() + main.mainRender.breakParticles.count()).append("\n");
-		sb.append("Chunks: ").append(chunks).append("/").append(chunkLayers).append("\n");
-		sb.append("Water Active Chunks: ").append(waterActive).append("\n");
-
-		int activeLightCount = 0;
-		for (Light light : LightManager.lights)
-		{
-			if (!light.isInactive())
-				activeLightCount++;
-		}
-
-		sb.append("Lights: ").append(activeLightCount).append("\n");
-		sb.append("Sounds: ").append(CaveGame.getInstance().world.getSoundCount()).append("\n");
-		sb.append("Scheduled Ticks: ").append(CaveGame.getInstance().world.scheduledTicks()).append("/").append(CaveGame.getInstance().world.scheduledTicks_()).append("\n");
-		sb.append("OnGround: ").append(CaveGame.getInstance().getPlayer().isOnGround).append("\n");
-
-//		sb.append("Left Hand: ").append(CaveGame.getInstance().getPlayer().holdedItems.get(EnumSlot.HAND_LEFT).getName()).append("\n");
-		sb.append("Right Hand: ").append(CaveGame.getInstance().getPlayer().heldItem).append("\n");
-
-		if (main.getPlayer().getHitResult().isHit())
-		{
-			sb.append("\n\n");
-			sb.append(BlockInspectorItem.getString(main.getPlayer().getHitResult().getState())).append("\n");
-		}
-
-		BlockData data = CaveGame.getInstance().getWorld().getData(main.hitPicker.getHitResult().getX(), main.hitPicker.getHitResult().getY(), main.hitPicker.getHitResult().getZ());
-		if (data != null)
-		{
-			try
+			if (main.hitPicker.getHitResult().isHit())
 			{
-				String snbt = SNBTUtil.toSNBT(data.write());
-				sb.append("NBT: ").append(snbt, 0, Math.min(snbt.length(), 500));
-			} catch (IOException e)
+				sb.append("Distance: ").append(main.hitPicker.getHitResult().getDistance()).append("\n");
+				sb
+					.append("Side: ")
+					.append(main.hitPicker.getHitResult().getFace())
+					.append("/")
+					.append(main.hitPicker.getHitResult().getFace().getAxis())
+					.append("\n");
+			}
+
+			sb.append("Particles: ").append(main.mainRender.particles.count() + main.mainRender.breakParticles.count()).append("\n");
+			sb.append("Chunks: ").append(chunks).append("/").append(chunkLayers).append("\n");
+			sb.append("Water Active Chunks: ").append(waterActive).append("\n");
+
+			int activeLightCount = 0;
+			for (Light light : LightManager.lights)
 			{
-				e.printStackTrace();
+				if (!light.isInactive())
+					activeLightCount++;
+			}
+
+			sb.append("Lights: ").append(activeLightCount).append("\n");
+			sb.append("Sounds: ").append(CaveGame.getInstance().world.getSoundCount()).append("\n");
+			sb
+				.append("Scheduled Ticks: ")
+				.append(CaveGame.getInstance().world.scheduledTicks())
+				.append("/")
+				.append(CaveGame.getInstance().world.scheduledTicks_())
+				.append("\n");
+			sb.append("OnGround: ").append(CaveGame.getInstance().getPlayer().isOnGround).append("\n");
+
+			//		sb.append("Left Hand: ").append(CaveGame.getInstance().getPlayer().holdedItems.get(EnumSlot.HAND_LEFT).getName()).append("\n");
+			sb.append("Right Hand: ").append(CaveGame.getInstance().getPlayer().heldItem).append("\n");
+
+			if (main.getPlayer().getHitResult().isHit())
+			{
+				sb.append("\n\n");
+				sb.append(BlockInspectorItem.getString(main.getPlayer().getHitResult().getState())).append("\n");
+			}
+
+			BlockData data = CaveGame
+				.getInstance()
+				.getWorld()
+				.getData(main.hitPicker.getHitResult().getX(), main.hitPicker.getHitResult().getY(), main.hitPicker
+					.getHitResult()
+					.getZ());
+			if (data != null)
+			{
+				try
+				{
+					String snbt = SNBTUtil.toSNBT(data.write());
+					sb.append("NBT: ").append(snbt, 0, Math.min(snbt.length(), 500));
+				} catch (IOException e)
+				{
+					e.printStackTrace();
+				}
 			}
 		}
 
-		Font.render(5, 45, sb.toString());
+		Font.render(5, 15, sb.toString());
 
+		final int as = BlockAtlas.getAtlas().getTileCount();
 		if (CaveGame.getInstance().options.renderAtlases)
 			SpriteRender.renderSprite(0, 60 + getLineCount(sb) * 8, as, as, 0, BlockAtlas.getAtlas().getSprite().getId());
 	}

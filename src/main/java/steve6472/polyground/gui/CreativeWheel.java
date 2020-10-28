@@ -219,8 +219,7 @@ public class CreativeWheel extends Component
 		{
 			if (overItem && !overIndex.isBlank())
 			{
-				Item selectedItem = Items.getItemByName(overIndex);
-				CaveGame.getInstance().inGameGui.itemBar.scroll = selectedItem.getId() - 1;
+				CaveGame.itemInHand = Items.getItemByName(overIndex);
 				open = false;
 			} else
 			{

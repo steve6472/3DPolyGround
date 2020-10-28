@@ -8,13 +8,15 @@ package steve6472.polyground.entity.player;
  ***********************/
 public enum EnumGameMode
 {
-	SURVIVAL(true),
-	CREATIVE(false);
+	SURVIVAL(true, false),
+	CREATIVE(false, true);
 
 	public final boolean spawBlockLoot;
+	public final boolean canFly;
 
-	EnumGameMode(boolean spawBlockLoot)
+	EnumGameMode(boolean spawBlockLoot, boolean canFly)
 	{
 		this.spawBlockLoot = spawBlockLoot;
+		this.canFly = canFly;
 	}
 }

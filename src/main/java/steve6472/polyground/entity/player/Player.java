@@ -98,6 +98,8 @@ public class Player implements IMotion3f, IPosition3f
 
 	public void tick()
 	{
+		canFly = gamemode.canFly;
+
 		CaveGame.itemInHand.onTickInItemBar(this);
 
 		if (flyTimer > 0)
