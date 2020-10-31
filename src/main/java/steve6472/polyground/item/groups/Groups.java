@@ -19,7 +19,7 @@ public class Groups
 {
 	public static final String UNGROUPED = "ungrouped";
 
-	public final record Group(IGroupWheelData wheelData, HashMap<String, Group> groups, List<IGroupWheelData> items)
+	public final record Group(IGroupWheelData wheelData, Group parent, HashMap<String, Group> groups, List<IGroupWheelData> items)
 	{
 		public void addGroup(Group group)
 		{
@@ -74,7 +74,7 @@ public class Groups
 				.addChild(GroupBuilder.create("A", "a", "stone", BLOCK))
 				.addChild(GroupBuilder.create("B", "b", "stone", BLOCK)))
 			.addChild(GroupBuilder.create("Ungrouped", "ungrouped", "null", BLOCK))
-			.generate();
+			.generate(null);
 	}
 
 	private Group findGroup(String groupPath)
@@ -160,7 +160,7 @@ public class Groups
 			return this;
 		}
 
-		public Group generate()
+		public Group generate(Group parent)
 		{
 			IGroupWheelData data = switch (previewType)
 				{
@@ -169,11 +169,11 @@ public class Groups
 					default -> throw new IllegalStateException("Unexpected value: " + previewType);
 				};
 
-			Group group = new Group(data, new HashMap<>(), new ArrayList<>());
+			Group group = new Group(data, parent, new HashMap<>(), new ArrayList<>());
 
 			for (GroupBuilder builder : children)
 			{
-				group.addGroup(builder.generate());
+				group.addGroup(builder.generate(group));
 			}
 
 			return group;

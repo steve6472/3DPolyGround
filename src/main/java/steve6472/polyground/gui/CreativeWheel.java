@@ -197,25 +197,38 @@ public class CreativeWheel extends Component
 	@Event
 	public void select(MouseEvent e)
 	{
-		if (isOpen() && e.getAction() == KeyList.PRESS && e.getButton() == KeyList.LMB)
+		if (isOpen() && e.getAction() == KeyList.PRESS)
 		{
-			if (!overIndex.isBlank() && overType != PreviewType.GROUP)
+			if (e.getButton() == KeyList.LMB)
 			{
-				if (overType == PreviewType.BLOCK)
+				if (!overIndex.isBlank() && overType != PreviewType.GROUP)
 				{
-					CaveGame.getInstance().getPlayer().itemPlacer = null;
-					CaveGame.getInstance().getPlayer().blockPlacer = Blocks.getBlockByName(overIndex);
+					if (overType == PreviewType.BLOCK)
+					{
+						CaveGame.getInstance().getPlayer().itemPlacer = null;
+						CaveGame.getInstance().getPlayer().blockPlacer = Blocks.getBlockByName(overIndex);
+					} else
+					{
+						CaveGame.getInstance().getPlayer().blockPlacer = null;
+						CaveGame.getInstance().getPlayer().itemPlacer = Items.getItemByName(overIndex);
+					}
+					open = false;
 				} else
 				{
-					CaveGame.getInstance().getPlayer().blockPlacer = null;
-					CaveGame.getInstance().getPlayer().itemPlacer = Items.getItemByName(overIndex);
+					if (!overIndex.isBlank() && currentGroup.groups().get(overIndex).groups().size() + currentGroup
+						.groups()
+						.get(overIndex)
+						.items()
+						.size() >= 3)
+					{
+						currentGroup = currentGroup.groups().get(overIndex);
+					}
 				}
-				open = false;
-			} else
+			} else if (e.getButton() == KeyList.RMB)
 			{
-				if (!overIndex.isBlank() && currentGroup.groups().get(overIndex).groups().size() + currentGroup.groups().get(overIndex).items().size() >= 3)
+				if (currentGroup != CaveGame.getInstance().itemGroups.getRoot())
 				{
-					currentGroup = currentGroup.groups().get(overIndex);
+					currentGroup = currentGroup.parent();
 				}
 			}
 		}
