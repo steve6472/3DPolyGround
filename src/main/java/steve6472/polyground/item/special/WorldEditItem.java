@@ -3,7 +3,6 @@ package steve6472.polyground.item.special;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.json.JSONObject;
-import steve6472.polyground.CaveGame;
 import steve6472.polyground.EnumFace;
 import steve6472.polyground.PolyUtil;
 import steve6472.polyground.block.states.BlockState;
@@ -40,12 +39,12 @@ public class WorldEditItem extends Item
 
 	@Event
 	public void renderPos(InGameGuiEvent.PostRender e)
-	{
+	{/*
 		if (CaveGame.itemInHand != this)
 			return;
 
 		renderPosition(firstPos, firstPosScreen);
-		renderPosition(secondPos, secondPosScreen);
+		renderPosition(secondPos, secondPosScreen);*/
 	}
 
 	private void renderPosition(Vector3f worldPos, Vector2f screenPos)

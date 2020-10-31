@@ -33,19 +33,19 @@ public class AirBiome extends Biome
 	@Override
 	public BlockState getTopBlock()
 	{
-		return Block.air.getDefaultState();
+		return Block.AIR.getDefaultState();
 	}
 
 	@Override
 	public BlockState getUnderBlock()
 	{
-		return Block.air.getDefaultState();
+		return Block.AIR.getDefaultState();
 	}
 
 	@Override
 	public BlockState getCaveBlock()
 	{
-		return Block.air.getDefaultState();
+		return Block.AIR.getDefaultState();
 	}
 
 	/**

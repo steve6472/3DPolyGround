@@ -2,7 +2,6 @@ package steve6472.polyground.item.special;
 
 import org.joml.Vector3f;
 import org.json.JSONObject;
-import steve6472.polyground.CaveGame;
 import steve6472.polyground.commands.coms.TeleCommand;
 import steve6472.polyground.entity.player.EnumSlot;
 import steve6472.polyground.entity.player.Player;
@@ -30,7 +29,7 @@ public class TeleportPlacerItem extends Item
 
 	@Event
 	public void renderPos(WorldEvent.PostRender e)
-	{
+	{/*
 		if (CaveGame.itemInHand != this)
 			return;
 
@@ -44,7 +43,7 @@ public class TeleportPlacerItem extends Item
 			pos.set((float) Math.floor((pos.x + 0.25f) * 2.0f) / 2.0f, (float) Math.floor((pos.y + 0.25f) * 2.0f) / 2.0f, (float) Math.floor((pos.z + 0.25f) * 2.0f) / 2.0f);
 		}
 
-		CaveGame.getInstance().mainRender.particles.addBasicTickParticle(pos.x, pos.y, pos.z, 0.05f, 0.6f, 1f, 0.6f, 1f);
+		CaveGame.getInstance().mainRender.particles.addBasicTickParticle(pos.x, pos.y, pos.z, 0.05f, 0.6f, 1f, 0.6f, 1f);*/
 	}
 
 	@Override

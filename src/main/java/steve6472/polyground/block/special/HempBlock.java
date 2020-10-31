@@ -53,7 +53,7 @@ public class HempBlock extends Block
 			spawnLoot(world, state, x, y, z);
 		} else
 		{
-			world.setBlock(Block.air, x, y, z);
+			world.setBlock(Block.AIR, x, y, z);
 		}
 		player.processNextBlockBreak = false;
 	}

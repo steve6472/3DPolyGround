@@ -92,7 +92,7 @@ public class TickScheduler
 
 	public void scheduleTick(BlockState state, EnumFace from, int x, int y, int z, int tickIn)
 	{
-		if (state == null || state.getBlock() == Block.air)
+		if (state == null || state.getBlock() == Block.AIR)
 			return;
 
 		if (world.getGame().options.maxScheduledTicks == -1 || ticksScheduled < world.getGame().options.maxScheduledTicks)

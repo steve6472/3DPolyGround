@@ -191,7 +191,7 @@ public class Tree
 					double dist = Vector3d.distance(0, 0, 0, x, y, z);
 					if (dist <= radius)
 					{
-						if (world.getBlock(pos.getX() + x, pos.getY() + y, pos.getZ() + z) == Block.air)
+						if (world.getBlock(pos.getX() + x, pos.getY() + y, pos.getZ() + z) == Block.AIR)
 							world.setBlock(leaves, pos.getX() + x, pos.getY() + y, pos.getZ() + z);
 					}
 				}
@@ -334,7 +334,7 @@ public class Tree
 				return false;
 
 			Block b = world.getBlock(x, y, z);
-			if (!(b instanceof LeavesBlock) && b != Block.air)
+			if (!(b instanceof LeavesBlock) && b != Block.AIR)
 			{
 				return false;
 			}

@@ -82,7 +82,7 @@ public class LeavesBlock extends Block
 	{
 		if (!state.get(PERSISTENT) && state.get(DISTANCE) == 7)
 		{
-			world.setBlock(Block.air, x, y, z);
+			world.setBlock(Block.AIR, x, y, z);
 		}
 	}
 

@@ -2,12 +2,11 @@ package steve6472.polyground.gui;
 
 import org.lwjgl.opengl.GL30;
 import steve6472.polyground.CaveGame;
-import steve6472.polyground.block.Block;
 import steve6472.polyground.entity.player.EnumGameMode;
-import steve6472.polyground.gfx.ItemRenderer;
 import steve6472.polyground.gfx.MainRender;
-import steve6472.polyground.item.Item;
-import steve6472.polyground.item.ItemGroups;
+import steve6472.polyground.item.groups.Groups;
+import steve6472.polyground.item.groups.IGroupWheelData;
+import steve6472.polyground.item.groups.PreviewType;
 import steve6472.polyground.registry.Blocks;
 import steve6472.polyground.registry.Items;
 import steve6472.polyground.tessellators.Basic2DTessellator;
@@ -30,9 +29,9 @@ public class CreativeWheel extends Component
 	private final Basic2DTessellator tess;
 	private boolean open;
 	private String overIndex;
-	private boolean overItem;
+	private PreviewType overType;
 
-	private ItemGroups.ItemGroup currentGroup;
+	private Groups.Group currentGroup;
 
 	public CreativeWheel()
 	{
@@ -81,14 +80,14 @@ public class CreativeWheel extends Component
 			overIndex = "";
 
 			int i = 0;
-			for (String s : currentGroup.groups().keySet())
+			for (Groups.Group group : currentGroup.groups().values())
 			{
-				render(s, c, i, half, f, g, false);
+				renderPart(group.wheelData(), c, i, half, f, g);
 				i++;
 			}
-			for (Item item : currentGroup.items())
+			for (IGroupWheelData data : currentGroup.items())
 			{
-				render(item.name, c, i, half, f, g, true);
+				renderPart(data, c, i, half, f, g);
 				i++;
 			}
 
@@ -100,14 +99,14 @@ public class CreativeWheel extends Component
 			tess.disable(0, 1);
 
 			i = 0;
-			for (String s : currentGroup.groups().keySet())
+			for (Groups.Group group : currentGroup.groups().values())
 			{
-				render(half, f, g, i, c, s, false);
+				renderItem(group.wheelData(), c, i, half, f, g);
 				i++;
 			}
-			for (Item item : currentGroup.items())
+			for (IGroupWheelData data : currentGroup.items())
 			{
-				render(half, f, g, i, c, item.getName(), true);
+				renderItem(data, c, i, half, f, g);
 				i++;
 			}
 
@@ -115,8 +114,11 @@ public class CreativeWheel extends Component
 		}
 	}
 
-	private void render(float half, float f, float g, int i, int c, String s, boolean items)
+	private void renderItem(IGroupWheelData data, int c, int i, float half, float f, float g)
 	{
+		/*
+		 * Center the item
+		 */
 		double ang = 6.28318530718 / c * i;
 
 		float v0x = cos(ang - half) * f + getX();
@@ -134,32 +136,15 @@ public class CreativeWheel extends Component
 		float x = (v0x + v1x + v2x + v3x) / 4f;
 		float y = (v0y + v1y + v2y + v3y) / 4f;
 
-		if (items)
-		{
-			Block b = Blocks.getBlockByName(s);
-			if (b == Block.error)
-			{
-				Item item = Items.getItemByName(s);
-				ItemRenderer.renderModel(item.model, getMain(), x, y, 30, 225, 0, 2f);
-			} else
-			{
-				ItemRenderer.renderBlock(b, getMain(), x, y, 30, 225, 0, 2f);
-			}
-		} else
-		{
-			ItemRenderer.renderBlock(Blocks.getBlockByName(currentGroup.groups().get(s).preview()), getMain(), x, y, 30, 225, 0, 2f);
-		}
+		/*
+		 * Render preview and name
+		 */
 
-		if (items)
-		{
-			Font.render((int) (x) - Font.getTextWidth(s, 1) / 2, (int) (y) + 30, s);
-		} else
-		{
-			Font.render((int) (x) - Font.getTextWidth(currentGroup.groups().get(s).name(), 1) / 2, (int) (y) + 30, currentGroup.groups().get(s).name());
-		}
+		data.renderPreview(getMain(), x, y);
+		Font.render((int) (x) - Font.getTextWidth(data.name(), 1) / 2, (int) (y) + 30, data.name());
 	}
 
-	private void render(String s, int c, int i, float half, float f, float g, boolean items)
+	private void renderPart(IGroupWheelData data, int c, int i, float half, float f, float g)
 	{
 		double ang = 6.28318530718 / c * i;
 
@@ -179,36 +164,33 @@ public class CreativeWheel extends Component
 
 		if (isInside)
 		{
-			overIndex = s;
-			overItem = items;
+			overIndex = data.id();
+			overType = data.previewType();
 		}
 
-		float col = isInside ? 0.8f : 0.4f;
-		float itemCol = items ? 1f : col;
-
 		tess.pos(v0x, v0y)
-			.color(col, col, itemCol, 0.8f)
+			.color(data.red(), data.green(), data.blue(), 0.8f)
 			.endVertex();
 
 		tess.pos(v1x, v1y)
-			.color(col - 0.2f, col - 0.2f, itemCol - 0.2f, 0.9f)
+			.color(data.red() - 0.2f, data.green() - 0.2f, data.blue() - 0.2f, 0.9f)
 			.endVertex();
 
 		tess.pos(v2x, v2y)
-			.color(col, col, itemCol, 0.8f)
+			.color(data.red(), data.green(), data.blue(), 0.8f)
 			.endVertex();
 
 
 		tess.pos(v0x, v0y)
-			.color(col, col, itemCol, 0.8f)
+			.color(data.red(), data.green(), data.blue(), 0.8f)
 			.endVertex();
 
 		tess.pos(v3x, v3y)
-			.color(col - 0.2f, col - 0.2f, itemCol - 0.2f, 0.9f)
+			.color(data.red() - 0.2f, data.green() - 0.2f, data.blue() - 0.2f, 0.9f)
 			.endVertex();
 
 		tess.pos(v1x, v1y)
-			.color(col - 0.2f, col - 0.2f, itemCol - 0.2f, 0.9f)
+			.color(data.red() - 0.2f, data.green() - 0.2f, data.blue() - 0.2f, 0.9f)
 			.endVertex();
 	}
 
@@ -217,9 +199,17 @@ public class CreativeWheel extends Component
 	{
 		if (isOpen() && e.getAction() == KeyList.PRESS && e.getButton() == KeyList.LMB)
 		{
-			if (overItem && !overIndex.isBlank())
+			if (!overIndex.isBlank() && overType != PreviewType.GROUP)
 			{
-				CaveGame.itemInHand = Items.getItemByName(overIndex);
+				if (overType == PreviewType.BLOCK)
+				{
+					CaveGame.getInstance().getPlayer().itemPlacer = null;
+					CaveGame.getInstance().getPlayer().blockPlacer = Blocks.getBlockByName(overIndex);
+				} else
+				{
+					CaveGame.getInstance().getPlayer().blockPlacer = null;
+					CaveGame.getInstance().getPlayer().itemPlacer = Items.getItemByName(overIndex);
+				}
 				open = false;
 			} else
 			{
@@ -255,7 +245,6 @@ public class CreativeWheel extends Component
 
 		return !(has_neg && has_pos);
 	}
-
 
 	private float sin(double ang)
 	{

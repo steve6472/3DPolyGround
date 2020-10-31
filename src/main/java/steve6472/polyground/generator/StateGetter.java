@@ -12,10 +12,10 @@ import java.util.List;
  */
 class StateGetter
 {
-	private final DataBuilder dataBuilder;
+	private final BlockBuilder dataBuilder;
 	private final List<PropertyBuilder> propertyBuilders;
 
-	StateGetter(DataBuilder dataBuilder)
+	StateGetter(BlockBuilder dataBuilder)
 	{
 		this.dataBuilder = dataBuilder;
 		propertyBuilders = new ArrayList<>();
@@ -44,17 +44,17 @@ class StateGetter
 		return this;
 	}
 
-	public DataBuilder finish()
+	public BlockBuilder finish()
 	{
 		return dataBuilder;
 	}
 
-	public DataBuilder finish(String tag)
+	public BlockBuilder finish(String tag)
 	{
 		return addTag(tag).finish();
 	}
 
-	public DataBuilder finish(String... tags)
+	public BlockBuilder finish(String... tags)
 	{
 		return addTags(tags).finish();
 	}

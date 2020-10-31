@@ -59,7 +59,7 @@ public class BreakableBlock extends CustomBlock
 		if (click.getButton() == KeyList.LMB)
 		{
 			spawnLoot(world, state, x, y, z);
-			world.setBlock(Block.air, x, y, z);
+			world.setBlock(Block.AIR, x, y, z);
 		}
 	}
 

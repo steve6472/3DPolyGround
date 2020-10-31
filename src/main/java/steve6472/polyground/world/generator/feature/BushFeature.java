@@ -42,10 +42,10 @@ public class BushFeature extends Feature
 		world.setState(log, x, y + 1, z);
 		world.setState(log, x, y + 2, z);
 		world.setState(leaves, x, y + 3, z);
-		world.setState(leaves, x + 1, y + 2, z, (b) -> b.getBlock() == Block.air);
-		world.setState(leaves, x - 1, y + 2, z, (b) -> b.getBlock() == Block.air);
-		world.setState(leaves, x, y + 2, z + 1, (b) -> b.getBlock() == Block.air);
-		world.setState(leaves, x, y + 2, z - 1, (b) -> b.getBlock() == Block.air);
+		world.setState(leaves, x + 1, y + 2, z, (b) -> b.getBlock() == Block.AIR);
+		world.setState(leaves, x - 1, y + 2, z, (b) -> b.getBlock() == Block.AIR);
+		world.setState(leaves, x, y + 2, z + 1, (b) -> b.getBlock() == Block.AIR);
+		world.setState(leaves, x, y + 2, z - 1, (b) -> b.getBlock() == Block.AIR);
 	}
 
 	@Override
@@ -62,7 +62,7 @@ public class BushFeature extends Feature
 			// Don't generate on border!
 			if (Math.abs(x) % 16 == 0 || Math.abs(x) % 16 == 15 || Math.abs(z) % 16 == 0 || Math.abs(z) % 16 == 15)
 				return false;
-			return world.getState(x, y, z) == blockUnder && world.getBlock(x, y + 1, z) == Block.air && world.getBlock(x, y + 2, z) == Block.air && world.getBlock(x, y + 3, z) == Block.air;
+			return world.getState(x, y, z) == blockUnder && world.getBlock(x, y + 1, z) == Block.AIR && world.getBlock(x, y + 2, z) == Block.AIR && world.getBlock(x, y + 3, z) == Block.AIR;
 		} else
 		{
 			return world.getState(x, y, z) == blockUnder;

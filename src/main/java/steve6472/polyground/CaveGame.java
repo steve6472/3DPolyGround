@@ -18,7 +18,7 @@ import steve6472.polyground.gui.InGameGui;
 import steve6472.polyground.gui.MainMenu;
 import steve6472.polyground.gui.OptionsGui;
 import steve6472.polyground.item.Item;
-import steve6472.polyground.item.ItemGroups;
+import steve6472.polyground.item.groups.Groups;
 import steve6472.polyground.knapping.Recipes;
 import steve6472.polyground.registry.*;
 import steve6472.polyground.registry.model.AnimationRegistry;
@@ -57,13 +57,12 @@ public class CaveGame extends MainApp
 	public static boolean DEBUG = false;
 
 	/* Game objects */
-	public static Item itemInHand;
 	private Player player;
 	public World world;
 	public CommandRegistry commandRegistry;
 	public HitPicker hitPicker;
 	public Recipes knappingRecipes;
-	public ItemGroups itemGroups;
+	public Groups itemGroups;
 
 	public MainRender mainRender;
 
@@ -89,7 +88,7 @@ public class CaveGame extends MainApp
 
 		getEventHandler().runEvent(new SpecialBlockRegistryEvent());
 
-		itemGroups = new ItemGroups();
+		itemGroups = new Groups();
 
 		ModelRegistry.init();
 		AnimationRegistry.init();
@@ -111,7 +110,6 @@ public class CaveGame extends MainApp
 
 		knappingRecipes = new Recipes();
 
-		itemInHand = Items.getItemByName("stone");
 		inGameGui.creativeWheel.load();
 
 		getEventHandler().runEvent(new WindowSizeEvent(getWindowWidth(), getWindowHeight()));
@@ -487,7 +485,7 @@ public class CaveGame extends MainApp
 				{
 					DataGenerator gen = new DataGenerator();
 					long start = System.nanoTime();
-					gen.generateBlocksItems();
+					gen.generateBlocks();
 					System.out.println("Generated blocks and items in " + (System.nanoTime() - start) / 1000000.0);
 					start = System.nanoTime();
 					gen.generateFeatures();

@@ -100,7 +100,7 @@ public class Blocks
 	{
 		Integer ref = reference.get(name);
 		if (ref == null)
-			return Block.error;
+			return Block.ERROR;
 		return blocks[ref];
 	}
 
@@ -170,12 +170,6 @@ public class Blocks
 		}
 
 		temp = null;
-
-		for (Block block : blocks)
-		{
-			block.item = Items.getItemByName(block.item.getName());
-//			System.out.println(block.item.getClass().getSimpleName());
-		}
 
 		BlockAtlas.compileTextures(0);
 

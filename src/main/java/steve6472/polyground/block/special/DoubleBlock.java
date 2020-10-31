@@ -38,7 +38,7 @@ public class DoubleBlock extends CustomBlock
 		{
 			if (state.get(HALF) == EnumHalf.BOTTOM)
 				spawnLoot(world, state, x, y, z);
-			world.setBlock(Block.air, x, y, z);
+			world.setBlock(Block.AIR, x, y, z);
 		}
 	}
 
@@ -50,7 +50,7 @@ public class DoubleBlock extends CustomBlock
 			BlockState up = world.getState(x, y + 1, z);
 			BlockState down = world.getState(x, y - 1, z);
 //			return super.isValidPosition(state, world, x, y, z) && (down.getBlock() != Block.air) && (up.getBlock() == this || up.getBlock() == Block.air);
-			return super.isValidPosition(state, world, x, y, z) && (down.hasTag(Tags.FLOWER_TOP)) && (up.getBlock() == this || up.getBlock() == Block.air);
+			return super.isValidPosition(state, world, x, y, z) && (down.hasTag(Tags.FLOWER_TOP)) && (up.getBlock() == this || up.getBlock() == Block.AIR);
 		} else
 		{
 			BlockState stateUnder = world.getState(x, y - 1, z);
@@ -74,7 +74,7 @@ public class DoubleBlock extends CustomBlock
 		super.onPlayerBreak(state, world, player, breakedFrom, x, y, z);
 
 		int Y = (state.get(HALF) == EnumHalf.BOTTOM ? 1 : -1);
-		world.setBlock(Block.air, x, y + Y, z);
+		world.setBlock(Block.AIR, x, y + Y, z);
 	}
 
 	@Override

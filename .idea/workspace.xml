@@ -17,8 +17,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Record" />
-        <option value="Interface" />
         <option value="Enum" />
+        <option value="Interface" />
         <option value="Class" />
       </list>
     </option>
@@ -33,6 +33,9 @@
         <option name="localRepository" value="D:\MavenRepo" />
       </MavenGeneralSettings>
     </option>
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedIndex" value="1" />
   </component>
   <component name="ProjectId" id="1ZTuvkYYsXrUbdXdp4wzwE1yruE" />
   <component name="ProjectViewState">
@@ -70,11 +73,11 @@
       <recent name="steve6472.polyground.block.model.elements" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="steve6472.polyground.item.groups" />
+      <recent name="steve6472.polyground.gui" />
       <recent name="steve6472.polyground.block.properties.enums" />
       <recent name="steve6472.polyground.registry.model" />
       <recent name="steve6472.polyground.tessellators" />
-      <recent name="steve6472.polyground.entity.model" />
-      <recent name="steve6472.polyground.block.special" />
     </key>
   </component>
   <component name="RunAnythingCache">

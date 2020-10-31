@@ -61,13 +61,13 @@ public class Items
 
 			game.getEventHandler().register(item);
 
-			if (!Items.items.containsKey(item.getName()) && !reference.containsKey(i + 1))
+			if (!Items.items.containsKey(item.name()) && !reference.containsKey(i + 1))
 			{
-				Items.items.put(item.getName(), item);
-				reference.put(i + 1, item.getName());
+				Items.items.put(item.name(), item);
+				reference.put(i + 1, item.name());
 			} else
 			{
-				throw new IllegalArgumentException("Duplicate item name " + item.getName() + " or id " + i);
+				throw new IllegalArgumentException("Duplicate item name " + item.name() + " or id " + i);
 			}
 		}
 	}

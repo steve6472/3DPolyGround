@@ -17,7 +17,6 @@ import steve6472.polyground.entity.item.ItemEntity;
 import steve6472.polyground.item.Item;
 import steve6472.polyground.item.itemdata.IItemData;
 import steve6472.polyground.item.itemdata.ItemData;
-import steve6472.polyground.registry.Blocks;
 import steve6472.polyground.world.World;
 import steve6472.sge.main.KeyList;
 import steve6472.sge.main.events.Event;
@@ -61,6 +60,8 @@ public class Player implements IMotion3f, IPosition3f
 
 	public BlockEntity heldBlock;
 	public ItemEntity heldItem;
+	public Block blockPlacer;
+	public Item itemPlacer;
 
 	public Player(CaveGame game)
 	{
@@ -100,7 +101,11 @@ public class Player implements IMotion3f, IPosition3f
 	{
 		canFly = gamemode.canFly;
 
-		CaveGame.itemInHand.onTickInItemBar(this);
+		if (gamemode != EnumGameMode.CREATIVE)
+		{
+			blockPlacer = null;
+			itemPlacer = null;
+		}
 
 		if (flyTimer > 0)
 			flyTimer--;
@@ -257,24 +262,6 @@ public class Player implements IMotion3f, IPosition3f
 			BlockState state = world.getState(hr.getX(), hr.getY(), hr.getZ());
 
 			state.getBlock().onClick(state, world, this, hr.getFace(), event, hr.getX(), hr.getY(), hr.getZ());
-
-			if (gamemode == EnumGameMode.CREATIVE)
-			{
-				CaveGame.itemInHand.onClick(world, state, this, EnumSlot.CREATIVE_BELT, hr.getFace(), event, hr.getX(), hr.getY(), hr.getZ());
-			} else
-			{
-				if (heldBlock != null)
-					heldBlock.state.getBlock().item.onClick(world, state, this, EnumSlot.CREATIVE_BELT, hr.getFace(), event, hr.getX(), hr.getY(), hr.getZ());
-			}
-		}
-
-		if (gamemode == EnumGameMode.CREATIVE && event.getAction() == KeyList.PRESS)
-		{
-			CaveGame.itemInHand.onClick(this, EnumSlot.CREATIVE_BELT, event);
-		} else if (event.getAction() == KeyList.PRESS)
-		{
-			if (heldBlock != null)
-				heldBlock.state.getBlock().item.onClick(this, EnumSlot.CREATIVE_BELT, event);
 		}
 
 		if (event.getButton() == KeyList.RMB && event.getAction() == KeyList.PRESS)
@@ -298,9 +285,26 @@ public class Player implements IMotion3f, IPosition3f
 
 	private void pressRMB()
 	{
-		if (gamemode == EnumGameMode.CREATIVE && Blocks.getBlockByName(CaveGame.itemInHand.getName()) == Block.error && getHitResult().isHit())
+		if (gamemode == EnumGameMode.CREATIVE && blockPlacer != null && getHitResult().isHit() && processNextBlockPlace)
 		{
-			Item item = CaveGame.itemInHand;
+			world.setState(blockPlacer
+					.getStateForPlacement(
+						world,
+						this,
+						getHitResult().getFace(),
+						getHitResult().getX(),
+						getHitResult().getY(),
+						getHitResult().getZ()),
+				getHitResult().getX() + getHitResult().getFace().getXOffset(),
+				getHitResult().getY() + getHitResult().getFace().getYOffset(),
+				getHitResult().getZ() + getHitResult().getFace().getZOffset(), 5);
+
+			return;
+		}
+
+		if (gamemode == EnumGameMode.CREATIVE && itemPlacer != null && getHitResult().isHit() && processNextBlockPlace)
+		{
+			Item item = itemPlacer;
 			ItemData data = null;
 			if (item instanceof IItemData id)
 				data = id.createNewItemData();
@@ -340,7 +344,8 @@ public class Player implements IMotion3f, IPosition3f
 				{
 					BlockState curr = world.getState(x, y, z);
 
-					Pair<BlockState, BlockState> pair = blockToPlace.merge(world, curr, heldBlock.state == null ? Block.air.getDefaultState() : heldBlock.state, this, face, x, y, z);
+					Pair<BlockState, BlockState> pair = blockToPlace.merge(world, curr, heldBlock.state == null ? Block.AIR
+						.getDefaultState() : heldBlock.state, this, face, x, y, z);
 
 					if (pair != null)
 					{
@@ -409,7 +414,7 @@ public class Player implements IMotion3f, IPosition3f
 				BlockState state = world.getState(x, y, z);
 
 				state.getBlock().onPlayerBreak(state, world, this, hr.getFace(), x, y, z);
-				world.setBlock(Block.air, hr.getX(), hr.getY(), hr.getZ());
+				world.setBlock(Block.AIR, hr.getX(), hr.getY(), hr.getZ());
 			}
 		} else
 		{
@@ -426,7 +431,7 @@ public class Player implements IMotion3f, IPosition3f
 				if (state.hasTag(Tags.PICKABLE) || state.getBlock().isPickable(state, this))
 				{
 					Pair<BlockState, BlockState> pair = state.getBlock().getStatesForPickup(world, state,
-						heldBlock == null ? Block.air.getDefaultState() : heldBlock.state,
+						heldBlock == null ? Block.AIR.getDefaultState() : heldBlock.state,
 						this, hr.getFace(), x, y, z);
 
 					if (pair != null)

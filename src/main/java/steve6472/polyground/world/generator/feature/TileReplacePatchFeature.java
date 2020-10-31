@@ -67,7 +67,7 @@ public class TileReplacePatchFeature extends Feature
 					if (world.getRandom().nextDouble() <= chance)
 					{
 						if (onlyTop)
-							if (world.getBlock(x + i, y + j + 1, z + k) != Block.air)
+							if (world.getBlock(x + i, y + j + 1, z + k) != Block.AIR)
 								continue;
 
 						if (decayFromCenter)

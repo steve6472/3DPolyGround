@@ -95,7 +95,8 @@ public class InGameGui extends Gui implements IGamePause
 		renderTheRest();
 
 		if (CaveGame.getInstance().getPlayer().gamemode == EnumGameMode.CREATIVE)
-			ItemRenderer.renderModel(CaveGame.itemInHand.model, getMainApp(), getMainApp().getWidth() - 20, getMainApp().getHeight() - 20, 30, 225, 0, 1.25f);
+			if (CaveGame.getInstance().getPlayer().blockPlacer != null)
+				ItemRenderer.renderBlock(CaveGame.getInstance().getPlayer().blockPlacer, getMainApp(), getMainApp().getWidth() - 20, getMainApp().getHeight() - 20, 30, 225, 0, 1.25f);
 
 		if (CaveGame.getInstance().options.renderCrosshair)
 			renderCrosshair();

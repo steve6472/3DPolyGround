@@ -48,7 +48,7 @@ public class TopSnowFeature extends Feature
 	@Override
 	public void generate(World world, int x, int y, int z)
 	{
-		if (world.getBlock(x, y, z) == Block.air)
+		if (world.getBlock(x, y, z) == Block.AIR)
 		{
 			if (y >= heightStart && y < heightMax)
 			{

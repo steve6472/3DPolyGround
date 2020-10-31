@@ -116,7 +116,7 @@ public class StalaFeature extends Feature
 	@Override
 	public void generate(World world, int x, int y, int z)
 	{
-		gen(world, x, y, z, world.getBlock(x, y + 1, z) == Block.air);
+		gen(world, x, y, z, world.getBlock(x, y + 1, z) == Block.AIR);
 	}
 
 	private void gen(World world, int x, int y, int z, boolean stalagmite)
@@ -187,7 +187,7 @@ public class StalaFeature extends Feature
 	@Override
 	public boolean canGenerate(World world, int x, int y, int z)
 	{
-		return world.getState(x, y, z) == baseState && (world.getBlock(x, y - 1, z) == Block.air || world.getBlock(x, y + 1, z) == Block.air);
+		return world.getState(x, y, z) == baseState && (world.getBlock(x, y - 1, z) == Block.AIR || world.getBlock(x, y + 1, z) == Block.AIR);
 	}
 
 	@Override

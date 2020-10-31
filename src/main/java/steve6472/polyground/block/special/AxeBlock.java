@@ -57,9 +57,9 @@ public class AxeBlock extends CustomBlock
 	@Override
 	public void onClick(BlockState state, World world, Player player, EnumFace clickedOn, MouseEvent click, int x, int y, int z)
 	{
-		boolean holdsHead = player.holdsItem() && player.getItemInHand().getName().equals("flint_axe_head");
-		boolean holdsStick = player.holdsItem() && player.getItemInHand().getName().equals("stick_item");
-		boolean holdsString = player.holdsItem() && player.getItemInHand().getName().equals("hemp_string");
+		boolean holdsHead = player.holdsItem() && player.getItemInHand().name().equals("flint_axe_head");
+		boolean holdsStick = player.holdsItem() && player.getItemInHand().name().equals("stick_item");
+		boolean holdsString = player.holdsItem() && player.getItemInHand().name().equals("hemp_string");
 
 		boolean worldHead = state.get(HEAD);
 		boolean worldStick = state.get(STICK);
@@ -83,7 +83,7 @@ public class AxeBlock extends CustomBlock
 
 		if ((worldStick && worldHead && holdsString) || (worldStick && worldString && holdsHead) || (worldHead && worldString && holdsStick))
 		{
-			world.setBlock(Block.air, x, y, z);
+			world.setBlock(Block.AIR, x, y, z);
 
 			spawnLoot(world, state, x, y, z);
 		}

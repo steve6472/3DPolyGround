@@ -86,7 +86,7 @@ public class SubChunk implements IBiomeProvider
 			BlockState stateToTick = blocks.getStates()[x][y][z];
 			Block blockToTick = stateToTick.getBlock();
 
-			if (blockToTick == Block.air)
+			if (blockToTick == Block.AIR)
 				continue;
 
 			if (blockToTick.randomTickable())

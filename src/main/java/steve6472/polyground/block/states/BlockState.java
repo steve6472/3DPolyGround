@@ -95,7 +95,7 @@ public class BlockState implements IBlockState
 
 	public boolean isAir()
 	{
-		return getBlock() == Block.air;
+		return getBlock() == Block.AIR;
 	}
 
 	public Block getBlock()

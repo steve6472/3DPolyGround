@@ -64,7 +64,7 @@ public class TreeFeature extends Feature
 				{
 					if (Math.abs(i) % 3 != 2 || Math.abs(j) % 3 != 2)
 					{
-						if (world.getBlock(x + i, y + h - 2 + k, z + j) == Block.air)
+						if (world.getBlock(x + i, y + h - 2 + k, z + j) == Block.AIR)
 							world.setState(leaves, x + i, y + h - 2 + k, z + j);
 					}
 				}
@@ -78,7 +78,7 @@ public class TreeFeature extends Feature
 				{
 					if (Math.abs(i) % 2 != 1 || Math.abs(j) % 2 != 1)
 					{
-						if (world.getBlock(x + i, y + h + k, z + j) == Block.air)
+						if (world.getBlock(x + i, y + h + k, z + j) == Block.AIR)
 							world.setState(leaves, x + i, y + h + k, z + j);
 					}
 				}
@@ -106,7 +106,7 @@ public class TreeFeature extends Feature
 				{
 					if (Math.abs(i) % 3 != 2 || Math.abs(j) % 3 != 2)
 					{
-						if (world.getBlock(x + i, y + 5 - 2 + k, z + j) != Block.air)
+						if (world.getBlock(x + i, y + 5 - 2 + k, z + j) != Block.AIR)
 							return false;
 					}
 				}
@@ -120,7 +120,7 @@ public class TreeFeature extends Feature
 				{
 					if (Math.abs(i) % 2 != 1 || Math.abs(j) % 2 != 1)
 					{
-						if (world.getBlock(x + i, y + 5 + k, z + j) != Block.air)
+						if (world.getBlock(x + i, y + 5 + k, z + j) != Block.AIR)
 							return false;
 					}
 				}

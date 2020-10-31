@@ -202,7 +202,7 @@ public class DoorBlock extends Block implements IBlockData, ISpecialRender
 		{
 			BlockState s = world.getState(x, y, z);
 			BlockState up = world.getState(x, y + 1, z);
-			return (s.getBlock().isReplaceable(s) || state == s) && (up.getBlock() == this || up.getBlock() == Block.air);
+			return (s.getBlock().isReplaceable(s) || state == s) && (up.getBlock() == this || up.getBlock() == Block.AIR);
 		} else
 		{
 			BlockState stateUnder = world.getState(x, y - 1, z);
@@ -246,7 +246,7 @@ public class DoorBlock extends Block implements IBlockData, ISpecialRender
 		super.onPlayerBreak(state, world, player, breakedFrom, x, y, z);
 
 		int Y = (state.get(HALF) == EnumHalf.BOTTOM ? 1 : -1);
-		world.setBlock(Block.air, x, y + Y, z);
+		world.setBlock(Block.AIR, x, y + Y, z);
 	}
 
 	@Override

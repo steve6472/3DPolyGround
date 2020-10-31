@@ -164,7 +164,7 @@ public class ChunkSerializer
 		if (stateTag.containsKey("properties"))
 		{
 			Block block = Blocks.getBlockByName(name);
-			if (block == Block.error)
+			if (block == Block.ERROR)
 				return block.getDefaultState();
 
 			HashMap<String, String> propertyMap = new HashMap<>();

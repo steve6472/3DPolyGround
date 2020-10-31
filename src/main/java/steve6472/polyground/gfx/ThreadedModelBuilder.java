@@ -114,7 +114,7 @@ public class ThreadedModelBuilder extends Thread
 
 					try
 					{
-						if (b != null && b != Block.air)
+						if (b != null && b != Block.AIR)
 						{
 							model.getSubChunk().getParent().getWorld().getGame().mainRender.buildHelper.load(j, i, k);
 							triangleCount += b.createModel(j + model.getSubChunk().getX() * 16, i + model.getSubChunk().getLayer() * 16, k + model.getSubChunk().getZ() * 16, model.getSubChunk().getWorld(), state, buildHelper, model.getLayer());
@@ -126,7 +126,7 @@ public class ThreadedModelBuilder extends Thread
 						ex.printStackTrace();
 						try
 						{
-							triangleCount += Block.error.createModel(j + model.getSubChunk().getX() * 16, i + model.getSubChunk().getLayer() * 16, k + model.getSubChunk().getZ() * 16, model.getSubChunk().getWorld(), state, buildHelper, model.getLayer());
+							triangleCount += Block.ERROR.createModel(j + model.getSubChunk().getX() * 16, i + model.getSubChunk().getLayer() * 16, k + model.getSubChunk().getZ() * 16, model.getSubChunk().getWorld(), state, buildHelper, model.getLayer());
 						} catch (Exception ex1)
 						{
 							System.err.println("Error while building chunk error block!\nFrick! This should not happen :(");

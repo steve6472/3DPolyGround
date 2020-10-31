@@ -73,13 +73,13 @@ public class KnappingBlock extends CustomBlock implements IBlockData
 
 			if (data.pieceCount == 0)
 			{
-				world.setBlock(Block.air, x, y, z);
+				world.setBlock(Block.AIR, x, y, z);
 			}
 
 			Recipe match = CaveGame.getInstance().knappingRecipes.getMatch(data.stone);
 			if (match != null)
 			{
-				world.setBlock(Block.air, x, y, z);
+				world.setBlock(Block.AIR, x, y, z);
 				ItemEntity e = new ItemEntity(null, match.getResult(), null, x + 0.5f, y + 0.25f, z + 0.5f);
 				world.getEntityManager().addEntity(e);
 			}

@@ -70,7 +70,7 @@ public class HitPicker
 							continue;
 
 						BlockState state = c.getWorld().getState(i, j, k);
-						if (state.getBlock() != Block.air)
+						if (state.getBlock() != Block.AIR)
 						{
 							for (CubeHitbox t : state.getBlock().getHitbox(world, state, i, j, k))
 							{

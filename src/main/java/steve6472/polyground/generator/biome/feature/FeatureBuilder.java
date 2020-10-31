@@ -2,7 +2,7 @@ package steve6472.polyground.generator.biome.feature;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import steve6472.polyground.generator.DataBuilder;
+import steve6472.polyground.generator.BlockBuilder;
 import steve6472.polyground.generator.DataGenerator;
 import steve6472.sge.main.util.Pair;
 
@@ -234,6 +234,6 @@ public class FeatureBuilder
 			e.printStackTrace();
 		}
 
-		DataBuilder.save(feature, build());
+		BlockBuilder.save(feature, build());
 	}
 }

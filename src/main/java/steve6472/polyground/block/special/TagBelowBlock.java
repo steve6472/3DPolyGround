@@ -41,7 +41,7 @@ public class TagBelowBlock extends CustomBlock
 		if (!isValidPosition(state, world, x, y, z))
 		{
 			spawnLoot(world, state, x, y, z);
-			world.setBlock(Block.air, x, y, z);
+			world.setBlock(Block.AIR, x, y, z);
 		}
 	}
 

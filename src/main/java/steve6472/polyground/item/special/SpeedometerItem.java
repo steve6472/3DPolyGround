@@ -2,11 +2,9 @@ package steve6472.polyground.item.special;
 
 import org.joml.Vector2f;
 import org.json.JSONObject;
-import steve6472.polyground.CaveGame;
 import steve6472.polyground.entity.player.Player;
 import steve6472.polyground.events.InGameGuiEvent;
 import steve6472.polyground.item.Item;
-import steve6472.sge.gfx.font.Font;
 import steve6472.sge.main.events.Event;
 
 /**********************
@@ -30,9 +28,9 @@ public class SpeedometerItem extends Item
 
 	@Event
 	public void renderSpeed(InGameGuiEvent.PostRender e)
-	{
+	{/*
 		if (CaveGame.itemInHand == this)
-			Font.render(String.format("Speed: %.3f", distance * 60f), CaveGame.getInstance().getWidth() - 96, CaveGame.getInstance().getHeight() - 15);
+			Font.render(String.format("Speed: %.3f", distance * 60f), CaveGame.getInstance().getWidth() - 96, CaveGame.getInstance().getHeight() - 15);*/
 	}
 
 	@Override

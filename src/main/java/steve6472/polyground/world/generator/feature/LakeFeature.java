@@ -70,7 +70,7 @@ public class LakeFeature extends Feature
 
 					if (X + Y + Z < 1)
 					{
-						world.setBlock(Block.air, i + x, j + y, k + z);
+						world.setBlock(Block.AIR, i + x, j + y, k + z);
 					}
 				}
 			}

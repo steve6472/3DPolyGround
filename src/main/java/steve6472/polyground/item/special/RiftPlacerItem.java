@@ -2,7 +2,6 @@ package steve6472.polyground.item.special;
 
 import org.joml.Vector3f;
 import org.json.JSONObject;
-import steve6472.polyground.CaveGame;
 import steve6472.polyground.commands.coms.RiftCommand;
 import steve6472.polyground.entity.player.EnumSlot;
 import steve6472.polyground.entity.player.Player;
@@ -33,7 +32,7 @@ public class RiftPlacerItem extends Item
 
 	@Event
 	public void renderPos(WorldEvent.PostRender e)
-	{
+	{/*
 		if (CaveGame.itemInHand != this)
 			return;
 
@@ -66,7 +65,7 @@ public class RiftPlacerItem extends Item
 		}
 
 		if (sel != null)
-			CaveGame.getInstance().mainRender.particles.addBasicTickParticle(sel.x, sel.y, sel.z, 0.09f, 1f, 0.6f, 0.6f, 1f);
+			CaveGame.getInstance().mainRender.particles.addBasicTickParticle(sel.x, sel.y, sel.z, 0.09f, 1f, 0.6f, 0.6f, 1f);*/
 	}
 
 	@Override

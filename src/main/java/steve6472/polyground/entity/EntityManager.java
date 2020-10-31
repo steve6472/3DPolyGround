@@ -68,7 +68,7 @@ public class EntityManager
 
 				Block block = world.getBlock(x, y, z);
 
-				if (block != Block.air)
+				if (block != Block.AIR)
 					c.collide(world, x, y, z);
 			}
 

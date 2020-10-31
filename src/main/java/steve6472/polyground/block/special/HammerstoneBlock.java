@@ -46,7 +46,7 @@ public class HammerstoneBlock extends Block
 			int ox = (int) (hash(world.getSeed(), -x, y, z * (1 << 4) + 1) % 12) - 6;
 			int oz = (int) (hash(world.getSeed(), x * -((1 << 5) + 1), y, -z) % 12) - 6;
 
-			world.setBlock(Block.air, x, y, z);
+			world.setBlock(Block.AIR, x, y, z);
 
 			Item item = switch (state.get(STONE_TYPE))
 				{

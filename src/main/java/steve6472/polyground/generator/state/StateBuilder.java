@@ -2,7 +2,7 @@ package steve6472.polyground.generator.state;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import steve6472.polyground.generator.DataBuilder;
+import steve6472.polyground.generator.BlockBuilder;
 import steve6472.polyground.generator.DataGenerator;
 import steve6472.polyground.generator.models.BlockModelBuilder;
 import steve6472.sge.main.util.Pair;
@@ -99,9 +99,9 @@ public class StateBuilder
 
 			// Save block state
 			if (this.tags.isEmpty())
-				DataBuilder.save(new File(DataGenerator.BLOCK_STATES, blockName + ".json"), main);
+				BlockBuilder.save(new File(DataGenerator.BLOCK_STATES, blockName + ".json"), main);
 			else
-				DataBuilder.save(new File(DataGenerator.BLOCK_STATES, blockName + ".json"), main.put("tags", this.tags));
+				BlockBuilder.save(new File(DataGenerator.BLOCK_STATES, blockName + ".json"), main.put("tags", this.tags));
 		}
 		else if (singleModel != null)
 		{
@@ -111,9 +111,9 @@ public class StateBuilder
 				if (custom) main.put("custom", true);
 				// Save block state
 				if (this.tags.isEmpty())
-					DataBuilder.save(new File(DataGenerator.BLOCK_STATES, blockName + ".json"), main);
+					BlockBuilder.save(new File(DataGenerator.BLOCK_STATES, blockName + ".json"), main);
 				else
-					DataBuilder.save(new File(DataGenerator.BLOCK_STATES, blockName + ".json"), main.put("tags", this.tags));
+					BlockBuilder.save(new File(DataGenerator.BLOCK_STATES, blockName + ".json"), main.put("tags", this.tags));
 
 				// Save block model
 				save(singleModel[0]);
@@ -132,9 +132,9 @@ public class StateBuilder
 				main.put("models", models);
 				// Save block state
 				if (this.tags.isEmpty())
-					DataBuilder.save(new File(DataGenerator.BLOCK_STATES, blockName + ".json"), main);
+					BlockBuilder.save(new File(DataGenerator.BLOCK_STATES, blockName + ".json"), main);
 				else
-					DataBuilder.save(new File(DataGenerator.BLOCK_STATES, blockName + ".json"), main.put("tags", this.tags));
+					BlockBuilder.save(new File(DataGenerator.BLOCK_STATES, blockName + ".json"), main.put("tags", this.tags));
 			}
 		} else
 		{
@@ -166,7 +166,7 @@ public class StateBuilder
 
 			// Save block state
 			main.put("models", modelArray);
-			DataBuilder.save(new File(DataGenerator.BLOCK_STATES, blockName + ".json"), main);
+			BlockBuilder.save(new File(DataGenerator.BLOCK_STATES, blockName + ".json"), main);
 		}
 	}
 
@@ -188,7 +188,7 @@ public class StateBuilder
 		} else if (builder.generateModel())
 		{
 			createModelFile(builder.getModelPath());
-			DataBuilder.save(new File(DataGenerator.BLOCK_MODELS, builder.getModelPath() + builder.getModelName() + ".json"), new JSONObject(builder.build().build()));
+			BlockBuilder.save(new File(DataGenerator.BLOCK_MODELS, builder.getModelPath() + builder.getModelName() + ".json"), new JSONObject(builder.build().build()));
 		}
 	}
 

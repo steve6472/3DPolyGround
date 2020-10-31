@@ -31,7 +31,7 @@ public class FlintBlock extends FourDirectionalBlock
 		if (!player.holdsItem())
 			return;
 
-		if (!player.getItemInHand().getName().startsWith("hammerstone"))
+		if (!player.getItemInHand().name().startsWith("hammerstone"))
 			return;
 
 		player.heldItem.remove(player);

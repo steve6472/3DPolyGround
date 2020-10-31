@@ -146,7 +146,7 @@ public class EntityHitbox
 					int x = ix + i, y = iy + j, z = iz + k;
 
 					BlockState state;
-					if ((state = world.getState(x, y, z)) != Block.air.getDefaultState())
+					if ((state = world.getState(x, y, z)) != Block.AIR.getDefaultState())
 					{
 						for (CubeHitbox t : state.getBlock().getHitbox(world, state, x, y, z))
 						{
@@ -207,7 +207,7 @@ public class EntityHitbox
 					int x = ix + i, y = iy + j, z = iz + k;
 
 					BlockState state;
-					if ((state = world.getState(x, y, z)) != Block.air.getDefaultState())
+					if ((state = world.getState(x, y, z)) != Block.AIR.getDefaultState())
 					{
 						for (CubeHitbox t : state.getBlock().getHitbox(world, state, x, y, z))
 						{

@@ -151,7 +151,7 @@ public class SlabBlock extends Block
 			}
 		} else
 		{
-			world.setBlock(hitResult, Block.air);
+			world.setBlock(hitResult, Block.AIR);
 		}
 
 		tobeplaced.getBlock().onPlayerBreak(state, world, player, hitResult.getFace(), hitResult.getX(), hitResult.getY(), hitResult.getZ());

@@ -22,9 +22,9 @@ public class FallingBlock extends Block
 	@Override
 	public void onBlockAdded(BlockState state, World world, BlockState oldState, int x, int y, int z)
 	{
-		if (world.getBlock(x, y - 1, z) == Block.air && y > 0)
+		if (world.getBlock(x, y - 1, z) == Block.AIR && y > 0)
 		{
-			world.setBlock(Block.air, x, y, z);
+			world.setBlock(Block.AIR, x, y, z);
 			world.getEntityManager().addEntity(new steve6472.polyground.entity.FallingBlock(state, x, y, z));
 		}
 	}
@@ -32,9 +32,9 @@ public class FallingBlock extends Block
 	@Override
 	public void neighbourChange(BlockState state, World world, EnumFace updateFrom, int x, int y, int z)
 	{
-		if (world.getBlock(x, y - 1, z) == Block.air && y > 0)
+		if (world.getBlock(x, y - 1, z) == Block.AIR && y > 0)
 		{
-			world.setBlock(Block.air, x, y, z);
+			world.setBlock(Block.AIR, x, y, z);
 			world.getEntityManager().addEntity(new steve6472.polyground.entity.FallingBlock(state, x, y, z));
 		}
 	}

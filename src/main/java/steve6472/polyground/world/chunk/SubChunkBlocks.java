@@ -22,7 +22,7 @@ public class SubChunkBlocks
 			{
 				for (int k = 0; k < 16; k++)
 				{
-					states[i][j][k] = Block.air.getDefaultState();
+					states[i][j][k] = Block.AIR.getDefaultState();
 				}
 			}
 		}

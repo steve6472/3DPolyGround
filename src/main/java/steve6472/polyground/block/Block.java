@@ -1,7 +1,9 @@
 package steve6472.polyground.block;
 
 import org.joml.AABBf;
+import org.json.JSONArray;
 import org.json.JSONObject;
+import steve6472.polyground.CaveGame;
 import steve6472.polyground.EnumFace;
 import steve6472.polyground.block.model.BlockModel;
 import steve6472.polyground.block.model.CubeHitbox;
@@ -15,7 +17,6 @@ import steve6472.polyground.block.states.StateLoader;
 import steve6472.polyground.entity.EntityBase;
 import steve6472.polyground.entity.player.Player;
 import steve6472.polyground.gfx.IModel;
-import steve6472.polyground.item.Item;
 import steve6472.polyground.world.ModelBuilder;
 import steve6472.polyground.world.World;
 import steve6472.polyground.world.chunk.ModelLayer;
@@ -34,19 +35,17 @@ import java.util.List;
  ***********************/
 public class Block
 {
-	public static Block air, error;
+	public static Block AIR, ERROR;
 
 	public boolean isFull;
 
 	public String name;
 	private BlockState defaultState;
-	public Item item;
 
 	public static Block createAir()
 	{
-		air = new Block("air", new BlockModel(), Tags.TRANSPARENT);
-		air.item = new ItemPlaceholder("air");
-		return air;
+		AIR = new Block("air", new BlockModel(), Tags.TRANSPARENT);
+		return AIR;
 	}
 
 	public static Block createError()
@@ -75,11 +74,10 @@ public class Block
 
 		BlockModel model = new BlockModel(new IElement[]{c}, cube);
 
-		error = new Block("error", model, Tags.ERROR, Tags.SOLID);
-		error.item = new ItemPlaceholder("air");
-		error.isFull = true;
+		ERROR = new Block("error", model, Tags.ERROR, Tags.SOLID);
+		ERROR.isFull = true;
 
-		return error;
+		return ERROR;
 	}
 
 	private Block(String name, BlockModel blockModel, String... tags)
@@ -93,8 +91,22 @@ public class Block
 	{
 		isFull = true;
 		name = json.getString("name");
-		item = new ItemPlaceholder(json.optString("item", "air"));
+		addToGroups(json.optJSONArray("groups"));
 		generateStates(json.getString("blockstate"));
+	}
+	
+	protected void addToGroups(JSONArray array)
+	{
+		if (array == null || array.isEmpty())
+		{
+			CaveGame.getInstance().itemGroups.addUngrouped(this);
+			return;
+		}
+
+		for (int i = 0; i < array.length(); i++)
+		{
+			CaveGame.getInstance().itemGroups.add(this, array.getString(i));
+		}
 	}
 
 	public String getName()
@@ -162,7 +174,7 @@ public class Block
 
 	public boolean isReplaceable(BlockState state)
 	{
-		return this == air;
+		return this == AIR;
 	}
 
 	public int createModel(int x, int y, int z, World world, BlockState state, ModelBuilder buildHelper, ModelLayer modelLayer)
@@ -229,7 +241,7 @@ public class Block
 	 */
 	public Pair<BlockState, BlockState> getStateForPlacement(World world, BlockState heldState, Player player, EnumFace placedOn, int x, int y, int z)
 	{
-		return new Pair<>(Block.air.getDefaultState(), getStateForPlacement(world, player, placedOn, x, y, z));
+		return new Pair<>(Block.AIR.getDefaultState(), getStateForPlacement(world, player, placedOn, x, y, z));
 	}
 
 	/**
@@ -253,7 +265,7 @@ public class Block
 	 */
 	public Pair<BlockState, BlockState> merge(World world, BlockState worldState, BlockState heldState, Player player, EnumFace placedOn, int x, int y, int z)
 	{
-		return new Pair<>(Block.air.getDefaultState(), heldState.getBlock().getStateForPlacement(world, player, placedOn, x, y, z));
+		return new Pair<>(Block.AIR.getDefaultState(), heldState.getBlock().getStateForPlacement(world, player, placedOn, x, y, z));
 	}
 
 	public boolean canMerge(BlockState holdedState, BlockState worldState, Player player, EnumFace clickedOn, int x, int y, int z)
@@ -281,7 +293,7 @@ public class Block
 	public Pair<BlockState, BlockState> getStatesForPickup(World world, BlockState worldState, BlockState heldState, Player player, EnumFace clickedOn, int x, int y, int z)
 	{
 		if (heldState.isAir())
-			return new Pair<>(worldState, Block.air.getDefaultState());
+			return new Pair<>(worldState, Block.AIR.getDefaultState());
 		else
 			return null;
 	}

@@ -52,7 +52,7 @@ public class PaintBucketBlock extends CustomBlock implements IBlockData
 
 			if (player.heldItem != null)
 			{
-				if (player.heldItem.item.getName().equals("brush"))
+				if (player.heldItem.item.name().equals("brush"))
 				{
 					if (player.heldItem.itemData instanceof BrushData bd)
 					{
@@ -65,7 +65,7 @@ public class PaintBucketBlock extends CustomBlock implements IBlockData
 				boolean foundColorMatch = false;
 				for (EnumFlowerColor fc : EnumFlowerColor.getValues())
 				{
-					if (player.heldItem.item.getName().toUpperCase().startsWith(fc.name().toUpperCase()) && player.heldItem.item.getName().contains("powder"))
+					if (player.heldItem.item.name().toUpperCase().startsWith(fc.name().toUpperCase()) && player.heldItem.item.name().contains("powder"))
 					{
 						foundColorMatch = true;
 						break;
@@ -77,7 +77,7 @@ public class PaintBucketBlock extends CustomBlock implements IBlockData
 					return;
 				}
 
-				EnumFlowerColor c = EnumFlowerColor.valueOf(player.heldItem.item.getName().split("_")[0].toUpperCase());
+				EnumFlowerColor c = EnumFlowerColor.valueOf(player.heldItem.item.name().split("_")[0].toUpperCase());
 
 				float r = c.r / 255f / 10f;
 				float g = c.g / 255f / 10f;

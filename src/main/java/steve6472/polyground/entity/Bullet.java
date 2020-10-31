@@ -48,7 +48,7 @@ public class Bullet implements ITickable, IKillable, ICollideable, IPosition3f, 
 	@Override
 	public void collide(World world, int x, int y, int z)
 	{
-		world.setBlock(Block.air, x, y, z);
+		world.setBlock(Block.AIR, x, y, z);
 		//TODO: spawn particles
 		die();
 	}

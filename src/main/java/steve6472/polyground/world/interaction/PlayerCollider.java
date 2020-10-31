@@ -20,7 +20,7 @@ public class PlayerCollider
 	private static void check(World world, int x, int y, int z, List<AABBf> aabbs, AABBf hitbox)
 	{
 		BlockState state;
-		if ((state = world.getState(x, y, z)) != Block.air.getDefaultState())
+		if ((state = world.getState(x, y, z)) != Block.AIR.getDefaultState())
 		{
 			for (CubeHitbox t : state.getBlock().getHitbox(world, state, x, y, z))
 			{

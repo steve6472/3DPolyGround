@@ -26,7 +26,7 @@ public interface IWorldBlockProvider extends IChunkProvider
 		Chunk c = getChunkFromBlockPos(x, z);
 
 		if (c == null)
-			return Block.air.getDefaultState();
+			return Block.AIR.getDefaultState();
 		else
 		{
 			int cx = Math.floorMod(x, 16);
@@ -34,7 +34,7 @@ public interface IWorldBlockProvider extends IChunkProvider
 			int cz = Math.floorMod(z, 16);
 
 			if (isOutOfChunkBounds(getWorld(), cx, y, cz))
-				return Block.air.getDefaultState();
+				return Block.AIR.getDefaultState();
 
 			SubChunk sc = c.getSubChunk(y / 16);
 			return sc.getState(cx, cy, cz);

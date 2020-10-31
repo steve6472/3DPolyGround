@@ -11,7 +11,6 @@ import steve6472.polyground.events.InGameGuiEvent;
 import steve6472.polyground.gui.floatingdialogs.BlockStateDialog;
 import steve6472.polyground.item.Item;
 import steve6472.polyground.world.World;
-import steve6472.sge.gfx.font.Font;
 import steve6472.sge.gui.floatingdialog.FloatingDialog;
 import steve6472.sge.main.KeyList;
 import steve6472.sge.main.events.Event;
@@ -43,13 +42,13 @@ public class BlockInspectorItem extends Item
 
 	@Event
 	public void renderBlock(InGameGuiEvent.PostRender e)
-	{
+	{/*
 		if (CaveGame.itemInHand == this && CaveGame.getInstance().hitPicker.getHitResult().isHit())
 		{
 			BlockState state = CaveGame.getInstance().hitPicker.getHitResult().getState();
 
 			Font.render(getString(state), 5, CaveGame.getInstance().getHeight() - 10 - 10 * 2);
-		}
+		}*/
 	}
 
 	public static String getString(BlockState state)

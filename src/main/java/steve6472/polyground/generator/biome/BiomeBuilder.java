@@ -3,7 +3,7 @@ package steve6472.polyground.generator.biome;
 import org.joml.Vector3f;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import steve6472.polyground.generator.DataBuilder;
+import steve6472.polyground.generator.BlockBuilder;
 import steve6472.polyground.generator.DataGenerator;
 import steve6472.polyground.world.generator.EnumFeatureStage;
 import steve6472.sge.main.util.Triple;
@@ -259,6 +259,6 @@ public class BiomeBuilder
 			e.printStackTrace();
 		}
 
-		DataBuilder.save(biome, build());
+		BlockBuilder.save(biome, build());
 	}
 }

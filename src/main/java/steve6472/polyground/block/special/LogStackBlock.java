@@ -53,14 +53,14 @@ public class LogStackBlock extends CustomBlock
 					return new Pair<>(worldState.with(LOGS, 1).get(), worldState.with(LOGS, c - 1).get());
 				} else
 				{
-					return new Pair<>(worldState, Block.air.getDefaultState());
+					return new Pair<>(worldState, Block.AIR.getDefaultState());
 				}
 			}
 			return new Pair<>(worldState, heldState);
 		}
 
 		// If hands are holding block of this type and is not full add one
-		BlockState toPlace = Block.air.getDefaultState();
+		BlockState toPlace = Block.AIR.getDefaultState();
 		if (heldState.get(LOGS) < 6)
 		{
 			if (worldState.get(LOGS) != 1)
@@ -88,7 +88,7 @@ public class LogStackBlock extends CustomBlock
 
 		if (h == 1)
 		{
-			return new Pair<>(Block.air.getDefaultState(), worldState.with(LOGS, c + 1).get());
+			return new Pair<>(Block.AIR.getDefaultState(), worldState.with(LOGS, c + 1).get());
 		} else
 		{
 			return new Pair<>(heldState.with(LOGS, h - 1).get(), worldState.with(LOGS, c + 1).get());

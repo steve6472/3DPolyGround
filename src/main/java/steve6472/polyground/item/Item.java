@@ -7,15 +7,14 @@ import steve6472.polyground.EnumFace;
 import steve6472.polyground.block.model.IElement;
 import steve6472.polyground.block.model.ModelLoader;
 import steve6472.polyground.block.states.BlockState;
-import steve6472.polyground.gfx.StaticEntityModel;
 import steve6472.polyground.entity.player.EnumSlot;
 import steve6472.polyground.entity.player.Player;
+import steve6472.polyground.gfx.StaticEntityModel;
 import steve6472.polyground.registry.Blocks;
 import steve6472.polyground.world.World;
 import steve6472.sge.main.events.MouseEvent;
 import steve6472.sge.main.util.Pair;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
@@ -70,22 +69,20 @@ public class Item
 			JSONArray groups = json.getJSONArray("groups");
 			for (int i = 0; i < groups.length(); i++)
 			{
-				CaveGame.getInstance().itemGroups.addItem(this, groups.getString(i));
+				CaveGame.getInstance().itemGroups.add(this, groups.getString(i));
 			}
 		} else
 		{
-			CaveGame.getInstance().itemGroups.addItem(this);
+			CaveGame.getInstance().itemGroups.addUngrouped(this);
 		}
-
-		JSONObject js = new JSONObject(ModelLoader.read(new File("game/objects/models/" + json.getString("model") + ".json")));
 
 		IElement[] elements = null;
-		if (js.getString("type").equals("from_model"))
+		if (json.getString("type").equals("from_model"))
 		{
-			elements = ModelLoader.loadElements(ModelLoader.load("custom_models/items/" + js.getString("model_name") + ".bbmodel", true), 0, 0, 0);
+			elements = ModelLoader.loadElements(ModelLoader.load("game/objects/models/item/" + json.getString("model_name") + ".bbmodel", true), 0, 0, 0);
 		}
 
-		modelQueue.add(new Pair<>(elements, (el) -> loadModel(js, el)));
+		modelQueue.add(new Pair<>(elements, el -> loadModel(json, el)));
 	}
 
 	public void loadModel(JSONObject json, IElement[] modelElements)
@@ -98,7 +95,7 @@ public class Item
 			model.load(CaveGame.getInstance().mainRender.buildHelper, modelElements, true);
 	}
 
-	public String getName()
+	public String name()
 	{
 		return name;
 	}

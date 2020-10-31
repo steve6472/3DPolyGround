@@ -46,7 +46,7 @@ public class FlowerBlock extends Block
 	{
 		if (click.getAction() == KeyList.PRESS && click.getButton() == KeyList.MMB)
 		{
-			world.setBlock(Block.air, x, y, z);
+			world.setBlock(Block.AIR, x, y, z);
 			spawnLoot(world, state, x, y, z);
 		}
 	}
@@ -105,7 +105,7 @@ public class FlowerBlock extends Block
 	@Override
 	public Pair<BlockState, BlockState> getStateForPlacement(World world, BlockState heldState, Player player, EnumFace placedOn, int x, int y, int z)
 	{
-		return new Pair<>(Block.air.getDefaultState(), heldState);
+		return new Pair<>(Block.AIR.getDefaultState(), heldState);
 	}
 
 	@Override
