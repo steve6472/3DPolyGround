@@ -42,7 +42,7 @@ public class BrushCommand extends Command
 			if (brushItem instanceof IItemData id)
 				data = id.createNewItemData();
 
-			ItemEntity itemEntity = new ItemEntity(null, brushItem, data, position.x, position.y, position.z);
+			ItemEntity itemEntity = new ItemEntity(brushItem, data, position.x, position.y, position.z);
 
 			world.getEntityManager().addEntity(itemEntity);
 

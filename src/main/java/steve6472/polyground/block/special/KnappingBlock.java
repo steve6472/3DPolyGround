@@ -80,7 +80,7 @@ public class KnappingBlock extends CustomBlock implements IBlockData
 			if (match != null)
 			{
 				world.setBlock(Block.AIR, x, y, z);
-				ItemEntity e = new ItemEntity(null, match.getResult(), null, x + 0.5f, y + 0.25f, z + 0.5f);
+				ItemEntity e = new ItemEntity(match.getResult(), null, x + 0.5f, y + 0.25f, z + 0.5f);
 				world.getEntityManager().addEntity(e);
 			}
 

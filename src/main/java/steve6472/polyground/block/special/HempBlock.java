@@ -67,7 +67,7 @@ public class HempBlock extends Block
 		float cos = (float) Math.cos(rRads) * distance;
 
 		Item hemp = Items.getItemByName("hemp_string");
-		ItemEntity entity = new ItemEntity(null, hemp, null, x + sin + 0.5f, y + RandomUtil.randomFloat(0, 1f), z + cos + 0.5f);
+		ItemEntity entity = new ItemEntity(hemp, null, x + sin + 0.5f, y + RandomUtil.randomFloat(0, 1f), z + cos + 0.5f);
 		entity.setYaw((float) RandomUtil.randomRadian());
 		world.getEntityManager().addEntity(entity);
 	}

@@ -32,13 +32,7 @@ public class ItemEntity extends HitboxEntityBase implements IRenderable, ITickab
 
 	public ItemEntity(Item item, ItemData itemData, float x, float y, float z)
 	{
-		this(null, item, itemData, x, y, z);
-	}
-
-	public ItemEntity(Player player, Item item, ItemData itemData, float x, float y, float z)
-	{
 		super(0.25f / 2f, 0.25f / 2f, 0.25f / 2f);
-		this.player = player;
 		this.item = item;
 		this.itemData = itemData;
 		setPosition(x, y, z);
@@ -66,7 +60,7 @@ public class ItemEntity extends HitboxEntityBase implements IRenderable, ITickab
 	@Override
 	public void tick()
 	{
-		if (player == null)
+		if (!isHeld())
 		{
 			/* Apply gravity */
 			getMotion().y -= 0.005f;
@@ -110,7 +104,7 @@ public class ItemEntity extends HitboxEntityBase implements IRenderable, ITickab
 			}
 		}
 
-		if (player != null)
+		if (isHeld())
 		{
 			setRotations(0, player.getCamera().getYaw() + 1.5707963267948966f, player.getCamera().getPitch());
 			setPosition(player.getPosition());
@@ -127,7 +121,7 @@ public class ItemEntity extends HitboxEntityBase implements IRenderable, ITickab
 	{
 		DynamicEntityModel.QUAT.identity().rotateXYZ(getRotations().x, getRotations().y, getRotations().z);
 
-		if (player != null)
+		if (isHeld())
 		{
 			DynamicEntityModel.MAT.identity()
 				.translate(player.getX(), player.getY() + player.eyeHeight, player.getZ())
@@ -160,6 +154,11 @@ public class ItemEntity extends HitboxEntityBase implements IRenderable, ITickab
 	public void setPlayer(Player player)
 	{
 		this.player = player;
+	}
+
+	public boolean isHeld()
+	{
+		return player != null;
 	}
 
 	@Override

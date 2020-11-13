@@ -58,7 +58,7 @@ public class FlowerBlock extends Block
 		int oz = (int) (hash(world.getSeed() + 1, x * -((1 << 5) + 1), y, -z) % 12) - 6;
 
 		Item item = Items.getItemByName(state.get(FLOWER_COLOR).name().toLowerCase() + "_powder");
-		ItemEntity e = new ItemEntity(null, item, null, x + 0.5f + ox / 16f, y + 0.25f, z + 0.5f + oz / 16f);
+		ItemEntity e = new ItemEntity(item, null, x + 0.5f + ox / 16f, y + 0.25f, z + 0.5f + oz / 16f);
 		e.setYaw((float) RandomUtil.randomRadian());
 		world.getEntityManager().addEntity(e);
 	}

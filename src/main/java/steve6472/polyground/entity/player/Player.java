@@ -320,7 +320,7 @@ public class Player implements IMotion3f, IPosition3f
 			if (item instanceof IItemData id)
 				data = id.createNewItemData();
 
-			ItemEntity entity = new ItemEntity(null, item, data, getHitResult().getPx(), getHitResult().getPy() + 0.001f, getHitResult().getPz());
+			ItemEntity entity = new ItemEntity(item, data, getHitResult().getPx(), getHitResult().getPy() + 0.001f, getHitResult().getPz());
 			world.getEntityManager().addEntity(entity);
 
 			return;

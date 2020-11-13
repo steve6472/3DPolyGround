@@ -93,7 +93,7 @@ public class AxeBlock extends CustomBlock
 	public void spawnLoot(World world, BlockState state, int x, int y, int z)
 	{
 		Item item = Items.getItemByName("flint_axe");
-		ItemEntity entity = new ItemEntity(null, item, null, x + 0.5f, y, z + 0.5f);
+		ItemEntity entity = new ItemEntity(item, null, x + 0.5f, y, z + 0.5f);
 
 		world.getEntityManager().addEntity(entity);
 	}
