@@ -2,6 +2,7 @@ package steve6472.polyground.item.special;
 
 import org.joml.Vector2f;
 import org.json.JSONObject;
+import steve6472.polyground.entity.item.ItemEntity;
 import steve6472.polyground.entity.player.Player;
 import steve6472.polyground.events.InGameGuiEvent;
 import steve6472.polyground.item.Item;
@@ -34,7 +35,7 @@ public class SpeedometerItem extends Item
 	}
 
 	@Override
-	public void tickInHand(Player player)
+	public void tickInHand(Player player, ItemEntity entity)
 	{
 		t++;
 		if (t == 2)

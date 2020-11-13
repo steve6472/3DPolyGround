@@ -184,6 +184,9 @@ public class Player implements IMotion3f, IPosition3f
 			getPosition().y = 0;
 
 		updateHitbox();
+
+		if (holdsItem())
+			heldItem.item.tickInHand(this, heldItem);
 	}
 
 	public void updateHitbox()

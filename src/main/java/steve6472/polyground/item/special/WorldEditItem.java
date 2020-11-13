@@ -5,6 +5,7 @@ import org.joml.Vector3f;
 import org.json.JSONObject;
 import steve6472.polyground.MouseClick;
 import steve6472.polyground.PolyUtil;
+import steve6472.polyground.entity.item.ItemEntity;
 import steve6472.polyground.entity.player.Player;
 import steve6472.polyground.events.InGameGuiEvent;
 import steve6472.polyground.item.Item;
@@ -87,7 +88,7 @@ public class WorldEditItem extends Item
 	}
 
 	@Override
-	public void tickInHand(Player player)
+	public void tickInHand(Player player, ItemEntity entity)
 	{
 		PolyUtil.toScreenPos(new Vector3f(firstPos).add(0.5f, 0.5f, 0.5f), firstPosScreen);
 		PolyUtil.toScreenPos(new Vector3f(secondPos).add(0.5f, 0.5f, 0.5f), secondPosScreen);

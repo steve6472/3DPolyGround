@@ -3,7 +3,6 @@ package steve6472.polyground.entity;
 import org.joml.Quaternionf;
 import steve6472.polyground.block.Block;
 import steve6472.polyground.entity.interfaces.*;
-import steve6472.polyground.entity.player.IHoldable;
 import steve6472.polyground.gfx.stack.Stack;
 import steve6472.polyground.world.World;
 import steve6472.sge.main.game.mixable.IPosition3f;
@@ -52,9 +51,6 @@ public class EntityManager
 			Object o = iterator.next();
 
 			if (o instanceof ITickable c)
-				c.tick();
-
-			if (o instanceof IHoldable c)
 				c.tick();
 
 			if (o instanceof ICollideable c)
@@ -110,12 +106,6 @@ public class EntityManager
 
 				stack.popMatrix();
 			}
-		}
-
-		for (Object o : entities)
-		{
-			if (o instanceof IHoldable r)
-				r.render();
 		}
 	}
 

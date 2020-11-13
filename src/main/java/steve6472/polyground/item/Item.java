@@ -6,6 +6,7 @@ import steve6472.polyground.CaveGame;
 import steve6472.polyground.MouseClick;
 import steve6472.polyground.block.model.IElement;
 import steve6472.polyground.block.model.ModelLoader;
+import steve6472.polyground.entity.item.ItemEntity;
 import steve6472.polyground.entity.player.Player;
 import steve6472.polyground.gfx.StaticEntityModel;
 import steve6472.polyground.world.World;
@@ -114,11 +115,12 @@ public class Item
 	{
 	}
 
-	public void tickInHand(Player player)
+	public void tickInHand(Player player, ItemEntity entity)
 	{
+
 	}
 
-	public void tickOnGround()
+	public void tickOnGround(ItemEntity entity)
 	{
 
 	}
