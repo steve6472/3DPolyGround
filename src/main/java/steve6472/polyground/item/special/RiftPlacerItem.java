@@ -2,14 +2,13 @@ package steve6472.polyground.item.special;
 
 import org.joml.Vector3f;
 import org.json.JSONObject;
+import steve6472.polyground.MouseClick;
 import steve6472.polyground.commands.coms.RiftCommand;
-import steve6472.polyground.entity.player.EnumSlot;
 import steve6472.polyground.entity.player.Player;
 import steve6472.polyground.events.WorldEvent;
 import steve6472.polyground.item.Item;
 import steve6472.sge.main.KeyList;
 import steve6472.sge.main.events.Event;
-import steve6472.sge.main.events.MouseEvent;
 
 import java.util.Collections;
 import java.util.Iterator;
@@ -69,59 +68,56 @@ public class RiftPlacerItem extends Item
 	}
 
 	@Override
-	public void onClick(Player player, EnumSlot slot, MouseEvent click)
+	public void onClick(Player player, MouseClick click)
 	{
-		if (click.getAction() == KeyList.PRESS)
+		if (click.clickRMB())
 		{
-			if (click.getButton() == KeyList.RMB)
+			player.processNextBlockPlace = false;
+			if (RiftCommand.rift != null)
 			{
-				player.processNextBlockPlace = false;
-				if (RiftCommand.rift != null)
-				{
-					RiftCommand.rift.getModel().addVertex(new Vector3f(pos));
-					RiftCommand.rift.getModel().updateModel();
-				}
+				RiftCommand.rift.getModel().addVertex(new Vector3f(pos));
+				RiftCommand.rift.getModel().updateModel();
 			}
+		}
 
-			if (click.getButton() == KeyList.MMB && click.getMods() != KeyList.M_SHIFT)
+		if (click.clickMMB() && click.getMods() != KeyList.M_SHIFT)
+		{
+			if (RiftCommand.rift != null)
 			{
-				if (RiftCommand.rift != null)
-				{
-					RiftCommand.rift.setPosition(pos);
-				}
+				RiftCommand.rift.setPosition(pos);
 			}
+		}
 
-			if (click.getButton() == KeyList.MMB && click.getMods() == KeyList.M_SHIFT)
+		if (click.clickMMB() && click.getMods() == KeyList.M_SHIFT)
+		{
+			if (RiftCommand.rift != null)
 			{
-				if (RiftCommand.rift != null)
-				{
-					RiftCommand.rift.getCorrection().set(pos).mul(-1.0f);
-				}
+				RiftCommand.rift.getCorrection().set(pos).mul(-1.0f);
 			}
+		}
 
-			if (click.getButton() == KeyList.LMB)
+		if (click.clickLMB())
+		{
+			if (RiftCommand.rift != null)
 			{
-				if (RiftCommand.rift != null)
-				{
-					Collections.reverse(RiftCommand.rift.getModel().getVertices());
+				Collections.reverse(RiftCommand.rift.getModel().getVertices());
 
-					for (Iterator<Vector3f> iterator = RiftCommand.rift.getModel().getVertices().iterator(); iterator.hasNext(); )
+				for (Iterator<Vector3f> iterator = RiftCommand.rift.getModel().getVertices().iterator(); iterator.hasNext(); )
+				{
+					Vector3f v = iterator.next();
+					if (v == sel)
 					{
-						Vector3f v = iterator.next();
-						if (v == sel)
-						{
-							iterator.remove();
-							sel = null;
-							break;
-						}
+						iterator.remove();
+						sel = null;
+						break;
 					}
-
-					Collections.reverse(RiftCommand.rift.getModel().getVertices());
-
-					RiftCommand.rift.getModel().updateModel();
 				}
-				player.processNextBlockBreak = false;
+
+				Collections.reverse(RiftCommand.rift.getModel().getVertices());
+
+				RiftCommand.rift.getModel().updateModel();
 			}
+			player.processNextBlockBreak = false;
 		}
 	}
 

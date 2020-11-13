@@ -3,10 +3,8 @@ package steve6472.polyground.item.special;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.json.JSONObject;
-import steve6472.polyground.EnumFace;
+import steve6472.polyground.MouseClick;
 import steve6472.polyground.PolyUtil;
-import steve6472.polyground.block.states.BlockState;
-import steve6472.polyground.entity.player.EnumSlot;
 import steve6472.polyground.entity.player.Player;
 import steve6472.polyground.events.InGameGuiEvent;
 import steve6472.polyground.item.Item;
@@ -15,7 +13,6 @@ import steve6472.sge.gfx.SpriteRender;
 import steve6472.sge.gfx.font.Font;
 import steve6472.sge.main.KeyList;
 import steve6472.sge.main.events.Event;
-import steve6472.sge.main.events.MouseEvent;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
@@ -58,27 +55,24 @@ public class WorldEditItem extends Item
 	}
 
 	@Override
-	public void onClick(World world, BlockState state, Player player, EnumSlot slot, EnumFace clickedOn, MouseEvent click, int x, int y, int z)
+	public void onClick(World world, Player player, MouseClick click)
 	{
-		if (click.getAction() == KeyList.PRESS)
+		if (click.clickLMB())
 		{
-			if (click.getButton() == KeyList.LMB)
-			{
-				if (click.getMods() == KeyList.M_SHIFT)
-					firstPos.set(player.getHitResult().getX() + clickedOn.getXOffset(), player.getHitResult().getY() + clickedOn.getYOffset(), player.getHitResult().getZ() + clickedOn.getZOffset());
-				else
-					firstPos.set(player.getHitResult().getX(), player.getHitResult().getY(), player.getHitResult().getZ());
+			if (click.getMods() == KeyList.M_SHIFT)
+				firstPos.set(click.getOffsetX(), click.getOffsetY(), click.getOffsetZ());
+			else
+				firstPos.set(player.getHitResult().getX(), player.getHitResult().getY(), player.getHitResult().getZ());
 
-				player.processNextBlockBreak = false;
-			}
-			if (click.getButton() == KeyList.RMB)
-			{
-				if (click.getMods() == KeyList.M_SHIFT)
-					secondPos.set(player.getHitResult().getX() + clickedOn.getXOffset(), player.getHitResult().getY() + clickedOn.getYOffset(), player.getHitResult().getZ() + clickedOn.getZOffset());
-				else
-					secondPos.set(player.getHitResult().getX(), player.getHitResult().getY(), player.getHitResult().getZ());
-				player.processNextBlockPlace = false;
-			}
+			player.processNextBlockBreak = false;
+		}
+		if (click.clickRMB())
+		{
+			if (click.getMods() == KeyList.M_SHIFT)
+				secondPos.set(click.getOffsetX(), click.getOffsetY(), click.getOffsetZ());
+			else
+				secondPos.set(player.getHitResult().getX(), player.getHitResult().getY(), player.getHitResult().getZ());
+			player.processNextBlockPlace = false;
 		}
 	}
 
@@ -93,7 +87,7 @@ public class WorldEditItem extends Item
 	}
 
 	@Override
-	public void onTickInItemBar(Player player)
+	public void tickInHand(Player player)
 	{
 		PolyUtil.toScreenPos(new Vector3f(firstPos).add(0.5f, 0.5f, 0.5f), firstPosScreen);
 		PolyUtil.toScreenPos(new Vector3f(secondPos).add(0.5f, 0.5f, 0.5f), secondPosScreen);

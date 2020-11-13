@@ -7,6 +7,7 @@ import org.joml.Vector3f;
 import steve6472.polyground.CaveGame;
 import steve6472.polyground.EnumFace;
 import steve6472.polyground.HitResult;
+import steve6472.polyground.MouseClick;
 import steve6472.polyground.block.Block;
 import steve6472.polyground.block.Tags;
 import steve6472.polyground.block.blockdata.BlockData;
@@ -254,7 +255,9 @@ public class Player implements IMotion3f, IPosition3f
 		if (game.mainRender.dialogManager.isActive())
 			return;
 
-		if (getHitResult().isHit())
+		MouseClick click = new MouseClick(event, getHitResult(), this);
+
+		if (getHitResult().isHit() && event.getAction() == KeyList.PRESS)
 		{
 			HitResult hr = game.hitPicker.getHitResult();
 			World world = game.getWorld();
@@ -262,6 +265,14 @@ public class Player implements IMotion3f, IPosition3f
 			BlockState state = world.getState(hr.getX(), hr.getY(), hr.getZ());
 
 			state.getBlock().onClick(state, world, this, hr.getFace(), event, hr.getX(), hr.getY(), hr.getZ());
+		}
+
+		if (holdsItem())
+		{
+			if (click.hitBlock())
+				getItemInHand().onClick(world, this, click);
+			else
+				getItemInHand().onClick(this, click);
 		}
 
 		if (event.getButton() == KeyList.RMB && event.getAction() == KeyList.PRESS)

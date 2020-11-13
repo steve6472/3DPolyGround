@@ -2,14 +2,12 @@ package steve6472.polyground.item.special;
 
 import org.joml.Vector3f;
 import org.json.JSONObject;
+import steve6472.polyground.MouseClick;
 import steve6472.polyground.commands.coms.TeleCommand;
-import steve6472.polyground.entity.player.EnumSlot;
 import steve6472.polyground.entity.player.Player;
 import steve6472.polyground.events.WorldEvent;
 import steve6472.polyground.item.Item;
-import steve6472.sge.main.KeyList;
 import steve6472.sge.main.events.Event;
-import steve6472.sge.main.events.MouseEvent;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
@@ -47,22 +45,19 @@ public class TeleportPlacerItem extends Item
 	}
 
 	@Override
-	public void onClick(Player player, EnumSlot slot, MouseEvent click)
+	public void onClick(Player player, MouseClick click)
 	{
 		if (TeleCommand.tele == null)
 			return;
 
-		if (click.getAction() == KeyList.PRESS)
+		if (click.clickLMB())
 		{
-			if (click.getButton() == KeyList.LMB)
-			{
-				TeleCommand.tele.setAabb(TeleCommand.tele.getAabb().setMin(pos.x, pos.y, pos.z));
-				player.processNextBlockBreak = false;
-			}
-			else if (click.getButton() == KeyList.RMB)
-			{
-				TeleCommand.tele.setAabb(TeleCommand.tele.getAabb().setMax(pos.x, pos.y, pos.z));
-			}
+			TeleCommand.tele.setAabb(TeleCommand.tele.getAabb().setMin(pos.x, pos.y, pos.z));
+			player.processNextBlockBreak = false;
+		}
+		else if (click.clickRMB())
+		{
+			TeleCommand.tele.setAabb(TeleCommand.tele.getAabb().setMax(pos.x, pos.y, pos.z));
 		}
 	}
 }

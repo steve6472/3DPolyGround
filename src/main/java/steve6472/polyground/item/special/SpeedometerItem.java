@@ -34,7 +34,7 @@ public class SpeedometerItem extends Item
 	}
 
 	@Override
-	public void onTickInItemBar(Player player)
+	public void tickInHand(Player player)
 	{
 		t++;
 		if (t == 2)

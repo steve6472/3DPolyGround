@@ -3,7 +3,6 @@ package steve6472.polyground.entity;
 import org.joml.Quaternionf;
 import steve6472.polyground.block.Block;
 import steve6472.polyground.entity.interfaces.*;
-import steve6472.polyground.entity.player.EnumSlot;
 import steve6472.polyground.entity.player.IHoldable;
 import steve6472.polyground.gfx.stack.Stack;
 import steve6472.polyground.world.World;
@@ -56,7 +55,7 @@ public class EntityManager
 				c.tick();
 
 			if (o instanceof IHoldable c)
-				c.tick(EnumSlot.GROUND);
+				c.tick();
 
 			if (o instanceof ICollideable c)
 			{
@@ -116,7 +115,7 @@ public class EntityManager
 		for (Object o : entities)
 		{
 			if (o instanceof IHoldable r)
-				r.render(EnumSlot.GROUND);
+				r.render();
 		}
 	}
 

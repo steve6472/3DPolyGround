@@ -2,15 +2,11 @@ package steve6472.polyground.item.special;
 
 import org.json.JSONObject;
 import steve6472.polyground.CaveGame;
-import steve6472.polyground.EnumFace;
-import steve6472.polyground.block.states.BlockState;
+import steve6472.polyground.MouseClick;
 import steve6472.polyground.entity.Bullet;
-import steve6472.polyground.entity.player.EnumSlot;
 import steve6472.polyground.entity.player.Player;
 import steve6472.polyground.item.Item;
 import steve6472.polyground.world.World;
-import steve6472.sge.main.KeyList;
-import steve6472.sge.main.events.MouseEvent;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
@@ -26,26 +22,20 @@ public class GunItem extends Item
 	}
 
 	@Override
-	public void onClick(Player player, EnumSlot slot, MouseEvent click)
+	public void onClick(Player player, MouseClick click)
 	{
-		if (click.getAction() == KeyList.PRESS)
+		if (click.clickLMB())
 		{
-			if (click.getButton() == KeyList.LMB)
-			{
-				CaveGame.getInstance().getWorld().getEntityManager().addEntity(new Bullet());
-			}
+			CaveGame.getInstance().getWorld().getEntityManager().addEntity(new Bullet());
 		}
 	}
 
 	@Override
-	public void onClick(World world, BlockState state, Player player, EnumSlot slot, EnumFace clickedOn, MouseEvent click, int x, int y, int z)
+	public void onClick(World world, Player player, MouseClick click)
 	{
-		if (click.getAction() == KeyList.PRESS)
+		if (click.clickLMB())
 		{
-			if (click.getButton() == KeyList.LMB)
-			{
-				player.processNextBlockBreak = false;
-			}
+			player.processNextBlockBreak = false;
 		}
 	}
 }

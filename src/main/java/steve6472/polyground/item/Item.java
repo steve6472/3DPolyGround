@@ -3,15 +3,12 @@ package steve6472.polyground.item;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import steve6472.polyground.CaveGame;
-import steve6472.polyground.EnumFace;
+import steve6472.polyground.MouseClick;
 import steve6472.polyground.block.model.IElement;
 import steve6472.polyground.block.model.ModelLoader;
-import steve6472.polyground.block.states.BlockState;
-import steve6472.polyground.entity.player.EnumSlot;
 import steve6472.polyground.entity.player.Player;
 import steve6472.polyground.gfx.StaticEntityModel;
 import steve6472.polyground.world.World;
-import steve6472.sge.main.events.MouseEvent;
 import steve6472.sge.main.util.Pair;
 
 import java.util.ArrayList;
@@ -100,31 +97,29 @@ public class Item
 
 	/**
 	 * Runs on item in hand
-	 *  @param player Player
-	 * @param slot slot
+	 * @param player Player
 	 * @param click  Event
 	 */
-	public void onClick(Player player, EnumSlot slot, MouseEvent click)
+	public void onClick(Player player, MouseClick click)
 	{
 	}
 
 	/**
 	 * Runs on block in the world
 	 * @param world World
-	 * @param state State of block
-	 * @param player    Player
-	 * @param slot slot
-	 * @param clickedOn Side the player has clicked on
-	 * @param click     event
-	 * @param x         x position of block
-	 * @param y         y position of block
-	 * @param z         z position of block
+	 * @param player Player
+	 * @param click event
 	 */
-	public void onClick(World world, BlockState state, Player player, EnumSlot slot, EnumFace clickedOn, MouseEvent click, int x, int y, int z)
+	public void onClick(World world, Player player, MouseClick click)
 	{
 	}
 
-	public void onTickInItemBar(Player player)
+	public void tickInHand(Player player)
 	{
+	}
+
+	public void tickOnGround()
+	{
+
 	}
 }

@@ -1,15 +1,11 @@
 package steve6472.polyground.item.special;
 
 import org.json.JSONObject;
-import steve6472.polyground.EnumFace;
-import steve6472.polyground.block.states.BlockState;
-import steve6472.polyground.entity.player.EnumSlot;
+import steve6472.polyground.MouseClick;
 import steve6472.polyground.entity.player.Player;
 import steve6472.polyground.item.Item;
 import steve6472.polyground.registry.WaterRegistry;
 import steve6472.polyground.world.World;
-import steve6472.sge.main.KeyList;
-import steve6472.sge.main.events.MouseEvent;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
@@ -25,16 +21,13 @@ public class VoidBucketItem extends Item
 	}
 
 	@Override
-	public void onClick(World world, BlockState state, Player player, EnumSlot slot, EnumFace clickedOn, MouseEvent click, int x, int y, int z)
+	public void onClick(World world, Player player, MouseClick click)
 	{
-		if (click.getAction() == KeyList.PRESS)
+		if (click.clickRMB())
 		{
-			if (click.getButton() == KeyList.RMB)
-			{
-				int blockId = world.getState(x + clickedOn.getXOffset(), y + clickedOn.getYOffset(), z + clickedOn.getZOffset()).getId();
-				if (WaterRegistry.volumes[blockId] > 0)
-					world.setLiquidVolume(x + clickedOn.getXOffset(), y + clickedOn.getYOffset(), z + clickedOn.getZOffset(), 0.0);
-			}
+			int blockId = world.getState(click.getOffsetX(), click.getOffsetY(), click.getOffsetZ()).getId();
+			if (WaterRegistry.volumes[blockId] > 0)
+				world.setLiquidVolume(click.getOffsetX(), click.getOffsetY(), click.getOffsetZ(), 0.0);
 		}
 	}
 }

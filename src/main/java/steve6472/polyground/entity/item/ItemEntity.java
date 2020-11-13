@@ -1,19 +1,16 @@
 package steve6472.polyground.entity.item;
 
-import org.joml.AABBf;
 import org.joml.Math;
-import org.joml.Vector3f;
 import steve6472.polyground.AABBUtil;
 import steve6472.polyground.CaveGame;
 import steve6472.polyground.block.states.BlockState;
-import steve6472.polyground.gfx.DynamicEntityModel;
-import steve6472.polyground.entity.EntityBase;
-import steve6472.polyground.entity.EntityHitbox;
+import steve6472.polyground.entity.HitboxEntityBase;
 import steve6472.polyground.entity.interfaces.IKillable;
 import steve6472.polyground.entity.interfaces.IRenderable;
 import steve6472.polyground.entity.interfaces.ITickable;
 import steve6472.polyground.entity.interfaces.IWorldContainer;
 import steve6472.polyground.entity.player.Player;
+import steve6472.polyground.gfx.DynamicEntityModel;
 import steve6472.polyground.item.Item;
 import steve6472.polyground.item.itemdata.ItemData;
 import steve6472.polyground.world.World;
@@ -25,11 +22,10 @@ import steve6472.sge.main.game.mixable.IPosition3f;
  * Project: CaveGame
  *
  ***********************/
-public class ItemEntity extends EntityBase implements IRenderable, ITickable, IKillable, IWorldContainer, IPosition3f
+public class ItemEntity extends HitboxEntityBase implements IRenderable, ITickable, IKillable, IWorldContainer, IPosition3f
 {
 	public Item item;
 	public ItemData itemData;
-	private final EntityHitbox entityHitbox;
 	private World world;
 	private boolean forceDead = false;
 	private Player player;
@@ -41,11 +37,10 @@ public class ItemEntity extends EntityBase implements IRenderable, ITickable, IK
 
 	public ItemEntity(Player player, Item item, ItemData itemData, float x, float y, float z)
 	{
-		super();
+		super(0.25f / 2f, 0.25f / 2f, 0.25f / 2f);
 		this.player = player;
 		this.item = item;
 		this.itemData = itemData;
-		entityHitbox = new EntityHitbox(0.25f / 2f, 0.25f / 2f, 0.25f / 2f, this, this);
 		setPosition(x, y, z);
 		setPivotPoint(.5f, .5f, .5f);
 	}
@@ -68,11 +63,6 @@ public class ItemEntity extends EntityBase implements IRenderable, ITickable, IK
 		return "item";
 	}
 
-	public AABBf getHitbox()
-	{
-		return entityHitbox.getHitbox();
-	}
-
 	@Override
 	public void tick()
 	{
@@ -86,8 +76,8 @@ public class ItemEntity extends EntityBase implements IRenderable, ITickable, IK
 			if (getMotion().y > 9.5f)
 				getMotion().y = 9.5f;
 
-			entityHitbox.expand(getMotionX(), getMotionY(), getMotionZ());
-			boolean isOnGround = entityHitbox.collideWithWorld(getWorld(), this);
+			getEntityHitbox().expand(getMotionX(), getMotionY(), getMotionZ());
+			boolean isOnGround = getEntityHitbox().collideWithWorld(getWorld(), this);
 
 			if (getY() <= 0)
 				isOnGround = true;
@@ -125,7 +115,7 @@ public class ItemEntity extends EntityBase implements IRenderable, ITickable, IK
 			setRotations(0, player.getCamera().getYaw() + 1.5707963267948966f, player.getCamera().getPitch());
 			setPosition(player.getPosition());
 			setMotion(0, 0, 0);
-			entityHitbox.setHitbox(getX(), getY(), getZ());
+			getEntityHitbox().setHitbox(getX(), getY(), getZ());
 		} else
 		{
 			setRotations(0, getRotations().y, 0f);
@@ -182,59 +172,5 @@ public class ItemEntity extends EntityBase implements IRenderable, ITickable, IK
 	public World getWorld()
 	{
 		return world;
-	}
-
-	public void updateHitbox()
-	{
-		entityHitbox.setHitbox(getX(), getY() + 0.25f / 2f, getZ());
-	}
-
-	@Override
-	public void setPosition(Vector3f position)
-	{
-		super.setPosition(position);
-		updateHitbox();
-	}
-
-	@Override
-	public void setPosition(float x, float y, float z)
-	{
-		super.setPosition(x, y, z);
-		updateHitbox();
-	}
-
-	@Override
-	public void addPosition(Vector3f position)
-	{
-		super.addPosition(position);
-		updateHitbox();
-	}
-
-	@Override
-	public void addPosition(float x, float y, float z)
-	{
-		super.addPosition(x, y, z);
-		updateHitbox();
-	}
-
-	@Override
-	public void setX(float x)
-	{
-		super.setX(x);
-		updateHitbox();
-	}
-
-	@Override
-	public void setY(float y)
-	{
-		super.setY(y);
-		updateHitbox();
-	}
-
-	@Override
-	public void setZ(float z)
-	{
-		super.setZ(z);
-		updateHitbox();
 	}
 }
