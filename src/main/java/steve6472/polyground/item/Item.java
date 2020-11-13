@@ -10,7 +10,6 @@ import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.entity.player.EnumSlot;
 import steve6472.polyground.entity.player.Player;
 import steve6472.polyground.gfx.StaticEntityModel;
-import steve6472.polyground.registry.Blocks;
 import steve6472.polyground.world.World;
 import steve6472.sge.main.events.MouseEvent;
 import steve6472.sge.main.util.Pair;
@@ -27,7 +26,7 @@ import java.util.function.Consumer;
  ***********************/
 public class Item
 {
-	private static List<Pair<IElement[], Consumer<IElement[]>>> modelQueue = new ArrayList<>();
+	private static final List<Pair<IElement[], Consumer<IElement[]>>> modelQueue = new ArrayList<>();
 
 	public static void runQueue()
 	{
@@ -76,23 +75,17 @@ public class Item
 			CaveGame.getInstance().itemGroups.addUngrouped(this);
 		}
 
-		IElement[] elements = null;
-		if (json.getString("type").equals("from_model"))
-		{
-			elements = ModelLoader.loadElements(ModelLoader.load("game/objects/models/item/" + json.getString("model_name") + ".bbmodel", true), 0, 0, 0);
-		}
+		IElement[] elements;
+		elements = ModelLoader.loadElements(ModelLoader.load("game/objects/models/item/" + json.getString("model_name") + ".bbmodel", true), 0, 0, 0);
 
-		modelQueue.add(new Pair<>(elements, el -> loadModel(json, el)));
+		modelQueue.add(new Pair<>(elements, this::loadModel));
 	}
 
-	public void loadModel(JSONObject json, IElement[] modelElements)
+	public void loadModel(IElement[] modelElements)
 	{
 		model = new StaticEntityModel();
 
-		if (json.getString("type").equals("from_block"))
-			model.load(CaveGame.getInstance().mainRender.buildHelper, Blocks.getDefaultState(json.getString("block")).getBlockModels()[0].getElements(), false);
-		else if (json.getString("type").equals("from_model"))
-			model.load(CaveGame.getInstance().mainRender.buildHelper, modelElements, true);
+		model.load(CaveGame.getInstance().mainRender.buildHelper, modelElements, true);
 	}
 
 	public String name()

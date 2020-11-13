@@ -18,11 +18,11 @@ import java.nio.file.StandardCopyOption;
  ***********************/
 public class ItemBuilder
 {
+	private final JSONArray groups;
 	private String itemName;
 	private String modelName;
 	private String modelPath;
 	private ISpecial special;
-	private JSONArray groups;
 
 	public ItemBuilder()
 	{
@@ -114,7 +114,6 @@ public class ItemBuilder
 				System.out.println("Created file " + target.getParentFile().getPath());
 			Files.copy(source.toPath(), target.toPath(), StandardCopyOption.REPLACE_EXISTING);
 
-			json.put("type", "from_model");
 			json.put("model_name", (modelPath.isEmpty() ? "" : modelPath + "/") + modelName);
 
 			if (special != null)
