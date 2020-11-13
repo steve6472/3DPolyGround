@@ -100,7 +100,7 @@ public class Minimap extends Component
 		if (world != null)
 		{
 			if (!CaveGame.runGameEvent(new WorldEvent.PreRender(world)))
-				world.render(false, false);
+				world.getRenderer().renderNormal(false, false);
 			CaveGame.runGameEvent(new WorldEvent.PostRender(world));
 		}
 

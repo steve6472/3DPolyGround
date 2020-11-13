@@ -86,9 +86,6 @@ public class EntityManager
 
 		for (Object o : entities)
 		{
-			if (o instanceof IRenderable r)
-				r.render();
-
 			if (o instanceof IAdvancedRender r)
 			{
 				stack.pushMatrix();
@@ -106,6 +103,15 @@ public class EntityManager
 
 				stack.popMatrix();
 			}
+		}
+	}
+
+	public void render()
+	{
+		for (Object o : entities)
+		{
+			if (o instanceof IRenderable r)
+				r.render();
 		}
 	}
 

@@ -150,9 +150,10 @@ public class MainRender
 			return;
 
 		stack.reset();
+		game.world.getEntityManager().render(game.mainRender.stack);
 
 		if (!CaveGame.runGameEvent(new WorldEvent.PreRender(game.world)))
-			game.world.render(true, true);
+			game.world.getRenderer().renderDeferred(true, true);
 		CaveGame.runGameEvent(new WorldEvent.PostRender(game.world));
 
 		mainFrameBuffer.bindFrameBuffer(game);
@@ -264,9 +265,10 @@ public class MainRender
 		if (renderWorld)
 		{
 			if (!CaveGame.runGameEvent(new WorldEvent.PreRender(game.world)))
-				game.world.render(false, false);
+				game.world.getRenderer().renderNormal(false, false);
 			CaveGame.runGameEvent(new WorldEvent.PostRender(game.world));
 		}
+		game.world.getEntityManager().render();
 
 //		miningTool.render(game.getPlayer().getX(), game.getPlayer().getY(), game.getPlayer().getZ()
 //			, 0, (float) (game.getPlayer().getCamera().getYaw() + Math.PI / 2f), (game.getPlayer().getCamera().getPitch()), 1f);

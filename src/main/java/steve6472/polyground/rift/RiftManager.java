@@ -9,7 +9,7 @@ import steve6472.polyground.gfx.shaders.RiftShader;
 import steve6472.polyground.tessellators.BasicTessellator;
 import steve6472.polyground.world.World;
 import steve6472.sge.gfx.DepthFrameBuffer;
-import steve6472.sge.gfx.Sprite;
+import steve6472.sge.gfx.StaticTexture;
 import steve6472.sge.gfx.Tessellator;
 import steve6472.sge.gfx.Tessellator3D;
 import steve6472.sge.main.events.Event;
@@ -25,7 +25,7 @@ import static org.lwjgl.opengl.GL11.glDrawArrays;
 import static org.lwjgl.opengl.GL11.glLineWidth;
 import static org.lwjgl.opengl.GL20.glDisableVertexAttribArray;
 import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
-import static org.lwjgl.opengl.GL30.*;
+import static org.lwjgl.opengl.GL30.glBindVertexArray;
 import static steve6472.sge.gfx.VertexObjectCreator.unbindVAO;
 
 /**********************
@@ -230,7 +230,7 @@ public class RiftManager
 		MainRender.shaders.riftShader.setView(CaveGame.getInstance().getCamera().getViewMatrix());
 		MainRender.shaders.riftShader.setUniform(RiftShader.TINT, 1f, 1f, 1f);
 
-		Sprite.bind(0, rift.getBuffer().texture);
+		StaticTexture.bind(0, rift.getBuffer().texture);
 
 		glBindVertexArray(rift.getModel().getVao());
 		glEnableVertexAttribArray(0);
