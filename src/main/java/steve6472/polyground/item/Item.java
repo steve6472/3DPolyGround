@@ -115,6 +115,16 @@ public class Item
 	{
 	}
 
+	public void onPickup(World world, Player player, ItemEntity entity)
+	{
+
+	}
+
+	public void onPlace(World world, Player player, ItemEntity entity)
+	{
+
+	}
+
 	public void tickInHand(Player player, ItemEntity entity)
 	{
 

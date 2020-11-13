@@ -476,6 +476,7 @@ public class Player implements IMotion3f, IPosition3f
 			{
 				heldItem = target;
 				heldItem.setPlayer(this);
+				heldItem.item.onPickup(world, this, heldItem);
 			}
 
 		} else
@@ -485,6 +486,7 @@ public class Player implements IMotion3f, IPosition3f
 
 			heldItem.setPlayer(null);
 			heldItem.setPosition(getHitResult().getPx(), getHitResult().getPy(), getHitResult().getPz());
+			heldItem.item.onPlace(world, this, heldItem);
 
 			if (target == null)
 			{
@@ -493,6 +495,7 @@ public class Player implements IMotion3f, IPosition3f
 			{
 				heldItem = target;
 				heldItem.setPlayer(this);
+				heldItem.item.onPickup(world, this, heldItem);
 			}
 		}
 	}
