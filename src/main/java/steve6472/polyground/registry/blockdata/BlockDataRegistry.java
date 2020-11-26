@@ -1,6 +1,7 @@
 package steve6472.polyground.registry.blockdata;
 
 import steve6472.polyground.block.blockdata.*;
+import steve6472.polyground.block.blockdata.logic.LogicBlockData;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -24,6 +25,7 @@ public class BlockDataRegistry
 	public static final BlockDataEntry<PipeData> pipeData = register("pipe", PipeData::new);
 	public static final BlockDataEntry<AmethineCoreData> amethineCore = register("amethine_core", AmethineCoreData::new);
 	public static final BlockDataEntry<DoorData> door = register("door", DoorData::new);
+	public static final BlockDataEntry<LogicBlockData> logic = register("logic", LogicBlockData::new);
 
 	public static <T extends BlockData> BlockDataEntry<T> register(String id, IBlockDataFactory<T> factory)
 	{

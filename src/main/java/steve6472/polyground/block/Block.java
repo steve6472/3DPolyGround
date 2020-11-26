@@ -13,6 +13,7 @@ import steve6472.polyground.block.model.elements.CubeElement;
 import steve6472.polyground.block.properties.IProperty;
 import steve6472.polyground.block.special.CustomBlock;
 import steve6472.polyground.block.states.BlockState;
+import steve6472.polyground.block.states.IBlockState;
 import steve6472.polyground.block.states.StateLoader;
 import steve6472.polyground.entity.EntityBase;
 import steve6472.polyground.entity.player.Player;
@@ -132,9 +133,9 @@ public class Block
 		return defaultState;
 	}
 
-	public void setDefaultState(BlockState state)
+	public void setDefaultState(IBlockState state)
 	{
-		this.defaultState = state;
+		this.defaultState = state.get();
 	}
 
 	public void fillStates(List<IProperty<?>> properties)

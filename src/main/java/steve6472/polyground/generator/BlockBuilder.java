@@ -7,6 +7,7 @@ import steve6472.polyground.PrettyJson;
 import steve6472.polyground.block.Tags;
 import steve6472.polyground.block.model.CubeTags;
 import steve6472.polyground.block.properties.enums.EnumAxis;
+import steve6472.polyground.block.properties.enums.EnumHalf;
 import steve6472.polyground.block.properties.enums.EnumSlabType;
 import steve6472.polyground.block.special.PillarBlock;
 import steve6472.polyground.block.special.SlabBlock;
@@ -411,30 +412,35 @@ public class BlockBuilder
 			.blockSpecial(new SimpleSpecial("stairs"))
 			.blockState(StateBuilder.create()
 				.addState(PropertyBuilder.create()
-					.addProperty(StairBlock.FACING, EnumFace.NORTH)
-					.uvLock(true)
-					.tag(Tags.KILL_SPREAD_BOTTOM)
+						.addProperty(StairBlock.FACING, EnumFace.NORTH)
+						.addProperty(StairBlock.HALF, EnumHalf.BOTTOM)
+						.uvLock(true)
+						.tag(Tags.KILL_SPREAD_BOTTOM)
 					, BlockModelBuilder.create(name)
-					.addCube(CubeBuilder.create()
-						.bottomSlab()
-						.name(CubeTags.STAIR_BOTTOM)
-						.face(FaceBuilder.create()
-							.texture("block/" + texture)
-							.uvlock(true)
+						.addCube(CubeBuilder.create()
+							.bottomSlab()
+							.name(CubeTags.STAIR_BOTTOM)
+							.face(FaceBuilder.create()
+								.texture("block/" + texture)
+								.uvlock(true)
+							)
 						)
-					)
-					.addCube(CubeBuilder.create()
-						.stairTop()
-						.face(FaceBuilder.create()
-							.texture("block/" + texture)
-							.uvlock(true)
-							, EnumFace.UP, EnumFace.NORTH, EnumFace.EAST, EnumFace.SOUTH, EnumFace.WEST
+						.addCube(CubeBuilder.create()
+							.stairTop()
+							.face(FaceBuilder.create()
+									.texture("block/" + texture)
+									.uvlock(true)
+								, EnumFace.UP, EnumFace.NORTH, EnumFace.EAST, EnumFace.SOUTH, EnumFace.WEST
+							)
 						)
-					)
 				)
-				.addState(PropertyBuilder.create().addProperty(StairBlock.FACING, EnumFace.EAST).tag(Tags.KILL_SPREAD_BOTTOM).uvLock(true).rot(0, 270, 0), BlockModelBuilder.noGen(name))
-				.addState(PropertyBuilder.create().addProperty(StairBlock.FACING, EnumFace.SOUTH).tag(Tags.KILL_SPREAD_BOTTOM).uvLock(true).rot(0, 180, 0), BlockModelBuilder.noGen(name))
-				.addState(PropertyBuilder.create().addProperty(StairBlock.FACING, EnumFace.WEST).tag(Tags.KILL_SPREAD_BOTTOM).uvLock(true).rot(0, 90, 0), BlockModelBuilder.noGen(name))
+				.addState(PropertyBuilder.create().addProperty(StairBlock.FACING, EnumFace.EAST).addProperty(StairBlock.HALF, EnumHalf.BOTTOM).tag(Tags.KILL_SPREAD_BOTTOM).uvLock(true).rot(0, 270, 0), BlockModelBuilder.noGen(name))
+				.addState(PropertyBuilder.create().addProperty(StairBlock.FACING, EnumFace.SOUTH).addProperty(StairBlock.HALF, EnumHalf.BOTTOM).tag(Tags.KILL_SPREAD_BOTTOM).uvLock(true).rot(0, 180, 0), BlockModelBuilder.noGen(name))
+				.addState(PropertyBuilder.create().addProperty(StairBlock.FACING, EnumFace.WEST).addProperty(StairBlock.HALF, EnumHalf.BOTTOM).tag(Tags.KILL_SPREAD_BOTTOM).uvLock(true).rot(0, 90, 0), BlockModelBuilder.noGen(name))
+				.addState(PropertyBuilder.create().addProperty(StairBlock.FACING, EnumFace.NORTH).addProperty(StairBlock.HALF, EnumHalf.TOP).uvLock(true).rot(0, 180, 180), BlockModelBuilder.noGen(name))
+				.addState(PropertyBuilder.create().addProperty(StairBlock.FACING, EnumFace.EAST).addProperty(StairBlock.HALF, EnumHalf.TOP).uvLock(true).rot(0, 90, 180), BlockModelBuilder.noGen(name))
+				.addState(PropertyBuilder.create().addProperty(StairBlock.FACING, EnumFace.SOUTH).addProperty(StairBlock.HALF, EnumHalf.TOP).uvLock(true).rot(0, 0, 180), BlockModelBuilder.noGen(name))
+				.addState(PropertyBuilder.create().addProperty(StairBlock.FACING, EnumFace.WEST).addProperty(StairBlock.HALF, EnumHalf.TOP).uvLock(true).rot(0, 270, 180), BlockModelBuilder.noGen(name))
 			);
 	}
 

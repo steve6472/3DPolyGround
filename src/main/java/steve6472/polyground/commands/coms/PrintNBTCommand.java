@@ -42,7 +42,7 @@ public class PrintNBTCommand extends Command
 			{
 				c.getSource().sendFeedback("[#aaaaaa]", data.getClass().getCanonicalName());
 				String snbt = SNBTUtil.toSNBT(data.write());
-				c.getSource().sendFeedback(snbt);
+				c.getSource().sendFeedback(snbt.substring(0, 1000));
 				System.out.println(snbt);
 			} catch (IOException e)
 			{

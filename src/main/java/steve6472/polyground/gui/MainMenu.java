@@ -80,6 +80,23 @@ public class MainMenu extends Gui implements IGamePause
 			CaveGame.getInstance().world.addChunk(new Chunk(0, 0, CaveGame.getInstance().getWorld()));
 
 
+			try
+			{
+				CommandRegistry registry = CaveGame.getInstance().commandRegistry;
+				registry.dispatcher.execute("tp 0.5 2 0.5", registry.commandSource);
+				registry.dispatcher.execute("fill 4 1 4 4 1 4 logic", registry.commandSource);
+
+				String[] logic = {"and", "nand", "or", "nor", "not", "switch", "wire", "light", "high_constant", "low_constant", "input", "output"};
+
+				for (int i = 0; i < logic.length; i++)
+				{
+					registry.dispatcher.execute("item " + logic[i] + " 5.4 1 " + (i / 2.0 + 1.5), registry.commandSource);
+				}
+			} catch (CommandSyntaxException e)
+			{
+				e.printStackTrace();
+			}
+
 		});
 		addComponent(sandbox);
 
@@ -104,7 +121,6 @@ public class MainMenu extends Gui implements IGamePause
 				registry.dispatcher.execute("loadworld house", registry.commandSource);
 				registry.dispatcher.execute("tp 0.5 1 0.5", registry.commandSource);
 				registry.dispatcher.execute("gms", registry.commandSource);
-				registry.dispatcher.execute("testity", registry.commandSource);
 				registry.dispatcher.execute("tp 0.5 2 0.5", registry.commandSource);
 			} catch (CommandSyntaxException e)
 			{

@@ -3,7 +3,6 @@ package steve6472.polyground.world;
 import steve6472.polyground.EnumFace;
 import steve6472.polyground.block.Block;
 import steve6472.polyground.block.Tags;
-import steve6472.polyground.block.model.CubeTags;
 import steve6472.polyground.block.properties.enums.EnumSlabType;
 import steve6472.polyground.block.special.*;
 import steve6472.polyground.block.states.BlockState;
@@ -26,24 +25,26 @@ public class Cull
 		if (middleBlock instanceof CustomBlock || testedBlock instanceof CustomBlock || testedState.isCustom())
 			return true;
 
-		if (middleBlock instanceof StairBlock)
-		{
-			if (cubeName.equals(CubeTags.STAIR_TOP))
-			{
-				if (!basicBlock(testedBlock, testedState))
-				{
-					return middleState.get(StairBlock.FACING) == face;
-				} else
-				{
-					return true;
-				}
-			} else if (cubeName.equals(CubeTags.STAIR_BOTTOM))
-			{
-				if (face == EnumFace.UP)
-					return true;
-			}
-			return basicBlock(testedBlock, testedState);
-		}
+//		if (middleBlock instanceof StairBlock)
+//		{
+//			boolean invert = middleState.get(StairBlock.HALF) == EnumHalf.BOTTOM;
+//
+//			if (cubeName.equals(CubeTags.STAIR_TOP))
+//			{
+//				if (!basicBlock(testedBlock, testedState))
+//				{
+//					return middleState.get(StairBlock.FACING) == face;
+//				} else
+//				{
+//					return !invert;
+//				}
+//			} else if (cubeName.equals(CubeTags.STAIR_BOTTOM))
+//			{
+//				if (face == EnumFace.UP)
+//					return !invert;
+//			}
+//			return basicBlock(testedBlock, testedState);
+//		}
 
 		if (middleBlock instanceof TorchBlock || testedBlock instanceof TorchBlock)
 		{

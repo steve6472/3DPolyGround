@@ -71,7 +71,7 @@ public class Groups
 			.addChild(GroupBuilder
 				.create("Items", "items", "brush", ITEM)
 				.addChild(GroupBuilder.create("Powders", "powders", "cyan_powder", ITEM))
-				.addChild(GroupBuilder.create("A", "a", "stone", BLOCK))
+				.addChild(GroupBuilder.create("Logic", "logic", "high_constant", ITEM))
 				.addChild(GroupBuilder.create("B", "b", "stone", BLOCK)))
 			.addChild(GroupBuilder.create("Ungrouped", "ungrouped", "null", BLOCK))
 			.generate(null);

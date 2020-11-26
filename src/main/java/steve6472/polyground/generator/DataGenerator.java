@@ -8,7 +8,9 @@ import steve6472.polyground.block.states.States;
 import steve6472.polyground.generator.biome.BiomeBuilder;
 import steve6472.polyground.generator.biome.feature.BlockStateBuilder;
 import steve6472.polyground.generator.biome.feature.FeatureBuilder;
-import steve6472.polyground.generator.models.*;
+import steve6472.polyground.generator.models.BlockModelBuilder;
+import steve6472.polyground.generator.models.CubeBuilder;
+import steve6472.polyground.generator.models.FaceBuilder;
 import steve6472.polyground.generator.special.SimpleSpecial;
 import steve6472.polyground.generator.special.SpecialBuilder;
 import steve6472.polyground.generator.state.PropertyBuilder;
@@ -81,10 +83,7 @@ public class DataGenerator
 			.addCube(CubeBuilder
 				.create()
 				.fullBlock()
-				.face(FaceBuilder
-					.create()
-					.texture("block/number/" + i)
-					.biomeTint(b)));
+				.face(FaceBuilder.create().texture("block/number/" + i).biomeTint(b)));
 
 		BlockBuilder
 			.create()
@@ -115,10 +114,7 @@ public class DataGenerator
 
 	private SpecialBuilder tagBelowSpecial(boolean and, String... tags)
 	{
-		return SpecialBuilder
-			.create("tag_below")
-			.addValue("operation", and ? "and" : "or")
-			.addValue("tags", tags);
+		return SpecialBuilder.create("tag_below").addValue("operation", and ? "and" : "or").addValue("tags", tags);
 	}
 
 	public void generateItems()
@@ -135,7 +131,28 @@ public class DataGenerator
 		ItemBuilder.item("pebble", "items");
 		ItemBuilder.item("stick", "items");
 
-		ItemBuilder.create().name("brush").model("brush").groupPath("items").special(new SimpleSpecial("brush")).generate();
+		// Logic
+		ItemBuilder.itemModelPath("high_constant", "logic", "high_constant", "items.logic");
+		ItemBuilder.itemModelPath("low_constant", "logic", "low_constant", "items.logic");
+		ItemBuilder.itemModelPath("and", "logic", "and", "items.logic");
+		ItemBuilder.itemModelPath("nand", "logic", "nand", "items.logic");
+		ItemBuilder.itemModelPath("not", "logic", "not", "items.logic");
+		ItemBuilder.itemModelPath("or", "logic", "or", "items.logic");
+		ItemBuilder.itemModelPath("nor", "logic", "nor", "items.logic");
+		ItemBuilder.itemModelPath("xor", "logic", "xor", "items.logic");
+		ItemBuilder.itemModelPath("wire", "logic", "wire", "items.logic");
+		ItemBuilder.itemModelPath("light", "logic", "light", "items.logic");
+		ItemBuilder.itemModelPath("input", "logic", "input", "items.logic");
+		ItemBuilder.itemModelPath("output", "logic", "output", "items.logic");
+		ItemBuilder.itemModelPath("switch", "logic", "switch", "items.logic");
+
+		ItemBuilder
+			.create()
+			.name("brush")
+			.model("brush")
+			.groupPath("items")
+			.special(new SimpleSpecial("brush"))
+			.generate();
 
 		for (String p : powders)
 		{
@@ -192,41 +209,22 @@ public class DataGenerator
 			.generate();*/
 
 		// Blocks
-		BlockBuilder
-			.create()
-			.fullBlock("null")
-			.addTags(Tags.SOLID, Tags.ERROR)
-			.generate();
+		BlockBuilder.create().fullBlock("null").addTags(Tags.SOLID, Tags.ERROR).generate();
 		BlockBuilder
 			.create()
 			.fullBlock("smooth_stone")
 			.addTags(Tags.SOLID)
 			.placerGroupPath("building.stone")
 			.generate();
-		BlockBuilder
-			.create()
-			.fullBlock("bricks")
-			.addTags(Tags.SOLID)
-			.placerGroupPath("building.bricks")
-			.generate();
-		BlockBuilder
-			.create()
-			.fullBlock("iron_block")
-			.addTags(Tags.SOLID)
-			.placerGroupPath("building.metal")
-			.generate();
+		BlockBuilder.create().fullBlock("bricks").addTags(Tags.SOLID).placerGroupPath("building.bricks").generate();
+		BlockBuilder.create().fullBlock("iron_block").addTags(Tags.SOLID).placerGroupPath("building.metal").generate();
 		BlockBuilder
 			.create()
 			.fullBlock("cobblestone")
 			.addTags(Tags.SOLID)
 			.placerGroupPath("building.stone.cobblestone")
 			.generate();
-		BlockBuilder
-			.create()
-			.fullBlock("bedrock")
-			.addTags(Tags.SOLID)
-			.placerGroupPath("building.stone")
-			.generate();
+		BlockBuilder.create().fullBlock("bedrock").addTags(Tags.SOLID).placerGroupPath("building.stone").generate();
 
 		BlockBuilder
 			.create()
@@ -278,41 +276,13 @@ public class DataGenerator
 			.addTags(Tags.SOLID)
 			.placerGroupPath("building.stone")
 			.generate();
-		BlockBuilder
-			.create()
-			.fullBlock("limestone")
-			.addTags(Tags.SOLID)
-			.placerGroupPath("building.stone")
-			.generate();
-		BlockBuilder
-			.create()
-			.fullBlock("quartzite")
-			.addTags(Tags.SOLID)
-			.placerGroupPath("building.stone")
-			.generate();
-		BlockBuilder
-			.create()
-			.fullBlock("andesite")
-			.addTags(Tags.SOLID)
-			.placerGroupPath("building.stone")
-			.generate();
-		BlockBuilder
-			.create()
-			.fullBlock("diorite")
-			.addTags(Tags.SOLID)
-			.placerGroupPath("building.stone")
-			.generate();
-		BlockBuilder
-			.create()
-			.fullBlock("granite")
-			.addTags(Tags.SOLID)
-			.placerGroupPath("building.stone")
-			.generate();
-		BlockBuilder
-			.create()
-			.fullBlock("dirt")
-			.addTags(Tags.FLOWER_TOP, Tags.SOLID)
-			.generate();
+		BlockBuilder.create().fullBlock("limestone").addTags(Tags.SOLID).placerGroupPath("building.stone").generate();
+		BlockBuilder.create().fullBlock("quartzite").addTags(Tags.SOLID).placerGroupPath("building.stone").generate();
+		BlockBuilder.create().fullBlock("andesite").addTags(Tags.SOLID).placerGroupPath("building.stone").generate();
+		BlockBuilder.create().fullBlock("diorite").addTags(Tags.SOLID).placerGroupPath("building.stone").generate();
+		BlockBuilder.create().fullBlock("granite").addTags(Tags.SOLID).placerGroupPath("building.stone").generate();
+		BlockBuilder.create().fullBlock("dirt").addTags(Tags.FLOWER_TOP, Tags.SOLID).generate();
+		BlockBuilder.create().fullBlock("coarse_dirt").addTags(Tags.FLOWER_TOP, Tags.SOLID).generate();
 
 		BlockBuilder
 			.create()
@@ -345,21 +315,13 @@ public class DataGenerator
 
 		//		DataBuilder.create().fullBlock("cond_test").blockState(StateBuilder.create().singleModel(new CondTest())).blockModel().generate();
 
-		BlockBuilder
-			.create()
-			.stairs("stone_stairs", "stone")
-			.placerGroupPath("building.stone.stone")
-			.generate();
+		BlockBuilder.create().stairs("stone_stairs", "stone").placerGroupPath("building.stone.stone").generate();
 		BlockBuilder
 			.create()
 			.stairs("cobblestone_stairs", "cobblestone")
 			.placerGroupPath("building.stone.cobblestone")
 			.generate();
-		BlockBuilder
-			.create()
-			.stairs("brick_stairs", "bricks")
-			.placerGroupPath("building.bricks")
-			.generate();
+		BlockBuilder.create().stairs("brick_stairs", "bricks").placerGroupPath("building.bricks").generate();
 
 		BlockBuilder
 			.create()
@@ -421,14 +383,8 @@ public class DataGenerator
 			.addTags(Tags.SOLID)
 			.generate();
 
-		BlockBuilder
-			.create()
-			.transparentFullBlock("glass")
-			.generate();
-		BlockBuilder
-			.create()
-			.transparentFullBlock("framed_glass")
-			.generate();
+		BlockBuilder.create().transparentFullBlock("glass").generate();
+		BlockBuilder.create().transparentFullBlock("framed_glass").generate();
 
 		BlockBuilder
 			.create()
@@ -441,11 +397,7 @@ public class DataGenerator
 			.leaves("spruce_leaves", "leaves/spruce_leaves")
 			.placerGroupPath("nature.leaves")
 			.generate();
-		BlockBuilder
-			.create()
-			.leaves("birch_leaves", "leaves/birch_leaves")
-			.placerGroupPath("nature.leaves")
-			.generate();
+		BlockBuilder.create().leaves("birch_leaves", "leaves/birch_leaves").placerGroupPath("nature.leaves").generate();
 		BlockBuilder
 			.create()
 			.leaves("acacia_leaves", "leaves/acacia_leaves")
@@ -624,26 +576,14 @@ public class DataGenerator
 			.placerGroupPath("nature.cave")
 			.generate();
 
-		BlockBuilder
-			.create()
-			.stala("stone_stala", "stone", "stone")
-			.placerGroupPath("building.stone.stone")
-			.generate();
-		BlockBuilder
-			.create()
-			.stala("granite_stala", "granite", "granite")
-			.placerGroupPath("building.stone")
-			.generate();
+		BlockBuilder.create().stala("stone_stala", "stone", "stone").placerGroupPath("building.stone.stone").generate();
+		BlockBuilder.create().stala("granite_stala", "granite", "granite").placerGroupPath("building.stone").generate();
 		BlockBuilder
 			.create()
 			.stala("andesite_stala", "andesite", "andesite")
 			.placerGroupPath("building.stone")
 			.generate();
-		BlockBuilder
-			.create()
-			.stala("diorite_stala", "diorite", "diorite")
-			.placerGroupPath("building.stone")
-			.generate();
+		BlockBuilder.create().stala("diorite_stala", "diorite", "diorite").placerGroupPath("building.stone").generate();
 
 		BlockBuilder
 			.create()
@@ -662,9 +602,7 @@ public class DataGenerator
 			.create()
 			.fullBlock("flint_knapping")
 			.blockSpecial(new SimpleSpecial("flint_knapping"))
-			.blockState(StateBuilder
-				.create()
-				.emptyModel())
+			.blockState(StateBuilder.create().emptyModel())
 			.placerGroupPath("misc")
 			.generate();
 
@@ -679,12 +617,8 @@ public class DataGenerator
 					.addCube(CubeBuilder
 						.create()
 						.fullBlock()
-						.face(FaceBuilder
-							.create()
-							.texture("block/root_side"), CubeBuilder.SIDE)
-						.face(FaceBuilder
-							.create()
-							.texture("block/dirt"), EnumFace.DOWN)
+						.face(FaceBuilder.create().texture("block/root_side"), CubeBuilder.SIDE)
+						.face(FaceBuilder.create().texture("block/dirt"), EnumFace.DOWN)
 						.face(FaceBuilder
 							.create()
 							.texture("block/grass_block_top")
@@ -697,9 +631,15 @@ public class DataGenerator
 			.create()
 			.fullBlock("chisel")
 			.blockSpecial(new SimpleSpecial("chisel"))
-			.blockState(StateBuilder
-				.create()
-				.emptyModel())
+			.blockState(StateBuilder.create().emptyModel())
+			.placerGroupPath("misc")
+			.generate();
+
+		BlockBuilder
+			.create()
+			.fullBlock("logic")
+			.blockSpecial(new SimpleSpecial("logic"))
+			.blockState(StateBuilder.create().emptyModel())
 			.placerGroupPath("misc")
 			.generate();
 
@@ -710,9 +650,7 @@ public class DataGenerator
 			.addTag(Tags.TRANSPARENT)
 			.blockState(StateBuilder
 				.create()
-				.singleModel(BlockModelBuilder
-					.create("small_grass")
-					.externalPath("custom_models/small_grass.bbmodel")))
+				.singleModel(BlockModelBuilder.create("small_grass").externalPath("custom_models/small_grass.bbmodel")))
 			.placerGroupPath("nature")
 			.generate();
 
@@ -730,9 +668,7 @@ public class DataGenerator
 			.blockSpecial(new SimpleSpecial("custom"))
 			.blockState(StateBuilder
 				.create()
-				.singleModel(BlockModelBuilder
-					.create("amethine")
-					.externalPath("custom_models/amethine.bbmodel"))
+				.singleModel(BlockModelBuilder.create("amethine").externalPath("custom_models/amethine.bbmodel"))
 				.custom(true))
 			.placerGroupPath("nature.cave")
 			.addTags(Tags.PICKABLE)
@@ -756,9 +692,7 @@ public class DataGenerator
 			.fullBlock("mining_tool")
 			.blockState(StateBuilder
 				.create()
-				.singleModel(BlockModelBuilder
-					.create("mining_tool")
-					.externalPath("custom_models/mining_tool.bbmodel")))
+				.singleModel(BlockModelBuilder.create("mining_tool").externalPath("custom_models/mining_tool.bbmodel")))
 			.blockSpecial(new SimpleSpecial("custom"))
 			.placerGroupPath("misc")
 			.generate();
@@ -793,9 +727,7 @@ public class DataGenerator
 			.fullBlock("wooden_box")
 			.blockState(StateBuilder
 				.create()
-				.singleModel(BlockModelBuilder
-					.create("wooden_box")
-					.externalPath("custom_models/wooden_box.bbmodel")))
+				.singleModel(BlockModelBuilder.create("wooden_box").externalPath("custom_models/wooden_box.bbmodel")))
 			.blockSpecial(new SimpleSpecial("custom"))
 			.addTags(Tags.SOLID, Tags.PICKABLE)
 			.placerGroupPath("misc")
@@ -806,11 +738,26 @@ public class DataGenerator
 			.fullBlock("icicle")
 			.blockState(StateBuilder
 				.create()
-				.singleModel(BlockModelBuilder
-					.create("icicle")
-					.externalPath("custom_models/icicle.bbmodel")))
+				.singleModel(BlockModelBuilder.create("icicle").externalPath("custom_models/icicle.bbmodel")))
 			.blockSpecial(new SimpleSpecial("custom"))
 			.placerGroupPath("misc")
+			.generate();
+
+		BlockBuilder
+			.create()
+			.fullBlock("dirt_path")
+			.blockSpecial(new SimpleSpecial("custom"))
+			.blockState(StateBuilder
+				.create()
+				.singleModel(BlockModelBuilder
+					.create("dirt_path")
+					.addCube(CubeBuilder
+						.create()
+						.max(16, 15, 16)
+						.face(FaceBuilder.create().texture("block/dirt_path_top"), EnumFace.UP)
+						.face(FaceBuilder.create().texture("block/dirt"), EnumFace.DOWN)
+						.face(FaceBuilder.create().texture("block/dirt_path_side"), CubeBuilder.SIDE))))
+			.placerGroupPath("nature")
 			.generate();
 
 		BlockBuilder
@@ -863,8 +810,7 @@ public class DataGenerator
 				.create()
 				.singleModel((BlockModelBuilder
 					.create("axe_template")
-					.externalPath("custom_models/axe_template.bbmodel")))
-			)
+					.externalPath("custom_models/axe_template.bbmodel"))))
 			.placerGroupPath("misc")
 			.generate();
 
@@ -872,9 +818,7 @@ public class DataGenerator
 			.create()
 			.fullBlock("branch")
 			.blockSpecial(new SimpleSpecial("branch"))
-			.blockState(StateBuilder
-				.create()
-				.emptyModel())
+			.blockState(StateBuilder.create().emptyModel())
 			.placerGroupPath("building.wood")
 			.generate();
 
@@ -882,9 +826,7 @@ public class DataGenerator
 			.create()
 			.fullBlock("amethine_core")
 			.blockSpecial(new SimpleSpecial("amethine_core"))
-			.blockState(StateBuilder
-				.create()
-				.emptyModel())
+			.blockState(StateBuilder.create().emptyModel())
 			.placerGroupPath("misc")
 			.generate();
 
@@ -892,9 +834,7 @@ public class DataGenerator
 			.create()
 			.fullBlock("pipe")
 			.blockSpecial(new SimpleSpecial("pipe"))
-			.blockState(StateBuilder
-				.create()
-				.emptyModel())
+			.blockState(StateBuilder.create().emptyModel())
 			.placerGroupPath("misc")
 			.generate();
 
@@ -906,10 +846,7 @@ public class DataGenerator
 				.create()
 				.singleModel(BlockModelBuilder
 					.create("sapling")
-					.addCube(CubeBuilder
-						.create()
-						.min(4, 0, 4)
-						.max(12, 12, 12))))
+					.addCube(CubeBuilder.create().min(4, 0, 4).max(12, 12, 12))))
 			.placerGroupPath("nature")
 			.generate();
 
@@ -976,19 +913,13 @@ public class DataGenerator
 			.blockSpecial(new SimpleSpecial("hemp"))
 			.blockState(StateBuilder
 				.create()
-				.addState(PropertyBuilder
-					.create()
-					.addProperty(HempBlock.STAGE, 3), BlockModelBuilder
+				.addState(PropertyBuilder.create().addProperty(HempBlock.STAGE, 3), BlockModelBuilder
 					.create("hemp_3")
 					.externalPath("custom_models/hemp_full.bbmodel"))
-				.addState(PropertyBuilder
-					.create()
-					.addProperty(HempBlock.STAGE, 2), BlockModelBuilder
+				.addState(PropertyBuilder.create().addProperty(HempBlock.STAGE, 2), BlockModelBuilder
 					.create("hemp_2")
 					.externalPath("custom_models/hemp_half.bbmodel"))
-				.addState(PropertyBuilder
-					.create()
-					.addProperty(HempBlock.STAGE, 1), BlockModelBuilder
+				.addState(PropertyBuilder.create().addProperty(HempBlock.STAGE, 1), BlockModelBuilder
 					.create("hemp_1")
 					.externalPath("custom_models/hemp_empty.bbmodel")))
 			.placerGroupPath("nature")
@@ -1003,9 +934,7 @@ public class DataGenerator
 					.create()
 					.addProperty(FourDirectionalBlock.FACING, EnumFace.NORTH)
 					.tags(Tags.PICKABLE, Tags.TRANSPARENT)
-					.custom(true), BlockModelBuilder
-					.create("flint_1")
-					.externalPath("custom_models/flint_1.bbmodel"))
+					.custom(true), BlockModelBuilder.create("flint_1").externalPath("custom_models/flint_1.bbmodel"))
 
 				.addState(PropertyBuilder
 					.create()
@@ -1089,9 +1018,7 @@ public class DataGenerator
 			.blockSpecial(new SimpleSpecial("conveyor_belt"))
 			.blockState(StateBuilder
 				.create()
-				.addState(PropertyBuilder
-					.create()
-					.addProperty(ConveyorBeltBlock.FACING, EnumFace.UP), BlockModelBuilder
+				.addState(PropertyBuilder.create().addProperty(ConveyorBeltBlock.FACING, EnumFace.UP), BlockModelBuilder
 					.create("conveyor_belt")
 					.externalPath("custom_models/conveyor_belt.bbmodel"))
 				.addState(PropertyBuilder
@@ -1211,10 +1138,7 @@ public class DataGenerator
 					.addProperty(DoubleBlock.HALF, EnumHalf.BOTTOM)
 					.tag(Tags.TRANSPARENT), BlockModelBuilder
 					.create("tall_grass_bottom")
-					.addCube(CubeBuilder
-						.create()
-						.fullBlock()
-						.collisionBox(false))
+					.addCube(CubeBuilder.create().fullBlock().collisionBox(false))
 					.addCube(CubeBuilder
 						.create()
 						.collisionBox(false)
@@ -1242,10 +1166,7 @@ public class DataGenerator
 					.addProperty(DoubleBlock.HALF, EnumHalf.TOP)
 					.tag(Tags.TRANSPARENT), BlockModelBuilder
 					.create("tall_grass_top")
-					.addCube(CubeBuilder
-						.create()
-						.fullBlock()
-						.collisionBox(false))
+					.addCube(CubeBuilder.create().fullBlock().collisionBox(false))
 					.addCube(CubeBuilder
 						.create()
 						.collisionBox(false)
@@ -1274,9 +1195,7 @@ public class DataGenerator
 			.create()
 			.blockName("oak_door")
 			.blockSpecial(new SimpleSpecial("door"))
-			.blockState(StateBuilder
-				.create()
-				.emptyModel())
+			.blockState(StateBuilder.create().emptyModel())
 			.placerGroupPath("building.wood.oak")
 			.generate();
 
@@ -1292,14 +1211,8 @@ public class DataGenerator
 						.create()
 						.min(1, 0, 1)
 						.max(15, 16, 15)
-						.face(FaceBuilder
-							.create()
-							.texture("block/cactus_top")
-							.autoUv(true), EnumFace.UP)
-						.face(FaceBuilder
-							.create()
-							.texture("block/cactus_bottom")
-							.autoUv(true), EnumFace.DOWN))
+						.face(FaceBuilder.create().texture("block/cactus_top").autoUv(true), EnumFace.UP)
+						.face(FaceBuilder.create().texture("block/cactus_bottom").autoUv(true), EnumFace.DOWN))
 					.addCube(CubeBuilder
 						.create()
 						.collisionBox(false)
@@ -1387,10 +1300,7 @@ public class DataGenerator
 					.addCube(CubeBuilder
 						.create()
 						.fullBlock()
-						.face(FaceBuilder
-							.create()
-							.texture("block/green_screen")
-							.modelLayer(ModelLayer.LIGHT))))
+						.face(FaceBuilder.create().texture("block/green_screen").modelLayer(ModelLayer.LIGHT))))
 				.tag(Tags.SOLID))
 			.placerGroupPath("misc")
 			.generate();
@@ -1401,9 +1311,7 @@ public class DataGenerator
 			.blockSpecial(new SimpleSpecial("state_test"))
 			.blockState(StateBuilder
 				.create()
-				.addState(PropertyBuilder
-					.create()
-					.addProperty(States.LIT, true), BlockModelBuilder
+				.addState(PropertyBuilder.create().addProperty(States.LIT, true), BlockModelBuilder
 					.create("slime_torch")
 					.addCube(CubeBuilder
 						.create()
@@ -1423,17 +1331,13 @@ public class DataGenerator
 							.texture("block/slime_torch")
 							.modelLayer(ModelLayer.LIGHT)
 							.uv(7, 11, 9, 13), EnumFace.DOWN)))
-				.addState(PropertyBuilder
-					.create()
-					.addProperty(States.LIT, false), BlockModelBuilder
+				.addState(PropertyBuilder.create().addProperty(States.LIT, false), BlockModelBuilder
 					.create("slime_torch_off")
 					.addCube(CubeBuilder
 						.create()
 						.torch()
 						.collisionBox(false)
-						.face(FaceBuilder
-							.create()
-							.texture("block/slime_torch_off"), CubeBuilder.SIDE)
+						.face(FaceBuilder.create().texture("block/slime_torch_off"), CubeBuilder.SIDE)
 						.face(FaceBuilder
 							.create()
 							.texture("block/slime_torch_off")
@@ -1451,9 +1355,9 @@ public class DataGenerator
 			.create()
 			.blockName("smooth_slab")
 			.blockSpecial(new SimpleSpecial("slab"))
-//			.itemSpecial(SpecialBuilder
-//				.create("slab")
-//				.addValue("block", "smooth_slab"))
+			//			.itemSpecial(SpecialBuilder
+			//				.create("slab")
+			//				.addValue("block", "smooth_slab"))
 			.blockState(StateBuilder
 				.create()
 				.addState(PropertyBuilder
@@ -1465,14 +1369,8 @@ public class DataGenerator
 					.addCube(CubeBuilder
 						.create()
 						.bottomSlab()
-						.face(FaceBuilder
-							.create()
-							.texture("block/smooth_stone")
-							.uvlock(true), CubeBuilder.TOP_BOTTOM)
-						.face(FaceBuilder
-							.create()
-							.texture("block/smooth_stone_slab")
-							.uvlock(true), CubeBuilder.SIDE)))
+						.face(FaceBuilder.create().texture("block/smooth_stone").uvlock(true), CubeBuilder.TOP_BOTTOM)
+						.face(FaceBuilder.create().texture("block/smooth_stone_slab").uvlock(true), CubeBuilder.SIDE)))
 				.addState(PropertyBuilder
 					.create()
 					.addProperty(SlabBlock.TYPE, EnumSlabType.TOP)
@@ -1482,14 +1380,8 @@ public class DataGenerator
 					.addCube(CubeBuilder
 						.create()
 						.topSlab()
-						.face(FaceBuilder
-							.create()
-							.texture("block/smooth_stone")
-							.uvlock(true), CubeBuilder.TOP_BOTTOM)
-						.face(FaceBuilder
-							.create()
-							.texture("block/smooth_stone_slab")
-							.uvlock(true), CubeBuilder.SIDE)))
+						.face(FaceBuilder.create().texture("block/smooth_stone").uvlock(true), CubeBuilder.TOP_BOTTOM)
+						.face(FaceBuilder.create().texture("block/smooth_stone_slab").uvlock(true), CubeBuilder.SIDE)))
 				.addState(PropertyBuilder
 					.create()
 					.addProperty(SlabBlock.TYPE, EnumSlabType.DOUBLE)
@@ -1500,14 +1392,8 @@ public class DataGenerator
 					.addCube(CubeBuilder
 						.create()
 						.fullBlock()
-						.face(FaceBuilder
-							.create()
-							.texture("block/smooth_stone")
-							.uvlock(true), CubeBuilder.TOP_BOTTOM)
-						.face(FaceBuilder
-							.create()
-							.texture("block/smooth_stone_slab")
-							.uvlock(true), CubeBuilder.SIDE)))
+						.face(FaceBuilder.create().texture("block/smooth_stone").uvlock(true), CubeBuilder.TOP_BOTTOM)
+						.face(FaceBuilder.create().texture("block/smooth_stone_slab").uvlock(true), CubeBuilder.SIDE)))
 				.addState(PropertyBuilder
 					.create()
 					.addProperty(SlabBlock.TYPE, EnumSlabType.BOTTOM)
@@ -1518,12 +1404,8 @@ public class DataGenerator
 						.create()
 						.min(0, 0, 0)
 						.max(8, 16, 16)
-						.face(FaceBuilder
-							.create()
-							.texture("block/smooth_stone_slab_side"), CubeBuilder.TOP_BOTTOM)
-						.face(FaceBuilder
-							.create()
-							.texture("block/smooth_stone"), EnumFace.NORTH, EnumFace.SOUTH)
+						.face(FaceBuilder.create().texture("block/smooth_stone_slab_side"), CubeBuilder.TOP_BOTTOM)
+						.face(FaceBuilder.create().texture("block/smooth_stone"), EnumFace.NORTH, EnumFace.SOUTH)
 						.face(FaceBuilder
 							.create()
 							.texture("block/smooth_stone_slab_side")
@@ -1533,9 +1415,7 @@ public class DataGenerator
 					.create()
 					.addProperty(SlabBlock.TYPE, EnumSlabType.TOP)
 					.addProperty(SlabBlock.AXIS, EnumAxis.X)
-					.rot(0, 180, 0), BlockModelBuilder
-					.noGen("smooth_slab" + "_side_x")
-					.modelPath("slab"))
+					.rot(0, 180, 0), BlockModelBuilder.noGen("smooth_slab" + "_side_x").modelPath("slab"))
 				.addState(PropertyBuilder
 					.create()
 					.addProperty(SlabBlock.TYPE, EnumSlabType.BOTTOM)
@@ -1556,24 +1436,18 @@ public class DataGenerator
 							.texture("block/smooth_stone_slab_side")
 							.uv(0, 8, 16, 0)
 							.rotation(90), EnumFace.NORTH, EnumFace.SOUTH)
-						.face(FaceBuilder
-							.create()
-							.texture("block/smooth_stone"), EnumFace.EAST, EnumFace.WEST)))
+						.face(FaceBuilder.create().texture("block/smooth_stone"), EnumFace.EAST, EnumFace.WEST)))
 				.addState(PropertyBuilder
 					.create()
 					.addProperty(SlabBlock.TYPE, EnumSlabType.TOP)
 					.addProperty(SlabBlock.AXIS, EnumAxis.Z)
-					.rot(0, 180, 0), BlockModelBuilder
-					.noGen("smooth_slab" + "_side_z")
-					.modelPath("slab"))
+					.rot(0, 180, 0), BlockModelBuilder.noGen("smooth_slab" + "_side_z").modelPath("slab"))
 				.addState(PropertyBuilder
 					.create()
 					.addProperty(SlabBlock.TYPE, EnumSlabType.DOUBLE)
 					.addProperty(SlabBlock.AXIS, EnumAxis.Z)
 					.tag(Tags.SOLID)
-					.rot(0, 90, 0), BlockModelBuilder
-					.noGen("smooth_slab" + "_double_x")
-					.modelPath("slab"))
+					.rot(0, 90, 0), BlockModelBuilder.noGen("smooth_slab" + "_double_x").modelPath("slab"))
 				.addState(PropertyBuilder
 					.create()
 					.addProperty(SlabBlock.TYPE, EnumSlabType.DOUBLE)
@@ -1588,9 +1462,7 @@ public class DataGenerator
 							.create()
 							.texture("block/smooth_stone")
 							.uvlock(true), EnumFace.NORTH, EnumFace.SOUTH)
-						.face(FaceBuilder
-							.create()
-							.texture("block/smooth_stone_slab"), EnumFace.UP, EnumFace.DOWN)
+						.face(FaceBuilder.create().texture("block/smooth_stone_slab"), EnumFace.UP, EnumFace.DOWN)
 						.face(FaceBuilder
 							.create()
 							.texture("block/smooth_stone_slab")
@@ -1695,9 +1567,7 @@ public class DataGenerator
 
 	private static PropertyBuilder snowState(int height)
 	{
-		return PropertyBuilder
-			.create()
-			.addProperty(States.SNOW_LAYERS, height);
+		return PropertyBuilder.create().addProperty(States.SNOW_LAYERS, height);
 	}
 
 	private static BlockModelBuilder snowLayer(int height, String texture)
@@ -1709,10 +1579,7 @@ public class DataGenerator
 				.create()
 				.min(0, 0, 0)
 				.max(16, height * 2, 16)
-				.face(FaceBuilder
-					.create()
-					.texture(texture)
-					.autoUv(true)));
+				.face(FaceBuilder.create().texture(texture).autoUv(true)));
 	}
 
 
@@ -1723,9 +1590,7 @@ public class DataGenerator
 			.path("desert")
 			.name("tall_cactus")
 			.matchTags("block_under", Tags.CACTUS_TOP)
-			.blockState("block", BlockStateBuilder
-				.create()
-				.block("cactus"))
+			.blockState("block", BlockStateBuilder.create().block("cactus"))
 			.doubleArg("next_chance", 0.1)
 			.integer("max_height", 22)
 			.generate();
@@ -1735,9 +1600,7 @@ public class DataGenerator
 			.path("desert")
 			.name("cactus")
 			.matchTags("block_under", Tags.CACTUS_TOP)
-			.provideStates("block", BlockStateBuilder
-				.create()
-				.block("cactus"))
+			.provideStates("block", BlockStateBuilder.create().block("cactus"))
 			.integer("min_height", 1)
 			.integer("max_height", 3)
 			.generate();
@@ -1818,9 +1681,7 @@ public class DataGenerator
 			.path("desert")
 			.name("shrubs")
 			.matchTags("block_under", Tags.SHRUBS_TOP)
-			.provideStates("block", BlockStateBuilder
-				.create()
-				.block("shrub"))
+			.provideStates("block", BlockStateBuilder.create().block("shrub"))
 			.integer("radius", 2)
 			.doubleArg("chance", 0.5)
 			.bool("decay", true)
@@ -1831,9 +1692,7 @@ public class DataGenerator
 			.path("common")
 			.name("grass_patch")
 			.matchTags("block_under", Tags.FLOWER_TOP)
-			.provideStates("block", BlockStateBuilder
-				.create()
-				.block("small_grass"))
+			.provideStates("block", BlockStateBuilder.create().block("small_grass"))
 			.integer("radius", 2)
 			.doubleArg("chance", 0.3)
 			.bool("decay", true)
@@ -1847,10 +1706,7 @@ public class DataGenerator
 			.provideStates("block", BlockStateBuilder
 				.create()
 				.block("hemp")
-				.state(HempBlock.STAGE, 3), BlockStateBuilder
-				.create()
-				.block("hemp")
-				.state(HempBlock.STAGE, 2))
+				.state(HempBlock.STAGE, 3), BlockStateBuilder.create().block("hemp").state(HempBlock.STAGE, 2))
 			.integer("radius", 5)
 			.doubleArg("chance", 0.05)
 			.bool("decay", true)
@@ -1861,9 +1717,7 @@ public class DataGenerator
 			.path("common")
 			.name("tall_grass_patch")
 			.matchTags("block_under", Tags.FLOWER_TOP)
-			.provideStates("block", BlockStateBuilder
-				.create()
-				.block("tall_grass"))
+			.provideStates("block", BlockStateBuilder.create().block("tall_grass"))
 			.integer("radius", 4)
 			.doubleArg("chance", 0.5)
 			.bool("decay", true)
@@ -1874,9 +1728,7 @@ public class DataGenerator
 			.path("common")
 			.name("grass_patch_mixed")
 			.matchTags("block_under", Tags.FLOWER_TOP)
-			.provideStates("block", BlockStateBuilder
-				.create()
-				.block("tall_grass"))
+			.provideStates("block", BlockStateBuilder.create().block("tall_grass"))
 			.integer("radius", 4)
 			.doubleArg("chance", 0.75)
 			.bool("decay", true)
@@ -1887,9 +1739,7 @@ public class DataGenerator
 			.path("common")
 			.name("pebbles")
 			.matchBlocks("block_under", "sand", "grass", "dirt", "stone")
-			.provideStates("block", BlockStateBuilder
-				.create()
-				.block("pebbles"))
+			.provideStates("block", BlockStateBuilder.create().block("pebbles"))
 			.integer("radius", 3)
 			.doubleArg("chance", 0.3)
 			.bool("decay", true)
@@ -1935,9 +1785,7 @@ public class DataGenerator
 			.path("common")
 			.name("sticks")
 			.matchBlocks("block_under", "sand", "grass", "dirt", "stone")
-			.provideStates("block", BlockStateBuilder
-				.create()
-				.block("stick"))
+			.provideStates("block", BlockStateBuilder.create().block("stick"))
 			.integer("radius", 3)
 			.doubleArg("chance", 0.3)
 			.bool("decay", true)
@@ -2000,9 +1848,7 @@ public class DataGenerator
 			.path("mountain")
 			.name("mountain_snow_patches")
 			.matchBlocks("target", "stone")
-			.provideStates("block", BlockStateBuilder
-				.create()
-				.block("snow_block"))
+			.provideStates("block", BlockStateBuilder.create().block("snow_block"))
 			.doubleArg("chance", 1)
 			.integer("radius", 4)
 			.bool("decay_from_center", true)

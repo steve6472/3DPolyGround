@@ -50,5 +50,6 @@ public class CommandRegistry
 		new ChiselCommand(dispatcher);
 		new PrintNBTCommand(dispatcher);
 		new TestityCommand(dispatcher);
+		new ItemCommand(dispatcher);
 	}
 }

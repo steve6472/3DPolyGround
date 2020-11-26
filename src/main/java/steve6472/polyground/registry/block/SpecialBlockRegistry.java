@@ -59,6 +59,7 @@ public class SpecialBlockRegistry
 		register("flint", FlintBlock::new);
 		register("amethine_core", AmethineCoreBlock::new);
 		register("door", DoorBlock::new);
+		register("logic", LogicBlock::new);
 	}
 
 	public static <T extends Block> void register(String id, ISpecialBlockFactory<T> factory)

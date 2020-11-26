@@ -17,8 +17,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Record" />
-        <option value="Interface" />
         <option value="Enum" />
+        <option value="Interface" />
         <option value="Class" />
       </list>
     </option>
@@ -48,7 +48,7 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="com.intellij.ide.scratch.LRUPopupBuilder$1/New Scratch File" value="JShellLanguage" />
     <property name="ignore.preview.features.used" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/main/java/steve6472/polyground/registry/model" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/main/java/steve6472/polyground/registry/logic" />
     <property name="project.structure.last.edited" value="Libraries" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
@@ -60,11 +60,11 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\CaveGame\src\main\java\steve6472\polyground\registry\logic" />
       <recent name="D:\CaveGame\src\main\java\steve6472\polyground\registry\model" />
       <recent name="D:\CaveGame\src\main\java\steve6472\polyground\registry\itemdata" />
       <recent name="D:\CaveGame\src\main\java\steve6472\polyground\registry" />
       <recent name="D:\CaveGame\src\main\java\steve6472\polyground\registry\data" />
-      <recent name="D:\CaveGame\src\main\java\steve6472\polyground\registry\blockdata" />
     </key>
     <key name="MoveMembersDialog.RECENTS_KEY">
       <recent name="steve6472.polyground.gfx.MainRender" />
@@ -73,11 +73,11 @@
       <recent name="steve6472.polyground.block.model.elements" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
-      <recent name="steve6472.polyground.item.groups" />
-      <recent name="steve6472.polyground.gui" />
-      <recent name="steve6472.polyground.block.properties.enums" />
-      <recent name="steve6472.polyground.registry.model" />
-      <recent name="steve6472.polyground.tessellators" />
+      <recent name="steve6472.polyground.block.blockdata.logic.other" />
+      <recent name="steve6472.polyground.block.blockdata.logic.gates" />
+      <recent name="steve6472.polyground.commands.arguments" />
+      <recent name="steve6472.polyground.commands.coms" />
+      <recent name="steve6472.polyground.block.blockdata" />
     </key>
   </component>
   <component name="RunAnythingCache">
@@ -153,8 +153,8 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="NBTArrayUtil" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="steve6472.polyground.NBTArrayUtil" />
+    <configuration name="LogicTest" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="steve6472.polyground.block.blockdata.logic.LogicTest" />
       <module name="CaveGame" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -173,18 +173,18 @@
       <item itemvalue="Application.DataGenerator" />
       <item itemvalue="Application.Gen-CaveGame" />
       <item itemvalue="Application.E" />
-      <item itemvalue="Application.NBTArrayUtil" />
       <item itemvalue="Application.Testity" />
       <item itemvalue="Application.Loader" />
       <item itemvalue="Application.Animation" />
+      <item itemvalue="Application.LogicTest" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.LogicTest" />
         <item itemvalue="Application.Animation" />
         <item itemvalue="Application.Loader" />
         <item itemvalue="Application.Testity" />
         <item itemvalue="Application.E" />
-        <item itemvalue="Application.NBTArrayUtil" />
       </list>
     </recent_temporary>
   </component>
