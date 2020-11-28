@@ -99,4 +99,34 @@ public class LineTessellator extends AbstractTessellator
 		pos.clear();
 		color.clear();
 	}
+
+	public int posLimit()
+	{
+		return pos.limit();
+	}
+
+	public int posCapacity()
+	{
+		return pos.capacity();
+	}
+
+	public int posPosition()
+	{
+		return pos.position();
+	}
+
+	public int colorLimit()
+	{
+		return color.limit();
+	}
+
+	public int colorCapacity()
+	{
+		return color.capacity();
+	}
+
+	public int colorPosition()
+	{
+		return color.position();
+	}
 }

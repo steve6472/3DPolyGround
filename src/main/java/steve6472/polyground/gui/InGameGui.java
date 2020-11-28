@@ -194,12 +194,28 @@ public class InGameGui extends Gui implements IGamePause
 				try
 				{
 					String snbt = SNBTUtil.toSNBT(data.write());
-					sb.append("NBT: ").append(snbt, 0, Math.min(snbt.length(), 500));
+					sb.append("NBT: ").append(snbt, 0, Math.min(snbt.length(), 500)).append("\n");
 				} catch (IOException e)
 				{
 					e.printStackTrace();
 				}
 			}
+/*
+			final LineTess lineTess = main.mainRender.stack.getLineTess();
+			sb
+				.append("LineTess:\n    [Max]: ")
+				.append(lineTess.maxCount())
+				.append("\n    [Current]: ")
+				.append(lineTess.getTess().current)
+				.append("\n    [MaxCount]: ")
+				.append(lineTess.getTess().maxCount)
+				.append("\n    [Pos Capacity]: ")
+				.append(lineTess.getTess().posCapacity())
+				.append("\n    [Pos Limit]: ")
+				.append(lineTess.getTess().posLimit())
+				.append("\n    [Pos Position]: ")
+				.append(lineTess.getTess().posPosition())
+			;*/
 		}
 
 		Font.render(5, 15, sb.toString());

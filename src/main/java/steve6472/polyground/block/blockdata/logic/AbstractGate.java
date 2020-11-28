@@ -90,7 +90,7 @@ public abstract class AbstractGate
 
 	public void updateModel()
 	{
-		logicData.updateModel();
+		logicData.updateMicroModel();
 	}
 
 	public void updateModel(int[][] grid)

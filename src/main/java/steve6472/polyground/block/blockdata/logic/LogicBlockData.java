@@ -2,14 +2,10 @@ package steve6472.polyground.block.blockdata.logic;
 
 import net.querz.nbt.tag.CompoundTag;
 import net.querz.nbt.tag.ListTag;
-import org.joml.Matrix4f;
 import org.joml.Vector3i;
 import steve6472.polyground.EnumFace;
-import steve6472.polyground.block.blockdata.BlockData;
+import steve6472.polyground.block.blockdata.AbstractPickableMicroBlockData;
 import steve6472.polyground.block.blockdata.logic.other.Chip;
-import steve6472.polyground.block.model.elements.Bakery;
-import steve6472.polyground.gfx.DynamicEntityModel;
-import steve6472.polyground.gfx.IModel;
 import steve6472.polyground.registry.blockdata.BlockDataRegistry;
 
 import java.util.ArrayList;
@@ -22,17 +18,14 @@ import java.util.UUID;
  * Project: CaveGame
  *
  ***********************/
-public class LogicBlockData extends BlockData implements IModel
+public class LogicBlockData extends AbstractPickableMicroBlockData
 {
 	public List<AbstractGate> components;
-	public int[][] grid;
-	public DynamicEntityModel model;
 	public boolean updateModel;
 
 	public LogicBlockData()
 	{
-		// layer, 2d grid
-		grid = new int[16][256];
+		super();
 		components = new ArrayList<>();
 
 		for (int i = 0; i < 16; i++)
@@ -44,9 +37,6 @@ public class LogicBlockData extends BlockData implements IModel
 		}
 
 		grid[0][0] = 0x008328;
-
-		model = new DynamicEntityModel();
-		updateHandModel();
 	}
 
 	public void placeWire(int x, int y, int z)
@@ -179,51 +169,16 @@ public class LogicBlockData extends BlockData implements IModel
 		components.add(gate);
 	}
 
-	public void updateModel()
+	public void updateMicroModel()
 	{
 		updateModel = true;
-	}
-
-	public void updateHandModel()
-	{
-		model.load((modelBuilder) -> {
-
-			Bakery.tempBuilder(modelBuilder);
-
-			int tris = 0;
-
-			for (int i = 0; i < 16; i++)
-			{
-				for (int j = 0; j < 16; j++)
-				{
-					for (int k = 0; k < 16; k++)
-					{
-						int flags = Bakery.createFaceFlags(
-							i != 15 && grid[j][(i + 1) + k * 16] != 0,
-							k != 15 && grid[j][i + (k + 1) * 16] != 0,
-							i != 0 && grid[j][(i - 1) + k * 16] != 0,
-							k != 0 && grid[j][i + (k - 1) * 16] != 0,
-							j != 15 && grid[j + 1][i + k * 16] != 0,
-							j != 0 && grid[j - 1][i + k * 16] != 0
-						);
-						if (grid[j][i + k * 16] != 0)
-						{
-							tris += Bakery.coloredCube_1x1(i, j, k, grid[j][i + k * 16], flags);
-						}
-					}
-				}
-			}
-
-			Bakery.worldBuilder();
-
-			return tris;
-		});
 	}
 
 	@Override
 	public CompoundTag write()
 	{
-		CompoundTag tag = new CompoundTag();
+		final CompoundTag tag = super.write();
+
 		ListTag<CompoundTag> list = new ListTag<>(CompoundTag.class);
 
 		for (AbstractGate g : components)
@@ -233,27 +188,15 @@ public class LogicBlockData extends BlockData implements IModel
 
 		tag.put("components", list);
 
-		for (int i = 0; i < 16; i++)
-		{
-			tag.putIntArray("layer" + i, grid[i]);
-		}
-
 		return tag;
 	}
 
 	@Override
 	public void read(CompoundTag tag)
 	{
-		grid = new int[16][];
-		for (int i = 0; i < 16; i++)
-		{
-			int[] layer = tag.getIntArray("layer" + i);
-			grid[i] = layer;
-		}
+		super.read(tag);
 
 		this.components = readComponents(tag);
-
-		updateHandModel();
 	}
 
 	private List<AbstractGate> readComponents(CompoundTag tag)
@@ -290,11 +233,5 @@ public class LogicBlockData extends BlockData implements IModel
 	public String getId()
 	{
 		return BlockDataRegistry.logic.id();
-	}
-
-	@Override
-	public void render(Matrix4f viewMatrix, Matrix4f mat)
-	{
-		model.render(viewMatrix, mat);
 	}
 }

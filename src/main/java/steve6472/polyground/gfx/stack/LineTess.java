@@ -120,4 +120,24 @@ public class LineTess extends StackTess
 		pos(maxX, maxY, minZ).color(1f, 1f, 1f, 1f).endVertex();
 		pos(maxX, maxY, maxZ).color(1f, 1f, 1f, 1f).endVertex();
 	}
+
+	public static int getMaxSize()
+	{
+		return MAX_SIZE;
+	}
+
+	public int current()
+	{
+		return tess.current;
+	}
+
+	public int maxCount()
+	{
+		return tess.maxCount;
+	}
+
+	public LineTessellator getTess()
+	{
+		return tess;
+	}
 }

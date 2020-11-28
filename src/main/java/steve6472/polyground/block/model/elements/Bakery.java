@@ -89,8 +89,9 @@ public class Bakery
 	 */
 	public static int coloredCube(int x, int y, int z, int w, int h, int d, int color, int faceFlags)
 	{
-		Vector3f from = new Vector3f(x * 1f / 16f, y * 1f / 16f, z * 1f / 16f);
-		Vector3f to = new Vector3f(x * 1f / 16f + w * 1f / 16f, y * 1f / 16f + h * 1f / 16f, z * 1f / 16f + d * 1f / 16f);
+		float inv = 1f / 16f;
+		Vector3f from = new Vector3f(x * inv, y * inv, z * inv);
+		Vector3f to = new Vector3f(x * inv + w * inv, y * inv + h * inv, z * inv + d * inv);
 
 		int tris = 0;
 
