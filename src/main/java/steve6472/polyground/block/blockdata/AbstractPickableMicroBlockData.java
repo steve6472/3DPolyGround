@@ -31,23 +31,23 @@ public abstract class AbstractPickableMicroBlockData extends AbstractMicroBlockD
 
 			int tris = 0;
 
-			for (int i = 0; i < 16; i++)
+			for (int i = 0; i < getSize(); i++)
 			{
-				for (int j = 0; j < 16; j++)
+				for (int j = 0; j < getSize(); j++)
 				{
-					for (int k = 0; k < 16; k++)
+					for (int k = 0; k < getSize(); k++)
 					{
 						int flags = Bakery.createFaceFlags(
-							i != 15 && grid[j][(i + 1) + k * 16] != 0,
-							k != 15 && grid[j][i + (k + 1) * 16] != 0,
-							i != 0 && grid[j][(i - 1) + k * 16] != 0,
-							k != 0 && grid[j][i + (k - 1) * 16] != 0,
-							j != 15 && grid[j + 1][i + k * 16] != 0,
-							j != 0 && grid[j - 1][i + k * 16] != 0
+							i != (getSize() - 1) && grid[j][(i + 1) + k * getSize()] != 0,
+							k != (getSize() - 1) && grid[j][i + (k + 1) * getSize()] != 0,
+							i != 0 && grid[j][(i - 1) + k * getSize()] != 0,
+							k != 0 && grid[j][i + (k - 1) * getSize()] != 0,
+							j != (getSize() - 1) && grid[j + 1][i + k * getSize()] != 0,
+							j != 0 && grid[j - 1][i + k * getSize()] != 0
 						);
-						if (grid[j][i + k * 16] != 0)
+						if (grid[j][i + k * getSize()] != 0)
 						{
-							tris += Bakery.coloredCube_1x1(i, j, k, grid[j][i + k * 16], flags);
+							tris += Bakery.coloredCube_1x1(i, j, k, grid[j][i + k * getSize()], flags);
 						}
 					}
 				}

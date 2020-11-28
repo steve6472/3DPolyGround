@@ -9,7 +9,7 @@ import steve6472.polyground.block.blockdata.logic.AbstractGate;
  * Project: CaveGame
  *
  ***********************/
-public class Light extends AbstractGate
+public class Cross extends AbstractGate
 {
 	private static final int[][] MODEL =
 	{
@@ -17,29 +17,24 @@ public class Light extends AbstractGate
 			0x303030, 0x303030, 0x303030,
 			0x303030, 0x303030, 0x303030,
 			0x303030, 0x303030, 0x303030
-		},
-		{
-			0x000000, 0x000000, 0x000000,
-			0x000000, 0x808000, 0x000000,
-			0x000000, 0x000000, 0x000000
 		}
 	};
 
-	public Light()
+	public Cross()
 	{
-		super("light");
+		super("cross");
 	}
 
 	@Override
 	protected Vector3i[] inputPositions()
 	{
-		return new Vector3i[] {new Vector3i(1, 0, 0)};
+		return new Vector3i[] {new Vector3i(1, 0, 0), new Vector3i(2, 0, 1)};
 	}
 
 	@Override
 	protected Vector3i[] outputPositions()
 	{
-		return new Vector3i[0];
+		return new Vector3i[] {new Vector3i(1, 0, 2), new Vector3i(0, 0, 1)};
 	}
 
 	@Override
@@ -49,33 +44,27 @@ public class Light extends AbstractGate
 	}
 
 	@Override
-	public void updateModel(int[][] grid)
-	{
-		super.updateModel(grid);
-		grid[getPosition().y() + 1][(getPosition().x() + 1) + (getPosition().z() + 1) * logicData.size()] = getInputStates()[0] ? 0xffff00 : 0x808000;
-	}
-
-	@Override
 	protected void updateOutputState()
 	{
-		updateModel();
+		outputStates[0] = inputStates[0];
+		outputStates[1] = inputStates[1];
 	}
 
 	@Override
 	protected int getInputCount()
 	{
-		return 1;
+		return 2;
 	}
 
 	@Override
 	protected int getOutputCount()
 	{
-		return 0;
+		return 2;
 	}
 
 	@Override
 	protected AbstractGate createCopy()
 	{
-		return new Light();
+		return new Cross();
 	}
 }

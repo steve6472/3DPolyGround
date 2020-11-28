@@ -46,7 +46,7 @@ public class Switch extends AbstractGate
 	public void updateModel(int[][] grid)
 	{
 		super.updateModel(grid);
-		grid[getPosition().y() + 1][(getPosition().x() + 2) + (getPosition().z() + 2) * 16] = getOutputStates()[0] ? 0x009000 : 0x900000;
+		grid[getPosition().y() + 1][(getPosition().x() + 2) + (getPosition().z() + 2) * logicData.size()] = getOutputStates()[0] ? 0x009000 : 0x900000;
 	}
 
 	@Override

@@ -3,6 +3,7 @@ package steve6472.polyground.block.blockdata.logic;
 import net.querz.nbt.tag.CompoundTag;
 import net.querz.nbt.tag.ListTag;
 import org.joml.Vector3i;
+import steve6472.polyground.block.blockdata.logic.data.LogicBlockData;
 
 import java.util.List;
 import java.util.UUID;
@@ -102,18 +103,18 @@ public abstract class AbstractGate
 				for (int k = 0; k < getSize().z; k++)
 				{
 					int i1 = getModel()[i][j + k * getSize().x];
-					grid[i + getPosition().y][(j + getPosition().x) + (k + getPosition().z) * 16] = i1;
+					grid[i + getPosition().y][(j + getPosition().x) + (k + getPosition().z) * logicData.size()] = i1;
 				}
 			}
 		}
 
 		for (Vector3i in : getInputPositions())
 		{
-			grid[in.y + getPosition().y][(in.x + getPosition().x) + (in.z + getPosition().z) * 16] = 0xffffff;
+			grid[in.y + getPosition().y][(in.x + getPosition().x) + (in.z + getPosition().z) * logicData.size()] = 0xffffff;
 		}
 		for (Vector3i in : getOutputPositions())
 		{
-			grid[in.y + getPosition().y][(in.x + getPosition().x) + (in.z + getPosition().z) * 16] = 0x010101;
+			grid[in.y + getPosition().y][(in.x + getPosition().x) + (in.z + getPosition().z) * logicData.size()] = 0x010101;
 		}
 	}
 
@@ -123,12 +124,17 @@ public abstract class AbstractGate
 
 	public int getInputIndex(Vector3i absPos)
 	{
+		return getInputIndex(absPos.x, absPos.y, absPos.z);
+	}
+
+	public int getInputIndex(int x, int y, int z)
+	{
 		for (int i = 0; i < getInputPositions().length; i++)
 		{
 			Vector3i input = getInputPositions()[i];
 //			System.out.println("input: " + input.x + " " + input.y + " " + input.z);
 //			System.out.println("absPos: " + absPos.x + " " + absPos.y + " " + absPos.z + "  ->  " + (getPosition().x - absPos.x) + " " + (getPosition().y - absPos.y) + " " + (getPosition().z - absPos.z) + "  ->  " + getPosition().x + " " + getPosition().y + " " + getPosition().z);
-			if (getPosition().x - absPos.x + input.x == 0 && getPosition().y - absPos.y + input.y == 0 && getPosition().z - absPos.z + input.z == 0)
+			if (getPosition().x - x + input.x == 0 && getPosition().y - y + input.y == 0 && getPosition().z - z + input.z == 0)
 			{
 //				System.out.println("returning input " + i + "\n");
 				return i;
@@ -140,12 +146,17 @@ public abstract class AbstractGate
 
 	public int getOutputIndex(Vector3i absPos)
 	{
+		return getOutputIndex(absPos.x, absPos.y, absPos.z);
+	}
+
+	public int getOutputIndex(int x, int y, int z)
+	{
 		for (int i = 0; i < getOutputPositions().length; i++)
 		{
 			Vector3i output = getOutputPositions()[i];
 //			System.out.println("output: " + output.x + " " + output.y + " " + output.z);
 //			System.out.println("absPos: " + absPos.x + " " + absPos.y + " " + absPos.z + "  ->  " + (getPosition().x - absPos.x) + " " + (getPosition().y - absPos.y) + " " + (getPosition().z - absPos.z));
-			if (getPosition().x - absPos.x + output.x == 0 && getPosition().y - absPos.y + output.y == 0 && getPosition().z - absPos.z + output.z == 0)
+			if (getPosition().x - x + output.x == 0 && getPosition().y - y + output.y == 0 && getPosition().z - z + output.z == 0)
 			{
 //				System.out.println("returning output " + i + "\n");
 				return i;
@@ -341,11 +352,56 @@ public abstract class AbstractGate
 			if (inputConnection != null && inputConnection.getGate() != null)
 				inputConnection.getGate().disconnectOutput(inputConnection.getIndex(), this, i);
 		}
+
+		for (int i = 0; i < outputConnections.length; i++)
+		{
+			GatePairList oc = outputConnections[i];
+			if (oc == null)
+				continue;
+
+			for (int j = 0; j < oc.getList().size(); j++)
+			{
+				GatePair pair = oc.getList().get(j);
+				pair.getGate().disconnectInput(pair.getIndex());
+
+				/*
+				tess.color(1, 0, 0, 1);
+				tess.pos(
+					component.getPosition().x / 16f + component.getOutputPositions()[i].x / 16f + 1f / 32f,
+					component.getPosition().y / 16f + component.getOutputPositions()[i].y / 16f + 1f / 32f - 1f / 64f,
+					component.getPosition().z / 16f + component.getOutputPositions()[i].z / 16f + 1f / 32f
+				).endVertex();
+
+				tess.color(1, 0, 1, 1);
+				tess.pos(
+					pair.getGate().getPosition().x / 16f + pair.getGate().getInputPositions()[pair.getIndex()].x / 16f + 1f / 32f,
+					pair.getGate().getPosition().y / 16f + pair.getGate().getInputPositions()[pair.getIndex()].y / 16f + 1f / 32f - 1f / 64f,
+					pair.getGate().getPosition().z / 16f + pair.getGate().getInputPositions()[pair.getIndex()].z / 16f + 1f / 32f
+				).endVertex();*/
+			}
+		}
+
+		/*for (int i = 0; i < outputConnections.length; i++)
+		{
+			GatePairList list = outputConnections[i];
+
+			for (Iterator<GatePair> iterator = list.iterator(); iterator.hasNext(); )
+			{
+				GatePair next = iterator.next();
+				next.getGate().disconnectInput(next.getIndex());
+				disconnectOutput(i, next.getGate(), next.getIndex());
+			}
+		}*/
 	}
 
 	public GatePair[] getInputConnections()
 	{
 		return inputConnections;
+	}
+
+	public GatePairList[] getOutputConnections()
+	{
+		return outputConnections;
 	}
 
 	protected abstract AbstractGate createCopy();

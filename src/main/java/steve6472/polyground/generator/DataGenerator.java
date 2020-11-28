@@ -145,6 +145,10 @@ public class DataGenerator
 		ItemBuilder.itemModelPath("input", "logic", "input", "items.logic");
 		ItemBuilder.itemModelPath("output", "logic", "output", "items.logic");
 		ItemBuilder.itemModelPath("switch", "logic", "switch", "items.logic");
+		ItemBuilder.itemModelPath("cross", "logic", "cross", "items.logic");
+		ItemBuilder.itemModelPath("board_level", "logic", "board_level", "items.logic");
+		ItemBuilder.itemModelPath("fill", "logic", "fill", "items.logic");
+		ItemBuilder.itemModelPath("seven_segment_display", "logic", "seven_segment_display", "items.logic");
 
 		ItemBuilder
 			.create()
@@ -639,6 +643,22 @@ public class DataGenerator
 			.create()
 			.fullBlock("logic")
 			.blockSpecial(new SimpleSpecial("logic"))
+			.blockState(StateBuilder.create().emptyModel())
+			.placerGroupPath("misc")
+			.generate();
+
+		BlockBuilder
+			.create()
+			.fullBlock("advanced_logic")
+			.blockSpecial(new SimpleSpecial("advanced_logic"))
+			.blockState(StateBuilder.create().emptyModel())
+			.placerGroupPath("misc")
+			.generate();
+
+		BlockBuilder
+			.create()
+			.fullBlock("pro_logic")
+			.blockSpecial(new SimpleSpecial("pro_logic"))
 			.blockState(StateBuilder.create().emptyModel())
 			.placerGroupPath("misc")
 			.generate();

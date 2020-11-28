@@ -81,6 +81,8 @@ public class Options
 	public boolean renderItemEntityOutline = false;
 	public boolean debugSoundPos = false;
 	public boolean renderPlayerBoudingBox = false;
+	public boolean disableLogicWire = false;
+	public boolean renderLogicConnections = false;
 
 	public float mouseSensitivity = 0.1f;
 

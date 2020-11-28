@@ -103,7 +103,9 @@ public class OptionsGui extends Gui implements IGamePause
 		checkBox("renderItemEntityOutline", 10, 10 + x++ * 30, () -> options.renderItemEntityOutline, b -> options.renderItemEntityOutline = b);
 		checkBox("debugSoundPos", 10, 10 + x++ * 30, () -> options.debugSoundPos, b -> options.debugSoundPos = b);
 		checkBox("renderBlockOutline", 10, 10 + x++ * 30, () -> options.renderBlockOutline, b -> options.renderBlockOutline = b);
-		checkBox("renderPlayerBoudingBox", 10, 10 + x * 30, () -> options.renderPlayerBoudingBox, b -> options.renderPlayerBoudingBox = b);
+		checkBox("renderPlayerBoudingBox", 10, 10 + x++ * 30, () -> options.renderPlayerBoudingBox, b -> options.renderPlayerBoudingBox = b);
+		checkBox("disableLogicWire", 10, 10 + x++ * 30, () -> options.disableLogicWire, b -> options.disableLogicWire = b);
+		checkBox("renderLogicConnections", 10, 10 + x * 30, () -> options.renderLogicConnections, b -> options.renderLogicConnections = b);
 
 		x = 0;
 		checkBox("enablePostProcessing", 300, 10 + x++ * 30, () -> options.enablePostProcessing, b -> options.enablePostProcessing = b);

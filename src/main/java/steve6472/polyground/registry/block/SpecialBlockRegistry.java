@@ -3,6 +3,9 @@ package steve6472.polyground.registry.block;
 import org.json.JSONObject;
 import steve6472.polyground.block.Block;
 import steve6472.polyground.block.special.*;
+import steve6472.polyground.block.special.logic.AdvancedLogicBlock;
+import steve6472.polyground.block.special.logic.LogicBlock;
+import steve6472.polyground.block.special.logic.ProLogicBlock;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -60,6 +63,8 @@ public class SpecialBlockRegistry
 		register("amethine_core", AmethineCoreBlock::new);
 		register("door", DoorBlock::new);
 		register("logic", LogicBlock::new);
+		register("advanced_logic", AdvancedLogicBlock::new);
+		register("pro_logic", ProLogicBlock::new);
 	}
 
 	public static <T extends Block> void register(String id, ISpecialBlockFactory<T> factory)

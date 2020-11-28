@@ -22,6 +22,8 @@ public class GateReg
 		register("low_constant", LogZero::new, 1, 2, 1);
 		register("light", Light::new, 3, 2, 3, -1, 0, -1);
 		register("switch", Switch::new, 3, 2, 3, -1, 0, -1);
+		register("seven_segment_display", SevenSegmentDisplay::new, 7, 2, 4, -3, 0, -1);
+		register("cross", Cross::new, 3, 1, 3, -1, 0, -1);
 
 		register("input", Input::new, 1, 2, 2, 0, 0, -1);
 		register("output", Output::new, 1, 2, 2);
@@ -43,9 +45,9 @@ public class GateReg
 		return REGISTRY.containsKey(gateName);
 	}
 
-	public static boolean canFit(String gateName, int x, int y, int z, int[][] grid)
+	public static boolean canFit(String gateName, int x, int y, int z, int[][] grid, int size)
 	{
-		return REGISTRY.get(gateName).canFit(x, y, z, grid);
+		return REGISTRY.get(gateName).canFit(x, y, z, grid, size);
 	}
 
 	public static AbstractGate createGate(String gateName, int x, int y, int z)
@@ -96,20 +98,20 @@ public class GateReg
 			this.offsetZ = offsetZ;
 		}
 
-		boolean canFit(int x, int y, int z, int[][] grid)
+		boolean canFit(int x, int y, int z, int[][] grid, int size)
 		{
-			return GateReg.canFit(x, y, z, offsetX, offsetY, offsetZ, sizeX, sizeY, sizeZ, grid);
+			return GateReg.canFit(x, y, z, offsetX, offsetY, offsetZ, sizeX, sizeY, sizeZ, grid, size);
 		}
 	}
 
-	public static boolean canFit(int x, int y, int z, int offsetX, int offsetY, int offsetZ, int sizeX, int sizeY, int sizeZ, int[][] grid)
+	public static boolean canFit(int x, int y, int z, int offsetX, int offsetY, int offsetZ, int sizeX, int sizeY, int sizeZ, int[][] grid, int size)
 	{
 		if (x + offsetX < 0 ||
 			y + offsetY < 0 ||
 			z + offsetZ < 0 ||
-			x + sizeX + offsetX > 16 ||
-			y + sizeY + offsetY > 16 ||
-			z + sizeZ + offsetZ > 16)
+			x + sizeX + offsetX > size ||
+			y + sizeY + offsetY > size ||
+			z + sizeZ + offsetZ > size)
 			return false;
 
 		for (int i = y + offsetY; i < sizeY + y + offsetY; i++)
@@ -118,7 +120,7 @@ public class GateReg
 			{
 				for (int k = z + offsetZ; k < sizeZ + z + offsetZ; k++)
 				{
-					if (grid[i][j + k * 16] != 0)
+					if (grid[i][j + k * size] != 0)
 						return false;
 				}
 			}

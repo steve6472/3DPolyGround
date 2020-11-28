@@ -485,7 +485,7 @@ public class Player implements IMotion3f, IPosition3f
 				return;
 
 			heldItem.setPlayer(null);
-			heldItem.setPosition(getHitResult().getPx(), getHitResult().getPy(), getHitResult().getPz());
+			heldItem.setPosition(getHitResult().getPx(), getHitResult().getPy() + 0.001f, getHitResult().getPz());
 			heldItem.item.onPlace(world, this, heldItem);
 
 			if (target == null)

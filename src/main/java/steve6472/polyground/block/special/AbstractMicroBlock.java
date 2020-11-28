@@ -46,17 +46,18 @@ public abstract class AbstractMicroBlock extends CustomBlock implements IBlockDa
 		int cx = 0, cy = 0, cz = 0;
 		float closestDistance = 10f;
 		int face = 0;
+		float inv = 1f / 16f;
 
-		for (int i = 0; i < 16; i++)
+		for (int i = 0; i < getSize(); i++)
 		{
-			for (int j = 0; j < 16; j++)
+			for (int j = 0; j < getSize(); j++)
 			{
-				for (int k = 0; k < 16; k++)
+				for (int k = 0; k < getSize(); k++)
 				{
-					if (data.grid[j][i + k * 16] != 0)
+					if (data.grid[j][i + k * getSize()] != 0)
 					{
-						box.setMin(x + i * 1f / 16f, y + j * 1f / 16f, z + k * 1f / 16f);
-						box.setMax(x + i * 1f / 16f + 1f / 16f, y + j * 1f / 16f + 1f / 16f, z + k * 1f / 16f + 1f / 16f);
+						box.setMin(x + i * inv + getOffsetX() * inv, y + j * inv + getOffsetY() * inv, z + k * inv + getOffsetZ() * inv);
+						box.setMax(x + i * inv + inv + getOffsetX() * inv, y + j * inv + inv + getOffsetY() * inv, z + k * inv + inv + getOffsetZ() * inv);
 
 						if (intersectsAABB(player.viewDir, player.getCamera().getPosition(), box, res))
 						{
@@ -174,7 +175,7 @@ public abstract class AbstractMicroBlock extends CustomBlock implements IBlockDa
 					);
 					if (data.grid[j][i + k * getSize()] != 0)
 					{
-						tris += Bakery.coloredCube(i, j, k, 1, 1, 1, data.grid[j][i + k * getSize()], flags);
+						tris += Bakery.coloredCube(i + getOffsetX(), j + getOffsetY(), k + getOffsetZ(), 1, 1, 1, data.grid[j][i + k * getSize()], flags);
 					}
 				}
 			}
@@ -197,18 +198,18 @@ public abstract class AbstractMicroBlock extends CustomBlock implements IBlockDa
 
 		AABBf box = new AABBf();
 		AABBf box_ = new AABBf();
-		float inv = 1f / (float) getSize();
+		float inv = 1f / 16f;
 
-		for (int i = 0; i < 16; i++)
+		for (int i = 0; i < getSize(); i++)
 		{
-			for (int j = 0; j < 16; j++)
+			for (int j = 0; j < getSize(); j++)
 			{
-				for (int k = 0; k < 16; k++)
+				for (int k = 0; k < getSize(); k++)
 				{
-					if (data.grid[j][i + k * 16] != 0)
+					if (data.grid[j][i + k * getSize()] != 0)
 					{
-						box_.setMin(i * inv, j * inv, k * inv);
-						box_.setMax(i * inv + inv, j * inv + inv, k * inv + inv);
+						box_.setMin(i * inv + getOffsetX() * inv, j * inv + getOffsetY() * inv, k * inv + getOffsetZ() * inv);
+						box_.setMax(i * inv + inv + getOffsetX() * inv, j * inv + inv + getOffsetY() * inv, k * inv + inv + getOffsetZ() * inv);
 						box.union(box_);
 					}
 				}
@@ -227,8 +228,8 @@ public abstract class AbstractMicroBlock extends CustomBlock implements IBlockDa
 				hitboxes.add(new CubeHitbox(box));
 				hitboxes.add(new CubeHitbox(
 					new AABBf(
-						c.x * inv, c.y * inv, c.z * inv,
-						c.x * inv + inv, c.y * inv + inv, c.z * inv + inv)));
+						c.x * inv + getOffsetX() * inv, c.y * inv + getOffsetY() * inv, c.z * inv + getOffsetZ() * inv,
+						c.x * inv + inv + getOffsetX() * inv, c.y * inv + inv + getOffsetY() * inv, c.z * inv + inv + getOffsetZ() * inv)));
 
 				return hitboxes.toArray(new CubeHitbox[0]);
 			}
@@ -239,5 +240,20 @@ public abstract class AbstractMicroBlock extends CustomBlock implements IBlockDa
 	protected int getSize()
 	{
 		return 16;
+	}
+
+	protected int getOffsetX()
+	{
+		return 8 - getSize() / 2;
+	}
+
+	protected int getOffsetY()
+	{
+		return 0;
+	}
+
+	protected int getOffsetZ()
+	{
+		return 8 - getSize() / 2;
 	}
 }
