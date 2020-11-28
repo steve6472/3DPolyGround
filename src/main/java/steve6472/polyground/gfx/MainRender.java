@@ -150,10 +150,15 @@ public class MainRender
 		if (game.world == null)
 			return;
 
+		/* Render stuff related to Stack here*/
+
 		stack.reset();
 		game.world.getEntityManager().render(game.mainRender.stack);
 		game.getEventHandler().runEvent(new TessTestEvent(stack.getLineTess()));
 		extra();
+		game.hitPicker.tick(game.getPlayer(), game);
+
+		/* Render World to GBuffer */
 
 		if (!CaveGame.runGameEvent(new WorldEvent.PreRender(game.world)))
 			game.world.getRenderer().renderDeferred(true, true);
@@ -268,7 +273,6 @@ public class MainRender
 		if (game.world == null)
 			return;
 
-		game.hitPicker.tick(game.getPlayer(), game);
 		game.mainRender.stack.render(game.getCamera().getViewMatrix());
 
 		if (renderWorld)
