@@ -3,7 +3,6 @@ package steve6472.polyground.entity.model;
 import org.joml.Vector3f;
 import steve6472.polyground.entity.EntityBase;
 import steve6472.polyground.gfx.stack.Stack;
-import steve6472.polyground.gfx.stack.StackUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,12 +38,12 @@ public class EntityModel<T extends EntityBase>
 	{
 		for (ModelCube cube : cubes)
 		{
-			stack.color(cube.color.x, cube.color.y, cube.color.z, 1);
+			stack.getEntityTess().color(cube.color.x, cube.color.y, cube.color.z, 1);
 			stack.pushMatrix();
 			stack.translate(cube.origin);
 			stack.rotateXYZ(cube.rotation);
 			stack.translate(-cube.origin.x, -cube.origin.y, -cube.origin.z);
-			StackUtil.rect(stack, cube.position.x, cube.position.y, cube.position.z, cube.size.x, cube.size.y, cube.size.z);
+			stack.getEntityTess().rect(cube.position.x, cube.position.y, cube.position.z, cube.size.x, cube.size.y, cube.size.z);
 			stack.popMatrix();
 		}
 	}

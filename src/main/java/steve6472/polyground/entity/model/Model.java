@@ -4,6 +4,7 @@ import steve6472.polyground.gfx.model.Element;
 import steve6472.polyground.gfx.model.Loader;
 import steve6472.polyground.gfx.model.Outliner;
 import steve6472.polyground.gfx.model.OutlinerElement;
+import steve6472.polyground.gfx.stack.EntityTess;
 import steve6472.polyground.gfx.stack.Stack;
 
 import java.util.HashMap;
@@ -81,32 +82,34 @@ public class Model
 		float h = element.toY - y;
 		float d = element.toZ - z;
 
+		EntityTess tess = stack.getEntityTess();
+
 		if (element.up != null)
 		{
-			stack.normal(0, 1, 0);
+			tess.normal(0, 1, 0);
 
-			stack
+			tess
 				.pos(x + w, y + h, z)
 				.uv(element.up.getU1(), element.up.getV0()) // 3
 				.endVertex();
-			stack
+			tess
 				.pos(x, y + h, z)
 				.uv(element.up.getU0(), element.up.getV0()) // 0
 				.endVertex();
-			stack
+			tess
 				.pos(x, y + h, z + d)
 				.uv(element.up.getU0(), element.up.getV1()) // 1
 				.endVertex();
 
-			stack
+			tess
 				.pos(x, y + h, z + d)
 				.uv(element.up.getU0(), element.up.getV1()) // 1
 				.endVertex();
-			stack
+			tess
 				.pos(x + w, y + h, z + d)
 				.uv(element.up.getU1(), element.up.getV1()) // 2
 				.endVertex();
-			stack
+			tess
 				.pos(x + w, y + h, z)
 				.uv(element.up.getU1(), element.up.getV0()) // 3
 				.endVertex();
@@ -114,30 +117,30 @@ public class Model
 
 		if (element.down != null)
 		{
-			stack.normal(0, -1, 0);
+			tess.normal(0, -1, 0);
 
-			stack
+			tess
 				.pos(x, y, z + d)
 				.uv(element.down.getU0(), element.down.getV0()) // 0
 				.endVertex();
-			stack
+			tess
 				.pos(x, y, z)
 				.uv(element.down.getU0(), element.down.getV1()) // 1
 				.endVertex();
-			stack
+			tess
 				.pos(x + w, y, z)
 				.uv(element.down.getU1(), element.down.getV1()) // 2
 				.endVertex();
 
-			stack
+			tess
 				.pos(x + w, y, z)
 				.uv(element.down.getU1(), element.down.getV1()) // 2
 				.endVertex();
-			stack
+			tess
 				.pos(x + w, y, z + d)
 				.uv(element.down.getU1(), element.down.getV0()) // 3
 				.endVertex();
-			stack
+			tess
 				.pos(x, y, z + d)
 				.uv(element.down.getU0(), element.down.getV0()) // 0
 				.endVertex();
@@ -146,31 +149,31 @@ public class Model
 
 		if (element.north != null)
 		{
-			stack.normal(1, 0, 0);
+			tess.normal(1, 0, 0);
 
-			stack
+			tess
 				.pos(x + w, y + h, z)
 				.uv(element.north.getU0(), element.north.getV0())
 				.endVertex();
-			stack
+			tess
 				.pos(x + w, y, z)
 				.uv(element.north.getU0(), element.north.getV1())
 				.endVertex();
-			stack
+			tess
 				.pos(x, y, z)
 				.uv(element.north.getU1(), element.north.getV1())
 				.endVertex();
 
 
-			stack
+			tess
 				.pos(x, y, z)
 				.uv(element.north.getU1(), element.north.getV1())
 				.endVertex();
-			stack
+			tess
 				.pos(x, y + h, z)
 				.uv(element.north.getU1(), element.north.getV0())
 				.endVertex();
-			stack
+			tess
 				.pos(x + w, y + h, z)
 				.uv(element.north.getU0(), element.north.getV0())
 				.endVertex();
@@ -179,31 +182,31 @@ public class Model
 
 		if (element.east != null)
 		{
-			stack.normal(0, 0, 1);
+			tess.normal(0, 0, 1);
 
-			stack
+			tess
 				.pos(x + w, y + h, z + d)
 				.uv(element.east.getU0(), element.east.getV0())
 				.endVertex();
-			stack
+			tess
 				.pos(x + w, y, z + d)
 				.uv(element.east.getU0(), element.east.getV1())
 				.endVertex();
-			stack
+			tess
 				.pos(x + w, y, z)
 				.uv(element.east.getU1(), element.east.getV1())
 				.endVertex();
 
 
-			stack
+			tess
 				.pos(x + w, y, z)
 				.uv(element.east.getU1(), element.east.getV1())
 				.endVertex();
-			stack
+			tess
 				.pos(x + w, y + h, z)
 				.uv(element.east.getU1(), element.east.getV0())
 				.endVertex();
-			stack
+			tess
 				.pos(x + w, y + h, z + d)
 				.uv(element.east.getU0(), element.east.getV0())
 				.endVertex();
@@ -212,30 +215,30 @@ public class Model
 
 		if (element.south != null)
 		{
-			stack.normal(-1, 0, 0);
+			tess.normal(-1, 0, 0);
 
-			stack
+			tess
 				.pos(x, y + h, z + d)
 				.uv(element.south.getU0(), element.south.getV0())
 				.endVertex();
-			stack
+			tess
 				.pos(x, y, z + d)
 				.uv(element.south.getU0(), element.south.getV1())
 				.endVertex();
-			stack
+			tess
 				.pos(x + w, y, z + d)
 				.uv(element.south.getU1(), element.south.getV1())
 				.endVertex();
 
-			stack
+			tess
 				.pos(x + w, y, z + d)
 				.uv(element.south.getU1(), element.south.getV1())
 				.endVertex();
-			stack
+			tess
 				.pos(x + w, y + h, z + d)
 				.uv(element.south.getU1(), element.south.getV0())
 				.endVertex();
-			stack
+			tess
 				.pos(x, y + h, z + d)
 				.uv(element.south.getU0(), element.south.getV0())
 				.endVertex();
@@ -244,30 +247,30 @@ public class Model
 
 		if (element.west != null)
 		{
-			stack.normal(0, 0, -1);
+			tess.normal(0, 0, -1);
 
-			stack
+			tess
 				.pos(x, y + h, z)
 				.uv(element.west.getU0(), element.west.getV0()) // 0
 				.endVertex();
-			stack
+			tess
 				.pos(x, y, z)
 				.uv(element.west.getU0(), element.west.getV1()) // 1
 				.endVertex();
-			stack
+			tess
 				.pos(x, y, z + d)
 				.uv(element.west.getU1(), element.west.getV1()) // 2
 				.endVertex();
 
-			stack
+			tess
 				.pos(x, y, z + d)
 				.uv(element.west.getU1(), element.west.getV1()) // 2
 				.endVertex();
-			stack
+			tess
 				.pos(x, y + h, z + d)
 				.uv(element.west.getU1(), element.west.getV0()) // 3
 				.endVertex();
-			stack
+			tess
 				.pos(x, y + h, z)
 				.uv(element.west.getU0(), element.west.getV0()) // 0
 				.endVertex();

@@ -29,7 +29,7 @@ public class DoorData extends BlockData
 
 	public void render(Stack stack, BlockState state)
 	{
-		stack.color(1, 1, 1, 1);
+		stack.getEntityTess().color(1, 1, 1, 1);
 
 		EnumFace facing = state.get(DoorBlock.FACING);
 		EnumLR hinge = state.get(DoorBlock.HINGE);

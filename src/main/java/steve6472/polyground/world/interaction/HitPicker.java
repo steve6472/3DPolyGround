@@ -4,7 +4,6 @@ import org.joml.AABBf;
 import org.joml.Intersectionf;
 import org.joml.Math;
 import org.joml.Vector2f;
-import steve6472.polyground.AABBUtil;
 import steve6472.polyground.CaveGame;
 import steve6472.polyground.EnumFace;
 import steve6472.polyground.HitResult;
@@ -41,7 +40,7 @@ public class HitPicker
 	public void tick(Player player, CaveGame game)
 	{
 		closest = Float.MAX_VALUE;
-		hitResult.setHit(false);;
+		hitResult.setHit(false);
 		int ix = (int) Math.floor(player.getX());
 		int iy = (int) Math.floor(player.getY());
 		int iz = (int) Math.floor(player.getZ());
@@ -129,9 +128,8 @@ public class HitPicker
 				MainRender.shaders.mainShader.bind(game.getCamera().getViewMatrix());
 
 				if (game.options.renderBlockOutline)
-					AABBUtil.renderAABB(hitResult.getX() - 0.001f + aabb.minX, hitResult.getY() - 0.001f + aabb.minY, hitResult.getZ() - 0.001f + aabb.minZ, hitResult.getX() + 0.001f + aabb.maxX, hitResult.getY() + 0.001f + aabb.maxY, hitResult.getZ() + 0.001f + aabb.maxZ, 1f, game.mainRender.basicTess, MainRender.shaders.mainShader);
+					game.mainRender.stack.getLineTess().debugBox(hitResult.getX() - 0.001f + aabb.minX, hitResult.getY() - 0.001f + aabb.minY, hitResult.getZ() - 0.001f + aabb.minZ, hitResult.getX() + 0.001f + aabb.maxX, hitResult.getY() + 0.001f + aabb.maxY, hitResult.getZ() + 0.001f + aabb.maxZ);
 			}
-
 		}
 	}
 

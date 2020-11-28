@@ -2,18 +2,19 @@ package steve6472.polyground.gfx;
 
 import org.joml.AABBf;
 import org.joml.Vector3f;
-import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 import steve6472.polyground.AABBUtil;
 import steve6472.polyground.CaveGame;
 import steve6472.polyground.Frustum;
 import steve6472.polyground.PolyUtil;
+import steve6472.polyground.events.TessTestEvent;
 import steve6472.polyground.events.WorldEvent;
 import steve6472.polyground.gfx.light.LightManager;
 import steve6472.polyground.gfx.particle.BreakParticleStorage;
 import steve6472.polyground.gfx.particle.ParticleStorage;
 import steve6472.polyground.gfx.shaders.Shaders;
+import steve6472.polyground.gfx.stack.LineTess;
 import steve6472.polyground.gfx.stack.Stack;
 import steve6472.polyground.teleporter.Teleporter;
 import steve6472.polyground.tessellators.BasicTessellator;
@@ -151,6 +152,8 @@ public class MainRender
 
 		stack.reset();
 		game.world.getEntityManager().render(game.mainRender.stack);
+		game.getEventHandler().runEvent(new TessTestEvent(stack.getLineTess()));
+		extra();
 
 		if (!CaveGame.runGameEvent(new WorldEvent.PreRender(game.world)))
 			game.world.getRenderer().renderDeferred(true, true);
@@ -222,6 +225,42 @@ public class MainRender
 			postProcessing.doPostProcessing(mainFrameBuffer.texture);
 	}
 
+	private void extra()
+	{
+		if (game.options.renderTeleporters) renderTeleporters();
+
+		for (AABBf a : t)
+		{
+			stack.getLineTess().debugBox(a);
+		}
+
+		if (game.options.renderPlayerBoudingBox) stack.getLineTess().debugBox(game.getPlayer().getHitbox().getHitbox());
+	}
+
+	private void renderTeleporters()
+	{
+		for (Teleporter teleporter : game.getWorld().teleporters.getTeleporters())
+		{
+			stack.getLineTess().debugBox(teleporter.getAabb());
+			renderTeleporterPair(teleporter);
+		}
+	}
+
+	private void renderTeleporterPair(Teleporter tel)
+	{
+		if (tel.getOther() == null)
+			return;
+
+		final LineTess lineTess = stack.getLineTess();
+
+		Vector3f c0 = AABBUtil.getCenter(tel.getAabb());
+		Vector3f c1 = AABBUtil.getCenter(tel.getOther().getAabb());
+
+		lineTess.color(1f, 1f, 1f, 1f);
+		lineTess.pos(c0.x, c0.y, c0.z).endVertex();
+		lineTess.pos(c1.x, c1.y, c1.z).endVertex();
+	}
+
 	public void renderTheWorld(boolean renderWorld)
 	{
 		resetFrustum();
@@ -230,37 +269,7 @@ public class MainRender
 			return;
 
 		game.hitPicker.tick(game.getPlayer(), game);
-
-		/* Render AABBs from t */
-		shaders.mainShader.bind(game.getCamera().getViewMatrix());
-		basicTess.begin(t.size() * 24);
-
-		for (AABBf a : t)
-		{
-			AABBUtil.addAABB(a, basicTess);
-		}
-
-		GL11.glLineWidth(1);
-		basicTess.loadPos(0);
-		basicTess.loadColor(1);
-		basicTess.draw(Tessellator.LINES);
-		basicTess.disable(0, 1);
-
 		game.mainRender.stack.render(game.getCamera().getViewMatrix());
-
-		/* END */
-
-		if (game.options.renderTeleporters)
-		{
-			shaders.mainShader.bind(game.getCamera().getViewMatrix());
-			for (Teleporter teleporter : game.getWorld().teleporters.getTeleporters())
-			{
-				AABBUtil.renderAABBf(teleporter.getAabb(), basicTess, 3f, shaders.mainShader);
-				renderTeleporterPair(teleporter);
-			}
-		}
-
-		shaders.mainShader.bind(game.getCamera().getViewMatrix());
 
 		if (renderWorld)
 		{
@@ -270,14 +279,8 @@ public class MainRender
 		}
 		game.world.getEntityManager().render();
 
-//		miningTool.render(game.getPlayer().getX(), game.getPlayer().getY(), game.getPlayer().getZ()
-//			, 0, (float) (game.getPlayer().getCamera().getYaw() + Math.PI / 2f), (game.getPlayer().getCamera().getPitch()), 1f);
-
 		if (game.getPlayer() != null)
 			game.getPlayer().render();
-
-//		CaveGame.shaders.mainShader.bind(getCamera().getViewMatrix());
-//		AABBUtil.renderAABBf(player.getHitbox().getHitbox(), basicTess, 1, shaders.mainShader);
 
 		if (game.options.renderSkybox)
 		{
@@ -287,26 +290,6 @@ public class MainRender
 
 		breakParticles.render();
 		particles.render();
-	}
-
-	private void renderTeleporterPair(Teleporter tel)
-	{
-		if (tel.getOther() == null)
-			return;
-
-		BasicTessellator tess = basicTess;
-		tess.begin(2);
-
-		Vector3f c0 = AABBUtil.getCenter(tel.getAabb());
-		Vector3f c1 = AABBUtil.getCenter(tel.getOther().getAabb());
-
-		tess.pos(c0.x, c0.y, c0.z).color(1f, 1f, 1f, 1f).endVertex();
-		tess.pos(c1.x, c1.y, c1.z).color(1f, 1f, 1f, 1f).endVertex();
-
-		tess.loadPos(0);
-		tess.loadColor(1);
-		tess.draw(Tessellator.LINES);
-		tess.disable(0, 1);
 	}
 
 	public DepthFrameBuffer getMainFrameBuffer()

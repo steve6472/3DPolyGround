@@ -1,8 +1,6 @@
 package steve6472.polyground.entity.parkour;
 
-import steve6472.polyground.AABBUtil;
 import steve6472.polyground.CaveGame;
-import steve6472.polyground.gfx.MainRender;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +34,7 @@ public class Population
 		for (ParkourEntity parkourEntity : parkourEntities)
 		{
 			if (!parkourEntity.isDead() || parkourEntity.goalReached())
-				AABBUtil.renderAABBf(parkourEntity.getHitbox().getHitbox(), CaveGame.getInstance().mainRender.basicTess, 1, MainRender.shaders.mainShader);
+				CaveGame.getInstance().mainRender.stack.getLineTess().debugBox(parkourEntity.getHitbox().getHitbox());
 		}
 	}
 
@@ -90,8 +88,8 @@ public class Population
 			Brain best = entity.getBrain();
 			//			parkourEntities.set(0, new ParkourEntity(new Brain(best, entity.getDiedAtStep(), entity.goalReached())));
 
-			System.out.println(String.format("#%d bestNow: %.3f best: %.3f avg: %.3f steps: %d reachedChectpoint: %d lastDistance: %.3f" ,
-				index, lastProbability, this.best, total / (double) ParkourTest.SAMPLE, best.getPassedInstructions(), entity.currentCheckpoint, entity.distanceToLastCheckpoint));
+			System.out.printf("#%d bestNow: %.3f best: %.3f avg: %.3f steps: %d reachedChectpoint: %d lastDistance: %.3f%n",
+				index, lastProbability, this.best, total / (double) ParkourTest.SAMPLE, best.getPassedInstructions(), entity.currentCheckpoint, entity.distanceToLastCheckpoint);
 
 			for (int i = 0; i < ParkourTest.SAMPLE - 1; i++)
 			{

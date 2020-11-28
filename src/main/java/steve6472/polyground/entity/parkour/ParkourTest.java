@@ -2,9 +2,9 @@ package steve6472.polyground.entity.parkour;
 
 import org.joml.Vector3f;
 import org.joml.Vector4f;
-import steve6472.polyground.AABBUtil;
 import steve6472.polyground.CaveGame;
-import steve6472.polyground.gfx.MainRender;
+import steve6472.polyground.gfx.stack.LineTess;
+import steve6472.polyground.gfx.stack.Stack;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,36 +53,35 @@ public class ParkourTest
 
 	public void render()
 	{
-		AABBUtil.renderAABB(
+		final Stack stack = CaveGame.getInstance().mainRender.stack;
+		final LineTess lineTess = stack.getLineTess();
+		lineTess.debugBox(
 			START_POSITION.x() - 0.5f,
 			START_POSITION.y() - 0.5f,
 			START_POSITION.z() - 0.5f,
 			START_POSITION.x() + 0.5f,
 			START_POSITION.y() + 0.5f,
-			START_POSITION.z() + 0.5f,
-			3, CaveGame.getInstance().mainRender.basicTess, MainRender.shaders.mainShader);
+			START_POSITION.z() + 0.5f);
 
-		AABBUtil.renderAABB(
+		lineTess.debugBox(
 			checkpoints.get(checkpoints.size() - 1).x() - 0.5f,
 			checkpoints.get(checkpoints.size() - 1).y() - 0.5f,
 			checkpoints.get(checkpoints.size() - 1).z() - 0.5f,
 			checkpoints.get(checkpoints.size() - 1).x() + 0.5f,
 			checkpoints.get(checkpoints.size() - 1).y() + 0.5f,
-			checkpoints.get(checkpoints.size() - 1).z() + 0.5f,
-			5, CaveGame.getInstance().mainRender.basicTess, MainRender.shaders.mainShader);
+			checkpoints.get(checkpoints.size() - 1).z() + 0.5f);
 
 		populations.forEach(Population::render);
 
 		for (Vector4f v : checkpoints)
 		{
-			AABBUtil.renderAABB(
+			lineTess.debugBox(
 				v.x() - v.w(),
 				v.y() - v.w(),
 				v.z() - v.w(),
 				v.x() + v.w(),
 				v.y() + v.w(),
-				v.z() + v.w(),
-				1, CaveGame.getInstance().mainRender.basicTess, MainRender.shaders.mainShader);
+				v.z() + v.w());
 		}
 	}
 

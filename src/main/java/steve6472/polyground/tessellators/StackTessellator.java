@@ -23,7 +23,7 @@ public class StackTessellator extends AbstractTessellator
 	private float tx, ty;
 	private float nx, ny, nz;
 
-	public int current, size;
+	public int current, maxCount;
 
 	public StackTessellator(int maxLength)
 	{
@@ -101,14 +101,14 @@ public class StackTessellator extends AbstractTessellator
 		setBuffer(normal, vertexCount * 3);
 
 		current = 0;
-		size = vertexCount;
+		maxCount = vertexCount;
 
 		super.begin(vertexCount);
 	}
 
 	public boolean hasSpace()
 	{
-		return current < size;
+		return current < maxCount;
 	}
 
 	public void loadPos(int index)

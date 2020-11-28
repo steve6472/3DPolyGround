@@ -28,7 +28,7 @@ public class AmethineCoreData extends BlockData
 	public void render(Stack stack)
 	{
 		float c = (float) (Math.cos(Math.toRadians((System.currentTimeMillis() % (3600 * 2)) * 0.05f)) / 4f + 0.70f);
-		stack.color(c, 0, c, 1);
+		stack.getEntityTess().color(c, 0, c, 1);
 
 		if (!isIdle)
 		{

@@ -1,16 +1,13 @@
 package steve6472.polyground.entity.item;
 
 import org.joml.Math;
-import steve6472.polyground.AABBUtil;
 import steve6472.polyground.CaveGame;
 import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.entity.HitboxEntityBase;
-import steve6472.polyground.entity.interfaces.IKillable;
-import steve6472.polyground.entity.interfaces.IRenderable;
-import steve6472.polyground.entity.interfaces.ITickable;
-import steve6472.polyground.entity.interfaces.IWorldContainer;
+import steve6472.polyground.entity.interfaces.*;
 import steve6472.polyground.entity.player.Player;
 import steve6472.polyground.gfx.DynamicEntityModel;
+import steve6472.polyground.gfx.stack.Stack;
 import steve6472.polyground.item.Item;
 import steve6472.polyground.item.itemdata.ItemData;
 import steve6472.polyground.world.World;
@@ -22,7 +19,7 @@ import steve6472.sge.main.game.mixable.IPosition3f;
  * Project: CaveGame
  *
  ***********************/
-public class ItemEntity extends HitboxEntityBase implements IRenderable, ITickable, IKillable, IWorldContainer, IPosition3f
+public class ItemEntity extends HitboxEntityBase implements IRenderable, ITickable, IKillable, IWorldContainer, IPosition3f, IAdvancedRender
 {
 	public Item item;
 	public ItemData itemData;
@@ -140,9 +137,15 @@ public class ItemEntity extends HitboxEntityBase implements IRenderable, ITickab
 		}
 
 		item.model.render(CaveGame.getInstance().getCamera().getViewMatrix(), DynamicEntityModel.MAT);
+	}
 
+	@Override
+	public void render(Stack stack)
+	{
 		if (CaveGame.getInstance().options.renderItemEntityOutline)
-			AABBUtil.renderAABBf(getHitbox(), 1);
+		{
+			stack.getLineTess().debugBox(getHitbox());
+		}
 	}
 
 	public void remove(Player player)

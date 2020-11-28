@@ -2,11 +2,7 @@ package steve6472.polyground;
 
 import org.joml.AABBf;
 import org.joml.Vector3f;
-import org.lwjgl.opengl.GL11;
-import steve6472.polyground.gfx.MainRender;
-import steve6472.polyground.gfx.shaders.MainShader;
 import steve6472.polyground.tessellators.BasicTessellator;
-import steve6472.sge.gfx.Tessellator;
 import steve6472.sge.main.Util;
 
 /**********************
@@ -94,92 +90,6 @@ public class AABBUtil
 		return za;
 	}
 
-	public static void renderAABB(float x, float y, float z, float size, float lineWidth)
-	{
-		AABBUtil.renderAABB(x - size, y - size, z - size, x + size, y + size, z + size, lineWidth, CaveGame.getInstance().mainRender.basicTess, MainRender.shaders.mainShader);
-	}
-
-	public static void renderAABB(float x, float y, float z, AABBf aabb, float lineWidth)
-	{
-		AABBUtil.renderAABB(x + aabb.minX, y + aabb.minY, z + aabb.minZ, x + aabb.maxX, y + aabb.maxY, z + aabb.maxZ, lineWidth, CaveGame.getInstance().mainRender.basicTess, MainRender.shaders.mainShader);
-	}
-
-	public static void renderAABB(float minX, float minY, float minZ, float maxX, float maxY, float maxZ, float lineWidth, BasicTessellator tess, MainShader mainShader)
-	{
-		mainShader.bind();
-		tess.begin(24);
-
-		GL11.glLineWidth(lineWidth);
-
-		tess.pos(minX, minY, minZ).color(1f, 0f, 0f, 1f).endVertex();
-		tess.pos(maxX, minY, minZ).color(1f, 0f, 0f, 1f).endVertex();
-		tess.pos(minX, minY, minZ).color(0f, 0f, 1f, 1f).endVertex();
-		tess.pos(minX, minY, maxZ).color(0f, 0f, 1f, 1f).endVertex();
-		tess.pos(minX, minY, maxZ).color(1f, 1f, 1f, 1f).endVertex();
-		tess.pos(maxX, minY, maxZ).color(1f, 1f, 1f, 1f).endVertex();
-		tess.pos(maxX, minY, minZ).color(1f, 1f, 1f, 1f).endVertex();
-		tess.pos(maxX, minY, maxZ).color(1f, 1f, 1f, 1f).endVertex();
-
-		tess.pos(minX, minY, minZ).color(0f, 1f, 0f, 1f).endVertex();
-		tess.pos(minX, maxY, minZ).color(0f, 1f, 0f, 1f).endVertex();
-		tess.pos(maxX, minY, minZ).color(1f, 1f, 1f, 1f).endVertex();
-		tess.pos(maxX, maxY, minZ).color(1f, 1f, 1f, 1f).endVertex();
-		tess.pos(minX, minY, maxZ).color(1f, 1f, 1f, 1f).endVertex();
-		tess.pos(minX, maxY, maxZ).color(1f, 1f, 1f, 1f).endVertex();
-		tess.pos(maxX, minY, maxZ).color(1f, 1f, 1f, 1f).endVertex();
-		tess.pos(maxX, maxY, maxZ).color(1f, 1f, 1f, 1f).endVertex();
-
-		tess.pos(minX, maxY, minZ).color(1f, 1f, 1f, 1f).endVertex();
-		tess.pos(maxX, maxY, minZ).color(1f, 1f, 1f, 1f).endVertex();
-		tess.pos(minX, maxY, minZ).color(1f, 1f, 1f, 1f).endVertex();
-		tess.pos(minX, maxY, maxZ).color(1f, 1f, 1f, 1f).endVertex();
-		tess.pos(minX, maxY, maxZ).color(1f, 1f, 1f, 1f).endVertex();
-		tess.pos(maxX, maxY, maxZ).color(1f, 1f, 1f, 1f).endVertex();
-		tess.pos(maxX, maxY, minZ).color(1f, 1f, 1f, 1f).endVertex();
-		tess.pos(maxX, maxY, maxZ).color(1f, 1f, 1f, 1f).endVertex();
-
-		tess.loadPos(0);
-		tess.loadColor(1);
-		tess.draw(Tessellator.LINES);
-		tess.disable(0, 1);
-		GL11.glLineWidth(1f);
-	}
-
-	public static void addAABB(AABBf box, BasicTessellator tess)
-	{
-		addAABB(box.minX, box.minY, box.minZ, box.maxX, box.maxY, box.maxZ, tess);
-	}
-
-	public static void addAABB(float minX, float minY, float minZ, float maxX, float maxY, float maxZ, BasicTessellator tess)
-	{
-		tess.pos(minX, minY, minZ).color(1f, 0f, 0f, 1f).endVertex();
-		tess.pos(maxX, minY, minZ).color(1f, 0f, 0f, 1f).endVertex();
-		tess.pos(minX, minY, minZ).color(0f, 0f, 1f, 1f).endVertex();
-		tess.pos(minX, minY, maxZ).color(0f, 0f, 1f, 1f).endVertex();
-		tess.pos(minX, minY, maxZ).color(1f, 1f, 1f, 1f).endVertex();
-		tess.pos(maxX, minY, maxZ).color(1f, 1f, 1f, 1f).endVertex();
-		tess.pos(maxX, minY, minZ).color(1f, 1f, 1f, 1f).endVertex();
-		tess.pos(maxX, minY, maxZ).color(1f, 1f, 1f, 1f).endVertex();
-
-		tess.pos(minX, minY, minZ).color(0f, 1f, 0f, 1f).endVertex();
-		tess.pos(minX, maxY, minZ).color(0f, 1f, 0f, 1f).endVertex();
-		tess.pos(maxX, minY, minZ).color(1f, 1f, 1f, 1f).endVertex();
-		tess.pos(maxX, maxY, minZ).color(1f, 1f, 1f, 1f).endVertex();
-		tess.pos(minX, minY, maxZ).color(1f, 1f, 1f, 1f).endVertex();
-		tess.pos(minX, maxY, maxZ).color(1f, 1f, 1f, 1f).endVertex();
-		tess.pos(maxX, minY, maxZ).color(1f, 1f, 1f, 1f).endVertex();
-		tess.pos(maxX, maxY, maxZ).color(1f, 1f, 1f, 1f).endVertex();
-
-		tess.pos(minX, maxY, minZ).color(1f, 1f, 1f, 1f).endVertex();
-		tess.pos(maxX, maxY, minZ).color(1f, 1f, 1f, 1f).endVertex();
-		tess.pos(minX, maxY, minZ).color(1f, 1f, 1f, 1f).endVertex();
-		tess.pos(minX, maxY, maxZ).color(1f, 1f, 1f, 1f).endVertex();
-		tess.pos(minX, maxY, maxZ).color(1f, 1f, 1f, 1f).endVertex();
-		tess.pos(maxX, maxY, maxZ).color(1f, 1f, 1f, 1f).endVertex();
-		tess.pos(maxX, maxY, minZ).color(1f, 1f, 1f, 1f).endVertex();
-		tess.pos(maxX, maxY, maxZ).color(1f, 1f, 1f, 1f).endVertex();
-	}
-
 	public static void addWater(float x, float y, float z, float height, BasicTessellator tess)
 	{
 		float density = 1;
@@ -263,101 +173,6 @@ public class AABBUtil
 		tess.pos(+1 + x, +0 + y, +0 + z).endVertex();
 		tess.pos(+1 + x, +0 + y, +1 + z).endVertex();
 		tess.pos(+0 + x, +0 + y, +1 + z).endVertex();
-	}
-
-	/*
-	public static void renderBox(float width, float height, float depth, EntityCube ec, PolyGround pg)
-	{
-		renderBox(-width / 2f, -height / 2f, -depth / 2f, width / 2f, height / 2f, depth / 2f, ec, pg);
-	}
-
-	public static void renderBox(float minX, float minY, float minZ, float maxX, float maxY, float maxZ, EntityCube ec, PolyGround pg)
-	{
-		EntityTessellator tess = pg.entityTessellator;
-		tess.begin(36);
-
-		EntityCubeFace face = ec.getFace(EnumFace.BACK);
-		tess.color(face.getShade(), face.getShade(), face.getShade(), 1.0f);
-
-		tess.pos(minX, maxY, minZ).texture(face.getMinU(), face.getMinV()).endVertex();
-		tess.pos(minX, minY, minZ).texture(face.getMinU(), face.getMaxV()).endVertex();
-		tess.pos(minX, minY, maxZ).texture(face.getMaxU(), face.getMaxV()).endVertex();
-
-		tess.pos(minX, minY, maxZ).texture(face.getMaxU(), face.getMaxV()).endVertex();
-		tess.pos(minX, maxY, maxZ).texture(face.getMaxU(), face.getMinV()).endVertex();
-		tess.pos(minX, maxY, minZ).texture(face.getMinU(), face.getMinV()).endVertex();
-
-		face = ec.getFace(EnumFace.FRONT);
-		tess.color(face.getShade(), face.getShade(), face.getShade(), 1.0f);
-
-		tess.pos(maxX, maxY, maxZ).texture(face.getMinU(), face.getMinV()).endVertex();
-		tess.pos(maxX, minY, maxZ).texture(face.getMinU(), face.getMaxV()).endVertex();
-		tess.pos(maxX, minY, minZ).texture(face.getMaxU(), face.getMaxV()).endVertex();
-
-		tess.pos(maxX, minY, minZ).texture(face.getMaxU(), face.getMaxV()).endVertex();
-		tess.pos(maxX, maxY, minZ).texture(face.getMaxU(), face.getMinV()).endVertex();
-		tess.pos(maxX, maxY, maxZ).texture(face.getMinU(), face.getMinV()).endVertex();
-
-		face = ec.getFace(EnumFace.TOP);
-		tess.color(face.getShade(), face.getShade(), face.getShade(), 1.0f);
-
-		tess.pos(maxX, maxY, minZ).texture(face.getMinU(), face.getMinV()).endVertex();
-		tess.pos(minX, maxY, minZ).texture(face.getMinU(), face.getMaxV()).endVertex();
-		tess.pos(minX, maxY, maxZ).texture(face.getMaxU(), face.getMaxV()).endVertex();
-
-		tess.pos(minX, maxY, maxZ).texture(face.getMaxU(), face.getMaxV()).endVertex();
-		tess.pos(maxX, maxY, maxZ).texture(face.getMaxU(), face.getMinV()).endVertex();
-		tess.pos(maxX, maxY, minZ).texture(face.getMinU(), face.getMinV()).endVertex();
-
-		face = ec.getFace(EnumFace.BOTTOM);
-		tess.color(face.getShade(), face.getShade(), face.getShade(), 1.0f);
-
-		tess.pos(minX, minY, maxZ).texture(face.getMaxU(), face.getMinV()).endVertex();
-		tess.pos(minX, minY, minZ).texture(face.getMinU(), face.getMinV()).endVertex();
-		tess.pos(maxX, minY, minZ).texture(face.getMinU(), face.getMaxV()).endVertex();
-
-		tess.pos(maxX, minY, minZ).texture(face.getMinU(), face.getMaxV()).endVertex();
-		tess.pos(maxX, minY, maxZ).texture(face.getMaxU(), face.getMaxV()).endVertex();
-		tess.pos(minX, minY, maxZ).texture(face.getMaxU(), face.getMinV()).endVertex();
-
-		face = ec.getFace(EnumFace.LEFT);
-		tess.color(face.getShade(), face.getShade(), face.getShade(), 1.0f);
-
-
-		tess.pos(maxX, maxY, minZ).texture(face.getMinU(), face.getMinV()).endVertex();
-		tess.pos(maxX, minY, minZ).texture(face.getMinU(), face.getMaxV()).endVertex();
-		tess.pos(minX, minY, minZ).texture(face.getMaxU(), face.getMaxV()).endVertex();
-
-		tess.pos(minX, minY, minZ).texture(face.getMaxU(), face.getMaxV()).endVertex();
-		tess.pos(minX, maxY, minZ).texture(face.getMaxU(), face.getMinV()).endVertex();
-		tess.pos(maxX, maxY, minZ).texture(face.getMinU(), face.getMinV()).endVertex();
-
-		face = ec.getFace(EnumFace.RIGHT);
-		tess.color(face.getShade(), face.getShade(), face.getShade(), 1.0f);
-
-		tess.pos(minX, maxY, maxZ).texture(face.getMinU(), face.getMinV()).endVertex();
-		tess.pos(minX, minY, maxZ).texture(face.getMinU(), face.getMaxV()).endVertex();
-		tess.pos(maxX, minY, maxZ).texture(face.getMaxU(), face.getMaxV()).endVertex();
-
-		tess.pos(maxX, minY, maxZ).texture(face.getMaxU(), face.getMaxV()).endVertex();
-		tess.pos(maxX, maxY, maxZ).texture(face.getMaxU(), face.getMinV()).endVertex();
-		tess.pos(minX, maxY, maxZ).texture(face.getMinU(), face.getMinV()).endVertex();
-
-		tess.loadPos(0);
-		tess.loadColor(1);
-		tess.loadTexture(2);
-		tess.draw(Tessellator.TRIANGLES);
-		tess.disable(0, 1, 2);
-	}*/
-
-	public static void renderAABBf(AABBf box, BasicTessellator tess, float lineWidth, MainShader mainShader)
-	{
-		renderAABB(box.minX, box.minY, box.minZ, box.maxX, box.maxY, box.maxZ, lineWidth, tess, mainShader);
-	}
-
-	public static void renderAABBf(AABBf box, float lineWidth)
-	{
-		renderAABB(box.minX, box.minY, box.minZ, box.maxX, box.maxY, box.maxZ, lineWidth, CaveGame.getInstance().mainRender.basicTess, MainRender.shaders.mainShader);
 	}
 
 	public static Vector3f getCenter(AABBf box)

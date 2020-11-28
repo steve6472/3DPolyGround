@@ -148,6 +148,11 @@ public class BlockState implements IBlockState
 			for (IProperty<?> property : state.getProperties().keySet())
 			{
 				String val = map.get(property.getName());
+				if (val == null)
+				{
+					match = false;
+					break;
+				}
 				Comparable<?> c = state.getProperties().get(property);
 				if (!val.equals(c.toString()))
 				{
@@ -170,6 +175,11 @@ public class BlockState implements IBlockState
 			for (IProperty<?> property : state.getProperties().keySet())
 			{
 				String val = map.get(property.getName());
+				if (val == null)
+				{
+					match = false;
+					break;
+				}
 				Comparable<?> c = state.getProperties().get(property);
 				if (!val.equals(c.toString()))
 				{

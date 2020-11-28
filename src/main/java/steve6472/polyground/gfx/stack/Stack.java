@@ -1,13 +1,7 @@
 package steve6472.polyground.gfx.stack;
 
-import org.joml.Math;
-import org.joml.*;
-import steve6472.polyground.CaveGame;
-import steve6472.polyground.block.BlockAtlas;
-import steve6472.polyground.gfx.MainRender;
-import steve6472.polyground.gfx.shaders.EntityShader;
-import steve6472.polyground.tessellators.StackTessellator;
-import steve6472.sge.gfx.Tessellator;
+import org.joml.Matrix4f;
+import org.joml.Matrix4fStack;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
@@ -17,95 +11,35 @@ import steve6472.sge.gfx.Tessellator;
  ***********************/
 public class Stack extends Matrix4fStack
 {
-	private static final int MAX_SIZE = 1024 * 32;
-
-	private final StackTessellator tess;
-	private final Vector3f dest3f;
-	private final Vector4f lastColor;
+	private final EntityTess entityTess;
+	private final LineTess lineTess;
 
 	public Stack()
 	{
 		super(16);
-
-		tess = new StackTessellator(MAX_SIZE);
-		tess.begin(MAX_SIZE);
-		tess.color(1, 1, 1, 1);
-
-		dest3f = new Vector3f();
-		lastColor = new Vector4f();
-	}
-
-	public Stack pos(float x, float y, float z)
-	{
-		transformPosition(x, y, z, dest3f);
-		tess.pos(dest3f);
-		return this;
-	}
-
-	public Stack color(float r, float g, float b, float a)
-	{
-		tess.color(r, g, b, a);
-		lastColor.set(r, g, b, a);
-		return this;
-	}
-
-	public Stack color(Vector4f color)
-	{
-		tess.color(color.x, color.y, color.z, color.w);
-		lastColor.set(color);
-		return this;
-	}
-
-	public Stack uv(float u, float v)
-	{
-		tess.uv(u, v);
-		return this;
-	}
-
-	public Stack normal(float nx, float ny, float nz)
-	{
-		pushMatrix();
-		rotateY((float) (Math.PI / 2f));
-		setTranslation(0, 0, 0);
-		transformPosition(nx, ny, nz, dest3f);
-		dest3f.normalize();
-		tess.normal(dest3f);
-		popMatrix();
-//		tess.normal(nx, ny, nz);
-		return this;
-	}
-
-	public Vector4f getLastColor()
-	{
-		return lastColor;
-	}
-
-	public Stack endVertex()
-	{
-		tess.endVertex();
-		return this;
+		entityTess = new EntityTess(this);
+		lineTess = new LineTess(this);
 	}
 
 	public void render(Matrix4f view)
 	{
-		MainRender.shaders.entityShader.bind(view);
-		MainRender.shaders.entityShader.setTransformation(new Matrix4f());
-		MainRender.shaders.entityShader.setUniform(EntityShader.NORMAL_MATRIX, new Matrix3f(new Matrix4f(this).invert().transpose3x3()));
-		MainRender.shaders.entityShader.setUniform(EntityShader.SHADE, CaveGame.getInstance().world.shade);
-		BlockAtlas.getAtlas().getSprite().bind();
-
-		tess.loadPos(0);
-		tess.loadColor(1);
-		tess.loadUv(2);
-		tess.loadNormal(3);
-		tess.draw(Tessellator.TRIANGLES);
-		tess.disable(0, 1, 2, 3);
+		entityTess.render(view);
+		lineTess.render(view);
 	}
 
 	public void reset()
 	{
-		tess.clear();
-		tess.begin(MAX_SIZE);
-		tess.color(1, 1, 1, 1);
+		entityTess.reset();
+		lineTess.reset();
+	}
+
+	public EntityTess getEntityTess()
+	{
+		return entityTess;
+	}
+
+	public LineTess getLineTess()
+	{
+		return lineTess;
 	}
 }

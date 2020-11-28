@@ -19,6 +19,8 @@ import java.util.List;
  ***********************/
 public class EntityManager
 {
+	public static final Quaternionf QUATERNIONF = new Quaternionf();
+
 	private final List<Object> entities;
 	private final World world;
 
@@ -82,25 +84,12 @@ public class EntityManager
 
 	public void render(Stack stack)
 	{
-		Quaternionf quat = new Quaternionf();
-
 		for (Object o : entities)
 		{
 			if (o instanceof IAdvancedRender r)
 			{
 				stack.pushMatrix();
-
-				if (o instanceof IPosition3f p)
-					stack.translate(p.getPosition());
-
-				if (o instanceof IRotation rot)
-				{
-					quat.rotateXYZ(rot.getRotations().x, rot.getRotations().y, rot.getRotations().z);
-					stack.rotate(quat);
-				}
-
 				r.render(stack);
-
 				stack.popMatrix();
 			}
 		}

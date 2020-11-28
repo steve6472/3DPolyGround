@@ -80,6 +80,7 @@ public class Options
 	public boolean renderDataBlocks = false;
 	public boolean renderItemEntityOutline = false;
 	public boolean debugSoundPos = false;
+	public boolean renderPlayerBoudingBox = false;
 
 	public float mouseSensitivity = 0.1f;
 
