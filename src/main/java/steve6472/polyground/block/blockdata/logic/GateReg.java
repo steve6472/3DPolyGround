@@ -59,6 +59,11 @@ public class GateReg
 		return gate;
 	}
 
+	public static GateEntry getEntry(String gateName)
+	{
+		return REGISTRY.get(gateName);
+	}
+
 	private static void register(String gateName, Supplier<AbstractGate> supplier, int sizeX, int sizeY, int sizeZ)
 	{
 		REGISTRY.put(gateName, new GateEntry(supplier, sizeX, sizeY, sizeZ));
@@ -69,10 +74,10 @@ public class GateReg
 		REGISTRY.put(gateName, new GateEntry(supplier, sizeX, sizeY, sizeZ, offsetX, offsetY, offsetZ));
 	}
 
-	static class GateEntry
+	public static class GateEntry
 	{
-		final int sizeX, sizeY, sizeZ;
-		final int offsetX, offsetY, offsetZ;
+		public final int sizeX, sizeY, sizeZ;
+		public final int offsetX, offsetY, offsetZ;
 		final Supplier<AbstractGate> supplier;
 
 		GateEntry(Supplier<AbstractGate> supplier, int sizeX, int sizeY, int sizeZ)

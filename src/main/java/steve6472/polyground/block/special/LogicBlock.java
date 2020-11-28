@@ -1,8 +1,10 @@
 package steve6472.polyground.block.special;
 
+import org.joml.AABBf;
 import org.joml.Vector3i;
 import org.joml.Vector4i;
 import org.json.JSONObject;
+import steve6472.polyground.CaveGame;
 import steve6472.polyground.EnumFace;
 import steve6472.polyground.block.blockdata.BlockData;
 import steve6472.polyground.block.blockdata.logic.AbstractGate;
@@ -12,6 +14,7 @@ import steve6472.polyground.block.blockdata.logic.LogicBlockData;
 import steve6472.polyground.block.blockdata.logic.other.Chip;
 import steve6472.polyground.block.blockdata.logic.other.Input;
 import steve6472.polyground.block.blockdata.logic.other.Output;
+import steve6472.polyground.block.model.CubeHitbox;
 import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.entity.player.Player;
 import steve6472.polyground.world.World;
@@ -19,7 +22,9 @@ import steve6472.sge.main.KeyList;
 import steve6472.sge.main.events.MouseEvent;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Stream;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
@@ -187,6 +192,46 @@ public class LogicBlock extends AbstractMicroBlock
 			world.getSubChunkFromBlockCoords(x, y, z).rebuild();
 			data.updateModel = false;
 		}
+	}
+
+	@Override
+	protected boolean renderSelectedMicro(World world, BlockState state, int x, int y, int z)
+	{
+		final Player player = CaveGame.getInstance().getPlayer();
+		return !(player.holdsItem() && GateReg.has(player.getItemInHand().name()));
+	}
+
+	@Override
+	public CubeHitbox[] getHitbox(World world, BlockState state, int x, int y, int z)
+	{
+		CubeHitbox[] hitbox = super.getHitbox(world, state, x, y, z);
+
+		final Player player = CaveGame.getInstance().getPlayer();
+
+		Vector4i c = getLookedAtPiece(world, player, x, y, z);
+
+		if (c != null && player.holdsItem() && GateReg.has(player.getItemInHand().name()))
+		{
+			EnumFace f = EnumFace.getFaces()[c.w];
+			int cx = c.x + f.getXOffset();
+			int cy = c.y + f.getYOffset();
+			int cz = c.z + f.getZOffset();
+
+			float inv = 1f / 16f;
+			final GateReg.GateEntry entry = GateReg.getEntry(player.getItemInHand().name());
+			hitbox = Stream
+				.concat(Arrays.stream(hitbox), Arrays.stream(new CubeHitbox[]{new CubeHitbox(
+					new AABBf(
+						cx * inv + entry.offsetX * inv,
+						cy * inv + entry.offsetY * inv,
+						cz * inv + entry.offsetZ * inv,
+						cx * inv + entry.offsetX * inv + entry.sizeX * inv,
+						cy * inv + entry.offsetY * inv + entry.sizeY * inv,
+						cz * inv + entry.offsetZ * inv + entry.sizeZ * inv))}))
+				.toArray(CubeHitbox[]::new);
+		}
+
+		return hitbox;
 	}
 
 	@Override

@@ -183,6 +183,11 @@ public abstract class AbstractMicroBlock extends CustomBlock implements IBlockDa
 		return tris;
 	}
 
+	protected boolean renderSelectedMicro(World world, BlockState state, int x, int y, int z)
+	{
+		return true;
+	}
+
 	@Override
 	public CubeHitbox[] getHitbox(World world, BlockState state, int x, int y, int z)
 	{
@@ -210,20 +215,23 @@ public abstract class AbstractMicroBlock extends CustomBlock implements IBlockDa
 			}
 		}
 
-		Vector4i c = getLookedAtPiece(world, CaveGame.getInstance().getPlayer(), x, y, z);
-
-		//TODO: use marching cubes or.. greedy cubes to generate hitbox
-
-		if (c != null)
+		if (renderSelectedMicro(world, state, x, y, z))
 		{
-			List<CubeHitbox> hitboxes = new ArrayList<>();
-			hitboxes.add(new CubeHitbox(box));
-			hitboxes.add(new CubeHitbox(
-				new AABBf(
-					c.x * inv, c.y * inv, c.z * inv,
-					c.x * inv + inv, c.y * inv + inv, c.z * inv + inv)));
+			Vector4i c = getLookedAtPiece(world, CaveGame.getInstance().getPlayer(), x, y, z);
 
-			return hitboxes.toArray(new CubeHitbox[0]);
+			//TODO: use marching cubes or.. greedy cubes to generate hitbox
+
+			if (c != null)
+			{
+				List<CubeHitbox> hitboxes = new ArrayList<>();
+				hitboxes.add(new CubeHitbox(box));
+				hitboxes.add(new CubeHitbox(
+					new AABBf(
+						c.x * inv, c.y * inv, c.z * inv,
+						c.x * inv + inv, c.y * inv + inv, c.z * inv + inv)));
+
+				return hitboxes.toArray(new CubeHitbox[0]);
+			}
 		}
 		return new CubeHitbox[] {new CubeHitbox(box)};
 	}
