@@ -24,6 +24,8 @@ public class GateReg
 		register("switch", Switch::new, 3, 2, 3, -1, 0, -1);
 		register("seven_segment_display", SevenSegmentDisplay::new, 7, 2, 4, -3, 0, -1);
 		register("cross", Cross::new, 3, 1, 3, -1, 0, -1);
+		register("connector_to_down", ConnectorDown::new, 1, 2, 1, 0, 0, 0);
+		register("connector_to_up", ConnectorUp::new, 3, 2, 1, -1, 0, 0);
 
 		register("input", Input::new, 1, 2, 2, 0, 0, -1);
 		register("output", Output::new, 1, 2, 2);

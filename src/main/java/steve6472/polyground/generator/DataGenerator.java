@@ -134,18 +134,21 @@ public class DataGenerator
 		// Logic
 		ItemBuilder.itemModelPath("high_constant", "logic", "high_constant", "items.logic");
 		ItemBuilder.itemModelPath("low_constant", "logic", "low_constant", "items.logic");
-		ItemBuilder.itemModelPath("and", "logic", "and", "items.logic");
-		ItemBuilder.itemModelPath("nand", "logic", "nand", "items.logic");
-		ItemBuilder.itemModelPath("not", "logic", "not", "items.logic");
-		ItemBuilder.itemModelPath("or", "logic", "or", "items.logic");
-		ItemBuilder.itemModelPath("nor", "logic", "nor", "items.logic");
-		ItemBuilder.itemModelPath("xor", "logic", "xor", "items.logic");
+		ItemBuilder.itemModelPath("and", "logic", "and", "items.logic.gates");
+		ItemBuilder.itemModelPath("nand", "logic", "nand", "items.logic.gates");
+		ItemBuilder.itemModelPath("not", "logic", "not", "items.logic.gates");
+		ItemBuilder.itemModelPath("or", "logic", "or", "items.logic.gates");
+		ItemBuilder.itemModelPath("nor", "logic", "nor", "items.logic.gates");
+		ItemBuilder.itemModelPath("xor", "logic", "xor", "items.logic.gates");
 		ItemBuilder.itemModelPath("wire", "logic", "wire", "items.logic");
+		ItemBuilder.itemModelPath("magenta_wire", "logic", "magenta_wire", "items.logic");
 		ItemBuilder.itemModelPath("light", "logic", "light", "items.logic");
 		ItemBuilder.itemModelPath("input", "logic", "input", "items.logic");
 		ItemBuilder.itemModelPath("output", "logic", "output", "items.logic");
 		ItemBuilder.itemModelPath("switch", "logic", "switch", "items.logic");
 		ItemBuilder.itemModelPath("cross", "logic", "cross", "items.logic");
+		ItemBuilder.itemModelPath("connector_to_up", "logic", "connector_to_up", "items.logic");
+		ItemBuilder.itemModelPath("connector_to_down", "logic", "connector_to_down", "items.logic");
 		ItemBuilder.itemModelPath("board_level", "logic", "board_level", "items.logic");
 		ItemBuilder.itemModelPath("fill", "logic", "fill", "items.logic");
 		ItemBuilder.itemModelPath("seven_segment_display", "logic", "seven_segment_display", "items.logic");

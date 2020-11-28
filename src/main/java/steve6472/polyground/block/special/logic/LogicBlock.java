@@ -145,7 +145,12 @@ public class LogicBlock extends AbstractMicroBlock implements ISpecialRender
 
 			if (player.holdsItem())
 			{
-				if (GateReg.has(player.getItemInHand().name()) || player.getItemInHand().name.equals("wire") || player.getItemInHand().name.equals("fill") || player.getItemInHand().name.equals("board_level"))
+				if (
+					GateReg.has(player.getItemInHand().name())
+						|| player.getItemInHand().name.equals("wire")
+						|| player.getItemInHand().name.equals("magenta_wire")
+						|| player.getItemInHand().name.equals("fill")
+						|| player.getItemInHand().name.equals("board_level"))
 				{
 					if (click.getButton() == KeyList.LMB)
 					{
@@ -170,12 +175,25 @@ public class LogicBlock extends AbstractMicroBlock implements ISpecialRender
 								player.processNextBlockBreak = false;
 							}
 						}
+
+						if (player.getItemInHand().name().equals("board_level"))
+						{
+							for (int i = 0; i < getSize() * getSize(); i++)
+							{
+								if (data.grid[c.y][i] == 0x00b340)
+									data.grid[c.y][i] = 0;
+							}
+						}
 					} else
 					{
 						if (player.getItemInHand().name.equals("wire"))
 						{
 							data.grid[cy][cx + cz * getSize()] = 0x909090;
-							data.placeWire(cx, cy, cz);
+							data.placeWire(cx, cy, cz, 0x909090);
+						} else if (player.getItemInHand().name.equals("magenta_wire"))
+						{
+							data.grid[cy][cx + cz * getSize()] = 0xff90ff;
+							data.placeWire(cx, cy, cz, 0xff90ff);
 						} else if (player.getItemInHand().name().equals("fill"))
 						{
 							data.grid[cy][cx + cz * getSize()] = 0x00b340;

@@ -74,7 +74,7 @@ public class LogicBlockData extends AbstractPickableMicroBlockData
 		}
 	}
 
-	private Pair<List<Node>, List<Node>> findWire(int x, int y, int z)
+	private Pair<List<Node>, List<Node>> findWire(int x, int y, int z, int color)
 	{
 		List<Node> inputs = new ArrayList<>();
 		List<Node> outputs = new ArrayList<>();
@@ -109,7 +109,7 @@ public class LogicBlockData extends AbstractPickableMicroBlockData
 					Node newNode = new Node(x1, y1, z1);
 
 					// Check if node exists and is not already listed
-					if (isWire(newNode) && !pos.contains(newNode))
+					if (isWire(newNode, color) && !pos.contains(newNode))
 					{
 						newNodes.add(newNode);
 					}
@@ -141,9 +141,9 @@ public class LogicBlockData extends AbstractPickableMicroBlockData
 		return new Pair<>(inputs, outputs);
 	}
 
-	public void placeWire(int x, int y, int z)
+	public void placeWire(int x, int y, int z, int color)
 	{
-		final Pair<List<Node>, List<Node>> wire = findWire(x, y, z);
+		final Pair<List<Node>, List<Node>> wire = findWire(x, y, z, color);
 		List<Node> inputs = wire.getA();
 		List<Node> outputs = wire.getB();
 
@@ -175,7 +175,7 @@ public class LogicBlockData extends AbstractPickableMicroBlockData
 
 	public void removeWire(int x, int y, int z)
 	{
-		final Pair<List<Node>, List<Node>> wire = findWire(x, y, z);
+		final Pair<List<Node>, List<Node>> wire = findWire(x, y, z, -1);
 		List<Node> inputs = wire.getA();
 		List<Node> outputs = wire.getB();
 
@@ -230,9 +230,16 @@ public class LogicBlockData extends AbstractPickableMicroBlockData
 		components.remove(gate);
 	}
 
-	private boolean isWire(Node pos)
+	/**
+	 *
+	 * @param pos position of check
+	 * @param color 0x909090 for no color wire <br>
+	 *              0xff90ff for magenta wire
+	 * @return true if same-colored wire is at pos
+	 */
+	private boolean isWire(Node pos, int color)
 	{
-		return grid[pos.y][pos.x + pos.z * getSize()] == 0x909090;
+		return grid[pos.y][pos.x + pos.z * getSize()] == color;
 	}
 
 	private boolean isInput(Node pos)
@@ -256,11 +263,13 @@ public class LogicBlockData extends AbstractPickableMicroBlockData
 
 			for (Vector3i inputPosition : gate.getInputPositions())
 			{
-				placeWire(gate.getPosition().x + inputPosition.x, gate.getPosition().y + inputPosition.y, gate.getPosition().z + inputPosition.z);
+				placeWire(gate.getPosition().x + inputPosition.x, gate.getPosition().y + inputPosition.y, gate.getPosition().z + inputPosition.z, 0x909090);
+				placeWire(gate.getPosition().x + inputPosition.x, gate.getPosition().y + inputPosition.y, gate.getPosition().z + inputPosition.z, 0xff90ff);
 			}
 			for (Vector3i outputPosition : gate.getOutputPositions())
 			{
-				placeWire(gate.getPosition().x + outputPosition.x, gate.getPosition().y + outputPosition.y, gate.getPosition().z + outputPosition.z);
+				placeWire(gate.getPosition().x + outputPosition.x, gate.getPosition().y + outputPosition.y, gate.getPosition().z + outputPosition.z, 0x909090);
+				placeWire(gate.getPosition().x + outputPosition.x, gate.getPosition().y + outputPosition.y, gate.getPosition().z + outputPosition.z, 0xff90ff);
 			}
 		}
 	}
@@ -273,11 +282,13 @@ public class LogicBlockData extends AbstractPickableMicroBlockData
 
 		for (Vector3i inputPosition : gate.getInputPositions())
 		{
-			placeWire(gate.getPosition().x + inputPosition.x, gate.getPosition().y + inputPosition.y, gate.getPosition().z + inputPosition.z);
+			placeWire(gate.getPosition().x + inputPosition.x, gate.getPosition().y + inputPosition.y, gate.getPosition().z + inputPosition.z, 0x909090);
+			placeWire(gate.getPosition().x + inputPosition.x, gate.getPosition().y + inputPosition.y, gate.getPosition().z + inputPosition.z, 0xff90ff);
 		}
 		for (Vector3i outputPosition : gate.getOutputPositions())
 		{
-			placeWire(gate.getPosition().x + outputPosition.x, gate.getPosition().y + outputPosition.y, gate.getPosition().z + outputPosition.z);
+			placeWire(gate.getPosition().x + outputPosition.x, gate.getPosition().y + outputPosition.y, gate.getPosition().z + outputPosition.z, 0x909090);
+			placeWire(gate.getPosition().x + outputPosition.x, gate.getPosition().y + outputPosition.y, gate.getPosition().z + outputPosition.z, 0xff90ff);
 		}
 	}
 
