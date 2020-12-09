@@ -217,11 +217,5 @@
         <PinnedItemInfo parentTag="steve6472.polyground.block.states.BlockState" memberName="tags" />
       </pinned-members>
     </pin-to-top-manager>
-    <watches-manager>
-      <configuration name="Application">
-        <watch expression="world" language="JAVA" />
-        <watch expression="state.possibleStates.get(0).blockModel" />
-      </configuration>
-    </watches-manager>
   </component>
 </project>

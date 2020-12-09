@@ -17,8 +17,6 @@ public class AnimationRegistry
 	private static final List<Animation> animations = new ArrayList<>();
 
 	public static final Animation CHEST_OPEN = register(ModelRegistry.CHEST, "open");
-	public static final Animation DOOR_OPEN = register(ModelRegistry.DOOR, "open");
-	public static final Animation DOOR_CLOSE = register(ModelRegistry.DOOR, "close");
 	public static final Animation AMETHINE_CORE_PLACE = register(ModelRegistry.AMETHINE_CORE, "place");
 	public static final Animation AMETHINE_CORE_IDLE = register(ModelRegistry.AMETHINE_CORE, "idle");
 	public static final Animation TEST = register(ModelRegistry.TEST, "test");
@@ -28,6 +26,17 @@ public class AnimationRegistry
 		Animation animation = new Animation(model.getName(), name, model);
 		animations.add(animation);
 		return animation;
+	}
+
+	public static Animation getAnimation(Model model, String name)
+	{
+		for (Animation animation : animations)
+		{
+			if (animation.getModel() == model && animation.getName().equals(name))
+				return animation;
+		}
+
+		return null;
 	}
 
 	public static void init()

@@ -16,9 +16,13 @@ import steve6472.polyground.block.properties.enums.EnumHalf;
 import steve6472.polyground.block.properties.enums.EnumLR;
 import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.block.states.States;
+import steve6472.polyground.entity.model.Model;
 import steve6472.polyground.entity.player.Player;
+import steve6472.polyground.gfx.model.Animation;
 import steve6472.polyground.gfx.stack.Stack;
 import steve6472.polyground.registry.SoundRegistry;
+import steve6472.polyground.registry.model.AnimationRegistry;
+import steve6472.polyground.registry.model.ModelRegistry;
 import steve6472.polyground.world.World;
 import steve6472.sge.main.KeyList;
 import steve6472.sge.main.events.MouseEvent;
@@ -50,10 +54,21 @@ public class DoorBlock extends Block implements IBlockData, ISpecialRender
 
 	private static final CubeHitbox[] NONE = new CubeHitbox[] {new CubeHitbox(new AABBf(0, 0, 0, 16, 16, 16)).div(16)};
 
+	private Animation open, close;
+	private Model model;
+
 	public DoorBlock(JSONObject json)
 	{
 		super(json);
 		isFull = false;
+	}
+
+	@Override
+	public void load(JSONObject json)
+	{
+		model = ModelRegistry.register(json.getString("model"));
+		open = AnimationRegistry.register(model, "open");
+		close = AnimationRegistry.register(model, "close");
 	}
 
 	@Override
@@ -103,13 +118,13 @@ public class DoorBlock extends Block implements IBlockData, ISpecialRender
 
 		if (state.get(HALF) == EnumHalf.TOP)
 		{
-			world.setState(getDefaultState().with(HALF, EnumHalf.BOTTOM).with(OPEN, !open).with(FACING, facing).with(HINGE, hinge), x, y - 1, z, 9);
-			world.setState(getDefaultState().with(HALF, EnumHalf.TOP).with(OPEN, !open).with(FACING, facing).with(HINGE, hinge), x, y, z, 9);
+			world.setState(state.with(HALF, EnumHalf.BOTTOM).with(OPEN, !open).with(FACING, facing).with(HINGE, hinge), x, y - 1, z, 9);
+			world.setState(state.with(HALF, EnumHalf.TOP).with(OPEN, !open).with(FACING, facing).with(HINGE, hinge), x, y, z, 9);
 			dataOffset = -1;
 		} else
 		{
-			world.setState(getDefaultState().with(HALF, EnumHalf.BOTTOM).with(OPEN, !open).with(FACING, facing).with(HINGE, hinge), x, y, z, 9);
-			world.setState(getDefaultState().with(HALF, EnumHalf.TOP).with(OPEN, !open).with(FACING, facing).with(HINGE, hinge), x, y + 1, z, 9);
+			world.setState(state.with(HALF, EnumHalf.BOTTOM).with(OPEN, !open).with(FACING, facing).with(HINGE, hinge), x, y, z, 9);
+			world.setState(state.with(HALF, EnumHalf.TOP).with(OPEN, !open).with(FACING, facing).with(HINGE, hinge), x, y + 1, z, 9);
 		}
 
 		DoorData data = ((DoorData) world.getData(x, y + dataOffset, z));
@@ -174,7 +189,6 @@ public class DoorBlock extends Block implements IBlockData, ISpecialRender
 				};
 		};
 	}
-
 
 	@Override
 	public void render(Stack stack, World world, BlockState state, int x, int y, int z)
@@ -252,6 +266,6 @@ public class DoorBlock extends Block implements IBlockData, ISpecialRender
 	@Override
 	public BlockData createNewBlockEntity(BlockState state)
 	{
-		return state.get(HALF) == EnumHalf.BOTTOM ? new DoorData() : null;
+		return state.get(HALF) == EnumHalf.BOTTOM ? new DoorData(model, open, close) : null;
 	}
 }

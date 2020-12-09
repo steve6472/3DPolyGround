@@ -20,7 +20,6 @@ public class ModelRegistry
 {
 	private static final List<Model> models = new ArrayList<>();
 
-	public static final Model DOOR = register("door");
 	public static final Model CHEST = register("chest");
 	public static final Model AMETHINE_CORE = register("amethine_core");
 	public static final Model PLAYER = register("player");
@@ -36,6 +35,17 @@ public class ModelRegistry
 	public static void init()
 	{
 
+	}
+
+	public static Model getModel(String path)
+	{
+		for (Model model : models)
+		{
+			if (model.getName().equals(path))
+				return model;
+		}
+
+		return null;
 	}
 
 	public static void assignTextures()

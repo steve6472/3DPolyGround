@@ -62,13 +62,23 @@ public class Animation
 			int rotIndex = binarySearch(bones.rotations(), time);
 			int scaIndex = binarySearch(bones.scales(), time);
 
-			Pair<IKey, IKey> pos = getKeys(bones.positions(), posIndex);
-			Pair<IKey, IKey> rot = getKeys(bones.rotations(), rotIndex);
-			Pair<IKey, IKey> sca = getKeys(bones.scales(), scaIndex);
+			Pair<IKey, IKey> pos, rot, sca;
+
+			if (controller.isReversed())
+			{
+				pos = getKeysReversed(bones.positions(), posIndex);
+				rot = getKeysReversed(bones.rotations(), rotIndex);
+				sca = getKeysReversed(bones.scales(), scaIndex);
+			} else
+			{
+				pos = getKeys(bones.positions(), posIndex);
+				rot = getKeys(bones.rotations(), rotIndex);
+				sca = getKeys(bones.scales(), scaIndex);
+			}
 
 			if (rot != null)
 			{
-				animate(rot, time, posIndex, bones.positions());
+				animate(rot, time, posIndex, bones.positions(), controller.isReversed());
 
 				OutlinerElement element = model.getAnimElements().get(bones.name());
 				element.rotationX = (float) Math.toRadians(-TEMP.x());
@@ -78,7 +88,7 @@ public class Animation
 
 			if (pos != null)
 			{
-				animate(pos, time, posIndex, bones.positions());
+				animate(pos, time, posIndex, bones.positions(), controller.isReversed());
 
 				OutlinerElement element = model.getAnimElements().get(bones.name());
 				element.positionX = TEMP.x();
@@ -88,7 +98,7 @@ public class Animation
 
 			if (sca != null)
 			{
-				animate(sca, time, posIndex, bones.scales());
+				animate(sca, time, posIndex, bones.scales(), controller.isReversed());
 
 				OutlinerElement element = model.getAnimElements().get(bones.name());
 				element.scaleX = TEMP.x();
@@ -106,7 +116,7 @@ public class Animation
 		}
 	}
 
-	private void animate(Pair<IKey, IKey> pair, double time, int index, List<IKey> keys)
+	private void animate(Pair<IKey, IKey> pair, double time, int index, List<IKey> keys, boolean reverse)
 	{
 		IKey before = pair.getA();
 		IKey after = pair.getB();
@@ -130,14 +140,30 @@ public class Animation
 			else
 				future = after;
 
-			vx = (float) AnimUtil.catmullLerp(past.x(t), before.x(t), after.x(t), future.x(t), t);
-			vy = (float) AnimUtil.catmullLerp(past.y(t), before.y(t), after.y(t), future.y(t), t);
-			vz = (float) AnimUtil.catmullLerp(past.z(t), before.z(t), after.z(t), future.z(t), t);
+			if (reverse)
+			{
+				vx = (float) AnimUtil.catmullLerp(future.x(t), after.x(t), before.x(t), past.x(t), t);
+				vy = (float) AnimUtil.catmullLerp(future.y(t), after.y(t), before.y(t), past.y(t), t);
+				vz = (float) AnimUtil.catmullLerp(future.z(t), after.z(t), before.z(t), past.z(t), t);
+			} else
+			{
+				vx = (float) AnimUtil.catmullLerp(past.x(t), before.x(t), after.x(t), future.x(t), t);
+				vy = (float) AnimUtil.catmullLerp(past.y(t), before.y(t), after.y(t), future.y(t), t);
+				vz = (float) AnimUtil.catmullLerp(past.z(t), before.z(t), after.z(t), future.z(t), t);
+			}
 		} else
 		{
-			vx = (float) AnimUtil.lerp(before.x(t), after.x(t), t);
-			vy = (float) AnimUtil.lerp(before.y(t), after.y(t), t);
-			vz = (float) AnimUtil.lerp(before.z(t), after.z(t), t);
+			if (reverse)
+			{
+				vx = (float) AnimUtil.lerp(after.x(t), before.x(t), t);
+				vy = (float) AnimUtil.lerp(after.y(t), before.y(t), t);
+				vz = (float) AnimUtil.lerp(after.z(t), before.z(t), t);
+			} else
+			{
+				vx = (float) AnimUtil.lerp(before.x(t), after.x(t), t);
+				vy = (float) AnimUtil.lerp(before.y(t), after.y(t), t);
+				vz = (float) AnimUtil.lerp(before.z(t), after.z(t), t);
+			}
 		}
 
 		TEMP.set(vx, vy, vz);
@@ -192,5 +218,40 @@ public class Animation
 			return new Pair<>(keys.get(index), keys.get(index));
 
 		return new Pair<>(keys.get(index), keys.get(index + 1));
+	}
+
+	private Pair<IKey, IKey> getKeysReversed(List<IKey> keys, int index)
+	{
+		if (index == -1)
+			return null;
+
+		index = keys.size() - index;
+
+		if (index == keys.size())
+		{
+			return new Pair<>(keys.get(index - 2), keys.get(index - 1));
+		}
+
+		if (index - 1 <= 0)
+		{
+			return new Pair<>(keys.get(0), keys.get(0));
+		}
+
+		return new Pair<>(keys.get(index), keys.get(index - 1));
+	}
+
+	public String getPath()
+	{
+		return path;
+	}
+
+	public String getName()
+	{
+		return name;
+	}
+
+	public Model getModel()
+	{
+		return model;
 	}
 }

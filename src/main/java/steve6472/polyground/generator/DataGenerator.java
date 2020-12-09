@@ -225,6 +225,7 @@ public class DataGenerator
 			.generate();
 		BlockBuilder.create().fullBlock("bricks").addTags(Tags.SOLID).placerGroupPath("building.bricks").generate();
 		BlockBuilder.create().fullBlock("iron_block").addTags(Tags.SOLID).placerGroupPath("building.metal").generate();
+		BlockBuilder.create().fullBlock("gold_block").addTags(Tags.SOLID).placerGroupPath("building.metal").generate();
 		BlockBuilder
 			.create()
 			.fullBlock("cobblestone")
@@ -1217,7 +1218,15 @@ public class DataGenerator
 		BlockBuilder
 			.create()
 			.blockName("oak_door")
-			.blockSpecial(new SimpleSpecial("door"))
+			.blockSpecial(SpecialBuilder.create("door").addValue("model", "door/oak"))
+			.blockState(StateBuilder.create().emptyModel())
+			.placerGroupPath("building.wood.oak")
+			.generate();
+
+		BlockBuilder
+			.create()
+			.blockName("mechanical_oak_door")
+			.blockSpecial(SpecialBuilder.create("door").addValue("model", "door/mechanical_oak"))
 			.blockState(StateBuilder.create().emptyModel())
 			.placerGroupPath("building.wood.oak")
 			.generate();

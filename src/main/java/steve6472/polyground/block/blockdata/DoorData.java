@@ -5,7 +5,9 @@ import steve6472.polyground.EnumFace;
 import steve6472.polyground.block.properties.enums.EnumLR;
 import steve6472.polyground.block.special.DoorBlock;
 import steve6472.polyground.block.states.BlockState;
+import steve6472.polyground.entity.model.Model;
 import steve6472.polyground.gfx.model.AnimController;
+import steve6472.polyground.gfx.model.Animation;
 import steve6472.polyground.gfx.stack.Stack;
 import steve6472.polyground.registry.blockdata.BlockDataRegistry;
 import steve6472.polyground.registry.model.AnimationRegistry;
@@ -21,10 +23,23 @@ public class DoorData extends BlockData
 {
 	private final AnimController controller;
 	private boolean isOpen;
+	private Animation open, close;
+	private Model model;
 
 	public DoorData()
 	{
 		controller = new AnimController();
+		model = ModelRegistry.getModel("door/oak");
+		open = AnimationRegistry.getAnimation(model, "open");
+		close = AnimationRegistry.getAnimation(model, "close");
+	}
+
+	public DoorData(Model model, Animation open, Animation close)
+	{
+		controller = new AnimController();
+		this.open = open;
+		this.close = close;
+		this.model = model;
 	}
 
 	public void render(Stack stack, BlockState state)
@@ -34,7 +49,7 @@ public class DoorData extends BlockData
 		EnumFace facing = state.get(DoorBlock.FACING);
 		EnumLR hinge = state.get(DoorBlock.HINGE);
 
-		boolean invertAnimation = false;
+		boolean reverseAnimation = false;
 
 		switch (facing)
 		{
@@ -43,14 +58,14 @@ public class DoorData extends BlockData
 				if (hinge == EnumLR.RIGHT)
 				{
 					stack.rotateY((float) Math.toRadians(90));
-					invertAnimation = true;
+					reverseAnimation = true;
 				}
 			}
 			case EAST ->
 			{
 				if (hinge == EnumLR.RIGHT)
 				{
-					invertAnimation = true;
+					reverseAnimation = true;
 				} else
 				{
 					stack.rotateY((float) Math.toRadians(270));
@@ -61,7 +76,7 @@ public class DoorData extends BlockData
 				if (hinge == EnumLR.RIGHT)
 				{
 					stack.rotateY((float) Math.toRadians(270));
-					invertAnimation = true;
+					reverseAnimation = true;
 				} else
 				{
 					stack.rotateY((float) Math.toRadians(180));
@@ -72,7 +87,7 @@ public class DoorData extends BlockData
 				if (hinge == EnumLR.RIGHT)
 				{
 					stack.rotateY((float) Math.toRadians(180));
-					invertAnimation = true;
+					reverseAnimation = true;
 				} else
 				{
 					stack.rotateY((float) Math.toRadians(90));
@@ -80,22 +95,14 @@ public class DoorData extends BlockData
 			}
 		}
 
-		if (invertAnimation)
-		{
-			if (!isOpen)
-				AnimationRegistry.DOOR_OPEN.tick(controller);
-			else
-				AnimationRegistry.DOOR_CLOSE.tick(controller);
-		} else
-		{
-			if (isOpen)
-				AnimationRegistry.DOOR_OPEN.tick(controller);
-			else
-				AnimationRegistry.DOOR_CLOSE.tick(controller);
-		}
+		controller.setReverse(reverseAnimation);
 
-		ModelRegistry.DOOR.render(stack);
+		if (isOpen)
+			open.tick(controller);
+		else
+			close.tick(controller);
 
+		model.render(stack);
 	}
 
 	public void open()
@@ -115,6 +122,7 @@ public class DoorData extends BlockData
 	{
 		CompoundTag tag = new CompoundTag();
 		tag.putBoolean("open", isOpen);
+		tag.putString("model", model.getName());
 		return tag;
 	}
 
@@ -122,6 +130,12 @@ public class DoorData extends BlockData
 	public void read(CompoundTag tag)
 	{
 		isOpen = tag.getBoolean("open");
+		if (tag.containsKey("model"))
+		{
+			model = ModelRegistry.getModel(tag.getString("model"));
+			open = AnimationRegistry.getAnimation(model, "open");
+			close = AnimationRegistry.getAnimation(model, "close");
+		}
 	}
 
 	@Override

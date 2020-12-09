@@ -10,7 +10,7 @@ public class AnimController
 {
 	private long start;
 	private long pause;
-	private boolean running, paused, loop;
+	private boolean running, paused, loop, reversed;
 	private double pauseTime;
 	private double speed;
 
@@ -71,6 +71,16 @@ public class AnimController
 	public double getPauseTime()
 	{
 		return pauseTime;
+	}
+
+	public boolean isReversed()
+	{
+		return reversed;
+	}
+
+	public void setReverse(boolean reverse)
+	{
+		this.reversed = reverse;
 	}
 
 	public void unpuase()
