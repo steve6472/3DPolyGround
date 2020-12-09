@@ -65,6 +65,7 @@ public class SpecialBlockRegistry
 		register("logic", LogicBlock::new);
 		register("advanced_logic", AdvancedLogicBlock::new);
 		register("pro_logic", ProLogicBlock::new);
+		register("palette", PaletteTest::new);
 	}
 
 	public static <T extends Block> void register(String id, ISpecialBlockFactory<T> factory)

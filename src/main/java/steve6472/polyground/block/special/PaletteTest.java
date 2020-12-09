@@ -5,75 +5,44 @@ import org.json.JSONObject;
 import steve6472.polyground.EnumFace;
 import steve6472.polyground.block.Block;
 import steve6472.polyground.block.blockdata.BlockData;
-import steve6472.polyground.block.blockdata.ChiselBlockData;
-import steve6472.polyground.block.special.micro.AbstractMicroBlock;
+import steve6472.polyground.block.blockdata.PaletteTestData;
+import steve6472.polyground.block.special.micro.AbstractIndexedMicroBlock;
 import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.entity.player.Player;
-import steve6472.polyground.item.itemdata.BrushData;
 import steve6472.polyground.world.World;
 import steve6472.sge.main.KeyList;
 import steve6472.sge.main.events.MouseEvent;
+import steve6472.sge.main.util.RandomUtil;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
- * On date: 26.09.2020
+ * On date: 09.12.2020
  * Project: CaveGame
  *
  ***********************/
-public class ChiselBlock extends AbstractMicroBlock
+public class PaletteTest extends AbstractIndexedMicroBlock
 {
-	public ChiselBlock(JSONObject json)
+	public PaletteTest(JSONObject json)
 	{
 		super(json);
 	}
 
 	@Override
-	public BlockData createNewBlockEntity(BlockState state)
-	{
-		return new ChiselBlockData();
-	}
-
-	@Override
 	public void onClick(BlockState state, World world, Player player, EnumFace clickedOn, MouseEvent click, int x, int y, int z)
 	{
-		if (click.getButton() == KeyList.RMB && click.getAction() == KeyList.PRESS)
-		{
-			ChiselBlockData data = (ChiselBlockData) world.getData(x, y, z);
-			if (data == null)
-				return;
-
-			Vector4i c = getLookedAtPiece(world, player, x, y, z);
-
-			if (c != null && player.holdsItem())
-			{
-				if (player.getItemDataInHand() instanceof BrushData bd)
-				{
-					int cx = c.x;
-					int cy = c.y;
-					int cz = c.z;
-					data.grid[cy][cx + cz * 16] = bd.color;
-
-					data.updateModel();
-					world.getSubChunkFromBlockCoords(x, y, z).rebuild();
-					return;
-
-				}
-			}
-		}
-
 		if (click.getButton() != KeyList.MMB && click.getAction() == KeyList.PRESS)
 		{
-			ChiselBlockData data = (ChiselBlockData) world.getData(x, y, z);
+			PaletteTestData data = (PaletteTestData) world.getData(x, y, z);
 			if (data == null)
 				return;
 
 			Vector4i c = getLookedAtPiece(world, player, x, y, z);
 
-			if (c != null && player.holdsItem() && player.getItemInHand().name().equals("chisel_tool"))
+			if (c != null)
 			{
 				if (click.getButton() == KeyList.LMB)
 				{
-					data.grid[c.y][c.x + c.z * 16] = 0;
+					data.grid[c.y][c.x + c.z * 16] = -128;
 					data.pieceCount--;
 					player.processNextBlockBreak = false;
 				} else
@@ -84,7 +53,7 @@ public class ChiselBlock extends AbstractMicroBlock
 					int cz = c.z + f.getZOffset();
 					if (cx >= 0 && cx < 16 && cy >= 0 && cy < 16 && cz >= 0 && cz < 16)
 					{
-						data.grid[cy][cx + cz * 16] = 0x303030;
+						data.grid[cy][cx + cz * 16] = (byte) RandomUtil.randomInt(-128, 127);
 						data.pieceCount++;
 					}
 					player.processNextBlockPlace = false;
@@ -97,15 +66,14 @@ public class ChiselBlock extends AbstractMicroBlock
 					return;
 				}
 
-				data.updateModel();
 				world.getSubChunkFromBlockCoords(x, y, z).rebuild();
 			}
 		}
 	}
 
 	@Override
-	public boolean isPickable(BlockState state, Player player)
+	public BlockData createNewBlockEntity(BlockState state)
 	{
-		return !player.holdsItem() || !player.getItemInHand().name().equals("chisel_tool");
+		return new PaletteTestData();
 	}
 }

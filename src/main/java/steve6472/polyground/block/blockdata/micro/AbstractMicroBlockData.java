@@ -1,6 +1,7 @@
-package steve6472.polyground.block.blockdata;
+package steve6472.polyground.block.blockdata.micro;
 
 import net.querz.nbt.tag.CompoundTag;
+import steve6472.polyground.block.blockdata.BlockData;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)

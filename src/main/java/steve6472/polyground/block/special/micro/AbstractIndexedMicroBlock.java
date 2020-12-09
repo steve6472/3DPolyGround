@@ -1,14 +1,16 @@
-package steve6472.polyground.block.special;
+package steve6472.polyground.block.special.micro;
 
 import org.joml.AABBf;
 import org.joml.Vector3f;
 import org.joml.Vector4i;
 import org.json.JSONObject;
 import steve6472.polyground.CaveGame;
-import steve6472.polyground.block.blockdata.AbstractMicroBlockData;
+import steve6472.polyground.block.blockdata.micro.AbstractIndexedMicroBlockData;
 import steve6472.polyground.block.blockdata.IBlockData;
+import steve6472.polyground.block.blockdata.Palette;
 import steve6472.polyground.block.model.CubeHitbox;
 import steve6472.polyground.block.model.elements.Bakery;
+import steve6472.polyground.block.special.CustomBlock;
 import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.entity.player.Player;
 import steve6472.polyground.world.ModelBuilder;
@@ -27,16 +29,16 @@ import static org.joml.Math.min;
  * Project: CaveGame
  *
  ***********************/
-public abstract class AbstractMicroBlock extends CustomBlock implements IBlockData
+public abstract class AbstractIndexedMicroBlock extends CustomBlock implements IBlockData
 {
-	public AbstractMicroBlock(JSONObject json)
+	public AbstractIndexedMicroBlock(JSONObject json)
 	{
 		super(json);
 	}
 
 	protected Vector4i getLookedAtPiece(World world, Player player, int x, int y, int z)
 	{
-		AbstractMicroBlockData data = (AbstractMicroBlockData) world.getData(x, y, z);
+		AbstractIndexedMicroBlockData data = (AbstractIndexedMicroBlockData) world.getData(x, y, z);
 		if (data == null)
 			return null;
 
@@ -54,7 +56,7 @@ public abstract class AbstractMicroBlock extends CustomBlock implements IBlockDa
 			{
 				for (int k = 0; k < getSize(); k++)
 				{
-					if (data.grid[j][i + k * getSize()] != 0)
+					if (data.grid[j][i + k * getSize()] != -128)
 					{
 						box.setMin(x + i * inv + getOffsetX() * inv, y + j * inv + getOffsetY() * inv, z + k * inv + getOffsetZ() * inv);
 						box.setMax(x + i * inv + inv + getOffsetX() * inv, y + j * inv + inv + getOffsetY() * inv, z + k * inv + inv + getOffsetZ() * inv);
@@ -157,7 +159,7 @@ public abstract class AbstractMicroBlock extends CustomBlock implements IBlockDa
 		int tris = 0;
 		buildHelper.setSubChunk(world.getSubChunkFromBlockCoords(x, y, z));
 
-		AbstractMicroBlockData data = (AbstractMicroBlockData) world.getData(x, y, z);
+		AbstractIndexedMicroBlockData data = (AbstractIndexedMicroBlockData) world.getData(x, y, z);
 
 		for (int i = 0; i < getSize(); i++)
 		{
@@ -165,17 +167,18 @@ public abstract class AbstractMicroBlock extends CustomBlock implements IBlockDa
 			{
 				for (int k = 0; k < getSize(); k++)
 				{
-					int flags = Bakery.createFaceFlags(
-						i != (getSize() - 1) && data.grid[j][(i + 1) + k * getSize()] != 0,
-						k != (getSize() - 1) && data.grid[j][i + (k + 1) * getSize()] != 0,
-						i != 0 && data.grid[j][(i - 1) + k * getSize()] != 0,
-						k != 0 && data.grid[j][i + (k - 1) * getSize()] != 0,
-						j != (getSize() - 1) && data.grid[j + 1][i + k * getSize()] != 0,
-						j != 0 && data.grid[j - 1][i + k * getSize()] != 0
-					);
-					if (data.grid[j][i + k * getSize()] != 0)
+					if (data.grid[j][i + k * getSize()] != -128)
 					{
-						tris += Bakery.coloredCube(i + getOffsetX(), j + getOffsetY(), k + getOffsetZ(), 1, 1, 1, data.grid[j][i + k * getSize()], flags);
+						int flags = Bakery.createFaceFlags(
+							i != (getSize() - 1) && data.grid[j][(i + 1) + k * getSize()] != -128,
+							k != (getSize() - 1) && data.grid[j][i + (k + 1) * getSize()] != -128,
+							i != 0 && data.grid[j][(i - 1) + k * getSize()] != -128,
+							k != 0 && data.grid[j][i + (k - 1) * getSize()] != -128,
+							j != (getSize() - 1) && data.grid[j + 1][i + k * getSize()] != -128,
+							j != 0 && data.grid[j - 1][i + k * getSize()] != -128
+						);
+						int color = Palette.getPalette()[data.grid[j][i + k * getSize()] + 128];
+						tris += Bakery.coloredCube(i + getOffsetX(), j + getOffsetY(), k + getOffsetZ(), 1, 1, 1, color, flags);
 					}
 				}
 			}
@@ -192,7 +195,7 @@ public abstract class AbstractMicroBlock extends CustomBlock implements IBlockDa
 	@Override
 	public CubeHitbox[] getHitbox(World world, BlockState state, int x, int y, int z)
 	{
-		AbstractMicroBlockData data = (AbstractMicroBlockData) world.getData(x, y, z);
+		AbstractIndexedMicroBlockData data = (AbstractIndexedMicroBlockData) world.getData(x, y, z);
 		if (data == null)
 			return new CubeHitbox[0];
 
@@ -206,7 +209,7 @@ public abstract class AbstractMicroBlock extends CustomBlock implements IBlockDa
 			{
 				for (int k = 0; k < getSize(); k++)
 				{
-					if (data.grid[j][i + k * getSize()] != 0)
+					if (data.grid[j][i + k * getSize()] != -128)
 					{
 						box_.setMin(i * inv + getOffsetX() * inv, j * inv + getOffsetY() * inv, k * inv + getOffsetZ() * inv);
 						box_.setMax(i * inv + inv + getOffsetX() * inv, j * inv + inv + getOffsetY() * inv, k * inv + inv + getOffsetZ() * inv);

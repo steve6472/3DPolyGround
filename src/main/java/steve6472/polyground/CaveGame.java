@@ -3,6 +3,7 @@ package steve6472.polyground;
 import org.lwjgl.glfw.GLFW;
 import steve6472.polyground.block.Block;
 import steve6472.polyground.block.BlockAtlas;
+import steve6472.polyground.block.blockdata.Palette;
 import steve6472.polyground.block.model.BlockModel;
 import steve6472.polyground.block.model.IElement;
 import steve6472.polyground.block.states.BlockState;
@@ -98,6 +99,7 @@ public class CaveGame extends MainApp
 		Blocks.finish(this);
 		ModelRegistry.assignTextures();
 		Item.runQueue();
+		Palette.reloadPalette();
 
 		inGameGui = new InGameGui(this);
 		mainMenu = new MainMenu(this);
@@ -372,6 +374,7 @@ public class CaveGame extends MainApp
 					ModelRegistry.reload();
 					ModelRegistry.assignTextures();
 					AnimationRegistry.reload();
+					Palette.reloadPalette();
 
 					if (e.getMods() == KeyList.M_CONTROL)
 					{

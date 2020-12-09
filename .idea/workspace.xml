@@ -73,11 +73,11 @@
       <recent name="steve6472.polyground.block.model.elements" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="steve6472.polyground.block.blockdata.micro" />
+      <recent name="steve6472.polyground.block.special" />
+      <recent name="steve6472.polyground.block.blockdata" />
       <recent name="steve6472.polyground.block.blockdata.logic.other" />
       <recent name="steve6472.polyground.block.blockdata.logic.data" />
-      <recent name="steve6472.polyground.block.special.logic" />
-      <recent name="steve6472.polyground.block.blockdata.logic" />
-      <recent name="steve6472.polyground.block.special" />
     </key>
   </component>
   <component name="RunAnythingCache">
@@ -131,13 +131,6 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="E" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="steve6472.polyground.E" />
-      <module name="CaveGame" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="Gen-CaveGame" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="steve6472.polyground.CaveGame" />
       <module name="CaveGame" />
@@ -160,6 +153,13 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="PaletteGenerator" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="steve6472.polyground.generator.PaletteGenerator" />
+      <module name="CaveGame" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="Testity" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="steve6472.polyground.entity.Testity" />
       <module name="CaveGame" />
@@ -172,19 +172,19 @@
       <item itemvalue="Application.CaveGame" />
       <item itemvalue="Application.DataGenerator" />
       <item itemvalue="Application.Gen-CaveGame" />
-      <item itemvalue="Application.E" />
       <item itemvalue="Application.Testity" />
       <item itemvalue="Application.Loader" />
       <item itemvalue="Application.Animation" />
       <item itemvalue="Application.LogicTest" />
+      <item itemvalue="Application.PaletteGenerator" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.PaletteGenerator" />
         <item itemvalue="Application.LogicTest" />
         <item itemvalue="Application.Animation" />
         <item itemvalue="Application.Loader" />
         <item itemvalue="Application.Testity" />
-        <item itemvalue="Application.E" />
       </list>
     </recent_temporary>
   </component>

@@ -1,4 +1,4 @@
-package steve6472.polyground.block.blockdata;
+package steve6472.polyground.block.blockdata.micro;
 
 import net.querz.nbt.tag.CompoundTag;
 import org.joml.Matrix4f;
