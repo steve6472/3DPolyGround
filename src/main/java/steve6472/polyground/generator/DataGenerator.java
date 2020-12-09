@@ -645,8 +645,8 @@ public class DataGenerator
 
 		BlockBuilder
 			.create()
-			.fullBlock("palette_test")
-			.blockSpecial(new SimpleSpecial("palette"))
+			.fullBlock("chip_designer")
+			.blockSpecial(new SimpleSpecial("chip_designer"))
 			.blockState(StateBuilder.create().emptyModel())
 			.placerGroupPath("misc")
 			.generate();

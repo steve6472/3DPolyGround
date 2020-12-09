@@ -312,7 +312,7 @@ public class LogicBlock extends AbstractMicroBlock implements ISpecialRender
 	}
 
 	@Override
-	public boolean isPickable(BlockState state, Player player)
+	public boolean isPickable(BlockState state, World world, int x, int y, int z, Player player)
 	{
 		return !player.holdsItem();
 	}

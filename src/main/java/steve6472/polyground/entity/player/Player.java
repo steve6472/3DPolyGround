@@ -442,7 +442,7 @@ public class Player implements IMotion3f, IPosition3f
 				int z = hr.getZ();
 
 				BlockState state = world.getState(x, y, z);
-				if (state.hasTag(Tags.PICKABLE) || state.getBlock().isPickable(state, this))
+				if (state.hasTag(Tags.PICKABLE) || state.getBlock().isPickable(state, world, x, y, z,this))
 				{
 					Pair<BlockState, BlockState> pair = state.getBlock().getStatesForPickup(world, state,
 						heldBlock == null ? Block.AIR.getDefaultState() : heldBlock.state,

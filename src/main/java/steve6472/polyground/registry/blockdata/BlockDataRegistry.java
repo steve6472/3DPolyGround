@@ -1,6 +1,7 @@
 package steve6472.polyground.registry.blockdata;
 
 import steve6472.polyground.block.blockdata.*;
+import steve6472.polyground.block.blockdata.logic.ChipDesignerData;
 import steve6472.polyground.block.blockdata.logic.data.AdvancedLogicBlockData;
 import steve6472.polyground.block.blockdata.logic.data.LogicBlockData;
 import steve6472.polyground.block.blockdata.logic.data.ProLogicBlockData;
@@ -30,7 +31,7 @@ public class BlockDataRegistry
 	public static final BlockDataEntry<LogicBlockData> logic = register("logic", LogicBlockData::new);
 	public static final BlockDataEntry<AdvancedLogicBlockData> advancedLogic = register("advanced_logic", AdvancedLogicBlockData::new);
 	public static final BlockDataEntry<ProLogicBlockData> proLogic = register("pro_logic", ProLogicBlockData::new);
-	public static final BlockDataEntry<PaletteTestData> paletteTestData = register("palette_test", PaletteTestData::new);
+	public static final BlockDataEntry<ChipDesignerData> chipDesigner = register("chip_designer", ChipDesignerData::new);
 
 	public static <T extends BlockData> BlockDataEntry<T> register(String id, IBlockDataFactory<T> factory)
 	{

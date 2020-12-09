@@ -4,6 +4,7 @@ import org.json.JSONObject;
 import steve6472.polyground.block.Block;
 import steve6472.polyground.block.special.*;
 import steve6472.polyground.block.special.logic.AdvancedLogicBlock;
+import steve6472.polyground.block.special.logic.ChipDesignerBlock;
 import steve6472.polyground.block.special.logic.LogicBlock;
 import steve6472.polyground.block.special.logic.ProLogicBlock;
 
@@ -65,7 +66,7 @@ public class SpecialBlockRegistry
 		register("logic", LogicBlock::new);
 		register("advanced_logic", AdvancedLogicBlock::new);
 		register("pro_logic", ProLogicBlock::new);
-		register("palette", PaletteTest::new);
+		register("chip_designer", ChipDesignerBlock::new);
 	}
 
 	public static <T extends Block> void register(String id, ISpecialBlockFactory<T> factory)
