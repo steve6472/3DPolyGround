@@ -229,15 +229,22 @@ public abstract class AbstractIndexedMicroBlock extends CustomBlock implements I
 			{
 				List<CubeHitbox> hitboxes = new ArrayList<>();
 				hitboxes.add(new CubeHitbox(box));
-				hitboxes.add(new CubeHitbox(
-					new AABBf(
-						c.x * inv + getOffsetX() * inv, c.y * inv + getOffsetY() * inv, c.z * inv + getOffsetZ() * inv,
-						c.x * inv + inv + getOffsetX() * inv, c.y * inv + inv + getOffsetY() * inv, c.z * inv + inv + getOffsetZ() * inv)));
+				hitboxes.add(createPixelHitbox(c));
 
 				return hitboxes.toArray(new CubeHitbox[0]);
 			}
 		}
 		return new CubeHitbox[] {new CubeHitbox(box)};
+	}
+
+	protected CubeHitbox createPixelHitbox(Vector4i c)
+	{
+		float inv = 1f / 16f;
+
+		return new CubeHitbox(
+			new AABBf(
+				c.x * inv + getOffsetX() * inv, c.y * inv + getOffsetY() * inv, c.z * inv + getOffsetZ() * inv,
+				c.x * inv + inv + getOffsetX() * inv, c.y * inv + inv + getOffsetY() * inv, c.z * inv + inv + getOffsetZ() * inv));
 	}
 
 	protected int getSize()

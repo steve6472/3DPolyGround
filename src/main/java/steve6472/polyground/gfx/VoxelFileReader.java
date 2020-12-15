@@ -1,4 +1,4 @@
-package steve6472.polyground.block.special.logic;
+package steve6472.polyground.gfx;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -21,6 +21,12 @@ class VoxelFileReader
 		void voxel(int x, int y, int z, byte colorIndex);
 	}
 
+	@FunctionalInterface
+	interface SizeReader
+	{
+		void size(int x, int y, int z);
+	}
+
 	private static class Chunk
 	{
 		long id;
@@ -30,7 +36,7 @@ class VoxelFileReader
 
 	private byte[] buf = new byte[4];
 
-	void read(File path, VoxelReader onVoxel) throws IOException
+	void read(File path, SizeReader onSize, VoxelReader onVoxel) throws IOException
 	{
 
 		BufferedInputStream input = new BufferedInputStream(new FileInputStream(path));
@@ -67,7 +73,15 @@ class VoxelFileReader
 				break;
 			}
 
-			if (chunk.id == magicValue('X', 'Y', 'Z', 'I'))
+			if (chunk.id == magicValue('S', 'I', 'Z', 'E'))
+			{
+				int width = (int) read32(input);
+				int depth = (int) read32(input);
+				int height = (int) read32(input);
+
+				onSize.size(width, depth, height);
+
+			} else if (chunk.id == magicValue('X', 'Y', 'Z', 'I'))
 			{
 
 				int numVoxels = (int) read32(input);
