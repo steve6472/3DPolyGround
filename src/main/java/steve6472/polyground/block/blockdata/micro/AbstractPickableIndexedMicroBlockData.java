@@ -2,7 +2,6 @@ package steve6472.polyground.block.blockdata.micro;
 
 import net.querz.nbt.tag.CompoundTag;
 import org.joml.Matrix4f;
-import steve6472.polyground.block.blockdata.Palette;
 import steve6472.polyground.block.model.elements.Bakery;
 import steve6472.polyground.gfx.DynamicEntityModel;
 import steve6472.polyground.gfx.IModel;
@@ -48,7 +47,7 @@ public abstract class AbstractPickableIndexedMicroBlockData extends AbstractInde
 								j != (getSize() - 1) && grid[j + 1][i + k * getSize()] != -128,
 								j != 0 && grid[j - 1][i + k * getSize()] != 0
 							);
-							int color = Palette.getPalette()[grid[j][i + k * getSize()] + 128];
+							int color = getPalette().getColors()[grid[j][i + k * getSize()] + 128];
 							tris += Bakery.coloredCube_1x1(i, j, k, color, flags);
 						}
 					}

@@ -60,6 +60,11 @@ public class VoxModel
 		return modelCopy;
 	}
 
+	public byte[][] getModel()
+	{
+		return model;
+	}
+
 	public void insert(byte[][] target, int targetWidth, int targetDepth, int x, int y, int z)
 	{
 		for (int i = 0; i < height; i++)
@@ -72,5 +77,20 @@ public class VoxModel
 				}
 			}
 		}
+	}
+
+	public int getWidth()
+	{
+		return width;
+	}
+
+	public int getHeight()
+	{
+		return height;
+	}
+
+	public int getDepth()
+	{
+		return depth;
 	}
 }

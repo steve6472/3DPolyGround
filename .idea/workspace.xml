@@ -48,7 +48,7 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="com.intellij.ide.scratch.LRUPopupBuilder$1/New Scratch File" value="JShellLanguage" />
     <property name="ignore.preview.features.used" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/main/java/steve6472/polyground/registry/logic" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/main/java/steve6472/polyground/registry/palette" />
     <property name="project.structure.last.edited" value="Libraries" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
@@ -60,11 +60,11 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\CaveGame\src\main\java\steve6472\polyground\registry\palette" />
+      <recent name="D:\CaveGame\src\main\java\steve6472\polyground\registry" />
       <recent name="D:\CaveGame\src\main\java\steve6472\polyground\registry\logic" />
       <recent name="D:\CaveGame\src\main\java\steve6472\polyground\registry\model" />
       <recent name="D:\CaveGame\src\main\java\steve6472\polyground\registry\itemdata" />
-      <recent name="D:\CaveGame\src\main\java\steve6472\polyground\registry" />
-      <recent name="D:\CaveGame\src\main\java\steve6472\polyground\registry\data" />
     </key>
     <key name="MoveMembersDialog.RECENTS_KEY">
       <recent name="steve6472.polyground.gfx.MainRender" />

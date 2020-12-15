@@ -1,9 +1,9 @@
 package steve6472.polyground;
 
 import org.lwjgl.glfw.GLFW;
+import steve6472.polyground.audio.SoundMaster;
 import steve6472.polyground.block.Block;
 import steve6472.polyground.block.BlockAtlas;
-import steve6472.polyground.block.blockdata.Palette;
 import steve6472.polyground.block.model.BlockModel;
 import steve6472.polyground.block.model.IElement;
 import steve6472.polyground.block.states.BlockState;
@@ -24,8 +24,8 @@ import steve6472.polyground.knapping.Recipes;
 import steve6472.polyground.registry.*;
 import steve6472.polyground.registry.model.AnimationRegistry;
 import steve6472.polyground.registry.model.ModelRegistry;
+import steve6472.polyground.registry.palette.PaletteRegistry;
 import steve6472.polyground.rift.RiftManager;
-import steve6472.polyground.audio.SoundMaster;
 import steve6472.polyground.world.World;
 import steve6472.polyground.world.chunk.Chunk;
 import steve6472.polyground.world.interaction.HitPicker;
@@ -91,6 +91,7 @@ public class CaveGame extends MainApp
 
 		itemGroups = new Groups();
 
+		PaletteRegistry.init();
 		ModelRegistry.init();
 		AnimationRegistry.init();
 		Blocks.register(this);
@@ -99,7 +100,6 @@ public class CaveGame extends MainApp
 		Blocks.finish(this);
 		ModelRegistry.assignTextures();
 		Item.runQueue();
-		Palette.reloadPalette();
 
 		inGameGui = new InGameGui(this);
 		mainMenu = new MainMenu(this);
@@ -374,7 +374,7 @@ public class CaveGame extends MainApp
 					ModelRegistry.reload();
 					ModelRegistry.assignTextures();
 					AnimationRegistry.reload();
-					Palette.reloadPalette();
+					PaletteRegistry.reload();
 
 					if (e.getMods() == KeyList.M_CONTROL)
 					{

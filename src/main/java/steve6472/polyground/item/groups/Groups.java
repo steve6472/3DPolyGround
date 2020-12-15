@@ -51,6 +51,7 @@ public class Groups
 					.addChild(GroupBuilder.create("Stone", "stone", "stone", BLOCK)))
 				.addChild(GroupBuilder.create("Bricks", "bricks", "bricks", BLOCK))
 				.addChild(GroupBuilder.create("Metal", "metal", "iron_block", BLOCK))
+				.addChild(GroupBuilder.create("Statues", "statues", "limestone", BLOCK))
 				.addChild(GroupBuilder
 					.create("Wood", "wood", "oak_log", BLOCK)
 					.addChild(GroupBuilder.create("Oak", "oak", "oak_log", BLOCK))

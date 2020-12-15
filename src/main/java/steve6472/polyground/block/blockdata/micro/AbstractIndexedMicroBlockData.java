@@ -2,6 +2,7 @@ package steve6472.polyground.block.blockdata.micro;
 
 import net.querz.nbt.tag.CompoundTag;
 import steve6472.polyground.block.blockdata.BlockData;
+import steve6472.polyground.gfx.Palette;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
@@ -37,6 +38,8 @@ public abstract class AbstractIndexedMicroBlockData extends BlockData
 	{
 		return 16;
 	}
+
+	public abstract Palette getPalette();
 
 	@Override
 	public CompoundTag write()

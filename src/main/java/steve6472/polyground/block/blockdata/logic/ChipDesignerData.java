@@ -2,7 +2,9 @@ package steve6472.polyground.block.blockdata.logic;
 
 import steve6472.polyground.block.blockdata.logic.data.LogicBlockData;
 import steve6472.polyground.block.blockdata.micro.AbstractPickableIndexedMicroBlockData;
+import steve6472.polyground.gfx.Palette;
 import steve6472.polyground.registry.blockdata.BlockDataRegistry;
+import steve6472.polyground.registry.palette.PaletteRegistry;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
@@ -27,12 +29,14 @@ public class ChipDesignerData extends AbstractPickableIndexedMicroBlockData
 
 	public ChipDesignerData(byte[][] grid)
 	{
-		this.grid = new byte[32][32 * 32];
-		for (int i = 0; i < 32; i++)
-		{
-			System.arraycopy(grid[i], 0, this.grid[i], 0, 32 * 32);
-		}
+		this.grid = grid;
 		updateModel();
+	}
+
+	@Override
+	public Palette getPalette()
+	{
+		return PaletteRegistry.RAINBOW;
 	}
 
 	@Override

@@ -5,9 +5,8 @@ import org.joml.Vector3f;
 import org.joml.Vector4i;
 import org.json.JSONObject;
 import steve6472.polyground.CaveGame;
-import steve6472.polyground.block.blockdata.micro.AbstractIndexedMicroBlockData;
 import steve6472.polyground.block.blockdata.IBlockData;
-import steve6472.polyground.block.blockdata.Palette;
+import steve6472.polyground.block.blockdata.micro.AbstractIndexedMicroBlockData;
 import steve6472.polyground.block.model.CubeHitbox;
 import steve6472.polyground.block.model.elements.Bakery;
 import steve6472.polyground.block.special.CustomBlock;
@@ -177,7 +176,7 @@ public abstract class AbstractIndexedMicroBlock extends CustomBlock implements I
 							j != (getSize() - 1) && data.grid[j + 1][i + k * getSize()] != -128,
 							j != 0 && data.grid[j - 1][i + k * getSize()] != -128
 						);
-						int color = Palette.getPalette()[data.grid[j][i + k * getSize()] + 128];
+						int color = data.getPalette().getColors()[data.grid[j][i + k * getSize()] + 128];
 						tris += Bakery.coloredCube(i + getOffsetX(), j + getOffsetY(), k + getOffsetZ(), 1, 1, 1, color, flags);
 					}
 				}

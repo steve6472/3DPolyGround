@@ -645,6 +645,30 @@ public class DataGenerator
 
 		BlockBuilder
 			.create()
+			.fullBlock("statue_grass")
+			.blockSpecial(SpecialBuilder.create("vox_statue").addValue("path", "statues/grass").addValue("palette", "rainbow"))
+			.blockState(StateBuilder.create().emptyModel())
+			.placerGroupPath("building.statues")
+			.generate();
+
+		BlockBuilder
+			.create()
+			.fullBlock("statue_megumin")
+			.blockSpecial(SpecialBuilder.create("vox_statue").addValue("path", "statues/statue").addValue("palette", "meg"))
+			.blockState(StateBuilder.create().emptyModel())
+			.placerGroupPath("building.statues")
+			.generate();
+
+		BlockBuilder
+			.create()
+			.fullBlock("statue_treasure")
+			.blockSpecial(SpecialBuilder.create("vox_statue").addValue("path", "statues/treasure").addValue("palette", "treasure"))
+			.blockState(StateBuilder.create().emptyModel())
+			.placerGroupPath("building.statues")
+			.generate();
+
+		BlockBuilder
+			.create()
 			.fullBlock("chip_designer")
 			.blockSpecial(new SimpleSpecial("chip_designer"))
 			.blockState(StateBuilder.create().emptyModel())
