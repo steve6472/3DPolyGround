@@ -23,14 +23,14 @@ public class Stack extends Matrix4fStack
 
 	public void render(Matrix4f view)
 	{
-		entityTess.render(view);
 		lineTess.render(view);
+		entityTess.render(view);
 	}
 
 	public void reset()
 	{
-		entityTess.reset();
 		lineTess.reset();
+		entityTess.reset();
 	}
 
 	public EntityTess getEntityTess()

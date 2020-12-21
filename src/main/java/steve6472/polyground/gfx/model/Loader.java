@@ -139,7 +139,8 @@ public class Loader
 		int id = BlockAtlas.getTextureId(texturePath);
 
 		JSONArray uv = json.getJSONArray("uv");
-		return new Element.Face(uv.getFloat(0) / resX, uv.getFloat(1) / resY, uv.getFloat(2) / resX, uv.getFloat(3) / resY, id);
+
+		return new Element.Face(uv.getFloat(0) / resX, uv.getFloat(1) / resY, uv.getFloat(2) / resX, uv.getFloat(3) / resY, (byte) (json.optInt("rotation", 0) / 90), id);
 	}
 
 

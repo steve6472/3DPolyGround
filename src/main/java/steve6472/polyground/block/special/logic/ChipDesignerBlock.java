@@ -6,6 +6,7 @@ import org.joml.Vector4i;
 import org.json.JSONObject;
 import steve6472.polyground.CaveGame;
 import steve6472.polyground.EnumFace;
+import steve6472.polyground.block.ISpecialRender;
 import steve6472.polyground.block.blockdata.BlockData;
 import steve6472.polyground.block.blockdata.logic.ChipDesignerData;
 import steve6472.polyground.block.blockdata.logic.data.LogicBlockData;
@@ -14,6 +15,8 @@ import steve6472.polyground.block.special.micro.AbstractIndexedMicroBlock;
 import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.entity.player.Player;
 import steve6472.polyground.gfx.VoxModel;
+import steve6472.polyground.gfx.stack.EntityTess;
+import steve6472.polyground.gfx.stack.Stack;
 import steve6472.polyground.world.World;
 import steve6472.sge.main.KeyList;
 import steve6472.sge.main.events.MouseEvent;
@@ -28,7 +31,7 @@ import java.util.List;
  * Project: CaveGame
  *
  ***********************/
-public class ChipDesignerBlock extends AbstractIndexedMicroBlock
+public class ChipDesignerBlock extends AbstractIndexedMicroBlock implements ISpecialRender
 {
 	private static final VoxModel DESIGNER_MODEL = new VoxModel(new File("custom_models/vox/logic/chip_designer.vox"));
 	private static final VoxModel BOARD_INSIDE = new VoxModel(new File("custom_models/vox/logic/board_inside.vox"));
@@ -44,7 +47,7 @@ public class ChipDesignerBlock extends AbstractIndexedMicroBlock
 
 	private static final VoxModel[] NUMBERS = new VoxModel[16];
 
-	private static final AABBi TABLE = newAABBi(0, 0, 0, 32, 10, 32);
+	private static final AABBi TABLE = newAABBi(0, 0, 0, 32, 9, 32);
 	private static final AABBi COLOR_PICKER_BUTTON = newAABBi(0, 10, 26, 6, 2, 6);
 	private static final AABBi DISPLAY = newAABBi(31, 12, 6, 1, 20, 20);
 	private static final AABBi PALETTE = newAABBi(31, 14, 8, 1, 16, 16);
@@ -290,6 +293,21 @@ public class ChipDesignerBlock extends AbstractIndexedMicroBlock
 	}
 
 	@Override
+	public void render(Stack stack, World world, BlockState state, int x, int y, int z)
+	{
+//		ChipDesignerData data = (ChipDesignerData) world.getData(x, y, z);
+
+		final EntityTess tess = stack.getEntityTess();
+		tess.color(1, 1, 1, 1f);
+		tess.rectShade(0, 0, 0, 1, 1, 1);
+	}
+
+	private void renderAABBi(EntityTess tess, AABBi aabb)
+	{
+		tess.rectShade(aabb.minX / 16f, aabb.minY / 16f, aabb.minZ / 16f, (aabb.maxX - aabb.minX) / 16f, (aabb.maxY - aabb.minY) / 16f, (aabb.maxZ - aabb.minZ) / 16f);
+	}
+
+	@Override
 	public boolean isPickable(BlockState state, World world, int x, int y, int z, Player player)
 	{
 		final Vector4i piece = getLookedAtPiece(world, player, x, y, z);
@@ -304,16 +322,6 @@ public class ChipDesignerBlock extends AbstractIndexedMicroBlock
 			return !lookingAtBox(TABLE, piece);
 		else
 			return false;
-	}
-
-	private static boolean lookingAtBox(AABBi box, Vector4i point)
-	{
-		return point != null && box.containsPoint(point.x, point.y, point.z);
-	}
-
-	private static AABBf toAABBf(AABBi box)
-	{
-		return new AABBf(box.minX / 16f - 8 / 16f, box.minY / 16f, box.minZ / 16f - 8 / 16f, box.maxX / 16f - 8 / 16f, box.maxY / 16f, box.maxZ / 16f - 8 / 16f);
 	}
 
 	@Override
@@ -379,5 +387,17 @@ public class ChipDesignerBlock extends AbstractIndexedMicroBlock
 	private static AABBi newAABBi(int x, int y, int z, int w, int h, int d)
 	{
 		return new AABBi(x, y, z, x + w, y + h, z + d);
+	}
+
+	private static boolean lookingAtBox(AABBi box, Vector4i point)
+	{
+		boolean b = (point != null && (point.x >= box.minX && point.y >= box.minY && point.z >= box.minZ && point.x < box.maxX && point.y < box.maxY && point.z < box.maxZ));
+		if (b) System.out.println(box + " " + point);
+		return b;
+	}
+
+	private static AABBf toAABBf(AABBi box)
+	{
+		return new AABBf(box.minX / 16f - 8 / 16f, box.minY / 16f, box.minZ / 16f - 8 / 16f, box.maxX / 16f - 8 / 16f, box.maxY / 16f, box.maxZ / 16f - 8 / 16f);
 	}
 }

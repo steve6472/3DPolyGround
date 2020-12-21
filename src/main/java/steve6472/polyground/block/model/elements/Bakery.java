@@ -44,6 +44,11 @@ public class Bakery
 		Bakery.tempBuilder = null;
 	}
 
+	public static Vector2f getWhiteUV()
+	{
+		return whiteUV;
+	}
+
 	public static int createFaceFlags(boolean north, boolean east, boolean south, boolean west, boolean up, boolean down)
 	{
 		return (north ? 1 : 0) | ((east ? 1 : 0) << 1) | ((south ? 1 : 0) << 2) | ((west ? 1 : 0) << 3) | ((up ? 1 : 0) << 4) | ((down ? 1 : 0) << 5);

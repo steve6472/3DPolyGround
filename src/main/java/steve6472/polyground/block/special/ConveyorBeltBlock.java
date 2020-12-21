@@ -2,10 +2,15 @@ package steve6472.polyground.block.special;
 
 import org.json.JSONObject;
 import steve6472.polyground.EnumFace;
+import steve6472.polyground.block.ISpecialRender;
+import steve6472.polyground.block.blockdata.BlockData;
+import steve6472.polyground.block.blockdata.ConveyorBeltData;
+import steve6472.polyground.block.blockdata.IBlockData;
 import steve6472.polyground.block.properties.enums.EnumAxis;
 import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.entity.EntityBase;
 import steve6472.polyground.entity.player.Player;
+import steve6472.polyground.gfx.stack.Stack;
 import steve6472.polyground.world.ModelBuilder;
 import steve6472.polyground.world.World;
 import steve6472.polyground.world.chunk.ModelLayer;
@@ -16,12 +21,28 @@ import steve6472.polyground.world.chunk.ModelLayer;
  * Project: CaveGame
  *
  ***********************/
-public class ConveyorBeltBlock extends DirectionalBlock
+public class ConveyorBeltBlock extends DirectionalBlock implements IBlockData, ISpecialRender
 {
 	public ConveyorBeltBlock(JSONObject json)
 	{
 		super(json);
 		isFull = false;
+	}
+
+	@Override
+	public void render(Stack stack, World world, BlockState state, int x, int y, int z)
+	{
+		ConveyorBeltData data = (ConveyorBeltData) world.getData(x, y, z);
+		if (data == null)
+			return;
+
+		switch (state.get(FACING))
+		{
+			case EAST -> stack.rotateY((float) (Math.PI * 1.5));
+			case SOUTH -> stack.rotateY((float) (Math.PI));
+			case WEST -> stack.rotateY((float) (Math.PI / 2f));
+		}
+		data.render(stack);
 	}
 
 	@Override
@@ -68,5 +89,11 @@ public class ConveyorBeltBlock extends DirectionalBlock
 	public int createModel(int x, int y, int z, World world, BlockState state, ModelBuilder buildHelper, ModelLayer modelLayer)
 	{
 		return CustomBlock.model(x, y, z, world, state, buildHelper, modelLayer);
+	}
+
+	@Override
+	public BlockData createNewBlockEntity(BlockState state)
+	{
+		return new ConveyorBeltData();
 	}
 }

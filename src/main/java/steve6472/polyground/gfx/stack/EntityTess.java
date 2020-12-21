@@ -4,6 +4,7 @@ import org.joml.Math;
 import org.joml.*;
 import steve6472.polyground.CaveGame;
 import steve6472.polyground.block.BlockAtlas;
+import steve6472.polyground.block.model.elements.Bakery;
 import steve6472.polyground.gfx.MainRender;
 import steve6472.polyground.gfx.shaders.EntityShader;
 import steve6472.polyground.tessellators.StackTessellator;
@@ -59,6 +60,12 @@ public class EntityTess extends StackTess
 	public EntityTess uv(float u, float v)
 	{
 		tess.uv(u, v);
+		return this;
+	}
+
+	public EntityTess uv(Vector2f uv)
+	{
+		tess.uv(uv.x, uv.y);
 		return this;
 	}
 
@@ -122,68 +129,68 @@ public class EntityTess extends StackTess
 
 	public void rect(float x, float y, float z, float w, float h, float d, float northMul, float eastMul, float southMul, float westMul, float upMul, float downMul)
 	{
-		EntityTess tess = stack.getEntityTess();
-		Vector4f lastColor = new Vector4f(tess.getLastColor());
+		Vector4f lastColor = new Vector4f(getLastColor());
+		uv(Bakery.getWhiteUV());
 
-		tess.color(new Vector4f(lastColor).mul(upMul, upMul, upMul, 1));
-		tess.pos(x +w, y +h, z).endVertex();
-		tess.pos(x, y +h, z).endVertex();
-		tess.pos(x, y +h, z +d).endVertex();
+		color(new Vector4f(lastColor).mul(upMul, upMul, upMul, 1));
+		pos(x + w, y + h, z).endVertex();
+		pos(x, y + h, z).endVertex();
+		pos(x, y + h, z + d).endVertex();
 
-		tess.pos(x, y +h, z +d).endVertex();
-		tess.pos(x +w, y +h, z +d).endVertex();
-		tess.pos(x +w, y +h, z).endVertex();
-
-
-		tess.color(new Vector4f(lastColor).mul(downMul, downMul, downMul, 1));
-		tess.pos(x, y +h, z).endVertex();
-		tess.pos(x, y, z).endVertex();
-		tess.pos(x, y, z +d).endVertex();
-
-		tess.pos(x, y, z +d).endVertex();
-		tess.pos(x, y +h, z +d).endVertex();
-		tess.pos(x, y +h, z).endVertex();
+		pos(x, y +h, z +d).endVertex();
+		pos(x +w, y +h, z +d).endVertex();
+		pos(x +w, y +h, z).endVertex();
 
 
-		tess.color(new Vector4f(lastColor).mul(northMul, northMul, northMul, 1));
-		tess.pos(x, y +h, z +d).endVertex();
-		tess.pos(x, y, z +d).endVertex();
-		tess.pos(x +w, y, z +d).endVertex();
+		color(new Vector4f(lastColor).mul(downMul, downMul, downMul, 1));
+		pos(x, y +h, z).endVertex();
+		pos(x, y, z).endVertex();
+		pos(x, y, z +d).endVertex();
 
-		tess.pos(x +w, y, z +d).endVertex();
-		tess.pos(x +w, y +h, z +d).endVertex();
-		tess.pos(x, y +h, z +d).endVertex();
-
-
-		tess.color(new Vector4f(lastColor).mul(eastMul, eastMul, eastMul, 1));
-		tess.pos(x +w, y +h, z +d).endVertex();
-		tess.pos(x +w, y, z +d).endVertex();
-		tess.pos(x +w, y, z).endVertex();
-
-		tess.pos(x +w, y, z).endVertex();
-		tess.pos(x +w, y +h, z).endVertex();
-		tess.pos(x +w, y +h, z +d).endVertex();
+		pos(x, y, z +d).endVertex();
+		pos(x, y +h, z +d).endVertex();
+		pos(x, y +h, z).endVertex();
 
 
-		tess.color(new Vector4f(lastColor).mul(southMul, southMul, southMul, 1));
-		tess.pos(x +w, y +h, z).endVertex();
-		tess.pos(x +w, y, z).endVertex();
-		tess.pos(x, y, z).endVertex();
+		color(new Vector4f(lastColor).mul(northMul, northMul, northMul, 1));
+		pos(x, y +h, z +d).endVertex();
+		pos(x, y, z +d).endVertex();
+		pos(x +w, y, z +d).endVertex();
 
-		tess.pos(x, y, z).endVertex();
-		tess.pos(x, y +h, z).endVertex();
-		tess.pos(x +w, y +h, z).endVertex();
+		pos(x +w, y, z +d).endVertex();
+		pos(x +w, y +h, z +d).endVertex();
+		pos(x, y +h, z +d).endVertex();
 
 
-		tess.color(new Vector4f(lastColor).mul(westMul, westMul, westMul, 1));
-		tess.pos(x, y, z + d).endVertex();
-		tess.pos(x, y, z).endVertex();
-		tess.pos(x + w, y, z).endVertex();
+		color(new Vector4f(lastColor).mul(eastMul, eastMul, eastMul, 1));
+		pos(x +w, y +h, z +d).endVertex();
+		pos(x +w, y, z +d).endVertex();
+		pos(x +w, y, z).endVertex();
 
-		tess.pos(x + w, y, z).endVertex();
-		tess.pos(x + w, y, z + d).endVertex();
-		tess.pos(x, y, z + d).endVertex();
+		pos(x +w, y, z).endVertex();
+		pos(x +w, y +h, z).endVertex();
+		pos(x +w, y +h, z +d).endVertex();
 
-		tess.color(lastColor);
+
+		color(new Vector4f(lastColor).mul(southMul, southMul, southMul, 1));
+		pos(x +w, y +h, z).endVertex();
+		pos(x +w, y, z).endVertex();
+		pos(x, y, z).endVertex();
+
+		pos(x, y, z).endVertex();
+		pos(x, y +h, z).endVertex();
+		pos(x +w, y +h, z).endVertex();
+
+
+		color(new Vector4f(lastColor).mul(westMul, westMul, westMul, 1));
+		pos(x, y, z + d).endVertex();
+		pos(x, y, z).endVertex();
+		pos(x + w, y, z).endVertex();
+
+		pos(x + w, y, z).endVertex();
+		pos(x + w, y, z + d).endVertex();
+		pos(x, y, z + d).endVertex();
+
+		color(lastColor);
 	}
 }

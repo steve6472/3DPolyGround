@@ -72,6 +72,61 @@ public class Model
 		stack.popMatrix();
 	}
 
+	private EntityTess vert0(Element.Face face, EntityTess tess)
+	{
+		switch (face.getRotation())
+		{
+			case 0 -> tess.uv(face.getU0(), face.getV0());
+			case 1 -> tess.uv(face.getU0(), face.getV1());
+			case 2 -> tess.uv(face.getU1(), face.getV1());
+			case 3 -> tess.uv(face.getU1(), face.getV0());
+		}
+		tess.endVertex();
+		return tess;
+	}
+
+	private EntityTess vert1(Element.Face face, EntityTess tess)
+	{
+//		tess.uv(face.getU0(), face.getV1());
+		switch (face.getRotation())
+		{
+			case 0 -> tess.uv(face.getU0(), face.getV1());
+			case 1 -> tess.uv(face.getU1(), face.getV1());
+			case 2 -> tess.uv(face.getU1(), face.getV0());
+			case 3 -> tess.uv(face.getU0(), face.getV0());
+		}
+		tess.endVertex();
+		return tess;
+	}
+
+	private EntityTess vert2(Element.Face face, EntityTess tess)
+	{
+//		tess.uv(face.getU1(), face.getV1());
+		switch (face.getRotation())
+		{
+			case 0 -> tess.uv(face.getU1(), face.getV1());
+			case 1 -> tess.uv(face.getU1(), face.getV0());
+			case 2 -> tess.uv(face.getU0(), face.getV0());
+			case 3 -> tess.uv(face.getU0(), face.getV1());
+		}
+		tess.endVertex();
+		return tess;
+	}
+
+	private EntityTess vert3(Element.Face face, EntityTess tess)
+	{
+//		tess.uv(face.getU1(), face.getV0());
+		switch (face.getRotation())
+		{
+			case 0 -> tess.uv(face.getU1(), face.getV0());
+			case 1 -> tess.uv(face.getU0(), face.getV0());
+			case 2 -> tess.uv(face.getU0(), face.getV1());
+			case 3 -> tess.uv(face.getU1(), face.getV1());
+		}
+		tess.endVertex();
+		return tess;
+	}
+
 	private void rect(Stack stack, Element element)
 	{
 		float x = element.fromX;
@@ -88,62 +143,26 @@ public class Model
 		{
 			tess.normal(0, 1, 0);
 
-			tess
-				.pos(x + w, y + h, z)
-				.uv(element.up.getU1(), element.up.getV0()) // 3
-				.endVertex();
-			tess
-				.pos(x, y + h, z)
-				.uv(element.up.getU0(), element.up.getV0()) // 0
-				.endVertex();
-			tess
-				.pos(x, y + h, z + d)
-				.uv(element.up.getU0(), element.up.getV1()) // 1
-				.endVertex();
+			vert3(element.up, tess.pos(x + w, y + h, z));
+			vert0(element.up, tess.pos(x, y + h, z));
+			vert1(element.up, tess.pos(x, y + h, z + d));
 
-			tess
-				.pos(x, y + h, z + d)
-				.uv(element.up.getU0(), element.up.getV1()) // 1
-				.endVertex();
-			tess
-				.pos(x + w, y + h, z + d)
-				.uv(element.up.getU1(), element.up.getV1()) // 2
-				.endVertex();
-			tess
-				.pos(x + w, y + h, z)
-				.uv(element.up.getU1(), element.up.getV0()) // 3
-				.endVertex();
+			vert1(element.up, tess.pos(x, y + h, z + d));
+			vert2(element.up, tess.pos(x + w, y + h, z + d));
+			vert3(element.up, tess.pos(x + w, y + h, z));
 		}
 
 		if (element.down != null)
 		{
 			tess.normal(0, -1, 0);
 
-			tess
-				.pos(x, y, z + d)
-				.uv(element.down.getU0(), element.down.getV0()) // 0
-				.endVertex();
-			tess
-				.pos(x, y, z)
-				.uv(element.down.getU0(), element.down.getV1()) // 1
-				.endVertex();
-			tess
-				.pos(x + w, y, z)
-				.uv(element.down.getU1(), element.down.getV1()) // 2
-				.endVertex();
+			vert0(element.down, tess.pos(x, y, z + d));
+			vert1(element.down, tess.pos(x, y, z));
+			vert2(element.down, tess.pos(x + w, y, z));
 
-			tess
-				.pos(x + w, y, z)
-				.uv(element.down.getU1(), element.down.getV1()) // 2
-				.endVertex();
-			tess
-				.pos(x + w, y, z + d)
-				.uv(element.down.getU1(), element.down.getV0()) // 3
-				.endVertex();
-			tess
-				.pos(x, y, z + d)
-				.uv(element.down.getU0(), element.down.getV0()) // 0
-				.endVertex();
+			vert2(element.down, tess.pos(x + w, y, z));
+			vert3(element.down, tess.pos(x + w, y, z + d));
+			vert0(element.down, tess.pos(x, y, z + d));
 		}
 
 
@@ -151,32 +170,13 @@ public class Model
 		{
 			tess.normal(1, 0, 0);
 
-			tess
-				.pos(x + w, y + h, z)
-				.uv(element.north.getU0(), element.north.getV0())
-				.endVertex();
-			tess
-				.pos(x + w, y, z)
-				.uv(element.north.getU0(), element.north.getV1())
-				.endVertex();
-			tess
-				.pos(x, y, z)
-				.uv(element.north.getU1(), element.north.getV1())
-				.endVertex();
+			vert0(element.north, tess.pos(x + w, y + h, z));
+			vert1(element.north, tess.pos(x + w, y, z));
+			vert2(element.north, tess.pos(x, y, z));
 
-
-			tess
-				.pos(x, y, z)
-				.uv(element.north.getU1(), element.north.getV1())
-				.endVertex();
-			tess
-				.pos(x, y + h, z)
-				.uv(element.north.getU1(), element.north.getV0())
-				.endVertex();
-			tess
-				.pos(x + w, y + h, z)
-				.uv(element.north.getU0(), element.north.getV0())
-				.endVertex();
+			vert2(element.north, tess.pos(x, y, z));
+			vert3(element.north, tess.pos(x, y + h, z));
+			vert0(element.north, tess.pos(x + w, y + h, z));
 		}
 
 
@@ -184,32 +184,13 @@ public class Model
 		{
 			tess.normal(0, 0, 1);
 
-			tess
-				.pos(x + w, y + h, z + d)
-				.uv(element.east.getU0(), element.east.getV0())
-				.endVertex();
-			tess
-				.pos(x + w, y, z + d)
-				.uv(element.east.getU0(), element.east.getV1())
-				.endVertex();
-			tess
-				.pos(x + w, y, z)
-				.uv(element.east.getU1(), element.east.getV1())
-				.endVertex();
+			vert0(element.east, tess.pos(x + w, y + h, z + d));
+			vert1(element.east, tess.pos(x + w, y, z + d));
+			vert2(element.east, tess.pos(x + w, y, z));
 
-
-			tess
-				.pos(x + w, y, z)
-				.uv(element.east.getU1(), element.east.getV1())
-				.endVertex();
-			tess
-				.pos(x + w, y + h, z)
-				.uv(element.east.getU1(), element.east.getV0())
-				.endVertex();
-			tess
-				.pos(x + w, y + h, z + d)
-				.uv(element.east.getU0(), element.east.getV0())
-				.endVertex();
+			vert2(element.east, tess.pos(x + w, y, z));
+			vert3(element.east, tess.pos(x + w, y + h, z));
+			vert0(element.east, tess.pos(x + w, y + h, z + d));
 		}
 
 
@@ -217,31 +198,13 @@ public class Model
 		{
 			tess.normal(-1, 0, 0);
 
-			tess
-				.pos(x, y + h, z + d)
-				.uv(element.south.getU0(), element.south.getV0())
-				.endVertex();
-			tess
-				.pos(x, y, z + d)
-				.uv(element.south.getU0(), element.south.getV1())
-				.endVertex();
-			tess
-				.pos(x + w, y, z + d)
-				.uv(element.south.getU1(), element.south.getV1())
-				.endVertex();
+			vert0(element.south, tess.pos(x, y + h, z + d));
+			vert1(element.south, tess.pos(x, y, z + d));
+			vert2(element.south, tess.pos(x + w, y, z + d));
 
-			tess
-				.pos(x + w, y, z + d)
-				.uv(element.south.getU1(), element.south.getV1())
-				.endVertex();
-			tess
-				.pos(x + w, y + h, z + d)
-				.uv(element.south.getU1(), element.south.getV0())
-				.endVertex();
-			tess
-				.pos(x, y + h, z + d)
-				.uv(element.south.getU0(), element.south.getV0())
-				.endVertex();
+			vert2(element.south, tess.pos(x + w, y, z + d));
+			vert3(element.south, tess.pos(x + w, y + h, z + d));
+			vert0(element.south, tess.pos(x, y + h, z + d));
 		}
 
 
@@ -249,31 +212,13 @@ public class Model
 		{
 			tess.normal(0, 0, -1);
 
-			tess
-				.pos(x, y + h, z)
-				.uv(element.west.getU0(), element.west.getV0()) // 0
-				.endVertex();
-			tess
-				.pos(x, y, z)
-				.uv(element.west.getU0(), element.west.getV1()) // 1
-				.endVertex();
-			tess
-				.pos(x, y, z + d)
-				.uv(element.west.getU1(), element.west.getV1()) // 2
-				.endVertex();
+			vert0(element.west, tess.pos(x, y + h, z));
+			vert1(element.west, tess.pos(x, y, z));
+			vert2(element.west, tess.pos(x, y, z + d));
 
-			tess
-				.pos(x, y, z + d)
-				.uv(element.west.getU1(), element.west.getV1()) // 2
-				.endVertex();
-			tess
-				.pos(x, y + h, z + d)
-				.uv(element.west.getU1(), element.west.getV0()) // 3
-				.endVertex();
-			tess
-				.pos(x, y + h, z)
-				.uv(element.west.getU0(), element.west.getV0()) // 0
-				.endVertex();
+			vert2(element.west, tess.pos(x, y, z + d));
+			vert3(element.west, tess.pos(x, y + h, z + d));
+			vert0(element.west, tess.pos(x, y + h, z));
 		}
 
 	}

@@ -32,6 +32,7 @@ public class BlockDataRegistry
 	public static final BlockDataEntry<AdvancedLogicBlockData> advancedLogic = register("advanced_logic", AdvancedLogicBlockData::new);
 	public static final BlockDataEntry<ProLogicBlockData> proLogic = register("pro_logic", ProLogicBlockData::new);
 	public static final BlockDataEntry<ChipDesignerData> chipDesigner = register("chip_designer", ChipDesignerData::new);
+	public static final BlockDataEntry<ConveyorBeltData> conveyorBelt = register("conveyor_belt", ConveyorBeltData::new);
 
 	public static <T extends BlockData> BlockDataEntry<T> register(String id, IBlockDataFactory<T> factory)
 	{

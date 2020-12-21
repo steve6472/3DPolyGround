@@ -24,6 +24,7 @@ public class ModelRegistry
 	public static final Model AMETHINE_CORE = register("amethine_core");
 	public static final Model PLAYER = register("player");
 	public static final Model TEST = register("test");
+	public static final Model CONVEYOR_BELT = register("conveyor_belt");
 
 	public static Model register(String path)
 	{
