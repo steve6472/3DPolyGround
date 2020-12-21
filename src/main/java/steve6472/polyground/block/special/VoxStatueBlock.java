@@ -1,6 +1,10 @@
 package steve6472.polyground.block.special;
 
+import org.joml.Vector2f;
+import org.joml.Vector3f;
+import org.joml.Vector4f;
 import org.json.JSONObject;
+import steve6472.polyground.CaveGame;
 import steve6472.polyground.block.model.elements.Bakery;
 import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.gfx.Palette;
@@ -11,6 +15,8 @@ import steve6472.polyground.world.World;
 import steve6472.polyground.world.chunk.ModelLayer;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
@@ -20,9 +26,13 @@ import java.io.File;
  ***********************/
 public class VoxStatueBlock extends CustomBlock
 {
-	private int size;
-	private VoxModel model;
-	private Palette palette;
+	private static final ModelBuilder modelBuilder = new ModelBuilder();
+
+	private List<Vector3f> vert;
+	private List<Vector4f> col;
+	private List<Vector2f> text;
+	private List<Vector3f> norm;
+	private int tris;
 
 	public VoxStatueBlock(JSONObject json)
 	{
@@ -32,21 +42,28 @@ public class VoxStatueBlock extends CustomBlock
 	@Override
 	public void load(JSONObject json)
 	{
+		Palette palette;
+		VoxModel model;
+
 		model = new VoxModel(new File("custom_models/vox/" + json.getString("path") + ".vox"));
 		model.reloadModel();
-		size = model.getWidth();
-		this.palette = PaletteRegistry.getOrRegister(json.getString("palette"));
-		this.palette.reloadPalette();
+		palette = PaletteRegistry.getOrRegister(json.getString("palette"));
+		palette.reloadPalette();
+		getDefaultState().getBlockModels()[0].createModel(CaveGame.getInstance().mainRender.buildHelper);
+
+		load(model, palette, model.getWidth());
 	}
 
-	@Override
-	public int createModel(int x, int y, int z, World world, BlockState state, ModelBuilder buildHelper, ModelLayer modelLayer)
+	public void load(VoxModel model, Palette palette, int size)
 	{
-		if (modelLayer != ModelLayer.NORMAL)
-			return 0;
+		tris = 0;
+		vert = new ArrayList<>();
+		col = new ArrayList<>();
+		text = new ArrayList<>();
+		norm = new ArrayList<>();
 
-		int tris = 0;
-		buildHelper.setSubChunk(world.getSubChunkFromBlockCoords(x, y, z));
+		modelBuilder.load(vert, col, text, norm);
+		Bakery.tempBuilder(modelBuilder);
 
 		for (int i = 0; i < size; i++)
 		{
@@ -65,27 +82,32 @@ public class VoxStatueBlock extends CustomBlock
 							j != 0 && model.getModel()[j - 1][i + k * size] != -128
 						);
 						int color = palette.getColors()[model.getModel()[j][i + k * size] + 128];
-						tris += Bakery.coloredCube(i + getOffsetX(), j + getOffsetY(), k + getOffsetZ(), 1, 1, 1, color, flags);
+						tris += Bakery.coloredCube(i + (8 - size / 2), j, k + (8 - size / 2), 1, 1, 1, color, flags);
 					}
 				}
 			}
 		}
 
+		modelBuilder.load(null, null, null, null);
+
+		Bakery.worldBuilder();
+	}
+
+	@Override
+	public int createModel(int x, int y, int z, World world, BlockState state, ModelBuilder buildHelper, ModelLayer modelLayer)
+	{
+		if (modelLayer != ModelLayer.NORMAL)
+			return 0;
+
+		buildHelper.setSubChunk(world.getSubChunkFromBlockCoords(x, y, z));
+		for (Vector3f v : vert)
+		{
+			buildHelper.getVert().add(new Vector3f(v).add(x, y, z));
+		}
+		buildHelper.getCol().addAll(col);
+		buildHelper.getText().addAll(text);
+		buildHelper.getNorm().addAll(norm);
+
 		return tris;
-	}
-
-	protected int getOffsetX()
-	{
-		return 8 - size / 2;
-	}
-
-	protected int getOffsetY()
-	{
-		return 0;
-	}
-
-	protected int getOffsetZ()
-	{
-		return 8 - size / 2;
 	}
 }

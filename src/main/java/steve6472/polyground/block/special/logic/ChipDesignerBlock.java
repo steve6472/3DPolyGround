@@ -299,12 +299,11 @@ public class ChipDesignerBlock extends AbstractIndexedMicroBlock
 	@Override
 	protected boolean renderSelectedMicro(World world, BlockState state, int x, int y, int z)
 	{
-		/*final Vector4i piece = getLookedAtPiece(world, CaveGame.getInstance().getPlayer(), x, y, z);
+		final Vector4i piece = getLookedAtPiece(world, CaveGame.getInstance().getPlayer(), x, y, z);
 		if (piece != null)
 			return !lookingAtBox(TABLE, piece);
 		else
-			return false;*/
-		return true;
+			return false;
 	}
 
 	private static boolean lookingAtBox(AABBi box, Vector4i point)
@@ -324,19 +323,14 @@ public class ChipDesignerBlock extends AbstractIndexedMicroBlock
 		ChipDesignerData data = (ChipDesignerData) world.getData(x, y, z);
 
 		Vector4i c = getLookedAtPiece(world, player, x, y, z);
-		if (c == null)
-			return super.getHitbox(world, state, x, y, z);
+//		if (c == null)
+//			return super.getHitbox(world, state, x, y, z);
 
 		List<CubeHitbox> hitboxes = new ArrayList<>();
 
-		if (lookingAtBox(TABLE, c))
-			hitboxes.add(new CubeHitbox(toAABBf(TABLE)));
-
-		if (lookingAtBox(COLOR_PICKER_BUTTON, c))
-			hitboxes.add(new CubeHitbox(toAABBf(COLOR_PICKER_BUTTON)));
-
-		if (lookingAtBox(DISPLAY, c))
-			hitboxes.add(new CubeHitbox(toAABBf(DISPLAY)));
+		hitboxes.add(new CubeHitbox(toAABBf(TABLE)).setVisible(lookingAtBox(TABLE, c)));
+		hitboxes.add(new CubeHitbox(toAABBf(COLOR_PICKER_BUTTON)).setVisible(lookingAtBox(COLOR_PICKER_BUTTON, c)));
+		hitboxes.add(new CubeHitbox(toAABBf(DISPLAY)).setVisible(lookingAtBox(DISPLAY, c)));
 
 		if (lookingAtBox(PALETTE, c) && data.isColorSelectorOpen)
 		{
@@ -344,18 +338,18 @@ public class ChipDesignerBlock extends AbstractIndexedMicroBlock
 			hitboxes.add(new CubeHitbox(toAABBf(PALETTE)));
 		}
 
-		if (lookingAtBox(INPUT_UP_ARROW, c)) hitboxes.add(new CubeHitbox(toAABBf(INPUT_UP_ARROW)));
-		if (lookingAtBox(INPUT_DOWN_ARROW, c)) hitboxes.add(new CubeHitbox(toAABBf(INPUT_DOWN_ARROW)));
-		if (lookingAtBox(INPUT_TYPE_UP_ARROW, c)) hitboxes.add(new CubeHitbox(toAABBf(INPUT_TYPE_UP_ARROW)));
+		hitboxes.add(new CubeHitbox(toAABBf(INPUT_UP_ARROW)).setVisible(lookingAtBox(INPUT_UP_ARROW, c)));
+		hitboxes.add(new CubeHitbox(toAABBf(INPUT_DOWN_ARROW)).setVisible(lookingAtBox(INPUT_DOWN_ARROW, c)));
+		hitboxes.add(new CubeHitbox(toAABBf(INPUT_TYPE_UP_ARROW)).setVisible(lookingAtBox(INPUT_TYPE_UP_ARROW, c)));
 
-		if (lookingAtBox(OUTPUT_UP_ARROW, c)) hitboxes.add(new CubeHitbox(toAABBf(OUTPUT_UP_ARROW)));
-		if (lookingAtBox(OUTPUT_DOWN_ARROW, c)) hitboxes.add(new CubeHitbox(toAABBf(OUTPUT_DOWN_ARROW)));
-		if (lookingAtBox(OUTPUT_TYPE_UP_ARROW, c)) hitboxes.add(new CubeHitbox(toAABBf(OUTPUT_TYPE_UP_ARROW)));
+		hitboxes.add(new CubeHitbox(toAABBf(OUTPUT_UP_ARROW)).setVisible(lookingAtBox(OUTPUT_UP_ARROW, c)));
+		hitboxes.add(new CubeHitbox(toAABBf(OUTPUT_DOWN_ARROW)).setVisible(lookingAtBox(OUTPUT_DOWN_ARROW, c)));
+		hitboxes.add(new CubeHitbox(toAABBf(OUTPUT_TYPE_UP_ARROW)).setVisible(lookingAtBox(OUTPUT_TYPE_UP_ARROW, c)));
 
-		if (lookingAtBox(INPUT, c)) hitboxes.add(new CubeHitbox(toAABBf(INPUT)));
-		if (lookingAtBox(OUTPUT, c)) hitboxes.add(new CubeHitbox(toAABBf(OUTPUT)));
+		hitboxes.add(new CubeHitbox(toAABBf(INPUT)).setVisible(lookingAtBox(INPUT, c)));
+		hitboxes.add(new CubeHitbox(toAABBf(OUTPUT)).setVisible(lookingAtBox(OUTPUT, c)));
 
-		if (renderSelectedMicro(world, state, x, y, z))
+		if (renderSelectedMicro(world, state, x, y, z) && c != null)
 			hitboxes.add(createPixelHitbox(c));
 
 		return hitboxes.toArray(CubeHitbox[]::new);
@@ -371,6 +365,7 @@ public class ChipDesignerBlock extends AbstractIndexedMicroBlock
 		NUMBERS[0].insert(chipDesignerData.grid, 32, 32, 31, 21, 27);
 		SELECTED.insert(chipDesignerData.grid, 32, 32, 26, 9, 0);
 		NOT_SELECTED.insert(chipDesignerData.grid, 32, 32, 26, 9, 26);
+		chipDesignerData.updateModel();
 
 		return chipDesignerData;
 	}

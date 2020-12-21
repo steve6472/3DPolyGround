@@ -130,4 +130,9 @@ public final class ModelBuilder
 	{
 		return text;
 	}
+
+	public List<Vector3f> getNorm()
+	{
+		return norm;
+	}
 }

@@ -8,7 +8,6 @@ import steve6472.polyground.commands.CommandSource;
 import steve6472.polyground.commands.arguments.BlockArgument;
 import steve6472.polyground.commands.arguments.Vec3iArgument;
 import steve6472.polyground.world.World;
-import steve6472.polyground.world.chunk.Chunk;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
@@ -41,16 +40,6 @@ public class FillCommand extends Command
 					{
 						w.setBlock(block, x, y, z);
 					}
-				}
-			}
-
-			for (int x = min.x >> 4; x <= max.x >> 4; x++)
-			{
-				for (int z = min.z >> 4; z <= max.z >> 4; z++)
-				{
-					Chunk chunk = w.getChunk(x, z);
-					if (chunk != null)
-						chunk.rebuild();
 				}
 			}
 
