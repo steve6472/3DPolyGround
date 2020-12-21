@@ -111,6 +111,13 @@ public class BlockPos
 		return west(1);
 	}
 
+	public void setPos(int x, int y, int z)
+	{
+		setX(x);
+		setY(y);
+		setZ(z);
+	}
+
 	public int getX()
 	{
 		return x;

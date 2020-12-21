@@ -27,20 +27,24 @@ public class Tree
 	private static int maxBranchRadius = 2;
 
 	private Node root;
-	private Array3D<Integer> nodes;
+	private Array3D<BlockPosNode, Integer> nodes;
 	private List<Branch> branches;
 	private int totalSize, trunkSize, trunkHeight;
 	private long seed;
 	private RootBlockData data;
 
+	private final BlockPosNode TEST_NODE;
+
 	public Tree()
 	{
 		seed = System.nanoTime();
+		TEST_NODE = new BlockPosNode(0, 0, 0);
 	}
 
 	public Tree(long seed)
 	{
 		this.seed = seed;
+		TEST_NODE = new BlockPosNode(0, 0, 0);
 	}
 
 	public Node getRoot()
@@ -48,7 +52,7 @@ public class Tree
 		return root;
 	}
 
-	public Array3D<Integer> getNodes()
+	public Array3D<BlockPosNode, Integer> getNodes()
 	{
 		return nodes;
 	}
@@ -129,7 +133,7 @@ public class Tree
 		{
 			if (countBranchesAroundTrunk(y) < (trunkHeight < 4 ? 1 : 2))
 			{
-				Node newBranch = new Node(x, y, z, 0);
+				Node newBranch = new Node(x, y, z, 0, false);
 
 				if (canBranchGrow(world, newBranch, EnumFace.NONE, true))
 				{
@@ -257,7 +261,7 @@ public class Tree
 			// Test if trunk is smaller
 			if (n == start)
 			{
-				Integer tr = this.nodes.get(new BlockPos(root.x, n.y, root.z));
+				Integer tr = this.nodes.get(new BlockPosNode(root.x, n.y, root.z));
 				if (tr != null && tr <= n.radius)
 					return;
 			}
@@ -287,7 +291,7 @@ public class Tree
 			if (n == nodes.get(nodes.size() - 1))
 				return;
 
-			Node node = new Node(n.x, n.y, n.z, n.radius + 1);
+			Node node = new Node(n.x, n.y, n.z, n.radius + 1, false);
 			nodes.set(r, node);
 			this.nodes.put(n.toBlockPos(), n.radius + 1);
 		}
@@ -295,7 +299,7 @@ public class Tree
 
 	private void growBranchNext(World world, EnumFace f, Node from, Branch branch)
 	{
-		Node n = new Node(from.x + f.getXOffset(), from.y + f.getYOffset(), from.z + f.getZOffset(), 0);
+		Node n = new Node(from.x + f.getXOffset(), from.y + f.getYOffset(), from.z + f.getZOffset(), 0, false);
 		if (canBranchGrow(world, n, f, false))
 		{
 			branch.nodes().add(n);
@@ -310,7 +314,7 @@ public class Tree
 		{
 			int x = root.x + f.getXOffset();
 			int z = root.z + f.getZOffset();
-			if (nodes.contains(new BlockPos(x, y, z)))
+			if (nodes.contains(new BlockPosNode(x, y, z)))
 				c++;
 		}
 		return c;
@@ -330,7 +334,7 @@ public class Tree
 			if (ignoreTrunk && root.x == x && root.z == z)
 				continue;
 
-			if (nodes.contains(new BlockPos(x, y, z)))
+			if (nodes.contains(new BlockPosNode(x, y, z)))
 				return false;
 
 			Block b = world.getBlock(x, y, z);
@@ -353,7 +357,7 @@ public class Tree
 			{
 				nodes.clear();
 				nodes.put(trunk.get(0).toBlockPos(), 1);
-				nodes.put(trunk.get(0).toBlockPos().up(), 0);
+				nodes.put((BlockPosNode) trunk.get(0).toBlockPos().up(), 0);
 			}
 			return;
 		}
@@ -361,7 +365,7 @@ public class Tree
 		// Try to prevent bad trees
 		if (trunkHeight < 5 && trunkSize >= 20)
 		{
-			nodes.put(root.toBlockPos().up(trunkHeight), 0);
+			nodes.put((BlockPosNode) root.toBlockPos().up(trunkHeight), 0);
 		}
 
 		for (int i = 0, size = trunk.size(); i < size; i++)
@@ -403,7 +407,7 @@ public class Tree
 
 						if (RandomUtil.decide(chance))
 						{
-							nodes.put(n.toBlockPos().up(), 0);
+							nodes.put((BlockPosNode) n.toBlockPos().up(), 0);
 						}
 					}
 
@@ -420,7 +424,7 @@ public class Tree
 	{
 		List<Node> trunkNodes = new ArrayList<>();
 
-		for (Pair<BlockPos, Integer> node : nodes)
+		for (Pair<BlockPosNode, Integer> node : nodes)
 		{
 			if (node.getA().getX() == root.x && node.getA().getZ() == root.z)
 				trunkNodes.add(new Node(node.getA(), node.getB()));
@@ -429,10 +433,10 @@ public class Tree
 		return trunkNodes;
 	}
 
-	private int calculateSize(Array3D<Integer> nodes)
+	private int calculateSize(Array3D<BlockPosNode, Integer> nodes)
 	{
 		int i = 0;
-		for (Pair<BlockPos, Integer> n : nodes)
+		for (Pair<BlockPosNode, Integer> n : nodes)
 		{
 			i += n.getB() + 1;
 		}
@@ -444,7 +448,7 @@ public class Tree
 		trunkHeight = 0;
 		trunkSize = 0;
 
-		for (Pair<BlockPos, Integer> node : nodes)
+		for (Pair<BlockPosNode, Integer> node : nodes)
 		{
 			if (node.getA().getX() == root.x && node.getA().getZ() == root.z)
 			{
@@ -459,7 +463,7 @@ public class Tree
 		List<Branch> branches = new ArrayList<>();
 		List<Node> branchStarts = new ArrayList<>();
 
-		for (Pair<BlockPos, Integer> node : nodes)
+		for (Pair<BlockPosNode, Integer> node : nodes)
 		{
 			for (EnumFace f : EnumFace.getCardinal())
 			{
@@ -489,7 +493,8 @@ public class Tree
 
 	private int getRadius(int x, int y, int z)
 	{
-		Integer r = nodes.get(new BlockPos(x, y, z));
+		TEST_NODE.setPos(x, y, z);
+		Integer r = nodes.get(TEST_NODE);
 		return r == null ? -1 : r;
 	}
 
@@ -501,14 +506,21 @@ public class Tree
 		List<Node> newNodes = new ArrayList<>();
 
 		int iterations = 0;
+		boolean processedSomething;
 
 		while (iterations < 8)
 		{
+			processedSomething = false;
 			for (Node n : pos)
 			{
+				if (node.isProcessed())
+					continue;
+				node.setProcessed(true);
+				processedSomething = true;
+
 				for (EnumFace f : EnumFace.getFaces())
 				{
-					Node newNode = new Node(n.x + f.getXOffset(), n.y + f.getYOffset(), n.z + f.getZOffset(), getRadius(n.x + f.getXOffset(), n.y + f.getYOffset(), n.z + f.getZOffset()));
+					Node newNode = new Node(n.x + f.getXOffset(), n.y + f.getYOffset(), n.z + f.getZOffset(), getRadius(n.x + f.getXOffset(), n.y + f.getYOffset(), n.z + f.getZOffset()), false);
 
 					// Do NOT got back to trunk!
 					if (newNode.x == root.x && newNode.z == root.z)
@@ -521,6 +533,9 @@ public class Tree
 					}
 				}
 			}
+
+			if (!processedSomething)
+				break;
 
 			if (newNodes.isEmpty())
 				break;
@@ -545,22 +560,28 @@ public class Tree
 	public Node findTree(World world, int x, int y, int z)
 	{
 		nodes = new Array3D<>();
-		nodes.put(new BlockPos(x, y, z), world.getState(x, y, z).get(BranchBlock.RADIUS));
+		nodes.put(new BlockPosNode(x, y, z), world.getState(x, y, z).get(BranchBlock.RADIUS));
 		int maxRadius = world.getState(x, y, z).get(BranchBlock.RADIUS);
 
 		List<Node> newNodes = new ArrayList<>();
 
 		int iterations = 0;
+		boolean processedSomething;
 
 		while (iterations < 32)
 		{
-			for (Pair<BlockPos, Integer> pair : nodes)
+			processedSomething = false;
+			for (Pair<BlockPosNode, Integer> pair : nodes)
 			{
-				BlockPos node = pair.getA();
+				BlockPosNode node = pair.getA();
+				if (node.isProcessed())
+					continue;
+				node.setProcessed(true);
+				processedSomething = true;
 
 				for (EnumFace face : EnumFace.getFaces())
 				{
-					BlockPos pos = new BlockPos(node).offset(face);
+					BlockPosNode pos = (BlockPosNode) new BlockPosNode(node).offset(face);
 
 					if (world.getBlock(pos.getX(), pos.getY(), pos.getZ()) instanceof BranchBlock)
 					{
@@ -575,6 +596,9 @@ public class Tree
 					}
 				}
 			}
+
+			if (!processedSomething)
+				break;
 
 			if (newNodes.isEmpty())
 				break;
@@ -608,11 +632,26 @@ public class Tree
 		return new Node(lowestNode, maxRadius);
 	}
 
-	public record Node(int x, int y, int z, int radius)
+	public static final class Node
 	{
+		private final int x;
+		private final int y;
+		private final int z;
+		private final int radius;
+		private boolean processed;
+
+		public Node(int x, int y, int z, int radius, boolean processed)
+		{
+			this.x = x;
+			this.y = y;
+			this.z = z;
+			this.radius = radius;
+			this.processed = processed;
+		}
+
 		public Node(BlockPos pos, int radius)
 		{
-			this(pos.getX(), pos.getY(), pos.getZ(), radius);
+			this(pos.getX(), pos.getY(), pos.getZ(), radius, false);
 		}
 
 		@Override
@@ -626,9 +665,9 @@ public class Tree
 			return x == position.x && y == position.y && z == position.z;
 		}
 
-		public BlockPos toBlockPos()
+		public BlockPosNode toBlockPos()
 		{
-			return new BlockPos(x, y, z);
+			return new BlockPosNode(x, y, z);
 		}
 
 		@Override
@@ -636,5 +675,42 @@ public class Tree
 		{
 			return Objects.hash(x, y, z);
 		}
+
+		public int x()
+		{
+			return x;
+		}
+
+		public int y()
+		{
+			return y;
+		}
+
+		public int z()
+		{
+			return z;
+		}
+
+		public int radius()
+		{
+			return radius;
+		}
+
+		public boolean isProcessed()
+		{
+			return processed;
+		}
+
+		public void setProcessed(boolean processed)
+		{
+			this.processed = processed;
+		}
+
+		@Override
+		public String toString()
+		{
+			return "Node[" + "x=" + x + ", " + "y=" + y + ", " + "z=" + z + ", " + "radius=" + radius + ", " + "processed=" + processed + ']';
+		}
+
 	}
 }

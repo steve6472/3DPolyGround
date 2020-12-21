@@ -13,36 +13,36 @@ import java.util.function.BiConsumer;
  * Project: CaveGame
  *
  ***********************/
-public class Array3D<T> implements Iterable<Pair<BlockPos, T>>
+public class Array3D<P, T> implements Iterable<Pair<P, T>>
 {
-	private final HashMap<BlockPos, T> map;
+	private final HashMap<P, T> map;
 
 	public Array3D()
 	{
 		map = new HashMap<>();
 	}
 
-	public void put(BlockPos pos, T t)
+	public void put(P pos, T t)
 	{
 		map.put(pos, t);
 	}
 
-	public void putIfAbsent(BlockPos pos, T t)
+	public void putIfAbsent(P pos, T t)
 	{
 		map.putIfAbsent(pos, t);
 	}
 
-	public T get(BlockPos pos)
+	public T get(P pos)
 	{
 		return map.get(pos);
 	}
 
-	public boolean contains(BlockPos pos)
+	public boolean contains(P pos)
 	{
 		return map.containsKey(pos);
 	}
 
-	public void remove(BlockPos pos)
+	public void remove(P pos)
 	{
 		map.remove(pos);
 	}
@@ -52,7 +52,7 @@ public class Array3D<T> implements Iterable<Pair<BlockPos, T>>
 		map.clear();
 	}
 
-	public void forEach(BiConsumer<? super BlockPos, ? super T> action)
+	public void forEach(BiConsumer<? super P, ? super T> action)
 	{
 		map.forEach(action);
 	}
@@ -64,9 +64,9 @@ public class Array3D<T> implements Iterable<Pair<BlockPos, T>>
 	 * @return an Iterator.
 	 */
 	@Override
-	public Iterator<Pair<BlockPos, T>> iterator()
+	public Iterator<Pair<P, T>> iterator()
 	{
-		ArrayList<Pair<BlockPos, T>> iter = new ArrayList<>();
+		ArrayList<Pair<P, T>> iter = new ArrayList<>();
 		forEach((pos, t) -> iter.add(new Pair<>(pos, t)));
 
 		return iter.iterator();

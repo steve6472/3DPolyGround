@@ -1925,7 +1925,7 @@ public class DataGenerator
 		BiomeBuilder
 			.create()
 			.name("desert")
-			.surface("sand", "sandstone", "stone", 4, 8)
+			.surface("sand", "sandstone", "stone", 4, 16)
 			.heightMap(4, 0.3f, 0.03f, 8, 18)
 			.climate(0.05f, 1f, 0f, -1f)
 			.foliageColor(183 / 255f, 212 / 255f, 80 / 255f)
@@ -1952,7 +1952,7 @@ public class DataGenerator
 		BiomeBuilder
 			.create()
 			.name("forest")
-			.surface("grass", "dirt", "stone", 4, 14)
+			.surface("grass", "dirt", "stone", 4, 20)
 			.heightMap(8, 0.07f, 0.007f, 12, 22)
 			.climate(0.1f, 0.25f, 0f, -0.6f)
 			.foliageColor(92 / 255f, 184 / 255f, 64 / 255f)
@@ -1967,7 +1967,7 @@ public class DataGenerator
 		BiomeBuilder
 			.create()
 			.name("plains")
-			.surface("grass", "dirt", "stone", 4, 12)
+			.surface("grass", "dirt", "stone", 4, 20)
 			.heightMap(7, 0.07f, 0.006f, 10, 20)
 			.climate(0f, 0.2f, 0f, -0.3f)
 			.foliageColor(92 / 255f, 200 / 255f, 64 / 255f)
@@ -1980,7 +1980,7 @@ public class DataGenerator
 		BiomeBuilder
 			.create()
 			.name("tundra")
-			.surface("grass", "dirt", "stone", 4, 12)
+			.surface("grass", "dirt", "stone", 4, 24)
 			.heightMap(7, 0.06f, 0.005f, 10, 18)
 			.climate(0f, -1f, 0f, 0.25f)
 			.foliageColor(92 / 255f, 200 / 255f, 64 / 255f)
@@ -1993,7 +1993,7 @@ public class DataGenerator
 		BiomeBuilder
 			.create()
 			.name("savanna")
-			.surface("grass", "dirt", "stone", 4, 14)
+			.surface("grass", "dirt", "stone", 4, 16)
 			.heightMap(6, 0.3f, 0.019f, 12, 23)
 			.climate(0.1f, 0.65f, 0.0f, 0.05f)
 			.foliageColor(120 / 255f, 190 / 255f, 60 / 255f)
@@ -2008,7 +2008,7 @@ public class DataGenerator
 		BiomeBuilder
 			.create()
 			.name("savanna_plateau")
-			.surface("grass", "dirt", "stone", 4, 14)
+			.surface("grass", "dirt", "stone", 4, 16)
 			.heightMap(6, 0.3f, 0.003f, 23, 30)
 			.climate(0.8f, 0.60f, 0.3f, 0.0f)
 			.foliageColor(120 / 255f, 190 / 255f, 60 / 255f)
