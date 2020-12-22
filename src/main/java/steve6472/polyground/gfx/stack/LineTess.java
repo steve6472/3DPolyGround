@@ -121,6 +121,41 @@ public class LineTess extends StackTess
 		pos(maxX, maxY, maxZ).color(1f, 1f, 1f, 1f).endVertex();
 	}
 
+	public void coloredBoxWHD(float x, float y, float z, float w, float h, float d, float r, float g, float b, float a)
+	{
+		coloredBox(x, y, z, x + w, y + h, z + d, r, g, b, a);
+	}
+
+	public void coloredBox(float minX, float minY, float minZ, float maxX, float maxY, float maxZ, float r, float g, float b, float a)
+	{
+		pos(minX, minY, minZ).color(r, g, b, a).endVertex();
+		pos(maxX, minY, minZ).color(r, g, b, a).endVertex();
+		pos(minX, minY, minZ).color(r, g, b, a).endVertex();
+		pos(minX, minY, maxZ).color(r, g, b, a).endVertex();
+		pos(minX, minY, maxZ).color(r, g, b, a).endVertex();
+		pos(maxX, minY, maxZ).color(r, g, b, a).endVertex();
+		pos(maxX, minY, minZ).color(r, g, b, a).endVertex();
+		pos(maxX, minY, maxZ).color(r, g, b, a).endVertex();
+
+		pos(minX, minY, minZ).color(r, g, b, a).endVertex();
+		pos(minX, maxY, minZ).color(r, g, b, a).endVertex();
+		pos(maxX, minY, minZ).color(r, g, b, a).endVertex();
+		pos(maxX, maxY, minZ).color(r, g, b, a).endVertex();
+		pos(minX, minY, maxZ).color(r, g, b, a).endVertex();
+		pos(minX, maxY, maxZ).color(r, g, b, a).endVertex();
+		pos(maxX, minY, maxZ).color(r, g, b, a).endVertex();
+		pos(maxX, maxY, maxZ).color(r, g, b, a).endVertex();
+
+		pos(minX, maxY, minZ).color(r, g, b, a).endVertex();
+		pos(maxX, maxY, minZ).color(r, g, b, a).endVertex();
+		pos(minX, maxY, minZ).color(r, g, b, a).endVertex();
+		pos(minX, maxY, maxZ).color(r, g, b, a).endVertex();
+		pos(minX, maxY, maxZ).color(r, g, b, a).endVertex();
+		pos(maxX, maxY, maxZ).color(r, g, b, a).endVertex();
+		pos(maxX, maxY, minZ).color(r, g, b, a).endVertex();
+		pos(maxX, maxY, maxZ).color(r, g, b, a).endVertex();
+	}
+
 	public static int getMaxSize()
 	{
 		return MAX_SIZE;

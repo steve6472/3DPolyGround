@@ -72,7 +72,7 @@ public class Model
 		stack.popMatrix();
 	}
 
-	private EntityTess vert0(Element.Face face, EntityTess tess)
+	private void vert0(Element.Face face, EntityTess tess)
 	{
 		switch (face.getRotation())
 		{
@@ -82,12 +82,10 @@ public class Model
 			case 3 -> tess.uv(face.getU1(), face.getV0());
 		}
 		tess.endVertex();
-		return tess;
 	}
 
-	private EntityTess vert1(Element.Face face, EntityTess tess)
+	private void vert1(Element.Face face, EntityTess tess)
 	{
-//		tess.uv(face.getU0(), face.getV1());
 		switch (face.getRotation())
 		{
 			case 0 -> tess.uv(face.getU0(), face.getV1());
@@ -96,12 +94,10 @@ public class Model
 			case 3 -> tess.uv(face.getU0(), face.getV0());
 		}
 		tess.endVertex();
-		return tess;
 	}
 
-	private EntityTess vert2(Element.Face face, EntityTess tess)
+	private void vert2(Element.Face face, EntityTess tess)
 	{
-//		tess.uv(face.getU1(), face.getV1());
 		switch (face.getRotation())
 		{
 			case 0 -> tess.uv(face.getU1(), face.getV1());
@@ -110,12 +106,10 @@ public class Model
 			case 3 -> tess.uv(face.getU0(), face.getV1());
 		}
 		tess.endVertex();
-		return tess;
 	}
 
-	private EntityTess vert3(Element.Face face, EntityTess tess)
+	private void vert3(Element.Face face, EntityTess tess)
 	{
-//		tess.uv(face.getU1(), face.getV0());
 		switch (face.getRotation())
 		{
 			case 0 -> tess.uv(face.getU1(), face.getV0());
@@ -124,7 +118,6 @@ public class Model
 			case 3 -> tess.uv(face.getU1(), face.getV1());
 		}
 		tess.endVertex();
-		return tess;
 	}
 
 	private void rect(Stack stack, Element element)

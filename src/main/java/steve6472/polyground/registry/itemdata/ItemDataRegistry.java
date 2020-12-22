@@ -1,6 +1,7 @@
 package steve6472.polyground.registry.itemdata;
 
 import steve6472.polyground.item.itemdata.BrushData;
+import steve6472.polyground.item.itemdata.ChipData;
 import steve6472.polyground.item.itemdata.ItemData;
 
 import java.util.Collection;
@@ -18,6 +19,7 @@ public class ItemDataRegistry
 	private static final HashMap<String, ItemDataEntry<? extends ItemData>> dataRegistry = new HashMap<>();
 
 	public static final ItemDataEntry<BrushData> brushData = register("brush", BrushData::new);
+	public static final ItemDataEntry<ChipData> chipData = register("chip", ChipData::new);
 
 	public static <T extends ItemData> ItemDataEntry<T> register(String id, IItemDataFactory<T> factory)
 	{

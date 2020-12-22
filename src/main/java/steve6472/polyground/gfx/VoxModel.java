@@ -20,6 +20,22 @@ public class VoxModel
 		this.path = path;
 	}
 
+	public VoxModel(int width, int height, int depth)
+	{
+		path = null;
+		this.width = width;
+		this.height = height;
+		this.depth = depth;
+		model = new byte[height][width * depth];
+		for (int i = 0; i < height; i++)
+		{
+			for (int j = 0; j < width * depth; j++)
+			{
+				model[i][j] = -128;
+			}
+		}
+	}
+
 	public void reloadModel()
 	{
 		VoxelFileReader voxReader = new VoxelFileReader();

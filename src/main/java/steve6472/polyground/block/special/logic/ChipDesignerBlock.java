@@ -2,22 +2,36 @@ package steve6472.polyground.block.special.logic;
 
 import org.joml.AABBf;
 import org.joml.AABBi;
+import org.joml.Vector3f;
 import org.joml.Vector4i;
 import org.json.JSONObject;
 import steve6472.polyground.CaveGame;
 import steve6472.polyground.EnumFace;
 import steve6472.polyground.block.ISpecialRender;
 import steve6472.polyground.block.blockdata.BlockData;
+import steve6472.polyground.block.blockdata.logic.AbstractGate;
 import steve6472.polyground.block.blockdata.logic.ChipDesignerData;
 import steve6472.polyground.block.blockdata.logic.data.LogicBlockData;
+import steve6472.polyground.block.blockdata.logic.other.Output;
 import steve6472.polyground.block.model.CubeHitbox;
+import steve6472.polyground.block.model.elements.Bakery;
 import steve6472.polyground.block.special.micro.AbstractIndexedMicroBlock;
 import steve6472.polyground.block.states.BlockState;
+import steve6472.polyground.entity.item.ItemEntity;
 import steve6472.polyground.entity.player.Player;
 import steve6472.polyground.gfx.VoxModel;
 import steve6472.polyground.gfx.stack.EntityTess;
+import steve6472.polyground.gfx.stack.LineTess;
 import steve6472.polyground.gfx.stack.Stack;
+import steve6472.polyground.item.Item;
+import steve6472.polyground.item.itemdata.ChipData;
+import steve6472.polyground.item.itemdata.IItemData;
+import steve6472.polyground.item.itemdata.ItemData;
+import steve6472.polyground.registry.Items;
+import steve6472.polyground.registry.palette.PaletteRegistry;
+import steve6472.polyground.world.ModelBuilder;
 import steve6472.polyground.world.World;
+import steve6472.polyground.world.chunk.ModelLayer;
 import steve6472.sge.main.KeyList;
 import steve6472.sge.main.events.MouseEvent;
 
@@ -51,6 +65,9 @@ public class ChipDesignerBlock extends AbstractIndexedMicroBlock implements ISpe
 	private static final AABBi COLOR_PICKER_BUTTON = newAABBi(0, 10, 26, 6, 2, 6);
 	private static final AABBi DISPLAY = newAABBi(31, 12, 6, 1, 20, 20);
 	private static final AABBi PALETTE = newAABBi(31, 14, 8, 1, 16, 16);
+	private static final AABBi BUILD_BOX = newAABBi(2, 10, 2, 22, 22, 22);
+	private static final AABBi BUILD_BOX_EXTENDED = newAABBi(1, 9, 1, 24, 24, 24);
+	private static final AABBi BOARD = newAABBi(7, 10, 26, 6, 2, 6);
 
 	private static final AABBi INPUT = newAABBi(27, 10, 1, 4, 4, 4);
 	private static final AABBi OUTPUT = newAABBi(27, 10, 27, 4, 4, 4);
@@ -96,13 +113,16 @@ public class ChipDesignerBlock extends AbstractIndexedMicroBlock implements ISpe
 			return;
 
 		final Vector4i piece = getLookedAtPiece(world, player, x, y, z);
-//		System.out.println(piece);
+		EnumFace f = EnumFace.getFaces()[piece.w];
+		int cx = piece.x + f.getXOffset();
+		int cy = piece.y + f.getYOffset();
+		int cz = piece.z + f.getZOffset();
 
 		ChipDesignerData data = (ChipDesignerData) world.getData(x, y, z);
 
 		if (click.getButton() == KeyList.RMB && player.holdsBlock() && player.getBlockDataInHand() instanceof LogicBlockData logicData)
 		{
-			data.chip = logicData;
+			data.setChipComponents(logicData.components);
 			BOARD_INSIDE.insert(data.grid, 32, 32, 8, 10, 27);
 			player.processNextBlockPlace = false;
 
@@ -111,20 +131,50 @@ public class ChipDesignerBlock extends AbstractIndexedMicroBlock implements ISpe
 			return;
 		}
 
+		if (data.chipComponents != null && click.getButton() == KeyList.RMB && !player.holdsBlock() && !player.holdsItem() && lookingAtBox(BUILD_BOX, cx, cy, cz))
+		{
+			place(data, piece, world, x, y, z);
+		}
+
 		if (click.getButton() != KeyList.LMB)
 			return;
 
+		if (lookingAtBox(BOARD, piece))
+		{
+			if (data.chipComponents != null)
+			{
+				Item item = Items.getItemByName("chip");
+				if (item != null)
+				{
+					ItemData itemData = null;
+
+					if (item instanceof IItemData id)
+						itemData = id.createNewItemData();
+					if (itemData instanceof ChipData chipData)
+					{
+						chipData.setData(data.chipComponents, data.chipModel);
+					} else
+					{
+						throw new RuntimeException("Chip item did not create correct ItemData (expected ChipData, got " + itemData.getClass().getName() + ")");
+					}
+
+					ItemEntity itemEntity = new ItemEntity(item, itemData, x + .5f, y + 2f, z + 0.5f);
+					world.getEntityManager().addEntity(itemEntity);
+				}
+			}
+		}
+
 		if (lookingAtBox(COLOR_PICKER_BUTTON, piece))
 		{
+			data.selectedType = ChipDesignerData.SelectedType.COLOR;
+			NOT_SELECTED.insert(data.grid, 32, 32, 26, 9, 0);
+			NOT_SELECTED.insert(data.grid, 32, 32, 26, 9, 26);
+			SELECTED.insert(data.grid, 32, 32, 0, 10, 26);
+
 			toggleColorSelector(world, data, x, y, z);
 		}
 
-		if (data.isColorSelectorOpen && lookingAtBox(PALETTE, piece))
-		{
-			setColor(world, data, x, y, z, piece);
-		}
-
-		if (data.isColorSelectorOpen && lookingAtBox(PALETTE, piece))
+		if (data.selectedType == ChipDesignerData.SelectedType.COLOR && lookingAtBox(PALETTE, piece))
 		{
 			setColor(world, data, x, y, z, piece);
 		}
@@ -177,21 +227,89 @@ public class ChipDesignerBlock extends AbstractIndexedMicroBlock implements ISpe
 		{
 			SELECTED.insert(data.grid, 32, 32, 26, 9, 0);
 			NOT_SELECTED.insert(data.grid, 32, 32, 26, 9, 26);
+			NOT_SELECTED.insert(data.grid, 32, 32, 0, 10, 26);
 			data.selectedType = ChipDesignerData.SelectedType.INPUT;
 
-			data.updateModel();
-			world.getSubChunkFromBlockCoords(x, y, z).rebuild();
+			toggleColorSelector(world, data, x, y, z);
 		}
 
 		if (lookingAtBox(OUTPUT, piece))
 		{
 			NOT_SELECTED.insert(data.grid, 32, 32, 26, 9, 0);
 			SELECTED.insert(data.grid, 32, 32, 26, 9, 26);
+			NOT_SELECTED.insert(data.grid, 32, 32, 0, 10, 26);
 			data.selectedType = ChipDesignerData.SelectedType.OUTPUT;
+
+			toggleColorSelector(world, data, x, y, z);
+		}
+	}
+
+	private void place(ChipDesignerData data, Vector4i piece, World world, int x, int y, int z)
+	{
+		if (data.selectedType == ChipDesignerData.SelectedType.COLOR)
+		{
+			placePixel(piece, data, PaletteRegistry.RAINBOW.getColors()[data.selectedColorIndex + 128]);
 
 			data.updateModel();
 			world.getSubChunkFromBlockCoords(x, y, z).rebuild();
 		}
+
+		if (data.selectedType == ChipDesignerData.SelectedType.INPUT)
+		{
+			if (data.selectedInputIndex < data.inputComponents.size())
+			{
+				placePixel(piece, data, 0xffffffff);
+				AbstractGate gate = data.inputComponents.get(data.selectedInputIndex);
+
+				// Remove pixel of old gate
+				if (!gate.getPosition().equals(-1, -1, -1))
+				{
+					placePixel(gate.getPosition().x + 2, gate.getPosition().y + 9, gate.getPosition().z + 2, 0, data, 0);
+				}
+				gate.setPosition(piece.x - 2, piece.y - 9, piece.z - 2);
+
+				data.updateModel();
+				world.getSubChunkFromBlockCoords(x, y, z).rebuild();
+			}
+		}
+
+		if (data.selectedType == ChipDesignerData.SelectedType.OUTPUT)
+		{
+			if (data.selectedOutputIndex < data.outputComponents.size())
+			{
+				placePixel(piece, data, 0xff010101);
+				Output gate = (Output) data.outputComponents.get(data.selectedOutputIndex);
+
+				// Remove pixel of old gate
+				if (!gate.getPosition().equals(-1, -1, -1))
+				{
+					placePixel(gate.getPosition().x + 2, gate.getPosition().y + 9, gate.getPosition().z + 2, 0, data, 0);
+				}
+				gate.setPosition(piece.x - 2, piece.y - 9, piece.z - 2);
+				gate.setLight(data.selectedOutputType == ChipDesignerData.OutputType.LIGHT);
+
+				data.updateModel();
+				world.getSubChunkFromBlockCoords(x, y, z).rebuild();
+			}
+		}
+	}
+
+	private void placePixel(Vector4i c, ChipDesignerData data, int color)
+	{
+		placePixel(c.x, c.y, c.z, c.w, data, color);
+	}
+
+	private void placePixel(int x, int y, int z, int w, ChipDesignerData data, int color)
+	{
+		EnumFace f = EnumFace.getFaces()[w];
+		int cx = x + f.getXOffset();
+		int cy = y + f.getYOffset();
+		int cz = z + f.getZOffset();
+
+		cx -= 2;
+		cy -= 10;
+		cz -= 2;
+		data.chipModel[cy][cx + cz * 22] = color;
 	}
 
 	private void setNumber(World world, ChipDesignerData data, int wx, int wy, int wz, int number, int x, int y, int z)
@@ -273,15 +391,13 @@ public class ChipDesignerBlock extends AbstractIndexedMicroBlock implements ISpe
 
 	private void toggleColorSelector(World world, ChipDesignerData data, int x, int y, int z)
 	{
-		data.isColorSelectorOpen = !data.isColorSelectorOpen;
-
 		for (int i = 0; i < 16; i++)
 		{
 			for (int j = 0; j < 16; j++)
 			{
 				byte b = -127;
 
-				if (data.isColorSelectorOpen)
+				if (data.selectedType == ChipDesignerData.SelectedType.COLOR)
 					b = (byte) (i + j * 16 - 128);
 
 				data.grid[14 + (15 - j)][31 + (i + 8) * 32] = b;
@@ -295,11 +411,97 @@ public class ChipDesignerBlock extends AbstractIndexedMicroBlock implements ISpe
 	@Override
 	public void render(Stack stack, World world, BlockState state, int x, int y, int z)
 	{
-//		ChipDesignerData data = (ChipDesignerData) world.getData(x, y, z);
+		stack.translate(-1f, 0, -1f);
+		ChipDesignerData data = (ChipDesignerData) world.getData(x, y, z);
 
-		final EntityTess tess = stack.getEntityTess();
-		tess.color(1, 1, 1, 1f);
-		tess.rectShade(0, 0, 0, 1, 1, 1);
+		 if (data.chipComponents == null)
+		 	return;
+
+		Vector4i c = getLookedAtPiece(world, CaveGame.getInstance().getPlayer(), x, y, z);
+		if (c == null)
+			return;
+
+		EnumFace f = EnumFace.getFaces()[c.w];
+		int cx = c.x + f.getXOffset();
+		int cy = c.y + f.getYOffset();
+		int cz = c.z + f.getZOffset();
+
+		if (lookingAtBox(BUILD_BOX, cx, cy, cz))
+		{
+			float cr = (float) (Math.cos(Math.toRadians((System.currentTimeMillis() % (3600)) * 0.1f)) / 4f + 0.70f);
+			float cg = (float) (Math.cos(Math.toRadians(((System.currentTimeMillis() + 1200) % (3600)) * 0.1f)) / 4f + 0.70f);
+			float cb = (float) (Math.cos(Math.toRadians(((System.currentTimeMillis() + 2400) % (3600)) * 0.1f)) / 4f + 0.70f);
+			// Highlight input
+			if (getChipColor(data, c.x, c.y, c.z) == 0xffffffff)
+			{
+				stack.pushMatrix();
+				stack.scale(1f / 16f);
+
+				EntityTess tess = stack.getEntityTess();
+				tess.color(cr, cg, cb, 0.5f);
+				tess.rect(26.9f, 9.9f, 0.9f, 4.2f, 4.2f, 4.2f);
+
+				LineTess ltess = stack.getLineTess();
+				ltess.coloredBoxWHD(26.9f, 9.9f, 0.9f, 4.2f, 4.2f, 4.2f, 0, 0, 0, 1);
+
+				stack.popMatrix();
+			}
+			// Highlight output
+			if (getChipColor(data, c.x, c.y, c.z) == 0xff010101)
+			{
+				stack.pushMatrix();
+				stack.scale(1f / 16f);
+
+				EntityTess tess = stack.getEntityTess();
+				tess.color(cr, cg, cb, 0.5f);
+				tess.rect(26.9f, 9.9f, 26.9f, 4.2f, 4.2f, 4.2f);
+
+				LineTess ltess = stack.getLineTess();
+				ltess.coloredBoxWHD(26.9f, 9.9f, 26.9f, 4.2f, 4.2f, 4.2f, 0, 0, 0, 1);
+
+				stack.popMatrix();
+			}
+
+			if (data.selectedType == ChipDesignerData.SelectedType.COLOR)
+			{
+				renderColor(stack, PaletteRegistry.RAINBOW.getColors()[data.selectedColorIndex + 128], c);
+			}
+
+			if (data.selectedType == ChipDesignerData.SelectedType.INPUT && data.selectedInputIndex < data.inputComponents.size())
+			{
+				renderColor(stack, 0xffffffff, c);
+			}
+
+			if (data.selectedType == ChipDesignerData.SelectedType.OUTPUT && data.selectedOutputIndex < data.outputComponents.size())
+			{
+				renderColor(stack, 0xff010101, c);
+			}
+		}
+	}
+
+	private void renderColor(Stack stack, int color, Vector4i c)
+	{
+		EnumFace f = EnumFace.getFaces()[c.w];
+		int cx = c.x + f.getXOffset();
+		int cy = c.y + f.getYOffset();
+		int cz = c.z + f.getZOffset();
+
+		color &= ~0xff000000; // Erase alpha bits
+		color |= 0xc0000000;  // Set alpha bits to 0.75 opacity
+
+		EntityTess tess = stack.getEntityTess();
+		tess.color(color);
+		tess.rectShade(cx / 16f, cy / 16f, cz / 16f, 1f / 16, 1f / 16f, 1f / 16f);
+	}
+
+	private int getChipColor(ChipDesignerData data, int x, int y, int z)
+	{
+		x -= 2;
+		y -= 10;
+		z -= 2;
+		if (y >= 0 && y < 22 && x >= 0 && x < 22 && z >= 0 && z < 22)
+			return data.chipModel[y][x + z * 22];
+		return 0;
 	}
 
 	private void renderAABBi(EntityTess tess, AABBi aabb)
@@ -311,7 +513,7 @@ public class ChipDesignerBlock extends AbstractIndexedMicroBlock implements ISpe
 	public boolean isPickable(BlockState state, World world, int x, int y, int z, Player player)
 	{
 		final Vector4i piece = getLookedAtPiece(world, player, x, y, z);
-		return piece != null && TABLE.containsPoint(piece.x, piece.y, piece.z);
+		return piece != null && TABLE.containsPoint(piece.x, piece.y, piece.z) && !BUILD_BOX_EXTENDED.containsPoint(piece.x, piece.y, piece.z);
 	}
 
 	@Override
@@ -331,16 +533,15 @@ public class ChipDesignerBlock extends AbstractIndexedMicroBlock implements ISpe
 		ChipDesignerData data = (ChipDesignerData) world.getData(x, y, z);
 
 		Vector4i c = getLookedAtPiece(world, player, x, y, z);
-//		if (c == null)
-//			return super.getHitbox(world, state, x, y, z);
 
 		List<CubeHitbox> hitboxes = new ArrayList<>();
 
 		hitboxes.add(new CubeHitbox(toAABBf(TABLE)).setVisible(lookingAtBox(TABLE, c)));
 		hitboxes.add(new CubeHitbox(toAABBf(COLOR_PICKER_BUTTON)).setVisible(lookingAtBox(COLOR_PICKER_BUTTON, c)));
 		hitboxes.add(new CubeHitbox(toAABBf(DISPLAY)).setVisible(lookingAtBox(DISPLAY, c)));
+		hitboxes.add(new CubeHitbox(toAABBf(BOARD)).setVisible(lookingAtBox(BOARD, c)));
 
-		if (lookingAtBox(PALETTE, c) && data.isColorSelectorOpen)
+		if (lookingAtBox(PALETTE, c) && data.selectedType == ChipDesignerData.SelectedType.COLOR)
 		{
 			hitboxes.add(createPixelHitbox(c));
 			hitboxes.add(new CubeHitbox(toAABBf(PALETTE)));
@@ -373,9 +574,103 @@ public class ChipDesignerBlock extends AbstractIndexedMicroBlock implements ISpe
 		NUMBERS[0].insert(chipDesignerData.grid, 32, 32, 31, 21, 27);
 		SELECTED.insert(chipDesignerData.grid, 32, 32, 26, 9, 0);
 		NOT_SELECTED.insert(chipDesignerData.grid, 32, 32, 26, 9, 26);
+		NOT_SELECTED.insert(chipDesignerData.grid, 32, 32, 0, 10, 26);
 		chipDesignerData.updateModel();
 
 		return chipDesignerData;
+	}
+
+	@Override
+	public int createModel(int x, int y, int z, World world, BlockState state, ModelBuilder buildHelper, ModelLayer modelLayer)
+	{
+		if (modelLayer != ModelLayer.NORMAL)
+			return 0;
+
+		// Create model from indexed data
+		int tris = super.createModel(x, y, z, world, state, buildHelper, modelLayer);
+
+		// Add chip color model data
+		ChipDesignerData data = (ChipDesignerData) world.getData(x, y, z);
+
+		for (int i = 0; i < 22; i++)
+		{
+			for (int j = 0; j < 22; j++)
+			{
+				for (int k = 0; k < 22; k++)
+				{
+					if (data.chipModel[j][i + k * 22] != 0)
+					{
+						int flags = Bakery.createFaceFlags(
+							i != (22 - 1) && data.chipModel[j][(i + 1) + k * 22] != 0,
+							k != (22 - 1) && data.chipModel[j][i + (k + 1) * 22] != 0,
+							i != 0 && data.chipModel[j][(i - 1) + k * 22] != 0,
+							k != 0 && data.chipModel[j][i + (k - 1) * 22] != 0,
+							j != (22 - 1) && data.chipModel[j + 1][i + k * 22] != 0,
+							j != 0 && data.chipModel[j - 1][i + k * 22] != 0
+						);
+						tris += Bakery.coloredCube_1x1(i + 2 + getOffsetX(), j + 10 + getOffsetY(), k + 2 + getOffsetZ(), data.chipModel[j][i + k * 22], flags);
+					}
+				}
+			}
+		}
+
+		return tris;
+	}
+
+	protected Vector4i getLookedAtPiece(World world, Player player, int x, int y, int z)
+	{
+		ChipDesignerData data = (ChipDesignerData) world.getData(x, y, z);
+		if (data == null)
+			return null;
+
+		AABBf box = new AABBf();
+		Vector3f res = new Vector3f();
+
+		int cx = 0, cy = 0, cz = 0;
+		float closestDistance = 10f;
+		int face = 0;
+		float inv = 1f / 16f;
+
+		for (int i = 0; i < getSize(); i++)
+		{
+			for (int j = 0; j < getSize(); j++)
+			{
+				for (int k = 0; k < getSize(); k++)
+				{
+					boolean doCheck;
+					// Check the Build Area
+					if (i >= 2 && j >= 10 && k >= 2 && i < 24 && j < 32 && k < 24)
+					{
+						doCheck = data.chipModel[(j - 10)][(i - 2) + (k - 2) * 22] != 0;
+					} else
+					{
+						doCheck = data.grid[j][i + k * getSize()] != -128;
+					}
+					if (doCheck)
+					{
+						box.setMin(x + i * inv + getOffsetX() * inv, y + j * inv + getOffsetY() * inv, z + k * inv + getOffsetZ() * inv);
+						box.setMax(x + i * inv + inv + getOffsetX() * inv, y + j * inv + inv + getOffsetY() * inv, z + k * inv + inv + getOffsetZ() * inv);
+
+						if (intersectsAABB(player.viewDir, player.getCamera().getPosition(), box, res))
+						{
+							if (res.y < closestDistance)
+							{
+								closestDistance = res.y;
+								cx = i;
+								cy = j;
+								cz = k;
+								face = (int) res.z;
+							}
+						}
+					}
+				}
+			}
+		}
+
+		if (closestDistance == 10f)
+			return null;
+
+		return new Vector4i(cx, cy, cz, face);
 	}
 
 	@Override
@@ -391,9 +686,12 @@ public class ChipDesignerBlock extends AbstractIndexedMicroBlock implements ISpe
 
 	private static boolean lookingAtBox(AABBi box, Vector4i point)
 	{
-		boolean b = (point != null && (point.x >= box.minX && point.y >= box.minY && point.z >= box.minZ && point.x < box.maxX && point.y < box.maxY && point.z < box.maxZ));
-		if (b) System.out.println(box + " " + point);
-		return b;
+		return point != null && (point.x >= box.minX && point.y >= box.minY && point.z >= box.minZ && point.x < box.maxX && point.y < box.maxY && point.z < box.maxZ);
+	}
+
+	private static boolean lookingAtBox(AABBi box, int x, int y, int z)
+	{
+		return (x >= box.minX && y >= box.minY && z >= box.minZ && x < box.maxX && y < box.maxY && z < box.maxZ);
 	}
 
 	private static AABBf toAABBf(AABBi box)

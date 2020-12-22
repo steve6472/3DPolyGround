@@ -7,7 +7,6 @@ import org.json.JSONObject;
 import steve6472.polyground.CaveGame;
 import steve6472.polyground.EnumFace;
 import steve6472.polyground.block.ISpecialRender;
-import steve6472.polyground.block.blockdata.micro.AbstractMicroBlockData;
 import steve6472.polyground.block.blockdata.BlockData;
 import steve6472.polyground.block.blockdata.logic.AbstractGate;
 import steve6472.polyground.block.blockdata.logic.GatePair;
@@ -17,6 +16,7 @@ import steve6472.polyground.block.blockdata.logic.data.LogicBlockData;
 import steve6472.polyground.block.blockdata.logic.other.Chip;
 import steve6472.polyground.block.blockdata.logic.other.Input;
 import steve6472.polyground.block.blockdata.logic.other.Output;
+import steve6472.polyground.block.blockdata.micro.AbstractMicroBlockData;
 import steve6472.polyground.block.model.CubeHitbox;
 import steve6472.polyground.block.model.elements.Bakery;
 import steve6472.polyground.block.special.micro.AbstractMicroBlock;
@@ -25,13 +25,13 @@ import steve6472.polyground.entity.player.EnumGameMode;
 import steve6472.polyground.entity.player.Player;
 import steve6472.polyground.gfx.stack.LineTess;
 import steve6472.polyground.gfx.stack.Stack;
+import steve6472.polyground.item.itemdata.ChipData;
 import steve6472.polyground.world.ModelBuilder;
 import steve6472.polyground.world.World;
 import steve6472.polyground.world.chunk.ModelLayer;
 import steve6472.sge.main.KeyList;
 import steve6472.sge.main.events.MouseEvent;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
@@ -111,30 +111,28 @@ public class LogicBlock extends AbstractMicroBlock implements ISpecialRender
 
 				if (b)
 				{
-					List<AbstractGate> gatesCopy = new ArrayList<>();
-					for (AbstractGate g : d.components)
-					{
-						gatesCopy.add(g.copy());
-					}
-
-					for (AbstractGate g : d.components)
-					{
-						GatePair[] inputConnections = g.getInputConnections();
-						for (int i = 0; i < inputConnections.length; i++)
-						{
-							GatePair inputConnection = inputConnections[i];
-							if (inputConnection == null)
-								continue;
-
-							final AbstractGate from = AbstractGate.findGate(gatesCopy, inputConnection.getGate().getUUID());
-							final AbstractGate to = AbstractGate.findGate(gatesCopy, g.getUUID());
-
-							AbstractGate.connect(from, to, inputConnection.getIndex(), i);
-						}
-					}
+					List<AbstractGate> gatesCopy = AbstractGate.copy(d.components);
 
 					Chip chip = new Chip(gatesCopy);
 					chip.setPosition(cx - max, cy, cz);
+					data.placeComponent(chip);
+					data.updateMicroModel();
+				}
+
+				player.processNextBlockPlace = false;
+				return;
+			}
+
+			if (player.holdsItem() && player.getItemDataInHand() instanceof ChipData d)
+			{
+				final boolean canFit = GateReg.canFit(cx, cy, cz, 0, 0, 0, d.width, d.height, d.depth, data.grid, getSize());
+
+				if (canFit)
+				{
+					List<AbstractGate> gatesCopy = AbstractGate.copy(d.components);
+
+					Chip chip = new Chip(gatesCopy, d.model, d.width, d.height, d.depth);
+					chip.setPosition(cx, cy, cz);
 					data.placeComponent(chip);
 					data.updateMicroModel();
 				}
@@ -326,17 +324,36 @@ public class LogicBlock extends AbstractMicroBlock implements ISpecialRender
 	@Override
 	public void render(Stack stack, World world, BlockState state, int x, int y, int z)
 	{
-		if (!CaveGame.getInstance().options.renderLogicConnections)
-			return;
-
 		LogicBlockData data = (LogicBlockData) world.getData(x, y, z);
 		if (data == null)
 			return;
+
 
 		stack.translate(-0.5f, 0, -0.5f);
 		stack.translate(0.5f - data.size() / 32f, 0, 0.5f - data.size() / 32f);
 
 		final LineTess tess = stack.getLineTess();
+
+		final Player player = CaveGame.getInstance().getPlayer();
+		Vector4i c = getLookedAtPiece(world, player, x, y, z);
+
+		if (c != null && player.holdsItem() && player.getItemDataInHand() instanceof ChipData d)
+		{
+			EnumFace f = EnumFace.getFaces()[c.w];
+			int cx = c.x + f.getXOffset();
+			int cy = c.y + f.getYOffset();
+			int cz = c.z + f.getZOffset();
+
+			stack.pushMatrix();
+			stack.scale(1f / 16f);
+
+			tess.debugBox(cx, cy, cz, cx + d.width, cy + d.height, cz + d.depth);
+
+			stack.popMatrix();
+		}
+
+		if (!CaveGame.getInstance().options.renderLogicConnections)
+			return;
 
 		for (AbstractGate component : data.components)
 		{

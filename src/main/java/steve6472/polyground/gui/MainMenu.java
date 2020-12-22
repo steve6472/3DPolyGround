@@ -190,7 +190,7 @@ public class MainMenu extends Gui implements IGamePause
 		addComponent(cave);
 
 
-		Button pathfind = new Button("Pathfind");
+		Button pathfind = new Button("Logic");
 		pathfind.setLocation(30, 190);
 		pathfind.setSize(100, 30);
 		pathfind.addClickEvent(c ->
@@ -199,17 +199,21 @@ public class MainMenu extends Gui implements IGamePause
 			setVisible(false);
 			CaveGame.getInstance().inGameGui.setVisible(true);
 			CaveGame.getInstance().options.isGamePaused = false;
+			CaveGame.getInstance().options.enablePostProcessing = false;
 			CaveGame.getInstance().options.generateDistance = -1;
 
 			var v = pettan(seed);
-			CaveGame.getInstance().setWorld(new World(CaveGame.getInstance(), 0, v.getA(), v.getB().getA(), v.getB().getB()));
+			CaveGame.getInstance().setWorld(new World(CaveGame.getInstance(), 4, v.getA(), v.getB().getA(), v.getB().getB()));
+			CaveGame.getInstance().world.addChunk(new Chunk(0, 0, CaveGame.getInstance().getWorld()));
+
 			try
 			{
 				CommandRegistry registry = CaveGame.getInstance().commandRegistry;
-				registry.dispatcher.execute("loadworld pathfind", registry.commandSource);
-				registry.dispatcher.execute("tp 8 32.005 8", registry.commandSource);
-				registry.dispatcher.execute("ai", registry.commandSource);
-				//				registry.dispatcher.execute("spawn ai", registry.commandSource);
+				registry.dispatcher.execute("loadworld logic", registry.commandSource);
+				registry.dispatcher.execute("tp 8 2.005 -8", registry.commandSource);
+				registry.dispatcher.execute("gms", registry.commandSource);
+				registry.dispatcher.execute("tp 8 2.005 -8", registry.commandSource);
+				registry.dispatcher.execute("fill 6 1 -10 6 1 -10 chip_designer", registry.commandSource);
 				CaveGame.getInstance().getPlayer().isFlying = true;
 			} catch (CommandSyntaxException e)
 			{

@@ -84,7 +84,7 @@ public abstract class AbstractIndexedMicroBlock extends CustomBlock implements I
 
 	private static final Vector3f DIRFRAC = new Vector3f();
 
-	private boolean intersectsAABB(Vector3f dir, Vector3f org, AABBf box, Vector3f res)
+	protected boolean intersectsAABB(Vector3f dir, Vector3f org, AABBf box, Vector3f res)
 	{
 		// r.dir is unit direction vector of ray
 		DIRFRAC.x = 1.0f / dir.x;

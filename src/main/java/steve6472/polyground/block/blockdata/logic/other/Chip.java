@@ -78,6 +78,52 @@ public class Chip extends AbstractGate
 		setUUID(UUID.randomUUID());
 	}
 
+	public Chip(List<AbstractGate> gates, int[][] model, int width, int height, int depth)
+	{
+		super("chip", true);
+
+		this.gates = gates;
+		this.model = model;
+		this.setSize(width, height, depth);
+
+		inputList = gates
+			.stream()
+			.filter((g) -> g instanceof Input)
+			.map((g) -> (Input) g)
+			.collect(Collectors.toUnmodifiableList());
+
+		outputList = gates
+			.stream()
+			.filter((g) -> g instanceof Output)
+			.map((g) -> (Output) g)
+			.collect(Collectors.toUnmodifiableList());
+
+		inputStates = new boolean[inputList.size()];
+		outputStates = new boolean[outputList.size()];
+
+		inputConnections = new GatePair[inputList.size()];
+		outputConnections = new GatePairList[outputList.size()];
+
+		inputs = new Vector3i[inputList.size()];
+		outputs = new Vector3i[outputList.size()];
+
+		for (int i = 0; i < inputList.size(); i++)
+		{
+			inputs[i] = new Vector3i(inputList.get(i).getPosition());
+		}
+
+		for (int i = 0; i < outputList.size(); i++)
+		{
+			outputs[i] = new Vector3i(outputList.get(i).getPosition());
+		}
+
+		this.position = new Vector3i();
+
+		inputPositions = inputPositions();
+		outputPositions = outputPositions();
+		setUUID(UUID.randomUUID());
+	}
+
 	@Override
 	public CompoundTag write()
 	{
@@ -124,6 +170,23 @@ public class Chip extends AbstractGate
 		{
 			Output output = outputList.get(i);
 			outputStates[i] = output.getOutputStates()[0];
+		}
+	}
+
+	@Override
+	public void updateModel(int[][] grid)
+	{
+		super.updateModel(grid);
+
+		for (int i = 0; i < outputList.size(); i++)
+		{
+			Output output = outputList.get(i);
+			if (output.isLight())
+			{
+				grid[getPosition().y() + output.getPosition().y()]
+					[(getPosition().x() + output.getPosition().x()) + (getPosition().z() + output.getPosition().z()) * logicData.size()] =
+					getOutputStates()[i] ? 0xffff00 : 0x808000;
+			}
 		}
 	}
 

@@ -9,6 +9,7 @@ import steve6472.polyground.gfx.MainRender;
 import steve6472.polyground.gfx.shaders.EntityShader;
 import steve6472.polyground.tessellators.StackTessellator;
 import steve6472.sge.gfx.Tessellator;
+import steve6472.sge.main.util.ColorUtil;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
@@ -19,6 +20,7 @@ import steve6472.sge.gfx.Tessellator;
 public class EntityTess extends StackTess
 {
 	private static final int MAX_SIZE = 1024 * 32;
+	private static final float INV_255 = 1f / 255f;
 
 	private final StackTessellator tess;
 	private final Vector3f dest3f;
@@ -41,6 +43,16 @@ public class EntityTess extends StackTess
 		stack.transformPosition(x, y, z, dest3f);
 		tess.pos(dest3f);
 		return this;
+	}
+
+	public EntityTess color(int argb)
+	{
+		float alpha = ColorUtil.getAlpha(argb) * INV_255;
+		float red = ColorUtil.getRed(argb) * INV_255;
+		float green = ColorUtil.getGreen(argb) * INV_255;
+		float blue = ColorUtil.getBlue(argb) * INV_255;
+
+		return color(red, green, blue, alpha);
 	}
 
 	public EntityTess color(float r, float g, float b, float a)

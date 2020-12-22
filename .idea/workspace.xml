@@ -34,9 +34,6 @@
       </MavenGeneralSettings>
     </option>
   </component>
-  <component name="ProblemsViewState">
-    <option name="selectedIndex" value="1" />
-  </component>
   <component name="ProjectId" id="1ZTuvkYYsXrUbdXdp4wzwE1yruE" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -73,11 +70,11 @@
       <recent name="steve6472.polyground.block.model.elements" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="steve6472.polyground.item.special" />
       <recent name="steve6472.polyground.block.blockdata" />
       <recent name="steve6472.polyground.block.tree" />
       <recent name="steve6472.polyground.block.blockdata.micro" />
       <recent name="steve6472.polyground.block.special" />
-      <recent name="steve6472.polyground.block.blockdata.logic.other" />
     </key>
   </component>
   <component name="RunAnythingCache">

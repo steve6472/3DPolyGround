@@ -161,6 +161,14 @@ public class DataGenerator
 			.special(new SimpleSpecial("brush"))
 			.generate();
 
+		ItemBuilder
+			.create()
+			.name("chip")
+			.model("chip")
+			.modelPath("logic")
+			.special(new SimpleSpecial("chip"))
+			.generate();
+
 		for (String p : powders)
 		{
 			ItemBuilder.itemModelPath(p + "_powder", "powders", p + "_powder", "items.powders");

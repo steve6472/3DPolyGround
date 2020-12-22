@@ -17,6 +17,8 @@ public class Output extends AbstractGate
 		{0, 0}
 	};
 
+	private boolean isLight = false;
+
 	public Output()
 	{
 		super("output");
@@ -58,9 +60,27 @@ public class Output extends AbstractGate
 		return 1;
 	}
 
+	public boolean isLight()
+	{
+		return isLight;
+	}
+
+	public void setLight(boolean light)
+	{
+		isLight = light;
+	}
+
 	@Override
 	protected AbstractGate createCopy()
 	{
 		return new Output();
+	}
+
+	@Override
+	public AbstractGate copy()
+	{
+		final Output copy = (Output) super.copy();
+		copy.setLight(isLight());
+		return copy;
 	}
 }

@@ -5,6 +5,7 @@ import net.querz.nbt.tag.ListTag;
 import org.joml.Vector3i;
 import steve6472.polyground.block.blockdata.logic.data.LogicBlockData;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -243,6 +244,47 @@ public abstract class AbstractGate
 		return null;
 	}
 
+	public static List<AbstractGate> copy(List<AbstractGate> originalComponents)
+	{
+		List<AbstractGate> copyComponents = new ArrayList<>();
+
+		for (AbstractGate component : originalComponents)
+		{
+			final AbstractGate copy = component.copy();
+			copy.setPosition(component.getPosition().x, component.getPosition().y, component.getPosition().z);
+			copyComponents.add(copy);
+		}
+
+		fixConnections(copyComponents, originalComponents);
+
+		return copyComponents;
+	}
+
+	public static void fixConnections(List<AbstractGate> gates, List<AbstractGate> original)
+	{
+		for (AbstractGate g : original)
+		{
+			GatePair[] inputConnections = g.getInputConnections();
+			for (int i = 0; i < inputConnections.length; i++)
+			{
+				GatePair inputConnection = inputConnections[i];
+				if (inputConnection == null)
+					continue;
+
+				final AbstractGate from = AbstractGate.findGate(gates, inputConnection.getGate().getUUID());
+				final AbstractGate to = AbstractGate.findGate(gates, g.getUUID());
+
+				if (from == null)
+					throw new NullPointerException("""
+						What dum dum did this ?! 
+						My 'game' is perfect! 
+						This error is impossible to get without modifying the save data of a world! 
+						IDENTIFY YOURSELF""");
+				AbstractGate.connect(from, to, inputConnection.getIndex(), i);
+			}
+		}
+	}
+
 	/* End */
 
 	public UUID getUUID()
@@ -363,35 +405,8 @@ public abstract class AbstractGate
 			{
 				GatePair pair = oc.getList().get(j);
 				pair.getGate().disconnectInput(pair.getIndex());
-
-				/*
-				tess.color(1, 0, 0, 1);
-				tess.pos(
-					component.getPosition().x / 16f + component.getOutputPositions()[i].x / 16f + 1f / 32f,
-					component.getPosition().y / 16f + component.getOutputPositions()[i].y / 16f + 1f / 32f - 1f / 64f,
-					component.getPosition().z / 16f + component.getOutputPositions()[i].z / 16f + 1f / 32f
-				).endVertex();
-
-				tess.color(1, 0, 1, 1);
-				tess.pos(
-					pair.getGate().getPosition().x / 16f + pair.getGate().getInputPositions()[pair.getIndex()].x / 16f + 1f / 32f,
-					pair.getGate().getPosition().y / 16f + pair.getGate().getInputPositions()[pair.getIndex()].y / 16f + 1f / 32f - 1f / 64f,
-					pair.getGate().getPosition().z / 16f + pair.getGate().getInputPositions()[pair.getIndex()].z / 16f + 1f / 32f
-				).endVertex();*/
 			}
 		}
-
-		/*for (int i = 0; i < outputConnections.length; i++)
-		{
-			GatePairList list = outputConnections[i];
-
-			for (Iterator<GatePair> iterator = list.iterator(); iterator.hasNext(); )
-			{
-				GatePair next = iterator.next();
-				next.getGate().disconnectInput(next.getIndex());
-				disconnectOutput(i, next.getGate(), next.getIndex());
-			}
-		}*/
 	}
 
 	public GatePair[] getInputConnections()

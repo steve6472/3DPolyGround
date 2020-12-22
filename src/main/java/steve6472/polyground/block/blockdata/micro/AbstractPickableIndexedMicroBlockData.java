@@ -45,7 +45,7 @@ public abstract class AbstractPickableIndexedMicroBlockData extends AbstractInde
 								i != 0 && grid[j][(i - 1) + k * getSize()] != -128,
 								k != 0 && grid[j][i + (k - 1) * getSize()] != -128,
 								j != (getSize() - 1) && grid[j + 1][i + k * getSize()] != -128,
-								j != 0 && grid[j - 1][i + k * getSize()] != 0
+								j != 0 && grid[j - 1][i + k * getSize()] != -128
 							);
 							int color = getPalette().getColors()[grid[j][i + k * getSize()] + 128];
 							tris += Bakery.coloredCube_1x1(i, j, k, color, flags);
