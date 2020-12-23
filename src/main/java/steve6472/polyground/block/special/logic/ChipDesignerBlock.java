@@ -47,6 +47,10 @@ import java.util.List;
  ***********************/
 public class ChipDesignerBlock extends AbstractIndexedMicroBlock implements ISpecialRender
 {
+	private static final int CHIP_OFFSET_X = -2;
+	private static final int CHIP_OFFSET_Y = -10;
+	private static final int CHIP_OFFSET_Z = -2;
+
 	private static final VoxModel DESIGNER_MODEL = new VoxModel(new File("custom_models/vox/logic/chip_designer.vox"));
 	private static final VoxModel BOARD_INSIDE = new VoxModel(new File("custom_models/vox/logic/board_inside.vox"));
 
@@ -113,6 +117,8 @@ public class ChipDesignerBlock extends AbstractIndexedMicroBlock implements ISpe
 			return;
 
 		final Vector4i piece = getLookedAtPiece(world, player, x, y, z);
+		if (piece == null)
+			return;
 		EnumFace f = EnumFace.getFaces()[piece.w];
 		int cx = piece.x + f.getXOffset();
 		int cy = piece.y + f.getYOffset();
@@ -134,6 +140,11 @@ public class ChipDesignerBlock extends AbstractIndexedMicroBlock implements ISpe
 		if (data.chipComponents != null && click.getButton() == KeyList.RMB && !player.holdsBlock() && !player.holdsItem() && lookingAtBox(BUILD_BOX, cx, cy, cz))
 		{
 			place(data, piece, world, x, y, z);
+		}
+
+		if (data.chipComponents != null && click.getButton() == KeyList.LMB && lookingAtBox(BUILD_BOX, piece.x, piece.y, piece.z))
+		{
+			breakPixel(data, piece, world, x, y, z);
 		}
 
 		if (click.getButton() != KeyList.LMB)
@@ -182,13 +193,13 @@ public class ChipDesignerBlock extends AbstractIndexedMicroBlock implements ISpe
 		if (lookingAtBox(INPUT_TYPE_UP_ARROW, piece))
 		{
 			data.selectedInputType = data.selectedInputType.next();
-			updateInput(world, data, x, y, z, piece);
+			updateInput(world, data, x, y, z);
 		}
 
 		if (lookingAtBox(OUTPUT_TYPE_UP_ARROW, piece))
 		{
 			data.selectedOutputType = data.selectedOutputType.next();
-			updateOutput(world, data, x, y, z, piece);
+			updateOutput(world, data, x, y, z);
 		}
 
 		if (lookingAtBox(INPUT_UP_ARROW, piece))
@@ -244,11 +255,46 @@ public class ChipDesignerBlock extends AbstractIndexedMicroBlock implements ISpe
 		}
 	}
 
+	private void breakPixel(ChipDesignerData data, Vector4i piece, World world, int x, int y, int z)
+	{
+		int c = getChipColor(data, piece.x, piece.y, piece.z);
+
+		// Break input
+		if (c == 0xffffffff)
+		{
+			final AbstractGate gate = data.getInputGateAt(piece.x + CHIP_OFFSET_X, piece.y + CHIP_OFFSET_Y, piece.z + CHIP_OFFSET_Z);
+			if (gate != null)
+			{
+				gate.setPosition(-1, -1, -1);
+			}
+		}
+
+		// Break output
+		if (c == 0xff010101)
+		{
+			final AbstractGate gate = data.getOutputGateAt(piece.x + CHIP_OFFSET_X, piece.y + CHIP_OFFSET_Y, piece.z + CHIP_OFFSET_Z);
+			if (gate != null)
+			{
+				gate.setPosition(-1, -1, -1);
+			}
+		}
+
+		setChipColor(data, piece.x, piece.y, piece.z, 0);
+
+		data.updateModel();
+		world.getSubChunkFromBlockCoords(x, y, z).rebuild();
+	}
+
 	private void place(ChipDesignerData data, Vector4i piece, World world, int x, int y, int z)
 	{
+		EnumFace f = EnumFace.getFaces()[piece.w];
+		int cx = piece.x + f.getXOffset();
+		int cy = piece.y + f.getYOffset();
+		int cz = piece.z + f.getZOffset();
+
 		if (data.selectedType == ChipDesignerData.SelectedType.COLOR)
 		{
-			placePixel(piece, data, PaletteRegistry.RAINBOW.getColors()[data.selectedColorIndex + 128]);
+			setChipColor(data, cx, cy, cz, PaletteRegistry.RAINBOW.getColors()[data.selectedColorIndex + 128]);
 
 			data.updateModel();
 			world.getSubChunkFromBlockCoords(x, y, z).rebuild();
@@ -258,15 +304,15 @@ public class ChipDesignerBlock extends AbstractIndexedMicroBlock implements ISpe
 		{
 			if (data.selectedInputIndex < data.inputComponents.size())
 			{
-				placePixel(piece, data, 0xffffffff);
+				setChipColor(data, cx, cy, cz, 0xffffffff);
 				AbstractGate gate = data.inputComponents.get(data.selectedInputIndex);
 
 				// Remove pixel of old gate
 				if (!gate.getPosition().equals(-1, -1, -1))
 				{
-					placePixel(gate.getPosition().x + 2, gate.getPosition().y + 9, gate.getPosition().z + 2, 0, data, 0);
+					setChipColor(data, gate.getPosition().x - CHIP_OFFSET_X, gate.getPosition().y - CHIP_OFFSET_Y, gate.getPosition().z - CHIP_OFFSET_Z, 0);
 				}
-				gate.setPosition(piece.x - 2, piece.y - 9, piece.z - 2);
+				gate.setPosition(cx + CHIP_OFFSET_X, cy + CHIP_OFFSET_Y, cz + CHIP_OFFSET_Z);
 
 				data.updateModel();
 				world.getSubChunkFromBlockCoords(x, y, z).rebuild();
@@ -277,39 +323,21 @@ public class ChipDesignerBlock extends AbstractIndexedMicroBlock implements ISpe
 		{
 			if (data.selectedOutputIndex < data.outputComponents.size())
 			{
-				placePixel(piece, data, 0xff010101);
+				setChipColor(data, cx, cy, cz, 0xff010101);
 				Output gate = (Output) data.outputComponents.get(data.selectedOutputIndex);
 
 				// Remove pixel of old gate
 				if (!gate.getPosition().equals(-1, -1, -1))
 				{
-					placePixel(gate.getPosition().x + 2, gate.getPosition().y + 9, gate.getPosition().z + 2, 0, data, 0);
+					setChipColor(data, gate.getPosition().x - CHIP_OFFSET_X, gate.getPosition().y - CHIP_OFFSET_Y, gate.getPosition().z - CHIP_OFFSET_Z, 0);
 				}
-				gate.setPosition(piece.x - 2, piece.y - 9, piece.z - 2);
+				gate.setPosition(cx + CHIP_OFFSET_X, cy + CHIP_OFFSET_Y, cz + CHIP_OFFSET_Z);
 				gate.setLight(data.selectedOutputType == ChipDesignerData.OutputType.LIGHT);
 
 				data.updateModel();
 				world.getSubChunkFromBlockCoords(x, y, z).rebuild();
 			}
 		}
-	}
-
-	private void placePixel(Vector4i c, ChipDesignerData data, int color)
-	{
-		placePixel(c.x, c.y, c.z, c.w, data, color);
-	}
-
-	private void placePixel(int x, int y, int z, int w, ChipDesignerData data, int color)
-	{
-		EnumFace f = EnumFace.getFaces()[w];
-		int cx = x + f.getXOffset();
-		int cy = y + f.getYOffset();
-		int cz = z + f.getZOffset();
-
-		cx -= 2;
-		cy -= 10;
-		cz -= 2;
-		data.chipModel[cy][cx + cz * 22] = color;
 	}
 
 	private void setNumber(World world, ChipDesignerData data, int wx, int wy, int wz, int number, int x, int y, int z)
@@ -320,7 +348,7 @@ public class ChipDesignerBlock extends AbstractIndexedMicroBlock implements ISpe
 		world.getSubChunkFromBlockCoords(wx, wy, wz).rebuild();
 	}
 
-	private void updateInput(World world, ChipDesignerData data, int x, int y, int z, Vector4i c)
+	private void updateInput(World world, ChipDesignerData data, int x, int y, int z)
 	{
 		VoxModel model;
 
@@ -335,7 +363,7 @@ public class ChipDesignerBlock extends AbstractIndexedMicroBlock implements ISpe
 		world.getSubChunkFromBlockCoords(x, y, z).rebuild();
 	}
 
-	private void updateOutput(World world, ChipDesignerData data, int x, int y, int z, Vector4i c)
+	private void updateOutput(World world, ChipDesignerData data, int x, int y, int z)
 	{
 		VoxModel model;
 
@@ -350,6 +378,16 @@ public class ChipDesignerBlock extends AbstractIndexedMicroBlock implements ISpe
 		world.getSubChunkFromBlockCoords(x, y, z).rebuild();
 	}
 
+	/**
+	 * Sets selectedColorIndex in ChipDesignerData from the color palette
+	 *
+	 * @param world world
+	 * @param data data
+	 * @param x x position
+	 * @param y y position
+	 * @param z z position
+	 * @param c clicked pixel
+	 */
 	private void setColor(World world, ChipDesignerData data, int x, int y, int z, Vector4i c)
 	{
 		INPUT_MODEL.insert(data.grid, 32, 32, 27, 10, 1);
@@ -416,6 +454,32 @@ public class ChipDesignerBlock extends AbstractIndexedMicroBlock implements ISpe
 
 		 if (data.chipComponents == null)
 		 	return;
+
+		for (AbstractGate g : data.inputComponents)
+		{
+			stack.pushMatrix();
+			stack.scale(1f / 16f);
+
+			LineTess ltess = stack.getLineTess();
+
+			ltess.coloredBoxWHD(g.getPosition().x - 0.1f - CHIP_OFFSET_X, g.getPosition().y - 0.1f - CHIP_OFFSET_Y, g.getPosition().z - 0.1f - CHIP_OFFSET_Z,
+				1.2f, 1.2f, 1.2f, 0.7f, 0.7f, 0.7f, 1);
+
+			stack.popMatrix();
+		}
+
+		for (AbstractGate g : data.outputComponents)
+		{
+			stack.pushMatrix();
+			stack.scale(1f / 16f);
+
+			LineTess ltess = stack.getLineTess();
+
+			ltess.coloredBoxWHD(g.getPosition().x - 0.1f - CHIP_OFFSET_X, g.getPosition().y - 0.1f - CHIP_OFFSET_Y, g.getPosition().z - 0.1f - CHIP_OFFSET_Z,
+				1.2f, 1.2f, 1.2f, 0.3f, 0.3f, 0.3f, 1);
+
+			stack.popMatrix();
+		}
 
 		Vector4i c = getLookedAtPiece(world, CaveGame.getInstance().getPlayer(), x, y, z);
 		if (c == null)
@@ -496,17 +560,21 @@ public class ChipDesignerBlock extends AbstractIndexedMicroBlock implements ISpe
 
 	private int getChipColor(ChipDesignerData data, int x, int y, int z)
 	{
-		x -= 2;
-		y -= 10;
-		z -= 2;
+		x += CHIP_OFFSET_X;
+		y += CHIP_OFFSET_Y;
+		z += CHIP_OFFSET_Z;
 		if (y >= 0 && y < 22 && x >= 0 && x < 22 && z >= 0 && z < 22)
 			return data.chipModel[y][x + z * 22];
 		return 0;
 	}
 
-	private void renderAABBi(EntityTess tess, AABBi aabb)
+	private void setChipColor(ChipDesignerData data, int x, int y, int z, int color)
 	{
-		tess.rectShade(aabb.minX / 16f, aabb.minY / 16f, aabb.minZ / 16f, (aabb.maxX - aabb.minX) / 16f, (aabb.maxY - aabb.minY) / 16f, (aabb.maxZ - aabb.minZ) / 16f);
+		x += CHIP_OFFSET_X;
+		y += CHIP_OFFSET_Y;
+		z += CHIP_OFFSET_Z;
+		if (y >= 0 && y < 22 && x >= 0 && x < 22 && z >= 0 && z < 22)
+			data.chipModel[y][x + z * 22] = color;
 	}
 
 	@Override
@@ -536,7 +604,9 @@ public class ChipDesignerBlock extends AbstractIndexedMicroBlock implements ISpe
 
 		List<CubeHitbox> hitboxes = new ArrayList<>();
 
-		hitboxes.add(new CubeHitbox(toAABBf(TABLE)).setVisible(lookingAtBox(TABLE, c)));
+		final AABBf table = toAABBf(TABLE);
+		table.maxY += 1;
+		hitboxes.add(new CubeHitbox(table).setVisible(lookingAtBox(TABLE, c)));
 		hitboxes.add(new CubeHitbox(toAABBf(COLOR_PICKER_BUTTON)).setVisible(lookingAtBox(COLOR_PICKER_BUTTON, c)));
 		hitboxes.add(new CubeHitbox(toAABBf(DISPLAY)).setVisible(lookingAtBox(DISPLAY, c)));
 		hitboxes.add(new CubeHitbox(toAABBf(BOARD)).setVisible(lookingAtBox(BOARD, c)));
@@ -617,6 +687,17 @@ public class ChipDesignerBlock extends AbstractIndexedMicroBlock implements ISpe
 		return tris;
 	}
 
+	/**
+	 *
+	 * @param world world
+	 * @param player player
+	 * @param x x coordinate
+	 * @param y y coordinate
+	 * @param z z coordinate
+	 * @return x, y, z, side
+	 *         UP, DOWN, NORTH, EAST, SOUTH, WEST
+	 *         0    1      2     3      4     5
+	 */
 	protected Vector4i getLookedAtPiece(World world, Player player, int x, int y, int z)
 	{
 		ChipDesignerData data = (ChipDesignerData) world.getData(x, y, z);
@@ -696,6 +777,12 @@ public class ChipDesignerBlock extends AbstractIndexedMicroBlock implements ISpe
 
 	private static AABBf toAABBf(AABBi box)
 	{
-		return new AABBf(box.minX / 16f - 8 / 16f, box.minY / 16f, box.minZ / 16f - 8 / 16f, box.maxX / 16f - 8 / 16f, box.maxY / 16f, box.maxZ / 16f - 8 / 16f);
+		return new AABBf(
+			box.minX / 16f - 8 / 16f,
+			box.minY / 16f,
+			box.minZ / 16f - 8 / 16f,
+			box.maxX / 16f - 8 / 16f,
+			box.maxY / 16f,
+			box.maxZ / 16f - 8 / 16f);
 	}
 }

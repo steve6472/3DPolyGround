@@ -211,21 +211,7 @@ public class Chip extends AbstractGate
 			gatesCopy.add(g.copy());
 		}
 
-		for (AbstractGate g : gates)
-		{
-			GatePair[] inputConnections = g.getInputConnections();
-			for (int i = 0; i < inputConnections.length; i++)
-			{
-				GatePair inputConnection = inputConnections[i];
-				if (inputConnection == null)
-					continue;
-
-				final AbstractGate from = AbstractGate.findGate(gatesCopy, inputConnection.getGate().getUUID());
-				final AbstractGate to = AbstractGate.findGate(gatesCopy, g.getUUID());
-
-				AbstractGate.connect(from, to, inputConnection.getIndex(), i);
-			}
-		}
+		AbstractGate.fixConnections(gates, gatesCopy);
 
 		return new Chip(gatesCopy);
 	}

@@ -1,5 +1,7 @@
 package steve6472.polyground.block.blockdata.logic;
 
+import net.querz.nbt.tag.CompoundTag;
+import net.querz.nbt.tag.ListTag;
 import steve6472.polyground.block.blockdata.logic.other.Input;
 import steve6472.polyground.block.blockdata.logic.other.Output;
 import steve6472.polyground.block.blockdata.micro.AbstractPickableIndexedMicroBlockData;
@@ -158,6 +160,73 @@ public class ChipDesignerData extends AbstractPickableIndexedMicroBlockData
 
 			return tris;
 		});
+	}
+
+	@Override
+	public CompoundTag write()
+	{
+		final CompoundTag tag = super.write();
+
+		for (int i = 0; i < 22; i++)
+		{
+			tag.putIntArray("chip_layer_" + i, chipModel[i]);
+		}
+		tag.putByte("selectedColorIndex", selectedColorIndex);
+
+		tag.putString("selectedOutputType", selectedOutputType.name());
+		tag.putString("selectedInputType", selectedInputType.name());
+		tag.putString("selectedType", selectedType.name());
+
+		tag.putInt("selectedInputIndex", selectedInputIndex);
+		tag.putInt("selectedOutputIndex", selectedOutputIndex);
+
+		if (chipComponents != null)
+		{
+			ListTag<CompoundTag> list = new ListTag<>(CompoundTag.class);
+
+			for (AbstractGate g : chipComponents)
+			{
+				list.add(g.write());
+			}
+
+			tag.put("components", list);
+		}
+
+		return tag;
+	}
+
+	@Override
+	public void read(CompoundTag tag)
+	{
+		super.read(tag);
+		chipModel = new int[22][];
+		for (int i = 0; i < 22; i++)
+		{
+			chipModel[i] = tag.getIntArray("chip_layer_" + i);
+		}
+		selectedColorIndex = tag.getByte("selectedColorIndex");
+
+		selectedOutputType = OutputType.valueOf(tag.getString("selectedOutputType"));
+		selectedInputType = InputType.valueOf(tag.getString("selectedInputType"));
+		selectedType = SelectedType.valueOf(tag.getString("selectedType"));
+
+		selectedInputIndex = tag.getInt("selectedInputIndex");
+		selectedOutputIndex = tag.getInt("selectedOutputIndex");
+
+		if (tag.containsKey("components"))
+		{
+			chipComponents = AbstractGate.readComponents(tag, null);
+			inputComponents = new ArrayList<>();
+			outputComponents = new ArrayList<>();
+
+			for (AbstractGate component : chipComponents)
+			{
+				if (component instanceof Input)
+					inputComponents.add(component);
+				if (component instanceof Output)
+					outputComponents.add(component);
+			}
+		}
 	}
 
 	@Override

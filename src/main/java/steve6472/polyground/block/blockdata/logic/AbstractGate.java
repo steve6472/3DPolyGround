@@ -4,6 +4,7 @@ import net.querz.nbt.tag.CompoundTag;
 import net.querz.nbt.tag.ListTag;
 import org.joml.Vector3i;
 import steve6472.polyground.block.blockdata.logic.data.LogicBlockData;
+import steve6472.polyground.block.blockdata.logic.other.Chip;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -283,6 +284,43 @@ public abstract class AbstractGate
 				AbstractGate.connect(from, to, inputConnection.getIndex(), i);
 			}
 		}
+	}
+
+	/**
+	 * Reads from ListTag "components"
+	 *
+	 * @param tag nbt to read from
+	 * @param data either LogicBlockData or null
+	 * @return list of AbstractGates
+	 */
+	public static List<AbstractGate> readComponents(CompoundTag tag, LogicBlockData data)
+	{
+		final ListTag<CompoundTag> components = (ListTag<CompoundTag>) tag.getListTag("components");
+		final List<AbstractGate> gates = new ArrayList<>();
+		for (CompoundTag c : components)
+		{
+			final String type = c.getString("type");
+			if (type.equals("chip"))
+			{
+				Chip g = new Chip(readComponents(c, data));
+				g.read(c);
+				g.setLogicData(data);
+				gates.add(g);
+			} else
+			{
+				AbstractGate g = GateReg.newGate(type);
+				g.read(c);
+				g.setLogicData(data);
+				gates.add(g);
+			}
+		}
+		for (CompoundTag c : components)
+		{
+			final AbstractGate gate = AbstractGate.findGate(gates, UUID.fromString(c.getString("uuid")));
+			gate.read(c, gates);
+		}
+
+		return gates;
 	}
 
 	/* End */

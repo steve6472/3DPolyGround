@@ -3,15 +3,11 @@ package steve6472.polyground.item.itemdata;
 import net.querz.nbt.tag.CompoundTag;
 import net.querz.nbt.tag.ListTag;
 import steve6472.polyground.block.blockdata.logic.AbstractGate;
-import steve6472.polyground.block.blockdata.logic.GateReg;
-import steve6472.polyground.block.blockdata.logic.other.Chip;
 import steve6472.polyground.block.blockdata.logic.other.Input;
 import steve6472.polyground.block.blockdata.logic.other.Output;
 import steve6472.polyground.registry.itemdata.ItemDataRegistry;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
@@ -63,7 +59,10 @@ public class ChipData extends ItemData
 		for (AbstractGate c : components)
 		{
 			if (c instanceof Input || c instanceof Output)
+			{
+//				System.out.println(c.getClass().getName() + " " + String.format("%d, %d, %d", c.getPosition().x - minK, c.getPosition().y - minI, c.getPosition().z - minJ));
 				c.setPosition(c.getPosition().x - minK, c.getPosition().y - minI, c.getPosition().z - minJ);
+			}
 		}
 
 //		System.out.printf("%d, %d | %d, %d | %d, %d\n", minI, maxI, minJ, maxJ, minK, maxK);
@@ -121,7 +120,7 @@ public class ChipData extends ItemData
 	@Override
 	public void read(CompoundTag tag)
 	{
-		this.components = readComponents(tag);
+		this.components = AbstractGate.readComponents(tag, null);
 		width = tag.getInt("width");
 		height = tag.getInt("height");
 		depth = tag.getInt("depth");
@@ -131,34 +130,6 @@ public class ChipData extends ItemData
 			int[] layer = tag.getIntArray("layer" + i);
 			model[i] = layer;
 		}
-	}
-
-	private List<AbstractGate> readComponents(CompoundTag tag)
-	{
-		final ListTag<CompoundTag> components = (ListTag<CompoundTag>) tag.getListTag("components");
-		final List<AbstractGate> gates = new ArrayList<>();
-		for (CompoundTag c : components)
-		{
-			final String type = c.getString("type");
-			if (type.equals("chip"))
-			{
-				Chip g = new Chip(readComponents(c));
-				g.read(c);
-				gates.add(g);
-			} else
-			{
-				AbstractGate g = GateReg.newGate(type);
-				g.read(c);
-				gates.add(g);
-			}
-		}
-		for (CompoundTag c : components)
-		{
-			final AbstractGate gate = AbstractGate.findGate(gates, UUID.fromString(c.getString("uuid")));
-			gate.read(c, gates);
-		}
-
-		return gates;
 	}
 
 	@Override

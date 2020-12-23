@@ -4,17 +4,15 @@ import net.querz.nbt.tag.CompoundTag;
 import net.querz.nbt.tag.ListTag;
 import org.joml.Vector3i;
 import steve6472.polyground.EnumFace;
-import steve6472.polyground.block.blockdata.micro.AbstractPickableMicroBlockData;
 import steve6472.polyground.block.blockdata.logic.AbstractGate;
 import steve6472.polyground.block.blockdata.logic.GateReg;
-import steve6472.polyground.block.blockdata.logic.other.Chip;
+import steve6472.polyground.block.blockdata.micro.AbstractPickableMicroBlockData;
 import steve6472.polyground.registry.blockdata.BlockDataRegistry;
 import steve6472.sge.main.util.Pair;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
@@ -319,37 +317,7 @@ public class LogicBlockData extends AbstractPickableMicroBlockData
 	{
 		super.read(tag);
 
-		this.components = readComponents(tag);
-	}
-
-	private List<AbstractGate> readComponents(CompoundTag tag)
-	{
-		final ListTag<CompoundTag> components = (ListTag<CompoundTag>) tag.getListTag("components");
-		final List<AbstractGate> gates = new ArrayList<>();
-		for (CompoundTag c : components)
-		{
-			final String type = c.getString("type");
-			if (type.equals("chip"))
-			{
-				Chip g = new Chip(readComponents(c));
-				g.read(c);
-				g.setLogicData(this);
-				gates.add(g);
-			} else
-			{
-				AbstractGate g = GateReg.newGate(type);
-				g.read(c);
-				g.setLogicData(this);
-				gates.add(g);
-			}
-		}
-		for (CompoundTag c : components)
-		{
-			final AbstractGate gate = AbstractGate.findGate(gates, UUID.fromString(c.getString("uuid")));
-			gate.read(c, gates);
-		}
-
-		return gates;
+		this.components = AbstractGate.readComponents(tag, this);
 	}
 
 	public int size()
