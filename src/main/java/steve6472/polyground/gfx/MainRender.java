@@ -4,10 +4,7 @@ import org.joml.AABBf;
 import org.joml.Vector3f;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
-import steve6472.polyground.AABBUtil;
-import steve6472.polyground.CaveGame;
-import steve6472.polyground.Frustum;
-import steve6472.polyground.PolyUtil;
+import steve6472.polyground.*;
 import steve6472.polyground.events.TessTestEvent;
 import steve6472.polyground.events.WorldEvent;
 import steve6472.polyground.gfx.light.LightManager;
@@ -30,6 +27,7 @@ import steve6472.sge.main.events.Event;
 import steve6472.sge.main.events.WindowSizeEvent;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import static org.lwjgl.opengl.GL11.*;
@@ -240,6 +238,26 @@ public class MainRender
 		}
 
 		if (game.options.renderPlayerBoudingBox) stack.getLineTess().debugBox(game.getPlayer().getHitbox().getHitbox());
+
+		renderTimedBlockPos(0.1f, 0.7f, 0.7f, 0.2f, game.options.renderNeighbourChangeList);
+		renderTimedBlockPos(0.7f, 0.6f, 0.1f, 0.4f, game.options.renderRandomTicksList);
+	}
+
+	private void renderTimedBlockPos(float r, float g, float b, float a, List<TimedBlockPos> list)
+	{
+		stack.getEntityTess().color(r, g, b, a);
+
+		for (Iterator<TimedBlockPos> iterator = list.iterator(); iterator.hasNext(); )
+		{
+			TimedBlockPos next = iterator.next();
+			next.getCloserToDeath();
+			if (next.isDead())
+			{
+				iterator.remove();
+				continue;
+			}
+			stack.getEntityTess().rectShade(next.getX() - 0.05f, next.getY() - 0.05f, next.getZ() - 0.05f, 1.1f, 1.1f, 1.1f);
+		}
 	}
 
 	private void renderTeleporters()

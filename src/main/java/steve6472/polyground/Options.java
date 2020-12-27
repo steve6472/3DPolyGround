@@ -1,5 +1,8 @@
 package steve6472.polyground;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**********************
  * Created by steve6472 (Mirek Jozefek)
  * On date: 09.09.2019
@@ -83,6 +86,11 @@ public class Options
 	public boolean renderPlayerBoudingBox = false;
 	public boolean disableLogicWire = false;
 	public boolean renderLogicConnections = false;
+	public boolean renderNeighbourChange = false;
+	public boolean renderRandomTicks = false;
+
+	public List<TimedBlockPos> renderNeighbourChangeList = new ArrayList<>();
+	public List<TimedBlockPos> renderRandomTicksList = new ArrayList<>();
 
 	public float mouseSensitivity = 0.1f;
 

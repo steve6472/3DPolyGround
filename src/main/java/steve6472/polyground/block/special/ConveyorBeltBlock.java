@@ -70,7 +70,7 @@ public class ConveyorBeltBlock extends DirectionalBlock implements IBlockData, I
 	public void entityOnBlockCollision(EntityBase entity, World world, BlockState state, int x, int y, int z)
 	{
 		EnumFace f = state.get(FACING);
-		entity.getMotion().add(f.getXOffset() / 100f, 0, f.getZOffset() / 100f);
+		entity.getMotion().add(f.getXOffset() / 700f, 0, f.getZOffset() / 700f);
 
 		if (f.getAxis() == EnumAxis.X)
 		{

@@ -196,7 +196,9 @@ public class Tree
 					if (dist <= radius)
 					{
 						if (world.getBlock(pos.getX() + x, pos.getY() + y, pos.getZ() + z) == Block.AIR)
-							world.setBlock(leaves, pos.getX() + x, pos.getY() + y, pos.getZ() + z);
+						{
+							world.setState(leaves.getStateForPlacement(world, null, EnumFace.NONE, pos.getX(), pos.getY(), pos.getZ()), pos.getX() + x, pos.getY() + y, pos.getZ() + z);
+						}
 					}
 				}
 			}

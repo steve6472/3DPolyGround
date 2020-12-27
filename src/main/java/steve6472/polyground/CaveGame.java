@@ -11,6 +11,7 @@ import steve6472.polyground.commands.CommandSource;
 import steve6472.polyground.entity.player.EnumGameMode;
 import steve6472.polyground.entity.player.Player;
 import steve6472.polyground.events.CancellableEvent;
+import steve6472.polyground.events.MouseClickEvent;
 import steve6472.polyground.events.SpecialBlockRegistryEvent;
 import steve6472.polyground.generator.DataGenerator;
 import steve6472.polyground.gfx.MainRender;
@@ -37,6 +38,7 @@ import steve6472.sge.gui.Gui;
 import steve6472.sge.main.*;
 import steve6472.sge.main.events.Event;
 import steve6472.sge.main.events.KeyEvent;
+import steve6472.sge.main.events.MouseEvent;
 import steve6472.sge.main.events.WindowSizeEvent;
 import steve6472.sge.main.game.Camera;
 
@@ -169,6 +171,13 @@ public class CaveGame extends MainApp
 	public int currentWaterCount;
 	private boolean oldCrosshair;
 	private boolean oldCrosshairFlag;
+
+	@Event
+	public void mouseClickEvent(MouseEvent e)
+	{
+		if (hitPicker != null)
+			runEvent(new MouseClickEvent(new MouseClick(e, player.getHitResult(), player), e));
+	}
 
 	@Override
 	public void tick()

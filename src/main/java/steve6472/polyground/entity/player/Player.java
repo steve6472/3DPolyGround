@@ -7,7 +7,6 @@ import org.joml.Vector3f;
 import steve6472.polyground.CaveGame;
 import steve6472.polyground.EnumFace;
 import steve6472.polyground.HitResult;
-import steve6472.polyground.MouseClick;
 import steve6472.polyground.block.Block;
 import steve6472.polyground.block.Tags;
 import steve6472.polyground.block.blockdata.BlockData;
@@ -15,6 +14,7 @@ import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.entity.EntityHitbox;
 import steve6472.polyground.entity.item.BlockEntity;
 import steve6472.polyground.entity.item.ItemEntity;
+import steve6472.polyground.events.MouseClickEvent;
 import steve6472.polyground.item.Item;
 import steve6472.polyground.item.itemdata.IItemData;
 import steve6472.polyground.item.itemdata.ItemData;
@@ -22,7 +22,6 @@ import steve6472.polyground.world.World;
 import steve6472.sge.main.KeyList;
 import steve6472.sge.main.events.Event;
 import steve6472.sge.main.events.KeyEvent;
-import steve6472.sge.main.events.MouseEvent;
 import steve6472.sge.main.game.Camera;
 import steve6472.sge.main.game.mixable.IMotion3f;
 import steve6472.sge.main.game.mixable.IPosition3f;
@@ -249,7 +248,7 @@ public class Player implements IMotion3f, IPosition3f
 	}
 
 	@Event
-	public void mouseEvent(MouseEvent event)
+	public void mouseEvent(MouseClickEvent event)
 	{
 		if (game.world == null || game.options.isInMenu)
 			return;
@@ -258,8 +257,6 @@ public class Player implements IMotion3f, IPosition3f
 		if (game.mainRender.dialogManager.isActive())
 			return;
 
-		MouseClick click = new MouseClick(event, getHitResult(), this);
-
 		if (getHitResult().isHit() && event.getAction() == KeyList.PRESS)
 		{
 			HitResult hr = game.hitPicker.getHitResult();
@@ -267,28 +264,28 @@ public class Player implements IMotion3f, IPosition3f
 
 			BlockState state = world.getState(hr.getX(), hr.getY(), hr.getZ());
 
-			state.getBlock().onClick(state, world, this, hr.getFace(), event, hr.getX(), hr.getY(), hr.getZ());
+			state.getBlock().onClick(state, world, this, hr.getFace(), event.getEvent(), hr.getX(), hr.getY(), hr.getZ());
 		}
 
 		if (holdsItem())
 		{
-			if (click.hitBlock())
-				getItemInHand().onClick(world, this, click);
+			if (event.hitBlock())
+				getItemInHand().onClick(world, this, event.getClick());
 			else
-				getItemInHand().onClick(this, click);
+				getItemInHand().onClick(this, event.getClick());
 		}
 
-		if (event.getButton() == KeyList.RMB && event.getAction() == KeyList.PRESS)
+		if (event.getEvent().getButton() == KeyList.RMB && event.getAction() == KeyList.PRESS)
 		{
 			pressRMB();
 		}
 
-		if (event.getButton() == KeyList.LMB && event.getAction() == KeyList.PRESS)
+		if (event.getEvent().getButton() == KeyList.LMB && event.getAction() == KeyList.PRESS)
 		{
 			pressLMB();
 		}
 
-		if (event.getButton() == KeyList.MMB && event.getAction() == KeyList.PRESS)
+		if (event.getEvent().getButton() == KeyList.MMB && event.getAction() == KeyList.PRESS)
 		{
 			pressMMB();
 		}

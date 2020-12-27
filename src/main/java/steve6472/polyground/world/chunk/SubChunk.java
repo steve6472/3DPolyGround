@@ -1,6 +1,8 @@
 package steve6472.polyground.world.chunk;
 
+import steve6472.polyground.CaveGame;
 import steve6472.polyground.EnumFace;
+import steve6472.polyground.TimedBlockPos;
 import steve6472.polyground.block.Block;
 import steve6472.polyground.block.blockdata.BlockData;
 import steve6472.polyground.block.blockdata.IWorld;
@@ -88,6 +90,10 @@ public class SubChunk implements IBiomeProvider
 
 			if (blockToTick == Block.AIR)
 				continue;
+
+			if (CaveGame.getInstance().options.renderRandomTicks)
+				CaveGame.getInstance().options.renderRandomTicksList.add(new TimedBlockPos(x + getX() * 16, y + getLayer() * 16, z + getZ() * 16, 30));
+
 
 			if (blockToTick.randomTickable())
 				blockToTick.randomTick(stateToTick, getWorld(), x + getX() * 16, y + getLayer() * 16, z + getZ() * 16);

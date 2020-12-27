@@ -1,7 +1,9 @@
 package steve6472.polyground.world;
 
+import steve6472.polyground.CaveGame;
 import steve6472.polyground.EnumFace;
 import steve6472.polyground.HitResult;
+import steve6472.polyground.TimedBlockPos;
 import steve6472.polyground.block.Block;
 import steve6472.polyground.block.ISpecialRender;
 import steve6472.polyground.block.blockdata.BlockData;
@@ -129,6 +131,12 @@ public interface IWorldBlockProvider extends IChunkProvider
 					{
 						BlockState stateToUpdate = getWorld().getState(x + face.getXOffset(), y + face.getYOffset(), z + face.getZOffset());
 						stateToUpdate.getBlock().neighbourChange(stateToUpdate, getWorld(), face.getOpposite(), x + face.getXOffset(), y + face.getYOffset(), z + face.getZOffset());
+
+						if (CaveGame.getInstance().options.renderNeighbourChange)
+						{
+							if (Thread.currentThread().getId() == CaveGame.MAIN_THREAD && !stateToUpdate.isAir())
+								CaveGame.getInstance().options.renderNeighbourChangeList.add(new TimedBlockPos(x + face.getXOffset(), y + face.getYOffset(), z + face.getZOffset(), 30));
+						}
 					}
 				}
 			}

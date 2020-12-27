@@ -84,12 +84,15 @@ public class StackTessellator extends AbstractTessellator
 	@Override
 	public void endVertex()
 	{
-		pos.put(x).put(y).put(z);
-		color.put(r).put(g).put(b).put(a);
-		texture.put(tx).put(ty);
-		normal.put(nx).put(ny).put(nz);
-		current++;
-		super.endVertex();
+		if (hasSpace())
+		{
+			pos.put(x).put(y).put(z);
+			color.put(r).put(g).put(b).put(a);
+			texture.put(tx).put(ty);
+			normal.put(nx).put(ny).put(nz);
+			current++;
+			super.endVertex();
+		}
 	}
 
 	@Override

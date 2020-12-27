@@ -30,6 +30,38 @@ public class MouseClick
 		button = EnumMouseButton.getButton(event.getButton());
 		mods = event.getMods();
 
+		if (hitResult != null && hitResult.isHit())
+		{
+			state = hitResult.getState();
+			blockX = hitResult.getX();
+			blockY = hitResult.getY();
+			blockZ = hitResult.getZ();
+			hitX = hitResult.getPx();
+			hitY = hitResult.getPy();
+			hitZ = hitResult.getPz();
+			face = hitResult.getFace();
+		} else
+		{
+			state = Block.AIR.getDefaultState();
+			blockX = 0;
+			blockY = 0;
+			blockZ = 0;
+			hitX = Float.NaN;
+			hitY = Float.NaN;
+			hitZ = Float.NaN;
+			face = EnumFace.NONE;
+		}
+
+		dirX = player.viewDir.x;
+		dirY = player.viewDir.y;
+		dirZ = player.viewDir.z;
+	}
+
+	public MouseClick(int button, int mods, HitResult hitResult, Player player)
+	{
+		this.button = EnumMouseButton.getButton(button);
+		this.mods = mods;
+
 		if (hitResult.isHit())
 		{
 			state = hitResult.getState();
