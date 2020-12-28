@@ -6,8 +6,8 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.suggestion.Suggestion;
 import com.mojang.brigadier.suggestion.Suggestions;
 import steve6472.polyground.CaveGame;
-import steve6472.polyground.registry.CommandRegistry;
 import steve6472.polyground.commands.CommandSource;
+import steve6472.polyground.registry.CommandRegistry;
 import steve6472.sge.gfx.font.Font;
 import steve6472.sge.gui.components.TextField;
 import steve6472.sge.main.KeyList;
@@ -15,6 +15,8 @@ import steve6472.sge.main.MainApp;
 import steve6472.sge.main.events.Event;
 import steve6472.sge.main.events.KeyEvent;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
@@ -27,11 +29,14 @@ import java.util.concurrent.ExecutionException;
 public class GameChat extends TextField
 {
 	public TextLog textLog;
+	private List<String> history;
+	private int historySelector;
 
 	@Override
 	public void init(MainApp main)
 	{
 		super.init(main);
+		history = new ArrayList<>();
 
 		textLog = new TextLog();
 		textLog.setDisplayTime(5000);
@@ -91,16 +96,37 @@ public class GameChat extends TextField
 	}
 
 	@Event
-	public void executeCommand(KeyEvent e)
+	public void key(KeyEvent e)
 	{
+		if (e.getAction() == KeyList.PRESS && e.getKey() == KeyList.UP)
+		{
+			setText(history.get(historySelector));
+			historySelector++;
+			if (historySelector > history.size())
+				historySelector = history.size();
+			endCarret();
+		}
+		if (e.getAction() == KeyList.PRESS && e.getKey() == KeyList.DOWN)
+		{
+			setText(history.get(historySelector));
+			historySelector--;
+			if (historySelector < 0)
+				historySelector = 0;
+			endCarret();
+		}
+
 		if (e.getAction() == KeyList.PRESS && e.getKey() == KeyList.ESCAPE)
 		{
 			setText("");
 			loseFocus();
 			setCarretPosition(0);
+			historySelector = 0;
 
 		} else if (e.getAction() == KeyList.PRESS && (e.getKey() == KeyList.ENTER || e.getKey() == KeyList.KP_ENTER))
 		{
+			if (!history.contains(getText()))
+				history.add(0, getText());
+			historySelector = 0;
 			CaveGame pg = ((CaveGame) getMain());
 			if (isFocused())
 			{

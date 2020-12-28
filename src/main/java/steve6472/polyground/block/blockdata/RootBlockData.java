@@ -53,7 +53,7 @@ public class RootBlockData extends BlockData
 					isGiant = true;
 
 					this.maxTrunkSize = RandomUtil.randomInt(80, 100);
-					this.maxTrunkWidth = 7;
+					this.maxTrunkWidth = 15;
 					this.maxTrunkHeight = RandomUtil.randomInt(20, 32);
 
 					this.branchGrowthTrunkThreshold = RandomUtil.randomInt(8, 13);

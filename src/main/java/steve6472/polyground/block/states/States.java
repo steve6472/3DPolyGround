@@ -41,4 +41,5 @@ public class States
 	public static final IntProperty LOGS = IntProperty.create("logs", 1, 6);
 	public static final IntProperty STAGE_1_3 = IntProperty.create("stage", 1, 3);
 	public static final IntProperty RADIUS_0_7 = IntProperty.create("radius", 0, 7);
+	public static final IntProperty RADIUS_0_15 = IntProperty.create("radius", 0, 15);
 }

@@ -483,8 +483,11 @@ public class Bakery
 		Rectangle r = BlockAtlas.getTexture(texture);
 		float x = r.x;
 		float y = r.y;
-		float w = r.width;
-		float h = r.height;
+		x -= (16 - r.width) / 2.0f;
+		y -= (16 - r.height) / 2.0f;
+		float w = 16f;
+		float h = 16f;
+
 		uv.set((x + w * uv.x) * builder.texel, (y + h * uv.y) * builder.texel);
 		return uv;
 	}

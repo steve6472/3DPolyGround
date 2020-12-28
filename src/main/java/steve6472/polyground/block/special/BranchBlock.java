@@ -2,6 +2,7 @@ package steve6472.polyground.block.special;
 
 import org.joml.AABBf;
 import org.json.JSONObject;
+import steve6472.polyground.block.BlockAtlas;
 import steve6472.polyground.block.model.CubeHitbox;
 import steve6472.polyground.block.model.elements.Bakery;
 import steve6472.polyground.block.properties.BooleanProperty;
@@ -29,13 +30,14 @@ import java.util.List;
 public class BranchBlock extends CustomBlock
 {
 	public static BooleanProperty LEAVES = States.HAS_LEAVES;
-	public static IntProperty RADIUS = States.RADIUS_0_7;
+	public static IntProperty RADIUS = States.RADIUS_0_15;
 	public static EnumProperty<EnumTreeType> TREE_TYPE = States.TREE_TYPE;
 
 	public BranchBlock(JSONObject json)
 	{
 		super(json);
 		setDefaultState(getDefaultState().with(LEAVES, false).with(RADIUS, 0).with(TREE_TYPE, EnumTreeType.OAK));
+		BlockAtlas.putTexture("block/wood/big_log/oak_log");
 	}
 
 	@Override
@@ -55,9 +57,9 @@ public class BranchBlock extends CustomBlock
 
 		int radius = state.get(RADIUS) + 1;
 		int diameter = (state.get(RADIUS) + 1) * 2;
-		tris += Bakery.autoTexturedCube(8 - radius, 8 - radius, 8 - radius, diameter, diameter, diameter, type.getLogTexture(), 0);
+		tris += Bakery.autoTexturedCube(8 - radius, Math.max(8 - radius, 0), 8 - radius, diameter, Math.min(diameter, 16), diameter, type.getLogTexture(), 0);
 
-		if (radius == 8)
+		if (radius >= 8)
 			return tris;
 
 		if (check(world.getState(x + 1, y, z), state))
@@ -98,7 +100,7 @@ public class BranchBlock extends CustomBlock
 
 		List<AABBf> collisionBox = new ArrayList<>();
 
-		collisionBox.add(fromWidth(0.5f - radius, 0.5f - radius, 0.5f - radius, diameter, diameter, diameter));
+		collisionBox.add(fromWidth(0.5f - radius, Math.max(0.5f - radius, 0), 0.5f - radius, diameter, Math.min(diameter, 1), diameter));
 
 		if (check(world.getState(x + 1, y, z), state))
 			collisionBox.add(fromWidth(0.5f - radius + diameter, 0.5f - radius, 0.5f - radius, 0.5f - radius, diameter, diameter));
