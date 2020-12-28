@@ -628,18 +628,35 @@ public class DataGenerator
 			.blockSpecial(new SimpleSpecial("root"))
 			.blockState(StateBuilder
 				.create()
-				.singleModel(BlockModelBuilder
-					.create("root")
+				.addState(PropertyBuilder.create().addProperty(RootBlock.TREE_TYPE, EnumTreeType.OAK), BlockModelBuilder
+					.create("root_oak")
 					.addCube(CubeBuilder
 						.create()
 						.fullBlock()
-						.face(FaceBuilder.create().texture("block/root_side"), CubeBuilder.SIDE)
+						.face(FaceBuilder.create().texture("block/wood/roots/root_oak"), CubeBuilder.SIDE)
 						.face(FaceBuilder.create().texture("block/dirt"), EnumFace.DOWN)
 						.face(FaceBuilder
 							.create()
 							.texture("block/grass_block_top")
 							.biomeTint(true)
-							.modelLayer(ModelLayer.OVERLAY_0), EnumFace.UP))))
+							.modelLayer(ModelLayer.OVERLAY_0), EnumFace.UP)
+					)
+				)
+				.addState(PropertyBuilder.create().addProperty(RootBlock.TREE_TYPE, EnumTreeType.ACACIA), BlockModelBuilder
+					.create("root_acacia")
+					.addCube(CubeBuilder
+						.create()
+						.fullBlock()
+						.face(FaceBuilder.create().texture("block/wood/roots/root_acacia"), CubeBuilder.SIDE)
+						.face(FaceBuilder.create().texture("block/dirt"), EnumFace.DOWN)
+						.face(FaceBuilder
+							.create()
+							.texture("block/grass_block_top")
+							.biomeTint(true)
+							.modelLayer(ModelLayer.OVERLAY_0), EnumFace.UP)
+					)
+				)
+			)
 			.placerGroupPath("nature")
 			.generate();
 
@@ -709,12 +726,46 @@ public class DataGenerator
 
 		BlockBuilder
 			.create()
-			.fullBlock("small_grass")
+			.fullBlock("grass")
 			.blockSpecial(tagBelowSpecial(true, Tags.FLOWER_TOP))
 			.addTag(Tags.TRANSPARENT)
 			.blockState(StateBuilder
 				.create()
-				.singleModel(BlockModelBuilder.create("small_grass").externalPath("custom_models/small_grass.bbmodel")))
+				.singleModel(
+					BlockModelBuilder
+						.create("grass_0")
+						.modelPath("grass/grass_0")
+						.externalPath("custom_models/grass/grass_0/grass_0.bbmodel"),
+					BlockModelBuilder
+						.create("grass_1")
+						.modelPath("grass/grass_0")
+						.externalPath("custom_models/grass/grass_0/grass_1.bbmodel"),
+					BlockModelBuilder
+						.create("grass_2")
+						.modelPath("grass/grass_0")
+						.externalPath("custom_models/grass/grass_0/grass_2.bbmodel"),
+					BlockModelBuilder
+						.create("grass_3")
+						.modelPath("grass/grass_0")
+						.externalPath("custom_models/grass/grass_0/grass_3.bbmodel"),
+					BlockModelBuilder
+						.create("grass_0")
+						.modelPath("grass_1")
+						.externalPath("custom_models/grass/grass_1/grass_0.bbmodel"),
+					BlockModelBuilder
+						.create("grass_1")
+						.modelPath("grass_1")
+						.externalPath("custom_models/grass/grass_1/grass_1.bbmodel"),
+					BlockModelBuilder
+						.create("grass_2")
+						.modelPath("grass_1")
+						.externalPath("custom_models/grass/grass_1/grass_2.bbmodel"),
+					BlockModelBuilder
+						.create("grass_3")
+						.modelPath("grass_1")
+						.externalPath("custom_models/grass/grass_1/grass_3.bbmodel")
+				)
+			)
 			.placerGroupPath("nature")
 			.generate();
 
@@ -1328,11 +1379,11 @@ public class DataGenerator
 
 		BlockBuilder
 			.create()
-			.fullBlock("grass")
+			.fullBlock("grass_block")
 			.blockState(StateBuilder
 				.create()
 				.singleModel(BlockModelBuilder
-					.create("grass")
+					.create("grass_block")
 					.addCube(CubeBuilder
 						.create()
 						.fullBlock()
@@ -1358,7 +1409,7 @@ public class DataGenerator
 			.blockSpecial(SpecialBuilder
 				.create("spreadable")
 				.addValue("target", "dirt")
-				.addValue("target_set", "grass"))
+				.addValue("target_set", "grass_block"))
 			.placerGroupPath("nature")
 			.generate();
 
@@ -1764,7 +1815,7 @@ public class DataGenerator
 			.path("common")
 			.name("grass_patch")
 			.matchTags("block_under", Tags.FLOWER_TOP)
-			.provideStates("block", BlockStateBuilder.create().block("small_grass"))
+			.provideStates("block", BlockStateBuilder.create().block("grass"))
 			.integer("radius", 2)
 			.doubleArg("chance", 0.3)
 			.bool("decay", true)
@@ -1810,7 +1861,7 @@ public class DataGenerator
 			.create(FeatureRegistry.VEGETATION_PATCH.name())
 			.path("common")
 			.name("pebbles")
-			.matchBlocks("block_under", "sand", "grass", "dirt", "stone")
+			.matchBlocks("block_under", "sand", "grass_block", "dirt", "stone")
 			.provideStates("block", BlockStateBuilder.create().block("pebbles"))
 			.integer("radius", 3)
 			.doubleArg("chance", 0.3)
@@ -1821,7 +1872,7 @@ public class DataGenerator
 			.create(FeatureRegistry.VEGETATION_PATCH.name())
 			.path("common")
 			.name("flowers")
-			.matchBlocks("block_under", "grass", "dirt")
+			.matchBlocks("block_under", "grass_block", "dirt")
 			.provideStates("block", BlockStateBuilder
 				.create()
 				.block("flower")
@@ -1856,7 +1907,7 @@ public class DataGenerator
 			.create(FeatureRegistry.VEGETATION_PATCH.name())
 			.path("common")
 			.name("sticks")
-			.matchBlocks("block_under", "sand", "grass", "dirt", "stone")
+			.matchBlocks("block_under", "sand", "grass_block", "dirt", "stone")
 			.provideStates("block", BlockStateBuilder.create().block("stick"))
 			.integer("radius", 3)
 			.doubleArg("chance", 0.3)
@@ -1867,7 +1918,7 @@ public class DataGenerator
 			.create(FeatureRegistry.VEGETATION_PATCH.name())
 			.path("common")
 			.name("flint")
-			.matchBlocks("block_under", "sand", "grass", "dirt", "stone")
+			.matchBlocks("block_under", "sand", "grass_block", "dirt", "stone")
 			.provideStates("block", BlockStateBuilder
 				.create()
 				.block("flint")
@@ -1890,7 +1941,22 @@ public class DataGenerator
 			.create(FeatureRegistry.SAPLING.name())
 			.path("trees")
 			.name("oak_sapling")
-			.matchBlocks("match_under", "grass", "dirt")
+			.matchBlocks("match_under", "grass_block", "dirt")
+			.provideStates("sapling", BlockStateBuilder
+				.create()
+				.block("sapling")
+				.state(SaplingBlock.TREE_TYPE, EnumTreeType.OAK))
+			.generate();
+
+		FeatureBuilder
+			.create(FeatureRegistry.SAPLING.name())
+			.path("trees")
+			.name("acacia_sapling")
+			.matchBlocks("match_under", "grass_block", "dirt")
+			.provideStates("sapling", BlockStateBuilder
+				.create()
+				.block("sapling")
+				.state(SaplingBlock.TREE_TYPE, EnumTreeType.ACACIA))
 			.generate();
 
 		FeatureBuilder
@@ -1960,7 +2026,7 @@ public class DataGenerator
 		BiomeBuilder
 			.create()
 			.name("forest")
-			.surface("grass", "dirt", "stone", 4, 20)
+			.surface("grass_block", "dirt", "stone", 4, 20)
 			.heightMap(8, 0.07f, 0.007f, 12, 22)
 			.climate(0.1f, 0.25f, 0f, -0.6f)
 			.foliageColor(92 / 255f, 184 / 255f, 64 / 255f)
@@ -1975,7 +2041,7 @@ public class DataGenerator
 		BiomeBuilder
 			.create()
 			.name("plains")
-			.surface("grass", "dirt", "stone", 4, 20)
+			.surface("grass_block", "dirt", "stone", 4, 20)
 			.heightMap(7, 0.07f, 0.006f, 10, 20)
 			.climate(0f, 0.2f, 0f, -0.3f)
 			.foliageColor(92 / 255f, 200 / 255f, 64 / 255f)
@@ -1988,7 +2054,7 @@ public class DataGenerator
 		BiomeBuilder
 			.create()
 			.name("tundra")
-			.surface("grass", "dirt", "stone", 4, 24)
+			.surface("grass_block", "dirt", "stone", 4, 24)
 			.heightMap(7, 0.06f, 0.005f, 10, 18)
 			.climate(0f, -1f, 0f, 0.25f)
 			.foliageColor(92 / 255f, 200 / 255f, 64 / 255f)
@@ -2001,13 +2067,13 @@ public class DataGenerator
 		BiomeBuilder
 			.create()
 			.name("savanna")
-			.surface("grass", "dirt", "stone", 4, 16)
+			.surface("grass_block", "dirt", "stone", 4, 16)
 			.heightMap(6, 0.3f, 0.019f, 12, 23)
 			.climate(0.1f, 0.65f, 0.0f, 0.05f)
 			.foliageColor(120 / 255f, 190 / 255f, 60 / 255f)
 			.feature(EnumFeatureStage.TOP_MODIFICATION, 1d / 4096 / 2d, "limestone_boulder")
 			.feature(EnumFeatureStage.TOP_MODIFICATION, 1d / 4096 / 2d, "quartzite_boulder")
-			.feature(EnumFeatureStage.TREE, 1d / 400d, "oak_sapling")
+			.feature(EnumFeatureStage.TREE, 1d / 400d, "acacia_sapling")
 			.feature(EnumFeatureStage.VEGETATION, 1d / 256d, "pebbles")
 			.feature(EnumFeatureStage.VEGETATION, 1d / 100d, "grass_patch")
 			.feature(EnumFeatureStage.VEGETATION, 1d / 4096d, "hemp")
@@ -2016,13 +2082,13 @@ public class DataGenerator
 		BiomeBuilder
 			.create()
 			.name("savanna_plateau")
-			.surface("grass", "dirt", "stone", 4, 16)
+			.surface("grass_block", "dirt", "stone", 4, 16)
 			.heightMap(6, 0.3f, 0.003f, 23, 30)
 			.climate(0.8f, 0.60f, 0.3f, 0.0f)
 			.foliageColor(120 / 255f, 190 / 255f, 60 / 255f)
 			.feature(EnumFeatureStage.TOP_MODIFICATION, 1d / 4096 / 2d, "limestone_boulder")
 			.feature(EnumFeatureStage.TOP_MODIFICATION, 1d / 4096 / 2d, "quartzite_boulder")
-			.feature(EnumFeatureStage.TREE, 1d / 400d, "oak_sapling")
+			.feature(EnumFeatureStage.TREE, 1d / 400d, "acacia_sapling")
 			.feature(EnumFeatureStage.VEGETATION, 1d / 2048d, "flint")
 			.feature(EnumFeatureStage.VEGETATION, 1d / 256d, "pebbles")
 			.feature(EnumFeatureStage.VEGETATION, 1d / 100d, "grass_patch")

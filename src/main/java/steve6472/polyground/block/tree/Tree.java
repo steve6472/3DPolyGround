@@ -6,6 +6,7 @@ import steve6472.polyground.EnumFace;
 import steve6472.polyground.block.Block;
 import steve6472.polyground.block.blockdata.BlockData;
 import steve6472.polyground.block.blockdata.RootBlockData;
+import steve6472.polyground.block.properties.enums.EnumTreeType;
 import steve6472.polyground.block.special.BranchBlock;
 import steve6472.polyground.block.special.LeavesBlock;
 import steve6472.polyground.registry.Blocks;
@@ -20,17 +21,24 @@ import java.util.Objects;
 
 public class Tree
 {
-	private static int maxTrunkSize = 40;
-	private static int branchGrowthTrunkThreshold = 5;
-	private static int maxBranchCount = 5;
-	private static int minBranchHeight = 3;
-	private static int maxBranchRadius = 2;
+	private int maxTrunkSize = 40;
+	private int maxTrunkWidth = 0;
+	private int maxTrunkHeight = 0;
+	private int branchGrowthTrunkThreshold = 5;
+	private int maxBranchCount = 5;
+	private int minBranchHeight = 3;
+	private int maxBranchRadius = 2;
+	private int maxBranchAroundBlock = 0;
+	private int branchMaxBlockCount, branchMinBlockCount;
+	private int branchMaxSize, branchMinSize;
+	private double leavesBlobMultiplier, branchLeavesBlobMultiplier;
 
 	private Node root;
 	private Array3D<BlockPosNode, Integer> nodes;
 	private List<Branch> branches;
 	private int totalSize, trunkSize, trunkHeight;
 	private long seed;
+	private EnumTreeType treeType;
 	private RootBlockData data;
 
 	private final BlockPosNode TEST_NODE;
@@ -77,12 +85,32 @@ public class Tree
 		totalSize = calculateSize(nodes);
 		calculateTrunkSize();
 		branches = findBranches();
+		treeType = this.data.treeType;
 
 		maxTrunkSize = this.data.maxTrunkSize;
+		maxTrunkWidth = this.data.maxTrunkWidth;
+		maxTrunkHeight = this.data.maxTrunkHeight;
 		branchGrowthTrunkThreshold = this.data.branchGrowthTrunkThreshold;
 		maxBranchCount = this.data.maxBranchCount;
 		minBranchHeight = this.data.minBranchHeight;
 		maxBranchRadius = this.data.maxBranchRadius;
+		maxBranchAroundBlock = this.data.maxBranchAroundBlock;
+		leavesBlobMultiplier = this.data.leavesBlobMultiplier;
+		branchLeavesBlobMultiplier = this.data.branchLeavesBlobMultiplier;
+		branchMaxBlockCount = this.data.branchMaxBlockCount;
+		branchMinBlockCount = this.data.branchMinBlockCount;
+		branchMaxSize = this.data.branchMaxSize;
+		branchMinSize = this.data.branchMinSize;
+/*
+		System.out.println("TotalSize: " + totalSize);
+		System.out.println("TrunkSize: " + trunkSize + "/" + maxTrunkSize);
+		System.out.println("TrunkHeight: " + trunkHeight + "/" + maxTrunkHeight);
+		System.out.println("BranchCount: " + branches.size() + "/" + maxBranchCount);
+		for (Branch b : branches)
+		{
+			System.out.printf("%d/%d, %d\n", b.nodes().size(), b.maxCount(), b.maxSize());
+		}
+		System.out.println("-".repeat(16));*/
 	}
 
 	public void grow(World world)
@@ -108,7 +136,8 @@ public class Tree
 
 			if (!RandomUtil.decide(10) && branches.size() > 0)
 			{
-				growBranch(world, branches.get(RandomUtil.randomInt(0, branches.size() - 1)));
+				final Branch branch = branches.get(RandomUtil.randomInt(0, branches.size() - 1));
+				growBranch(world, branch);
 			}
 		}
 
@@ -131,7 +160,7 @@ public class Tree
 
 		if ((hash % ts) == 0 && trunkHeight >= minBranchHeight)
 		{
-			if (countBranchesAroundTrunk(y) < (trunkHeight < 4 ? 1 : 2))
+			if (countBranchesAroundTrunk(y) < (trunkHeight < 4 ? 1 : maxBranchAroundBlock))
 			{
 				Node newBranch = new Node(x, y, z, 0, false);
 
@@ -141,7 +170,7 @@ public class Tree
 					Node n = new Node(newBranch.toBlockPos(), newBranch.radius);
 					List<Node> nodes = new ArrayList<>();
 					nodes.add(n);
-					Branch branch = new Branch(n, nodes, RandomUtil.randomInt(4, 8), RandomUtil.randomInt(3, 5));
+					Branch branch = new Branch(n, nodes, RandomUtil.randomInt(branchMinSize, branchMaxSize), RandomUtil.randomInt(branchMinBlockCount, branchMaxBlockCount));
 					data.addBranch(branch.start().x, branch.start().y, branch.start().z, branch.maxSize(), branch.maxCount());
 					branches.add(branch);
 				}
@@ -161,20 +190,20 @@ public class Tree
 		Block branchBlock = Blocks.getBlockByName("branch");
 
 		nodes.forEach((pos, radius) ->
-			world.setState(branchBlock.getDefaultState().with(BranchBlock.LEAVES, radius == 0 && !pos.equals(root.x, root.y, root.z)).with(BranchBlock.RADIUS, radius).get(), pos.getX(), pos.getY(), pos.getZ()));
+			world.setState(branchBlock.getDefaultState().with(BranchBlock.LEAVES, radius == 0 && !pos.equals(root.x, root.y, root.z)).with(BranchBlock.RADIUS, radius).with(BranchBlock.TREE_TYPE, treeType).get(), pos.getX(), pos.getY(), pos.getZ()));
 
-		leavesBlob(world, root.toBlockPos().up(trunkHeight), trunkSize / (maxTrunkSize / 3.5));
+		leavesBlob(world, root.toBlockPos().up(trunkHeight), (trunkSize / (maxTrunkSize / 3.5)) * leavesBlobMultiplier);
 
 		for (Branch branch : branches)
 		{
 			Node lastNode = branch.nodes().get(branch.nodes().size() - 1);
-			leavesBlob(world, lastNode.toBlockPos(), 1.2);
+			leavesBlob(world, lastNode.toBlockPos(), 1.2 * branchLeavesBlobMultiplier);
 
 			if (branch.nodes().size() > 1)
 			{
 				int r = RandomUtil.randomInt(0, branch.nodes().size() - 2);
 				Node n = branch.nodes().get(r);
-				leavesBlob(world, n.toBlockPos(), Math.min(n.radius(), 1) + 0.5);
+				leavesBlob(world, n.toBlockPos(), (Math.min(n.radius(), 1) + 0.5) * branchLeavesBlobMultiplier);
 			}
 		}
 	}
@@ -184,7 +213,7 @@ public class Tree
 		radius = Math.min(radius, 3.2);
 		int r = (int) Math.ceil(radius) + 1;
 
-		Block leaves = Blocks.getBlockByName("oak_leaves");
+		Block leaves = Blocks.getBlockByName(treeType.getLeaves());
 
 		for (int x = -r; x < r; x++)
 		{
@@ -241,7 +270,7 @@ public class Tree
 
 		int ts = Math.max(1, scale - (int) (trunkSize * ((double) scale / (double) maxTrunkSize)));
 
-		if (nodes.size() < branch.maxCount() && (branchSize == 1 || (hash % ts) == 0) && RandomUtil.flipACoin())
+		if (nodes.size() < branch.maxCount() && (branchSize == 1 || (hash % ts == 0)) && RandomUtil.flipACoin())
 		{
 			Node from;
 
@@ -341,9 +370,7 @@ public class Tree
 
 			Block b = world.getBlock(x, y, z);
 			if (!(b instanceof LeavesBlock) && b != Block.AIR)
-			{
 				return false;
-			}
 		}
 
 		return true;
@@ -352,6 +379,9 @@ public class Tree
 	private void growTrunk()
 	{
 		List<Node> trunk = getTrunkNodes();
+
+		if (trunkHeight > maxTrunkHeight)
+			return;
 
 		if (trunk.size() == 1)
 		{
@@ -365,15 +395,24 @@ public class Tree
 		}
 
 		// Try to prevent bad trees
-		if (trunkHeight < 5 && trunkSize >= 20)
+		if (treeType == EnumTreeType.OAK)
 		{
-			nodes.put((BlockPosNode) root.toBlockPos().up(trunkHeight), 0);
+			if (trunkHeight < 5 && trunkSize >= 20)
+			{
+				nodes.put((BlockPosNode) root.toBlockPos().up(trunkHeight), 0);
+			}
+		} else if (treeType == EnumTreeType.ACACIA)
+		{
+			if (trunkHeight < 6 && trunkSize >= 6)
+			{
+				nodes.put((BlockPosNode) root.toBlockPos().up(trunkHeight), 0);
+			}
 		}
 
 		for (int i = 0, size = trunk.size(); i < size; i++)
 		{
 			Node n = trunk.get(i);
-			if (n.radius < 7)
+			if (n.radius < maxTrunkWidth)
 			{
 				// decide if it should increse radius
 				if (RandomUtil.decide(2))
@@ -515,14 +554,23 @@ public class Tree
 			processedSomething = false;
 			for (Node n : pos)
 			{
-				if (node.isProcessed())
+				if (n.isProcessed())
 					continue;
 				node.setProcessed(true);
 				processedSomething = true;
 
 				for (EnumFace f : EnumFace.getFaces())
 				{
-					Node newNode = new Node(n.x + f.getXOffset(), n.y + f.getYOffset(), n.z + f.getZOffset(), getRadius(n.x + f.getXOffset(), n.y + f.getYOffset(), n.z + f.getZOffset()), false);
+					Node newNode = new Node(
+						n.x + f.getXOffset(),
+						n.y + f.getYOffset(),
+						n.z + f.getZOffset(),
+
+						getRadius(
+							n.x + f.getXOffset(),
+							n.y + f.getYOffset(),
+							n.z + f.getZOffset()),
+						false);
 
 					// Do NOT got back to trunk!
 					if (newNode.x == root.x && newNode.z == root.z)

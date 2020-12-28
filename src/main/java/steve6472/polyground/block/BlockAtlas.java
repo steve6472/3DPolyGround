@@ -101,7 +101,13 @@ public class BlockAtlas
 
 	public static int getTextureId(String name)
 	{
-		return usedTexturesReference.get(name);
+		try
+		{
+			return usedTexturesReference.get(name);
+		} catch (Exception ex) {
+			System.err.println(name);ex.printStackTrace();
+		}
+		return 0;
 	}
 
 	public static Rectangle getTexture(int texture)

@@ -32,6 +32,7 @@ public class States
 	public static final EnumProperty<EnumHalfSnowy> HALF_SNOWY = EnumProperty.create("half_snowy", EnumHalfSnowy.class, EnumHalfSnowy.getValues());
 	public static final EnumProperty<EnumFlowerColor> FLOWER_COLOR = EnumProperty.create("color", EnumFlowerColor.class, EnumFlowerColor.getValues());
 	public static final EnumProperty<EnumLR> HINGE = EnumProperty.create("hinge", EnumLR.class, EnumLR.getValues());
+	public static final EnumProperty<EnumTreeType> TREE_TYPE = EnumProperty.create("tree_type", EnumTreeType.class, EnumTreeType.getValues());
 
 	public static final IntProperty STALA_WIDTH = IntProperty.create("width", 1, 7);
 	public static final IntProperty SNOW_LAYERS = IntProperty.create("layers", 1, 8);
