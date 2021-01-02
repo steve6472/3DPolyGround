@@ -1,5 +1,6 @@
 package steve6472.polyground.rift;
 
+import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -8,7 +9,6 @@ import steve6472.polyground.gfx.MainRender;
 import steve6472.polyground.gfx.shaders.RiftShader;
 import steve6472.polyground.tessellators.BasicTessellator;
 import steve6472.polyground.world.World;
-import steve6472.sge.gfx.DepthFrameBuffer;
 import steve6472.sge.gfx.StaticTexture;
 import steve6472.sge.gfx.Tessellator;
 import steve6472.sge.gfx.Tessellator3D;
@@ -21,8 +21,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import static org.lwjgl.opengl.GL11.glDrawArrays;
-import static org.lwjgl.opengl.GL11.glLineWidth;
+import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL20.glDisableVertexAttribArray;
 import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
 import static org.lwjgl.opengl.GL30.glBindVertexArray;
@@ -40,7 +39,9 @@ public class RiftManager
 	private final CaveGame main;
 	private final Camera camera;
 	private final World world;
-
+/*
+	private final DepthFrameBuffer testBuffer;
+*/
 	public RiftManager(CaveGame main, World world)
 	{
 		rifts = new ArrayList<>();
@@ -48,6 +49,10 @@ public class RiftManager
 		camera = new Camera();
 		this.world = world;
 		main.getEventHandler().register(this);
+/*
+		testBuffer = new DepthFrameBuffer(16 * 70, 9 * 70);
+		width = 16 * 70;
+		height = 16 * 70;*/
 	}
 
 	public void loadRifts()
@@ -214,21 +219,56 @@ public class RiftManager
 		camera.updateViewMatrix();
 		main.getPlayer().setCamera(camera);
 		main.mainRender.frustum.updateFrustum(MainRender.shaders.getProjectionMatrix(), camera.getViewMatrix());
+/*
+		for (Rift r : rifts)
+		{
+			GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, testBuffer.frameBuffer);
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+			GL30.glBindFramebuffer(GL30.GL_READ_FRAMEBUFFER, r.getBuffer().frameBuffer);
+			GL30.glBindFramebuffer(GL30.GL_DRAW_FRAMEBUFFER, testBuffer.frameBuffer);
+			GL30.glBlitFramebuffer(0, 0, width, height, 0, 0, width, height, GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT, GL_NEAREST);
+			GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, 0);
+		}
+
+		InGameGui.a = testBuffer.texture;*/
+
 
 		rift.getBuffer().bindFrameBuffer(main);
-		DepthFrameBuffer.clearCurrentBuffer();
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+//		DepthFrameBuffer.clearCurrentBuffer();
 
 		main.mainRender.renderTheWorld(true);
+/*
+		renderToWorld_(rift);*/
 
 		main.getPlayer().setCamera(temp);
 		rift.getBuffer().unbindCurrentFrameBuffer(main);
 	}
+/*
+	private void renderToWorld_(Rift rift)
+	{
+		MainRender.shaders.riftShader.bind();
+		MainRender.shaders.riftShader.setView(camera.getViewMatrix());
+		MainRender.shaders.riftShader.setUniform(RiftShader.TINT, 1f, 0.8f, 1f);
+//		MainRender.shaders.riftShader.setTransformation(new Matrix4f().translate(8, 0, 0));
+
+		StaticTexture.bind(0, testBuffer.texture);
+
+		glBindVertexArray(rift.getModel().getVao());
+		glEnableVertexAttribArray(0);
+		glDrawArrays(Tessellator3D.TRIANGLE_STRIP, 0, rift.getModel().getVertCount());
+
+		glDisableVertexAttribArray(0);
+		unbindVAO();
+	}*/
 
 	private void renderToWorld(Rift rift)
 	{
 		MainRender.shaders.riftShader.bind();
 		MainRender.shaders.riftShader.setView(CaveGame.getInstance().getCamera().getViewMatrix());
 		MainRender.shaders.riftShader.setUniform(RiftShader.TINT, 1f, 1f, 1f);
+		MainRender.shaders.riftShader.setTransformation(new Matrix4f());
 
 		StaticTexture.bind(0, rift.getBuffer().texture);
 
@@ -252,6 +292,8 @@ public class RiftManager
 		}
 	}
 
+	//private int width, height;
+
 	@Event
 	public void updateFramebuffers(WindowSizeEvent e)
 	{
@@ -261,6 +303,13 @@ public class RiftManager
 			rift.getBuffer().resize(e.getWidth(), e.getHeight());
 			rift.getBuffer().unbindCurrentFrameBuffer(e.getWidth(), e.getHeight());
 		}
+/*
+		this.width = e.getWidth();
+		this.height = e.getHeight();
+
+		testBuffer.bindFrameBuffer(e.getWidth(), e.getHeight());
+		testBuffer.resize(e.getWidth(), e.getHeight());
+		testBuffer.unbindCurrentFrameBuffer(e.getWidth(), e.getHeight());*/
 	}
 
 	public void addRift(Rift rift)

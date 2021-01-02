@@ -267,7 +267,7 @@ public class Player implements IMotion3f, IPosition3f
 			state.getBlock().onClick(state, world, this, hr.getFace(), event.getEvent(), hr.getX(), hr.getY(), hr.getZ());
 		}
 
-		if (holdsItem())
+		if (holdsItem() && event.getAction() == KeyList.PRESS)
 		{
 			if (event.hitBlock())
 				getItemInHand().onClick(world, this, event.getClick());
@@ -466,6 +466,9 @@ public class Player implements IMotion3f, IPosition3f
 	private void pressMMB()
 	{
 		ItemEntity target = getTargetedItem();
+
+		if (heldItem != null && !heldItem.item.canBePlaced())
+			return;
 
 		if (heldItem == null)
 		{

@@ -163,6 +163,14 @@ public class DataGenerator
 
 		ItemBuilder
 			.create()
+			.name("rift_placer")
+			.model("rift_placer")
+			.groupPath("items")
+			.special(new SimpleSpecial("rift_placer"))
+			.generate();
+
+		ItemBuilder
+			.create()
 			.name("chip")
 			.model("chip")
 			.modelPath("logic")

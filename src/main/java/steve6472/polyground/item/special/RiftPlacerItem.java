@@ -2,13 +2,14 @@ package steve6472.polyground.item.special;
 
 import org.joml.Vector3f;
 import org.json.JSONObject;
+import steve6472.polyground.CaveGame;
 import steve6472.polyground.MouseClick;
 import steve6472.polyground.commands.coms.RiftCommand;
+import steve6472.polyground.entity.item.ItemEntity;
 import steve6472.polyground.entity.player.Player;
-import steve6472.polyground.events.WorldEvent;
 import steve6472.polyground.item.Item;
+import steve6472.polyground.world.World;
 import steve6472.sge.main.KeyList;
-import steve6472.sge.main.events.Event;
 
 import java.util.Collections;
 import java.util.Iterator;
@@ -29,14 +30,9 @@ public class RiftPlacerItem extends Item
 
 	private Vector3f pos, sel;
 
-	@Event
-	public void renderPos(WorldEvent.PostRender e)
-	{/*
-		if (CaveGame.itemInHand != this)
-			return;
-
-		Player player = CaveGame.getInstance().getPlayer();
-
+	@Override
+	public void tickInHand(Player player, ItemEntity entity)
+	{
 		float dis = 3f;
 		pos.set(player.viewDir.x * dis + player.getX(), player.viewDir.y * dis + player.getY() + player.getEyeHeight(), player.viewDir.z * dis + player.getZ());
 
@@ -64,7 +60,21 @@ public class RiftPlacerItem extends Item
 		}
 
 		if (sel != null)
-			CaveGame.getInstance().mainRender.particles.addBasicTickParticle(sel.x, sel.y, sel.z, 0.09f, 1f, 0.6f, 0.6f, 1f);*/
+			CaveGame.getInstance().mainRender.particles.addBasicTickParticle(sel.x, sel.y, sel.z, 0.09f, 1f, 0.6f, 0.6f, 1f);
+	}
+
+	@Override
+	public void onClick(World world, Player player, MouseClick click)
+	{
+		onClick(player, click);
+	}
+
+	@Override
+	public boolean canBePlaced()
+	{
+		if (RiftCommand.rift == null)
+			return true;
+		return RiftCommand.rift.isFinished();
 	}
 
 	@Override

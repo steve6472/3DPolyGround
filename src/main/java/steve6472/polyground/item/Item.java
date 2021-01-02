@@ -115,6 +115,11 @@ public class Item
 	{
 	}
 
+	public boolean canBePlaced()
+	{
+		return true;
+	}
+
 	public void onPickup(World world, Player player, ItemEntity entity)
 	{
 

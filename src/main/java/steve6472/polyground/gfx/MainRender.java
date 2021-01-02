@@ -2,7 +2,6 @@ package steve6472.polyground.gfx;
 
 import org.joml.AABBf;
 import org.joml.Vector3f;
-import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 import steve6472.polyground.*;
 import steve6472.polyground.events.TessTestEvent;
@@ -187,7 +186,7 @@ public class MainRender
 		dialogManager.render(game, MainRender.shaders.dialogShader, game.getCamera().getViewMatrix(), game.getCamera().getYaw(), game.getCamera().getPitch(), mainFrameBuffer.frameBuffer);
 
 		/* Render water */
-		waterFrameBuffer.bindFrameBuffer(game);
+		/*waterFrameBuffer.bindFrameBuffer(game);
 		DepthFrameBuffer.clearCurrentBuffer();
 		copyDepthToBuffer(waterFrameBuffer.frameBuffer);
 		waterFrameBuffer.bindFrameBuffer(game);
@@ -195,7 +194,7 @@ public class MainRender
 		waterTess.loadPos(0);
 		waterTess.loadColor(1);
 		GL20.glDrawArrays(Tessellator.TRIANGLES, 0, game.currentWaterCount);
-		waterTess.disable(0, 1);
+		waterTess.disable(0, 1);*/
 
 		game.getRifts().render();
 
@@ -291,7 +290,7 @@ public class MainRender
 		if (game.world == null)
 			return;
 
-		game.mainRender.stack.render(game.getCamera().getViewMatrix());
+		stack.render(game.getCamera().getViewMatrix());
 
 		if (renderWorld)
 		{
@@ -299,6 +298,7 @@ public class MainRender
 				game.world.getRenderer().renderNormal(false, false);
 			CaveGame.runGameEvent(new WorldEvent.PostRender(game.world));
 		}
+
 		game.world.getEntityManager().render();
 
 		if (game.getPlayer() != null)

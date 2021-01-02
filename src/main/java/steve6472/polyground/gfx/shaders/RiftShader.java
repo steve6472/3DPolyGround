@@ -23,4 +23,5 @@ public class RiftShader extends StaticShader3D
 		addUniform("tex", TEXTURE = new Type(EnumUniformType.INT_1));
 		addUniform("tint", TINT = new Type(EnumUniformType.FLOAT_3));
 	}
+
 }

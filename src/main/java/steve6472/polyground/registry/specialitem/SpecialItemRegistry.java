@@ -23,7 +23,7 @@ public class SpecialItemRegistry
 	public static final SpecialItemEntry<SpeedometerItem> speedometerItem = register("speedometer", SpeedometerItem::new);
 	public static final SpecialItemEntry<BlockInspectorItem> blockInspector = register("block_inspector", BlockInspectorItem::new);
 	public static final SpecialItemEntry<WorldEditItem> worldedit = register("worldedit", WorldEditItem::new);
-	public static final SpecialItemEntry<RiftPlacerItem> riftplacer = register("riftplacer", RiftPlacerItem::new);
+	public static final SpecialItemEntry<RiftPlacerItem> riftplacer = register("rift_placer", RiftPlacerItem::new);
 	public static final SpecialItemEntry<GunItem> gun = register("gun", GunItem::new);
 	public static final SpecialItemEntry<WaterBucketItem> waterBucket = register("waterbucket", WaterBucketItem::new);
 	public static final SpecialItemEntry<VoidBucketItem> voidBucket = register("voidbucket", VoidBucketItem::new);
