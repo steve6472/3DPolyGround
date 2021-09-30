@@ -6,7 +6,7 @@ import steve6472.polyground.world.chunk.SubChunk;
 import steve6472.polyground.world.generator.ChunkGenDataStorage;
 import steve6472.polyground.world.generator.generators.IHeightMapGenerator;
 import steve6472.polyground.world.generator.generators.ISurfaceGenerator;
-import steve6472.sge.main.Util;
+import steve6472.sge.main.util.MathUtil;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
@@ -61,7 +61,7 @@ public class SurfaceGenerator implements ISurfaceGenerator
 				for (int k = height - 1 - biome.getUnderLayerHeight(); k >= 0; k--)
 					subChunk.getWorld().setState(biome.getCaveBlock(), x + cx * 16, k, z + cz * 16, 0);
 
-				for (int k = subChunk.getLayer() * 16; k < Util.clamp(subChunk.getLayer() * 16, subChunk.getLayer() * 16 + 16, height + biome.getBiomeHeight()); k++)
+				for (int k = subChunk.getLayer() * 16; k < MathUtil.clamp(subChunk.getLayer() * 16, subChunk.getLayer() * 16 + 16, height + biome.getBiomeHeight()); k++)
 					subChunk.getWorld().setBiome(biome, x + cx * 16, k, z + cz * 16);
 
 				// Add air biome if present

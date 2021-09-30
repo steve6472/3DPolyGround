@@ -7,7 +7,7 @@ import steve6472.sge.gui.Component;
 import steve6472.sge.gui.components.schemes.SchemeButton;
 import steve6472.sge.main.KeyList;
 import steve6472.sge.main.MainApp;
-import steve6472.sge.main.Util;
+import steve6472.sge.main.util.MathUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -165,7 +165,7 @@ public class NumberSelector extends Component
 
 	public void setValue(int value)
 	{
-		this.value = Util.clamp(min, max, value);
+		this.value = MathUtil.clamp(min, max, value);
 	}
 
 	public void setButtonScheme(SchemeButton buttonScheme)

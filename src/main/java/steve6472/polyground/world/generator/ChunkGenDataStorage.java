@@ -34,18 +34,18 @@ public class ChunkGenDataStorage
 	public ChunkGenData getData(int x, int y, int z)
 	{
 		if (isChunkPresent(x, z))
-			return storage.get(x, z)[y];
+			return storage.get(x, z).get()[y];
 		return NOT_GENERATED;
 	}
 
 	public boolean isChunkPresent(int x, int z)
 	{
-		return storage.get(x, z) != null;
+		return storage.get(x, z).get() != null;
 	}
 
 	public void markSubChunkAsGenerated(int x, int y, int z)
 	{
-		storage.get(x, z)[y] = GENERATED;
+		storage.get(x, z).get()[y] = GENERATED;
 	}
 
 	public boolean isSubChunkGenerated(int x, int y, int z)
@@ -53,7 +53,7 @@ public class ChunkGenDataStorage
 		if (!isChunkPresent(x, z))
 			return false;
 
-		return storage.get(x, z)[y] == GENERATED;
+		return storage.get(x, z).get()[y] == GENERATED;
 	}
 
 	public void clear()

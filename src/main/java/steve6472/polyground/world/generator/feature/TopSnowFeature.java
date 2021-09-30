@@ -10,7 +10,7 @@ import steve6472.polyground.world.generator.feature.components.match.IBlockMatch
 import steve6472.polyground.world.generator.feature.components.match.Match;
 import steve6472.polyground.world.generator.feature.components.provider.IBlockProvider;
 import steve6472.polyground.world.generator.feature.components.provider.Provider;
-import steve6472.sge.main.Util;
+import steve6472.sge.main.util.MathUtil;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
@@ -63,7 +63,7 @@ public class TopSnowFeature extends Feature
 
 	private static double smoothstep(double edge0, double edge1, double n)
 	{
-		n = Util.clamp(0.0, 1.0, (n - edge0) / (edge1 - edge0));
+		n = MathUtil.clamp(0.0, 1.0, (n - edge0) / (edge1 - edge0));
 		return n * n * (3.0 - 2.0 * n);
 	}
 

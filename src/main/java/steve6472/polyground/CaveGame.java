@@ -35,12 +35,16 @@ import steve6472.sge.gfx.FrameBuffer;
 import steve6472.sge.gfx.SpriteRender;
 import steve6472.sge.gfx.VertexObjectCreator;
 import steve6472.sge.gui.Gui;
-import steve6472.sge.main.*;
+import steve6472.sge.main.KeyList;
+import steve6472.sge.main.MainApp;
+import steve6472.sge.main.MainFlags;
+import steve6472.sge.main.Window;
 import steve6472.sge.main.events.Event;
 import steve6472.sge.main.events.KeyEvent;
 import steve6472.sge.main.events.MouseEvent;
 import steve6472.sge.main.events.WindowSizeEvent;
 import steve6472.sge.main.game.Camera;
+import steve6472.sge.main.util.MathUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -284,6 +288,7 @@ public class CaveGame extends MainApp
 			getMouseHandler().tick();
 
 			getCamera().head(oldx, oldy, options.mouseSensitivity);
+			getCamera().setPosition(getCamera().getViewPosition());
 		}
 
 		if (!flag && !mouseUpdated)
@@ -310,8 +315,8 @@ public class CaveGame extends MainApp
 		// Keep cursor in dialog bounds
 		pickMouse(true);
 		GLFW.glfwSetCursorPos(getWindowId(),
-			Util.clamp(0, mainRender.dialogManager.getFirstActiveDialog().getWidth(), getMouseX()),
-			Util.clamp(0, mainRender.dialogManager.getFirstActiveDialog().getHeight(), getMouseY()));
+			MathUtil.clamp(0, mainRender.dialogManager.getFirstActiveDialog().getWidth(), getMouseX()),
+			MathUtil.clamp(0, mainRender.dialogManager.getFirstActiveDialog().getHeight(), getMouseY()));
 		getMouseHandler().tick();
 	}
 

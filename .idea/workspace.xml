@@ -24,8 +24,8 @@
     </option>
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="jar://$PROJECT_DIR$/../openjdk-15/lib/src.zip!/java.base/java/util/List.java" root0="SKIP_INSPECTION" />
     <setting file="jar://$PROJECT_DIR$/../openjdk-15/lib/src.zip!/java.base/java/util/ArrayList.java" root0="SKIP_INSPECTION" />
+    <setting file="jar://$PROJECT_DIR$/../openjdk-15/lib/src.zip!/java.base/java/util/List.java" root0="SKIP_INSPECTION" />
   </component>
   <component name="MavenImportPreferences">
     <option name="generalSettings">
@@ -46,11 +46,11 @@
     <property name="com.intellij.ide.scratch.LRUPopupBuilder$1/New Scratch File" value="JShellLanguage" />
     <property name="ignore.preview.features.used" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../Hychat" />
-    <property name="project.structure.last.edited" value="Libraries" />
+    <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="restartRequiresConfirmation" value="false" />
-    <property name="settings.editor.selected.configurable" value="fileTemplates" />
+    <property name="settings.editor.selected.configurable" value="reference.settings.ide.settings.notifications" />
   </component>
   <component name="ReaderModeSettings">
     <option name="showLigatures" value="false" />
@@ -100,6 +100,8 @@
       </method>
     </configuration>
     <configuration name="CaveGame" type="Application" factoryName="Application" nameIsGenerated="true">
+      <option name="ALTERNATIVE_JRE_PATH" value="openjdk-16" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
       <option name="MAIN_CLASS_NAME" value="steve6472.polyground.CaveGame" />
       <module name="CaveGame" />
       <selectedOptions>
@@ -169,11 +171,11 @@
       <item itemvalue="Application.CaveGame" />
       <item itemvalue="Application.DataGenerator" />
       <item itemvalue="Application.Gen-CaveGame" />
-      <item itemvalue="Application.Testity" />
-      <item itemvalue="Application.Loader" />
       <item itemvalue="Application.Animation" />
+      <item itemvalue="Application.Loader" />
       <item itemvalue="Application.LogicTest" />
       <item itemvalue="Application.PaletteGenerator" />
+      <item itemvalue="Application.Testity" />
     </list>
     <recent_temporary>
       <list>

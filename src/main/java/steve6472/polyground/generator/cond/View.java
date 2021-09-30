@@ -52,7 +52,7 @@ public class View
 		camera = new Camera();
 		camera.setYaw((float) Math.toRadians(45));
 		camera.setPitch((float) Math.toRadians(-45));
-		camera.calculateOrbit(0, 0, 0, 16f);
+		camera.calculateOrbit(16f);
 		camera.updateViewMatrix();
 
 		screen = new DepthFrameBuffer(screenWidth, screenHeight);
@@ -76,7 +76,7 @@ public class View
 				this.y = mainApp.getMouseY() + this.py;
 			}
 
-			camera.headOrbit(x, y, 0.3f, 0, 0, 0, 16f);
+			camera.headOrbit(x, y, 0.3f, 16f);
 			camera.updateViewMatrix();
 		} else
 		{

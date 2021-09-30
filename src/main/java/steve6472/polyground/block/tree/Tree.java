@@ -467,8 +467,8 @@ public class Tree
 
 		for (Pair<BlockPosNode, Integer> node : nodes)
 		{
-			if (node.getA().getX() == root.x && node.getA().getZ() == root.z)
-				trunkNodes.add(new Node(node.getA(), node.getB()));
+			if (node.a().getX() == root.x && node.a().getZ() == root.z)
+				trunkNodes.add(new Node(node.a(), node.b()));
 		}
 		trunkNodes.sort(Comparator.comparingInt(a -> a.y));
 		return trunkNodes;
@@ -479,7 +479,7 @@ public class Tree
 		int i = 0;
 		for (Pair<BlockPosNode, Integer> n : nodes)
 		{
-			i += n.getB() + 1;
+			i += n.b() + 1;
 		}
 		return i;
 	}
@@ -491,9 +491,9 @@ public class Tree
 
 		for (Pair<BlockPosNode, Integer> node : nodes)
 		{
-			if (node.getA().getX() == root.x && node.getA().getZ() == root.z)
+			if (node.a().getX() == root.x && node.a().getZ() == root.z)
 			{
-				trunkSize += node.getB() + 1;
+				trunkSize += node.b() + 1;
 				trunkHeight++;
 			}
 		}
@@ -508,13 +508,13 @@ public class Tree
 		{
 			for (EnumFace f : EnumFace.getCardinal())
 			{
-				int x = node.getA().getX() + f.getXOffset();
-				int z = node.getA().getZ() + f.getZOffset();
+				int x = node.a().getX() + f.getXOffset();
+				int z = node.a().getZ() + f.getZOffset();
 
 				// Block is next to trunk
 				if (root.x == x && root.z == z)
 				{
-					branchStarts.add(new Node(node.getA(), node.getB()));
+					branchStarts.add(new Node(node.a(), node.b()));
 					break;
 				}
 			}
@@ -623,7 +623,7 @@ public class Tree
 			processedSomething = false;
 			for (Pair<BlockPosNode, Integer> pair : nodes)
 			{
-				BlockPosNode node = pair.getA();
+				BlockPosNode node = pair.a();
 				if (node.isProcessed())
 					continue;
 				node.setProcessed(true);

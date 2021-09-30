@@ -72,11 +72,11 @@ public class Minimap extends Component
 
 		if (staticPosition)
 		{
-			camera.setPosition(temp.getX(), getRenderHeight(), temp.getZ());
+			camera.getViewPosition().set(temp.getX(), getRenderHeight(), temp.getZ());
 		} else
 		{
-			camera.setPosition(temp.getPosition());
-			camera.addPosition(0, getRenderHeight(), 0);
+			camera.getViewPosition().set(temp.getPosition());
+			camera.getViewPosition().add(0, getRenderHeight(), 0);
 		}
 
 		if (rotate)

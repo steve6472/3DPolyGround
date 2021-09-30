@@ -21,7 +21,7 @@ public interface IChunkProvider
 
 	default Chunk getChunk(int x, int z)
 	{
-		return getChunkStorage().get(x, z);
+		return getChunkStorage().get(x, z).orElse(null);
 	}
 
 	default void deleteChunk(int x, int z)
@@ -52,7 +52,7 @@ public interface IChunkProvider
 
 	default Chunk getChunkFromBlockPos(int x, int z)
 	{
-		return getChunkStorage().get(x >> 4, z >> 4);
+		return getChunkStorage().get(x >> 4, z >> 4).orElse(null);
 	}
 
 	void addChunk(Chunk chunk);

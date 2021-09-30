@@ -261,7 +261,7 @@ public class EntityHitbox
 		{
 			BlockState state = queuedEntityCollision.get(i);
 			Triple<Integer, Integer, Integer> pos = queuedEntityCollisionPos.get(i);
-			state.getBlock().entityCollision(entity, world, state, pos.getA(), pos.getB(), pos.getC());
+			state.getBlock().entityCollision(entity, world, state, pos.a(), pos.b(), pos.c());
 		}
 
 		return yaOrg != ya && yaOrg < 0.0F;

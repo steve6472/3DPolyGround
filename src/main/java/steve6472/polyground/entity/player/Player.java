@@ -190,6 +190,7 @@ public class Player implements IMotion3f, IPosition3f
 
 	public void updateHitbox()
 	{
+		camera.getViewPosition().set(getPosition().x, getPosition().y + eyeHeight, getPosition().z);
 		camera.setPosition(getPosition().x, getPosition().y + eyeHeight, getPosition().z);
 		hitbox.setHitbox(getX(), getY() + 0.9f, getZ());
 	}
@@ -360,9 +361,9 @@ public class Player implements IMotion3f, IPosition3f
 
 					if (pair != null)
 					{
-						world.setState(pair.getB(), x, y, z, 1);
+						world.setState(pair.b(), x, y, z, 1);
 
-						if (pair.getA() == null || pair.getA().isAir())
+						if (pair.a() == null || pair.a().isAir())
 						{
 							getWorld().getEntityManager().removeEntity(heldBlock);
 							heldBlock = null;
@@ -370,24 +371,24 @@ public class Player implements IMotion3f, IPosition3f
 						{
 							if (heldBlock == null)
 							{
-								BlockEntity item = new BlockEntity(this, pair.getA(), world.getData(x, y, z), x, y, z);
+								BlockEntity item = new BlockEntity(this, pair.a(), world.getData(x, y, z), x, y, z);
 								heldBlock = item;
 								getWorld().getEntityManager().addEntity(item);
 							} else
 							{
-								heldBlock.state = pair.getA();
+								heldBlock.state = pair.a();
 							}
 						}
 					}
 				} else
 				{
 					Pair<BlockState, BlockState> pair = blockToPlace.getStateForPlacement(world, heldBlock.state, this, face, x, y, z);
-					if (pair.getB().getBlock().isValidPosition(pair.getB(), world, x, y, z) && pair.getB().getBlock() != world.getState(x, y, z).getBlock())
+					if (pair.b().getBlock().isValidPosition(pair.b(), world, x, y, z) && pair.b().getBlock() != world.getState(x, y, z).getBlock())
 					{
-						world.setState(pair.getB(), x, y, z, 1);
+						world.setState(pair.b(), x, y, z, 1);
 						world.setData(heldBlock.data, x, y, z);
 
-						if (pair.getA() == null || pair.getA().isAir())
+						if (pair.a() == null || pair.a().isAir())
 						{
 							getWorld().getEntityManager().removeEntity(heldBlock);
 							heldBlock = null;
@@ -395,12 +396,12 @@ public class Player implements IMotion3f, IPosition3f
 						{
 							if (heldBlock == null)
 							{
-								BlockEntity item = new BlockEntity(this, pair.getA(), world.getData(x, y, z), x, y, z);
+								BlockEntity item = new BlockEntity(this, pair.a(), world.getData(x, y, z), x, y, z);
 								heldBlock = item;
 								getWorld().getEntityManager().addEntity(item);
 							} else
 							{
-								heldBlock.state = pair.getA();
+								heldBlock.state = pair.a();
 							}
 						}
 					}
@@ -449,14 +450,14 @@ public class Player implements IMotion3f, IPosition3f
 					{
 						if (heldBlock == null)
 						{
-							BlockEntity item = new BlockEntity(this, pair.getA(), world.getData(x, y, z), x, y, z);
+							BlockEntity item = new BlockEntity(this, pair.a(), world.getData(x, y, z), x, y, z);
 							heldBlock = item;
 							getWorld().getEntityManager().addEntity(item);
 						} else
 						{
-							heldBlock.state = pair.getA();
+							heldBlock.state = pair.a();
 						}
-						world.setState(pair.getB(), x, y, z);
+						world.setState(pair.b(), x, y, z);
 					}
 				}
 			}

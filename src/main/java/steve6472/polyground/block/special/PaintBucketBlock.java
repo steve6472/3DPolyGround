@@ -16,9 +16,9 @@ import steve6472.polyground.world.ModelBuilder;
 import steve6472.polyground.world.World;
 import steve6472.polyground.world.chunk.ModelLayer;
 import steve6472.sge.main.KeyList;
-import steve6472.sge.main.Util;
 import steve6472.sge.main.events.MouseEvent;
 import steve6472.sge.main.util.ColorUtil;
+import steve6472.sge.main.util.MathUtil;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
@@ -90,9 +90,9 @@ public class PaintBucketBlock extends CustomBlock implements IBlockData
 					b = -0.1f;
 				}
 
-				data.red = Util.clamp(0, 1, data.red + r);
-				data.green = Util.clamp(0, 1, data.green + g);
-				data.blue = Util.clamp(0, 1, data.blue + b);
+				data.red = MathUtil.clamp(0, 1, data.red + r);
+				data.green = MathUtil.clamp(0, 1, data.green + g);
+				data.blue = MathUtil.clamp(0, 1, data.blue + b);
 
 				if (player.gamemode != EnumGameMode.CREATIVE)
 				{

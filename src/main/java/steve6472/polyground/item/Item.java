@@ -28,7 +28,7 @@ public class Item
 
 	public static void runQueue()
 	{
-		modelQueue.forEach(c -> c.getB().accept(c.getA()));
+		modelQueue.forEach(c -> c.b().accept(c.a()));
 	}
 
 	public static Item air;

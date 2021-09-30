@@ -49,8 +49,8 @@ public class DumpCommand extends Command
 								List<Pair<Integer, String>> list = new ArrayList<>();
 								BlockAtlas.getUsedTexturesReference().forEach((k, i) -> list.add(new Pair<>(i, k)));
 
-								list.sort(Comparator.comparingInt(Pair::getA));
-								list.forEach((p) -> System.out.println(p.getA() + " -> " + p.getB()));
+								list.sort(Comparator.comparingInt(Pair::a));
+								list.forEach((p) -> System.out.println(p.a() + " -> " + p.b()));
 
 								return 1;
 							})
@@ -61,8 +61,8 @@ public class DumpCommand extends Command
 								List<Pair<Integer, String>> list = new ArrayList<>();
 								BlockAtlas.getUsedTexturesReference().forEach((k, i) -> list.add(new Pair<>(i, k)));
 
-								list.sort(Comparator.comparing(Pair::getB));
-								list.forEach((p) -> System.out.println(p.getB() + " -> " + p.getA()));
+								list.sort(Comparator.comparing(Pair::b));
+								list.forEach((p) -> System.out.println(p.b() + " -> " + p.a()));
 
 								return 1;
 							})

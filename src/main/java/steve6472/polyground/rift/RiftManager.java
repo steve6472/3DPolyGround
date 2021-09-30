@@ -209,9 +209,9 @@ public class RiftManager
 	{
 		Camera temp = main.getPlayer().getCamera();
 
-		camera.setPosition(rift.getPosition());
-		camera.getPosition().add(temp.getPosition());
-		camera.getPosition().add(rift.getCorrection());
+		camera.getViewPosition().set(rift.getPosition());
+		camera.getViewPosition().add(temp.getPosition());
+		camera.getViewPosition().add(rift.getCorrection());
 
 		camera.setYaw(temp.getYaw() - rift.getYaw());
 		camera.setPitch(temp.getPitch() - rift.getPitch());

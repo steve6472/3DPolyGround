@@ -277,9 +277,9 @@ public abstract class AbstractGate
 
 				if (from == null)
 					throw new NullPointerException("""
-						What dum dum did this ?! 
-						My 'game' is perfect! 
-						This error is impossible to get without modifying the save data of a world! 
+						What dum dum did this ?!
+						My 'game' is perfect!
+						This error is impossible to get without modifying the save data of a world!
 						IDENTIFY YOURSELF""");
 				AbstractGate.connect(from, to, inputConnection.getIndex(), i);
 			}

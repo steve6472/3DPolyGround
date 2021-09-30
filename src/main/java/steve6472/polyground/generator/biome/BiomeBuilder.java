@@ -228,9 +228,9 @@ public class BiomeBuilder
 			for (Triple<EnumFeatureStage, Double, String> t : this.features)
 			{
 				JSONObject feature = new JSONObject();
-				feature.put("stage", t.getA());
-				feature.put("chance", t.getB());
-				feature.put("name", t.getC());
+				feature.put("stage", t.a());
+				feature.put("chance", t.b());
+				feature.put("name", t.c());
 				features.put(feature);
 			}
 			main.put("features", features);

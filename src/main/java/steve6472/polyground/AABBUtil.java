@@ -3,7 +3,7 @@ package steve6472.polyground;
 import org.joml.AABBf;
 import org.joml.Vector3f;
 import steve6472.polyground.tessellators.BasicTessellator;
-import steve6472.sge.main.Util;
+import steve6472.sge.main.util.MathUtil;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
@@ -94,9 +94,9 @@ public class AABBUtil
 	{
 		float density = 1;
 		if (height > 1)
-			density = Util.clamp(0, 1f, 1f - (float) Math.log10(height));
+			density = MathUtil.clamp(0, 1f, 1f - (float) Math.log10(height));
 
-		height = Util.clamp(0.0005f, 1f, height);
+		height = MathUtil.clamp(0.0005f, 1f, height);
 
 		float r = 0.5f;
 		float g = 0.75f;

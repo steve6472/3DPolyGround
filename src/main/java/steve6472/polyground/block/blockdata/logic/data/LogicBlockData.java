@@ -142,8 +142,8 @@ public class LogicBlockData extends AbstractPickableMicroBlockData
 	public void placeWire(int x, int y, int z, int color)
 	{
 		final Pair<List<Node>, List<Node>> wire = findWire(x, y, z, color);
-		List<Node> inputs = wire.getA();
-		List<Node> outputs = wire.getB();
+		List<Node> inputs = wire.a();
+		List<Node> outputs = wire.b();
 
 		if (outputs.size() > 1)
 		{
@@ -174,8 +174,8 @@ public class LogicBlockData extends AbstractPickableMicroBlockData
 	public void removeWire(int x, int y, int z)
 	{
 		final Pair<List<Node>, List<Node>> wire = findWire(x, y, z, -1);
-		List<Node> inputs = wire.getA();
-		List<Node> outputs = wire.getB();
+		List<Node> inputs = wire.a();
+		List<Node> outputs = wire.b();
 
 		if (outputs.size() > 1)
 		{

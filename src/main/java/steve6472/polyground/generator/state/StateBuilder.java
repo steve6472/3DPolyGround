@@ -144,24 +144,24 @@ public class StateBuilder
 			for (Pair<PropertyBuilder, BlockModelBuilder> s : models)
 			{
 				JSONObject model = new JSONObject();
-				model.put("state", s.getA().build());
-				if (s.getA().hasRotation())
-					model.put("rotation", new JSONArray().put(s.getA().getRotX()).put(s.getA().getRotY()).put(s.getA().getRotZ()));
-				if (s.getA().isUvLock())
+				model.put("state", s.a().build());
+				if (s.a().hasRotation())
+					model.put("rotation", new JSONArray().put(s.a().getRotX()).put(s.a().getRotY()).put(s.a().getRotZ()));
+				if (s.a().isUvLock())
 					model.put("uvlock", true);
-				if (s.getA().isCustom())
+				if (s.a().isCustom())
 					model.put("custom", true);
-				if (!s.getA().getTags().isEmpty())
+				if (!s.a().getTags().isEmpty())
 				{
 					JSONArray tags = new JSONArray();
-					for (String tag : s.getA().getTags())
+					for (String tag : s.a().getTags())
 						tags.put(tag);
 					model.put("tags", tags);
 				}
-				model.put("model", "block/" + s.getB().getModelPath() + s.getB().getModelName());
+				model.put("model", "block/" + s.b().getModelPath() + s.b().getModelName());
 				modelArray.put(model);
 
-				save(s.getB());
+				save(s.b());
 			}
 
 			// Save block state

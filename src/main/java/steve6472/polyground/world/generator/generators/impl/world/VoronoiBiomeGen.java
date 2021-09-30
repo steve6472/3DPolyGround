@@ -105,7 +105,7 @@ public class VoronoiBiomeGen implements IBiomeGenerator
 		{
 			for (int j = -searchRadius; j <= searchRadius; j++)
 			{
-				Vector3i v = seedCache.get(i + gx, j + gz);
+				Vector3i v = seedCache.get(i + gx, j + gz).get();
 				double dis = Vector2d.distance(x, z, v.x, v.y);
 				if (dis < lastDistance)
 				{

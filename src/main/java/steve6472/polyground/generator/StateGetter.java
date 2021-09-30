@@ -21,7 +21,7 @@ class StateGetter
 		propertyBuilders = new ArrayList<>();
 		for (int i = 0; i < dataBuilder.blockState.getModels().size(); i++)
 		{
-			propertyBuilders.add(dataBuilder.blockState.getModels().get(i).getA());
+			propertyBuilders.add(dataBuilder.blockState.getModels().get(i).a());
 		}
 		System.out.println(propertyBuilders);
 	}

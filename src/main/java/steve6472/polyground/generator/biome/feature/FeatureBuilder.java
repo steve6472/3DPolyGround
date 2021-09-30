@@ -130,12 +130,12 @@ public class FeatureBuilder
 		{
 			JSONObject object = new JSONObject();
 			JSONArray array = new JSONArray();
-			for (String string : pair.getB())
+			for (String string : pair.b())
 			{
 				array.put(string);
 			}
 			object.put(name, array);
-			main.put(pair.getA(), object);
+			main.put(pair.a(), object);
 		}
 	}
 
@@ -146,7 +146,7 @@ public class FeatureBuilder
 			JSONObject object = new JSONObject();
 			JSONArray array = new JSONArray();
 
-			for (BlockStateBuilder state : states.getB())
+			for (BlockStateBuilder state : states.b())
 			{
 				JSONObject obj = new JSONObject();
 				obj.put("block", state.block);
@@ -162,7 +162,7 @@ public class FeatureBuilder
 			}
 
 			object.put(name, array);
-			main.put(states.getA(), object);
+			main.put(states.a(), object);
 		}
 	}
 
@@ -185,24 +185,24 @@ public class FeatureBuilder
 		for (Pair<String, BlockStateBuilder> state : states)
 		{
 			JSONObject s = new JSONObject();
-			s.put("block", state.getB().block);
+			s.put("block", state.b().block);
 
-			if (!state.getB().states.isEmpty())
+			if (!state.b().states.isEmpty())
 			{
 				JSONObject properties = new JSONObject();
 
-				state.getB().states.forEach((k, v) -> properties.put(k.getName(), v.toString()));
+				state.b().states.forEach((k, v) -> properties.put(k.getName(), v.toString()));
 				s.put("properties", properties);
 			}
-			main.put(state.getA(), s);
+			main.put(state.a(), s);
 		}
 
 		for (Pair<String, Object> pair : other)
 		{
-			if (pair.getB() instanceof FeatureBuilder fb)
-				main.put(pair.getA(), fb.build());
+			if (pair.b() instanceof FeatureBuilder fb)
+				main.put(pair.a(), fb.build());
 			else
-				main.put(pair.getA(), pair.getB());
+				main.put(pair.a(), pair.b());
 		}
 
 		return main;

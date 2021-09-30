@@ -76,7 +76,7 @@ public class MainMenu extends Gui implements IGamePause
 			CaveGame.getInstance().options.generateDistance = -1;
 
 			var v = pettan(seed);
-			CaveGame.getInstance().setWorld(new World(CaveGame.getInstance(), 4, v.getA(), v.getB().getA(), v.getB().getB()));
+			CaveGame.getInstance().setWorld(new World(CaveGame.getInstance(), 4, v.a(), v.b().a(), v.b().b()));
 			CaveGame.getInstance().world.addChunk(new Chunk(0, 0, CaveGame.getInstance().getWorld()));
 
 
@@ -114,7 +114,7 @@ public class MainMenu extends Gui implements IGamePause
 			CaveGame.getInstance().options.generateDistance = -1;
 
 			var v = pettan(seed);
-			CaveGame.getInstance().setWorld(new World(CaveGame.getInstance(), 4, v.getA(), v.getB().getA(), v.getB().getB()));
+			CaveGame.getInstance().setWorld(new World(CaveGame.getInstance(), 4, v.a(), v.b().a(), v.b().b()));
 			CaveGame.getInstance().world.worldName = "house";
 
 			try
@@ -205,7 +205,7 @@ public class MainMenu extends Gui implements IGamePause
 			CaveGame.getInstance().options.generateDistance = -1;
 
 			var v = pettan(seed);
-			CaveGame.getInstance().setWorld(new World(CaveGame.getInstance(), 4, v.getA(), v.getB().getA(), v.getB().getB()));
+			CaveGame.getInstance().setWorld(new World(CaveGame.getInstance(), 4, v.a(), v.b().a(), v.b().b()));
 			CaveGame.getInstance().world.addChunk(new Chunk(0, 0, CaveGame.getInstance().getWorld()));
 
 			try

@@ -1,6 +1,6 @@
 package steve6472.polyground.entity.parkour;
 
-import steve6472.sge.main.Util;
+import steve6472.sge.main.util.MathUtil;
 import steve6472.sge.main.util.RandomUtil;
 
 public class Instruction
@@ -30,13 +30,13 @@ public class Instruction
 
 	public Instruction mutate()
 	{
-		yaw = Util.clamp(0, Math.PI * 2, yaw + mutation());
-		forward = Util.clamp(0, 1, forward + mutation());
-		backwards = Util.clamp(0, 1, backwards + mutation());
-		left = Util.clamp(0, 1, left + mutation());
-		right = Util.clamp(0, 1, right + mutation());
-		jump = Util.clamp(0, 1, jump + mutation());
-		sprint = Util.clamp(0, 1, sprint + mutation());
+		yaw = MathUtil.clamp(0, Math.PI * 2, yaw + mutation());
+		forward = MathUtil.clamp(0, 1, forward + mutation());
+		backwards = MathUtil.clamp(0, 1, backwards + mutation());
+		left = MathUtil.clamp(0, 1, left + mutation());
+		right = MathUtil.clamp(0, 1, right + mutation());
+		jump = MathUtil.clamp(0, 1, jump + mutation());
+		sprint = MathUtil.clamp(0, 1, sprint + mutation());
 		return this;
 	}
 

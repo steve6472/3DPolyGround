@@ -8,7 +8,7 @@ import steve6472.polyground.world.generator.feature.components.match.IBlockMatch
 import steve6472.polyground.world.generator.feature.components.match.Match;
 import steve6472.polyground.world.generator.feature.components.provider.IBlockProvider;
 import steve6472.polyground.world.generator.feature.components.provider.Provider;
-import steve6472.sge.main.Util;
+import steve6472.sge.main.util.MathUtil;
 import steve6472.sge.main.util.RandomUtil;
 
 /**********************
@@ -33,8 +33,8 @@ public class OreVein extends Feature
 	{
 		this.target = target;
 		this.ore = ore;
-		this.minSize = Util.clamp(0, 30, minSize);
-		this.maxSize = Util.clamp(1, 31, maxSize);
+		this.minSize = MathUtil.clamp(0, 30, minSize);
+		this.maxSize = MathUtil.clamp(1, 31, maxSize);
 		this.chance = chance;
 	}
 
@@ -45,8 +45,8 @@ public class OreVein extends Feature
 		ore = Provider.provide(json.getJSONObject("ore"));
 //		target = Blocks.loadStateFromJSON(json.getJSONObject("target"));
 //		ore = Blocks.loadStateFromJSON(json.getJSONObject("ore"));
-		minSize = Util.clamp(0, 30, json.getInt("min_size"));
-		maxSize = Util.clamp(1, 31, json.getInt("max_size"));
+		minSize = MathUtil.clamp(0, 30, json.getInt("min_size"));
+		maxSize = MathUtil.clamp(1, 31, json.getInt("max_size"));
 		chance = json.getDouble("chance");
 	}
 

@@ -5,7 +5,7 @@ import steve6472.polyground.CaveGame;
 import steve6472.polyground.block.states.BlockState;
 import steve6472.polyground.registry.WaterRegistry;
 import steve6472.polyground.world.World;
-import steve6472.sge.main.Util;
+import steve6472.sge.main.util.MathUtil;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
@@ -114,10 +114,10 @@ public class SubChunkWater
 						if (freeBlockVolume > 0)
 						{
 							double downVolume = subChunk.getLiquidVolume(i, j - 1, k);
-							double freeDownVolume = Util.clamp(0.0, 1000.0, freeBlockVolume - downVolume);
+							double freeDownVolume = MathUtil.clamp(0.0, 1000.0, freeBlockVolume - downVolume);
 							if (freeDownVolume > 0)
 							{
-								double flow = Util.clamp(0.0, freeDownVolume, volume);
+								double flow = MathUtil.clamp(0.0, freeDownVolume, volume);
 								setLiquidVolume(i, j, k, volume - flow);
 								world.setLiquidVolume(
 									i + subChunk.getX() * 16,

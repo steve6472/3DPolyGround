@@ -118,8 +118,8 @@ public class Animation
 
 	private void animate(Pair<IKey, IKey> pair, double time, int index, List<IKey> keys, boolean reverse)
 	{
-		IKey before = pair.getA();
-		IKey after = pair.getB();
+		IKey before = pair.a();
+		IKey after = pair.b();
 		double t = AnimUtil.time(before.time(), after.time(), time);
 
 		float vx;

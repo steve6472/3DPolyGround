@@ -5,6 +5,7 @@ import steve6472.sge.gfx.font.Font;
 import steve6472.sge.main.*;
 import steve6472.sge.main.events.Event;
 import steve6472.sge.main.events.MouseEvent;
+import steve6472.sge.main.util.MathUtil;
 
 /**********************
  * Created by steve6472 (Mirek Jozefek)
@@ -68,7 +69,7 @@ public class KnappingRecipeCreator extends MainApp
 			if (x < 16 && y < 16 && x >= 0 && y >= 0)
 				grid[x][y] = !grid[x][y];
 
-			if (Util.isInRectangle(520, 300, 620, 330, e.getX(), e.getY()))
+			if (MathUtil.isInRectangle(520, 300, 620, 330, e.getX(), e.getY()))
 			{
 				StringBuilder sb = new StringBuilder();
 				sb.append("{\"recipe\": {\n");
